@@ -1,12 +1,12 @@
-@frontoffice
+@frontoffice @wip
 Feature: Check licence details
   As a business with a water abstraction licence
   I want to be able to check my licence details
   So that I know how much water I am licenced to abstract legally
 
   Background:
-    Given I sign in with valid login details
-    And I select "Licence number: 18/54/13/0381"
+    Given I sign into my account
+    And I select "03/28/03/0215"
 
   Scenario: Contact details are shown for licence
     When I check the licence contact details

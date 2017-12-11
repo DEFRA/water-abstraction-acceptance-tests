@@ -27,4 +27,20 @@ class FrontOfficeApp
     @last_page = LicenceTermsPage.new
   end
 
+  def mailinator_page
+    @last_page = MailinatorPage.new
+  end
+
+  def mailinator_email_details_page
+    @last_page = MailinatorDetailsPage.new
+  end
+
+  def reset_password_page
+    @last_page = ResetPasswordPage.new
+  end
+
+  def mailinator_inbox_page
+    @last_page = MailinatorInboxPage.new
+  end
+
 end

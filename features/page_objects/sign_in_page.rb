@@ -17,7 +17,7 @@ class SignInPage < SitePrism::Page
       if has_disabled_submit_button? == false
         email.set(args[:email]) if args.key?(:email)
         password.set "@3kjldjfa@"
-        wait_for_submit_button(10, visible: true)
+        wait_until_submit_button_visible
         submit_button.click
         refresh_cnt = 20
       else
