@@ -61,6 +61,6 @@ end
 
 Then(/^I can sign into my account$/) do
   within_window @new_window do
-  expect(@front_app.licences_page.current_url).to include "/licences"
+    expect(@front_app.licences_page.current_url).to include "/licences"
   end
 end

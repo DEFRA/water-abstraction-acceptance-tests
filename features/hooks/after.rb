@@ -3,5 +3,6 @@ After("@email") do
   @front_app.mailinator_page.load
   @front_app.mailinator_page.submit(inbox: Quke::Quke.config.custom["accounts"]["water_user2"]["username"])
   @front_app.mailinator_inbox_page.unlock_email.click
+  sleep(2)
   @front_app.mailinator_inbox_page.delete_email.click
 end
