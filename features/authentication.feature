@@ -11,7 +11,6 @@ Feature: Identity management
     When I enter my password incorrectly
     Then I am informed "Your email address or password are incorrect"
 
-@email
   Scenario: Invalid sign in causes account to be locked and email sent to account holder informing them
     Given I lock my account by attempting to sign in with an incorrect password too many times
      When I unlock my account using the email link provided

@@ -31,20 +31,13 @@ Given(/^I lock my account by attempting to sign in with an incorrect password to
   @front_app = FrontOfficeApp.new
   @front_app.start_page.load
   @front_app.start_page.submit
+  # Locks account after ten unsuccessful attempts
   @front_app.sign_in_page.lock_account(email: Quke::Quke.config.custom["accounts"]["water_user2"]["username"])
-  # # Ten is the magic number..
-  # 10.times do
-  #   @front_app.sign_in_page.submit_incorrect_password(email: Quke::Quke.config.custom["accounts"]["water_user2"]["username"])
-  # end
-
 end
 # rubocop:enable Metrics/LineLength
 When(/^I unlock my account using the email link provided$/) do
-  @front_app.mailinator_page.load
-  @front_app.mailinator_page.submit(inbox: Quke::Quke.config.custom["accounts"]["water_user2"]["username"])
-  # @front_app.mailinator_inbox_page.wait_for_unlock_email(10)
-  # @front_app.mailinator_inbox_page.unlock_email.click
-  # @front_app.mailinator_inbox_page.inbox.wait_for_unlock_email(10)
+  @front_app.mailinator_home_page.load
+  @front_app.mailinator_home_page.submit(inbox: Quke::Quke.config.custom["accounts"]["water_user2"]["username"])
   @front_app.mailinator_inbox_page.email[0].from.click
 
   @front_app.mailinator_inbox_page.email_details do |frame|

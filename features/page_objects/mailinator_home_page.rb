@@ -1,4 +1,4 @@
-class MailinatorPage < SitePrism::Page
+class MailinatorHomePage < SitePrism::Page
 
   # Mailinator email checker main page
   set_url(Quke::Quke.config.custom["urls"]["mail_checker"])
