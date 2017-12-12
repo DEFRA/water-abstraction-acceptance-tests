@@ -28,7 +28,7 @@ class FrontOfficeApp
   end
 
   def mailinator_page
-    @last_page = MailinatorPage.new
+    @last_page = MailinatorHomePage.new
   end
 
   def mailinator_email_details_page
