@@ -1,9 +1,10 @@
 class MailinatorInboxPage < SitePrism::Page
 
   # Mailinator inbox
-  element(:unlock_email, :xpath, "//*[normalize-space()='Reset your password to unlock your account']")
-
-  element(:delete_email, ".fa-trash")
+ 
+  sections :email, ".all_message-item" do
+    element :from, "div[title='FROM']"
+  end
 
   iframe :email_details, MailinatorEmailDetailsPage, "#msg_body"
 

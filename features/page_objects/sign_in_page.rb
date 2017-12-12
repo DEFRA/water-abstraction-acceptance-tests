@@ -11,20 +11,14 @@ class SignInPage < SitePrism::Page
     submit_button.click
   end
 
-  def submit_incorrect_password(args = {})
-    refresh_cnt = 0
-    loop do
-      if has_disabled_submit_button? == false
-        email.set(args[:email]) if args.key?(:email)
-        password.set "@3kjldjfa@"
-        wait_until_submit_button_visible
-        submit_button.click
-        refresh_cnt = 20
-      else
-        refresh_cnt += 1
-        sleep(1)
-      end
-      break unless refresh_cnt < 20
+  def lock_account(args = {})
+    attempts = 0
+    until attempts == 10
+      next if has_disabled_submit_button?
+      email.set(args[:email]) if args.key?(:email)
+      password.set "@3kjldjfa@"
+      submit_button.click
+      attempts += 1
     end
   end
 
