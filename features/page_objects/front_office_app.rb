@@ -27,7 +27,7 @@ class FrontOfficeApp
     @last_page = LicenceTermsPage.new
   end
 
-  def mailinator_page
+  def mailinator_home_page
     @last_page = MailinatorHomePage.new
   end
 
