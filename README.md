@@ -137,6 +137,9 @@ You can also test them using the Chrome developer tools. Open them up, select th
 
 Capybara has a known issue with links that don't have a valid href, as seen in MS dynamics. Work around is to find the element by ID and then call `click()` on it e.g. `page.find("#example-thing-id").click`. Issue details can be found here: https://github.com/teamcapybara/capybara/issues/379
 
+In instances where the element to be interacted with is out of the viewport of the browser it's possible to receive a 'Element is not clickable at point' error message. A scroll_to helper has been added to scroll to the element so it's now visable to be interacted with using scroll_to(element)
+Example scroll_to(@front_app.sign_in_page)
+
 ## Contributing to this project
 
 If you have an idea you'd like to contribute please log an issue.

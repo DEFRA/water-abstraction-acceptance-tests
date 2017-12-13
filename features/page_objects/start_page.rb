@@ -7,6 +7,7 @@ class StartPage < SitePrism::Page
   element(:sign_in, "a[href$='signin']")
 
   def submit(_args = {})
+    scroll_to(sign_in)
     sign_in.click
   end
 
