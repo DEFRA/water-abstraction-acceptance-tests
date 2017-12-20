@@ -6,7 +6,7 @@ Feature: Check licence details
 
   Background:
     Given I sign into my account
-    And I select "Licence number: 18/54/13/0381"
+    And I select "18/54/13/0381"
 
   Scenario: Contact details are shown for licence
     When I check the licence contact details
