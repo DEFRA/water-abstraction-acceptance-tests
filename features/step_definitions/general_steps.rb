@@ -17,6 +17,7 @@ Then(/^I am on the contact details page$/) do
 end
 
 When(/^I check the licence terms$/) do
+  scroll_to(@front_app.licence_details_page.licence_terms)
   @front_app.licence_details_page.licence_terms.click
 end
 
@@ -25,9 +26,11 @@ Then(/^I am on the licence terms page$/) do
 end
 
 When(/^I individually select each licence$/) do
+  scroll_to(@front_app.licence_terms_page.source)
   @front_app.licence_terms_page.source.click
   @front_app.licence_terms_page.point.click
   @front_app.licence_terms_page.purpose.click
+  scroll_to(@front_app.licence_terms_page.means_of_abstraction)
   @front_app.licence_terms_page.means_of_abstraction.click
   @front_app.licence_terms_page.means_of_measurement.click
   @front_app.licence_terms_page.max_quantities.click
