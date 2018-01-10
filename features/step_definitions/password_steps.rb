@@ -5,30 +5,30 @@ end
 
 Given(/^I enter a password which is too short$/) do
   @front_app.change_password_page.submit(
-    password:"Is$h0rt",
-    confirmpw:"Is$h0rt"
+    password: "Is$h0rt",
+    confirmpw: "Is$h0rt"
   )
 end
 
 Given(/^I enter a password with no uppercase letters$/) do
   @front_app.change_password_page.submit(
-    password:"low£rcase",
-    confirmpw:"low£rcase"
+    password: "low£rcase",
+    confirmpw: "low£rcase"
   )
 end
 
 Given(/^I enter a password with no symbols$/) do
   @front_app.change_password_page.submit(
-      password:"N0symbol",
-      confirmpw:"N0symbol"
-    )
+    password: "N0symbol",
+    confirmpw: "N0symbol"
+  )
 end
 
 Given(/^I enter valid passwords which don't match$/) do
   @front_app.change_password_page.submit(
-      password:"S0mething?",
-      confirmpw:"S0mething!"
-    )
+    password: "S0mething?",
+    confirmpw: "S0mething!"
+  )
 end
 
 Given(/^I see an error telling me the password is invalid$/) do
