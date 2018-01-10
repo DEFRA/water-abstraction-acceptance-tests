@@ -35,6 +35,14 @@ class FrontOfficeApp
     @last_page = MailinatorDetailsPage.new
   end
 
+  def change_password_page
+    @last_page = ChangePasswordPage.new
+  end
+
+  def change_password_confirm_page
+    @last_page = ChangePasswordConfirmPage.new
+  end
+
   def reset_password_page
     @last_page = ResetPasswordPage.new
   end

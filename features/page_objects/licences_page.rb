@@ -2,7 +2,8 @@ class LicencesPage < SitePrism::Page
 
   # Your water abstraction licences
 
-  elements(:licences, ".license-result:nth-child(11) .license-result__column")
+  element(:changepw, ".header-links a:nth-child(1)")
+  elements(:licences, ".license-result:nth-child(128) .license-result__column")
 
   def submit(args = {})
     return unless args.key?(:licence)
