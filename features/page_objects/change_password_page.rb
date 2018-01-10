@@ -5,9 +5,9 @@ class ChangePasswordPage < SitePrism::Page
   element(:submit_button, ".button-start")
   element(:error_heading, "#error-summary-heading")
 
-  def submit(pw)
-    password.set(pw)
-    confirmpw.set(pw)
+  def submit(args = {})
+    password.set(args[:password]) if args.key?(:password)
+    confirmpw.set(args[:confirmpw]) if args.key?(:confirmpw)
     submit_button.click
   end
 
