@@ -1,4 +1,4 @@
-# Waste abstraction acceptance tests
+# Water abstraction acceptance tests
 
 [![Build Status](https://travis-ci.org/DEFRA/water-abstraction-acceptance-tests.svg?branch=master)](https://travis-ci.org/DEFRA/water-abstraction-acceptance-tests)
 [![security](https://hakiri.io/github/DEFRA/water-abstraction-acceptance-tests/master.svg)](https://hakiri.io/github/DEFRA/water-abstraction-acceptance-tests/master)

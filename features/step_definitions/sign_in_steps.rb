@@ -1,15 +1,15 @@
 
-Given(/^I sign into my account$/) do
+Given(/^I sign into my account as "([^"]*)"$/) do |account|
   @front_app = FrontOfficeApp.new
   @front_app.start_page.load
   @front_app.start_page.submit
   @front_app.sign_in_page.submit(
-    email: Quke::Quke.config.custom["accounts"]["water_user1"]["username"],
-    password: Quke::Quke.config.custom["accounts"]["water_user1"]["password"]
+    email: Quke::Quke.config.custom["accounts"][account.to_s]["username"],
+    password: Quke::Quke.config.custom["accounts"][account.to_s]["password"]
   )
 end
 
-Given(/^I am in the sign in page$/) do
+Given(/^I am on the sign in page$/) do
   @front_app = FrontOfficeApp.new
   @front_app.start_page.load
   @front_app.start_page.submit
@@ -46,10 +46,6 @@ When(/^I unlock my account using the email link provided$/) do
     @front_app.reset_password_page.submit(
       password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"],
       confirm_password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
-    )
-    @front_app.sign_in_page.submit(
-      email: Quke::Quke.config.custom["accounts"]["water_user2"]["username"],
-      password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
     )
   end
 end

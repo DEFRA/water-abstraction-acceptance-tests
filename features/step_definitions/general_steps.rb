@@ -6,6 +6,9 @@ end
 
 Then(/^I am on the abstraction licences page$/) do
   expect(@front_app.licences_page).to have_text("Your water abstraction licences")
+  @total_licences = @front_app.licences_page.view_links.count.to_s
+  puts "Licences count is: " + @total_licences
+  # Shows total number of licences available to that user.
 end
 
 When(/^I check the licence contact details$/) do

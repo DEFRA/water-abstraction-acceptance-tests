@@ -3,6 +3,11 @@ Given(/^I select Change Password$/) do
   @front_app.licences_page.changepw.click
 end
 
+Given(/^I am on the Change Password page$/) do
+  expect(@front_app.change_password_page.header).to have_text("Change your password")
+  expect(@front_app.change_password_page.current_url).to include "/update_password"
+end
+
 Given(/^I enter a password which is too short$/) do
   @front_app.change_password_page.submit(
     password: "Is$h0rt",

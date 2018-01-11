@@ -4,9 +4,10 @@ Feature: Manage password
   I want to update my password
   So that I can sign in securely
 
-  Background:
-    Given I sign into my account
-    And I select Change Password
+  Background: Go to Change Password screen
+    Given I sign into my account as "water_user1"
+    When I select Change Password
+    Then I am on the Change Password page
 
   Scenario: Enter short password
     When I enter a password which is too short
@@ -25,7 +26,8 @@ Feature: Manage password
     Then I see an error telling me the passwords don't match
 
   Scenario: Sign in with existing password to show that it hasn't been changed
-    When I sign into my account
+    Given I am on the sign in page
+    When I sign into my account as "water_user1"
     Then I am on the abstraction licences page
 
   Scenario: Enter valid password

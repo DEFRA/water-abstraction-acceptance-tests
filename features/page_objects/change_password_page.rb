@@ -1,5 +1,6 @@
 class ChangePasswordPage < SitePrism::Page
 
+  element(:header, ".heading-large")
   element(:password, "#password")
   element(:confirmpw, "#confirm-password")
   element(:submit_button, ".button-start")
