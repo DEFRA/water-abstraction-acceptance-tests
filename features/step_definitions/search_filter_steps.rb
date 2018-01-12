@@ -9,9 +9,6 @@ end
 
 Given(/^all licences containing that term are shown on screen$/) do
   @licences_page = @front_app.licences_page
-  puts "Licences count is:   " + @front_app.licences_page.view_links.count.to_s
-  puts "Licence result no:   " + @front_app.licences_page.licence_result_no.text
-  puts "Licence result name: " + @licences_page.licence_result_name.text
   @licence_results = [@licences_page.licence_result_no.text, @licences_page.licence_result_name.text]
   expect(@licence_results).to have_text(@expected_search_result.to_s)
   expect(@licences_page).to have_view_links count: @expected_result_count.to_i
@@ -46,7 +43,6 @@ Given(/^I remove a search term$/) do
 end
 
 Given(/^I can see the original number of licences$/) do
-  puts "Licences count is: " + @front_app.licences_page.view_links.count.to_s
   expect(@front_app.licences_page).to have_view_links count: @total_licences.to_i
 end
 
@@ -55,10 +51,7 @@ Given(/^I select the licence name heading$/) do
 end
 
 Given(/^the table is sorted by licence name in ascending order$/) do
-  puts "Licence name text: " + @front_app.licences_page.licencename_link.text
   expect(@front_app.licences_page.licencename_link.text).to have_text("Licence name ▲")
-  puts "First licence: " + @front_app.licences_page.firstlicence.text.to_s
-  puts "Last licence:  " + @front_app.licences_page.lastlicence.text.to_s
 end
 
 Given(/^I select the licence number heading$/) do
@@ -66,12 +59,7 @@ Given(/^I select the licence number heading$/) do
 end
 
 Given(/^the table is sorted by licence number in ascending order$/) do
-  puts "Licence number text: " + @front_app.licences_page.serialno_link.text
   expect(@front_app.licences_page.serialno_link.text).to have_text("Licence serial number ▲")
-  puts "First licence: " + @front_app.licences_page.firstlicence.text.to_s
-  puts "Last licence:  " + @front_app.licences_page.lastlicence.text.to_s
-  puts "First licence index: " + page.body.index("28/01/0142").to_s
-  puts "Last licence index:  " + page.body.index("055/0018/009").to_s
   expect(page.body.index("28/01/0142")).to be < page.body.index("055/0018/009")
 end
 
