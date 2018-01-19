@@ -52,5 +52,5 @@ Given(/^I enter a valid password$/) do
 end
 
 Given(/^I see the Password Changed screen$/) do
-  expect(@front_app.change_password_confirm_page.confirmation.text).to include "Your password has been changed."
+  expect(@front_app.change_password_confirm_page.confirmation.text).to include "Your password has been changed"
 end
