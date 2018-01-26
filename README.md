@@ -78,8 +78,8 @@ bundle exec quke
 To run just the back or front office tests call
 
 ```bash
-bundle exec quke --tags @frontoffice
-bundle exec quke --tags @backoffice
+bundle exec quke --tags @readonly
+bundle exec quke --tags @readwrite
 ```
 
 You can create [multiple config files](https://github.com/DEFRA/quke#multiple-configs), for example you may wish to have one setup for running against **Chrome**, and another to run against a different environment. You can tell **Quke** which config file to use by adding an environment variable argument to the command.
@@ -107,9 +107,9 @@ Scenario: Registration by an individual
 When applied you then have the ability to filter which tests will be used during any given run
 
 ```bash
-bundle exec quke --tags @frontoffice # Run only things tagged with this
-bundle exec quke --tags @frontoffice,@happypath # Run all things with these tags
-bundle exec quke --tags ~@functional # Don't run anything with this tag (run everything else)
+bundle exec quke --tags @readonly # Run only things tagged with this
+bundle exec quke --tags @readonly,@wip # Run all things with these tags
+bundle exec quke --tags ~@readwrite # Don't run anything with this tag (run everything else)
 ```
 
 ### In this project
@@ -118,7 +118,8 @@ To have consistency across the project the following tags are defined and should
 
 |Tag|Description|
 |---|---|
-|@frontoffice|Any feature or scenario expected to be run against the front office application|
+|@readonly|Any feature which doesn't change user data on the service.|
+|@readwrite|Any feature which amends user data on the service.  Do not run on a live environment.|
 |@backoffice|Any feature or scenario expected to be run against the back office Dynamics application|
 |@happypath|A scenario which details a complete registration with no errors|
 |@functional|Any feature or scenario which is testing just a specific function of the service e.g. validation errors|
