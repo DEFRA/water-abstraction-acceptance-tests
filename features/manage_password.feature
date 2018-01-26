@@ -1,4 +1,4 @@
-@frontoffice @wip
+@readonly
 Feature: Manage password
   As a viewer of water abstraction licences
   I want to update my password

@@ -1,4 +1,4 @@
-@frontoffice
+@readonly
 Feature: Check licence details
   As a business with a water abstraction licence
   I want to be able to check my licence details
@@ -18,5 +18,5 @@ Feature: Check licence details
 
   Scenario: Licence terms details are displayed when selected from the licence terms page
     When I check the licence terms
-    And I individually select each licence
+    And I individually select each heading
     Then I can see all my licence term details

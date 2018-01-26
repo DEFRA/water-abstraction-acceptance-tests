@@ -1,4 +1,4 @@
-@frontoffice
+@readonly
 Feature: Search and filter on licences page
 
 Background:

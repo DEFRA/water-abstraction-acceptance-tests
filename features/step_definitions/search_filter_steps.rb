@@ -64,7 +64,9 @@ Given(/^the table is sorted by licence number in ascending order$/) do
 end
 
 Given(/^I enter an email address on the licence holder's email field$/) do
-  @expected_search_result = "54/17/0361"
+  @expected_search_result = "28/02/0094"
+  # In Dev: 54/17/0361 .
+  # Once the registration process is automated, make this match the licence that the John user registers.
   @expected_result_count = 1
   @front_app.licences_page.search(
     email_form: Quke::Quke.config.custom["accounts"]["water_user_john"]["username"].to_s
