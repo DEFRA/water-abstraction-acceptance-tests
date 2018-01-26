@@ -53,6 +53,5 @@ end
 Then(/^I can sign into my account$/) do
   within_window @new_window do
     expect(@front_app.licences_page.current_url).to include "licences"
-    # Caters for both scenarios, whether this user has licences available to them or not.
   end
 end

@@ -4,7 +4,7 @@ class LicencesPage < SitePrism::Page
 
   element(:changepw, ".header-links a:nth-child(1)")
   elements(:licences, ".heading-medium")
-  # elements(:licences, ".license-result__column") # see https://github.com/natritmeyer/site_prism#element-collections
+  # see https://github.com/natritmeyer/site_prism#element-collections
   elements(:view_links, ".license-result__column--view")
   element(:licence_result_no, ".license-results-header+ .license-result .heading-medium")
   element(:licence_result_name, ".license-results-header+ .license-result .license-result__column--description")
