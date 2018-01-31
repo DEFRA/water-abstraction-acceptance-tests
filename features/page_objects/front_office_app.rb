@@ -43,8 +43,16 @@ class FrontOfficeApp
     @last_page = ChangePasswordConfirmPage.new
   end
 
+  def request_pw_reset_page
+    @last_page = RequestResetPage.new
+  end
+
   def reset_password_page
     @last_page = ResetPasswordPage.new
+  end
+
+  def reset_password_check1_page
+    @last_page = ResetPasswordCheck1Page.new
   end
 
   def mailinator_inbox_page

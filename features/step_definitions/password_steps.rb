@@ -54,3 +54,14 @@ end
 Given(/^I see the Password Changed screen$/) do
   expect(@front_app.change_password_confirm_page.confirmation.text).to include "Your password has been changed"
 end
+
+Given(/^I request a password reset$/) do
+  @front_app.sign_in_page.forgotten_password.click
+  @front_app.request_pw_reset_page.submit(
+    email_address: Quke::Quke.config.custom["accounts"]["water_user1"]["username"]
+  )
+end
+
+Given(/^I am on the Check Your Email page$/) do
+  expect(@front_app.reset_password_check1_page.heading.text).to include "Check your email"
+end

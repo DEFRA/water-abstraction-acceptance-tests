@@ -4,6 +4,10 @@ When(/^I select "([^"]*)"$/) do |lic_no|
   @licence_number = lic_no
 end
 
+When(/^I access the first licence$/) do
+  @front_app.licences_page.first_licence.click
+end
+
 Then(/^I am on the abstraction licences page$/) do
   expect(@front_app.licences_page).to have_text("Your water abstraction licences")
   @total_licences = @front_app.licences_page.view_links.count.to_s

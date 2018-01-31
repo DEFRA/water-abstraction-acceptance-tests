@@ -6,6 +6,7 @@ class LicencesPage < SitePrism::Page
   elements(:licences, ".heading-medium")
   # see https://github.com/natritmeyer/site_prism#element-collections
   elements(:view_links, ".license-result__column--view")
+  element(:first_licence, ".license-results-header+ .license-result .heading-medium")
   element(:licence_result_no, ".license-results-header+ .license-result .heading-medium")
   element(:licence_result_name, ".license-results-header+ .license-result .license-result__column--description")
   element(:email_form, "#emailAddress")
