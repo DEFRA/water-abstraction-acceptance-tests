@@ -1,4 +1,4 @@
-@basic @readonly
+@basic @readonly @wip
 Feature: Basic licence checks
   As a business with a water abstraction licence
   I want to be able to check my licence details
@@ -12,11 +12,14 @@ Feature: Basic licence checks
     When I check the licence contact details
     Then I am on the contact details page
 
-  Scenario: Licence terms are shown for licence
-    When I check the licence terms
-    Then I am on the licence terms page
+  Scenario: Licence points are shown for licence
+    When I check the licence points
+    Then I am on the licence points page
 
-  Scenario: Licence terms details are displayed when selected from the licence terms page
-    When I check the licence terms
-    And I individually select each heading
-    Then I can see all my licence term details
+  Scenario: Licence purposes are shown for licence
+    When I check the licence purposes
+    Then I am on the licence purposes page
+
+  Scenario: Licence conditions are shown for licence
+    When I check the licence conditions
+    Then I am on the licence conditions page

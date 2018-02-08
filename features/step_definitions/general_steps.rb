@@ -24,29 +24,52 @@ Then(/^I am on the contact details page$/) do
   expect(@front_app.licences_page.current_url).to include "/contact"
 end
 
-When(/^I check the licence terms$/) do
-  scroll_to(@front_app.licence_details_page.licence_terms)
-  @front_app.licence_details_page.licence_terms.click
+When(/^I check the licence points$/) do
+  scroll_to(@front_app.licence_details_page.points_link)
+  @front_app.licence_details_page.points_link.click
 end
 
-Then(/^I am on the licence terms page$/) do
-  expect(@front_app.licences_page.current_url).to include "/terms"
+Then(/^I am on the licence points page$/) do
+  expect(@front_app.licence_points_page.current_url).to include "/points"
+  expect(@front_app.licence_points_page).to have_text("Abstraction points for licence")
 end
 
-When(/^I individually select each heading$/) do
-  scroll_to(@front_app.licence_terms_page.source)
-  @front_app.licence_terms_page.source.click
-  @front_app.licence_terms_page.point.click
-  @front_app.licence_terms_page.purpose.click
-  scroll_to(@front_app.licence_terms_page.means_of_abstraction)
-  @front_app.licence_terms_page.means_of_abstraction.click
-  @front_app.licence_terms_page.means_of_measurement.click
-  @front_app.licence_terms_page.max_quantities.click
+When(/^I check the licence purposes$/) do
+  scroll_to(@front_app.licence_details_page.purposes_link)
+  @front_app.licence_details_page.purposes_link.click
 end
 
-Then(/^I can see all my licence term details$/) do
-  expect(@front_app.licence_terms_page).to have_text("Close all")
+Then(/^I am on the licence purposes page$/) do
+  expect(@front_app.licence_purposes_page.current_url).to include "/purposes"
+  expect(@front_app.licence_purposes_page).to have_text("Abstraction purposes for licence")
 end
+
+When(/^I check the licence conditions$/) do
+  scroll_to(@front_app.licence_details_page.conditions_link)
+  @front_app.licence_details_page.conditions_link.click
+end
+
+Then(/^I am on the licence conditions page$/) do
+  expect(@front_app.licence_conditions_page.current_url).to include "/conditions"
+  expect(@front_app.licence_conditions_page.heading).to have_text("Conditions held for")
+  expect(@front_app.licence_conditions_page.disclaimer).to have_text("You must refer to the paper copy of your licence")
+end
+
+# DELETE THIS ON DEV
+# When(/^I individually select each heading$/) do # NEEDS REMOVING
+#   scroll_to(@front_app.licence_conditions_page.source)
+#   @front_app.licence_conditions_page.source.click
+#   @front_app.licence_conditions_page.point.click
+#   @front_app.licence_conditions_page.purpose.click
+#   scroll_to(@front_app.licence_conditions_page.means_of_abstraction)
+#   @front_app.licence_conditions_page.means_of_abstraction.click
+#   @front_app.licence_conditions_page.means_of_measurement.click
+#   @front_app.licence_conditions_page.max_quantities.click
+# end
+
+# Then(/^I can see all my licence term details$/) do
+#   expect(@front_app.licence_conditions_page).to have_text("Close all")
+# end
 
 Given(/^I select the "Name this licence" link$/) do
   @front_app.licence_details_page.rename_link.click
@@ -63,7 +86,7 @@ Given(/^I enter a licence name which is invalid$/) do
 end
 
 Given(/^the expected licence name appears on the licence summary page$/) do
-  @front_app.licence_details_page.abstraction_licences_link.click
+  @front_app.licence_details_page.back_link.click
   expect(@front_app.licences_page).to have_text(@expected_licence_name.to_s)
 end
 

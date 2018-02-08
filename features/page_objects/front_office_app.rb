@@ -23,8 +23,16 @@ class FrontOfficeApp
     @last_page = LicenceDetailsPage.new
   end
 
-  def licence_terms_page
-    @last_page = LicenceTermsPage.new
+  def licence_points_page
+    @last_page = LicencePointsPage.new
+  end
+
+  def licence_purposes_page
+    @last_page = LicencePurposesPage.new
+  end
+
+  def licence_conditions_page
+    @last_page = LicenceConditionsPage.new
   end
 
   def mailinator_home_page
