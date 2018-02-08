@@ -5,6 +5,7 @@
 # the build will fail if there isn't one.
 # Hence this is here just to cater for just for this specific scenario
 custom:
+  current_environment: "sand" # choose from: dev qa sand
   accounts:
     PermitingSupportAdvisor:
       username: psa@example.com
@@ -13,5 +14,12 @@ custom:
       username: account2@example.com
       password: please123
   urls:
-    front_office: "https://example.com"
-    back_office: "https://example.com"
+    qa:
+      front_office: "https://example.com"
+      back_office: "https://example.com"
+    dev:
+      front_office: "https://example.com"
+      back_office: "https://example.com"
+    sand:
+      front_office: "https://example.com"
+      back_office: "https://example.com"
