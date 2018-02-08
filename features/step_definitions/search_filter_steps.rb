@@ -59,13 +59,16 @@ Given(/^I select the licence number heading$/) do
 end
 
 Given(/^the table is sorted by licence number in ascending order$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @top_licence = Quke::Quke.config.custom["data"][@environment]["licence_top"].to_s
+  @btm_licence = Quke::Quke.config.custom["data"][@environment]["licence_bottom"].to_s
   expect(@front_app.licences_page.serialno_link.text).to have_text("Licence serial number ▲")
-  expect(page.body.index("28/01/0142")).to be < page.body.index("055/0018/009")
+  expect(page.body.index(@top_licence)).to be < page.body.index(@btm_licence)
 end
 
 Given(/^I enter an email address on the licence holder's email field$/) do
-  @expected_search_result = "28/29/0076"
-  # In Dev: (..)28/29/0076/1.
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @expected_search_result = Quke::Quke.config.custom["data"][@environment]["licence_searchterm"].to_s
   # Once the registration process is automated, make this match the licence that the John user registers.
   @expected_result_count = 1
   @front_app.licences_page.search(

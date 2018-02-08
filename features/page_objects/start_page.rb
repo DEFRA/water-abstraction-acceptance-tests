@@ -1,6 +1,7 @@
 class StartPage < SitePrism::Page
 
-  set_url(Quke::Quke.config.custom["urls"]["front_office"])
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  set_url(Quke::Quke.config.custom["urls"][@environment]["front_office"])
 
   # Water management managing your water abstraction or impoundment licence
 

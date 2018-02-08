@@ -1,7 +1,8 @@
-When(/^I select "([^"]*)"$/) do |lic_no|
-  @front_app.licences_page.submit(licence: lic_no)
+When(/^I select a particular licence$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @licence_number = Quke::Quke.config.custom["data"][@environment]["licence_main"].to_s
+  @front_app.licences_page.submit(licence: @licence_number)
   # Stores licence number for later checks
-  @licence_number = lic_no
 end
 
 When(/^I access the first licence$/) do
