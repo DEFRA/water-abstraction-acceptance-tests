@@ -1,7 +1,7 @@
 
 Given(/^my email address is not registered on the service$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @reg_email = "mywail"+((rand(1000000000)+1).to_s)+"@mailinator.com"
+  @reg_email = "mywail" + (rand(1_000_000_000) + 1).to_s + "@mailinator.com"
   puts "Random email address: " + @reg_email
 end
 
