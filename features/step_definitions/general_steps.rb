@@ -55,22 +55,6 @@ Then(/^I am on the licence conditions page$/) do
   expect(@front_app.licence_conditions_page.disclaimer).to have_text("You must refer to the paper copy of your licence")
 end
 
-# DELETE THIS ON DEV
-# When(/^I individually select each heading$/) do # NEEDS REMOVING
-#   scroll_to(@front_app.licence_conditions_page.source)
-#   @front_app.licence_conditions_page.source.click
-#   @front_app.licence_conditions_page.point.click
-#   @front_app.licence_conditions_page.purpose.click
-#   scroll_to(@front_app.licence_conditions_page.means_of_abstraction)
-#   @front_app.licence_conditions_page.means_of_abstraction.click
-#   @front_app.licence_conditions_page.means_of_measurement.click
-#   @front_app.licence_conditions_page.max_quantities.click
-# end
-
-# Then(/^I can see all my licence term details$/) do
-#   expect(@front_app.licence_conditions_page).to have_text("Close all")
-# end
-
 Given(/^I select the "Name this licence" link$/) do
   @front_app.licence_details_page.rename_link.click
 end

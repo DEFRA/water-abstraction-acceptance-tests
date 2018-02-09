@@ -2,6 +2,7 @@ class LicenceDetailsPage < SitePrism::Page
 
   # Water abstraction licence
   element(:abstraction_licences_link, "li:nth-child(1) a")
+  element(:licence_breadcrumb, "li+ li a")
   element(:back_link, ".link-back")
   element(:licence_rename_error, ".error-summary-list a")
   element(:rename_link, "#showForm")
