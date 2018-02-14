@@ -1,13 +1,12 @@
-class Reg50ChooseAddressPage < SitePrism::Page
+class RegisterConfirmLicencesPage < SitePrism::Page
 
   element(:heading, ".heading-large")
-  element(:why_post_link, ".summary")
-  element(:address_radio, ".multiple-choice")
+  element(:error_heading, "#error-summary-heading-example-2")
+  element(:licence_checkbox, "#licences input")
   element(:continue_button, ".button")
   element(:not_mine_link, ".column-two-thirds p a")
 
   def submit(_args = {})
-    address_radio.click
     continue_button.click
   end
 

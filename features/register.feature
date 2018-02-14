@@ -1,4 +1,4 @@
-@readwrite
+@readwrite @wip
 Feature: Register
   As a user with a water abstraction licence
   I want to register with the service

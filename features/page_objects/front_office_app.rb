@@ -67,36 +67,36 @@ class FrontOfficeApp
     @last_page = MailinatorInboxPage.new
   end
 
-  def reg10_email_page
-    @last_page = Reg10EmailPage.new
+  def register_email_page
+    @last_page = RegisterEmailPage.new
   end
 
-  def reg20_create_pw_page
-    @last_page = Reg20CreatePwPage.new
+  def register_create_pw_page
+    @last_page = RegisterCreatePasswordPage.new
   end
 
-  def reg30_add_licences_page
-    @last_page = Reg30AddLicencesPage.new
+  def register_add_licences_page
+    @last_page = RegisterAddLicencesPage.new
   end
 
-  def reg40_confirm_licences_page
-    @last_page = Reg40ConfirmLicencesPage.new
+  def register_confirm_licences_page
+    @last_page = RegisterConfirmLicencesPage.new
   end
 
-  def reg41_not_my_licences_page
-    @last_page = Reg41NotMyLicencesPage.new
+  def register_not_my_licences_page
+    @last_page = RegisterNotMyLicencesPage.new
   end
 
-  def reg50_choose_address_page
-    @last_page = Reg50ChooseAddressPage.new
+  def register_choose_address_page
+    @last_page = RegisterChooseAddressPage.new
   end
 
-  def reg60_sending_letter_page
-    @last_page = Reg60SendingLetterPage.new
+  def register_sending_letter_page
+    @last_page = RegisterSendingLetterPage.new
   end
 
-  def reg70_security_code_page
-    @last_page = Reg70SecurityCodePage.new
+  def register_security_code_page
+    @last_page = RegisterSecurityCodePage.new
   end
 
 end

@@ -38,8 +38,7 @@ Given(/^I can sign in with my new email address$/) do
     email: @reg_email.to_s,
     password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
   )
-  puts "Debug: Email address is: " + @reg_email.to_s
-  puts "Debug: Password is: " + Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
+  Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
 end
 
 Then(/^I am on the add licences page$/) do

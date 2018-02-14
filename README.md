@@ -148,7 +148,7 @@ If you have an idea you'd like to contribute please log an issue.
 
 All contributions should be submitted via a pull request.
 
-## Licence
+## License
 
 THIS INFORMATION IS LICENSED UNDER THE CONDITIONS OF THE OPEN GOVERNMENT LICENCE found at:
 

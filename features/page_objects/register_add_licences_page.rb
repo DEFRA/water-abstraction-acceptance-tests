@@ -1,4 +1,4 @@
-class Reg30AddLicencesPage < SitePrism::Page
+class RegisterAddLicencesPage < SitePrism::Page
 
   element(:heading, ".heading-large")
   element(:error_heading, "#error-summary-heading-example-2")

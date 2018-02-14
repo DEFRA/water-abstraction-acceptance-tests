@@ -1,4 +1,4 @@
-class Reg70SecurityCodePage < SitePrism::Page
+class RegisterSecurityCodePage < SitePrism::Page
 
   # Your water abstraction licences
 

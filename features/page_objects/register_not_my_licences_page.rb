@@ -1,4 +1,4 @@
-class Reg41NotMyLicencesPage < SitePrism::Page
+class RegisterNotMyLicencesPage < SitePrism::Page
 
   element(:heading, ".heading-large")
   element(:email_link, ".lede a")

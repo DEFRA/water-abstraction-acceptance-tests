@@ -1,4 +1,4 @@
-class Reg10EmailPage < SitePrism::Page
+class RegisterEmailPage < SitePrism::Page
 
   element(:heading, ".heading-large")
   element(:email_address, "#email")
