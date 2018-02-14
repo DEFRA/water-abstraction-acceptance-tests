@@ -5,7 +5,7 @@ Feature: Register
   So that I can view my licence
 
 Scenario: Register a licence
-  Given my email address is not registered on the service
+  Given I am a new user
   When I register my email address on the service
   Then I receive an email with sign in details
   And I can sign in with my new email address
@@ -20,3 +20,10 @@ Scenario: Register a licence
   When I enter my confirmation code
   Then I am on the abstraction licences page
   And I can select the licence I registered
+
+  # Given I am on the sign in page
+  # And I sign into my account as "water_user1"
+  # When I enter an email address on the licence holder's email field
+  # Then all licences containing that term are shown on screen
+
+ # This final scenario is currently broken in Dev.  We have a ticket in our next sprint to fix it: WATER-743 .

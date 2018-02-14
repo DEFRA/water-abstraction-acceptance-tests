@@ -1,16 +1,16 @@
 
-Given(/^my email address is not registered on the service$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @reg_email = "mywail" + (rand(1_000_000_000) + 1).to_s + "@mailinator.com"
-  puts "Random email address: " + @reg_email
+Given(/^I am a new user$/) do
+  # No action required
 end
 
 Given(/^I register my email address on the service$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.start_page.load
   @front_app.start_page.createaccount
-  puts "Random email address: " + @reg_email
+  @reg_email = @front_app.reg10_email_page.generate_email.to_s
   @front_app.reg10_email_page.submit(email_address: @reg_email)
+  puts "Random email is: " + @reg_email
 end
 
 Given(/^I receive an email with sign in details$/) do
@@ -35,9 +35,11 @@ Given(/^I can sign in with my new email address$/) do
   @front_app.start_page.load
   @front_app.start_page.submit
   @front_app.sign_in_page.submit(
-    email: @reg_email,
+    email: @reg_email.to_s,
     password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
   )
+  puts "Debug: Email address is: " + @reg_email.to_s
+  puts "Debug: Password is: " + Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
 end
 
 Then(/^I am on the add licences page$/) do

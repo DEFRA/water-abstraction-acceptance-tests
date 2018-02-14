@@ -30,7 +30,3 @@ Scenario: Sort licences by number
   When I select the licence name heading
   And I select the licence number heading
   Then the table is sorted by licence number in ascending order
-
-Scenario: Filter licences by email address
-  When I enter an email address on the licence holder's email field
-  Then all licences containing that term are shown on screen

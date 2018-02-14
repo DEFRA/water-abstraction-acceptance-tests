@@ -1,4 +1,4 @@
-class RegSendingLetterPage < SitePrism::Page
+class Reg60SendingLetterPage < SitePrism::Page
 
   element(:heading, ".heading-large")
   element(:address, "p:nth-child(3)")

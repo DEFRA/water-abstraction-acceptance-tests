@@ -1,4 +1,4 @@
-class RegChangePasswordPage < SitePrism::Page
+class Reg20CreatePwPage < SitePrism::Page
 
   element(:header, ".heading-large")
   element(:password, "#password")

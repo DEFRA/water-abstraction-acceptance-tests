@@ -68,10 +68,10 @@ end
 
 Given(/^I enter an email address on the licence holder's email field$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @expected_search_result = Quke::Quke.config.custom["data"][@environment]["licence_searchterm"].to_s
-  # Once the registration process is automated, make this match the licence that the John user registers.
+  @expected_search_result = @licence_reg
+  # Quke::Quke.config.custom["data"][@environment]["licence_searchterm"].to_s
   @expected_result_count = 1
   @front_app.licences_page.search(
-    email_form: Quke::Quke.config.custom["accounts"]["water_user_john"]["username"].to_s
+    email_form: @reg_email # Quke::Quke.config.custom["accounts"]["water_user_john"]["username"].to_s
   )
 end

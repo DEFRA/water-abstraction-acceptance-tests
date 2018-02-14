@@ -12,8 +12,6 @@ end
 Then(/^I am on the abstraction licences page$/) do
   expect(@front_app.licences_page).to have_text("Your water abstraction licences")
   @total_licences = @front_app.licences_page.view_links.count.to_s
-  puts "Licences count is: " + @total_licences
-  # Shows total number of licences available to that user.
 end
 
 When(/^I check the licence contact details$/) do
@@ -35,8 +33,7 @@ Then(/^I am on the licence points page$/) do
 end
 
 When(/^I check the licence purposes$/) do
-  scroll_to(@front_app.licence_details_page.purposes_link)
-  @front_app.licence_details_page.purposes_link.click
+  @front_app.licences_page.click_link(text: "your abstraction purpose")
 end
 
 Then(/^I am on the licence purposes page$/) do

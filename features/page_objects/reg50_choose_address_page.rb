@@ -1,4 +1,4 @@
-class RegChooseAddressPage < SitePrism::Page
+class Reg50ChooseAddressPage < SitePrism::Page
 
   element(:heading, ".heading-large")
   element(:why_post_link, ".summary")

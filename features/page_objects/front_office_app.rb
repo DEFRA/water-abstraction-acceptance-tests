@@ -68,35 +68,35 @@ class FrontOfficeApp
   end
 
   def reg10_email_page
-    @last_page = RegisterEmailPage.new
+    @last_page = Reg10EmailPage.new
   end
 
   def reg20_create_pw_page
-    @last_page = RegChangePasswordPage.new
+    @last_page = Reg20CreatePwPage.new
   end
 
   def reg30_add_licences_page
-    @last_page = RegAddLicencesPage.new
+    @last_page = Reg30AddLicencesPage.new
   end
 
   def reg40_confirm_licences_page
-    @last_page = RegConfirmLicencesPage.new
+    @last_page = Reg40ConfirmLicencesPage.new
   end
 
   def reg41_not_my_licences_page
-    @last_page = RegNotMyLicencesPage.new
+    @last_page = Reg41NotMyLicencesPage.new
   end
 
   def reg50_choose_address_page
-    @last_page = RegChooseAddressPage.new
+    @last_page = Reg50ChooseAddressPage.new
   end
 
   def reg60_sending_letter_page
-    @last_page = RegSendingLetterPage.new
+    @last_page = Reg60SendingLetterPage.new
   end
 
   def reg70_security_code_page
-    @last_page = RegSecurityCodePage.new
+    @last_page = Reg70SecurityCodePage.new
   end
 
 end
