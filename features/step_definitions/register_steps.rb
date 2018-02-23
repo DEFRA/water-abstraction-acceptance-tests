@@ -14,6 +14,7 @@ Given(/^I register my email address on the service$/) do
 end
 
 Given(/^I receive an email with sign in details$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.mailinator_home_page.load
   @front_app.mailinator_home_page.wait_for_inbox
   @front_app.mailinator_home_page.submit(inbox: @reg_email)
@@ -26,21 +27,22 @@ Given(/^I receive an email with sign in details$/) do
 
   within_window @new_window do
     @front_app.register_create_pw_page.submit(
-      password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"],
-      confirmpw: Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
+      password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"],
+      confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
     )
   end
 end
 
 Given(/^I can sign in with my new email address$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.start_page.load
   @front_app.start_page.submit
   @front_app.sign_in_page.submit(
     email: @reg_email.to_s,
-    password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
   )
-  Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
+  Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
 end
 
 Then(/^I am on the add licences page$/) do
@@ -49,7 +51,9 @@ Then(/^I am on the add licences page$/) do
 end
 
 When(/^I register a licence$/) do
-  @licence_reg = Quke::Quke.config.custom["data"][@environment]["licence_reg"]
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @licence_reg = Quke::Quke.config.custom["data"][@environment]["licence_reg"].to_s
+  @front_app.register_add_licences_page.wait_for_licence_box
   @front_app.register_add_licences_page.submit(
     licence_box: @licence_reg
   )

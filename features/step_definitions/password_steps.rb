@@ -45,9 +45,10 @@ Given(/^I see an error telling me the passwords don't match$/) do
 end
 
 Given(/^I enter a valid password$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.change_password_page.submit(
-    password: Quke::Quke.config.custom["accounts"]["water_user1"]["password"],
-    confirmpw: Quke::Quke.config.custom["accounts"]["water_user1"]["password"]
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["password"],
+    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["password"]
   )
 end
 
@@ -56,9 +57,10 @@ Given(/^I see the Password Changed screen$/) do
 end
 
 Given(/^I request a password reset$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.sign_in_page.forgotten_password.click
   @front_app.request_pw_reset_page.submit(
-    email_address: Quke::Quke.config.custom["accounts"]["water_user1"]["username"]
+    email_address: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["username"]
   )
 end
 

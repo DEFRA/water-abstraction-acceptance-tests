@@ -1,11 +1,12 @@
 
 Given(/^I sign into my account as "([^"]*)"$/) do |account|
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.start_page.load
   @front_app.start_page.submit
   @front_app.sign_in_page.submit(
-    email: Quke::Quke.config.custom["accounts"][account.to_s]["username"],
-    password: Quke::Quke.config.custom["accounts"][account.to_s]["password"]
+    email: Quke::Quke.config.custom["data"][@environment]["accounts"][account.to_s]["username"],
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"][account.to_s]["password"]
   )
 end
 
@@ -16,8 +17,9 @@ Given(/^I am on the sign in page$/) do
 end
 
 When(/^I enter my password incorrectly$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.sign_in_page.submit(
-    email: Quke::Quke.config.custom["accounts"]["water_user2"]["username"],
+    email: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["username"],
     password: "@3kjldjfa@"
   )
 end
@@ -27,16 +29,20 @@ Then(/^I am informed "([^"]*)"$/) do |message|
 end
 
 Given(/^I lock my account by attempting to sign in with an incorrect password too many times$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.start_page.load
   @front_app.start_page.submit
   # Locks account after ten unsuccessful attempts
-  @front_app.sign_in_page.lock_account(email: Quke::Quke.config.custom["accounts"]["water_user2"]["username"])
+  @account_to_lock = Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["username"]
+  @front_app.sign_in_page.lock_account(email: @account_to_lock)
 end
 # rubocop:enable Metrics/LineLength
 When(/^I unlock my account using the email link provided$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @mailinator_username = Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["username"]
   @front_app.mailinator_home_page.load
-  @front_app.mailinator_home_page.submit(inbox: Quke::Quke.config.custom["accounts"]["water_user2"]["username"])
+  @front_app.mailinator_home_page.submit(inbox: @mailinator_username)
   @front_app.mailinator_inbox_page.email[0].from.click
 
   @front_app.mailinator_inbox_page.email_details do |frame|
@@ -45,8 +51,8 @@ When(/^I unlock my account using the email link provided$/) do
 
   within_window @new_window do
     @front_app.reset_password_page.submit(
-      password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"],
-      confirm_password: Quke::Quke.config.custom["accounts"]["water_user2"]["password"]
+      password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"],
+      confirm_password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
     )
   end
 end
