@@ -10,7 +10,7 @@ When(/^I access the first licence$/) do
 end
 
 Then(/^I am on the abstraction licences page$/) do
-  expect(@front_app.licences_page).to have_text("Your water abstraction licences")
+  expect(@front_app.licences_page).to have_text("Your licences")
   @total_licences = @front_app.licences_page.view_links.count.to_s
 end
 
@@ -87,7 +87,7 @@ end
 
 Given(/^I see an error message telling me the name is invalid$/) do
   @rename_error = @front_app.licence_details_page.licence_rename_error
-  expect(@rename_error).to have_text("There was a problem with the licence name field")
+  expect(@rename_error).to have_text("Check your licence name")
 end
 
 Given(/^I reset the licence name$/) do

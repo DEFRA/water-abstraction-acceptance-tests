@@ -15,7 +15,9 @@ end
 
 Given(/^I receive an email with sign in details$/) do
   @front_app.mailinator_home_page.load
+  @front_app.mailinator_home_page.wait_for_inbox
   @front_app.mailinator_home_page.submit(inbox: @reg_email)
+  @front_app.mailinator_inbox_page.wait_for_email
   @front_app.mailinator_inbox_page.email[0].from.click
 
   @front_app.mailinator_inbox_page.email_details do |frame|
@@ -51,7 +53,9 @@ When(/^I register a licence$/) do
   @front_app.register_add_licences_page.submit(
     licence_box: @licence_reg
   )
+  @front_app.register_confirm_licences_page.wait_for_licence_checkbox
   @front_app.register_confirm_licences_page.submit
+  @front_app.register_choose_address_page.wait_for_address_radio
   @front_app.register_choose_address_page.submit
 end
 

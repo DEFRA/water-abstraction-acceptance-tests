@@ -3,6 +3,7 @@ class LicencesPage < SitePrism::Page
   # Your water abstraction licences
 
   element(:changepw, ".header-links a:nth-child(1)")
+  element(:heading, ".heading-large")
   elements(:licences, ".heading-medium")
   # see https://github.com/natritmeyer/site_prism#element-collections
   elements(:view_links, ".license-result__column--view")

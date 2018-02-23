@@ -4,7 +4,8 @@ class SignInPage < SitePrism::Page
   element(:password, "#password")
   element(:disabled_submit_button, "input[aria-disabled='true']")
   element(:submit_button, "input[type='submit']")
-  element(:forgotten_password, ".column-two-thirds a")
+  element(:forgotten_password, ".form+ a")
+  element(:create_account_link, "br+ a")
 
   def submit(args = {})
     email.set(args[:email]) if args.key?(:email)

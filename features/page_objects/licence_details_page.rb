@@ -4,7 +4,7 @@ class LicenceDetailsPage < SitePrism::Page
   element(:abstraction_licences_link, "#content li:nth-child(1) a")
   element(:licence_breadcrumb, "#content li+ li a")
   element(:back_link, ".link-back")
-  element(:licence_rename_error, ".error-summary-list a")
+  element(:licence_rename_error, "#error-summary-heading-example-2")
   element(:rename_link, "#showForm")
   element(:licence_name_static, "p+ .data-table .licenceAnswer")
   element(:licence_name_form, "#name")
