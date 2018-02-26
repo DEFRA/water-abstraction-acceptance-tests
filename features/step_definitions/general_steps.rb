@@ -53,7 +53,11 @@ Then(/^I am on the licence conditions page$/) do
 end
 
 Given(/^I select the "Name this licence" link$/) do
-  @front_app.licence_details_page.rename_link.click
+  if @front_app.licence_details_page.has_name_link?
+    @front_app.licence_details_page.name_link.click
+  elsif @front_app.licence_details_page.has_rename_link?
+    @front_app.licence_details_page.rename_link.click
+  end
 end
 
 Given(/^I enter a valid licence name$/) do

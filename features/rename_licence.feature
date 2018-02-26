@@ -9,6 +9,10 @@ Feature: Rename licence
     And I select a particular licence
     When I select the "Name this licence" link
 
+  Scenario: Reset licence name
+    When I reset the licence name
+    Then the expected licence name appears on the licence summary page
+
   Scenario: Cancel licence rename
     When I select the Cancel link
     Then the expected licence name appears on the licence summary page

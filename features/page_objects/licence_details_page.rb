@@ -5,7 +5,8 @@ class LicenceDetailsPage < SitePrism::Page
   element(:licence_breadcrumb, "#content li+ li a")
   element(:back_link, ".link-back")
   element(:licence_rename_error, "#error-summary-heading-example-2")
-  element(:rename_link, "#showForm")
+  element(:name_link, "#nameLicence") # first time
+  element(:rename_link, "#showForm") # subsequent times
   element(:licence_name_static, "p+ .data-table .licenceAnswer")
   element(:licence_name_form, "#name")
   element(:save_button, ".button")
