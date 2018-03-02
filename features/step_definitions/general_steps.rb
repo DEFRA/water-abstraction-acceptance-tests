@@ -1,17 +1,24 @@
 When(/^I select a particular licence$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @licence_number = Quke::Quke.config.custom["data"][@environment]["licence_main"].to_s
+  @front_app.licences_page.search(search_form: "/")
   @front_app.licences_page.submit(licence: @licence_number)
   # Stores licence number for later checks
 end
 
 When(/^I access the first licence$/) do
+  @front_app.licences_page.search(search_form: "/")
   @front_app.licences_page.first_licence.click
 end
 
-Then(/^I am on the abstraction licences page$/) do
-  expect(@front_app.licences_page).to have_text("Your licences")
+Then(/^I am on the internal abstraction licences page$/) do
+  expect(@front_app.licences_page.heading).to have_text("Licences")
+  @front_app.licences_page.search(search_form: "/")
   @total_licences = @front_app.licences_page.view_links.count.to_s
+end
+
+Then(/^I am on the external abstraction licences page$/) do
+  expect(@front_app.licences_page.heading).to have_text("Your licences")
 end
 
 When(/^I check the licence contact details$/) do
@@ -72,6 +79,7 @@ end
 
 Given(/^the expected licence name appears on the licence summary page$/) do
   @front_app.licence_details_page.back_link.click
+  @front_app.licences_page.search(search_form: "/")
   expect(@front_app.licences_page).to have_text(@expected_licence_name.to_s)
 end
 

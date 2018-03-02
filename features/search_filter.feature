@@ -3,7 +3,7 @@ Feature: Search and filter on licences page
 
 Background:
   Given I sign into my account as "water_user1"
-  And I am on the abstraction licences page
+  And I am on the internal abstraction licences page
 
 Scenario: Search by licence number
   When I search for a partial licence number

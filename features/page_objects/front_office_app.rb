@@ -67,6 +67,10 @@ class FrontOfficeApp
     @last_page = MailinatorInboxPage.new
   end
 
+  def register_create_account_page
+    @last_page = RegisterCreateAccountPage.new
+  end
+
   def register_email_page
     @last_page = RegisterEmailPage.new
   end

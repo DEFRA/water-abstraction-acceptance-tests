@@ -35,7 +35,7 @@ Given(/^I cannot see any licences$/) do
 end
 
 Given(/^I remove a search term$/) do
-  @expected_search_result = ""
+  @expected_search_result = "/"
   @expected_result_count = @total_licences
   @front_app.licences_page.search(
     search_form: @expected_search_result.to_s
@@ -69,8 +69,7 @@ end
 Given(/^I enter an email address on the licence holder's email field$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @expected_search_result = @licence_reg
-  # Quke::Quke.config.custom["data"][@environment]["licence_searchterm"].to_s
-  @expected_result_count = 1
+  @expected_result_count = 50
   @front_app.licences_page.search(
     email_form: @reg_email
   )

@@ -6,8 +6,9 @@ end
 Given(/^I register my email address on the service$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app = FrontOfficeApp.new
-  @front_app.start_page.load
-  @front_app.start_page.createaccount
+  @front_app.sign_in_page.load
+  @front_app.sign_in_page.create_account_link.click
+  @front_app.register_create_account_page.create_account_button.click
   @reg_email = @front_app.register_email_page.generate_email.to_s
   @front_app.register_email_page.submit(email_address: @reg_email)
   puts "Random email is: " + @reg_email
@@ -36,8 +37,7 @@ end
 Given(/^I can sign in with my new email address$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app = FrontOfficeApp.new
-  @front_app.start_page.load
-  @front_app.start_page.submit
+  @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @reg_email.to_s,
     password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
@@ -53,13 +53,12 @@ end
 When(/^I register a licence$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @licence_reg = Quke::Quke.config.custom["data"][@environment]["licence_reg"].to_s
+  @licence_multi = Quke::Quke.config.custom["data"][@environment]["licence_multi"].to_s
   @front_app.register_add_licences_page.wait_for_licence_box
   @front_app.register_add_licences_page.submit(
-    licence_box: @licence_reg
+    licence_box: @licence_multi
   )
-  @front_app.register_confirm_licences_page.wait_for_licence_checkbox
   @front_app.register_confirm_licences_page.submit
-  @front_app.register_choose_address_page.wait_for_address_radio
   @front_app.register_choose_address_page.submit
 end
 

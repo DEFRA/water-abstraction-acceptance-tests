@@ -28,7 +28,7 @@ Feature: Manage password
   Scenario: Sign in with existing password to show that it hasn't been changed
     Given I am on the sign in page
     When I sign into my account as "water_user1"
-    Then I am on the abstraction licences page
+    Then I am on the internal abstraction licences page
 
   Scenario: Enter valid password
     When I enter a valid password

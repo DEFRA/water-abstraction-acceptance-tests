@@ -17,4 +17,4 @@ Feature: Basic login
   Scenario: Valid login
     Given I am on the sign in page
     When I sign into my account as "water_user1"
-    Then I am on the abstraction licences page
+    Then I am on the internal abstraction licences page
