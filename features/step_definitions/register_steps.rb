@@ -58,7 +58,9 @@ When(/^I register a licence$/) do
   @front_app.register_add_licences_page.submit(
     licence_box: @licence_multi
   )
+  @front_app.register_confirm_licences_page.wait_for_licence_checkbox
   @front_app.register_confirm_licences_page.submit
+  @front_app.register_choose_address_page.wait_for_address_radio
   @front_app.register_choose_address_page.submit
 end
 
