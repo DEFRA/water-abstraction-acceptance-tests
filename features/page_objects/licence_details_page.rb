@@ -27,4 +27,12 @@ class LicenceDetailsPage < SitePrism::Page
     page_links.find("a", text: args[:text]).click
   end
 
+  def click_name_or_rename(_args = {})
+    if has_name_link?
+      name_link.click
+    elsif has_rename_link?
+      rename_link.click
+    end
+  end
+
 end
