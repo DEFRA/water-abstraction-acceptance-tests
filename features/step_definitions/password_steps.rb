@@ -8,6 +8,12 @@ Given(/^I am on the Change Password page$/) do
   expect(@front_app.change_password_page.current_url).to include "/update_password"
 end
 
+Given(/^I enter my correct password$/) do
+  @front_app.change_password_reauthenticate_page.submit(
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["password"]
+  )
+end
+
 Given(/^I enter a password which is too short$/) do
   @front_app.change_password_page.submit(
     password: "Is$h0rt",

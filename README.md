@@ -41,7 +41,7 @@ Into that file you'll need to add as a minimum this
 # immediately failing because the element cannot be found. This defaults to 2
 # seconds but with the need to confirm emails via mailinator, we have found we
 # need to increase this time to at least 5 seconds
-max_wait_time: 5
+max_wait_time: 10
 
 custom:
   accounts:
@@ -121,8 +121,7 @@ To have consistency across the project the following tags are defined and should
 |@basic|Features used for basic regression testing as part of Continuous Integration|
 |@readonly|Any feature which doesn't change user data on the service.|
 |@readwrite|Any feature which amends user data on the service.  Do not run on a live environment.|
-|@backoffice|Any feature or scenario expected to be run against the back office Dynamics application|
-|@happypath|A scenario which details a complete registration with no errors|
+|@bs|Features to run as part of a Browserstack test.  (Essentially anything that can be run more than once without needing to clear the database)|
 |@functional|Any feature or scenario which is testing just a specific function of the service e.g. validation errors|
 |@broken|A scenario which is known to be broken due to the service not meeting expected behaviour|
 |@ci|A feature that is intended to be run only on our continuous integration service (you should never need to use this tag).|

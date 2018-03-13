@@ -1,4 +1,4 @@
-@basic @readonly
+@basic @readonly @bs
 Feature: Basic login
   As a business with water abstraction licences
   I want to be given help when I have problem signing into my account

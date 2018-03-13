@@ -4,11 +4,11 @@ class LicencesPage < SitePrism::Page
 
   element(:changepw, ".header-links a:nth-child(1)")
   element(:heading, ".heading-large")
-  elements(:licences, ".heading-medium")
+  elements(:licences, ".license-result__column--number a")
   # see https://github.com/natritmeyer/site_prism#element-collections
-  elements(:view_links, ".license-result__column--view")
-  element(:first_licence, ".license-results-header+ .license-result .heading-medium")
-  element(:licence_result_no, ".license-results-header+ .license-result .heading-medium")
+  elements(:view_links, ".license-result a")
+  element(:first_licence, ".license-results-header+ .license-result a")
+  element(:licence_result_no, ".license-results-header+ .license-result a")
   element(:licence_result_name, ".license-results-header+ .license-result .license-result__column--description")
   element(:email_form, "#emailAddress")
   element(:search_form, "#licenceNumber")
@@ -23,7 +23,7 @@ class LicencesPage < SitePrism::Page
 
   def submit(args = {})
     return unless args.key?(:licence)
-    licences.find { |btn| btn.text == args[:licence] }.click
+    find_link(args[:licence]).click
   end
 
   def search(args = {})

@@ -1,4 +1,4 @@
-@readonly
+@readonly @bs
 Feature: Manage password
   As a viewer of water abstraction licences
   I want to update my password
@@ -6,7 +6,8 @@ Feature: Manage password
 
   Background: Go to Change Password screen
     Given I sign into my account as "water_user1"
-    When I select Change Password
+    And I select Change Password
+    When I enter my correct password
     Then I am on the Change Password page
 
   Scenario: Enter short password

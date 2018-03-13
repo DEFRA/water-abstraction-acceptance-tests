@@ -1,4 +1,4 @@
-@basic @readonly
+@basic @readonly @bs
 Feature: Basic licence checks
   As a business with a water abstraction licence
   I want to be able to check my licence details
@@ -6,7 +6,8 @@ Feature: Basic licence checks
 
   Background:
     Given I sign into my account as "water_user1"
-    And I access the first licence
+    
+    # And I access the first licence
 
   Scenario: Contact details are shown for licence
     When I check the licence contact details

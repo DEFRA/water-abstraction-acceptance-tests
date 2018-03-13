@@ -1,4 +1,4 @@
-@readonly
+@readonly @bs
 Feature: Search and filter on licences page
 
 Background:

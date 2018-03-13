@@ -1,4 +1,4 @@
-@readwrite
+@readwrite @bs
 Feature: Rename licence
   As a business with a water abstraction licence
   I want to be able to check my licence details
