@@ -6,8 +6,7 @@ Feature: Basic licence checks
 
   Background:
     Given I sign into my account as "water_user1"
-    
-    # And I access the first licence
+    And I access the first licence
 
   Scenario: Contact details are shown for licence
     When I check the licence contact details

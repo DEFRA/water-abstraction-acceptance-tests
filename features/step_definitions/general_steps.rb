@@ -40,12 +40,12 @@ Then(/^I am on the licence points page$/) do
 end
 
 When(/^I check the licence purposes$/) do
-  @front_app.licences_page.click_link(text: "your abstraction purpose")
+  @front_app.licences_page.click_link(text: "View details of your purpose")
 end
 
 Then(/^I am on the licence purposes page$/) do
   expect(@front_app.licence_purposes_page.current_url).to include "/purposes"
-  expect(@front_app.licence_purposes_page).to have_text("Abstraction purposes for licence")
+  expect(@front_app.licence_purposes_page).to have_text("Abstraction details for licence")
 end
 
 When(/^I check the licence conditions$/) do

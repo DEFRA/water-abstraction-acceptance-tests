@@ -13,8 +13,8 @@ class LicenceDetailsPage < SitePrism::Page
   element(:cancel_link, "#nameForm a")
   element(:contact_details, "a[href$='/contact']")
   element(:points_link, "a[href$='/points']")
-  element(:purposes_link, "a[href$='/purposes']")
   element(:conditions_link, "a[href$='/conditions']")
+  element(:purpose_period_amounts_link, "a[href$='/purposes']")
   elements(:page_links, "a")
 
   def submit(args = {})
