@@ -1,6 +1,8 @@
 class LicenceDetailsPage < SitePrism::Page
 
   # Water abstraction licence
+  element(:banner_links, ".header-proposition")
+  element(:manage_licences_link, "#proposition-links li+ li a")
   element(:abstraction_licences_link, "#content li:nth-child(1) a")
   element(:licence_breadcrumb, "#content li+ li a")
   element(:back_link, ".link-back")

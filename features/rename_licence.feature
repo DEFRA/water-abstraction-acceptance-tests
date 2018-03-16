@@ -7,7 +7,7 @@ Feature: Rename licence
   Background:
     Given I sign into my account as "water_user1"
     And I select a particular licence
-    When I select the "Name this licence" link
+    When I select the link to name the licence
 
   Scenario: Reset licence name
     When I reset the licence name

@@ -2,8 +2,11 @@ class LicencesPage < SitePrism::Page
 
   # Your water abstraction licences
 
+  element(:banner_links, ".header-proposition")
+  element(:manage_licences_link, "#proposition-links li+ li a")
   element(:changepw, ".header-links a:nth-child(1)")
   element(:heading, ".heading-large")
+  element(:content, "#content")
   elements(:licences, ".license-result__column--number a")
   # see https://github.com/natritmeyer/site_prism#element-collections
   elements(:view_links, ".license-result a")
@@ -14,10 +17,7 @@ class LicencesPage < SitePrism::Page
   element(:search_form, "#licenceNumber")
   element(:search_button, "#searchButton")
   element(:triangle, ".sort-icon")
-  element(:serialno_link, ".license-results-header__column:nth-child(1) a")
-  element(:licencename_link, ".license-results-header__column+ .license-results-header__column a")
   element(:johnlicence, ".license-result:nth-child(133) .heading-medium") # 18/54/17/0361
-  element(:content, "#content") # all page content
   element(:firstlicence, ".license-results-header+ .license-result .heading-medium")
   element(:lastlicence, ".license-result:last-child .heading-medium")
 

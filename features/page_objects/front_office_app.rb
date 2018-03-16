@@ -107,4 +107,12 @@ class FrontOfficeApp
     @last_page = RegisterSecurityCodePage.new
   end
 
+  def manage_licences_page
+    @last_page = ManageLicencesPage.new
+  end
+
+  def manage_give_access_page
+    @last_page = ManageGiveAccessPage.new
+  end
+
 end
