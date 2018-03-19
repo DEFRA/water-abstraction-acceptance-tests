@@ -31,7 +31,7 @@ end
 # To run Browserstack tests, use bundle exec rake bs
 
 desc "Run all browser tests"
-  task bs: %i[ios_safari android_chrome samsung]
+task bs: %i[ios_safari android_chrome samsung]
 
 # rubocop:disable Metrics/LineLength
 # Select browsers from the following, separated by spaces: win7_ie9 win7_ie11 win7_chrome win7_ff win10_edge macos_safari macos_chrome macos_ff ios_safari android_chrome samsung
