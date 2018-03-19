@@ -41,7 +41,7 @@ Into that file you'll need to add as a minimum this
 # immediately failing because the element cannot be found. This defaults to 2
 # seconds but with the need to confirm emails via mailinator, we have found we
 # need to increase this time to at least 5 seconds
-max_wait_time: 10
+max_wait_time: 5
 
 custom:
   accounts:
