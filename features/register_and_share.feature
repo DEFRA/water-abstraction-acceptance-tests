@@ -1,10 +1,10 @@
 @readwrite
-Feature: [WATER - <JIRA no.>] Register and share
+Feature: [WATER-528 and 560] Register and share
   As a user with a water abstraction licence
   I want to register with the service
   So that I can view my licence and share access with my agent
 
-Scenario: Register and share licences
+Scenario: [WATER-528 and 560] Register and share licences
   Given I am a new user
   When I register my email address on the service
   Then I receive an email with sign in details
