@@ -1,7 +1,7 @@
 
 Given(/^I search for a partial licence number$/) do
-  @expected_search_result = "28/09"
-  @expected_result_count = 16
+  @expected_search_result = "29/01/*G"
+  @expected_result_count = 5
   @front_app.licences_page.search(
     search_form: @expected_search_result.to_s
   )
@@ -23,7 +23,7 @@ Given(/^I search for a partial licence name$/) do
 end
 
 Given(/^I enter a search term which does not exist on screen$/) do
-  @expected_search_result = "marmite" # change to "spring" once 'licence holder' defect is fixed
+  @expected_search_result = "marmite"
   @expected_result_count = 0
   @front_app.licences_page.search(
     search_form: @expected_search_result.to_s

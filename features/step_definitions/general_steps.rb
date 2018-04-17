@@ -75,7 +75,6 @@ end
 
 Given(/^the expected licence name appears on the licence summary page$/) do
   @front_app.licences_page.click_link(text: "Licences")
-  @front_app.licences_page.wait_for_search_form
   @front_app.licences_page.search(search_form: "/")
   expect(@front_app.licences_page).to have_text(@expected_licence_name.to_s)
 end
