@@ -20,6 +20,8 @@ class LicencesPage < SitePrism::Page
   element(:johnlicence, ".license-result:nth-child(133) .heading-medium") # 18/54/17/0361
   element(:firstlicence, ".license-results-header+ .license-result .heading-medium")
   element(:lastlicence, ".license-result:last-child .heading-medium")
+  element(:pagetwo, ".pagination__item:nth-child(3) .pagination__link")
+  elements(:pagination_links, ".pagination__link")
 
   def submit(args = {})
     return unless args.key?(:licence)

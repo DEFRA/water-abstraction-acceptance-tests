@@ -6,6 +6,7 @@ class LicenceDetailsPage < SitePrism::Page
   element(:abstraction_licences_link, "#content li:nth-child(1) a")
   element(:licence_breadcrumb, "#content li+ li a")
   element(:back_link, ".link-back")
+  element(:confirmation_code, ".bold-small") # works for single code only
   element(:licence_rename_error, "#error-summary-heading-example-2")
   element(:name_link, "#nameLicence") # first time
   element(:rename_link, "#showForm") # subsequent times

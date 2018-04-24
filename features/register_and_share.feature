@@ -14,6 +14,7 @@ Scenario: [WATER-528 and 560] Register and share licences
   Given I am on the add licences page
   When I register a licence
   Then I receive a confirmation code
+  And an admin user can read the code
   And I can sign in with my new email address
 
   Given I am on the confirmation code page

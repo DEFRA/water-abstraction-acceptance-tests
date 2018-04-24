@@ -1,3 +1,47 @@
+Given(/^I select a second page of many licences$/) do
+  @expected_search_result = "/"
+  @expected_result_count = 50
+  @front_app.licences_page.search(
+    search_form: @expected_search_result.to_s
+  )
+  @front_app.licences_page.pagetwo.click
+end
+
+Given(/^I can see a full page of licences$/) do
+  @licences_page = @front_app.licences_page
+  expect(@licences_page).to have_view_links count: @expected_result_count.to_i
+end
+
+Given(/^I can see the correct number of pagination links$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @expected_pages = Quke::Quke.config.custom["data"][@environment]["total_pages"]
+  expect(@licences_page).to have_pagination_links count: @expected_pages.to_i + 2
+  # +2 for the "Previous page" and "Next page" links - both are visible on p2.
+end
+
+Given(/^I search for an expired licence$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @expected_search_result = Quke::Quke.config.custom["data"][@environment]["licence_expired"].to_s
+  @front_app.licences_page.search(
+    search_form: @expected_search_result.to_s
+  )
+end
+
+Given(/^I search for a revoked licence$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @expected_search_result = Quke::Quke.config.custom["data"][@environment]["licence_revoked"].to_s
+  @front_app.licences_page.search(
+    search_form: @expected_search_result.to_s
+  )
+end
+
+Given(/^I search for a lapsed licence$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @expected_search_result = Quke::Quke.config.custom["data"][@environment]["licence_lapsed"].to_s
+  @front_app.licences_page.search(
+    search_form: @expected_search_result.to_s
+  )
+end
 
 Given(/^I search for a partial licence number$/) do
   @expected_search_result = "29/01/*G"

@@ -65,8 +65,17 @@ When(/^I register a licence$/) do
 end
 
 When(/^I receive a confirmation code$/) do
+  # This will show in Dev, not in QA
   @security_code = @front_app.register_sending_letter_page.security_code.text
   puts "Confirmation code is: " + @security_code
+end
+
+When(/^an admin user can read the code$/) do
+  puts "This step won't work yet"
+  # Log in as admin
+  # Search for @licence_reg
+  # Identify the most recent code and copy to @security_code
+  # Log out and back in as the registering user
 end
 
 When(/^I am on the confirmation code page$/) do
