@@ -1,6 +1,6 @@
 
 Given(/^I can see the manage licences link$/) do
-  expect(@front_app.licences_page.banner_links).to have_text("Manage your licences")
+  expect(@front_app.licences_page.navbar).to have_text("Manage your licences")
 end
 
 Given(/^I go to the manage licences link$/) do
@@ -13,6 +13,7 @@ end
 
 Given(/^I add an agent to view my licences$/) do
   @front_app.manage_licences_page.add_user_button.click
+  @front_app.manage_give_access_page.add_user_button.click
   expect(@front_app.manage_give_access_page.heading).to have_text("Give access to view your licences")
   @geoff_email = @front_app.manage_give_access_page.generate_email.to_s
   @front_app.manage_give_access_page.submit(email_address: @geoff_email)
@@ -41,7 +42,7 @@ Given(/^the agent can log in and view the licences I registered$/) do
       confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
     )
     @front_app.licences_page.submit(licence: @licence_reg)
-    expect(@front_app.licence_details_page.licence_breadcrumb).to have_text(@licence_reg)
+    expect(@front_app.licence_details_page.licence_2nd_heading).to have_text(@licence_reg)
     expect(@front_app.licence_details_page).to have_no_manage_licences_link
   end
 

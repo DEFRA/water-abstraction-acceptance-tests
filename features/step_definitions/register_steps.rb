@@ -90,5 +90,5 @@ end
 
 When(/^I can select the licence I registered$/) do
   @front_app.licences_page.submit(licence: @licence_reg)
-  expect(@front_app.licence_details_page.licence_breadcrumb).to have_text(@licence_reg)
+  expect(@front_app.licence_details_page.licence_2nd_heading).to have_text(@licence_reg)
 end

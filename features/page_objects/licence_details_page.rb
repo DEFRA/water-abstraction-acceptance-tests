@@ -2,12 +2,13 @@ class LicenceDetailsPage < SitePrism::Page
 
   # Water abstraction licence
   element(:banner_links, ".header-proposition")
-  element(:manage_licences_link, "#proposition-links li+ li a")
+  element(:manage_licences_link, ".active+ .navlink a")
   element(:abstraction_licences_link, "#content li:nth-child(1) a")
-  element(:licence_breadcrumb, "#content li+ li a")
+  element(:licence_2nd_heading, ".heading-secondary")
   element(:back_link, ".link-back")
   element(:confirmation_code, ".bold-small") # works for single code only
   element(:licence_rename_error, "#error-summary-heading-example-2")
+  element(:first_row, "p+ .data-row")
   element(:name_link, "#nameLicence") # first time
   element(:rename_link, "#showForm") # subsequent times
   element(:licence_name_static, "p+ .data-table .licenceAnswer")
@@ -31,10 +32,10 @@ class LicenceDetailsPage < SitePrism::Page
   end
 
   def click_name_or_rename(_args = {})
-    if has_name_link?
-      name_link.click
-    elsif has_rename_link?
+    if has_rename_link?
       rename_link.click
+    elsif has_name_link?
+      name_link.click
     end
   end
 

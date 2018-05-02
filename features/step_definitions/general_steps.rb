@@ -74,13 +74,13 @@ Given(/^I enter a licence name which is invalid$/) do
 end
 
 Given(/^the expected licence name appears on the licence summary page$/) do
-  @front_app.licences_page.click_link(text: "Licences")
+  @front_app.licences_page.view_licences_link.click
   @front_app.licences_page.search(search_form: "/")
   expect(@front_app.licences_page).to have_text(@expected_licence_name.to_s)
 end
 
 Given(/^the licence name is searchable on the abstraction licences page$/) do
-  @front_app.licences_page.click_link(text: "Licences")
+  @front_app.licences_page.view_licences_link.click
   @expected_search_result = @expected_licence_name
   @expected_result_count = 1
   @front_app.licences_page.search(
