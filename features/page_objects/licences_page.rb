@@ -24,6 +24,7 @@ class LicencesPage < SitePrism::Page
   element(:lastlicence, ".license-result:last-child .heading-medium")
   element(:pagetwo, ".pagination__item:nth-child(3) .pagination__link")
   elements(:pagination_links, ".pagination__link")
+  element(:disclaimer, ".panel-border-wide p")
 
   def submit(args = {})
     return unless args.key?(:licence)

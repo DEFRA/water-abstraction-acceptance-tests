@@ -15,6 +15,9 @@ Then(/^I am on the internal abstraction licences page$/) do
   expect(@front_app.licences_page.heading).to have_text("Licences")
   @front_app.licences_page.search(search_form: "/")
   @total_licences = @front_app.licences_page.view_links.count.to_s
+  # rubocop:disable Metrics/LineLength
+  expect(@front_app.licences_page.disclaimer).to have_text("The information included in this service does not replace or affect the legal (paper) copy of the licence issued to you. The information must be used for reference only. You must refer to and comply with the licence issued to you as a paper copy when you make decisions about abstracting or impounding water.")
+  # rubocop:enable Metrics/LineLength
 end
 
 Then(/^I am on the external abstraction licences page$/) do

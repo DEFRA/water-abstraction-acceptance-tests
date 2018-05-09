@@ -3,10 +3,12 @@ class LicenceDetailsPage < SitePrism::Page
   # Water abstraction licence
   element(:banner_links, ".header-proposition")
   element(:manage_licences_link, ".active+ .navlink a")
+  element(:sign_out_link, "#proposition-links .navlink+ .navlink a")
   element(:abstraction_licences_link, "#content li:nth-child(1) a")
   element(:licence_2nd_heading, ".heading-secondary")
   element(:back_link, ".link-back")
-  element(:confirmation_code, ".bold-small") # works for single code only
+  element(:confirmation_only_code, ".bold-small") # works for single code only
+  element(:confirmation_first_code, ".bold-small:nth-child(2)") # works for multiple codes assuming most recent first.
   element(:licence_rename_error, "#error-summary-heading-example-2")
   element(:first_row, "p+ .data-row")
   element(:name_link, "#nameLicence") # first time

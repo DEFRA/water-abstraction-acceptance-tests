@@ -22,6 +22,14 @@ When(/^I enter my password incorrectly$/) do
   )
 end
 
+When(/^I enter blank details$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @front_app.sign_in_page.submit(
+    email: "",
+    password: ""
+  )
+end
+
 Then(/^I am informed "([^"]*)"$/) do |message|
   expect(@front_app.sign_in_page).to have_text(message)
 end

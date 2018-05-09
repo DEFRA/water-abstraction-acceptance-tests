@@ -58,27 +58,47 @@ When(/^I register a licence$/) do
   @front_app.register_add_licences_page.submit(
     licence_box: @licence_multi
   )
-  @front_app.register_confirm_licences_page.wait_for_licence_checkbox
+  @front_app.register_confirm_licences_page.wait_for_continue_button
   @front_app.register_confirm_licences_page.submit
-  @front_app.register_choose_address_page.wait_for_address_radio
+  @front_app.register_choose_address_page.wait_for_continue_button
   @front_app.register_choose_address_page.submit
 end
 
 When(/^I receive a confirmation code$/) do
-  # This will show in Dev, not in QA
+  # This will only show in Dev, not in QA.  Writing another step below.
   @security_code = @front_app.register_sending_letter_page.security_code.text
   puts "Confirmation code is: " + @security_code
 end
 
 When(/^an admin user can read the code$/) do
-  puts "This step won't work yet"
-  # Log in as admin
-  # Search for @licence_reg
-  # Identify the most recent code and copy to @security_code
-  # Log out and back in as the registering user
+  # Log in as admin user
+  @front_app = FrontOfficeApp.new
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @front_app.sign_in_page.load
+  @front_app.sign_in_page.submit(
+    email: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["username"],
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["password"]
+  )
+  @licence_reg = Quke::Quke.config.custom["data"][@environment]["licence_reg"].to_s
+  @front_app.licences_page.search(
+    search_form: @licence_reg.to_s
+  )
+  @front_app.licences_page.submit(licence: @licence_reg)
+  expect(@front_app.licence_details_page.licence_2nd_heading).to have_text(@licence_reg)
+  @security_code = @front_app.licence_details_page.confirmation_first_code.text
+  puts "Confirmation code is: " + @security_code + "."
+  @front_app.licence_details_page.sign_out_link.click
 end
 
 When(/^I am on the confirmation code page$/) do
+  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @front_app = FrontOfficeApp.new
+  @front_app.sign_in_page.load
+  @front_app.sign_in_page.submit(
+    email: @reg_email.to_s,
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
+  )
+  Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
   expect(@front_app.register_security_code_page.current_url).to include "/security-code"
 end
 

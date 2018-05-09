@@ -9,6 +9,11 @@ Feature: [WATER-420] Basic login
     When I enter my password incorrectly
     Then I am informed "Your email address or password is incorrect"
 
+  Scenario: [WATER-420] Blank email and password gives error message
+    Given I am on the sign in page
+    When I enter blank details
+    Then I am informed "Your email address or password is incorrect"
+
   Scenario: [WATER-444] Request password reset
     Given I am on the sign in page
     When I request a password reset

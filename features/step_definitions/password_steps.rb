@@ -1,5 +1,7 @@
 
 Given(/^I select Change Password$/) do
+  @front_app.licences_page.wait_for_changepw
+  # Wait for helps because the page object is not always found straight away on load
   @front_app.licences_page.changepw.click
 end
 
@@ -47,7 +49,7 @@ Given(/^I see an error telling me the password is invalid$/) do
 end
 
 Given(/^I see an error telling me the passwords don't match$/) do
-  expect(@front_app.change_password_page.error_heading.text).to include "The passwords you entered didn't match"
+  expect(@front_app.change_password_page.error_heading.text).to include "The passwords you entered did not match"
 end
 
 Given(/^I enter a valid password$/) do
