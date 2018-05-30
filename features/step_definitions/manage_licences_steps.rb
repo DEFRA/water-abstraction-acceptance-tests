@@ -15,9 +15,9 @@ Given(/^I add an agent to view my licences$/) do
   @front_app.manage_licences_page.add_user_button.click
   @front_app.manage_give_access_page.add_user_button.click
   expect(@front_app.manage_give_access_page.heading).to have_text("Give access to view your licences")
-  @geoff_email = @front_app.manage_give_access_page.generate_email.to_s
-  @front_app.manage_give_access_page.submit(email_address: @geoff_email)
-  puts "Agent's email address is: " + @geoff_email
+  @agent_email = @front_app.manage_give_access_page.generate_email.to_s
+  @front_app.manage_give_access_page.submit(email_address: @agent_email)
+  puts "Agent's email address is: " + @agent_email
 end
 
 Given(/^I receive confirmation that the agent has received an email$/) do
@@ -28,7 +28,7 @@ Given(/^the agent can log in and view the licences I registered$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.mailinator_home_page.load
   @front_app.mailinator_home_page.wait_for_inbox
-  @front_app.mailinator_home_page.submit(inbox: @geoff_email)
+  @front_app.mailinator_home_page.submit(inbox: @agent_email)
   @front_app.mailinator_inbox_page.wait_for_email
   @front_app.mailinator_inbox_page.email[0].from.click
 
