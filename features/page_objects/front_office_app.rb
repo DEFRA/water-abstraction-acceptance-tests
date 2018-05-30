@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 # Represents all pages in the front office. Was created to avoid needing to
 # create individual instances of each page throughout the steps.
 # https://github.com/natritmeyer/site_prism#epilogue
@@ -115,4 +116,37 @@ class FrontOfficeApp
     @last_page = ManageGiveAccessPage.new
   end
 
+  def notify_menu_page
+    @last_page = NotifyMenuPage.new
+  end
+
+  def notify_add_licences_page
+    @last_page = NotifyAddLicencesPage.new
+  end
+
+  def notify_confirm_licences_page
+    @last_page = NotifyConfirmLicencesPage.new
+  end
+
+  def notify_custom_info_page
+    @last_page = NotifyCustomInfoPage.new
+  end
+
+  def notify_confirm_message_page
+    @last_page = NotifyConfirmMessagePage.new
+  end
+
+  def notify_confirm_sent_page
+    @last_page = NotifyConfirmSentPage.new
+  end
+
+  def notify_report_summary_page
+    @last_page = NotifyReportSummaryPage.new
+  end
+
+  def notify_report_details_page
+    @last_page = NotifyReportDetailsPage.new
+  end
+
 end
+# rubocop:enable Metrics/ClassLength

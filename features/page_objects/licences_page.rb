@@ -5,10 +5,16 @@ class LicencesPage < SitePrism::Page
   element(:banner_links, ".header-proposition")
   element(:view_licences_link, ".active a")
   element(:manage_licences_link, ".active+ .navlink a")
+  element(:notifications_link, ".active+ .navlink a")
   element(:changepw, "#proposition-links .navlink:nth-child(1) a")
   element(:navbar, ".navbar")
   element(:heading, ".heading-large")
   element(:content, "#content")
+  element(:sort_by_number_link, ".license-results-header__column:nth-child(1) .sr-only+ span")
+  element(:sort_by_name_link, ".license-results-header__column:nth-child(2) span")
+  # rubocop:disable Metrics/LineLength
+  element(:sort_by_end_date_link, ".license-results-header__column~ .license-results-header__column+ .license-results-header__column span")
+  # rubocop:enable Metrics/LineLength
   elements(:licences, ".license-result__column--number a")
   # see https://github.com/natritmeyer/site_prism#element-collections
   elements(:view_links, ".license-result a")

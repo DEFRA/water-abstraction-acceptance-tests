@@ -33,7 +33,7 @@ Then(/^I am on the contact details page$/) do
 end
 
 When(/^I check the licence points$/) do
-  scroll_to(@front_app.licence_details_page.points_link)
+  # scroll_to(@front_app.licence_details_page.points_link) # Remove for iOS
   @front_app.licence_details_page.points_link.click
 end
 
@@ -52,7 +52,7 @@ Then(/^I am on the licence purposes page$/) do
 end
 
 When(/^I check the licence conditions$/) do
-  scroll_to(@front_app.licence_details_page.conditions_link)
+  # scroll_to(@front_app.licence_details_page.conditions_link) # Remove for iOS
   @front_app.licence_details_page.conditions_link.click
 end
 
