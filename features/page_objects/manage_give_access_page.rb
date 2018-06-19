@@ -1,7 +1,5 @@
 class ManageGiveAccessPage < SitePrism::Page
 
-  # Your water abstraction licences
-
   element(:manage_licences_link, ".active+ .navlink a")
   element(:changepw, ".header-links a:nth-child(1)")
   element(:heading, ".heading-large")
@@ -9,9 +7,10 @@ class ManageGiveAccessPage < SitePrism::Page
   element(:email_form, "#email")
   element(:add_user_button, ".button")
   element(:add_user_button_complete, ".button-start")
+  element(:remove_access_link, ".license-result__column--description a")
 
   def generate_email
-    @random_email = "mywail" + rand(0..999_999_999).to_s + "@mailinator.com"
+    @random_email = "mywail" + rand(0..999_999_999).to_s + "@andrewhick.com"
   end
 
   def submit(args = {})

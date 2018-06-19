@@ -3,7 +3,7 @@ Given(/^I go to the notifications screen$/) do
   expect(@front_app.notify_menu_page.heading).to have_text("Reports and notifications")
 end
 
-Given(/^I select the hands off flow template$/) do
+Given(/^I select the hands off flow warning template$/) do
   @front_app.notify_menu_page.clicklink(link: "Hands off flow: levels warning")
   expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow warning")
   @environment = Quke::Quke.config.custom["current_environment"].to_s
@@ -43,7 +43,8 @@ Given(/^I add custom information$/) do
   @front_app.notify_custom_info_page.submit(
     gauging_station: "THIS IS A TEST",
     hof_threshold: "0 metres cubed per second",
-    contact_details: "0117 496 0000",
+    contact_name: "Water Abstraction Digital Team",
+    contact_details: "enquiries@environment-agency.gov.uk",
     sender_name: "A Tester",
     sender_role: "Test person",
     sender_address: "Environment Agency\nDeanery Road\nBristol\nBS1 5AH"
@@ -56,7 +57,7 @@ Given(/^I can see the correct information on the confirm message page$/) do
   expect(@front_app.notify_confirm_message_page.number_of_licences).to have_text(@notify_licence_count.to_s)
   # rubocop:disable Metrics/LineLength
   expect(@front_app.notify_confirm_message_page.message_preview).to have_text("This is an advance warning that you may be asked to stop or reduce your water abstraction soon")
-  expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact 0117 496 0000")
+  expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on enquiries@environment-agency.gov.uk")
   # rubocop:enable Metrics/LineLength
 end
 

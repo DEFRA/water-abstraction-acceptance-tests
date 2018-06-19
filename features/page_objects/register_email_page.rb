@@ -10,7 +10,7 @@ class RegisterEmailPage < SitePrism::Page
   end
 
   def generate_email
-    @random_email = "mywail" + rand(0..999_999_999).to_s + "@mailinator.com"
+    @random_email = "mywail" + rand(0..999_999_999).to_s + "@example.com"
   end
 
 end

@@ -148,5 +148,9 @@ class FrontOfficeApp
     @last_page = NotifyReportDetailsPage.new
   end
 
+  def email_content_page
+    @last_page = EmailContentPage.new
+  end
+
 end
 # rubocop:enable Metrics/ClassLength

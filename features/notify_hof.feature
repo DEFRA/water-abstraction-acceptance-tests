@@ -10,7 +10,7 @@ Feature: [WATER-1013] Notify user of hands off flow
     And I go to the notifications screen
 
   Scenario: [WATER-1013 and 932] Send hands off flow warning and check log
-    When I select the hands off flow template
+    When I select the hands off flow warning template
     Then I am on the notification add licences page
 
     When I add licences for a notification
@@ -27,7 +27,7 @@ Feature: [WATER-1013] Notify user of hands off flow
     And I can view the details of the latest batch
 
   Scenario: [WATER-1013] Invalid data
-    Given I select the hands off flow template
+    Given I select the hands off flow warning template
     And I am on the notification add licences page
     When I select no licences
     Then I see an error message telling me I need at least one licence

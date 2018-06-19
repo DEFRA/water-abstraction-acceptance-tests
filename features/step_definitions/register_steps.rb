@@ -16,6 +16,7 @@ end
 
 Given(/^I receive an email with sign in details$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
+  # BROKEN
   @front_app.mailinator_home_page.load
   @front_app.mailinator_home_page.wait_for_inbox
   @front_app.mailinator_home_page.submit(inbox: @reg_email)

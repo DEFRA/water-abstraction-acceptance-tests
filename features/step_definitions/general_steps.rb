@@ -39,7 +39,7 @@ end
 
 Then(/^I am on the licence points page$/) do
   expect(@front_app.licence_points_page.current_url).to include "/points"
-  expect(@front_app.licence_points_page).to have_text("Abstraction points for licence")
+  expect(@front_app.licence_points_page).to have_text("Abstraction points for")
 end
 
 When(/^I check the licence purposes$/) do
@@ -48,7 +48,7 @@ end
 
 Then(/^I am on the licence purposes page$/) do
   expect(@front_app.licence_purposes_page.current_url).to include "/purposes"
-  expect(@front_app.licence_purposes_page).to have_text("Abstraction details for licence")
+  expect(@front_app.licence_purposes_page).to have_text("Abstraction details for")
 end
 
 When(/^I check the licence conditions$/) do
