@@ -25,25 +25,28 @@ Given(/^I receive confirmation that the agent has received an email$/) do
 end
 
 Given(/^the agent can log in and view the licences I registered$/) do
+
   @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @front_app.mailinator_home_page.load
-  @front_app.mailinator_home_page.wait_for_inbox
-  @front_app.mailinator_home_page.submit(inbox: @agent_email)
-  @front_app.mailinator_inbox_page.wait_for_email
-  @front_app.mailinator_inbox_page.email[0].from.click
+  # rubocop:disable Metrics/LineLength
+  @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @agent_email).to_s
+  # rubocop:enable Metrics/LineLength
+  puts "Agent email  : " + @agent_email
+  puts "Email API address : " + @email_api_url
 
-  @front_app.mailinator_inbox_page.email_details do |frame|
-    @new_window = window_opened_by { frame.create_password.click }
-  end
+  visit(@email_api_url)
+  @email_json = @front_app.email_content_page.email_content.text
 
-  within_window @new_window do
-    @front_app.register_create_pw_page.submit(
-      password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"],
-      confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
-    )
-    @front_app.licences_page.submit(licence: @licence_reg)
-    expect(@front_app.licence_details_page.licence_2nd_heading).to have_text(@licence_reg)
-    expect(@front_app.licence_details_page).to have_no_manage_licences_link
-  end
+  # See register_steps.rb for comments on regex format
+  @create_account_url = @email_json[/Go to our website: (.*?)\\r\\n2. Create/, 1].to_s
+  visit(@create_account_url)
+
+  @front_app.register_create_pw_page.submit(
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"],
+    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
+  )
+
+  @front_app.licences_page.submit(licence: @licence_reg)
+  expect(@front_app.licence_details_page.licence_2nd_heading).to have_text(@licence_reg)
+  expect(@front_app.licence_details_page).to have_no_manage_licences_link
 
 end

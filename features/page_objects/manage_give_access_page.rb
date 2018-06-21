@@ -10,7 +10,7 @@ class ManageGiveAccessPage < SitePrism::Page
   element(:remove_access_link, ".license-result__column--description a")
 
   def generate_email
-    @random_email = "mywail" + rand(0..999_999_999).to_s + "@andrewhick.com"
+    @random_email = "mywail" + rand(0..999_999_999).to_s + "@example.com"
   end
 
   def submit(args = {})
