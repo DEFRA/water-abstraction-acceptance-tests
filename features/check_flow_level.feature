@@ -1,4 +1,4 @@
-@readonly @bs @wip
+@readonly @bs
 Feature: [WATER-1049] Check flows and levels
   As a water abstraction licence holder
   I want to check the flow or level data

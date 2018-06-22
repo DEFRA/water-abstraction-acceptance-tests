@@ -19,10 +19,10 @@ Given(/^I can see the correct "([^"]*)" data$/) do |conditiontype|
     expect(@front_app.flow_level_page.data_info).to have_text(conditiontype)
     @flow_level_data_url = "http://environment.data.gov.uk/flood-monitoring/id/stations/" + @gauging_station
     visit(@flow_level_data_url)
-    # The following step won't work if the data is below a decimal point - for example the reading might be 11.3 and the service shows 11.299
+    # The following step won't work if the data isn't identical eg the reading is 11.3 and the service shows 11.299
     # expect(@front_app.flow_level_data.flow_level_data).to have_text(@data_reading.to_f.to_s)
     page.go_back
-  elsif (conditiontype == "nodata")
+  elsif conditiontype == "nodata"
     expect(@front_app.flow_level_page.reading).to have_text("Sorry, there is no data available")
   end
 
@@ -33,11 +33,11 @@ Given(/^I can convert the units$/) do
   @front_app.flow_level_page.select_unit(unit: "Cubic metres per second")
   @reading_m3s = @front_app.flow_level_page.reading.text.to_f
   @front_app.flow_level_page.select_unit(unit: "Megalitres per day")
-  @reading_Mld = @front_app.flow_level_page.reading.text.to_f
+  @reading_mld = @front_app.flow_level_page.reading.text.to_f
   @front_app.flow_level_page.select_unit(unit: "Cubic metres per day")
   @reading_m3d = @front_app.flow_level_page.reading.text.to_f
-  expect((@reading_m3d / 86400).to_i).to eq(@reading_m3s.to_i)
-  expect((@reading_m3d / 1000).to_i).to eq(@reading_Mld.to_i)
+  expect((@reading_m3d / 86_400).to_i).to eq(@reading_m3s.to_i)
+  expect((@reading_m3d / 1_000).to_i).to eq(@reading_mld.to_i)
 end
 
 Given(/^I cannot see a flow or level data link$/) do

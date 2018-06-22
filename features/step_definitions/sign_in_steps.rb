@@ -46,7 +46,7 @@ end
 When(/^I unlock my account using the email link provided$/) do
   # Broken - can now fix to include email API.
   # Copy step syntax from register_steps.rb
-  # 
+  #
   # @environment = Quke::Quke.config.custom["current_environment"].to_s
   # @mailinator_username = Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["username"]
   # @front_app.mailinator_home_page.load
