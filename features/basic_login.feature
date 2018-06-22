@@ -21,5 +21,5 @@ Feature: [WATER-420] Basic login
 
   Scenario: [WATER-420] Valid login
     Given I am on the sign in page
-    When I sign into my account as "water_user1"
+    When I sign into my account as "internal_user"
     Then I am on the internal abstraction licences page

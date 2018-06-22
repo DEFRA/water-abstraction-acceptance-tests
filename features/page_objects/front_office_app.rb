@@ -20,6 +20,10 @@ class FrontOfficeApp
     @last_page = LicencesPage.new
   end
 
+  def licence_contact_page
+    @last_page = LicenceContactPage.new
+  end
+
   def licence_details_page
     @last_page = LicenceDetailsPage.new
   end
@@ -34,14 +38,6 @@ class FrontOfficeApp
 
   def licence_conditions_page
     @last_page = LicenceConditionsPage.new
-  end
-
-  def mailinator_home_page
-    @last_page = MailinatorHomePage.new
-  end
-
-  def mailinator_email_details_page
-    @last_page = MailinatorDetailsPage.new
   end
 
   def change_password_reauthenticate_page
@@ -66,10 +62,6 @@ class FrontOfficeApp
 
   def reset_password_check1_page
     @last_page = ResetPasswordCheck1Page.new
-  end
-
-  def mailinator_inbox_page
-    @last_page = MailinatorInboxPage.new
   end
 
   def register_create_account_page
@@ -150,6 +142,14 @@ class FrontOfficeApp
 
   def email_content_page
     @last_page = EmailContentPage.new
+  end
+
+  def flow_level_page
+    @last_page = FlowLevelPage.new
+  end
+
+  def flow_level_data
+    @last_page = FlowLevelData.new
   end
 
 end

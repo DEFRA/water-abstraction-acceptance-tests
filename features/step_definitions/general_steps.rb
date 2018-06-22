@@ -30,6 +30,8 @@ end
 
 Then(/^I am on the contact details page$/) do
   expect(@front_app.licences_page.current_url).to include "/contact"
+  expect(@front_app.licence_contact_page.heading).to have_text("ontact details")
+  @front_app.licence_contact_page.back_link.click
 end
 
 When(/^I check the licence points$/) do
@@ -39,7 +41,8 @@ end
 
 Then(/^I am on the licence points page$/) do
   expect(@front_app.licence_points_page.current_url).to include "/points"
-  expect(@front_app.licence_points_page).to have_text("Abstraction points for")
+  expect(@front_app.licence_points_page.heading).to have_text("Abstraction points for")
+  @front_app.licence_points_page.back_link.click
 end
 
 When(/^I check the licence purposes$/) do
@@ -48,7 +51,8 @@ end
 
 Then(/^I am on the licence purposes page$/) do
   expect(@front_app.licence_purposes_page.current_url).to include "/purposes"
-  expect(@front_app.licence_purposes_page).to have_text("Abstraction details for")
+  expect(@front_app.licence_purposes_page.heading).to have_text("Abstraction details for")
+  @front_app.licence_purposes_page.back_link.click
 end
 
 When(/^I check the licence conditions$/) do
@@ -60,6 +64,7 @@ Then(/^I am on the licence conditions page$/) do
   expect(@front_app.licence_conditions_page.current_url).to include "/conditions"
   expect(@front_app.licence_conditions_page.heading).to have_text("Conditions held for")
   expect(@front_app.licence_conditions_page.disclaimer).to have_text("You must refer to the paper copy of your licence")
+  @front_app.licence_conditions_page.back_link.click
 end
 
 Given(/^I select the link to name the licence$/) do

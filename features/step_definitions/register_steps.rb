@@ -32,8 +32,8 @@ Given(/^I receive an email with sign in details$/) do
   visit(@create_account_url)
 
   @front_app.register_create_pw_page.submit(
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"],
-    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"],
+    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
   )
 end
 
@@ -43,9 +43,9 @@ Given(/^I can sign in with my new email address$/) do
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @reg_email.to_s,
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
   )
-  Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
+  Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
 end
 
 Then(/^I am on the add licences page$/) do
@@ -79,8 +79,8 @@ When(/^an admin user can read the code$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
-    email: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["username"],
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["password"]
+    email: Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["username"],
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["password"]
   )
   @licence_reg = Quke::Quke.config.custom["data"][@environment]["licence_reg"].to_s
   @front_app.licences_page.search(
@@ -99,9 +99,9 @@ When(/^I am on the confirmation code page$/) do
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @reg_email.to_s,
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
   )
-  Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
+  Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
   expect(@front_app.register_security_code_page.current_url).to include "/security-code"
 end
 

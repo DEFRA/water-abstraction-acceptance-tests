@@ -30,9 +30,6 @@ Given(/^the agent can log in and view the licences I registered$/) do
   # rubocop:disable Metrics/LineLength
   @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @agent_email).to_s
   # rubocop:enable Metrics/LineLength
-  puts "Agent email  : " + @agent_email
-  puts "Email API address : " + @email_api_url
-
   visit(@email_api_url)
   @email_json = @front_app.email_content_page.email_content.text
 
@@ -41,8 +38,8 @@ Given(/^the agent can log in and view the licences I registered$/) do
   visit(@create_account_url)
 
   @front_app.register_create_pw_page.submit(
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"],
-    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user2"]["password"]
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"],
+    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
   )
 
   @front_app.licences_page.submit(licence: @licence_reg)

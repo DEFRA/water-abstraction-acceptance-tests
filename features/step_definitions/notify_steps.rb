@@ -80,7 +80,7 @@ end
 Given(/^the notifications appear in the log$/) do
   expect(@front_app.notify_report_summary_page.first_notification).to have_text(@notification_type_long)
   # rubocop:disable Metrics/LineLength
-  expect(@front_app.notify_report_summary_page.first_sender).to have_text(Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["username"])
+  expect(@front_app.notify_report_summary_page.first_sender).to have_text(Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["username"])
   # rubocop:enable Metrics/LineLength
 end
 

@@ -5,7 +5,7 @@ Feature: [WATER-1013] Notify user of hands off flow
   So that they abstract water sustainably
 
   Background:
-    Given I sign into my account as "water_user1"
+    Given I sign into my account as "internal_user"
     And I am on the internal abstraction licences page
     And I go to the notifications screen
 

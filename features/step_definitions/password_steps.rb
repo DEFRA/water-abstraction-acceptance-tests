@@ -12,7 +12,7 @@ end
 
 Given(/^I enter my correct password$/) do
   @front_app.change_password_reauthenticate_page.submit(
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["password"]
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["password"]
   )
 end
 
@@ -55,8 +55,8 @@ end
 Given(/^I enter a valid password$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.change_password_page.submit(
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["password"],
-    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["password"]
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["password"],
+    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["password"]
   )
 end
 
@@ -68,7 +68,7 @@ Given(/^I request a password reset$/) do
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.sign_in_page.forgotten_password.click
   @front_app.request_pw_reset_page.submit(
-    email_address: Quke::Quke.config.custom["data"][@environment]["accounts"]["water_user1"]["username"]
+    email_address: Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["username"]
   )
 end
 

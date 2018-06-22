@@ -95,7 +95,7 @@ QUKE_CONFIG='chrome.config.yml' bundle exec quke
 These can be added to a [feature](https://github.com/cucumber/cucumber/wiki/Feature-Introduction) or individual **scenarios**.
 
 ```gherkin
-@functional
+@frontoffice
 Feature: Validations within the digital service
 ```
 
@@ -122,7 +122,6 @@ To have consistency across the project the following tags are defined and should
 |@readonly|Any feature which doesn't change user data on the service.|
 |@readwrite|Any feature which amends user data on the service.  Do not run on a live environment.|
 |@bs|Features to run as part of a Browserstack test.  (Essentially anything that can be run more than once without needing to clear the database)|
-|@functional|Any feature or scenario which is testing just a specific function of the service e.g. validation errors|
 |@broken|A scenario which is known to be broken due to the service not meeting expected behaviour|
 |@ci|A feature that is intended to be run only on our continuous integration service (you should never need to use this tag).|
 
