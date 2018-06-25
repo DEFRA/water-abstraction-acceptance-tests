@@ -13,14 +13,15 @@ end
 Given(/^I can see the correct "([^"]*)" data$/) do |conditiontype|
   @front_app.licences_page.click_link(text: "View data from")
   expect(@front_app.flow_level_page.heading).to have_text("Data from")
-  @data_reading = @front_app.flow_level_page.reading.text
+  @data_reading = @front_app.flow_level_page.reading.text.to_f
 
   if (conditiontype == "flow") || (conditiontype == "level")
     expect(@front_app.flow_level_page.data_info).to have_text(conditiontype)
     @flow_level_data_url = "http://environment.data.gov.uk/flood-monitoring/id/stations/" + @gauging_station
+    puts "Data reading: " + @data_reading.to_s
+    expect(@data_reading).to be > 0
     visit(@flow_level_data_url)
-    # The following step won't work if the data isn't identical eg the reading is 11.3 and the service shows 11.299
-    # expect(@front_app.flow_level_data.flow_level_data).to have_text(@data_reading.to_f.to_s)
+    expect(@front_app.flow_level_data.flow_level_data).to have_text("latestReading")
     page.go_back
   elsif conditiontype == "nodata"
     expect(@front_app.flow_level_page.reading).to have_text("Sorry, there is no data available")

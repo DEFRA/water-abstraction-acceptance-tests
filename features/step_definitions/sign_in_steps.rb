@@ -44,25 +44,7 @@ Given(/^I lock my account by attempting to sign in with an incorrect password to
 end
 
 When(/^I unlock my account using the email link provided$/) do
-  # Broken - can now fix to include email API.
-  # Copy step syntax from register_steps.rb
-  #
-  # @environment = Quke::Quke.config.custom["current_environment"].to_s
-  # @mailinator_username = Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["username"]
-  # @front_app.mailinator_home_page.load
-  # @front_app.mailinator_home_page.submit(inbox: @mailinator_username)
-  # @front_app.mailinator_inbox_page.email[0].from.click
-  #
-  # @front_app.mailinator_inbox_page.email_details do |frame|
-  #   @new_window = window_opened_by { frame.reset_password.click }
-  # end
-  #
-  # within_window @new_window do
-  #   @front_app.reset_password_page.submit(
-  #     password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"],
-  #     confirm_password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
-  #   )
-  # end
+  # Use email API.  Copy step syntax from register_steps.rb
 end
 
 Then(/^I can sign into my account$/) do

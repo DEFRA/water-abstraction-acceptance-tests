@@ -9,7 +9,6 @@ class FlowLevelPage < SitePrism::Page
   element(:condition_link, ".panel-border-wide+ p a")
 
   def select_unit(args = {})
-    return unless args.key?(:unit)
     unit_selector.select(args[:unit]) if args.key?(:unit)
   end
 
