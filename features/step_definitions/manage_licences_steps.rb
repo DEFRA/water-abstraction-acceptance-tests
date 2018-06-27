@@ -47,3 +47,25 @@ Given(/^the agent can log in and view the licences I registered$/) do
   expect(@front_app.licence_details_page).to have_no_manage_licences_link
 
 end
+
+Given(/^I remove an agent to view my licences$/) do
+  @front_app.manage_licences_page.add_user_button.click
+  expect(@front_app.manage_give_access_page.user_list).to have_text(@agent_email)
+  @front_app.manage_give_access_page.remove_access_link.click
+end
+
+Given(/^I receive confirmation that the agent is removed$/) do
+  expect(@front_app.manage_access_removed_page.heading).to have_text("Access removed")
+  expect(@front_app.manage_access_removed_page.content).to have_text(@agent_email)
+end
+
+Given(/^the agent cannot view the licences I registered$/) do
+  @front_app.manage_access_removed_page.sign_out_link.click
+  @front_app.sign_in_page.load
+  @front_app.sign_in_page.submit(
+    email: @agent_email,
+    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
+  )
+  expect(@front_app.register_add_licences_page.heading).to have_text("Which licences do you want to be able to view?")
+
+end

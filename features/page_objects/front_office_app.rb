@@ -108,6 +108,10 @@ class FrontOfficeApp
     @last_page = ManageGiveAccessPage.new
   end
 
+  def manage_access_removed_page
+    @last_page = ManageAccessRemovedPage.new
+  end
+
   def notify_menu_page
     @last_page = NotifyMenuPage.new
   end

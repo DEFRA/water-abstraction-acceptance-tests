@@ -1,5 +1,4 @@
-@readwrite
-
+@readwrite @wip
 Feature: [WATER-528 and 560] Register and share
   As a user with a water abstraction licence
   I want to register with the service
@@ -37,3 +36,9 @@ Scenario: [WATER-528 and 560] Register and share licences
   When I add an agent to view my licences
   Then I receive confirmation that the agent has received an email
   And the agent can log in and view the licences I registered
+
+  Given I can sign in with my new email address
+  And I go to the manage licences link
+  When I remove an agent to view my licences
+  Then I receive confirmation that the agent is removed
+  And the agent cannot view the licences I registered
