@@ -3,7 +3,8 @@ Given(/^I go to the notifications screen$/) do
   expect(@front_app.notify_menu_page.heading).to have_text("Reports and notifications")
   @environment = Quke::Quke.config.custom["current_environment"].to_s
   @notify_licences = Quke::Quke.config.custom["data"][@environment]["licence_multi"].to_s
-  @notify_recipient_count = Quke::Quke.config.custom["data"][@environment]["notify_recipient_count"].to_s
+  @notify_hof_recipient_count = Quke::Quke.config.custom["data"][@environment]["notify_hof_recipient_count"].to_s
+  @notify_exp_recipient_count = Quke::Quke.config.custom["data"][@environment]["notify_exp_recipient_count"].to_s
   @notify_licence_count = Quke::Quke.config.custom["data"][@environment]["notify_licence_count"].to_s
 end
 
@@ -109,24 +110,27 @@ end
 
 Given(/^I can see the correct information on the confirm message page$/) do
   @front_app.notify_confirm_message_page.wait_for_continue_button
-  expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_recipient_count.to_s)
   expect(@front_app.notify_confirm_message_page.number_of_licences).to have_text(@notify_licence_count.to_s)
   if @notification_type == "hands off flow warning"
+    expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
     # rubocop:disable Metrics/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("This is an advance warning that you may be asked to stop or reduce your water abstraction soon")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on water_abstractiondigital@environment-agency.gov.uk")
     # rubocop:enable Metrics/LineLength
   elsif @notification_type == "hands off flow restriction notice"
+    expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
     # rubocop:disable Metrics/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("We need to enforce the hands off flow condition of your licences because river levels are very low")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on water_abstractiondigital@environment-agency.gov.uk")
     # rubocop:enable Metrics/LineLength
   elsif @notification_type == "hands off flow resume notice"
+    expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
     # rubocop:disable Metrics/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("You can now start or increase your water abstraction, if the terms of your licences allow this")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on water_abstractiondigital@environment-agency.gov.uk")
     # rubocop:enable Metrics/LineLength
   elsif @notification_type == "invitation to renew"
+    expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_exp_recipient_count.to_s)
     # rubocop:disable Metrics/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("All or part of the following abstraction licences will expire soon")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("To discuss any changes you would like to make please call us on 0114 2898 340")
@@ -144,7 +148,11 @@ Given(/^I can see the correct information on the confirm sent page$/) do
   expect(@front_app.notify_confirm_sent_page.heading).to have_text("Your " + @notification_type_long.downcase.to_s + " has been sent")
   # rubocop:enable Metrics/LineLength
   expect(@front_app.notify_confirm_sent_page.confirmation_box).to have_text("You sent this notification to")
-  expect(@front_app.notify_confirm_sent_page.number_of_recipients).to have_text(@notify_recipient_count.to_s)
+  if @notification_type == "invitation to renew"
+    expect(@front_app.notify_confirm_sent_page.number_of_recipients).to have_text(@notify_exp_recipient_count.to_s)
+  else
+    expect(@front_app.notify_confirm_sent_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
+  end
 end
 
 Given(/^I check the log$/) do

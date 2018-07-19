@@ -6,7 +6,7 @@ class LicencesPage < SitePrism::Page
   element(:view_licences_link, ".active a")
   element(:manage_licences_link, ".active+ .navlink a")
   element(:notifications_link, ".active+ .navlink a")
-  element(:changepw, "#proposition-links .navlink:nth-child(1) a")
+  element(:changepw, "#proposition-links .navlink:nth-child(2) a")
   element(:navbar, ".navbar")
   element(:heading, ".heading-large")
   element(:content, "#content")

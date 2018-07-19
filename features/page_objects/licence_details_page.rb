@@ -4,7 +4,7 @@ class LicenceDetailsPage < SitePrism::Page
   element(:banner_links, ".header-proposition")
   element(:view_licences_link, ".active a")
   element(:manage_licences_link, ".active+ .navlink a")
-  element(:sign_out_link, "#proposition-links .navlink+ .navlink a")
+  element(:sign_out_link, ".navlink~ .navlink+ .navlink a")
   element(:licence_2nd_heading, ".heading-secondary")
   element(:licence_date_info, ".heading-large+ p")
   element(:confirmation_only_code, ".bold-small") # works for single code only
