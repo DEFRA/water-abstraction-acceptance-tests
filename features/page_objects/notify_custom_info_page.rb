@@ -3,6 +3,7 @@ class NotifyCustomInfoPage < SitePrism::Page
   element(:heading, ".heading-large--tight-above")
   element(:error_heading, "#error-summary-heading-example-1")
   element(:error_detail, ".error-summary")
+  element(:form_fields, ".column-full")
   # Pick and choose from the following elements depending on notification type:
   element(:gauging_station, "#gauging_station")
   element(:hof_threshold, "#hof_threshold")

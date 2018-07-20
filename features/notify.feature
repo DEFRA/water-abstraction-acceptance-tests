@@ -9,6 +9,16 @@ Feature: [WATER-1013] Notify user of hands off flow
     And I am on the internal abstraction licences page
     And I go to the notifications screen
 
+  Scenario: [WATER-1125] Autopopulate contact details
+    When I remove my contact information
+    And I am on the internal abstraction licences page
+    And I go to the notifications screen
+    Then I am prompted to add my contact details
+
+    When I add licences for a notification
+    Then I am on the notification custom information page
+    And I can see my autopopulated details
+
   Scenario: [WATER-1013 and 932] Send hands off flow warning and check log
     When I select the hands off flow warning template
     Then I am on the notification add licences page

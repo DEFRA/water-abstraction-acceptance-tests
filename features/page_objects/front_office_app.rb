@@ -116,12 +116,24 @@ class FrontOfficeApp
     @last_page = NotifyMenuPage.new
   end
 
+  def notify_add_contact_name_page
+    @last_page = NotifyAddContactNamePage.new
+  end
+
+  def notify_add_contact_details_page
+    @last_page = NotifyAddContactDetailsPage.new
+  end
+
   def notify_add_licences_page
     @last_page = NotifyAddLicencesPage.new
   end
 
   def notify_confirm_licences_page
     @last_page = NotifyConfirmLicencesPage.new
+  end
+
+  def notify_contact_info_page
+    @last_page = NotifyContactInfoPage.new
   end
 
   def notify_custom_info_page
