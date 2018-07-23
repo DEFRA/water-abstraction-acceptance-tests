@@ -4,7 +4,7 @@ Given(/^I am a new user$/) do
 end
 
 Given(/^I register my email address on the service$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   @front_app.sign_in_page.create_account_link.click
@@ -15,7 +15,7 @@ Given(/^I register my email address on the service$/) do
 end
 
 Given(/^I receive an email with sign in details$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
   # rubocop:disable Metrics/LineLength
   @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @reg_email).to_s
   # rubocop:enable Metrics/LineLength
@@ -32,20 +32,19 @@ Given(/^I receive an email with sign in details$/) do
   visit(@create_account_url)
 
   @front_app.register_create_pw_page.submit(
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"],
-    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"],
+    confirmpw: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
 end
 
 Given(/^I can sign in with my new email address$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @reg_email.to_s,
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
-  Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
+  Quke::Quke.config.custom["data"]["accounts"]["password"]
 end
 
 Then(/^I am on the add licences page$/) do
@@ -54,9 +53,8 @@ Then(/^I am on the add licences page$/) do
 end
 
 When(/^I register a licence$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @licence_reg = Quke::Quke.config.custom["data"][@environment]["licence_reg"].to_s
-  @licence_multi = Quke::Quke.config.custom["data"][@environment]["licence_multi"].to_s
+  @licence_reg = Quke::Quke.config.custom["data"]["licence_reg"].to_s
+  @licence_multi = Quke::Quke.config.custom["data"]["licence_many"].to_s
   @front_app.register_add_licences_page.wait_for_licence_box
   @front_app.register_add_licences_page.submit(
     licence_box: @licence_multi
@@ -76,13 +74,13 @@ end
 When(/^an admin user can read the code$/) do
   # Log in as admin user
   @front_app = FrontOfficeApp.new
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
-    email: Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["username"],
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["internal_user"]["password"]
+    email: Quke::Quke.config.custom["data"]["accounts"]["internal_user"],
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
-  @licence_reg = Quke::Quke.config.custom["data"][@environment]["licence_reg"].to_s
+  @licence_reg = Quke::Quke.config.custom["data"]["licence_reg"].to_s
   @front_app.licences_page.search(
     search_form: @licence_reg.to_s
   )
@@ -94,14 +92,13 @@ When(/^an admin user can read the code$/) do
 end
 
 When(/^I am on the confirmation code page$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @reg_email.to_s,
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
-  Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
   expect(@front_app.register_security_code_page.current_url).to include "/security-code"
 end
 

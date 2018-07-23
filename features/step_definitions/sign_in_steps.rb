@@ -1,11 +1,11 @@
 
 Given(/^I sign into my account as "([^"]*)"$/) do |account|
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
-    email: Quke::Quke.config.custom["data"][@environment]["accounts"][account.to_s]["username"],
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"][account.to_s]["password"]
+    email: Quke::Quke.config.custom["data"]["accounts"][account.to_s],
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
 end
 
@@ -15,15 +15,13 @@ Given(/^I am on the sign in page$/) do
 end
 
 When(/^I enter my password incorrectly$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.sign_in_page.submit(
-    email: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["username"],
+    email: Quke::Quke.config.custom["data"]["accounts"]["external_user"],
     password: "@3kjldjfa@"
   )
 end
 
 When(/^I enter blank details$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app.sign_in_page.submit(
     email: "",
     password: ""
@@ -35,11 +33,10 @@ Then(/^I am informed "([^"]*)"$/) do |message|
 end
 
 Given(/^I lock my account by attempting to sign in with an incorrect password too many times$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   # Locks account after ten unsuccessful attempts
-  @account_to_lock = Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["username"]
+  @account_to_lock = Quke::Quke.config.custom["data"]["accounts"]["external_user"]
   @front_app.sign_in_page.lock_account(email: @account_to_lock)
 end
 

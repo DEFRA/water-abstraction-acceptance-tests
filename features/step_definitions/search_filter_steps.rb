@@ -8,36 +8,34 @@ Given(/^I select a second page of many licences$/) do
 end
 
 Given(/^I can see a full page of licences$/) do
-  @licences_page = @front_app.licences_page
-  expect(@licences_page).to have_view_links count: @expected_result_count.to_i
+  expect(@front_app.licences_page).to have_view_links count: @expected_result_count.to_i
 end
 
 Given(/^I can see the correct number of pagination links$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @expected_pages = Quke::Quke.config.custom["data"][@environment]["total_pages"]
-  expect(@licences_page).to have_pagination_links count: @expected_pages.to_i + 2
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @expected_pages = Quke::Quke.config.custom["data"]["total_pages"][@environment]
+  expect(@front_app.licences_page).to have_pagination_links count: @expected_pages.to_i + 2
   # +2 for the "Previous page" and "Next page" links - both are visible on p2.
 end
 
 Given(/^I search for an expired licence$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @expected_search_result = Quke::Quke.config.custom["data"][@environment]["licence_expired"].to_s
+  @expected_search_result = Quke::Quke.config.custom["data"]["licence_expired"].to_s
   @front_app.licences_page.search(
     search_form: @expected_search_result.to_s
   )
 end
 
 Given(/^I search for a revoked licence$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @expected_search_result = Quke::Quke.config.custom["data"][@environment]["licence_revoked"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @expected_search_result = Quke::Quke.config.custom["data"]["licence_revoked"].to_s
   @front_app.licences_page.search(
     search_form: @expected_search_result.to_s
   )
 end
 
 Given(/^I search for a lapsed licence$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @expected_search_result = Quke::Quke.config.custom["data"][@environment]["licence_lapsed"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @expected_search_result = Quke::Quke.config.custom["data"]["licence_lapsed"].to_s
   @front_app.licences_page.search(
     search_form: @expected_search_result.to_s
   )
@@ -52,10 +50,8 @@ Given(/^I search for a partial licence number$/) do
 end
 
 Given(/^all licences containing that term are shown on screen$/) do
-  @licences_page = @front_app.licences_page
-  @licence_results = [@licences_page.licence_result_no.text, @licences_page.licence_result_name.text]
-  expect(@licence_results).to have_text(@expected_search_result.to_s)
-  expect(@licences_page).to have_view_links count: @expected_result_count.to_i
+  expect(@front_app.licences_page.content).to have_text(@expected_search_result.to_s)
+  expect(@front_app.licences_page).to have_view_links count: @expected_result_count.to_i
 end
 
 Given(/^I search for a partial licence name$/) do
@@ -114,15 +110,14 @@ Given(/^I select the licence number heading$/) do
 end
 
 Given(/^the table is sorted by licence number in ascending order$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @top_licence = Quke::Quke.config.custom["data"][@environment]["licence_top"].to_s
-  @btm_licence = Quke::Quke.config.custom["data"][@environment]["licence_bottom"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @top_licence = Quke::Quke.config.custom["data"]["licence_top"].to_s
+  @btm_licence = Quke::Quke.config.custom["data"]["licence_bottom"].to_s
   expect(@front_app.licences_page.content.text).to have_text("Licence number ▲")
   expect(page.body.index(@top_licence)).to be < page.body.index(@btm_licence)
 end
 
 Given(/^I enter an email address on the licence holder's email field$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
   @expected_search_result = @licence_reg
   @expected_result_count = 50
   @front_app.licences_page.search(

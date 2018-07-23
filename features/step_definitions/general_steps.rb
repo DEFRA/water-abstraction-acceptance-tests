@@ -1,7 +1,6 @@
 When(/^I select a particular licence$/) do
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
-  @licence_number = Quke::Quke.config.custom["data"][@environment]["licence_main"].to_s
-  @front_app.licences_page.search(search_form: "/")
+  @licence_number = Quke::Quke.config.custom["data"]["licence_reg"].to_s
+  @front_app.licences_page.search(search_form: @licence_number)
   @front_app.licences_page.submit(licence: @licence_number)
   # Stores licence number for later checks
 end
@@ -83,7 +82,8 @@ end
 
 Given(/^the expected licence name appears on the licence summary page$/) do
   @front_app.licences_page.view_licences_link.click
-  @front_app.licences_page.search(search_form: "/")
+  @front_app.licences_page.search(search_form: @licence_number)
+  @front_app.licences_page.submit(licence: @licence_number)
   expect(@front_app.licences_page).to have_text(@expected_licence_name.to_s)
 end
 

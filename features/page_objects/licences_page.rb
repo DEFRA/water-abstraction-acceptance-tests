@@ -19,7 +19,7 @@ class LicencesPage < SitePrism::Page
   # see https://github.com/natritmeyer/site_prism#element-collections
   elements(:view_links, ".license-result a")
   element(:first_licence, ".license-results-header+ .license-result a")
-  element(:licence_result_no, ".license-results-header+ .license-result a")
+  element(:licence_result_no, ".license-results-header+ .license-result .license-result__column--number")
   element(:licence_result_name, ".license-results-header+ .license-result .license-result__column--description")
   element(:email_form, "#emailAddress")
   element(:search_form, "#licenceNumber")

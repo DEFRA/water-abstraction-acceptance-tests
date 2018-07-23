@@ -3,7 +3,7 @@ class StartPage < SitePrism::Page
   # This page is not currently being used.
   # Reinstate from public beta onwards.
 
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
   set_url(Quke::Quke.config.custom["urls"][@environment]["front_office"])
 
   # Water management managing your water abstraction or impoundment licence

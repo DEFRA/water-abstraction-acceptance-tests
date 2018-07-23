@@ -25,8 +25,7 @@ Given(/^I receive confirmation that the agent has received an email$/) do
 end
 
 Given(/^the agent can log in and view the licences I registered$/) do
-
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
   # rubocop:disable Metrics/LineLength
   @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @agent_email).to_s
   # rubocop:enable Metrics/LineLength
@@ -38,8 +37,8 @@ Given(/^the agent can log in and view the licences I registered$/) do
   visit(@create_account_url)
 
   @front_app.register_create_pw_page.submit(
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"],
-    confirmpw: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"],
+    confirmpw: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
 
   @front_app.licences_page.submit(licence: @licence_reg)
@@ -64,7 +63,7 @@ Given(/^the agent cannot view the licences I registered$/) do
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @agent_email,
-    password: Quke::Quke.config.custom["data"][@environment]["accounts"]["external_user"]["password"]
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
   expect(@front_app.register_add_licences_page.heading).to have_text("Which licences do you want to be able to view?")
 

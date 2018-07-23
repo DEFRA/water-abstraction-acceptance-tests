@@ -1,9 +1,9 @@
 
 Given(/^I select a licence with a "([^"]*)" condition$/) do |conditiontype|
-  @environment = Quke::Quke.config.custom["current_environment"].to_s
+  @environment = Quke::Quke.config.custom["environment"].to_s
   conditionvar = "licence_" + conditiontype.to_s
-  @licence_number = Quke::Quke.config.custom["data"][@environment][conditionvar]["number"].to_s
-  @gauging_station = Quke::Quke.config.custom["data"][@environment][conditionvar]["station"].to_s
+  @licence_number = Quke::Quke.config.custom["data"][conditionvar]["number"].to_s
+  @gauging_station = Quke::Quke.config.custom["data"][conditionvar]["station"].to_s
   @front_app.licences_page.search(
     search_form: @licence_number.to_s
   )
@@ -36,8 +36,8 @@ Given(/^I can convert the units$/) do
   @reading_mld = @front_app.flow_level_page.reading.text.to_f
   @front_app.flow_level_page.select_unit(unit: "Cubic metres per day")
   @reading_m3d = @front_app.flow_level_page.reading.text.to_f
-  expect((@reading_m3d / 86_400).to_i).to eq(@reading_m3s.to_i)
-  expect((@reading_m3d / 1_000).to_i).to eq(@reading_mld.to_i)
+  expect((@reading_m3d / 86_400).round).to eq(@reading_m3s.round)
+  expect((@reading_m3d / 1_000).round).to eq(@reading_mld.round)
 end
 
 Given(/^I cannot see a flow or level data link$/) do

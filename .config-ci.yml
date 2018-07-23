@@ -5,7 +5,7 @@
 # the build will fail if there isn't one.
 # Hence this is here just to cater for just for this specific scenario
 custom:
-  current_environment: "sand" # choose from: dev qa sand
+  environment: "sand" # choose from: dev qa sand
   accounts:
     PermitingSupportAdvisor:
       username: psa@example.com
