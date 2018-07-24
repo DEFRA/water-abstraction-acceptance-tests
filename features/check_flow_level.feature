@@ -11,6 +11,7 @@ Feature: [WATER-1049] Check flows and levels
     When I select a licence with a "flow" condition
     Then I can see the correct "flow" data
     And I can convert the units
+    And The units are the correct ratio to each other
 
   Scenario: [WATER-1090] Show level
     When I select a licence with a "level" condition

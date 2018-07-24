@@ -36,6 +36,9 @@ Given(/^I can convert the units$/) do
   @reading_mld = @front_app.flow_level_page.reading.text.to_f
   @front_app.flow_level_page.select_unit(unit: "Cubic metres per day")
   @reading_m3d = @front_app.flow_level_page.reading.text.to_f
+end
+
+Given(/^The units are the correct ratio to each other$/) do
   expect((@reading_m3d / 86_400).round).to eq(@reading_m3s.round)
   expect((@reading_m3d / 1_000).round).to eq(@reading_mld.round)
 end
