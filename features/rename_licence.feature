@@ -5,7 +5,8 @@ Feature: [WATER-564] Rename licence
   So that I know how much water I am licenced to abstract legally
 
   Background:
-    Given I sign into my account as "internal_user"
+    Given I am on the sign in page
+    And I sign into my account as "internal_user"
     And I select a particular licence
     When I select the link to name the licence
 

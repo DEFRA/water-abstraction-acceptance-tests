@@ -11,7 +11,7 @@ Given(/^I select a licence with a "([^"]*)" condition$/) do |conditiontype|
 end
 
 Given(/^I can see the correct "([^"]*)" data$/) do |conditiontype|
-  @front_app.licences_page.click_link(text: "View data from")
+  @front_app.licence_details_page.click_link(link: "View data from")
   expect(@front_app.flow_level_page.heading).to have_text("Data from")
   @data_reading = @front_app.flow_level_page.reading.text.to_f
 
@@ -39,8 +39,9 @@ Given(/^I can convert the units$/) do
 end
 
 Given(/^The units are the correct ratio to each other$/) do
-  expect((@reading_m3d / 86_400).round).to eq(@reading_m3s.round)
-  expect((@reading_m3d / 1_000).round).to eq(@reading_mld.round)
+  # Add 0.05 to account for rounding errors.  Otherwise fails if decimals are >= .45 and < .5
+  expect(((@reading_m3d / 86_400) + 0.05).round).to eq(@reading_m3s.round)
+  expect(((@reading_m3d / 1_000) + 0.05).round).to eq(@reading_mld.round)
 end
 
 Given(/^I cannot see a flow or level data link$/) do

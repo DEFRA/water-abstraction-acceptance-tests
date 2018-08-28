@@ -5,10 +5,12 @@ Feature: [WATER-1] Basic licence checks
   So that I know how much water I am licenced to abstract legally
 
   Background:
-    Given I sign into my account as "internal_user"
-    And I access the first licence
+    Given I am on the sign in page
+    And I sign into my account as "internal_user"
+    When I access the first licence
+    Then I am on the licence details page
 
-  Scenario: [WATER-78] Contact details are shown for licence
+  Scenario: [WATER-78] Details are shown for licence
     When I check the licence contact details
     Then I am on the contact details page
 

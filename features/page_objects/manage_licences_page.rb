@@ -2,7 +2,7 @@ class ManageLicencesPage < SitePrism::Page
 
   # Your water abstraction licences
 
-  element(:manage_licences_link, ".active+ .navlink a")
+  element(:manage_licences_link, "#navbar-manage a")
   element(:changepw, ".header-links a:nth-child(1)")
   element(:heading, ".heading-large")
   element(:content, "#content")

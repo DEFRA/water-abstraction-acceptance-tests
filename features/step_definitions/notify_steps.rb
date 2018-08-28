@@ -1,7 +1,9 @@
 Given(/^I go to the notifications screen$/) do
   @front_app.licences_page.notifications_link.click
   expect(@front_app.notify_menu_page.heading).to have_text("Reports and notifications")
+  # Failsafe to prevent test running in production
   @environment = Quke::Quke.config.custom["environment"].to_s
+  expect(2 + 2).to eq(5) if @environment == "prod"
   @notify_licences = Quke::Quke.config.custom["data"]["licence_some"].to_s
   @notify_hof_recipient_count = Quke::Quke.config.custom["data"]["notify_hof_recipient_count"].to_s
   @notify_exp_recipient_count = Quke::Quke.config.custom["data"]["notify_exp_recipient_count"].to_s
@@ -161,19 +163,19 @@ Given(/^I can see the correct information on the confirm message page$/) do
   elsif @notification_type == "hands off flow restriction notice"
     expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
     # rubocop:disable Metrics/LineLength
-    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("We need to enforce the hands off flow condition of your licences because river levels are very low")
+    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("We need to enforce the hands off flow condition of your licence")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on water_abstractiondigital@environment-agency.gov.uk")
     # rubocop:enable Metrics/LineLength
   elsif @notification_type == "hands off flow resume notice"
     expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
     # rubocop:disable Metrics/LineLength
-    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("You can now start or increase your water abstraction, if the terms of your licences allow this")
+    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("You can now start or increase your water abstraction, if the terms of your licence")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on water_abstractiondigital@environment-agency.gov.uk")
     # rubocop:enable Metrics/LineLength
   elsif @notification_type == "invitation to renew"
     expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_exp_recipient_count.to_s)
     # rubocop:disable Metrics/LineLength
-    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("All or part of the following abstraction licences will expire soon")
+    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("All or part of the following abstraction licence")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("please send your renewal applications to us by 31 December 1999")
     # rubocop:enable Metrics/LineLength
   end

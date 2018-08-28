@@ -1,17 +1,16 @@
 
+Given(/^I am on the sign in page$/) do
+  @front_app = FrontOfficeApp.new
+  @front_app.sign_in_page.load
+end
+
 Given(/^I sign into my account as "([^"]*)"$/) do |account|
   @environment = Quke::Quke.config.custom["environment"].to_s
-  @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: Quke::Quke.config.custom["data"]["accounts"][account.to_s],
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
-end
-
-Given(/^I am on the sign in page$/) do
-  @front_app = FrontOfficeApp.new
-  @front_app.sign_in_page.load
 end
 
 When(/^I enter my password incorrectly$/) do

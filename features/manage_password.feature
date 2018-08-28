@@ -5,7 +5,8 @@ Feature: [WATER-437] Manage password
   So that I can sign in securely
 
   Background: Go to Change Password screen
-    Given I sign into my account as "internal_user"
+    Given I am on the sign in page
+    And I sign into my account as "internal_user"
     And I select Change Password
     When I enter my correct password
     Then I am on the Change Password page

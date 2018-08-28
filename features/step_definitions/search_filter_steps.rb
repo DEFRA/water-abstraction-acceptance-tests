@@ -118,9 +118,9 @@ Given(/^the table is sorted by licence number in ascending order$/) do
 end
 
 Given(/^I enter an email address on the licence holder's email field$/) do
-  @expected_search_result = @licence_reg
-  @expected_result_count = 50
+  @expected_search_result = @front_app.licence_reg
+  @expected_result_count = 4
   @front_app.licences_page.search(
-    email_form: @reg_email
+    email_form: @front_app.reg_email
   )
 end

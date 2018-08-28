@@ -5,10 +5,12 @@ Feature: [WATER-1049] Check flows and levels
   So that I can abstract water legally
 
   Background:
-    Given I sign into my account as "internal_user"
+    Given I am on the sign in page
+    And I sign into my account as "internal_user"
 
   Scenario: [WATER-1090] Show flow
     When I select a licence with a "flow" condition
+    And I am on the licence details page
     Then I can see the correct "flow" data
     And I can convert the units
     And The units are the correct ratio to each other

@@ -1,3 +1,8 @@
+Given(/^I go to the abstraction licences page$/) do
+  # Works from any page
+  find("#navbar-view a").click
+end
+
 When(/^I select a particular licence$/) do
   @licence_number = Quke::Quke.config.custom["data"]["licence_reg"].to_s
   @front_app.licences_page.search(search_form: @licence_number)
@@ -16,6 +21,14 @@ Then(/^I am on the internal abstraction licences page$/) do
   @total_licences = @front_app.licences_page.view_links.count.to_s
   # rubocop:disable Metrics/LineLength
   expect(@front_app.licences_page.disclaimer).to have_text("The information included in this service does not replace or affect the legal (paper) copy of the licence issued to you. The information must be used for reference only. You must refer to and comply with the licence issued to you as a paper copy when you make decisions about abstracting or impounding water.")
+  # rubocop:enable Metrics/LineLength
+end
+
+Then(/^I am on the licence details page$/) do
+  expect(@front_app.licence_details_page.heading).to have_text("Licence number")
+  expect(@front_app.licence_details_page.content).to have_text("Source of supply")
+  # rubocop:disable Metrics/LineLength
+  expect(@front_app.licence_details_page.disclaimer).to have_text("The information included in this service does not replace or affect the legal (paper) copy of the licence issued to you. The information must be used for reference only. You must refer to and comply with the licence issued to you as a paper copy when you make decisions about abstracting or impounding water.")
   # rubocop:enable Metrics/LineLength
 end
 
@@ -45,7 +58,7 @@ Then(/^I am on the licence points page$/) do
 end
 
 When(/^I check the licence purposes$/) do
-  @front_app.licences_page.click_link(text: "View details of your purpose")
+  @front_app.licence_details_page.click_link(link: "View details of your purpose")
 end
 
 Then(/^I am on the licence purposes page$/) do
@@ -67,6 +80,9 @@ Then(/^I am on the licence conditions page$/) do
 end
 
 Given(/^I select the link to name the licence$/) do
+  # Failsafe to stop test in production
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  expect(2 + 2).to eq(5) if @environment == "prod"
   @front_app.licence_details_page.click_name_or_rename
 end
 

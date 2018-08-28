@@ -2,7 +2,8 @@
 Feature: [WATER-563] Search and filter on licences page
 
 Background:
-  Given I sign into my account as "internal_user"
+  Given I am on the sign in page
+  And I sign into my account as "internal_user"
   And I am on the internal abstraction licences page
 
 Scenario: [WATER-922] Invalid licences
