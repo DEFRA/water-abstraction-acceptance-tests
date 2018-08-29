@@ -1,17 +1,14 @@
 
 Given(/^I have registered some licences externally$/) do
-  # Once complete and working, take variables from the reg steps:
-  # No action - delete the following if tests pass
-  # @front_app = FrontOfficeApp.new
-  # @front_app.reg_email = "mywail933387156@example.com"
-  # @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg"].to_s
+  # No action
 end
 
 Given(/^I can access my returns overview$/) do
   expect(@front_app.licences_page).to have_returns_link
   @front_app.licences_page.returns_link.click
   expect(@front_app.returns_page.heading).to have_text("Your returns")
-  expect(@front_app.returns_page.content).to have_text(@front_app.licence_reg)
+  expect(@front_app.returns_page.content).to have_text("View 2018 return")
+  expect(@front_app.returns_page.content).to have_text("Potable Water Supply")
 end
 
 Given(/^I am on the returns page$/) do
@@ -37,7 +34,6 @@ Given(/^I can view the return details$/) do
     # The following line removes commas from the reading.
     # https://stackoverflow.com/questions/30743686/remove-a-comma-from-string-in-ruby-then-cast-to-integer
     @first_reading.tap { |s| s.delete!(",") }
-    puts "First reading is: " + @first_reading.to_s
     @first_reading = @first_reading.to_f
     expect(@front_app.return_details_page.freq_heading).to have_text("Day")
     expect(@front_app.return_details_page.unit_heading).to have_text("Cubic metres")

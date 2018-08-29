@@ -110,10 +110,9 @@ end
 When(/^I select a licence I registered$/) do
   @front_app.licences_page.submit(licence: @front_app.licence_reg)
   expect(@front_app.licence_details_page.heading).to have_text(@front_app.licence_reg)
-  # Get the start year for the version, for returns tests
+  # Get the start year for the version, for returns tests.
   # rubocop:disable Metrics/LineLength
   @version_years = @front_app.licence_details_page.licence_date_info.text.scan(/[[:digit:]][[:digit:]][[:digit:]][[:digit:]]/)
   # rubocop:enable Metrics/LineLength
-  puts "Version years: " + @version_years.to_s
   @earliest_version_year = @version_years.min.to_i
 end
