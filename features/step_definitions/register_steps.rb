@@ -41,6 +41,7 @@ Given(/^I receive an email with sign in details$/) do
 end
 
 Given(/^I sign in with my new email address$/) do
+
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @front_app.reg_email.to_s,
@@ -66,12 +67,6 @@ When(/^I register a licence$/) do
   @front_app.register_choose_address_page.submit
 end
 
-When(/^I receive a confirmation code$/) do
-  # This will only show in Dev, not in QA.  Writing another step below.
-  @security_code = @front_app.register_sending_letter_page.security_code.text
-  puts "Confirmation code is: " + @security_code
-end
-
 When(/^an admin user can read the code$/) do
   # Log in as admin user
   @environment = Quke::Quke.config.custom["environment"].to_s
@@ -91,7 +86,7 @@ When(/^an admin user can read the code$/) do
   @front_app.licence_details_page.sign_out_link.click
 end
 
-When(/^I am on the confirmation code page$/) do
+When(/^I enter my confirmation code$/) do
   @environment = Quke::Quke.config.custom["environment"].to_s
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
@@ -99,9 +94,6 @@ When(/^I am on the confirmation code page$/) do
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
   expect(@front_app.register_security_code_page.current_url).to include "/security-code"
-end
-
-When(/^I enter my confirmation code$/) do
   @front_app.register_security_code_page.submit(
     security_code_box: @security_code
   )

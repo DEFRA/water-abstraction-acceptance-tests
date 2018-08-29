@@ -15,10 +15,7 @@ class ReturnsPage < SitePrism::Page
   # Function to click a link where the URL contains a licence number
   def clickfirstlink(args = {})
     return unless args.key?(:link)
-    # Search regex for a URL containing the licence number:
-    search_val = args[:link].to_s
-    # Find the first instance of view_links containing the search term and click the link:
-    view_links.find { |chk| chk["href"].include?(search_val) }.click
+    click_url_text(view_links, args[:link].to_s)
   end
 
 end

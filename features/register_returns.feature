@@ -19,7 +19,6 @@ Scenario: [WATER-528 and 560] Register and share licences
   Then an admin user can read the code
 
   Given I sign in with my new email address
-  And I am on the confirmation code page
   When I enter my confirmation code
   Then I am on the external abstraction licences page
   And I select a licence I registered
@@ -31,48 +30,25 @@ Scenario: [WATER-528 and 560] Register and share licences
 
 # Scenario: [WATER-560] Share access
   Given I sign in with my new email address
-  And I am on the external abstraction licences page
-  And I can see the manage licences link
-  When I go to the manage licences link
-  Then I am on the manage your licences page
-
-  Given I am on the manage your licences page
   When I add an agent to view my licences
-  Then I receive confirmation that the agent has received an email
-  And the agent can log in and view the licences I registered
+  Then the agent can log in and view the licences I registered
 
 # Scenario: [WATER-565] Revoke access
   Given I sign in with my new email address
-  And I go to the manage licences link
   When I remove an agent to view my licences
-  Then I receive confirmation that the agent is removed
-  And the agent cannot view the licences I registered
+  Then the agent cannot view the licences I registered
 
 # Scenario: [WATER-1258] View returns history (external user)
-  Given I have registered some licences externally
-  When I sign in with my new email address
-  Then I can access my returns overview
-
-  Given I am on the returns page
-  When I select a return that is "populated daily"
-  Then I can view the return details
+  Given I sign in with my new email address
+  When I can access my returns overview
+  Then I can view a return that is "populated daily"
   And I can't see the NALD reference
-
-  When I access the licence details
-  Then I am on the licence details page
-
-  Given I go to the returns page
-  When I select a return that is "nil"
-  Then I can view the return details
+  And I can check the licence details
+  And I can view a return that is "nil"
 
 # Scenario: [WATER-1376] View returns link (external user)
-  Given I have registered some licences externally
-  And I sign in with my new email address
+  Given I sign in with my new email address
   When I select a licence I registered
-  Then I can access the returns link
-
-  When I view all returns for my licence
-  Then the earliest return date is not earlier than the current version start date
-
-  When I select the most recent return
-  Then I can view the return details
+  Then I can view all returns for my licence
+  And the earliest return date is not earlier than the current version start date
+  And I can view a return that is "the most recent"

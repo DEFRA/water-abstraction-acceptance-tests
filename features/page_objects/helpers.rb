@@ -9,3 +9,9 @@ def scroll_to(element)
        }();
      SCRIPT
 end
+
+# Function to click the first element where link text includes search_val
+def click_url_text(element, search_val)
+  # Find the first instance of view_links containing the search term and click the link:
+  element.find { |chk| chk["href"].include?(search_val) }.click
+end
