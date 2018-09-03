@@ -67,12 +67,20 @@ class FrontOfficeApp
     @last_page = ManageAccessRemovedPage.new
   end
 
+  def manage_change_access_page
+    @last_page = ManageChangeAccessPage.new
+  end
+
   def manage_give_access_page
     @last_page = ManageGiveAccessPage.new
   end
 
   def manage_licences_page
     @last_page = ManageLicencesPage.new
+  end
+
+  def manage_remove_access_page
+    @last_page = ManageRemoveAccessPage.new
   end
 
   def notify_add_contact_details_page

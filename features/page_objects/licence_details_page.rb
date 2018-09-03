@@ -23,6 +23,7 @@ class LicenceDetailsPage < SitePrism::Page
   element(:points_link, "a[href$='/points']")
   element(:conditions_link, "a[href$='/conditions']")
   element(:purpose_period_amounts_link, "a[href$='/purposes']")
+  element(:view_returns_for_licence, ".data-row__value a:nth-child(1)")
   element(:disclaimer, ".panel-border-wide p")
   elements(:page_links, "a")
 

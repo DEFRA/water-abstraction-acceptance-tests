@@ -1,6 +1,5 @@
 
 Given(/^I can access my returns overview$/) do
-
   expect(@front_app.licences_page).to have_returns_link
   @front_app.licences_page.returns_link.click
   expect(@front_app.returns_page.heading).to have_text("Your returns")
@@ -51,7 +50,7 @@ end
 Given(/^I can view all returns for my licence$/) do
   expect(@front_app.licence_details_page.content).to have_text("Returns for this licence")
   expect(@front_app.licence_details_page.content).to have_text("View returns")
-  @front_app.licence_details_page.click_link(link: "View returns")
+  @front_app.licence_details_page.view_returns_for_licence.click
   @return_type = ""
   expect(@front_app.returns_for_licence_page.heading).to have_text("Returns for")
   expect(@front_app.returns_for_licence_page.heading).to have_text(@front_app.licence_reg)

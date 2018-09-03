@@ -1,12 +1,12 @@
 
 Given(/^I add an agent to view my licences$/) do
-  expect(@front_app.licences_page.navbar).to have_text("Manage your licences")
+  expect(@front_app.licences_page.navbar).to have_text("Add licences or give access")
   @front_app.licences_page.manage_licences_link.click
-  expect(@front_app.manage_licences_page.heading).to have_text("Manage your licences")
+  expect(@front_app.manage_licences_page.heading).to have_text("Add more of your licences or give others access")
 
   @front_app.manage_licences_page.add_user_button.click
   @front_app.manage_give_access_page.add_user_button.click
-  expect(@front_app.manage_give_access_page.heading).to have_text("Give access to view your licences")
+  expect(@front_app.manage_give_access_page.heading).to have_text("Give access to your licences")
   @front_app.agent_email = @front_app.manage_give_access_page.generate_email.to_s
   @front_app.manage_give_access_page.submit(email_address: @front_app.agent_email)
   puts "Agent's email address is: " + @front_app.agent_email
@@ -42,6 +42,10 @@ Given(/^I remove an agent to view my licences$/) do
   @front_app.manage_licences_page.add_user_button.click
   expect(@front_app.manage_give_access_page.user_list).to have_text(@front_app.agent_email)
   @front_app.manage_give_access_page.remove_access_link.click
+  @front_app.manage_change_access_page.remove_access_link.click
+  expect(@front_app.manage_remove_access_page.heading).to have_text("You are about to remove access")
+  expect(@front_app.manage_remove_access_page.content).to have_text(@front_app.agent_email)
+  @front_app.manage_remove_access_page.remove_access_button.click
 end
 
 Given(/^the agent cannot view the licences I registered$/) do

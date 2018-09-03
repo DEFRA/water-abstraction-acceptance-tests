@@ -176,8 +176,9 @@ Given(/^I can see the correct information on the confirm message page$/) do
     expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_exp_recipient_count.to_s)
     # rubocop:disable Metrics/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("All or part of the following abstraction licence")
-    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("please send your renewal applications to us by 31 December 1999")
+    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("please send your renewal application")
     # rubocop:enable Metrics/LineLength
+    expect(@front_app.notify_confirm_message_page.message_preview).to have_text("to us by 31 December 1999")
   end
 
 end
