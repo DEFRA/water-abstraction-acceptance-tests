@@ -11,19 +11,24 @@ Given(/^I select a licence with a "([^"]*)" condition$/) do |conditiontype|
 end
 
 Given(/^I can see the correct "([^"]*)" data$/) do |conditiontype|
-  @front_app.licence_details_page.click_link(link: "View data from")
-  expect(@front_app.flow_level_page.heading).to have_text("Data from")
-  @data_reading = @front_app.flow_level_page.reading.text.to_f
+  @do_this_step = 1
+  @do_this_step = 0 if (@environment == "prod") && (conditiontype != "flow")
 
-  if (conditiontype == "flow") || (conditiontype == "level")
-    expect(@front_app.flow_level_page.data_info).to have_text(conditiontype)
-    @flow_level_data_url = "http://environment.data.gov.uk/flood-monitoring/id/stations/" + @gauging_station
-    expect(@data_reading).to be > 0
-    visit(@flow_level_data_url)
-    expect(@front_app.flow_level_data.flow_level_data).to have_text("latestReading")
-    page.go_back
-  elsif conditiontype == "nodata"
-    expect(@front_app.flow_level_page.reading).to have_text("Sorry, there is no data available")
+  if @do_this_step == 1
+    @front_app.licence_details_page.click_link(link: "View data from")
+    expect(@front_app.flow_level_page.heading).to have_text("Data from")
+    @data_reading = @front_app.flow_level_page.reading.text.to_f
+
+    if (conditiontype == "flow") || (conditiontype == "level")
+      expect(@front_app.flow_level_page.data_info).to have_text(conditiontype)
+      @flow_level_data_url = "http://environment.data.gov.uk/flood-monitoring/id/stations/" + @gauging_station
+      expect(@data_reading).to be > 0
+      visit(@flow_level_data_url)
+      expect(@front_app.flow_level_data.flow_level_data).to have_text("latestReading")
+      page.go_back
+    elsif conditiontype == "nodata"
+      expect(@front_app.flow_level_page.reading).to have_text("Sorry, there is no data available")
+    end
   end
 
 end
