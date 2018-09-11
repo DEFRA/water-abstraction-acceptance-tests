@@ -3,11 +3,12 @@ class LicencesPage < SitePrism::Page
   # Your water abstraction licences
 
   element(:banner_links, ".header-proposition")
+  element(:sign_out_link, "a[href$='/signout']")
   element(:view_licences_link, "#navbar-view a")
   element(:returns_link, "#navbar-returns a")
   element(:manage_licences_link, "#navbar-manage a")
   element(:notifications_link, ".active+ .navlink a")
-  element(:changepw, "#proposition-links .navlink:nth-child(2) a")
+  element(:changepw, "a[href$='/update_password']")
   element(:navbar, ".navbar")
   element(:heading, ".heading-large")
   element(:content, "#content")

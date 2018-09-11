@@ -18,24 +18,9 @@ Given(/^I can see the correct number of pagination links$/) do
   # +2 for the "Previous page" and "Next page" links - both are visible on p2.
 end
 
-Given(/^I search for an expired licence$/) do
-  @expected_search_result = Quke::Quke.config.custom["data"]["licence_expired"].to_s
-  @front_app.licences_page.search(
-    search_form: @expected_search_result.to_s
-  )
-end
-
-Given(/^I search for a revoked licence$/) do
+Given(/^I search for a "([^"]*)" licence$/) do |licencetype|
   @environment = Quke::Quke.config.custom["environment"].to_s
-  @expected_search_result = Quke::Quke.config.custom["data"]["licence_revoked"].to_s
-  @front_app.licences_page.search(
-    search_form: @expected_search_result.to_s
-  )
-end
-
-Given(/^I search for a lapsed licence$/) do
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  @expected_search_result = Quke::Quke.config.custom["data"]["licence_lapsed"].to_s
+  @expected_search_result = Quke::Quke.config.custom["data"]["licence_" + licencetype.to_s].to_s
   @front_app.licences_page.search(
     search_form: @expected_search_result.to_s
   )
@@ -118,9 +103,9 @@ Given(/^the table is sorted by licence number in ascending order$/) do
 end
 
 Given(/^I enter an email address on the licence holder's email field$/) do
-  @expected_search_result = @front_app.licence_reg
+  @expected_search_result = Quke::Quke.config.custom["data"]["licence_one"].to_s
   @expected_result_count = 4
   @front_app.licences_page.search(
-    email_form: @front_app.reg_email
+    email_form: Quke::Quke.config.custom["data"]["accounts"]["external_user"]
   )
 end

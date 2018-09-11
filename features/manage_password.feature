@@ -4,14 +4,24 @@ Feature: [WATER-437] Manage password
   I want to update my password
   So that I can sign in securely
 
-  Background: Go to Change Password screen
+  Background:
     Given I am on the sign in page
-    And I sign into my account as "internal_user"
-    And I select Change Password
-    When I enter my correct password
-    Then I am on the Change Password page
+
+  Scenario: [WATER-447] Password lock out
+    When I lock my account by attempting to sign in with an incorrect password "10" times
+    Then I unlock my account using the email link provided
+    And I am on the external abstraction licences page
+
+    Given I am on the sign in page
+    When I enter a correct password between incorrect attempts
+    Then I am on the external abstraction licences page
 
   Scenario: [WATER-437] Enter incorrect passwords
+    Given I sign into my account as "external_user"
+    And I select Change Password
+    And I enter my correct password
+    And I am on the Change Password page
+
     When I enter a password which is too short
     Then I see an error telling me the password is invalid
 
@@ -24,11 +34,9 @@ Feature: [WATER-437] Manage password
     When I enter valid passwords which don't match
     Then I see an error telling me the passwords don't match
 
-  Scenario: [WATER-437] Sign in with existing password to show that it hasn't been changed
-    Given I am on the sign in page
-    When I sign into my account as "internal_user"
-    Then I am on the internal abstraction licences page
-
-  Scenario: [WATER-437] Enter valid password
     When I enter a valid password
     Then I see the Password Changed screen
+
+  Scenario: [WATER-437] Sign in with existing password to show that it hasn't been changed
+    When I sign into my account as "external_user"
+    Then I am on the external abstraction licences page

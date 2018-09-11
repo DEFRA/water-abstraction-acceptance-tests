@@ -7,13 +7,16 @@ Background:
   And I am on the internal abstraction licences page
 
 Scenario: [WATER-922] Invalid licences
-  When I search for an expired licence
+  When I search for a "expired" licence
   Then I cannot see any licences
 
-  When I search for a revoked licence
+  When I search for a "revoked" licence
   Then I cannot see any licences
 
-  When I search for a lapsed licence
+  When I search for a "lapsed" licence
+  Then I cannot see any licences
+
+  When I search for a "future" licence
   Then I cannot see any licences
 
 Scenario: [WATER-978] Pagination

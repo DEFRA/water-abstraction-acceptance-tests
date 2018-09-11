@@ -1,12 +1,19 @@
 
-Given(/^I am a new user$/) do
-  # No action required
+Given(/^I am a new user with no linked licences$/) do
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  # Failsafe to stop test in production:
+  expect(2 + 2).to eq(5) if @environment == "prod"
+  @back_app = BackOfficeApp.new
+  @back_login = Quke::Quke.config.custom["urls"][@environment]["back_office_login"].to_s
+  @back_root = Quke::Quke.config.custom["urls"][@environment]["back_office_root"].to_s
+  @unlink_ids = Quke::Quke.config.custom["data"]["licence_reg_unlink"][@environment]
+  visit(@back_login)
+  # Unlink each licence by visiting the URL generated from each document ID
+  @unlink_ids.each { |id| visit(@back_root + "crm/document/" + id.to_s + "/unlink") }
 end
 
 Given(/^I register my email address on the service$/) do
   @environment = Quke::Quke.config.custom["environment"].to_s
-  # Failsafe to stop test in production
-  expect(2 + 2).to eq(5) if @environment == "prod"
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   @front_app.sign_in_page.create_account_link.click
@@ -55,8 +62,8 @@ Then(/^I am on the add licences page$/) do
 end
 
 When(/^I register a licence$/) do
-  @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg"].to_s
-  @licence_multi = Quke::Quke.config.custom["data"]["licence_some"].to_s
+  @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
+  @licence_multi = Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
   @front_app.register_add_licences_page.wait_for_licence_box
   @front_app.register_add_licences_page.submit(
     licence_box: @licence_multi
@@ -75,7 +82,7 @@ When(/^an admin user can read the code$/) do
     email: Quke::Quke.config.custom["data"]["accounts"]["internal_user"],
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
-  @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg"].to_s
+  @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
   @front_app.licences_page.search(
     search_form: @front_app.licence_reg.to_s
   )
@@ -102,9 +109,4 @@ end
 When(/^I select a licence I registered$/) do
   @front_app.licences_page.submit(licence: @front_app.licence_reg)
   expect(@front_app.licence_details_page.heading).to have_text(@front_app.licence_reg)
-  # Get the start year for the version, for returns tests.
-  # rubocop:disable Metrics/LineLength
-  @version_years = @front_app.licence_details_page.licence_date_info.text.scan(/[[:digit:]][[:digit:]][[:digit:]][[:digit:]]/)
-  # rubocop:enable Metrics/LineLength
-  @earliest_version_year = @version_years.min.to_i
 end

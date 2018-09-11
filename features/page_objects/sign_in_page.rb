@@ -5,8 +5,8 @@ class SignInPage < SitePrism::Page
 
   element(:email, "#user-id")
   element(:password, "#password")
-  element(:disabled_submit_button, "input[aria-disabled='true']")
-  element(:submit_button, "input[type='submit']")
+  element(:error_heading, "#error-summary-heading")
+  element(:submit_button, "#signInButton")
   element(:forgotten_password, ".form+ a")
   element(:create_account_link, "br+ a")
 
@@ -17,9 +17,15 @@ class SignInPage < SitePrism::Page
   end
 
   def lock_account(args = {})
-    attempts = 0
-    until attempts == 10
-      next if has_disabled_submit_button?
+    attempts = 1
+    attempt_limit = if args.key?(:limit)
+                      args[:limit]
+                    else
+                      10
+                    end
+    puts "Attempt limit: " + attempt_limit.to_s
+    until attempts == attempt_limit + 1
+      puts "Wrong password attempt: " + attempts.to_s
       email.set(args[:email]) if args.key?(:email)
       password.set "ComeOnFhqwhgads!"
       submit_button.click

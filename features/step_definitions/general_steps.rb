@@ -4,7 +4,7 @@ Given(/^I go to the abstraction licences page$/) do
 end
 
 When(/^I select a particular licence$/) do
-  @licence_number = Quke::Quke.config.custom["data"]["licence_reg"].to_s
+  @licence_number = Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
   @front_app.licences_page.search(search_form: @licence_number)
   @front_app.licences_page.submit(licence: @licence_number)
   # Stores licence number for later checks

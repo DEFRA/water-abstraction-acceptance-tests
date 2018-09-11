@@ -191,6 +191,10 @@ class FrontOfficeApp
     @last_page = SignInPage.new
   end
 
+  def sign_out_page
+    @last_page = SignOutPage.new
+  end
+
   def start_page
     @last_page = StartPage.new
   end

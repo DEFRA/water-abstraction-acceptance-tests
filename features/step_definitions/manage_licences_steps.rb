@@ -12,10 +12,10 @@ Given(/^I add an agent to view my licences$/) do
   puts "Agent's email address is: " + @front_app.agent_email
 end
 
-Given(/^the agent can log in and view the licences I registered$/) do
+Given(/^the agent can log in and view a licence I own$/) do
   expect(@front_app.manage_give_access_page.heading).to have_text("Access email sent to")
-
   @environment = Quke::Quke.config.custom["environment"].to_s
+  @licence_own = Quke::Quke.config.custom["data"]["licence_one"].to_s
   # rubocop:disable Metrics/LineLength
   @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @front_app.agent_email).to_s
   # rubocop:enable Metrics/LineLength
@@ -31,8 +31,8 @@ Given(/^the agent can log in and view the licences I registered$/) do
     confirmpw: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
 
-  @front_app.licences_page.submit(licence: @front_app.licence_reg)
-  expect(@front_app.licence_details_page.heading).to have_text(@front_app.licence_reg)
+  @front_app.licences_page.submit(licence: @licence_own)
+  expect(@front_app.licence_details_page.heading).to have_text(@licence_own)
   expect(@front_app.licence_details_page).to have_no_manage_licences_link
 
 end
@@ -48,7 +48,7 @@ Given(/^I remove an agent to view my licences$/) do
   @front_app.manage_remove_access_page.remove_access_button.click
 end
 
-Given(/^the agent cannot view the licences I registered$/) do
+Given(/^the agent cannot view any licences I own$/) do
   expect(@front_app.manage_access_removed_page.heading).to have_text("Access removed")
   expect(@front_app.manage_access_removed_page.content).to have_text(@front_app.agent_email)
 
