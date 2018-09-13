@@ -118,6 +118,7 @@ To have consistency across the project the following tags are defined and should
 
 |Tag|Description|
 |---|---|
+|@admin|Refreshes the data in the test environment. Only needs to be run if external_user steps are failing.|
 |@basic|Features used for basic regression testing as part of Continuous Integration|
 |@readonly|Any feature which doesn't change user data on the service.|
 |@readwrite|Any feature which amends user data on the service.  Do not run on a live environment.|

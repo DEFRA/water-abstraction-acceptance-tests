@@ -1,4 +1,4 @@
-@readwrite @wip
+@readwrite
 Feature: [WATER-1258] View returns history
   As a user with a water abstraction licence
   I want to see what I have abstracted in previous years
