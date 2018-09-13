@@ -9,9 +9,9 @@ class ReturnDetailsPage < SitePrism::Page
   element(:view_licence_link, "br+ p a")
   element(:heading, ".navbar+ .heading-large")
   element(:data_table, ".column-two-thirds")
-  element(:freq_heading, "thead th:nth-child(1)")
-  element(:unit_heading, "thead .numeric")
-  element(:first_reading, "tbody tr:nth-child(1) .numeric")
+  element(:freq_heading, ".column-33:nth-child(1)")
+  element(:unit_heading, ".column-33.numbers")
+  element(:first_reading, ".table-head+ .medium-space .numbers")
   element(:nil_return, "main h2")
 
 end

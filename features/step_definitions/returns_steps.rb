@@ -3,7 +3,7 @@ Given(/^I can access my returns overview$/) do
   expect(@front_app.licences_page).to have_returns_link
   @front_app.licences_page.returns_link.click
   expect(@front_app.returns_page.heading).to have_text("Your returns")
-  expect(@front_app.returns_page.content).to have_text("View 2018 return")
+  expect(@front_app.returns_page.content).to have_text("View return from")
   expect(@front_app.returns_page.content).to have_text("Potable Water Supply")
 end
 
@@ -13,7 +13,7 @@ Given(/^I can view a return that is "([^"]*)"$/) do |returntype|
     @return_licence_link = Quke::Quke.config.custom["data"]["return_day"].to_s
     @front_app.returns_page.clickfirstlink(link: @return_licence_link)
     @first_reading = @front_app.return_details_page.first_reading.text
-    # The following line removes commas from the reading.
+    # The following line removes commas from the reading.  Syntax:
     # https://stackoverflow.com/questions/30743686/remove-a-comma-from-string-in-ruby-then-cast-to-integer
     @first_reading.tap { |s| s.delete!(",") }
     @first_reading = @first_reading.to_f
