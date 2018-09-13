@@ -1,14 +1,20 @@
 
-Given(/^I am a new user with no linked licences$/) do
+Given(/^I have no registered licences for "([^"]*)"$/) do |tasktype|
+  # Unlink licences
   @environment = Quke::Quke.config.custom["environment"].to_s
   # Failsafe to stop test in production:
   expect(2 + 2).to eq(5) if @environment == "prod"
   @back_app = BackOfficeApp.new
   @back_login = Quke::Quke.config.custom["urls"][@environment]["back_office_login"].to_s
   @back_root = Quke::Quke.config.custom["urls"][@environment]["back_office_root"].to_s
-  @unlink_ids = Quke::Quke.config.custom["data"]["licence_reg_unlink"][@environment]
+  # Get the document IDs for each licence to be unlinked as a single array:
+  @unlink_ids = if tasktype == "registration"
+                  Quke::Quke.config.custom["data"]["licence_reg_unlink"][@environment]
+                else
+                  Quke::Quke.config.custom["data"]["licence_some_unlink"][@environment]
+                end
   visit(@back_login)
-  # Unlink each licence by visiting the URL generated from each document ID
+  # Unlink each licence by visiting the URL generated from each document ID:
   @unlink_ids.each { |id| visit(@back_root + "crm/document/" + id.to_s + "/unlink") }
 end
 
@@ -48,7 +54,6 @@ Given(/^I receive an email with sign in details$/) do
 end
 
 Given(/^I sign in with my new email address$/) do
-
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @front_app.reg_email.to_s,
@@ -61,9 +66,24 @@ Then(/^I am on the add licences page$/) do
   expect(@front_app.register_add_licences_page.heading).to have_text("Which licences do you want to view?")
 end
 
-When(/^I register a licence$/) do
-  @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
-  @licence_multi = Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
+When(/^I register a licence for "([^"]*)"$/) do |tasktype|
+  # if tasktype == "registration"
+  #   @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
+  #   @licence_multi = Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
+  # else
+  #   @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_one"].to_s
+  #   @licence_multi = Quke::Quke.config.custom["data"]["licence_some"].to_s
+  # end
+  @front_app.licence_reg = if tasktype == "registration"
+                             Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
+                           else
+                             Quke::Quke.config.custom["data"]["licence_one"].to_s
+                           end
+  @licence_multi = if tasktype == "registration"
+                     Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
+                   else
+                     Quke::Quke.config.custom["data"]["licence_some"].to_s
+                   end
   @front_app.register_add_licences_page.wait_for_licence_box
   @front_app.register_add_licences_page.submit(
     licence_box: @licence_multi
@@ -82,7 +102,6 @@ When(/^an admin user can read the code$/) do
     email: Quke::Quke.config.custom["data"]["accounts"]["internal_user"],
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
-  @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
   @front_app.licences_page.search(
     search_form: @front_app.licence_reg.to_s
   )
@@ -94,12 +113,6 @@ When(/^an admin user can read the code$/) do
 end
 
 When(/^I enter my confirmation code$/) do
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  @front_app.sign_in_page.load
-  @front_app.sign_in_page.submit(
-    email: @front_app.reg_email.to_s,
-    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
-  )
   expect(@front_app.register_security_code_page.current_url).to include "/security-code"
   @front_app.register_security_code_page.submit(
     security_code_box: @security_code

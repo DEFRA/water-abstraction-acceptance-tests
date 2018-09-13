@@ -23,9 +23,7 @@ class SignInPage < SitePrism::Page
                     else
                       10
                     end
-    puts "Attempt limit: " + attempt_limit.to_s
     until attempts == attempt_limit + 1
-      puts "Wrong password attempt: " + attempts.to_s
       email.set(args[:email]) if args.key?(:email)
       password.set "ComeOnFhqwhgads!"
       submit_button.click

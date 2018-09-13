@@ -5,7 +5,7 @@ class LicenceDetailsPage < SitePrism::Page
   element(:view_licences_link, "#navbar-view a")
   element(:returns_link, "#navbar-returns a")
   element(:manage_licences_link, "#navbar-manage a")
-  element(:sign_out_link, "a[href$='/signout']")
+  element(:sign_out_link, "#signout a")
   element(:heading, ".heading-large")
   element(:licence_date_info, ".heading-large+ p")
   element(:confirmation_only_code, ".bold-small") # works for single code only

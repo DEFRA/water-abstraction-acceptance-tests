@@ -36,7 +36,6 @@ Given(/^I lock my account by attempting to sign in with an incorrect password "(
   if @environment != "preprod" && @environment != "prod"
     # Locks account after ten unsuccessful attempts
     @account_to_lock = Quke::Quke.config.custom["data"]["accounts"]["external_user"]
-    puts "Account to lock: " + @account_to_lock
     @front_app.sign_in_page.lock_account(
       email: @account_to_lock,
       limit: attempts.to_i
@@ -90,7 +89,6 @@ When(/^I unlock my account using the email link provided$/) do
     # Find text between: once:\r\n\r\n#
     # and: \r\n\r\n^ If
     @unlock_account_url = @email_json[/once:\\r\\n\\r\\n#(.*?)\\r\\n\\r\\n\^ If/, 1].to_s
-    puts "URL to visit: " + @unlock_account_url
     visit(@unlock_account_url)
 
     @front_app.register_create_pw_page.submit(

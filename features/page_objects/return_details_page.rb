@@ -3,7 +3,7 @@ class ReturnDetailsPage < SitePrism::Page
   element(:banner_links, ".header-proposition")
   element(:view_licences_link, "#navbar-view a")
   element(:manage_licences_link, "#navbar-manage a")
-  element(:changepw, "#proposition-links .navlink:nth-child(2) a")
+  element(:changepw, "#change-password a")
   element(:navbar, ".navbar")
   element(:content, "#content")
   element(:view_licence_link, "br+ p a")

@@ -4,17 +4,14 @@ Feature: [WATER-528 and 560] Register and share
   I want to register with the service
   So that I can view my licence and share access with my agent
 
-  # Scenario names are commented out to avoid clearing out variables.
-  # External_user must have not granted access to a user for share steps to work.
-
 Scenario: [WATER-528] Register licences
-  Given I am a new user with no linked licences
+  Given I have no registered licences for "registration"
   When I register my email address on the service
   Then I receive an email with sign in details
   And I sign in with my new email address
 
   Given I am on the add licences page
-  When I register a licence
+  When I register a licence for "registration"
   Then an admin user can read the code
 
   Given I sign in with my new email address
@@ -29,6 +26,7 @@ Scenario: [WATER-563] Search by licence holder
   Then all licences containing that term are shown on screen
 
 Scenario: [WATER-560 and 565] Share and revoke access
+  # External_user must have not already granted access to another user for these steps to work.
   Given I am on the sign in page
   And I sign into my account as "external_user"
   When I add an agent to view my licences

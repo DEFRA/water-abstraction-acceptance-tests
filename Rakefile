@@ -14,9 +14,15 @@ if ENV["TRAVIS"]
   task default: [:ci]
 end
 
-desc "Run all scenarios (eq to bundle exec quke)"
+desc "Run scenarios without refreshing the environment"
 task :run do
-  sh %( bundle exec quke --profile json_report --profile junit_report --profile html_report)
+  sh %( bundle exec quke --tags ~@admin --profile json_report --profile junit_report --profile html_report)
+end
+
+desc "Run all scenarios (eq to bundle exec quke), refreshing the environment first"
+task :run_refresh do
+  sh %( bundle exec quke --tags @admin --profile json_report --profile junit_report --profile html_report)
+  sh %( bundle exec quke --tags ~@admin --profile json_report --profile junit_report --profile html_report)
 end
 
 desc "Runs the tests used by continuous integration to check the project"
