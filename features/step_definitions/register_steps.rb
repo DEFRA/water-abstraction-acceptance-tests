@@ -67,13 +67,6 @@ Then(/^I am on the add licences page$/) do
 end
 
 When(/^I register a licence for "([^"]*)"$/) do |tasktype|
-  # if tasktype == "registration"
-  #   @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
-  #   @licence_multi = Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
-  # else
-  #   @front_app.licence_reg = Quke::Quke.config.custom["data"]["licence_one"].to_s
-  #   @licence_multi = Quke::Quke.config.custom["data"]["licence_some"].to_s
-  # end
   @front_app.licence_reg = if tasktype == "registration"
                              Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
                            else
