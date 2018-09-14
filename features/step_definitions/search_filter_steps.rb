@@ -18,7 +18,7 @@ Given(/^I can see the correct number of pagination links$/) do
   # +2 for the "Previous page" and "Next page" links - both are visible on p2.
 end
 
-Given(/^I search for a "([^"]*)" licence$/) do |licencetype|
+Given(/^I search for (?:a|an) "([^"]*)" licence$/) do |licencetype|
   @environment = Quke::Quke.config.custom["environment"].to_s
   @expected_search_result = Quke::Quke.config.custom["data"]["licence_" + licencetype.to_s].to_s
   @front_app.licences_page.search(

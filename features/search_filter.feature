@@ -1,4 +1,4 @@
-@readonly @bs
+@readonly @bs @wip
 Feature: [WATER-563] Search and filter on licences page
 
 Background:
@@ -7,7 +7,7 @@ Background:
   And I am on the internal abstraction licences page
 
 Scenario: [WATER-922] Invalid licences
-  When I search for a "expired" licence
+  When I search for an "expired" licence
   Then I cannot see any licences
 
   When I search for a "revoked" licence
