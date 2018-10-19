@@ -6,7 +6,7 @@ class ReturnDetailsPage < SitePrism::Page
   element(:changepw, "#change-password a")
   element(:navbar, ".navbar")
   element(:content, "#content")
-  element(:view_licence_link, "br+ p a")
+  element(:view_licence_link, ".medium-space a")
   element(:heading, ".navbar+ .heading-large")
   element(:data_table, ".column-two-thirds")
   element(:freq_heading, ".column-33:nth-child(1)")

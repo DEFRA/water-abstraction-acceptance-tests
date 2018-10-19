@@ -14,15 +14,49 @@ if ENV["TRAVIS"]
   task default: [:ci]
 end
 
-desc "Run scenarios without refreshing the environment"
-task :run do
-  sh %( bundle exec quke --tags ~@admin --profile json_report --profile junit_report --profile html_report)
+desc "Reset data in the environment"
+# Run this if the
+task :reset do
+  sh %( bundle exec quke --tags @reset)
 end
 
-desc "Run all scenarios (eq to bundle exec quke), refreshing the environment first"
-task :run_refresh do
-  sh %( bundle exec quke --tags @admin --profile json_report --profile junit_report --profile html_report)
-  sh %( bundle exec quke --tags ~@admin --profile json_report --profile junit_report --profile html_report)
+desc "Run basic features"
+task :basic do
+  sh %( bundle exec quke --tags @basic)
+end
+
+# Default task
+desc "Run main features without refreshing the environment"
+task :test do
+  sh %( bundle exec quke --tags @flow)
+  sh %( bundle exec quke --tags @password)
+  sh %( bundle exec quke --tags @notify)
+  sh %( bundle exec quke --tags @register)
+  sh %( bundle exec quke --tags @rename)
+  sh %( bundle exec quke --tags @search)
+  sh %( bundle exec quke --tags @returns)
+end
+
+# Run this on preprod and prod
+desc "Run read only features without refreshing the environment"
+task :readonly do
+  sh %( bundle exec quke --tags @readonly)
+end
+
+desc "Run work in progress features"
+task :wip do
+  sh %( bundle exec quke --tags @wip)
+end
+
+desc "Run all features (eq to bundle exec quke), resetting the environment first"
+task :run_reset do
+  sh %( bundle exec quke --tags @reset)
+  sh %( bundle exec quke --tags ~@reset)
+end
+
+desc "Run all features with a report"
+task :run_report do
+  sh %( bundle exec quke --tags ~@reset --profile json_report --profile junit_report --profile html_report)
 end
 
 desc "Runs the tests used by continuous integration to check the project"

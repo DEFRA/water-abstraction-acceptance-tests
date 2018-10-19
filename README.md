@@ -69,17 +69,37 @@ If left as that by default when **Quke** is executed it will run against your se
 
 ## Execution
 
-To run all tests call
+To run all scenarios call
 
 ```bash
 bundle exec quke
 ```
 
-To run just the back or front office tests call
+You can also enter the following commands (from the Rakefile) to carry out the following tasks:
 
+Reset the data in the environment:
 ```bash
-bundle exec quke --tags @readonly
-bundle exec quke --tags @readwrite
+bundle exec rake reset
+```
+
+Run the main test scenarios (excluding reset and basic tests)
+```bash
+bundle exec rake test
+```
+
+Run only read-only steps:
+```bash
+bundle exec rake readonly
+```
+
+Run only basic steps:
+```bash
+bundle exec rake basic
+```
+
+Run only work in progress steps:
+```bash
+bundle exec rake wip
 ```
 
 You can create [multiple config files](https://github.com/DEFRA/quke#multiple-configs), for example you may wish to have one setup for running against **Chrome**, and another to run against a different environment. You can tell **Quke** which config file to use by adding an environment variable argument to the command.
@@ -120,10 +140,8 @@ To have consistency across the project the following tags are defined and should
 |---|---|
 |@admin|Refreshes the data in the test environment. Only needs to be run if external_user steps are failing.|
 |@basic|Features used for basic regression testing as part of Continuous Integration|
+|@test|The core test suite, including writing to the database.  Do not run this in production.|
 |@readonly|Any feature which doesn't change user data on the service.|
-|@readwrite|Any feature which amends user data on the service.  Do not run on a live environment.|
-|@bs|Features to run as part of a Browserstack test.  (Essentially anything that can be run more than once without needing to clear the database)|
-|@broken|A scenario which is known to be broken due to the service not meeting expected behaviour|
 |@ci|A feature that is intended to be run only on our continuous integration service (you should never need to use this tag).|
 
 It's also common practice to use a custom tag whilst working on a new feature or scenario e.g. `@focus` or `@wip`. That is perfectly acceptable but please ensure they are removed before your change is merged.

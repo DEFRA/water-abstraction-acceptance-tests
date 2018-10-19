@@ -1,4 +1,4 @@
-@readonly @bs
+@test @search @readonly @wip
 Feature: [WATER-563] Search and filter on licences page
 
 Background:

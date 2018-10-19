@@ -1,4 +1,4 @@
-@readwrite @bs
+@test @rename @wip
 Feature: [WATER-564] Rename licence
   As a business with a water abstraction licence
   I want to be able to check my licence details

@@ -12,7 +12,7 @@ class LicencesPage < SitePrism::Page
   element(:view_licences_link, "#navbar-view a")
   element(:returns_link, "#navbar-returns a")
   element(:manage_licences_link, "#navbar-manage a")
-  element(:notifications_link, ".active+ .navlink a")
+  element(:notifications_link, "#navbar-notifications a")
   element(:changepw, "#change-password a")
   element(:navbar, ".navbar")
   element(:heading, ".heading-large")
