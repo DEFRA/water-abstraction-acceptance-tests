@@ -6,6 +6,8 @@ end
 
 Given(/^I sign into my account as "([^"]*)"$/) do |account|
   @environment = Quke::Quke.config.custom["environment"].to_s
+  # Record the user type for different tests
+  @user_type = account.to_s
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: Quke::Quke.config.custom["data"]["accounts"][account.to_s],
@@ -59,7 +61,7 @@ Given(/^I enter a correct password between incorrect attempts$/) do
     email: Quke::Quke.config.custom["data"]["accounts"]["external_user"],
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
-  @front_app.register_add_licences_page.sign_out_link.click
+  @front_app.register_add_licences_page.govuk_banner.sign_out_link.click
   @front_app.sign_out_page.sign_in_link.click
   @account_to_lock = Quke::Quke.config.custom["data"]["accounts"]["external_user"]
   @front_app.sign_in_page.lock_account(

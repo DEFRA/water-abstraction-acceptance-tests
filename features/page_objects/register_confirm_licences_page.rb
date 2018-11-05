@@ -6,8 +6,4 @@ class RegisterConfirmLicencesPage < SitePrism::Page
   element(:continue_button, ".button")
   element(:not_mine_link, ".column-two-thirds p a")
 
-  def submit(_args = {})
-    continue_button.click
-  end
-
 end

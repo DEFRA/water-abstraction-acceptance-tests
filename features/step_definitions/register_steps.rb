@@ -69,11 +69,15 @@ end
 When(/^I register a licence for "([^"]*)"$/) do |tasktype|
   @front_app.licence_reg = if tasktype == "registration"
                              Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
-                           else
+                           elsif tasktype == "returns"
+                             Quke::Quke.config.custom["data"]["licence_returns"].to_s
+                           else # refresh the data
                              Quke::Quke.config.custom["data"]["licence_one"].to_s
                            end
   @licence_multi = if tasktype == "registration"
                      Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
+                   elsif tasktype == "returns"
+                     Quke::Quke.config.custom["data"]["licence_returns"].to_s
                    else
                      Quke::Quke.config.custom["data"]["licence_some"].to_s
                    end
@@ -82,9 +86,10 @@ When(/^I register a licence for "([^"]*)"$/) do |tasktype|
     licence_box: @licence_multi
   )
   @front_app.register_confirm_licences_page.wait_for_continue_button
-  @front_app.register_confirm_licences_page.submit
+  @front_app.register_confirm_licences_page.continue_button.click
   @front_app.register_choose_address_page.wait_for_continue_button
-  @front_app.register_choose_address_page.submit
+  @front_app.register_choose_address_page.address_radio.click
+  @front_app.register_choose_address_page.continue_button.click
 end
 
 When(/^an admin user can read the code$/) do
@@ -98,11 +103,11 @@ When(/^an admin user can read the code$/) do
   @front_app.licences_page.search(
     search_form: @front_app.licence_reg.to_s
   )
-  @front_app.licences_page.submit(licence: @front_app.licence_reg)
+  find_link(@front_app.licence_reg).click
   expect(@front_app.licence_details_page.heading).to have_text(@front_app.licence_reg)
   @security_code = @front_app.licence_details_page.confirmation_first_code.text
   puts "Confirmation code is: " + @security_code + "."
-  @front_app.licence_details_page.sign_out_link.click
+  @front_app.licence_details_page.govuk_banner.sign_out_link.click
 end
 
 When(/^I enter my confirmation code$/) do
@@ -113,6 +118,6 @@ When(/^I enter my confirmation code$/) do
 end
 
 When(/^I select a licence I registered$/) do
-  @front_app.licences_page.submit(licence: @front_app.licence_reg)
+  find_link(@front_app.licence_reg).click
   expect(@front_app.licence_details_page.heading).to have_text(@front_app.licence_reg)
 end

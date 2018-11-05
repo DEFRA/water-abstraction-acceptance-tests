@@ -1,11 +1,11 @@
+require_relative "sections/govuk_banner.rb"
+require_relative "sections/nav_bar.rb"
+
 class LicenceDetailsPage < SitePrism::Page
 
-  # Water abstraction licence
-  element(:banner_links, ".header-proposition")
-  element(:view_licences_link, "#navbar-view a")
-  element(:returns_link, "#navbar-returns a")
-  element(:manage_licences_link, "#navbar-manage a")
-  element(:sign_out_link, "#signout a")
+  section(:govuk_banner, GovukBanner, "#global-header")
+  section(:nav_bar, NavBar, ".navbar")
+
   element(:heading, ".heading-large")
   element(:licence_date_info, ".heading-large+ p")
   element(:confirmation_only_code, ".bold-small") # works for single code only
@@ -23,18 +23,14 @@ class LicenceDetailsPage < SitePrism::Page
   element(:points_link, "a[href$='/points']")
   element(:conditions_link, "a[href$='/conditions']")
   element(:purpose_period_amounts_link, "a[href$='/purposes']")
-  element(:view_returns_for_licence, ".data-row__value a:nth-child(1)")
+  element(:view_returns_for_licence, ".data-row__value a:nth-child(1)") # for external_user
+  element(:view_returns_for_licence_int, ".data-row:nth-child(13) a")
   element(:disclaimer, ".panel-border-wide p")
   elements(:page_links, "a")
 
   def submit(args = {})
     licence_name_form.set(args[:licence_name_form]) if args.key?(:licence_name_form)
     save_button.click
-  end
-
-  def click_link(args = {})
-    return unless args.key?(:link)
-    find_link(args[:link]).click
   end
 
   def click_name_or_rename(_args = {})

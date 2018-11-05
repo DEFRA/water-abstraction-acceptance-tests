@@ -1,20 +1,14 @@
 require_relative "sections/govuk_banner.rb"
-require_relative "sections/tab_bar.rb"
+require_relative "sections/nav_bar.rb"
 
 class LicencesPage < SitePrism::Page
 
   # Your water abstraction licences
 
-  section(:govuk_banner, GovukBanner, "#global-header") # Work in progress
-  section(:tab_bar, TabBar, ".navbar") # Work in progress
-  element(:banner_links, ".header-proposition")
-  element(:sign_out_link, "#signout a")
-  element(:view_licences_link, "#navbar-view a")
-  element(:returns_link, "#navbar-returns a")
-  element(:manage_licences_link, "#navbar-manage a")
-  element(:notifications_link, "#navbar-notifications a")
-  element(:changepw, "#change-password a")
-  element(:navbar, ".navbar")
+  section(:govuk_banner, GovukBanner, "#global-header")
+  section(:nav_bar, NavBar, ".navbar")
+
+  element(:navbar, ".navbar") # Used in manage_licences_steps
   element(:heading, ".heading-large")
   element(:content, "#content")
   element(:sort_by_number_link, ".license-results-header__column:nth-child(1) .sr-only+ span")
@@ -37,11 +31,6 @@ class LicencesPage < SitePrism::Page
   element(:pagetwo, ".pagination__item:nth-child(3) .pagination__link")
   elements(:pagination_links, ".pagination__link")
   element(:disclaimer, ".panel-border-wide p")
-
-  def submit(args = {})
-    return unless args.key?(:licence)
-    find_link(args[:licence]).click
-  end
 
   def search(args = {})
     email_form.set(args[:email_form]) if args.key?(:email_form)

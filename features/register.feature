@@ -30,7 +30,7 @@ Scenario: [WATER-560 and 565] Share and revoke access
   Given I am on the sign in page
   And I sign into my account as "external_user"
   When I add an agent to view my licences
-  Then the agent can log in and view a licence I own
+  Then the agent can log in and view a licence I can access
 
   Given I sign into my account as "external_user"
   When I remove an agent to view my licences

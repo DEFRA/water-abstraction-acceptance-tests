@@ -7,8 +7,4 @@ class NotifyConfirmLicencesPage < SitePrism::Page
   elements(:licence_checkboxes, ".medium-space .table-cell:nth-child(1)")
   element(:continue_button, ".button")
 
-  def submit(_args = {})
-    continue_button.click
-  end
-
 end

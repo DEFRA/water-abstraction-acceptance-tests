@@ -73,7 +73,7 @@ end
 
 Given(/^I select the licence name heading$/) do
   # @front_app.licences_page.sort_by_name_link.click # ambiguous
-  @front_app.licences_page.submit(licence: "Licence name") # doesn't work in Safari
+  find_link("Licence name").click # doesn't work in Safari
 end
 
 Given(/^the table is sorted by licence name in ascending order$/) do
@@ -82,7 +82,7 @@ end
 
 Given(/^I select the end date heading$/) do
   # @front_app.licences_page.sort_by_end_date_link.click # ambiguous
-  @front_app.licences_page.submit(licence: "End date") # doesn't work in Safari
+  find_link("End date").click # doesn't work in Safari
 end
 
 Given(/^the table is sorted by end date in ascending order$/) do
@@ -91,7 +91,7 @@ end
 
 Given(/^I select the licence number heading$/) do
   # @front_app.licences_page.sort_by_number_link.click # ambiguous
-  @front_app.licences_page.submit(licence: "Licence number") # doesn't work in Safari
+  find_link("Licence number").click # doesn't work in Safari
 end
 
 Given(/^the table is sorted by licence number in ascending order$/) do

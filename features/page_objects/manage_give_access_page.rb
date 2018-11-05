@@ -1,7 +1,5 @@
 class ManageGiveAccessPage < SitePrism::Page
 
-  element(:manage_licences_link, "#navbar-manage a")
-  element(:changepw, "#change-password a")
   element(:heading, ".heading-large")
   element(:content, "#content")
   element(:email_form, "#email")

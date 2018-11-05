@@ -1,5 +1,5 @@
 class BackOfficeStartPage < SitePrism::Page
 
-  element(:confirmation, ".heading-large")
+  element(:heading, ".heading-xlarge")
 
 end

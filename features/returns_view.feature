@@ -1,5 +1,5 @@
-@test @returns @wip
-Feature: [WATER-1258] View and edit returns
+@test @returns_view
+Feature: [WATER-1258] View returns
   As a user with a water abstraction licence
   I want to see what I have abstracted in previous years
   So that I can ensure my current licence is appropriate
@@ -17,10 +17,6 @@ Scenario: [WATER-1258] View returns history (external user)
 
 Scenario: [WATER-1376] View returns link (external user)
   Given I sign into my account as "external_user"
-  When I select a licence I own
-  Then I can view all returns for my licence
-  And the earliest return date is not earlier than the current version start date
+  When I select a licence I can access
+  Then I can view all returns for the licence
   And I can view a return that is "the most recent"
-
-# Scenario: [] Edit returns (internal user)
-#   Given I

@@ -7,15 +7,16 @@ Given(/^I select a licence with a "([^"]*)" condition$/) do |conditiontype|
   @front_app.licences_page.search(
     search_form: @licence_number.to_s
   )
-  @front_app.licences_page.submit(licence: @licence_number)
+  find_link(@licence_number).click
 end
 
 Given(/^I can see the correct "([^"]*)" data$/) do |conditiontype|
   @do_this_step = 1
+  # In prod, this only works for flow.
   @do_this_step = 0 if (@environment == "prod") && (conditiontype != "flow")
 
   if @do_this_step == 1
-    @front_app.licence_details_page.click_link(link: "View data from")
+    find_link("View data from").click
     expect(@front_app.flow_level_page.heading).to have_text("Data from")
     @data_reading = @front_app.flow_level_page.reading.text.to_f
 

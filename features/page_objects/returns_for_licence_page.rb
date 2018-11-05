@@ -1,10 +1,5 @@
 class ReturnsForLicencePage < SitePrism::Page
 
-  element(:banner_links, ".header-proposition")
-  element(:view_licences_link, "#navbar-view a")
-  element(:manage_licences_link, "#navbar-manage a")
-  element(:changepw, "#change-password a")
-  element(:navbar, ".navbar")
   element(:heading, ".heading-large")
   element(:content, "#content")
   element(:returns_table, ".column-full")

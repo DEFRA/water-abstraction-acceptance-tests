@@ -179,12 +179,20 @@ class FrontOfficeApp
     @last_page = ReturnDetailsPage.new
   end
 
+  def return_submitted_page
+    @last_page = ReturnSubmittedPage.new
+  end
+
   def returns_page
     @last_page = ReturnsPage.new
   end
 
   def returns_for_licence_page
     @last_page = ReturnsForLicencePage.new
+  end
+
+  def returns_routes_page
+    @last_page = ReturnsRoutesPage.new
   end
 
   def sign_in_page
