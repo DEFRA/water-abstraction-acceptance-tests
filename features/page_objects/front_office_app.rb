@@ -5,12 +5,6 @@
 class FrontOfficeApp
   # Using an attr_reader automatically gives us a my_app.last_page method
   attr_reader :last_page
-  # Use the following for variables across scenarios.
-  # Variable syntax: @front_app.reg_email = "something"
-  # Guidance on syntax: https://www.codecademy.com/en/forum_questions/50f0192b102455349200372d
-  attr_accessor :reg_email
-  attr_accessor :licence_reg
-  attr_accessor :agent_email
 
   # FRONT OFFICE SPECIFIC PAGES
   # /

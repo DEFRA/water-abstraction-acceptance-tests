@@ -9,7 +9,7 @@ Background:
 
 Scenario: [WATER-1352] Edit returns (internal user)
   Given I sign into my account as "internal_user"
-  # nil, volume, one meter, multi meter
+
   When I "edit" a return of type "nil"
   Then I can view the return I just submitted
 
