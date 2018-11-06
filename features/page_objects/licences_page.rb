@@ -5,8 +5,8 @@ class LicencesPage < SitePrism::Page
 
   # Your water abstraction licences
 
-  section(:govuk_banner, GovukBanner, "#global-header")
-  section(:nav_bar, NavBar, ".navbar")
+  section(:govuk_banner, GovukBanner, GovukBanner::SELECTOR)
+  section(:nav_bar, NavBar, NavBar::SELECTOR)
 
   element(:navbar, ".navbar") # Used in manage_licences_steps
   element(:heading, ".heading-large")

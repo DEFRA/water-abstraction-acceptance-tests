@@ -3,7 +3,7 @@ Feature: Reset test environment
 
   Scenario: Refresh data
     Given I have no registered licences for "registration"
-    Given I have no registered licences for "refresh"
+    And I have no registered licences for "refresh"
     And I am on the sign in page
 
     Given I sign into my account as "external_user"

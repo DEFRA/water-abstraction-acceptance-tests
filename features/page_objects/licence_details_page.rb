@@ -3,8 +3,8 @@ require_relative "sections/nav_bar.rb"
 
 class LicenceDetailsPage < SitePrism::Page
 
-  section(:govuk_banner, GovukBanner, "#global-header")
-  section(:nav_bar, NavBar, ".navbar")
+  section(:govuk_banner, GovukBanner, GovukBanner::SELECTOR)
+  section(:nav_bar, NavBar, NavBar::SELECTOR)
 
   element(:heading, ".heading-large")
   element(:licence_date_info, ".heading-large+ p")

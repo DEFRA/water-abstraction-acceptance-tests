@@ -155,6 +155,19 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
         @front_app.return_routes_page.continue_button.click
       end
 
+      if @return_flow == "multi meter"
+        # Multiple meters used
+        @front_app.return_routes_page.yes_radio.click
+        @front_app.return_routes_page.continue_button.click
+
+        # Add info for one of your meters
+        expect(@front_app.return_routes_page.question).to have_text("Tell us about your meter")
+        @front_app.return_routes_page.submit(
+          manufacturer: "Schofield Meter Co",
+          serial: "081-811-8181"
+        )
+      end
+
       # Enter random quantities including blanks, and set @abstraction_total as the total entered.
       @abstraction_total = @front_app.return_quantities_page.populate_volumes
       @front_app.return_quantities_page.submit_button.click
@@ -188,7 +201,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
     expect(@front_app.return_check_page.heading_mini).to have_text("Check the information before submitting")
 
     # Compare the table's total with the calculated abstraction total, in the submitted units.
-    table_total = if @return_flow == "volume"
+    table_total = if @return_flow == "volume" || @return_flow == "multi meter"
                     # There's only one figure at the bottom of the table
                     @front_app.return_check_page.table_total.text
                   elsif @return_flow == "one meter"
@@ -221,7 +234,7 @@ Given(/^I can view the return I just submitted$/) do
     # Check it's a nil return
     expect(@front_app.return_details_page.heading_mini).to have_text("Nil return")
 
-  elsif @return_flow == "volume"
+  elsif @return_flow == "volume" || @return_flow == "multi meter"
     # Check the volume in the table against what was entered
     expect(@front_app.return_details_page.heading_mini).to have_text("Abstraction volumes")
     expect(@front_app.return_details_page.data_table).to have_text(@return_unit)

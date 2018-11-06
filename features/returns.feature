@@ -37,6 +37,5 @@ Scenario: [WATER-1352] Edit returns (internal user)
   When I "edit" a return of type "one meter"
   Then I can view the return I just submitted
 
-  # TO DO
-  # When I "edit" a return of type "multi meter"
-  # Then I can view the return I just submitted
+  When I "edit" a return of type "multi meter"
+  Then I can view the return I just submitted

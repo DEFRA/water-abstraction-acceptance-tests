@@ -2,7 +2,7 @@ require_relative "sections/nav_bar.rb"
 
 class ReturnDetailsPage < SitePrism::Page
 
-  section(:nav_bar, NavBar, ".navbar")
+  section(:nav_bar, NavBar, NavBar::SELECTOR)
 
   element(:heading, "h1")
   element(:content, "#content")
