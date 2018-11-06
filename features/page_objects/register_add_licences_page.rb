@@ -11,6 +11,7 @@ class RegisterAddLicencesPage < SitePrism::Page
   element(:licence_box, "#licence_no")
   element(:continue_button, ".button")
   element(:no_info_link, ".summary")
+  element(:sign_out_link, "#signout a")
 
   def submit(args = {})
     licence_box.set(args[:licence_box]) if args.key?(:licence_box)
