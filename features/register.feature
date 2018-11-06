@@ -1,4 +1,4 @@
-@test @register @wip
+@test @register
 Feature: [WATER-528 and 560] Register and share
   As a user with a water abstraction licence
   I want to register with the service

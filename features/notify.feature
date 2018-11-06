@@ -1,4 +1,4 @@
-@test @notify @wip
+@test @notify
 Feature: [WATER-1013] Notify user of hands off flow
   As an internal user
   I want to send a notification to licence holders

@@ -33,6 +33,7 @@ task :test do
   sh %( bundle exec quke --tags @password)
   sh %( bundle exec quke --tags @register)
   sh %( bundle exec quke --tags @rename)
+  sh %( bundle exec quke --tags @returns_edit)
   sh %( bundle exec quke --tags @returns_view)
   sh %( bundle exec quke --tags @search)
 end

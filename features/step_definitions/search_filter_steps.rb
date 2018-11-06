@@ -71,41 +71,30 @@ Given(/^I can see the original number of licences$/) do
   expect(@front_app.licences_page).to have_view_links count: @total_licences.to_i
 end
 
-Given(/^I select the licence name heading$/) do
-  # @front_app.licences_page.sort_by_name_link.click # ambiguous
-  find_link("Licence name").click # doesn't work in Safari
-end
-
-Given(/^the table is sorted by licence name in ascending order$/) do
-  expect(@front_app.licences_page.content.text).to have_text("Licence name ▲")
-end
-
-Given(/^I select the end date heading$/) do
-  # @front_app.licences_page.sort_by_end_date_link.click # ambiguous
-  find_link("End date").click # doesn't work in Safari
-end
-
-Given(/^the table is sorted by end date in ascending order$/) do
-  expect(@front_app.licences_page.content.text).to have_text("End date ▲")
-end
-
-Given(/^I select the licence number heading$/) do
-  # @front_app.licences_page.sort_by_number_link.click # ambiguous
-  find_link("Licence number").click # doesn't work in Safari
-end
-
-Given(/^the table is sorted by licence number in ascending order$/) do
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  @top_licence = Quke::Quke.config.custom["data"]["licence_top"].to_s
-  @btm_licence = Quke::Quke.config.custom["data"]["licence_bottom"].to_s
-  expect(@front_app.licences_page.content.text).to have_text("Licence number ▲")
-  expect(page.body.index(@top_licence)).to be < page.body.index(@btm_licence)
-end
-
 Given(/^I enter an email address on the licence holder's email field$/) do
   @expected_search_result = Quke::Quke.config.custom["data"]["licence_one"].to_s
   @expected_result_count = 4
   @front_app.licences_page.search(
     email_form: Quke::Quke.config.custom["data"]["accounts"]["external_user"]
   )
+end
+
+Given(/^I can sort the table by headings$/) do
+
+  # Sort by licence name
+  find_link("Licence name").click # doesn't work in Safari
+  expect(@front_app.licences_page.content.text).to have_text("Licence name ▲")
+
+  # Sort by licence number:
+  find_link("Licence number").click
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @top_licence = Quke::Quke.config.custom["data"]["licence_top"].to_s
+  @btm_licence = Quke::Quke.config.custom["data"]["licence_bottom"].to_s
+  expect(@front_app.licences_page.content.text).to have_text("Licence number ▲")
+  expect(page.body.index(@top_licence)).to be < page.body.index(@btm_licence)
+
+  # Sort by licence end date
+  find_link("End date").click
+  expect(@front_app.licences_page.content.text).to have_text("End date ▲")
+
 end
