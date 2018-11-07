@@ -10,6 +10,8 @@ Given(/^I have no registered licences for "([^"]*)"$/) do |tasktype|
   # Get the document IDs for each licence to be unlinked as a single array:
   @unlink_ids = if tasktype == "registration"
                   Quke::Quke.config.custom["data"]["licence_reg_unlink"][@environment]
+                elsif tasktype == "returns"
+                  Quke::Quke.config.custom["data"]["licence_returns_unlink"][@environment]
                 else
                   Quke::Quke.config.custom["data"]["licence_some_unlink"][@environment]
                 end
