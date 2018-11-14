@@ -12,7 +12,7 @@ end
 
 Given(/^I remove my contact information$/) do
   @front_app.notify_menu_page.govuk_banner.contact_info_link.click
-  expect(@front_app.notify_contact_info_page.heading).to have_text("Update your contact information")
+  expect(@front_app.notify_contact_info_page.heading).to have_text("Contact information")
   @front_app.notify_contact_info_page.submit(
     contact_name: "",
     contact_job: "",

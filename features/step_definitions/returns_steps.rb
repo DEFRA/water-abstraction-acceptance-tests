@@ -71,7 +71,7 @@ end
 
 Given(/^I can view all returns for the licence$/) do
   expect(@front_app.licence_details_page.content).to have_text("Returns for this licence")
-  expect(@front_app.licence_details_page.content).to have_text("View returns")
+  expect(@front_app.licence_details_page.content).to have_text("Manage returns")
   @front_app.licence_details_page.view_returns_for_licence.click
   @return_type = ""
   expect(@front_app.returns_for_licence_page.heading).to have_text("Returns for")
@@ -94,28 +94,36 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
   @return_action = action.to_s
   @return_flow = flow.to_s
 
-  # Edit or submit a return using a particular flow.
+  # Edit or submit a return using a particular flow.  Can also expand to log receipt and queries.
   @environment = Quke::Quke.config.custom["environment"].to_s
   # Failsafe to stop test in production:
   expect(2 + 2).to eq(5) if @environment == "prod"
 
   # Decide whether to start on the edit or submit path:
   @licence_returns = Quke::Quke.config.custom["data"]["licence_returns"].to_s
+
   if action == "edit"
     @front_app.licences_page.search(search_form: @licence_returns)
     find_link(@licence_returns).click
     @front_app.licence_details_page.view_returns_for_licence_int.click
     find_link("November 2017 to October 2018").click
     @front_app.return_details_page.edit_return_button.click
+
+    # Should show "enter and submit return" and "log a problem" options.
+    expect(@front_app.return_routes_page.heading).to have_text("Abstraction return for")
+    expect(@front_app.return_routes_page.question).to have_text("What do you want to do with this return?")
+    @front_app.return_routes_page.enter_radio.click
+    @front_app.return_routes_page.continue_button.click
+
   elsif action == "submit"
     # Not yet built.  Access the required licence's list of returns as an external user.
     find_link(@licence_returns).click
     @front_app.licence_details_page.view_returns_for_licence.click
+
   end
 
   # Returns routes pages
   # Use assertions to check the right options exist
-  expect(@front_app.return_routes_page.heading).to have_text("Abstraction return for")
   expect(@front_app.return_routes_page.question).to have_text("Are there any abstraction amounts to report")
   if @return_flow == "nil"
     # Report a nil return
@@ -135,6 +143,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
       @front_app.return_routes_page.continue_button.click
 
       expect(@front_app.return_routes_page.question).to have_text("What is the unit of measurement?")
+      # If changing to/from m3 then the validation for table_total or table_total_first will change
       @return_unit = "Cubic metres"
       @front_app.return_routes_page.unit_m3_radio.click
       @front_app.return_routes_page.continue_button.click

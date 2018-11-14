@@ -6,6 +6,8 @@ class ReturnRoutesPage < SitePrism::Page
 
   # Radio buttons - use unique html attributes.
   # These use the same identifiers but different options.
+  element(:enter_radio, "input[id='radio-inline-0']", visible: false)
+  element(:query_radio, "input[id='radio-inline-1']", visible: false)
   # Do you have volumes to report? / Is it a single amount? / One or more meters?
   element(:yes_radio, "input[id='radio-inline-0']", visible: false)
   element(:no_radio, "input[id='radio-inline-1']", visible: false)
