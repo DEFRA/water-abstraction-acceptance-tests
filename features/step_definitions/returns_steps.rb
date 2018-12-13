@@ -124,7 +124,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
 
   # Returns routes pages
   # Use assertions to check the right options exist
-  expect(@front_app.return_routes_page.question).to have_text("Are there any abstraction amounts to report")
+  expect(@front_app.return_routes_page.question).to have_text("Has any water been abstracted in this return period?")
   if @return_flow == "nil"
     # Report a nil return
     @front_app.return_routes_page.no_radio.click
@@ -150,13 +150,13 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
 
       if @return_action == "edit"
         # An internal user editing a return has this as an extra question:
-        expect(@front_app.return_routes_page.question).to have_text("Is it a single amount?")
+        expect(@front_app.return_routes_page.question).to have_text("Is it a single amount of abstracted water?")
         @front_app.return_routes_page.no_radio.click
         @front_app.return_routes_page.continue_button.click
       end
 
       # rubocop:disable Metrics/LineLength
-      expect(@front_app.return_routes_page.question).to have_text("Did you use one or more meters to calculate the volumes?")
+      expect(@front_app.return_routes_page.question).to have_text("Did you use a meter (or meters) to calculate the volumes?")
       # rubocop:enable Metrics/LineLength
       if @return_flow == "volume"
         # No meters used
@@ -194,7 +194,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
         start_reading: "0"
       )
 
-      expect(@front_app.return_routes_page.question).to have_text("What units does your meter use?")
+      expect(@front_app.return_routes_page.question).to have_text("What is the unit of measurement?")
       @return_unit = "Gallons"
       @front_app.return_routes_page.unit_gal_radio.click
       @front_app.return_routes_page.continue_button.click

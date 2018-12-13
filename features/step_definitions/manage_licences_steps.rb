@@ -58,6 +58,6 @@ Given(/^the agent cannot view any licences I own$/) do
     email: @agent_email,
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
-  expect(@front_app.register_add_licences_page.heading).to have_text("Which licences do you want to view?")
+  expect(@front_app.register_add_licences_page.heading).to have_text("Add your licences to the service")
 
 end

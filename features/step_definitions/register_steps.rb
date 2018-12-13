@@ -65,7 +65,7 @@ end
 
 Then(/^I am on the add licences page$/) do
   expect(@front_app.register_add_licences_page.current_url).to include "/add-licences"
-  expect(@front_app.register_add_licences_page.heading).to have_text("Which licences do you want to view?")
+  expect(@front_app.register_add_licences_page.heading).to have_text("Add your licences to the service")
 end
 
 When(/^I register a licence for "([^"]*)"$/) do |tasktype|

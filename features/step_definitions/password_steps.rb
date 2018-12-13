@@ -45,11 +45,11 @@ Given(/^I enter valid passwords which don't match$/) do
 end
 
 Given(/^I see an error telling me the password is invalid$/) do
-  expect(@front_app.change_password_page.error_heading.text).to include "Please enter a valid password"
+  expect(@front_app.change_password_page.error_heading.text).to include "There is a problem"
 end
 
 Given(/^I see an error telling me the passwords don't match$/) do
-  expect(@front_app.change_password_page.error_heading.text).to include "The passwords you entered did not match"
+  expect(@front_app.change_password_page.error_heading.text).to include "There is a problem"
 end
 
 Given(/^I enter a valid password$/) do
