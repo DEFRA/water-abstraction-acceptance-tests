@@ -21,6 +21,18 @@ class FrontOfficeApp
     @last_page = ChangePasswordReauthenticatePage.new
   end
 
+  def digitise_edit_page
+    @last_page = DigitiseEditPage.new
+  end
+
+  def digitise_page
+    @last_page = DigitisePage.new
+  end
+
+  def digitise_review_page
+    @last_page = DigitiseReviewPage.new
+  end
+
   def email_content_page
     @last_page = EmailContentPage.new
   end

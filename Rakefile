@@ -28,6 +28,7 @@ end
 # Default task
 desc "Run main features without refreshing the environment"
 task :test do
+  sh %( bundle exec quke --tags @digitise)
   sh %( bundle exec quke --tags @flow)
   sh %( bundle exec quke --tags @notify)
   sh %( bundle exec quke --tags @password)

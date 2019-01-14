@@ -27,7 +27,9 @@ Feature: Reset test environment
     * I am on the external abstraction licences page
     * I select a licence I registered
 
-    # Consider a 'submit a return' step
+    * I am on the sign in page
+    * I sign into my account as "ar_approver"
+    * I reset a licence back to in progress
 
   Scenario: Back end permissions
     * I am on the sign in page
