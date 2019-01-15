@@ -10,9 +10,6 @@ class DigitiseReviewPage < SitePrism::Page
   # See https://github.com/SeleniumHQ/selenium/issues/1656
   element(:content, "#main-content")
   element(:notes_box, "#notes")
-  element(:licence_table, ".grid-row+ .grid-row .column-full")
-  # Delete following example if tests work:
-  # element(:address_radio, "input[name='address']", visible: false)
   element(:no_radio, "#status-1", visible: false)
   element(:approved_radio, "#status-2", visible: false)
   element(:lic_review_radio, "#status-3", visible: false)

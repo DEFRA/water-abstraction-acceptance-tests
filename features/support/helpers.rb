@@ -15,3 +15,9 @@ def click_url_text(element, search_val)
   # Find the first instance of an element containing the search term and click the link:
   element.find { |chk| chk["href"].include?(search_val) }.click
 end
+
+def production?
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  return true if @environment == "prod"
+  false
+end

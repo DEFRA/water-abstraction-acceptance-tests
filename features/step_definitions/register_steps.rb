@@ -1,9 +1,10 @@
 
 Given(/^I have no registered licences for "([^"]*)"$/) do |tasktype|
+  expect(production?).to be false
+
   # Unlink licences
   @environment = Quke::Quke.config.custom["environment"].to_s
-  # Failsafe to stop test in production:
-  expect(2 + 2).to eq(5) if @environment == "prod"
+
   @back_app = BackOfficeApp.new
   @back_login = Quke::Quke.config.custom["urls"][@environment]["back_office_login"].to_s
   @back_root = Quke::Quke.config.custom["urls"][@environment]["back_office_root"].to_s

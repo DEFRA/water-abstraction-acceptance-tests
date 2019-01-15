@@ -138,11 +138,12 @@ To have consistency across the project the following tags are defined and should
 
 |Tag|Description|
 |---|---|
-|@admin|Refreshes the data in the test environment. Only needs to be run if external_user steps are failing.|
+|@reset|Refreshes the data in the test environment. Only needs to be run if external_user steps are failing.|
 |@basic|Features used for basic regression testing as part of Continuous Integration|
 |@test|The core test suite, including writing to the database.  Do not run this in production.|
 |@readonly|Any feature which doesn't change user data on the service.|
 |@ci|A feature that is intended to be run only on our continuous integration service (you should never need to use this tag).|
+|@(test name)|Run an individual feature: @digitise, @flow, @password, @notify, @register, @rename, @returns, @search|
 
 It's also common practice to use a custom tag whilst working on a new feature or scenario e.g. `@focus` or `@wip`. That is perfectly acceptable but please ensure they are removed before your change is merged.
 

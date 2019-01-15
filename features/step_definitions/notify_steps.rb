@@ -1,9 +1,8 @@
 Given(/^I go to the notifications screen$/) do
+  expect(production?).to be false
   @front_app.licences_page.nav_bar.notifications_link.click
   expect(@front_app.notify_menu_page.heading).to have_text("Reports and notifications")
-  # Failsafe to prevent test running in production
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  expect(2 + 2).to eq(5) if @environment == "prod"
+
   @notify_licences = Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
   @notify_hof_recipient_count = Quke::Quke.config.custom["data"]["notify_hof_recipient_count"].to_s
   @notify_exp_recipient_count = Quke::Quke.config.custom["data"]["notify_exp_recipient_count"].to_s

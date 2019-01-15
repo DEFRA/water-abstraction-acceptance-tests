@@ -80,9 +80,7 @@ Then(/^I am on the licence conditions page$/) do
 end
 
 Given(/^I select the link to name the licence$/) do
-  # Failsafe to stop test in production
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  expect(2 + 2).to eq(5) if @environment == "prod"
+  expect(production?).to be false
   @front_app.licence_details_page.click_name_or_rename
 end
 
@@ -128,9 +126,9 @@ Given(/^I reset the licence name$/) do
 end
 
 Given(/^I access the back end as "([^"]*)"$/) do |account|
+  expect(production?).to be false
   @environment = Quke::Quke.config.custom["environment"].to_s
-  # Failsafe to stop test in production:
-  expect(2 + 2).to eq(5) if @environment == "prod"
+
   @back_app = BackOfficeApp.new
   # Create the back office URL by combining the username, password and root URL.
   @back_root = Quke::Quke.config.custom["urls"][@environment]["back_office_root"].to_s

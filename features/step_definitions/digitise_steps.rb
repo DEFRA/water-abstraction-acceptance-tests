@@ -1,8 +1,5 @@
 Given(/^I reset a licence back to in progress$/) do
-
-  # Failsafe to prevent test running in production
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  expect(2 + 2).to eq(5) if @environment == "prod"
+  expect(production?).to be false
   @ar_licence = Quke::Quke.config.custom["data"]["ar_licence"].to_s
 
   # Search for a licence
@@ -22,13 +19,11 @@ Given(/^I reset a licence back to in progress$/) do
 end
 
 Given(/^I propose changes to a licence$/) do
+  expect(production?).to be false
+
   # Go to AR screens
   @front_app.licences_page.nav_bar.ar_link.click
   expect(@front_app.digitise_page.heading).to have_text("Review licence data")
-
-  # Failsafe to prevent test running in production
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  expect(2 + 2).to eq(5) if @environment == "prod"
 
   # Set a licence to work with
   @ar_licence = Quke::Quke.config.custom["data"]["ar_licence"].to_s
@@ -56,11 +51,10 @@ Given(/^I propose changes to a licence$/) do
   expect(@front_app.digitise_page.heading).to have_text("Review licence data")
 
   # Count the number of In Progress, Approved, Licence review after first edit
-  table_content = @front_app.digitise_review_page.licence_table.text
-  @no_of_in_progress = table_content.scan(/(?=#{"In progress"})/).count
-  @no_of_in_review = table_content.scan(/(?=#{"In review"})/).count
-  @no_of_approved = table_content.scan(/(?=#{"Approved"})/).count
-  @no_of_lic_review = table_content.scan(/(?=#{"Licence review"})/).count
+  @no_of_in_progress = @front_app.digitise_page.table_count("In progress")
+  @no_of_in_review = @front_app.digitise_page.table_count("In review")
+  @no_of_approved = @front_app.digitise_page.table_count("Approved")
+  @no_of_lic_review = @front_app.digitise_page.table_count("Licence review")
 
   @front_app.digitise_page.govuk_banner.sign_out_link.click
   expect(@front_app.sign_out_page.heading).to have_text("You are signed out")
@@ -94,11 +88,9 @@ Then(/^the change is shown as "([^"]*)"$/) do |status|
                         elsif status == "Licence review"
                           @no_of_lic_review
                         end
-  # Find and compare the new number of In Progress licences:
-  table_content = @front_app.digitise_review_page.licence_table.text
-  status_count_after = table_content.scan(/(?=#{status})/).count
 
   # Check that there is one more licence in the new status than before:
+  status_count_after = @front_app.digitise_page.table_count(status)
   expect(status_count_after).to eq(status_count_before + 1)
 end
 
