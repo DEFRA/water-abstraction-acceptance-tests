@@ -1,4 +1,4 @@
-@basic @readonly @bs
+@basic @bs @preprod @prod
 Feature: [WATER-1] Basic licence checks
   As a business with a water abstraction licence
   I want to be able to check my licence details

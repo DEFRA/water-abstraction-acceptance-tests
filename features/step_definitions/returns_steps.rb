@@ -1,5 +1,6 @@
 
 Given(/^I can access my returns overview$/) do
+  expect(production?).to be false
   expect(@front_app.licences_page.nav_bar).to have_returns_link
   @front_app.licences_page.nav_bar.returns_link.click
   expect(@front_app.returns_page.heading).to have_text("Your returns")

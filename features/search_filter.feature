@@ -1,4 +1,4 @@
-@test @search @readonly
+@test @search @preprod @prod
 Feature: [WATER-563] Search and filter on licences page
 
 Background:
@@ -20,7 +20,7 @@ Scenario: [WATER-526 and 563] Sort and search licences
   And I remove a search term
   Then I can see the original number of licences
   And I can sort the table by headings
-  
+
 Scenario: [WATER-922] Licence sanity check
   When I select a second page of many licences
   Then I can see a full page of licences

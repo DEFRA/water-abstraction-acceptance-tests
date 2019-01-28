@@ -39,9 +39,14 @@ task :test do
 end
 
 # Run this on preprod and prod
-desc "Run read only features without refreshing the environment"
-task :readonly do
-  sh %( bundle exec quke --tags @readonly)
+desc "Run features which work in the preproduction environment"
+task :preprod do
+  sh %( bundle exec quke --tags @preprod)
+end
+
+desc "Run features suitable for the production environment"
+task :prod do
+  sh %( bundle exec quke --tags @prod)
 end
 
 desc "Run work in progress features"
@@ -50,7 +55,7 @@ task :wip do
 end
 
 desc "Run all features (eq to bundle exec quke), resetting the environment first"
-task :run_reset do
+task :reset_run do
   sh %( bundle exec quke --tags @reset)
   sh %( bundle exec quke --tags ~@reset)
 end

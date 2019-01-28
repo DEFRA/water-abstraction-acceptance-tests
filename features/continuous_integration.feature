@@ -1,4 +1,4 @@
-@test @readonly @ci
+@test @ci
 Feature: Continuous integration check of the project
   As a contributor to this project
   I want to know a change I made hasn't broken it (though it may have failing tests)

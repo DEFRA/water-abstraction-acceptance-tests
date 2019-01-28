@@ -1,4 +1,4 @@
-@test @flow @readonly
+@test @flow @preprod @prod
 Feature: [WATER-1049] Check flows and levels
   As a water abstraction licence holder
   I want to check the flow or level data

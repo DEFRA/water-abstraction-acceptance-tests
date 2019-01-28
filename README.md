@@ -87,9 +87,9 @@ Run the main test scenarios (excluding reset and basic tests)
 bundle exec rake test
 ```
 
-Run only read-only steps:
+Run only steps for preproduction:
 ```bash
-bundle exec rake readonly
+bundle exec rake preprod
 ```
 
 Run only basic steps:
@@ -127,9 +127,9 @@ Scenario: Registration by an individual
 When applied you then have the ability to filter which tests will be used during any given run
 
 ```bash
-bundle exec quke --tags @readonly # Run only things tagged with this
-bundle exec quke --tags @readonly,@wip # Run all things with these tags
-bundle exec quke --tags ~@readwrite # Don't run anything with this tag (run everything else)
+bundle exec quke --tags @preprod # Run only things tagged with this
+bundle exec quke --tags @preprod,@wip # Run all things with these tags
+bundle exec quke --tags ~@returns # Don't run anything with this tag (run everything else)
 ```
 
 ### In this project
@@ -141,7 +141,8 @@ To have consistency across the project the following tags are defined and should
 |@reset|Refreshes the data in the test environment. Only needs to be run if external_user steps are failing.|
 |@basic|Features used for basic regression testing as part of Continuous Integration|
 |@test|The core test suite, including writing to the database.  Do not run this in production.|
-|@readonly|Any feature which doesn't change user data on the service.|
+|@preprod|Any feature which can be run on preproduction.|
+|@prod|Any feature which can be run on production.|
 |@ci|A feature that is intended to be run only on our continuous integration service (you should never need to use this tag).|
 |@(test name)|Run an individual feature: @digitise, @flow, @password, @notify, @register, @rename, @returns, @search|
 

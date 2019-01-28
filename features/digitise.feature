@@ -1,4 +1,4 @@
-@test @digitise
+@test @digitise @preprod
 Feature: [WATER-1015] Edit licence
   As an internal user
   I want to propose changes to licences

@@ -1,4 +1,4 @@
-@test @returns
+@test @returns @preprod
 Feature: [WATER-1258] [WATER-1352] View and edit returns
   As a user with a water abstraction licence
   I want to see what I have abstracted in previous years

@@ -5,7 +5,6 @@ Given(/^I am on the sign in page$/) do
 end
 
 Given(/^I sign into my account as "([^"]*)"$/) do |account|
-  expect(production?).to be false
   @environment = Quke::Quke.config.custom["environment"].to_s
   # Record the user type for different tests
   @user_type = account.to_s
