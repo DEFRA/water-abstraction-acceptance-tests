@@ -1,5 +1,5 @@
 @test @digitise @preprod
-Feature: [WATER-1015] Edit licence
+Feature: [WATER-1015] Edit licence and [WATER-1772] Add Hands Off Flow conditions
   As an internal user
   I want to propose changes to licences
   So that licence holders receive a consistent service
@@ -10,12 +10,12 @@ Feature: [WATER-1015] Edit licence
     And I propose changes to a licence
 
   Scenario: [WATER-1015] Reject licence changes
-    When I sign into my account as "ar_approver"
-    And I reject the changes
+    Given I sign into my account as "ar_approver"
+    When I reject the changes
     Then the change is shown as "In progress"
 
   Scenario: [WATER-1015] Review and approve licence changes
-    When I sign into my account as "ar_approver"
+    Given I sign into my account as "ar_approver"
     And I mark the licence for review
     Then the change is shown as "Licence review"
 

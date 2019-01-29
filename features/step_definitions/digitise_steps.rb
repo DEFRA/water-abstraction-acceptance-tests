@@ -3,7 +3,8 @@ Given(/^I reset a licence back to in progress$/) do
   @ar_licence = Quke::Quke.config.custom["data"]["ar_licence"].to_s
 
   # Search for a licence
-  @front_app.licences_page.nav_bar.ar_link.click
+  find_link("Digitise!").click
+  # @front_app.licences_page.nav_bar.ar_link.click
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)
@@ -45,6 +46,37 @@ Given(/^I propose changes to a licence$/) do
   @front_app.digitise_edit_page.populate_edits
   @front_app.digitise_edit_page.submit_button.click
 
+  # Add an extra Hands Off Flow condition
+  find_link("Add a condition").click
+  find("label", text: "Hands off flows/levels").click
+  @front_app.digitise_choose_condition_page.continue_button.click
+
+  # Choose which sub-condition to add
+  expect(@front_app.digitise_choose_condition_page.heading).to have_text("Choose a further condition to add")
+  find("label", text: "2.3").click
+  # @front_app.digitise_choose_condition_page.condition_2_3_radio.click
+  @front_app.digitise_choose_condition_page.continue_button.click
+
+  # Add data for the specific condition
+  # Set random number to help identify condition
+  random_digits = rand(0..999_999_999).to_s
+  expect(@front_app.digitise_edit_condition_page.heading).to have_text("Link data to this condition")
+  @front_app.digitise_edit_condition_page.nald_condition_1_radio.click
+  @front_app.digitise_edit_condition_page.purpose_2_radio.click
+  @front_app.digitise_edit_condition_page.water_body_name.set("Cheddar")
+  # Select first item containing "Cheddar" from the auto-complete
+  @front_app.digitise_edit_condition_page.water_body_name.send_keys :arrow_down, :enter, :tab
+  @front_app.digitise_edit_condition_page.measurement_point_1_radio.click
+  @front_app.digitise_edit_condition_page.diagram_type_1_radio.click
+  @front_app.digitise_edit_condition_page.hof_hol_flow_input.set(random_digits)
+  @front_app.digitise_edit_condition_page.unit_3_radio.click
+  @front_app.digitise_edit_condition_page.hof_type_2_radio.click
+  @front_app.digitise_edit_condition_page.submit_button.click
+
+  # Sanity check that new condition is visible on screen by checking the random number used
+  expect(@front_app.digitise_review_page.content).to have_text(random_digits)
+
+  # Submit the changes you have proposed
   @front_app.digitise_review_page.submit(
     notes_box: "Automated edit at: " + Time.new.inspect
   )
@@ -110,7 +142,8 @@ end
 
 When(/^I approve the changes$/) do
   # Search for the licence
-  @front_app.licences_page.nav_bar.ar_link.click
+  find_link("Digitise!").click # TEMPORARY UNTIL IDs ARE FIXED
+  # @front_app.licences_page.nav_bar.ar_link.click
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)
