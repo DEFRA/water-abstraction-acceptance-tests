@@ -4,7 +4,6 @@ Given(/^I reset a licence back to in progress$/) do
 
   # Search for a licence
   find_link("Digitise!").click
-  # @front_app.licences_page.nav_bar.ar_link.click
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)
@@ -54,7 +53,6 @@ Given(/^I propose changes to a licence$/) do
   # Choose which sub-condition to add
   expect(@front_app.digitise_choose_condition_page.heading).to have_text("Choose a further condition to add")
   find("label", text: "2.3").click
-  # @front_app.digitise_choose_condition_page.condition_2_3_radio.click
   @front_app.digitise_choose_condition_page.continue_button.click
 
   # Add data for the specific condition
