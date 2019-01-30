@@ -9,6 +9,6 @@ class NavBar < SitePrism::Section
   element(:ar_link, "#navbar-ar")
   element(:returns_link, "#navbar-returns a")
   element(:manage_licences_link, "#navbar-manage a")
-  element(:notifications_link, "#navbar-notifications a")
+  element(:notifications_link, "#navbar-notifications")
 
 end

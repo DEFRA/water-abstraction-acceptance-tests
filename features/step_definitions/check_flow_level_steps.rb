@@ -5,7 +5,7 @@ Given(/^I select a licence with a "([^"]*)" condition$/) do |conditiontype|
   @licence_number = Quke::Quke.config.custom["data"][conditionvar]["number"].to_s
   @gauging_station = Quke::Quke.config.custom["data"][conditionvar]["station"].to_s
   @front_app.licences_page.search(
-    search_form: @licence_number.to_s
+    search_input: @licence_number.to_s
   )
   find_link(@licence_number).click
 end

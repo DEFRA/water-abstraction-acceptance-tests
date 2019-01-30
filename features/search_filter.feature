@@ -8,10 +8,10 @@ Background:
 
 Scenario: [WATER-526 and 563] Sort and search licences
   When I search for a partial licence number
-  Then all licences containing that term are shown on screen
+  Then the correct search results are shown
 
   When I search for a partial licence name
-  Then all licences containing that term are shown on screen
+  Then the correct search results are shown
 
   When I enter a search term which does not exist on screen
   Then I cannot see any licences
@@ -19,7 +19,6 @@ Scenario: [WATER-526 and 563] Sort and search licences
   When I search for a partial licence name
   And I remove a search term
   Then I can see the original number of licences
-  And I can sort the table by headings
 
 Scenario: [WATER-922] Licence sanity check
   When I select a second page of many licences

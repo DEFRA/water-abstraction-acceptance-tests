@@ -9,8 +9,9 @@ class LicencesPage < SitePrism::Page
   section(:nav_bar, NavBar, NavBar::SELECTOR)
 
   element(:navbar, ".navbar") # Used in manage_licences_steps
-  element(:heading, ".heading-large")
-  element(:content, "#content")
+  element(:external_heading, ".heading-large")
+  element(:internal_heading, ".govuk-label--xl")
+  element(:content, "#main-content")
   element(:sort_by_number_link, ".license-results-header__column:nth-child(1) .sr-only+ span")
   element(:sort_by_name_link, ".license-results-header__column:nth-child(2) span")
   # rubocop:disable Metrics/LineLength
@@ -18,23 +19,18 @@ class LicencesPage < SitePrism::Page
   # rubocop:enable Metrics/LineLength
   elements(:licences, ".license-result__column--number a")
   # see https://github.com/natritmeyer/site_prism#element-collections
-  elements(:view_links, ".license-result a")
-  element(:first_licence, ".license-results-header+ .license-result a")
-  element(:licence_result_no, ".license-results-header+ .license-result .license-result__column--number")
-  element(:licence_result_name, ".license-results-header+ .license-result .license-result__column--description")
-  element(:email_form, "#emailAddress")
-  element(:search_form, "#licenceNumber")
-  element(:search_button, "#searchButton")
+  elements(:email_links, "#main-content .govuk-link")
+  elements(:licence_links, ".govuk-table__cell a")
+  element(:first_licence, ".govuk-table__row:nth-child(1) a")
+  element(:search_input, "#query")
+  element(:search_button, ".inline-button")
   element(:triangle, ".sort-icon")
-  element(:firstlicence, ".license-results-header+ .license-result .heading-medium")
-  element(:lastlicence, ".license-result:last-child .heading-medium")
-  element(:pagetwo, ".pagination__item:nth-child(3) .pagination__link")
-  elements(:pagination_links, ".pagination__link")
+  element(:pagetwo, ".pagination__link")
+  element(:pagination_text, ".pagination__current-page")
   element(:disclaimer, ".panel-border-wide p")
 
   def search(args = {})
-    email_form.set(args[:email_form]) if args.key?(:email_form)
-    search_form.set(args[:search_form]) if args.key?(:search_form)
+    search_input.set(args[:search_input]) if args.key?(:search_input)
     search_button.click
   end
 

@@ -6,22 +6,19 @@ end
 When(/^I select a particular licence$/) do
   # Stores licence number for later checks
   @licence_number = Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
-  @front_app.licences_page.search(search_form: @licence_number)
+  @front_app.licences_page.search(search_input: @licence_number)
   find_link(@licence_number).click
 end
 
 When(/^I access the first licence$/) do
-  @front_app.licences_page.search(search_form: "/")
+  @front_app.licences_page.search(search_input: "/")
   @front_app.licences_page.first_licence.click
 end
 
 Then(/^I am on the internal abstraction licences page$/) do
-  expect(@front_app.licences_page.heading).to have_text("Licences")
-  @front_app.licences_page.search(search_form: "/")
-  @total_licences = @front_app.licences_page.view_links.count.to_s
-  # rubocop:disable Metrics/LineLength
-  expect(@front_app.licences_page.disclaimer).to have_text("The information included in this service does not replace or affect the legal (paper) copy of the licence issued to you. The information must be used for reference only. You must refer to and comply with the licence issued to you as a paper copy when you make decisions about abstracting or impounding water.")
-  # rubocop:enable Metrics/LineLength
+  expect(@front_app.licences_page.internal_heading).to have_text("Licences, users and returns")
+  @front_app.licences_page.search(search_input: "/")
+  @total_licences = @front_app.licences_page.licence_links.count.to_s
 end
 
 Then(/^I am on the licence details page$/) do
@@ -33,7 +30,7 @@ Then(/^I am on the licence details page$/) do
 end
 
 Then(/^I am on the external abstraction licences page$/) do
-  expect(@front_app.licences_page.heading).to have_text("Your licences")
+  expect(@front_app.licences_page.external_heading).to have_text("Your licences")
 end
 
 When(/^I check the licence contact details$/) do
@@ -96,7 +93,7 @@ end
 
 Given(/^the expected licence name appears on the licence summary page$/) do
   @front_app.licences_page.nav_bar.view_licences_link.click
-  @front_app.licences_page.search(search_form: @licence_number)
+  @front_app.licences_page.search(search_input: @licence_number)
   find_link(@licence_number).click
   expect(@front_app.licences_page).to have_text(@expected_licence_name.to_s)
 end
@@ -106,7 +103,7 @@ Given(/^the licence name is searchable on the abstraction licences page$/) do
   @expected_search_result = @expected_licence_name
   @expected_result_count = 1
   @front_app.licences_page.search(
-    search_form: @expected_search_result.to_s
+    search_input: @expected_search_result.to_s
   )
 end
 

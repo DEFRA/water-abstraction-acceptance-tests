@@ -104,7 +104,7 @@ When(/^an admin user can read the code$/) do
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
   )
   @front_app.licences_page.search(
-    search_form: @licence_reg.to_s
+    search_input: @licence_reg.to_s
   )
   find_link(@licence_reg).click
   expect(@front_app.licence_details_page.heading).to have_text(@licence_reg)

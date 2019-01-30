@@ -58,7 +58,7 @@ Given(/^I select a licence I can access$/) do
 
   if @user_type == "internal_user"
     # Internal user must for the licence first:
-    @front_app.licences_page.search(search_form: @licence_one)
+    @front_app.licences_page.search(search_input: @licence_one)
   end
 
   find_link(@licence_one).click
@@ -103,7 +103,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
   @licence_returns = Quke::Quke.config.custom["data"]["licence_returns"].to_s
 
   if action == "edit"
-    @front_app.licences_page.search(search_form: @licence_returns)
+    @front_app.licences_page.search(search_input: @licence_returns)
     find_link(@licence_returns).click
     @front_app.licence_details_page.view_returns_for_licence_int.click
     find_link("November 2017 to October 2018").click
