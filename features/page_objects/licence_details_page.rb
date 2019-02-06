@@ -16,7 +16,8 @@ class LicenceDetailsPage < SitePrism::Page
   element(:visible_subheading, ".govuk-heading-m")
   element(:licence_date_info, ".govuk-summary-list__row:nth-child(3) .govuk-summary-list__value")
   element(:confirmation_only_code, ".bold-small") # works for single code only
-  element(:confirmation_first_code, "li:nth-child(1) .bold-small") # works for multiple codes assuming most recent first.
+  # The following works for multiple codes assuming most recent first:
+  element(:confirmation_first_code, "li:nth-child(1) .bold-small")
 
   # Summary tab selectors
 
