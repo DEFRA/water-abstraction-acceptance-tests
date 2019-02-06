@@ -33,7 +33,7 @@ Given(/^I can view a return that is "([^"]*)"$/) do |returntype|
     @return_licence_link = Quke::Quke.config.custom["data"]["return_null"].to_s
 
   elsif @return_type == "the most recent"
-    @front_app.returns_for_licence_page.clickfirstlink(link: @licence_one)
+    @front_app.licence_details_page.clickfirstlink(link: @licence_one)
     @return_licence_link = @licence_one
 
   end
@@ -43,12 +43,12 @@ Given(/^I can view a return that is "([^"]*)"$/) do |returntype|
 end
 
 Given(/^I can't see the NALD reference$/) do
-  expect(@front_app.return_details_page.content).to have_no_text("NALD")
+  expect(@front_app.return_details_page.content).to have_no_text("Return reference")
 end
 
 Given(/^I can check the licence details$/) do
   @front_app.return_details_page.view_licence_link.click
-  expect(@front_app.licence_details_page.heading).to have_text("Licence number")
+  expect(@front_app.licence_details_page.heading).to have_text(@return_licence_link)
   expect(@front_app.licence_details_page.content).to have_text("Source of supply")
   @front_app.licence_details_page.nav_bar.returns_link.click
 end
@@ -71,12 +71,11 @@ Given(/^I select a licence I can access$/) do
 end
 
 Given(/^I can view all returns for the licence$/) do
-  expect(@front_app.licence_details_page.content).to have_text("Returns for this licence")
-  expect(@front_app.licence_details_page.content).to have_text("Manage returns")
-  @front_app.licence_details_page.view_returns_for_licence.click
+  expect(@front_app.licence_details_page).to have_returns_tab
+  @front_app.licence_details_page.returns_tab.click
   @return_type = ""
-  expect(@front_app.returns_for_licence_page.heading).to have_text("Returns for")
-  expect(@front_app.returns_for_licence_page.heading).to have_text(@licence_one)
+  expect(@front_app.licence_details_page.visible_subheading).to have_text("Returns")
+  expect(@front_app.licence_details_page.heading).to have_text(@licence_one)
 end
 
 Given(/^the earliest return date is not earlier than the transfer date$/) do
@@ -85,8 +84,9 @@ Given(/^the earliest return date is not earlier than the transfer date$/) do
   # Works by putting all return years (4 digit numbers) in the table into an array, to compare them:
   # Syntax from https://www.regular-expressions.info/ruby.html
   # rubocop:disable Metrics/LineLength
-  @return_years = @front_app.returns_for_licence_page.returns_table.text.scan(/[[:digit:]][[:digit:]][[:digit:]][[:digit:]]/)
+  @return_years = @front_app.licence_details_page.returns_table.text.scan(/[[:digit:]][[:digit:]][[:digit:]][[:digit:]]/)
   # rubocop:enable Metrics/LineLength
+  puts "Return years: " + @return_years.to_s
   @earliest_return_year = @return_years.min.to_i
   expect(@earliest_return_year).to be >= @earliest_version_year
 end
@@ -105,8 +105,8 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
   if action == "edit"
     @front_app.licences_page.search(search_input: @licence_returns)
     find_link(@licence_returns).click
-    @front_app.licence_details_page.view_returns_for_licence_int.click
-    find_link("November 2017 to October 2018").click
+    @front_app.licence_details_page.returns_tab.click
+    @front_app.licence_details_page.first_return.click
     @front_app.return_details_page.edit_return_button.click
 
     # Should show "enter and submit return" and "log a problem" options.
@@ -118,7 +118,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
   elsif action == "submit"
     # Not yet built.  Access the required licence's list of returns as an external user.
     find_link(@licence_returns).click
-    @front_app.licence_details_page.view_returns_for_licence.click
+    @front_app.licence_details_page.returns_tab.click
 
   end
 

@@ -5,10 +5,10 @@ class NavBar < SitePrism::Section
 
   SELECTOR ||= ".navbar".freeze
 
-  element(:view_licences_link, "#navbar-view a")
-  element(:ar_link, "#navbar-ar")
-  element(:returns_link, "#navbar-returns a")
-  element(:manage_licences_link, "#navbar-manage a")
+  element(:view_licences_link, "#navbar-view")
+  element(:ar_link, "#navbar-ar") # Only works from outside of Digitise tab.
+  element(:returns_link, "#navbar-returns")
+  element(:manage_licences_link, "#navbar-manage")
   element(:notifications_link, "#navbar-notifications")
 
 end

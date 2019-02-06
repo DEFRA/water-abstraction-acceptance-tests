@@ -51,6 +51,6 @@ Given(/^The units are the correct ratio to each other$/) do
 end
 
 Given(/^I cannot see a flow or level data link$/) do
-  expect(@front_app.licence_details_page.licence_date_info).to have_text("Current licence version")
-  expect(@front_app.licence_details_page).to have_no_text("View data from")
+  expect(@front_app.licence_details_page.visible_subheading).to have_text("Summary")
+  expect(@front_app.licence_details_page.content).to have_no_text("View data from")
 end

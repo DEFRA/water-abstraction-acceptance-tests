@@ -6,7 +6,7 @@ Feature: [WATER-1] Basic licence checks
 
   Background:
     Given I am on the sign in page
-    And I sign into my account as "internal_user"
+    And I sign into my account as "external_user"
     When I access the first licence
     Then I am on the licence details page
 

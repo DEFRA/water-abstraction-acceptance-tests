@@ -4,7 +4,7 @@ class GovukBanner < SitePrism::Section
 
   SELECTOR ||= "#global-header".freeze
 
-  element(:sign_out_link, "#signout a")
+  element(:sign_out_link, "#signout")
   element(:changepw, "#change-password a")
   element(:contact_info_link, "a[href$='/contact-information']")
 

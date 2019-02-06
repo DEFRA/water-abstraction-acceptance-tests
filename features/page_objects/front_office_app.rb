@@ -205,10 +205,6 @@ class FrontOfficeApp
     @last_page = ReturnSubmittedPage.new
   end
 
-  def returns_for_licence_page
-    @last_page = ReturnsForLicencePage.new
-  end
-
   def returns_page
     @last_page = ReturnsPage.new
   end

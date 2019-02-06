@@ -15,7 +15,8 @@ if ENV["TRAVIS"]
 end
 
 desc "Reset data in the environment"
-# Run this if the
+# Run this if the licences in the environment have been unlinked
+# or the Digitise licence isn't in the right state
 task :reset do
   sh %( bundle exec quke --tags @reset)
 end
@@ -28,6 +29,7 @@ end
 # Default task
 desc "Run main features without refreshing the environment"
 task :test do
+  sh %( bundle exec quke --tags @basic)
   sh %( bundle exec quke --tags @digitise)
   sh %( bundle exec quke --tags @flow)
   sh %( bundle exec quke --tags @notify)

@@ -21,9 +21,9 @@ class LicencesPage < SitePrism::Page
   # see https://github.com/natritmeyer/site_prism#element-collections
   elements(:email_links, "#main-content .govuk-link")
   elements(:licence_links, ".govuk-table__cell a")
-  element(:first_licence, ".govuk-table__row:nth-child(1) a")
-  element(:search_input, "#query")
-  element(:search_button, ".inline-button")
+  element(:first_licence, ".license-results-header+ .license-result a")
+  element(:search_input, ".search__input")
+  element(:search_button, ".search__button")
   element(:triangle, ".sort-icon")
   element(:pagetwo, ".pagination__link")
   element(:pagination_text, ".pagination__current-page")

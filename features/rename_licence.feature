@@ -6,9 +6,8 @@ Feature: [WATER-564] Rename licence
 
   Background:
     Given I am on the sign in page
-    And I sign into my account as "internal_user"
-    And I select a particular licence
-    When I select the link to name the licence
+    And I sign into my account as "external_user"
+    When I start renaming a licence
 
   Scenario: [WATER-564] Reset licence name
     When I reset the licence name
@@ -26,8 +25,6 @@ Feature: [WATER-564] Rename licence
   Scenario: [WATER-564] Valid licence rename
     When I enter a valid licence name
     Then the expected licence name appears on the licence summary page
-    And the licence name is searchable on the abstraction licences page
-    And the correct search results are shown
 
   Scenario: [WATER-564] Reset licence name
     When I reset the licence name
