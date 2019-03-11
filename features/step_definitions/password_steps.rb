@@ -63,13 +63,49 @@ Given(/^I see the Password Changed screen$/) do
   expect(@front_app.change_password_confirm_page.confirmation.text).to include "Your password has been changed"
 end
 
-Given(/^I request a password reset$/) do
+Given(/^I request a password reset as an "([^"]*)"$/) do |account|
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  # If in prod, switch to internal user because an external user won't work:
+  account = "internal_user" if production? == true
+  puts "Account: " + account
+  # Record the user type for different tests
+  @user_type = account.to_s
+  @password_reset_email = Quke::Quke.config.custom["data"]["accounts"][account.to_s].to_s
+
   @front_app.sign_in_page.forgotten_password.click
   @front_app.request_pw_reset_page.submit(
-    email_address: Quke::Quke.config.custom["data"]["accounts"]["internal_user"]
+    email_address: @password_reset_email
+  )
+
+  # Also test the "not received email" link:
+  @front_app.reset_password_check_page.havent_received_link.click
+  expect(@front_app.request_pw_reset_page.paragraph).to have_text("The email might take a few minutes to reach you")
+  @front_app.request_pw_reset_page.submit(
+    email_address: @password_reset_email
   )
 end
 
 Given(/^I am on the Check Your Email page$/) do
-  expect(@front_app.reset_password_check1_page.heading.text).to include "Check your email"
+  expect(@front_app.reset_password_check_page.heading.text).to include "Check your email"
+end
+
+Given(/^I can reset my password$/) do
+  if @environment != "preprod" && @environment != "prod"
+
+    # rubocop:disable Metrics/LineLength
+    @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @password_reset_email).to_s
+    # rubocop:enable Metrics/LineLength
+    visit(@email_api_url)
+    @email_json = @front_app.email_content_page.email_content.text
+
+    # Find text between: once):\r\n\r\n#
+    # and: \r\n\r\n^ If
+    @unlock_account_url = @email_json[/\\r\\n\\r\\n#(.*?)\\r\\n\\r\\nIf/, 1].to_s
+    visit(@unlock_account_url)
+
+    @front_app.register_create_pw_page.submit(
+      password: Quke::Quke.config.custom["data"]["accounts"]["password"],
+      confirmpw: Quke::Quke.config.custom["data"]["accounts"]["password"]
+    )
+  end
 end

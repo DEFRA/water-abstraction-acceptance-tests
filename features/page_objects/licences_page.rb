@@ -19,9 +19,12 @@ class LicencesPage < SitePrism::Page
   # rubocop:enable Metrics/LineLength
   elements(:licences, ".license-result__column--number a")
   # see https://github.com/natritmeyer/site_prism#element-collections
+  elements(:links, "a")
   elements(:email_links, "#main-content .govuk-link")
-  elements(:licence_links, ".govuk-table__cell a")
-  element(:first_licence, ".license-results-header+ .license-result a")
+  elements(:licence_links_external, ".govuk-table__cell a")
+  elements(:licence_links_internal, ".govuk-table__cell a")
+  element(:first_licence_external, ".license-results-header+ .license-result a")
+  element(:first_licence_internal, ".govuk-table__row:nth-child(1) a")
   element(:search_input, ".search__input")
   element(:search_button, ".search__button")
   element(:triangle, ".sort-icon")
@@ -32,6 +35,11 @@ class LicencesPage < SitePrism::Page
   def search(args = {})
     search_input.set(args[:search_input]) if args.key?(:search_input)
     search_button.click
+  end
+
+  def clickfirstlink(args = {})
+    return unless args.key?(:link)
+    click_url_text(links, args[:link].to_s)
   end
 
 end

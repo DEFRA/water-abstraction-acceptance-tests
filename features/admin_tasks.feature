@@ -31,6 +31,11 @@ Feature: Reset test environment
     * I sign into my account as "ar_approver"
     * I reset a licence back to in progress
 
+    # Submit a nil return for external_user but only if not yet completed.
+    # * I am on the sign in page
+    # * I sign into my account as "returns_user"
+    # * I "submit" a return of type "nil" (but only if needed)
+
   Scenario: Back end permissions
     * I am on the sign in page
 

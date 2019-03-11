@@ -22,22 +22,30 @@ Given(/^I have no registered licences for "([^"]*)"$/) do |tasktype|
 end
 
 Given(/^I register my email address on the service$/) do
+
   @environment = Quke::Quke.config.custom["environment"].to_s
+
   # Create an account using a random email address
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   @front_app.sign_in_page.create_account_link.click
   @front_app.register_create_account_page.create_account_button.click
-  # Variables such as the following are initialised in front_office_app.rb
+
+  # Store the email used for registration and output on screen (useful for debugging):
   @reg_email = @front_app.register_email_page.generate_email.to_s
   @front_app.register_email_page.submit(email_address: @reg_email)
   puts "Random email is: " + @reg_email
-end
 
-Given(/^I receive an email with sign in details$/) do
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  # Read the contents of the last email sent to the random email address that was just generated.
+  # Also test the "not received email screen":
+  # NEXT 3 STEPS BROKEN
+
+  # @front_app.register_email_page.not_received_email_link.click
+  # expect(@front_app.register_email_page.heading).to have_text("Request another email")
+  # @front_app.register_email_page.submit(email_address: @reg_email)
+
+  # Now read the contents of the last email sent to the random email address that was just generated.
   # The contents are displayed via an API that was created specifically for the automated tests.
+
   # rubocop:disable Metrics/LineLength
   @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @reg_email).to_s
   # rubocop:enable Metrics/LineLength
@@ -51,6 +59,7 @@ Given(/^I receive an email with sign in details$/) do
   # @create_account_url = @email_json[/001(.*?)002/,1].to_s
   # See https://stackoverflow.com/questions/4218986/ruby-using-regex-to-find-something-in-between-two-strings
   @create_account_url = @email_json[/account: \\r\\n\\r\\n#(.*?)\\r\\n\\r\\nIf/, 1].to_s
+
   # Go to the URL that was in the email contents:
   visit(@create_account_url)
 
@@ -90,9 +99,17 @@ When(/^I register a licence for "([^"]*)"$/) do |tasktype|
                      Quke::Quke.config.custom["data"]["licence_some"].to_s
                    end
   @front_app.register_add_licences_page.wait_for_licence_box
+  @front_app.register_add_licences_page.help_link.click
+  expect(@front_app.register_add_licences_page.help_text).to have_text("Telephone: 03708 506 506")
   @front_app.register_add_licences_page.submit(
     licence_box: @licence_multi
   )
+  # Check that the "not my licences" link works
+  @front_app.register_confirm_licences_page.not_mine_link.click
+  # rubocop:disable Metrics/LineLength
+  expect(@front_app.register_confirm_licences_page.heading).to have_text("Sorry, we need to confirm your licence information with you")
+  # rubocop:enable Metrics/LineLength
+  page.go_back
   @front_app.register_confirm_licences_page.wait_for_continue_button
   @front_app.register_confirm_licences_page.continue_button.click
   @front_app.register_choose_address_page.wait_for_continue_button

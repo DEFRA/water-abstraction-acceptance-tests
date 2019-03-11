@@ -7,8 +7,7 @@ Feature: [WATER-528 and 560] Register and share
 Scenario: [WATER-528] Register licences
   Given I have no registered licences for "registration"
   When I register my email address on the service
-  Then I receive an email with sign in details
-  And I sign in with my new email address
+  Then I sign in with my new email address
 
   Given I am on the add licences page
   When I register a licence for "registration"

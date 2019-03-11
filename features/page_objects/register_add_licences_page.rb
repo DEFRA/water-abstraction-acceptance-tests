@@ -10,7 +10,8 @@ class RegisterAddLicencesPage < SitePrism::Page
   element(:error_heading, "#error-summary-heading-example-2")
   element(:licence_box, "#licence_no")
   element(:continue_button, ".button")
-  element(:no_info_link, ".summary")
+  element(:help_link, ".summary")
+  element(:help_text, ".closeOnOpen")
   element(:sign_out_link, "#signout a")
 
   def submit(args = {})

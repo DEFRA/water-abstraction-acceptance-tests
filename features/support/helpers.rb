@@ -18,6 +18,6 @@ end
 
 def production?
   @environment = Quke::Quke.config.custom["environment"].to_s
-  return true if @environment == "prod"
+  return true if @environment == "prod" || @environment == "prod2"
   false
 end

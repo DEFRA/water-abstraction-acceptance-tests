@@ -16,7 +16,7 @@ Feature: [WATER-420] Basic login
     Then I am informed "Your email address or password is incorrect"
 
   Scenario: [WATER-444] Request password reset
-    When I request a password reset
+    When I request a password reset as an "internal_user"
     Then I am on the Check Your Email page
 
   Scenario: [WATER-420] Valid login

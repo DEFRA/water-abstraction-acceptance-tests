@@ -119,6 +119,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
     # Not yet built.  Access the required licence's list of returns as an external user.
     find_link(@licence_returns).click
     @front_app.licence_details_page.returns_tab.click
+    @front_app.licence_details_page.first_return.click
 
   end
 

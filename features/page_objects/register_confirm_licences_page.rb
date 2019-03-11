@@ -4,6 +4,6 @@ class RegisterConfirmLicencesPage < SitePrism::Page
   element(:error_heading, "#error-summary-heading-example-2")
   element(:licence_checkbox, "#licences input")
   element(:continue_button, ".button")
-  element(:not_mine_link, ".column-two-thirds p a")
+  element(:not_mine_link, ".column-two-thirds a")
 
 end

@@ -8,6 +8,7 @@ class DigitiseReviewPage < SitePrism::Page
 
   # Heading doesn't work as a selector on this page as it contains '--'
   # See https://github.com/SeleniumHQ/selenium/issues/1656
+  element(:caption, ".govuk-caption-l")
   element(:content, "#main-content")
   element(:notes_box, "#notes")
   element(:no_radio, "#status-1", visible: false)

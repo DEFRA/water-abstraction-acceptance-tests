@@ -4,13 +4,18 @@ Given(/^I go to the abstraction licences page$/) do
 end
 
 When(/^I access the first licence$/) do
-  @front_app.licences_page.first_licence.click
+  if @user_type == "internal_user"
+    @front_app.licences_page.search(search_input: "/")
+    @front_app.licences_page.first_licence_internal.click
+  else
+    @front_app.licences_page.first_licence_external.click
+  end
 end
 
 Then(/^I am on the internal abstraction licences page$/) do
   expect(@front_app.licences_page.internal_heading).to have_text("Licences, users and returns")
   @front_app.licences_page.search(search_input: "/")
-  @total_licences = @front_app.licences_page.licence_links.count.to_s
+  @total_licences = @front_app.licences_page.licence_links_internal.count.to_s
 end
 
 Then(/^I am on the licence details page$/) do

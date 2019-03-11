@@ -1,12 +1,12 @@
 @test @search @preprod @prod
-Feature: [WATER-563] Search and filter on licences page
+Feature: [WATER-563] Search for things
 
 Background:
   Given I am on the sign in page
   And I sign into my account as "internal_user"
   And I am on the internal abstraction licences page
 
-Scenario: [WATER-526 and 563] Sort and search licences
+Scenario: [WATER-526 and 563] Search licences
   When I search for a partial licence number
   Then the correct search results are shown
 
@@ -19,6 +19,20 @@ Scenario: [WATER-526 and 563] Sort and search licences
   When I search for a partial licence name
   And I remove a search term
   Then I can see the original number of licences
+
+Scenario: [WATER-1831] Search for a return
+  When I search for a return
+  Then the correct search results are shown
+  And I can access the return details
+
+Scenario: [WATER_1831] Search for users
+  When I search for an "external_user"
+  Then the correct search results are shown
+  And I can access the user details
+
+  When I search for an "internal_user"
+  Then the correct search results are shown
+  And I can access the user details
 
 Scenario: [WATER-922] Licence sanity check
   When I select a second page of many licences

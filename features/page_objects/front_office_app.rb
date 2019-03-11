@@ -181,8 +181,8 @@ class FrontOfficeApp
     @last_page = RequestResetPage.new
   end
 
-  def reset_password_check1_page
-    @last_page = ResetPasswordCheck1Page.new
+  def reset_password_check_page
+    @last_page = ResetPasswordCheckPage.new
   end
 
   def reset_password_page
@@ -223,6 +223,10 @@ class FrontOfficeApp
 
   def start_page
     @last_page = StartPage.new
+  end
+
+  def user_details_page
+    @last_page = UserDetailsPage.new
   end
 
 end

@@ -2,6 +2,7 @@ class RequestResetPage < SitePrism::Page
 
   element(:heading, ".heading-large")
   element(:email_address, "#email-address")
+  element(:paragraph, ".column-two-thirds p")
   element(:continue_button, ".button-start")
 
   def submit(args = {})

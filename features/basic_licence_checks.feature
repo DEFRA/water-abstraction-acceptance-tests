@@ -1,4 +1,4 @@
-@basic @bs @preprod @prod
+@basic @bs @preprod
 Feature: [WATER-1] Basic licence checks
   As a business with a water abstraction licence
   I want to be able to check my licence details
@@ -6,6 +6,7 @@ Feature: [WATER-1] Basic licence checks
 
   Background:
     Given I am on the sign in page
+    # The following gets switched to internal user in production:
     And I sign into my account as "external_user"
     When I access the first licence
     Then I am on the licence details page

@@ -6,6 +6,9 @@ end
 
 Given(/^I sign into my account as "([^"]*)"$/) do |account|
   @environment = Quke::Quke.config.custom["environment"].to_s
+  # If in prod, switch to internal user because an external user won't work:
+  account = "internal_user" if production? == true
+  puts "Account: " + account
   # Record the user type for different tests
   @user_type = account.to_s
   @front_app.sign_in_page.load

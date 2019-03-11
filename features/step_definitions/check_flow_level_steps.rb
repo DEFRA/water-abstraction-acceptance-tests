@@ -13,7 +13,7 @@ end
 Given(/^I can see the correct "([^"]*)" data$/) do |conditiontype|
   @do_this_step = 1
   # In prod, this only works for flow.
-  @do_this_step = 0 if (@environment == "prod") && (conditiontype != "flow")
+  @do_this_step = 0 if (production? == true) && (conditiontype != "flow")
 
   if @do_this_step == 1
     find_link("View data from").click
