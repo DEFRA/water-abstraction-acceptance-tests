@@ -92,12 +92,13 @@ Given(/^the earliest return date is not earlier than the transfer date$/) do
 end
 
 Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
+  # Given I "edit" or "submit" a return of type "nil", "volume", "meter", or "multi meter"
   expect(production?).to be false
 
   @return_action = action.to_s
   @return_flow = flow.to_s
 
-  # Edit or submit a return using a particular flow.  Can also expand to log receipt and queries.
+  # Edit or submit a return using a particular flow.
 
   # Decide whether to start on the edit or submit path:
   @licence_returns = Quke::Quke.config.custom["data"]["licence_returns"].to_s

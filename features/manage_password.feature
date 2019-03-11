@@ -10,8 +10,7 @@ Feature: [WATER-437] Manage password
   Scenario: [WATER-471] Password reset
     When I request a password reset as an "external_user"
     Then I can reset my password
-    # Next step is broken by WATER-1967:
-    # And I am on the external abstraction licences page
+    And I am on the external abstraction licences page
 
   Scenario: [WATER-447] Password lock out
     When I lock my account by attempting to sign in with an incorrect password "10" times

@@ -77,7 +77,7 @@ end
 
 Then(/^I can access the user details$/) do
   # @front_app.licences_page.clickfirstlink(link: @expected_search_result)
-  click_link(@expected_search_result, :match => :first)
+  click_link(@expected_search_result, match: :first)
   expect(@front_app.user_details_page.caption).to have_text(@expected_user_type)
   expect(@front_app.user_details_page.heading).to have_text(@expected_search_result)
   expect(@front_app.user_details_page.content).to have_text("Last signed in")
@@ -97,12 +97,10 @@ Given(/^the correct search results are shown$/) do
   # Count the number of links. The page object to query differs based on search results.
   if @expected_search_result.include? "@"
     expect(@front_app.licences_page).to have_email_links count: @expected_result_count.to_i
+  elsif @user_type == "external_user"
+    expect(@front_app.licences_page).to have_licence_links_external count: @expected_result_count.to_i
   else
-    if @user_type == "external_user"
-      expect(@front_app.licences_page).to have_licence_links_external count: @expected_result_count.to_i
-    else
-      expect(@front_app.licences_page).to have_licence_links_internal count: @expected_result_count.to_i
-    end
+    expect(@front_app.licences_page).to have_licence_links_internal count: @expected_result_count.to_i
   end
 end
 
