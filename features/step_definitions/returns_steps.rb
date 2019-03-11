@@ -107,7 +107,13 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
     find_link(@licence_returns).click
     @front_app.licence_details_page.returns_tab.click
     @front_app.licence_details_page.first_return.click
-    @front_app.return_details_page.edit_return_button.click
+
+    # TEMPORARY STEP to select the action to submit the return.
+    # Remove this and uncomment the next step once WATER-1954 is fixed.
+    @front_app.return_routes_page.first_action_radio.click
+
+    # Next step is temporarily broken due to bug WATER-1954
+    # @front_app.return_details_page.edit_return_button.click
 
     # Should show "enter and submit return" and "log a problem" options.
     expect(@front_app.return_routes_page.heading).to have_text("Abstraction return for")

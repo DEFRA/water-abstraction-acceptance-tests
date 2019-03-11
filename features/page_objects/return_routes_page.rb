@@ -5,6 +5,8 @@ class ReturnRoutesPage < SitePrism::Page
   element(:question, ".heading-medium")
 
   # Radio buttons - use unique html attributes.
+  element(:first_action_radio, "input[id='radio-inline-0']", visible: false)
+  element(:second_action_radio, "input[id='radio-inline-1']", visible: false)
   # These use the same identifiers but different options.
   element(:enter_radio, "input[id='radio-inline-0']", visible: false)
   element(:query_radio, "input[id='radio-inline-1']", visible: false)

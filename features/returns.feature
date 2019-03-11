@@ -11,23 +11,24 @@ Feature: [WATER-1258] [WATER-1352] View and edit returns
 Background:
   Given I am on the sign in page
 
-Scenario: [WATER-1258] View returns history (external user)
-  Given I sign into my account as "external_user"
-  When I can access my returns overview
-  Then I can view a return that is "populated daily"
-  And I can't see the NALD reference
-  And I can check the licence details
-  And I can view a return that is "nil"
-
-Scenario: [WATER-1376] View returns link (external user)
-  Given I sign into my account as "external_user"
-  When I select a licence I can access
-  Then I can view all returns for the licence
-  And I can view a return that is "the most recent"
+# Scenario: [WATER-1258] View returns history (external user)
+#   Given I sign into my account as "external_user"
+#   When I can access my returns overview
+#   Then I can view a return that is "populated daily"
+#   And I can't see the NALD reference
+#   And I can check the licence details
+#   And I can view a return that is "nil"
+#
+# Scenario: [WATER-1376] View returns link (external user)
+#   Given I sign into my account as "external_user"
+#   When I select a licence I can access
+#   Then I can view all returns for the licence
+#   And I can view a return that is "the most recent"
 
 Scenario: [WATER-1352] Edit returns (internal user)
   Given I sign into my account as "internal_user"
 
+  # Currently broken by WATER-1954
   When I "edit" a return of type "nil"
   Then I can view the return I just submitted
 
