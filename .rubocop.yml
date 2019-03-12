@@ -28,6 +28,13 @@ Layout/EmptyLinesAroundClassBody:
 Layout/EmptyLinesAroundBlockBody:
   Enabled: false
 
+# .rubocop.yml
+# The following is excluded because of the issues identified here:
+# https://github.com/rubocop-hq/rubocop/issues/3341
+Style/NumericPredicate:
+  Exclude:
+    - 'spec/**/*'
+
 # There are no relative performance improvements using '' over "", therefore we
 # believe there is more value in using "" for all strings irrespective of
 # whether string interpolation is used

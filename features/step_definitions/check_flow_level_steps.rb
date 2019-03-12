@@ -23,7 +23,9 @@ Given(/^I can see the correct "([^"]*)" data$/) do |conditiontype|
     if (conditiontype == "flow") || (conditiontype == "level")
       expect(@front_app.flow_level_page.data_info).to have_text(conditiontype)
       @flow_level_data_url = "http://environment.data.gov.uk/flood-monitoring/id/stations/" + @gauging_station
-      expect(@data_reading).to be > 0
+      # expect(@data_reading).to be.positive? won't work.
+      # RSpec and Rubocop are expecting an assertion in the following format:
+      expect(@data_reading.positive?).to eq(true)
       visit(@flow_level_data_url)
       expect(@front_app.flow_level_data.flow_level_data).to have_text("latestReading")
       page.go_back

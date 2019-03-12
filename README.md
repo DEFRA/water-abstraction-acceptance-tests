@@ -8,7 +8,7 @@ This project contains the acceptance tests for the Water abstraction digital ser
 
 ## Pre-requisites
 
-This project is setup to run against version 2.2.3 of Ruby.
+This project is setup to run against version 2.3.0 of Ruby.
 
 The rest of the pre-requisites are the same as those for [Quke](https://github.com/DEFRA/quke#pre-requisites).
 

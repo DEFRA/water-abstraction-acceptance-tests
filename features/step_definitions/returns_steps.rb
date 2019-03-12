@@ -22,7 +22,7 @@ Given(/^I can view a return that is "([^"]*)"$/) do |returntype|
     expect(@front_app.return_details_page.freq_heading).to have_text("Day")
     expect(@front_app.return_details_page.unit_heading).to have_text("Cubic metres")
     expect(@front_app.return_details_page.data_table).to have_text("March")
-    expect(@first_reading).to be > 0
+    expect(@first_reading.positive?).to eq(true)
 
   elsif @return_type == "nil"
     @return_licence_link = Quke::Quke.config.custom["data"]["return_nil"].to_s
