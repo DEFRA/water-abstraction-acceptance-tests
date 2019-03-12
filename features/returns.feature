@@ -28,7 +28,6 @@ Scenario: [WATER-1376] View returns link (external user)
 Scenario: [WATER-1352] Edit returns (internal user)
   Given I sign into my account as "internal_user"
 
-  # Currently broken by WATER-1954
   When I "edit" a return of type "nil"
   Then I can view the return I just submitted
 
