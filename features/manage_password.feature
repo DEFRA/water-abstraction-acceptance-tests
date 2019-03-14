@@ -17,6 +17,7 @@ Feature: [WATER-437] Manage password
     Then I unlock my account using the email link provided
     And I am on the external abstraction licences page
 
+  Scenario: [WATER-447] Password doesn't lock out under the limit
     Given I am on the sign in page
     When I enter a correct password between incorrect attempts
     Then I am on the external abstraction licences page

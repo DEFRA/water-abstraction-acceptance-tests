@@ -66,6 +66,7 @@ Given(/^I enter a correct password between incorrect attempts$/) do
   )
   @front_app.register_add_licences_page.govuk_banner.sign_out_link.click
   @front_app.sign_out_page.sign_in_link.click
+  @front_app.sign_in_page.wait_for_email
   @account_to_lock = Quke::Quke.config.custom["data"]["accounts"]["external_user"]
   @front_app.sign_in_page.lock_account(
     email: @account_to_lock,
