@@ -34,6 +34,7 @@ Given(/^the agent can log in and view a licence I can access$/) do
   find_link(@licence_one).click
   expect(@front_app.licence_details_page.heading).to have_text(@licence_one)
   expect(@front_app.licence_details_page.nav_bar).to have_no_manage_licences_link
+  find_link("Sign out").click # Can't use selector due to bug WATER-1905
 
 end
 

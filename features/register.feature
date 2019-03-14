@@ -7,10 +7,8 @@ Feature: [WATER-528 and 560] Register and share
 Scenario: [WATER-528] Register licences
   Given I have no registered licences for "registration"
   When I register my email address on the service
-  Then I sign in with my new email address
-
-  Given I am on the add licences page
-  When I register a licence for "registration"
+  And I am on the add licences page
+  And I register a licence for "registration"
   Then an admin user can read the code
 
   Given I sign in with my new email address
@@ -31,6 +29,7 @@ Scenario: [WATER-560 and 565] Share and revoke access
   When I add an agent to view my licences
   Then the agent can log in and view a licence I can access
 
-  Given I sign into my account as "external_user"
+  Given I am on the sign in page
+  And I sign into my account as "external_user"
   When I remove an agent to view my licences
   Then the agent cannot view any licences I own
