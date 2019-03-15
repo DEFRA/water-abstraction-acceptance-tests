@@ -40,8 +40,6 @@ Given(/^I register my email address on the service$/) do
   puts "Random email is: " + @reg_email
 
   # Also test the "not received email screen":
-  # NEXT 3 STEPS BROKEN?
-
   @front_app.register_email_page.not_received_email_link.click
   expect(@front_app.register_email_page.heading).to have_text("Request another email")
   @front_app.register_email_page.submit(email_address: @reg_email)
