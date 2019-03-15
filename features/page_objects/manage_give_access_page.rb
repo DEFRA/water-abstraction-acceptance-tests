@@ -5,6 +5,7 @@ class ManageGiveAccessPage < SitePrism::Page
   element(:email_form, "#email")
   element(:add_user_button, ".button")
   element(:user_list, ".column-full")
+  elements(:change_links, "#results a")
   element(:remove_access_link, "#results a")
 
   def generate_email

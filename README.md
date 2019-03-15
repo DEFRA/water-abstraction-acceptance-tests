@@ -144,7 +144,7 @@ To have consistency across the project the following tags are defined and should
 |@preprod|Any feature which can be run on preproduction.|
 |@prod|Any feature which can be run on production.|
 |@ci|A feature that is intended to be run only on our continuous integration service (you should never need to use this tag).|
-|@(test name)|Run an individual feature: @digitise, @flow, @password, @notify, @register, @rename, @returns, @search|
+|@(test name)|Run an individual feature: @digitise, @flow, @password, @notify, @register, @rename, @returns, @search, @switch|
 
 It's also common practice to use a custom tag whilst working on a new feature or scenario e.g. `@focus` or `@wip`. That is perfectly acceptable but please ensure they are removed before your change is merged.
 

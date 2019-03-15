@@ -8,6 +8,8 @@ Feature: [WATER-1258] [WATER-1352] View and edit returns
   I want to edit a user's return
   So that I can correct any errors in our database
 
+  # Currently broken by bug WATER-1982
+
 Background:
   Given I am on the sign in page
 

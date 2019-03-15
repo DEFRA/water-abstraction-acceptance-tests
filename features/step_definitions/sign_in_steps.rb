@@ -8,7 +8,6 @@ Given(/^I sign into my account as "([^"]*)"$/) do |account|
   @environment = Quke::Quke.config.custom["environment"].to_s
   # If in prod, switch to internal user because an external user won't work:
   account = "internal_user" if production? == true
-  puts "Account: " + account
   # Record the user type for different tests
   @user_type = account.to_s
   @front_app.sign_in_page.load
@@ -102,4 +101,8 @@ When(/^I unlock my account using the email link provided$/) do
       confirmpw: Quke::Quke.config.custom["data"]["accounts"]["password"]
     )
   end
+end
+
+When(/^I sign out$/) do
+  find_link("Sign out").click
 end

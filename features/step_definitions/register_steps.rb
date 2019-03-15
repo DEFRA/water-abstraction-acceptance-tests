@@ -13,6 +13,8 @@ Given(/^I have no registered licences for "([^"]*)"$/) do |tasktype|
                   Quke::Quke.config.custom["data"]["licence_reg_unlink"][@environment]
                 elsif tasktype == "returns"
                   Quke::Quke.config.custom["data"]["licence_returns_unlink"][@environment]
+                elsif tasktype == "switching companies"
+                  Quke::Quke.config.custom["data"]["licence_company2_unlink"][@environment]
                 else
                   Quke::Quke.config.custom["data"]["licence_some_unlink"][@environment]
                 end
@@ -92,6 +94,8 @@ When(/^I register a licence for "([^"]*)"$/) do |tasktype|
                    Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
                  elsif tasktype == "returns"
                    Quke::Quke.config.custom["data"]["licence_returns"].to_s
+                 elsif tasktype == "switching companies"
+                   Quke::Quke.config.custom["data"]["licence_company2"].to_s
                  else # refresh the data
                    Quke::Quke.config.custom["data"]["licence_one"].to_s
                  end
@@ -99,6 +103,8 @@ When(/^I register a licence for "([^"]*)"$/) do |tasktype|
                      Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
                    elsif tasktype == "returns"
                      Quke::Quke.config.custom["data"]["licence_returns"].to_s
+                   elsif tasktype == "switching companies"
+                     Quke::Quke.config.custom["data"]["licence_company2"].to_s
                    else
                      Quke::Quke.config.custom["data"]["licence_some"].to_s
                    end
@@ -152,5 +158,4 @@ end
 When(/^I select a licence I registered$/) do
   find_link(@licence_reg).click
   expect(@front_app.licence_details_page.heading).to have_text(@licence_reg)
-  find_link("Sign out").click # Can't use selector due to bug WATER-1905
 end

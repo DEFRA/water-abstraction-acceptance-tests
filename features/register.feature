@@ -31,5 +31,5 @@ Scenario: [WATER-560 and 565] Share and revoke access
 
   Given I am on the sign in page
   And I sign into my account as "external_user"
-  When I remove an agent to view my licences
+  When I revoke access to view my licences
   Then the agent cannot view any licences I own

@@ -225,6 +225,10 @@ class FrontOfficeApp
     @last_page = StartPage.new
   end
 
+  def switch_company_page
+    @last_page = SwitchCompanyPage.new
+  end
+
   def user_details_page
     @last_page = UserDetailsPage.new
   end

@@ -8,6 +8,8 @@ class LicencesPage < SitePrism::Page
   section(:govuk_banner, GovukBanner, GovukBanner::SELECTOR)
   section(:nav_bar, NavBar, NavBar::SELECTOR)
 
+  element(:company_switcher, ".company-switcher")
+  element(:change_company_link, ".company-switcher__link")
   element(:navbar, ".navbar") # Used in manage_licences_steps
   element(:external_heading, ".heading-large")
   element(:internal_heading, ".govuk-label--xl")
