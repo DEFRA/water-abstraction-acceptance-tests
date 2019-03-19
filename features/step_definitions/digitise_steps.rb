@@ -5,6 +5,7 @@ Given(/^I reset a licence back to in progress$/) do
   # Search for a licence
   find_link("Digitise!").click # Can't use selector due to bug WATER-1905
   @front_app.digitise_page.wait_for_heading
+  @front_app.digitise_page.wait_for_search_form
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)
@@ -24,6 +25,8 @@ Given(/^I propose changes to a licence$/) do
 
   # Go to AR screens
   @front_app.licences_page.nav_bar.ar_link.click
+  @front_app.digitise_page.wait_for_heading
+  @front_app.digitise_page.wait_for_search_form
   expect(@front_app.digitise_page.heading).to have_text("Review licence data")
 
   # Set a licence to work with
@@ -95,6 +98,7 @@ When(/^I reject the changes$/) do
   # Search for a licence
   find_link("Digitise!").click
   @front_app.digitise_page.wait_for_heading
+  @front_app.digitise_page.wait_for_search_form
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)
@@ -130,6 +134,7 @@ When(/^I mark the licence for review$/) do
   # Search for a licence
   find_link("Digitise!").click
   @front_app.digitise_page.wait_for_heading
+  @front_app.digitise_page.wait_for_search_form
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)
