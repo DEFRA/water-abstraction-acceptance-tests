@@ -20,47 +20,8 @@ Feature: [WATER-1013] Notify user of hands off flow
     Then I am on the notification custom information page
     And I can see my autopopulated details
 
-  Scenario: [WATER-1013 and 932] Send hands off flow warning and check log
-    When I select the hands off flow warning template
-    Then I am on the notification add licences page
-    When I add licences for a notification
-    Then I am on the notification custom information page
-    When I add custom information
-    Then I can see the correct information on the confirm message page
-    When I send the notification
-    Then I can see the correct information on the confirm sent page
-    When I check the log
-    Then the notifications appear in the log
-    And I can view the details of the latest batch
-
-  Scenario: [WATER-1013 and 932] Send hands off flow stop and check log
-    When I select the hands off flow stop template
-    Then I am on the notification add licences page
-    When I add licences for a notification
-    Then I am on the notification custom information page
-    When I add custom information
-    Then I can see the correct information on the confirm message page
-    When I send the notification
-    Then I can see the correct information on the confirm sent page
-    When I check the log
-    Then the notifications appear in the log
-    And I can view the details of the latest batch
-
-  Scenario: [WATER-1013 and 932] Send hands off flow resume and check log
-    When I select the hands off flow resume template
-    Then I am on the notification add licences page
-    When I add licences for a notification
-    Then I am on the notification custom information page
-    When I add custom information
-    Then I can see the correct information on the confirm message page
-    When I send the notification
-    Then I can see the correct information on the confirm sent page
-    When I check the log
-    Then the notifications appear in the log
-    And I can view the details of the latest batch
-
-  Scenario: [WATER-1013 and 932] Send expiry notification and check log
-    When I select the expiry notification template
+  Scenario: [WATER-1013 and 932] Send a notification and check log
+    When I select a template at random
     Then I am on the notification add licences page
     When I add licences for a notification
     Then I am on the notification custom information page
@@ -73,7 +34,7 @@ Feature: [WATER-1013] Notify user of hands off flow
     And I can view the details of the latest batch
 
   Scenario: [WATER-1013] Invalid data
-    Given I select the hands off flow warning template
+    Given I select a template at random
     And I am on the notification add licences page
     When I select no licences
     Then I see an error message telling me I need at least one licence

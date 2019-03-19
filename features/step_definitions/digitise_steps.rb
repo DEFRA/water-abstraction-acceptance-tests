@@ -94,7 +94,7 @@ end
 When(/^I reject the changes$/) do
   # Search for a licence
   find_link("Digitise!").click
-  @front_app.digitise_page.wait_for_search_form
+  @front_app.digitise_page.wait_for_heading
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)
@@ -129,7 +129,7 @@ end
 When(/^I mark the licence for review$/) do
   # Search for a licence
   find_link("Digitise!").click
-  @front_app.digitise_page.wait_for_search_form
+  @front_app.digitise_page.wait_for_heading
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)

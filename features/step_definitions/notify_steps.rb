@@ -50,32 +50,33 @@ Given(/^I can see my autopopulated details$/) do
   # rubocop:enable Metrics/LineLength
 end
 
-Given(/^I select the hands off flow warning template$/) do
-  find_link("Hands off flow: levels warning").click
-  expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow warning")
-  @notification_type = "hands off flow warning"
-  @notification_type_long = "Hands off flow: levels warning"
-end
-
-Given(/^I select the hands off flow stop template$/) do
-  find_link("Hands off flow: stop or reduce abstraction").click
-  expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow restriction notice")
-  @notification_type = "hands off flow restriction notice"
-  @notification_type_long = "Hands off flow: stop or reduce abstraction"
-end
-
-Given(/^I select the hands off flow resume template$/) do
-  find_link("Hands off flow: resume abstraction").click
-  expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow resume notice")
-  @notification_type = "hands off flow resume notice"
-  @notification_type_long = "Hands off flow: resume abstraction"
-end
-
-Given(/^I select the expiry notification template$/) do
-  find_link("Expiring licence(s): invitation to renew").click
-  expect(@front_app.notify_add_licences_page.heading).to have_text("Send an invitation to renew")
-  @notification_type = "invitation to renew"
-  @notification_type_long = "Expiring licence(s): invitation to renew"
+Given(/^I select a template at random$/) do
+  # This step chooses one of 4 notification templates to send.
+  # Because the code is the same for each template, we only need to test one per run.
+  # The advantage of this is that the test is quicker to run and doesn't
+  # clog up Notify with extra messages.
+  r = rand(1..4)
+  if r == 1
+    find_link("Hands off flow: levels warning").click
+    expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow warning")
+    @notification_type = "hands off flow warning"
+    @notification_type_long = "Hands off flow: levels warning"
+  elsif r == 2
+    find_link("Hands off flow: stop or reduce abstraction").click
+    expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow restriction notice")
+    @notification_type = "hands off flow restriction notice"
+    @notification_type_long = "Hands off flow: stop or reduce abstraction"
+  elsif r == 3
+    find_link("Hands off flow: resume abstraction").click
+    expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow resume notice")
+    @notification_type = "hands off flow resume notice"
+    @notification_type_long = "Hands off flow: resume abstraction"
+  elsif r == 4
+    find_link("Expiring licence(s): invitation to renew").click
+    expect(@front_app.notify_add_licences_page.heading).to have_text("Send an invitation to renew")
+    @notification_type = "invitation to renew"
+    @notification_type_long = "Expiring licence(s): invitation to renew"
+  end
 end
 
 Given(/^I am on the notification add licences page$/) do
