@@ -11,6 +11,11 @@ Feature: [WATER-1258] [WATER-1352] View and edit returns
 Background:
   Given I am on the sign in page
 
+Scenario: [WATER-1432] Upload an XML file
+  * I reset a return back to due
+  # TODO Write tests to upload an XML file
+  # Include one happy path and one unhappy path scenario
+
 Scenario: [WATER-1258] View returns history (external user)
   Given I sign into my account as "external_user"
   When I can access my returns overview

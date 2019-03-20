@@ -12,4 +12,8 @@ class BackOfficeApp
     @last_page = BackOfficeStartPage.new
   end
 
+  def return_admin_page
+    @last_page = ReturnAdminPage.new
+  end
+
 end

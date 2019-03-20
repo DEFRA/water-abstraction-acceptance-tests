@@ -266,3 +266,28 @@ Given(/^I can view the return I just submitted$/) do
   @front_app.return_details_page.nav_bar.view_licences_link.click
 
 end
+
+Given(/^I reset a return back to due$/) do
+  # This step uses the admin UI to reset a return, to help with XML testing.
+  # Warning - this causes a return version conflict which means that
+  # that return can no longer be viewed externally.
+  expect(production?).to be false
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @back_app = BackOfficeApp.new
+  @back_login = Quke::Quke.config.custom["urls"][@environment]["back_office_login"].to_s
+  @back_root = Quke::Quke.config.custom["urls"][@environment]["back_office_root"].to_s
+
+  # Go to back office UI using login details
+  visit(@back_login)
+  # Visit the link to reset the return
+  visit(@back_root + Quke::Quke.config.custom["data"]["return_xml_reset_url"].to_s)
+  @back_app.return_admin_page.submit(
+    status: "due",
+    created: "",
+    updated: "",
+    received: ""
+  )
+
+  page.execute_script "window.close();"
+
+end
