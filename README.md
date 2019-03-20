@@ -20,6 +20,17 @@ First clone the repository and then drop into your new local repo
 git clone https://github.com/DEFRA/water-abstraction-acceptance-tests.git && cd water-abstraction-acceptance-tests
 ```
 
+To help with installing dependencies on a Mac, the following tools are useful:
+
+|Tool|What it does|How to use|
+|----|------------|-------|
+|Homebrew|Make it easy to install Mac packages|[Installation instructions](https://brew.sh/)|
+|rbenv|Manage Ruby versions|`brew install rbenv`|
+||To install Ruby, use:|`rbenv install 2.3.0`|
+||To set Ruby version, use:|`rbenv global 2.3.0`|
+||To initialise Ruby, use:|`rbenv init`|
+|Bundler|Use the correct components for your repository|`sudo gem install bundler`|
+
 Next download and install the dependencies
 
 ```bash
@@ -97,11 +108,6 @@ Run only basic steps:
 bundle exec rake basic
 ```
 
-Run only work in progress steps:
-```bash
-bundle exec rake wip
-```
-
 You can create [multiple config files](https://github.com/DEFRA/quke#multiple-configs), for example you may wish to have one setup for running against **Chrome**, and another to run against a different environment. You can tell **Quke** which config file to use by adding an environment variable argument to the command.
 
 ```bash
@@ -154,7 +160,7 @@ In our experience one of the most complex and time consuming aspects of creating
 
 A tool we have found useful is a Chrome addin called [SelectorGadget](http://selectorgadget.com/).
 
-You can also test them using the Chrome developer tools. Open them up, select the elements tab and then `ctrl/cmd+f`. You should get an input field into which you can enter your selector and confirm/test its working. See <https://developers.google.com/web/updates/2015/05/search-dom-tree-by-css-selector>
+You can also test them using the Chrome developer tools. Open them up, select the elements tab and then `ctrl/cmd+f`. You should get an input field into which you can enter your selector and confirm/test it's working. See <https://developers.google.com/web/updates/2015/05/search-dom-tree-by-css-selector>
 
 Capybara has a known issue with links that don't have a valid href, as seen in MS dynamics. Work around is to find the element by ID and then call `click()` on it e.g. `page.find("#example-thing-id").click`. Issue details can be found here: https://github.com/teamcapybara/capybara/issues/379
 
