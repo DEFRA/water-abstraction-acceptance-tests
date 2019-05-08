@@ -106,7 +106,7 @@ When(/^I register a licence for "([^"]*)"$/) do |tasktype|
                    else
                      Quke::Quke.config.custom["data"]["licence_some"].to_s
                    end
-  @front_app.register_add_licences_page.wait_for_licence_box
+  @front_app.register_add_licences_page.wait_until_licence_box_visible
   @front_app.register_add_licences_page.help_link.click
   expect(@front_app.register_add_licences_page.help_text).to have_text("Telephone: 03708 506 506")
   @front_app.register_add_licences_page.submit(
@@ -118,9 +118,9 @@ When(/^I register a licence for "([^"]*)"$/) do |tasktype|
   expect(@front_app.register_confirm_licences_page.heading).to have_text("Sorry, we need to confirm your licence information with you")
   # rubocop:enable Metrics/LineLength
   page.go_back
-  @front_app.register_confirm_licences_page.wait_for_continue_button
+  @front_app.register_confirm_licences_page.wait_until_continue_button_visible
   @front_app.register_confirm_licences_page.continue_button.click
-  @front_app.register_choose_address_page.wait_for_continue_button
+  @front_app.register_choose_address_page.wait_until_continue_button_visible
   @front_app.register_choose_address_page.address_radio.click
   @front_app.register_choose_address_page.continue_button.click
   @front_app.register_sending_letter_page.sign_out_link.click

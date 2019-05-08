@@ -1,6 +1,6 @@
 
 Given(/^I select Change Password$/) do
-  @front_app.licences_page.govuk_banner.wait_for_changepw
+  @front_app.licences_page.govuk_banner.wait_until_changepw_visible
   # Wait for helps because the page object is not always found straight away on load
   @front_app.licences_page.govuk_banner.changepw.click
 end
