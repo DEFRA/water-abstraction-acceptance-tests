@@ -49,8 +49,7 @@ Feature: Reset test environment
     * I am on the sign in page for "internal_user"
     * I sign into my account as "ar_approver"
     * I reset a licence back to in progress
-
-  @skip_scenario
+  @wip
   Scenario: Back end permissions
     * I am on the sign in page
 
