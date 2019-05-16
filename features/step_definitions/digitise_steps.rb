@@ -5,7 +5,7 @@ Given(/^I reset a licence back to in progress$/) do
   # Search for a licence
   find_link("Digitise!").click # Can't use selector due to bug WATER-1905
   @front_app.digitise_page.wait_until_heading_visible
-  @front_app.digitise_page.wait_until_search_form_visble
+  @front_app.digitise_page.wait_until_search_form_visible
   @front_app.digitise_page.search(search_form: @ar_licence)
   @front_app.digitise_page.single_result.click
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)

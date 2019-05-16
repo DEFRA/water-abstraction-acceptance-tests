@@ -123,6 +123,7 @@ When(/^I register a licence for "([^"]*)"$/) do |tasktype|
   @front_app.register_choose_address_page.wait_until_continue_button_visible
   @front_app.register_choose_address_page.address_radio.click
   @front_app.register_choose_address_page.continue_button.click
+  @front_app.register_choose_address_page.continue_button.click
   @front_app.register_sending_letter_page.sign_out_link.click
 end
 
