@@ -1,6 +1,6 @@
 class ManageGiveAccessPage < SitePrism::Page
 
-  element(:heading, ".govuk-heading-l")
+  element(:heading, "h1")
   element(:content, "#content")
   element(:email_form, "#email")
   element(:add_user_button, ".govuk-button")

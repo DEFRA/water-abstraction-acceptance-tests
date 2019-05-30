@@ -16,7 +16,6 @@ class ReturnDetailsPage < SitePrism::Page
   element(:data_table, ".column-two-thirds")
   # Use this for different units and meter readings:
   element(:data_table_full, ".column-full")
-
   # Use this for cubic meter volumes:
   element(:table_total, ".table-foot .numbers")
   # Use this for different units and meter readings:

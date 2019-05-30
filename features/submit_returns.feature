@@ -2,16 +2,14 @@
 Feature: External flows where user can submit returns through various paths
 
   Scenario:
-    Given I am on the sign in page for "internal_user"
-    And I sign into my account as "internal_user"
-#    And I can access my returns overview
-    When I "submit" a return of type "volume"
-#    And I input "yes" for "Have_you_abstracted_water_in_this_return_period"
-#    Then I can view a return that is "populated daily"
-#    And I can't see the NALD reference
-#    And I can check the licence details
-#    And I can view a return that is "due"
-#    And I am on the abstraction licences page
+    Given I am on the sign in page
+    And  I sign into my account as "external_user"
+    When I can access my returns overview
+    Then I can view a return that is "populated daily"
+    And I can't see the NALD reference
+    And I can check the licence details
+    And I can view a return that is "due"
+    And I am on the abstraction licences page
 
 #  Scenario: Input returns through estimates flow as an external user.
 #    When I click on "returns"

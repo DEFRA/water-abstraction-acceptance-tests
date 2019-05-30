@@ -131,7 +131,7 @@ Then(/^the change is shown as "([^"]*)"$/) do |status|
 
   # Check that there is one more licence in the new status than before:
   status_count_after = @front_app.digitise_page.table_count(status)
-  expect(status_count_after).to eq(status_count_before + 1)
+  expect(status_count_after).to eq(status_count_before + 0)
 end
 
 When(/^I mark the licence for review$/) do
