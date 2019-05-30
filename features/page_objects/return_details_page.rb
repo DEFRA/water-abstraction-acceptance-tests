@@ -16,7 +16,7 @@ class ReturnDetailsPage < SitePrism::Page
   element(:data_table_full, ".column-full")
   element(:freq_heading, ".column-33:nth-child(1)")
   element(:unit_heading, ".column-33.numbers")
-  element(:first_reading, ".table-head+ .medium-space .numbers")
+  element(:first_reading, ".medium-space")
   # Use this for cubic meter volumes:
   element(:table_total, ".table-foot .numbers")
   # Use this for different units and meter readings:

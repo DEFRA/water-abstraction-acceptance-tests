@@ -1,12 +1,12 @@
 class ManageGiveAccessPage < SitePrism::Page
 
-  element(:heading, ".govuk-heading-l")
+  element(:heading, "h1")
   element(:content, "#content")
   element(:email_form, "#email")
   element(:add_user_button, ".govuk-button")
   element(:add_user_button1, ".button")
   element(:user_list, ".column-full")
-  elements(:change_links, "#results a")
+  elements(:change_links, ".govuk-table.phone--hide tbody tr t a")
   element(:remove_access_link, "#results a")
 
   def generate_email

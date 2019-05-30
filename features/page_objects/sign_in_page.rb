@@ -3,10 +3,10 @@ class SignInPage < SitePrism::Page
   @environment = Quke::Quke.config.custom["environment"].to_s
   set_url(Quke::Quke.config.custom["urls"][@environment]["front_office_sign_in"])
 
-  element(:email, "#user-id")
+  element(:email, "#email")
   element(:password, "#password")
   element(:error_heading, "#error-summary-heading")
-  element(:submit_button, "#signInButton")
+  element(:submit_button, "[type='submit']")
   element(:forgotten_password, ".form+ a")
   element(:create_account_link, "br+ a")
 
