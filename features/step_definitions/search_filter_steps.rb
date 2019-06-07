@@ -23,6 +23,7 @@ Given(/^I can see the correct number of pagination links$/) do
 end
 
 Given(/^I search for (?:a|an) "([^"]*)" licence$/) do |licencetype|
+  @licencetype = licencetype
   @environment = Quke::Quke.config.custom["environment"].to_s
   @expected_search_result = Quke::Quke.config.custom["data"]["licence_" + licencetype.to_s].to_s
   @front_app.licences_page.search(
@@ -32,7 +33,7 @@ end
 
 Given(/^I search for a partial licence number$/) do
   @expected_search_result = "29/01/*G"
-  @expected_result_count = 5
+  @expected_result_count = 10
   @front_app.licences_page.search(
     search_input: @expected_search_result.to_s
   )
@@ -100,7 +101,12 @@ Given(/^the correct search results are shown$/) do
   elsif @user_type == "external_user"
     expect(@front_app.licences_page).to have_licence_links_external count: @expected_result_count.to_i
   else
-    expect(@front_app.licences_page).to have_licence_links_internal count: @expected_result_count.to_i
+    if @front_app.licences_page.has_licence_links_internal?
+      p @expected_result_count
+      expect(@front_app.licences_page).to have_licence_links_internal count: @expected_result_count.to_i
+    else
+      expect(@front_app.licences_page).to have_licence_links_internal1 count: @expected_result_count.to_i
+    end
   end
 end
 
@@ -113,7 +119,17 @@ Given(/^I enter a search term which does not exist on screen$/) do
 end
 
 Given(/^I cannot see any licences$/) do
-  expect(@front_app.licences_page).to have_text("No results found.")
+  case @licencetype
+  when 'expired'
+    expect(@front_app.licences_page).to have_text("EXPIRED")
+  when 'revoked'
+    expect(@front_app.licences_page).to have_text("EXPIRED")
+  when 'lapsed'
+    expect(@front_app.licences_page).to have_text("EXPIRED")
+  when 'future'
+    #expect(@front_app.licences_page).to have_text("") #update this when you get future licence data -chandra
+  end
+
 end
 
 Given(/^I remove a search term$/) do

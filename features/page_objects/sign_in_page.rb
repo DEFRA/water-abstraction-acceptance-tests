@@ -7,7 +7,7 @@ class SignInPage < SitePrism::Page
   element(:password, "#password")
   element(:error_heading, "#error-summary-heading")
   element(:submit_button, "[type='submit']")
-  element(:forgotten_password, ".form+ a")
+  element(:forgotten_password, "#main-content a:nth-child(1)")
   element(:create_account_link, "br+ a")
 
   def submit(args = {})

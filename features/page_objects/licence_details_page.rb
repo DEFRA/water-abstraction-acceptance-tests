@@ -9,6 +9,7 @@ class LicenceDetailsPage < SitePrism::Page
   # Global page selectors
 
   element(:heading, ".govuk-heading-l")
+  element(:heading2, "h1")
   element(:summary_tab, "#tab_summary")
   element(:returns_tab, "#tab_returns")
   element(:communications_tab, "#tab_communications")

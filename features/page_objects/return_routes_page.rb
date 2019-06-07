@@ -3,6 +3,7 @@ class ReturnRoutesPage < SitePrism::Page
   element(:heading, ".heading-large")
   element(:content, "#content")
   element(:question, ".heading-medium")
+  element(:question1, ".govuk-heading-m")
 
   # Radio buttons - use unique html attributes.
   element(:first_action_radio, "input[id='radio-inline-0']", visible: false)
@@ -13,6 +14,7 @@ class ReturnRoutesPage < SitePrism::Page
   # Do you have volumes to report? / Is it a single amount? / One or more meters?
   element(:yes_radio, "input[id='radio-inline-0']", visible: false)
   element(:no_radio, "input[id='radio-inline-1']", visible: false)
+  element(:no_radio1, "input[id='isNil-2']", visible: false)
   # How are you reporting your return?
   element(:method_meter_radio, "input[id='radio-inline-0']", visible: false)
   element(:method_volume_radio, "input[id='radio-inline-1']", visible: false)
@@ -27,8 +29,9 @@ class ReturnRoutesPage < SitePrism::Page
   element(:meter_start_reading_form, "#startReading")
   element(:meter_x10_checkbox, "input[name='isMultiplier']", visible: false)
 
-  element(:nil_return_heading, "h3")
+  element(:nil_return_heading, "h2", match: :first )
   element(:continue_button, "button")
+  element(:continue_button1, "button", text: "Continue")
 
   def submit(args = {})
     meter_manufacturer_form.set(args[:manufacturer]) if args.key?(:manufacturer)

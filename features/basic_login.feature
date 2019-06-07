@@ -9,14 +9,14 @@ Feature: [WATER-420] Basic login
 
   Scenario: [WATER-420] Incorrect password prompts reentering sign in details
     When I enter my password incorrectly
-    Then I am informed "Your email address or password is incorrect"
+    Then I am informed "Re-enter your email address"
 
   Scenario: [WATER-420] Blank email and password gives error message
     When I enter blank details
-    Then I am informed "Your email address or password is incorrect"
+    Then I am informed "Re-enter your password"
 
   Scenario: [WATER-444] Request password reset
-    When I request a password reset as an "internal_user"
+    When I request a password reset as an "external_user"
     Then I am on the Check Your Email page
 
   Scenario: [WATER-420] Valid login
