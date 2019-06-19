@@ -213,6 +213,10 @@ class FrontOfficeApp
     @last_page = ReturnRoutesPage.new
   end
 
+  #def sign_in_page
+  # @last_page = SignInPage.new
+  #end
+
   def sign_in_page
     @last_page = SignInPage.new
   end

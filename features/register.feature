@@ -17,7 +17,7 @@ Scenario: [WATER-528] Register licences
   And I select a licence I registered
 
 Scenario: [WATER-563] Search by licence holder
-  Given I am on the sign in page
+  Given I am on the sign in page for "internal_user"
   And I sign into my account as "internal_user"
   When I enter an email address on the licence holder's email field
   Then the correct search results are shown
@@ -25,12 +25,12 @@ Scenario: [WATER-563] Search by licence holder
 
 Scenario: [WATER-560 and 565] Share and revoke access
   # External_user must have not already granted access to another user for these steps to work.
-  Given I am on the sign in page
+  Given I am on the sign in page for "external_user"
   And I sign into my account as "external_user"
   When I add an agent to view my licences
   Then the agent can log in and view a licence I can access
 
-  Given I am on the sign in page
+  Given I am on the sign in page for "external_user"
   And I sign into my account as "external_user"
   When I revoke access to view my licences
   Then the agent cannot view any licences I own

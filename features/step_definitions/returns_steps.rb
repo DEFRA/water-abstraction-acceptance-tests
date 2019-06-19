@@ -5,7 +5,7 @@ Given(/^I can access my returns overview$/) do
   @front_app.licences_page.nav_bar.returns_link.click
   expect(@front_app.returns_page.heading).to have_text("Your returns")
   expect(@front_app.returns_page.content).to have_text("View return from")
-  expect(@front_app.returns_page.content).to have_text("Potable Water Supply")
+  # expect(@front_app.returns_page).to has_current_path?(/returns/)
 end
 
 Given(/^I can view a return that is "([^"]*)"$/) do |returntype|
@@ -19,16 +19,19 @@ Given(/^I can view a return that is "([^"]*)"$/) do |returntype|
     # https://stackoverflow.com/questions/30743686/remove-a-comma-from-string-in-ruby-then-cast-to-integer
     @first_reading.tap { |s| s.delete!(",") }
     @first_reading = @first_reading.to_f
-    expect(@front_app.return_details_page.freq_heading).to have_text("Day")
-    expect(@front_app.return_details_page.unit_heading).to have_text("Cubic metres")
-    expect(@front_app.return_details_page.data_table).to have_text("March")
-    expect(@first_reading.positive?).to eq(true)
+    # expect(@front_app.return_details_page.freq_heading).to have_text("Day")
+    # expect(@front_app.return_details_page.unit_heading).to have_text("Cubic metres")
+    # expect(@front_app.return_details_page.data_table).to have_text("March")
+    # expect(@first_reading.positive?).to eq(true)
+    expect(@front_app.return_details_page.heading).to have_text("Abstraction return for")
+    expect(@front_app.return_details_page.heading).to have_text(@return_licence_link)
 
   elsif @return_type == "nil"
     @return_licence_link = Quke::Quke.config.custom["data"]["return_nil"].to_s
     @front_app.returns_page.clickfirstlink(link: @return_licence_link)
     expect(@front_app.return_details_page.heading_mini).to have_text("Nil return")
-
+    expect(@front_app.return_details_page.heading2).to have_text("Abstraction return for")
+    expect(@front_app.return_details_page.heading2).to have_text(@return_licence_link)
   elsif @return_type == "null"
     @return_licence_link = Quke::Quke.config.custom["data"]["return_null"].to_s
 
@@ -37,9 +40,8 @@ Given(/^I can view a return that is "([^"]*)"$/) do |returntype|
     @return_licence_link = @licence_one
 
   end
-  # Two lines here, because the heading wording order varies depending if licence has a name or not.
-  expect(@front_app.return_details_page.heading).to have_text("Abstraction return for")
-  expect(@front_app.return_details_page.heading).to have_text(@return_licence_link)
+  # Two lines here, because the heading wording order varies depending if licence has a name or not
+
 end
 
 Given(/^I can't see the NALD reference$/) do
@@ -49,6 +51,7 @@ end
 Given(/^I can check the licence details$/) do
   @front_app.return_details_page.view_licence_link.click
   expect(@front_app.licence_details_page.heading).to have_text(@return_licence_link)
+  # expect(@front_app.licence_details_page.heading2).to have_text(@return_licence_link)
   expect(@front_app.licence_details_page.content).to have_text("Source of supply")
   @front_app.licence_details_page.nav_bar.returns_link.click
 end
@@ -99,9 +102,11 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
   @return_flow = flow.to_s
 
   # Edit or submit a return using a particular flow.
-
+  find_link('Licences').click
   # Decide whether to start on the edit or submit path:
-  @licence_returns = Quke::Quke.config.custom["data"]["licence_returns"].to_s
+  #@licence_returns = Quke::Quke.config.custom["data"]["licence_returns"].to_s
+  @licence_returns = Quke::Quke.config.custom["data"]["return_nil"].to_s
+
 
   if action == "edit"
     @front_app.licences_page.search(search_input: @licence_returns)
@@ -118,7 +123,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
 
   elsif action == "submit"
     # Not yet built.  Access the required licence's list of returns as an external user.
-    find_link(@licence_returns).click
+
     @front_app.licence_details_page.returns_tab.click
     @front_app.licence_details_page.first_return.click
 
@@ -126,10 +131,12 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
 
   # Returns routes pages
   # Use assertions to check the right options exist
-  expect(@front_app.return_routes_page.question).to have_text("Has any water been abstracted in this return period?")
+  expect(@front_app.return_routes_page.question).to have_text("When was the return received?")
+  @front_app.return_routes_page.continue_button1.click
+  expect(@front_app.return_routes_page.question1).to have_text("Has water been abstracted in this return period?")
   if @return_flow == "nil"
     # Report a nil return
-    @front_app.return_routes_page.no_radio.click
+    @front_app.return_routes_page.no_radio1.click
     @front_app.return_routes_page.continue_button.click
     expect(@front_app.return_routes_page.nil_return_heading).to have_text("Nil return")
     @front_app.return_routes_page.continue_button.click
@@ -228,7 +235,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
 
   end
 
-  expect(@front_app.return_submitted_page.confirmation_box).to have_text("Return submitted")
+  expect(@front_app.return_submitted_page.confirmation_box).to have_text("Return Submitted")
   expect(@front_app.return_submitted_page.confirmation_box).to have_text(@licence_returns)
 
   # These tests may be expanded by:
@@ -238,7 +245,8 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
 end
 
 Given(/^I can view the return I just submitted$/) do
-  @front_app.return_submitted_page.view_return_link.click
+  #@front_app.return_submitted_page.view_return_link.click
+  click_link("View this return")
   expect(@front_app.return_details_page.heading).to have_text(@licence_returns)
 
   if @return_flow == "nil"

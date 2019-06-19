@@ -5,7 +5,7 @@ Feature: [WATER-1049] Check flows and levels
   So that I can abstract water legally
 
   Background:
-    Given I am on the sign in page
+    Given I am on the sign in page for "internal_user"
     And I sign into my account as "internal_user"
 
   Scenario: [WATER-1090] Show flow

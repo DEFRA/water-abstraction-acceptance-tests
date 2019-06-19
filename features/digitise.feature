@@ -5,7 +5,7 @@ Feature: [WATER-1015] Edit licence and [WATER-1772] Add Hands Off Flow condition
   So that licence holders receive a consistent service
 
   Background:
-    Given I am on the sign in page
+    Given I am on the sign in page for "ar_user"
     And I sign into my account as "ar_user"
     And I propose changes to a licence
 

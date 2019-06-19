@@ -82,6 +82,9 @@ Given(/^I sign in with my new email address$/) do
 end
 
 Then(/^I am on the add licences page$/) do
+  find_link("Add licences or give access").click
+  expect(@front_app.register_add_licences_page.current_url).to include "/manage_licences"
+  find_link("Add more of your licences to the service").click
   expect(@front_app.register_add_licences_page.current_url).to include "/add-licences"
   expect(@front_app.register_add_licences_page.heading).to have_text("Add your licences to the service")
 end

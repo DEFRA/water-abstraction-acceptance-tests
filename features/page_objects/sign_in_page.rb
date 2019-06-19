@@ -1,5 +1,4 @@
 class SignInPage < SitePrism::Page
-
   @environment = Quke::Quke.config.custom["environment"].to_s
   set_url(Quke::Quke.config.custom["urls"][@environment]["front_office_sign_in"])
 

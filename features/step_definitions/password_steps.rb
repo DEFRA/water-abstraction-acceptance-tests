@@ -73,16 +73,29 @@ Given(/^I request a password reset as an "([^"]*)"$/) do |account|
   @password_reset_email = Quke::Quke.config.custom["data"]["accounts"][account.to_s].to_s
 
   @front_app.sign_in_page.forgotten_password.click
-  @front_app.request_pw_reset_page.submit(
-    email_address: @password_reset_email
-  )
+  if @front_app.request_pw_reset_page.has_email_address2?
+    @front_app.request_pw_reset_page.submit2(
+      email_address: @password_reset_email
+    )
+  else
+    @front_app.request_pw_reset_page.submit(
+      email_address: @password_reset_email
+    )
+    end
 
   # Also test the "not received email" link:
-  @front_app.reset_password_check_page.havent_received_link.click
+  #@front_app.reset_password_check_page.havent_received_link.click
+  find_link("Has the email not arrived?").click
   expect(@front_app.request_pw_reset_page.paragraph).to have_text("The email might take a few minutes to reach you")
-  @front_app.request_pw_reset_page.submit(
-    email_address: @password_reset_email
-  )
+  if @front_app.request_pw_reset_page.has_email_address2?
+    @front_app.request_pw_reset_page.submit2(
+        email_address: @password_reset_email
+    )
+  else
+    @front_app.request_pw_reset_page.submit(
+        email_address: @password_reset_email
+    )
+  end
 end
 
 Given(/^I am on the Check Your Email page$/) do

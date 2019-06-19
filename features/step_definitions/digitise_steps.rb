@@ -92,6 +92,7 @@ Given(/^I propose changes to a licence$/) do
 
   @front_app.digitise_page.govuk_banner.sign_out_link.click
   expect(@front_app.sign_out_page.heading).to have_text("You are signed out")
+  find_link("Sign in").click
 end
 
 When(/^I reject the changes$/) do
@@ -127,7 +128,7 @@ Then(/^the change is shown as "([^"]*)"$/) do |status|
 
   # Check that there is one more licence in the new status than before:
   status_count_after = @front_app.digitise_page.table_count(status)
-  expect(status_count_after).to eq(status_count_before + 0)
+  expect(status_count_after).to eq(status_count_before + 1)
 end
 
 When(/^I mark the licence for review$/) do

@@ -4,13 +4,23 @@ Given(/^I am on the sign in page$/) do
   @front_app.sign_in_page.load
 end
 
+Given(/^I am on the sign in page for "([^"]*)"$/) do |account|
+  @user_type = account
+  @front_app = FrontOfficeApp.new
+  @front_app.sign_in_page.load
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @url = (Quke::Quke.config.custom["urls"][@environment]["back_office_internal"]) if @user_type == "internal_user" || @user_type == "ar_user"
+  p "user type: #{@user_type}    url: #{@url}"
+  visit(@url) if @user_type == "internal_user" || @user_type == "ar_user"
+  sleep 5
+end
+
 Given(/^I sign into my account as "([^"]*)"$/) do |account|
   @environment = Quke::Quke.config.custom["environment"].to_s
   # If in prod, switch to internal user because an external user won't work:
   account = "internal_user" if production? == true
   # Record the user type for different tests
   @user_type = account.to_s
-  @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: Quke::Quke.config.custom["data"]["accounts"][account.to_s],
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
