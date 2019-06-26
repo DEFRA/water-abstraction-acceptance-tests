@@ -12,7 +12,6 @@ Given(/^I am on the sign in page for "([^"]*)"$/) do |account|
   @url = (Quke::Quke.config.custom["urls"][@environment]["back_office_internal"]) if @user_type == "internal_user" || @user_type == "ar_user"
   p "user type: #{@user_type}    url: #{@url}"
   visit(@url) if @user_type == "internal_user" || @user_type == "ar_user"
-  sleep 5
 end
 
 Given(/^I sign into my account as "([^"]*)"$/) do |account|

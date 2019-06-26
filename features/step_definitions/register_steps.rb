@@ -134,6 +134,8 @@ When(/^an admin user can read the code$/) do
   # Log in as admin user
   @environment = Quke::Quke.config.custom["environment"].to_s
   @front_app.sign_in_page.load
+  @url = (Quke::Quke.config.custom["urls"][@environment]["back_office_internal"])
+  visit(@url)
   @front_app.sign_in_page.submit(
     email: Quke::Quke.config.custom["data"]["accounts"]["internal_user"],
     password: Quke::Quke.config.custom["data"]["accounts"]["password"]
@@ -144,6 +146,7 @@ When(/^an admin user can read the code$/) do
   )
   find_link(@licence_reg).click
   expect(@front_app.licence_details_page.heading).to have_text(@licence_reg)
+  @front_app.licence_details_page.registered_to_link.click
   # Read the first (latest) security code on screen.
   @security_code = @front_app.licence_details_page.confirmation_first_code.text
   puts "Confirmation code is: " + @security_code + "."
@@ -151,6 +154,7 @@ When(/^an admin user can read the code$/) do
 end
 
 When(/^I enter my confirmation code$/) do
+  find_link("Enter your code here").click
   expect(@front_app.register_security_code_page.current_url).to include "/security-code"
   @front_app.register_security_code_page.submit(
     security_code_box: @security_code
