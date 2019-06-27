@@ -195,7 +195,6 @@ When(/^an admin user can read the code$/) do
   else
     @security_code = @front_app.licence_details_page.confirmation_only_code.text
   end
-
   puts "Confirmation code is: " + @security_code + "."
   find_link("Sign out").click # Can't use selector due to bug WATER-1905
 end
