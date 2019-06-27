@@ -113,8 +113,11 @@ end
 Given(/^I access the back end as "([^"]*)"$/) do |account|
   expect(production?).to be false
   @environment = Quke::Quke.config.custom["environment"].to_s
-
   @back_app = BackOfficeApp.new
+  if account == "internal_user"
+    @back_internal = Quke::Quke.config.custom["urls"][@environment]["back_office_login"].to_s
+    visit(@back_internal)
+  else
   # Create the back office URL by combining the username, password and root URL.
   @back_root = Quke::Quke.config.custom["urls"][@environment]["back_office_root"].to_s
   # rubocop:disable Metrics/LineLength
@@ -123,7 +126,9 @@ Given(/^I access the back end as "([^"]*)"$/) do |account|
   # This is the full URL to visit, containing the credentials.
   # Insert username and password from 8th character:
   @back_login = @back_root.insert(8, @back_credentials)
+  p "Back login: #{@back_login}"
   visit(@back_login)
+  end
 end
 
 Given(/^I can see the back end page$/) do
@@ -131,5 +136,5 @@ Given(/^I can see the back end page$/) do
 end
 
 Given(/^I cannot see the back end page$/) do
-  expect(@back_app.back_office_start_page.heading).to not_have_text("Permit Repository Admin")
+  expect(@back_app.back_office_start_page.has_heading?).to be false
 end

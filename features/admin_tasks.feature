@@ -15,7 +15,6 @@ Feature: Reset test environment
     * I sign into my account as "external_user"
     * I am on the add licences page
     * I register a licence for "refresh"
-   # * I sign into my account as "external_user"
     * an admin user can read the code
 
     * I am on the sign in page for "external_user"
@@ -29,22 +28,25 @@ Feature: Reset test environment
     * I register a licence for "returns"
     * an admin user can read the code
 
+    * I am on the sign in page for "external_user"
     * I sign into my account as "returns_user"
     * I enter my confirmation code
     * I am on the external abstraction licences page
     * I sign out
-
+    
+    * I am on the sign in page for "external_user"
     * I sign into my account as "external_user_2"
     * I am on the add licences page
     * I register a licence for "switching companies"
     * an admin user can read the code
 
+    * I am on the sign in page for "external_user"
     * I sign into my account as "external_user_2"
     * I enter my confirmation code
     * I am on the external abstraction licences page
     * I revoke access to view my licences
 
-    * I am on the sign in page
+    * I am on the sign in page for "internal_user"
     * I sign into my account as "ar_approver"
     * I reset a licence back to in progress
 

@@ -91,6 +91,7 @@ end
 
 When(/^I register a licence for "([^"]*)"$/) do |tasktype|
   # Register different licences based on the task type
+  @tasktype = tasktype
   @licence_reg = if tasktype == "registration"
                    Quke::Quke.config.custom["data"]["licence_reg_one"].to_s
                  elsif tasktype == "returns"
@@ -146,15 +147,21 @@ When(/^an admin user can read the code$/) do
   )
   find_link(@licence_reg).click
   expect(@front_app.licence_details_page.heading).to have_text(@licence_reg)
-  @front_app.licence_details_page.registered_to_link.click
+  if @tasktype == "refresh"
+    @front_app.licence_details_page.registered_to_link.click
   # Read the first (latest) security code on screen.
-  @security_code = @front_app.licence_details_page.confirmation_first_code.text
+    @security_code = @front_app.licence_details_page.confirmation_first_code.text
+  else
+    @security_code = @front_app.licence_details_page.confirmation_only_code.text
+  end
   puts "Confirmation code is: " + @security_code + "."
   find_link("Sign out").click # Can't use selector due to bug WATER-1905
 end
 
 When(/^I enter my confirmation code$/) do
-  find_link("Enter your code here").click
+  if @front_app.register_security_code_page.has_text?("Enter your code here")
+    find_link("Enter your code here").click
+  end
   expect(@front_app.register_security_code_page.current_url).to include "/security-code"
   @front_app.register_security_code_page.submit(
     security_code_box: @security_code
