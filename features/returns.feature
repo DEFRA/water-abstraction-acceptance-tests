@@ -8,10 +8,6 @@ Feature: [WATER-1258] [WATER-1352] View and edit returns
   I want to edit a user's return
   So that I can correct any errors in our database
 
-Background:
-  Given I am on the sign in page
-
-
 Scenario: [WATER-1258] View returns history (external user)
   Given I am on the sign in page for "external_user"
   When I sign into my account as "external_user"

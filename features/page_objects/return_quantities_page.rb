@@ -38,17 +38,17 @@ class ReturnQuantitiesPage < SitePrism::Page
     start_reading.set(total.to_s)
     reading_fields.each do |quantity|
       # Alternate between blanks and random numbers that total up to 7,000,000,000 (the size of Loch Ness in m3)
-      if rand(0..2).zero?
-        # Make 1 in 3 entries blank
-        quantity.set("")
-      else
-        # Enter a random quantity up to 7,000,000,000 m3 / 52, with 3 decimal places
-        abs_quantity = rand(0..134_615_385_000) / 1000
-        total += abs_quantity
-        # As it's a meter reading, the entered value must not decrease, so enter the total so far.
-        quantity.set(total.to_s)
+        if rand(0..2).zero?
+          # Make 1 in 3 entries blank
+          quantity.set("")
+        else
+          # Enter a random quantity up to 7,000,000,000 m3 / 52, with 3 decimal places
+          abs_quantity = rand(0..134_615_385_000) / 1000
+          total += abs_quantity
+          # As it's a meter reading, the entered value must not decrease, so enter the total so far.
+          quantity.set(total.to_s)
+        end
       end
-    end
     total
   end
 

@@ -23,5 +23,4 @@ class DigitiseReviewPage < SitePrism::Page
     status_radio1.click if args.key?(:status) && has_status_radio1?
     submit_button.click
   end
-
 end
