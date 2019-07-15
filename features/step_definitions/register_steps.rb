@@ -50,6 +50,7 @@ Given(/^I register my email address on the service$/) do
   # rubocop:disable Metrics/LineLength
   @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @reg_email).to_s
   # rubocop:enable Metrics/LineLength
+  p @email_api_url
   visit(@email_api_url)
   @email_json = @front_app.email_content_page.email_content.text
 
@@ -148,7 +149,7 @@ When(/^an admin user can read the code$/) do
   find_link(@licence_reg).click
   expect(@front_app.licence_details_page.heading).to have_text(@licence_reg)
   if @tasktype == "refresh"
-    @front_app.licence_details_page.registered_to_link.click
+    @front_app.licence_details_page.registered_to_link.click if @front_app.licence_details_page.has_registered_to_link?
   # Read the first (latest) security code on screen.
     @security_code = @front_app.licence_details_page.confirmation_first_code.text
   else

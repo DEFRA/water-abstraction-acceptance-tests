@@ -6,9 +6,10 @@ class ReturnDetailsPage < SitePrism::Page
 
 
   # element(:heading, ".govuk-caption-l")
-  # element(:heading, ".heading-large")
-  element(:heading, "h1")
-  element(:content, "#content")
+  element(:heading, ".govuk-caption-l")
+  element(:heading1, "h1")
+  element(:heading2, ".heading-large")
+  element(:content, "#main-content")
   element(:edit_return_button, ".button")
   element(:heading_mini, "main h2")
   element(:view_licence_link, ".medium-space a")

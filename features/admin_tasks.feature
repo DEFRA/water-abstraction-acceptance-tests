@@ -1,9 +1,9 @@
-@reset
+@test @reset
 Feature: Reset test environment
 
-# This feature refreshes all the data used for the purposes below.
-# It does not need running every cycle, only if the test data for automation has been unexpectedly changed.
-# It assumes that the accounts used for each test have already been set up manually on each environment.
+ This feature refreshes all the data used for the purposes below.
+ It does not need running every cycle, only if the test data for automation has been unexpectedly changed.
+ It assumes that the accounts used for each test have already been set up manually on each environment.
 
   Scenario: Refresh data
     * I have no registered licences for "registration"
@@ -36,7 +36,7 @@ Feature: Reset test environment
     
     * I am on the sign in page for "external_user"
     * I sign into my account as "external_user_2"
-    * I am on the add licences page
+#    * I am on the add licences page
     * I register a licence for "switching companies"
     * an admin user can read the code
 

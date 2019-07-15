@@ -5,7 +5,7 @@ Feature: [WATER-564] Rename licence
   So that I know how much water I am licenced to abstract legally
 
   Background:
-    Given I am on the sign in page
+    Given I am on the sign in page for "external_user"
     And I sign into my account as "external_user"
     When I start renaming a licence
 
@@ -17,10 +17,10 @@ Feature: [WATER-564] Rename licence
     When I select the Cancel link
     Then the expected licence name appears on the licence summary page
 
-  Scenario: [WATER-564] Invalid licence rename
-    When I enter a licence name which is invalid
-    Then I see an error message telling me the name is invalid
-    And the expected licence name appears on the licence summary page
+#  Scenario: [WATER-564] Invalid licence rename
+#    When I enter a licence name which is invalid
+#    Then I see an error message telling me the name is invalid
+#    And the expected licence name appears on the licence summary page
 
   Scenario: [WATER-564] Valid licence rename
     When I enter a valid licence name

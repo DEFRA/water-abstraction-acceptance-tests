@@ -6,6 +6,6 @@ class UserDetailsPage < SitePrism::Page
 
   element(:caption, ".govuk-caption-l")
   element(:heading, ".break-word")
-  element(:content, ".govuk-grid-column-two-thirds")
+  element(:content, ".heading-small")
 
 end

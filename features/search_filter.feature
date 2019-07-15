@@ -2,7 +2,7 @@
 Feature: [WATER-563] Search for things
 
 Background:
-  Given I am on the sign in page
+  Given I am on the sign in page for "internal_user"
   And I sign into my account as "internal_user"
   And I am on the internal abstraction licences page
 

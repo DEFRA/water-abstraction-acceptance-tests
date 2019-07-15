@@ -83,7 +83,6 @@ Given(/^I revoke access to view my licences$/) do
   #@front_app.manage_access_removed_page.govuk_banner.sign_out_link.click
   @front_app.manage_access_removed_page.sign_out_link.click
   find_link("Sign in").click
-  sleep 5
 end
 
 Given(/^the agent cannot view any licences I own$/) do

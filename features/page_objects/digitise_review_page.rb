@@ -13,11 +13,14 @@ class DigitiseReviewPage < SitePrism::Page
   element(:notes_box, "#notes")
   element(:no_radio, "#status-1", visible: false)
   element(:approved_radio, "#status-2", visible: false)
-  element(:lic_review_radio, "#status-3", visible: false)
+  element(:lic_review_radio, "#status-4", visible: false)
   element(:submit_button, ".govuk-button")
+  element(:status_radio1, "#status-1", visible: false)
+  element(:status_radio2, "#status-2", visible: false)
 
   def submit(args = {})
     notes_box.set(args[:notes_box]) if args.key?(:notes_box)
+    status_radio1.click if args.key?(:status)&&self.has_status_radio1?
     submit_button.click
   end
 

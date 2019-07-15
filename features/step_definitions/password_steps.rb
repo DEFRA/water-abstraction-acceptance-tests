@@ -108,6 +108,7 @@ Given(/^I can reset my password$/) do
     # rubocop:disable Metrics/LineLength
     @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @password_reset_email).to_s
     # rubocop:enable Metrics/LineLength
+    p @email_api_url
     visit(@email_api_url)
     @email_json = @front_app.email_content_page.email_content.text
 

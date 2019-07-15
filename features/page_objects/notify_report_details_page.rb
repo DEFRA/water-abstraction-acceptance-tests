@@ -4,7 +4,7 @@ class NotifyReportDetailsPage < SitePrism::Page
 
   section(:nav_bar, NavBar, NavBar::SELECTOR)
 
-  element(:heading, ".heading-large--tight-above")
-  element(:details_table, ".column-full")
+  element(:heading, ".govuk-heading-xl")
+  element(:details_table, ".govuk-table")
 
 end

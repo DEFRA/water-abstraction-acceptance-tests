@@ -80,7 +80,7 @@ Given(/^I propose changes to a licence$/) do
 
   # Submit the changes you have proposed
   @front_app.digitise_review_page.submit(
-    notes_box: "Automated edit at: " + Time.new.inspect
+    notes_box: "Automated edit at: " + Time.new.inspect, status: "Review"
   )
   expect(@front_app.digitise_page.heading).to have_text("Review licence data")
 

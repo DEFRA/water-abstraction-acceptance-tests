@@ -1,14 +1,14 @@
 class NotifyContactInfoPage < SitePrism::Page
 
-  element(:heading, ".heading-large")
+  element(:heading, ".govuk-heading-l")
   element(:error_heading, "#error-summary-heading")
   element(:error_detail, ".error-summary")
-  element(:contact_name, "#contact-name")
-  element(:contact_job, "#contact-job-title")
-  element(:contact_email, "#contact-email")
-  element(:contact_tel, "#contact-tel")
-  element(:contact_address, "#contact-address")
-  element(:submit_button, ".button")
+  element(:contact_name, "#name")
+  element(:contact_job, "#jobTitle")
+  element(:contact_email, "#email")
+  element(:contact_tel, "#tel")
+  element(:contact_address, "#address")
+  element(:submit_button, ".govuk-button")
 
   def submit(args = {})
     contact_name.set(args[:contact_name]) if args.key?(:contact_name)

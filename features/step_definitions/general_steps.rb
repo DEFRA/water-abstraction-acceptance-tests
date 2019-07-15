@@ -81,7 +81,7 @@ Given(/^I start renaming a licence$/) do
 end
 
 Given(/^I enter a valid licence name$/) do
-  @expected_licence_name = "'Renameobot'"
+  @expected_licence_name = "Renameobot"
   @front_app.licence_details_page.submit(licence_name_form: @expected_licence_name)
 end
 
