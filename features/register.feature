@@ -1,4 +1,4 @@
-@tom @register
+@register
 Feature: [WATER-528 and 560] Register and share
   As a user with a water abstraction licence
   I want to register with the service
@@ -7,7 +7,7 @@ Feature: [WATER-528 and 560] Register and share
 Scenario: [WATER-528] Register licences
   Given I have no registered licences for "registration"
   When I register my email address on the service
-  And I am on the add licences page
+#  And I am on the add licences page
   And I register a licence for "registration"
   Then an admin user can read the code
 

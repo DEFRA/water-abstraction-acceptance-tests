@@ -18,8 +18,9 @@ class LicenceDetailsPage < SitePrism::Page
   element(:licence_date_info, ".govuk-summary-list__row:nth-child(3) .govuk-summary-list__value")
   element(:confirmation_only_code, ".bold-small") # works for single code only
   # The following works for multiple codes assuming most recent first:
-  element(:confirmation_first_code, "li:nth-child(1) .bold-small")
-  # element(:confirmation_first_code, :xpath, "(//span[@class='govuk-body govuk-!-font-weight-bold'])[1]")
+  # element(:confirmation_first_code, '.govuk-!-font-weight-bold')
+  #preprod2 element(:confirmation_first_code, "li:nth-child(1) .bold-small")
+  element(:confirmation_first_code, :xpath, "(//span[@class='govuk-body govuk-!-font-weight-bold'])[1]")
   element( :registered_to_link, :xpath, "//p[text()='Registered to ']/a")
 
   # Summary tab selectors
