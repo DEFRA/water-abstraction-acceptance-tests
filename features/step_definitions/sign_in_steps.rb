@@ -41,6 +41,7 @@ Then(/^I am informed "([^"]*)"$/) do |message|
   expect(@front_app.sign_in_page).to have_text(message)
 end
 
+
 Given(/^I lock my account by attempting to sign in with an incorrect password "([^"]*)" times$/) do |attempts|
   @environment = config_environment
   sign_in_page = @front_app.sign_in_page
@@ -71,7 +72,7 @@ Given(/^I enter a correct password between incorrect attempts$/) do
   @front_app.sign_in_page.submit_credentials(external_user_email, password)
 
   @front_app.register_add_licences_page.govuk_banner.sign_out_link.click
-  @front_app.sign_out_page.sign_in_link.click
+  find_link("Sign in").click
   @front_app.sign_in_page.wait_until_email_visible
   @account_to_lock = Quke::Quke.config.custom["data"]["accounts"]["external_user"]
   @front_app.sign_in_page.lock_account(

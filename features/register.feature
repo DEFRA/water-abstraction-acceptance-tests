@@ -21,7 +21,6 @@ Scenario: [WATER-563] Search by licence holder
   When I enter an email address on the licence holder's email field
   Then the correct search results are shown
 
-
 Scenario: [WATER-560 and 565] Share and revoke access
   # External_user must have not already granted access to another user for these steps to work.
   Given I am on the sign in page for "external_user"

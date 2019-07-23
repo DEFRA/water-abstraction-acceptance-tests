@@ -1,4 +1,4 @@
-@password
+@tom @password
 Feature: [WATER-437] Manage password
   As a viewer of water abstraction licences
   I want to update my password
