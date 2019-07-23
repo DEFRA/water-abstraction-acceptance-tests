@@ -8,6 +8,7 @@ Background:
   Given I am on the sign in page
   And I sign into my account as "external_user"
   And I add an agent to view my licences
+  And I am on the sign in page
   And I sign into my account as "external_user_2"
   And I add the same agent to view my licences
 
@@ -18,8 +19,9 @@ Scenario: [WATER-1432] Switch companies
   Then that agent can switch between those companies' licences
 
   # The agent then needs to be removed from both licences.
-
+  * I am on the sign in page
   * I sign into my account as "external_user"
   * I revoke access to view my licences
+  * I am on the sign in page
   * I sign into my account as "external_user_2"
   * I revoke access to view my licences

@@ -6,7 +6,7 @@ class ManageGiveAccessPage < SitePrism::Page
   element(:add_user_button, ".govuk-button")
   element(:add_user_button1, ".button")
   element(:user_list, ".column-full")
-  elements(:change_links, ".govuk-table.phone--hide tbody tr t a")
+  elements(:change_links, ".govuk-table__cell:nth-child(4)")
   element(:remove_access_link, "#results a")
 
   def generate_email
