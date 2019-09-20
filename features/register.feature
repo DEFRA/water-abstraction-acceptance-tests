@@ -7,9 +7,8 @@ Feature: [WATER-528 and 560] Register and share
 Scenario: [WATER-528] Register licences
   Given I have no registered licences for "registration"
   When I register my email address on the service
-#  And I am on the add licences page
   And I register a licence for "registration"
-  Then an admin user can read the code
+  Then an admin user can get the last verification code for the last registered user
 
   Given I sign in with my new email address
   When I enter my confirmation code

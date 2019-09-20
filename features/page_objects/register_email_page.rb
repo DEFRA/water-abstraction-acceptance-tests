@@ -1,9 +1,9 @@
 class RegisterEmailPage < SitePrism::Page
 
-  element(:heading, ".heading-large")
+  element(:heading, "h1.govuk-heading-l")
   element(:email_address, "#email")
-  element(:continue_button, ".button")
-  element(:not_received_email_link, ".column-two-thirds a")
+  element(:continue_button, "button[type=submit]")
+  element(:not_received_email_link, "main a")
 
   def submit(args = {})
     email_address.set(args[:email_address]) if args.key?(:email_address)

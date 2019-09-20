@@ -23,7 +23,7 @@ Scenario: [WATER-526 and 563] Search licences
 Scenario: [WATER-1831] Search for a return
   When I search for a return
   Then the correct search results are shown
-  And I can access the return details
+  And the search results contain a link to the return
 
 Scenario: [WATER_1831] Search for users
   When I search for an "external_user"

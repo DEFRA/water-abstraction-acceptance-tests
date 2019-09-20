@@ -41,7 +41,7 @@ Given(/^I register my email address on the service$/) do
 
   # Also test the "not received email screen":
   @front_app.register_email_page.not_received_email_link.click
-  expect(@front_app.register_email_page.heading).to have_text("Request another email")
+  expect(@front_app.register_email_page.heading).to have_text("Ask for another email")
   @front_app.register_email_page.submit(email_address: @reg_email)
 
   # Now read the contents of the last email sent to the random email address that was just generated.
@@ -130,6 +130,54 @@ When(/^I register a licence for "([^"]*)"$/) do |tasktype|
   @front_app.register_choose_address_page.continue_button.click
   @front_app.register_choose_address_page.continue_button.click
   @front_app.register_sending_letter_page.sign_out_link.click
+end
+
+When(/^an admin user can get the last verification code for the last registered user$/) do
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @front_app.sign_in_page.load
+  @url = (Quke::Quke.config.custom["urls"][@environment]["back_office_internal"])
+  visit(@url)
+
+  @front_app.sign_in_page.submit(
+    email: Quke::Quke.config.custom["data"]["accounts"]["internal_user"],
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
+  )
+
+  # Search for the user
+  @front_app.licences_page.search(
+    search_input: @reg_email
+  )
+
+  find_link(@reg_email).click
+
+  expect(@front_app.user_details_page.heading).to have_text(@reg_email)
+
+  @security_code = @front_app.user_details_page.latest_verification_code
+end
+
+When(/^an admin user can get the last verification code for the "([^"]*)" user$/) do |user_type|
+  user_email = Quke::Quke.config.custom["data"]["accounts"][user_type]
+
+  @environment = Quke::Quke.config.custom["environment"].to_s
+  @front_app.sign_in_page.load
+  @url = (Quke::Quke.config.custom["urls"][@environment]["back_office_internal"])
+  visit(@url)
+
+  @front_app.sign_in_page.submit(
+    email: Quke::Quke.config.custom["data"]["accounts"]["internal_user"],
+    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
+  )
+
+  # Search for the user
+  @front_app.licences_page.search(
+    search_input: user_email
+  )
+
+  find_link(user_email).click
+
+  expect(@front_app.user_details_page.heading).to have_text(user_email)
+
+  @security_code = @front_app.user_details_page.latest_verification_code
 end
 
 When(/^an admin user can read the code$/) do

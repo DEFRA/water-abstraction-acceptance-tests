@@ -45,5 +45,6 @@ output.html
 
 # Ignore your project specific .config.yml config files
 *.config.yml
+*.config.local.yml
 *.config-bs*
 *.config-jenkins*

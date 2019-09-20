@@ -10,5 +10,6 @@ class NavBar < SitePrism::Section
   element(:returns_link, "#navbar-returns")
   element(:manage_licences_link, "#navbar-manage")
   element(:notifications_link, "#navbar-notifications")
+  element(:manage_link, "#navbar-notifications")
 
 end

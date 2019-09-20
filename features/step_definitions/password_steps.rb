@@ -8,7 +8,7 @@ end
 
 Given(/^I am on the Change Password page$/) do
   expect(@front_app.change_password_page.header).to have_text("Change your password")
-  expect(@front_app.change_password_page.current_url).to include "/update_password"
+  expect(@front_app.change_password_page.current_url).to include "/account/update-password"
 end
 
 Given(/^I enter my correct password$/) do

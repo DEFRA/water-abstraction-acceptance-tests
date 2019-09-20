@@ -53,6 +53,10 @@ class FrontOfficeApp
     @last_page = FlowLevelPage.new
   end
 
+  def internal_search_results_page
+    @last_page = InternalSearchResultsPage.new
+  end
+
   def licence_conditions_page
     @last_page = LicenceConditionsPage.new
   end
@@ -75,6 +79,10 @@ class FrontOfficeApp
 
   def licences_page
     @last_page = LicencesPage.new
+  end
+
+  def manage_page
+    @last_page = ManagePage.new
   end
 
   def manage_access_removed_page

@@ -17,9 +17,8 @@ Given(/^I can see a full page of licences$/) do
 end
 
 Given(/^I can see the correct number of pagination links$/) do
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  @expected_pages = Quke::Quke.config.custom["data"]["total_pages"][@environment]
-  expect(@front_app.licences_page.pagination_text).to have_text(@expected_pages.to_s)
+  expect(@front_app.internal_search_results_page).to have_pagination_details
+  expect(@front_app.internal_search_results_page).to have_link_to_next_page_of_results
 end
 
 Given(/^I search for (?:a|an) "([^"]*)" licence$/) do |licencetype|
@@ -46,6 +45,10 @@ Given(/^I search for a return$/) do
   @front_app.licences_page.search(
     search_input: @expected_search_result.to_s
   )
+end
+
+Then(/^the search results contain a link to the return$/) do
+  expect(@front_app.internal_search_results_page).to have_link_to_searched_return
 end
 
 Then(/^I can access the return details$/) do
@@ -77,7 +80,6 @@ When(/^I search for an "([^"]*)"$/) do |user_type|
 end
 
 Then(/^I can access the user details$/) do
-  # @front_app.licences_page.clickfirstlink(link: @expected_search_result)
   click_link(@expected_search_result, match: :first)
   expect(@front_app.user_details_page.caption).to have_text(@expected_user_type)
   expect(@front_app.user_details_page.heading).to have_text(@expected_search_result)

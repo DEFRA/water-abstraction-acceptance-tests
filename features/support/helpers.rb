@@ -11,9 +11,9 @@ def scroll_to(element)
 end
 
 # Function to click the first element where link text includes search_val
-def click_url_text(element, search_val)
+def click_url_text(elements, search_val)
   # Find the first instance of an element containing the search term and click the link:
-  element.find { |chk| chk["href"].include?(search_val) }.click
+  elements.find { |chk| chk["href"].include?(search_val) }.click
 end
 
 def production?

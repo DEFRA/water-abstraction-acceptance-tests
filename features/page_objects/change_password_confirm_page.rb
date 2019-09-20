@@ -1,5 +1,4 @@
 class ChangePasswordConfirmPage < SitePrism::Page
 
-  element(:confirmation, ".heading-large")
-
+  element(:confirmation, "h1.govuk-heading-l")
 end

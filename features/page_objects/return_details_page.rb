@@ -4,8 +4,6 @@ class ReturnDetailsPage < SitePrism::Page
 
   section(:nav_bar, NavBar, NavBar::SELECTOR)
 
-
-  # element(:heading, ".govuk-caption-l")
   element(:heading, ".govuk-caption-l")
   element(:heading1, "h1")
   element(:heading2, ".heading-large")
@@ -20,7 +18,7 @@ class ReturnDetailsPage < SitePrism::Page
   element(:data_table_full, ".column-full")
   element(:freq_heading, ".column-33:nth-child(1)")
   element(:unit_heading, ".column-33.numbers")
-  element(:first_reading, ".medium-space")
+
   # Use this for cubic meter volumes:
   element(:table_total, ".table-foot .numbers")
   # Use this for different units and meter readings:

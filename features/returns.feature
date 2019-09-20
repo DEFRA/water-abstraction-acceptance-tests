@@ -15,7 +15,6 @@ Scenario: [WATER-1258] View returns history (external user)
   Then I can view a return that is "populated daily"
   And I can't see the NALD reference
   And I can check the licence details
-#  And I can view a return that is "nil"
 
 Scenario: [WATER-1376] View returns link (external user)
   Given I am on the sign in page for "external_user"

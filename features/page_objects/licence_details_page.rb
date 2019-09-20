@@ -7,7 +7,6 @@ class LicenceDetailsPage < SitePrism::Page
   section(:nav_bar, NavBar, NavBar::SELECTOR)
 
   # Global page selectors
-
   element(:heading, ".govuk-heading-l")
   element(:heading2, "h1")
   element(:summary_tab, "#tab_summary")
@@ -17,14 +16,11 @@ class LicenceDetailsPage < SitePrism::Page
   element(:visible_subheading, ".govuk-heading-m")
   element(:licence_date_info, ".govuk-summary-list__row:nth-child(3) .govuk-summary-list__value")
   element(:confirmation_only_code, ".bold-small") # works for single code only
-  # The following works for multiple codes assuming most recent first:
-  # element(:confirmation_first_code, '.govuk-!-font-weight-bold')
-  #preprod2 element(:confirmation_first_code, "li:nth-child(1) .bold-small")
+
   element(:confirmation_first_code, :xpath, "(//span[@class='govuk-body govuk-!-font-weight-bold'])[1]")
   element( :registered_to_link, :xpath, "//p[text()='Registered to ']/a")
 
   # Summary tab selectors
-
   element(:name_rename_link, ".govuk-summary-list__row:nth-child(1) a")
   element(:licence_name_form, "#name")
   element(:licence_rename_error, "#error-summary-heading-example-2")
@@ -37,7 +33,6 @@ class LicenceDetailsPage < SitePrism::Page
   element(:disclaimer, ".govuk-inset-text")
 
   # Returns tab selectors
-
   elements(:licences, ".license-result__column--number a")
   elements(:view_links, ".govuk-table__cell a")
   element(:first_return, ".govuk-table__row:nth-child(1) a")
@@ -48,9 +43,8 @@ class LicenceDetailsPage < SitePrism::Page
     save_button.click
   end
 
-  def clickfirstlink(args = {})
+  def click_first_link(args = {})
     return unless args.key?(:link)
     click_url_text(view_links, args[:link].to_s)
   end
-
 end

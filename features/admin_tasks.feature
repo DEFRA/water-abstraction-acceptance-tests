@@ -26,7 +26,7 @@ Feature: Reset test environment
     * I sign into my account as "returns_user"
     * I am on the add licences page
     * I register a licence for "returns"
-    * an admin user can read the code
+    * an admin user can get the last verification code for the "external_user" user
 
     * I am on the sign in page for "external_user"
     * I sign into my account as "returns_user"
