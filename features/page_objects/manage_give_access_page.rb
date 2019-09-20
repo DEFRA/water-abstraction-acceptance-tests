@@ -4,7 +4,6 @@ class ManageGiveAccessPage < SitePrism::Page
   element(:content, "#content")
   element(:email_form, "#email")
   element(:add_user_button, ".govuk-button")
-  element(:add_user_button1, ".button")
   element(:user_list, ".column-full")
   elements(:change_links, ".govuk-table__cell:nth-child(4)")
   element(:remove_access_link, "#results a")
@@ -15,7 +14,7 @@ class ManageGiveAccessPage < SitePrism::Page
 
   def submit(args = {})
     email_form.set(args[:email_address]) if args.key?(:email_address)
-    add_user_button1.click
+    add_user_button.click
   end
 
 end

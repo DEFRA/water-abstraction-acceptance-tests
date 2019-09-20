@@ -40,7 +40,6 @@ end
 Given(/^I can check the licence details$/) do
   @front_app.return_details_page.view_licence_link.click
   expect(@front_app.licence_details_page.heading).to have_text(@return_licence_link)
-  # expect(@front_app.licence_details_page.heading2).to have_text(@return_licence_link)
   expect(@front_app.licence_details_page.content).to have_text("Source of supply")
   @front_app.licence_details_page.nav_bar.returns_link.click
 end
