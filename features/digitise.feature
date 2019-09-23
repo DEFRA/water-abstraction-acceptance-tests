@@ -14,12 +14,12 @@ Feature: [WATER-1015] Edit licence and [WATER-1772] Add Hands Off Flow condition
     When I reject the changes
     Then the change is shown as "In progress"
 
-  Scenario: [WATER-1015] Review and approve licence changes
-    Given I sign into my account as "ar_approver"
-    And I mark the licence for review
-    Then the change is shown as "Licence review"
+  # Scenario: [WATER-1015] Review and approve licence changes
+  #   Given I sign into my account as "ar_approver"
+  #   And I mark the licence for review
+  #   Then the change is shown as "Licence review"
 
-    When I approve the changes
-    Then the change is shown as "Approved"
+  #   When I approve the changes
+  #   Then the change is shown as "Approved"
 
-    * I reset a licence back to in progress
+  #   * I reset a licence back to in progress

@@ -5,10 +5,10 @@ class ReturnDetailsPage < SitePrism::Page
   section(:nav_bar, NavBar, NavBar::SELECTOR)
 
   element(:heading, ".govuk-caption-l")
-  element(:heading1, "h1")
-  element(:heading2, ".heading-large")
+  element(:licence_number_heading, "span.govuk-caption-l")
+
   element(:content, "#main-content")
-  element(:edit_return_button, ".button")
+  element(:edit_return_button, "a.govuk-button")
   element(:heading_mini, "main h2")
   element(:view_licence_link, ".medium-space a")
   element(:return_info, ".small-space")
@@ -16,8 +16,6 @@ class ReturnDetailsPage < SitePrism::Page
   element(:data_table, ".column-two-thirds")
   # Use this for different units and meter readings:
   element(:data_table_full, ".column-full")
-  element(:freq_heading, ".column-33:nth-child(1)")
-  element(:unit_heading, ".column-33.numbers")
 
   # Use this for cubic meter volumes:
   element(:table_total, ".table-foot .numbers")

@@ -25,14 +25,16 @@ Scenario: [WATER-1831] Search for a return
   Then the correct search results are shown
   And the search results contain a link to the return
 
-Scenario: [WATER_1831] Search for users
+Scenario: Search for external user
   When I search for an "external_user"
   Then the correct search results are shown
   And I can access the user details
 
-  When I search for an "internal_user"
-  Then the correct search results are shown
-  And I can access the user details
+
+# Scenario: Search for internal user
+#   When I search for an "internal_user"
+#   Then the correct search results are shown
+#   And I can access the user details
 
 Scenario: [WATER-922] Licence sanity check
   When I select a second page of many licences
