@@ -41,7 +41,6 @@ Then(/^I am informed "([^"]*)"$/) do |message|
   expect(@front_app.sign_in_page).to have_text(message)
 end
 
-
 Given(/^I lock my account by attempting to sign in with an incorrect password "([^"]*)" times$/) do |attempts|
   @environment = config_environment
   sign_in_page = @front_app.sign_in_page

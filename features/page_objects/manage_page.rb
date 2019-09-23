@@ -1,7 +1,6 @@
 require_relative "sections/govuk_banner.rb"
 
 class ManagePage < SitePrism::Page
-
   url = internal_url(:root)
   set_url(url)
 
