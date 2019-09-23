@@ -52,7 +52,7 @@ end
 
 Then(/^I can access the return details$/) do
   find_link(@expected_search_result).click
-  expect(@front_app.return_details_page.heading2).to have_text("Abstraction return for")
+  expect(@front_app.return_details_page.heading).to have_text("Abstraction return for")
   expect(@front_app.return_details_page.return_info).to have_text(@expected_search_result)
   # Additional check that the return ID exists on the returns tab of the licence
   @front_app.return_details_page.view_licence_link.click

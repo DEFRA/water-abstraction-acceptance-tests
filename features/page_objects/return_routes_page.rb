@@ -21,7 +21,6 @@ class ReturnRoutesPage < SitePrism::Page
 
   element(:nil_return_heading, "h2", match: :first)
   element(:continue_button, "button")
-  element(:continue_button1, "button", text: "Continue")
 
   def submit(args = {})
     meter_manufacturer_form.set(args[:manufacturer]) if args.key?(:manufacturer)

@@ -229,7 +229,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
 
   end
 
-  expect(@front_app.return_submitted_page.confirmation_box).to have_text("Return Submitted")
+  expect(@front_app.return_submitted_page.confirmation_box).to have_text("Return submitted")
   expect(@front_app.return_submitted_page.confirmation_box).to have_text(@licence_returns)
 
   # These tests may be expanded by:
