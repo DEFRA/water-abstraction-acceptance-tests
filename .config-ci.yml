@@ -24,3 +24,4 @@ custom:
       front_office: "https://example.com"
       back_office: "https://example.com"
       back_office_internal_root: "https://example.com"
+      root_url: "https://example.com"

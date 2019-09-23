@@ -2,8 +2,8 @@ require_relative "sections/govuk_banner.rb"
 
 class ManagePage < SitePrism::Page
 
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  set_url(Quke::Quke.config.custom["urls"][@environment]["back_office_internal_root"] + "manage")
+  url = internal_url(:root)
+  set_url(url)
 
   element :heading, "h1.govuk-heading-l"
   section(:govuk_banner, GovukBanner, GovukBanner::NUNJUCKS_SELECTOR)

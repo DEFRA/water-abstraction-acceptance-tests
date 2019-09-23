@@ -11,4 +11,8 @@ class ChangePasswordPage < SitePrism::Page
     confirmpw.set(args[:confirmpw]) if args.key?(:confirmpw)
     submit_button.click
   end
+
+  def submit_password(password)
+    submit(password: password, confirmpw: password)
+  end
 end

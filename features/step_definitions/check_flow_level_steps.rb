@@ -1,6 +1,6 @@
 
 Given(/^I select a licence with a "([^"]*)" condition$/) do |conditiontype|
-  @environment = Quke::Quke.config.custom["environment"].to_s
+  @environment = config_environment
   conditionvar = "licence_" + conditiontype.to_s
   @licence_number = Quke::Quke.config.custom["data"][conditionvar]["number"].to_s
   @gauging_station = Quke::Quke.config.custom["data"][conditionvar]["station"].to_s

@@ -14,19 +14,15 @@ Given(/^I add an agent to view my licences$/) do
   puts "Agent's email address is: " + @agent_email
   expect(@front_app.manage_give_access_page.heading).to have_text("Access email sent to")
 
-  # Get the link for the agent to access the licences:
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  # rubocop:disable Metrics/LineLength
-  @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @agent_email).to_s
-  # rubocop:enable Metrics/LineLength
-  visit(@email_api_url)
-  @email_json = @front_app.email_content_page.email_content.text
+  email_api_url = "#{external_url(:root)}notifications/last?email=#{@agent_email}"
+  visit email_api_url
+  email_json = @front_app.email_content_page.email_content.text
 
   # See register_steps.rb for comments on regex format
-  @create_account_url = @email_json[/Go to our website: (.*?)\\r\\n2. Create/, 1].to_s
+  @create_account_url = email_json[/Go to our website: (.*?)\\r\\n2. Create/, 1].to_s
 
   # Go back to service and sign out for consistency between steps.
-  visit(Quke::Quke.config.custom["urls"][@environment]["front_office"])
+  visit external_url(:welcome)
   find_link("Sign out").click
 end
 
@@ -44,12 +40,10 @@ end
 
 Given(/^the agent can log in and view a licence I can access$/) do
   @licence_one = Quke::Quke.config.custom["data"]["licence_one"].to_s
-  visit(@create_account_url)
+  visit @create_account_url
 
-  @front_app.register_create_pw_page.submit(
-    password: Quke::Quke.config.custom["data"]["accounts"]["password"],
-    confirmpw: Quke::Quke.config.custom["data"]["accounts"]["password"]
-  )
+  password = config_accounts("password")
+  @front_app.register_create_pw_page.submit_password password
 
   find_link(@licence_one).click
   expect(@front_app.licence_details_page.heading).to have_text(@licence_one)
@@ -88,7 +82,7 @@ Given(/^the agent cannot view any licences I own$/) do
   @front_app.sign_in_page.load
   @front_app.sign_in_page.submit(
     email: @agent_email,
-    password: Quke::Quke.config.custom["data"]["accounts"]["password"]
+    password: config_accounts("password")
   )
   expect(@front_app.register_add_licences_page.heading).to have_text("Add your licences to the service")
 end
@@ -96,10 +90,8 @@ end
 Given(/^the agent for multiple licences logs in$/) do
   visit(@create_account_url) # URL defined when the first agent grants access
 
-  @front_app.register_create_pw_page.submit(
-    password: Quke::Quke.config.custom["data"]["accounts"]["password"],
-    confirmpw: Quke::Quke.config.custom["data"]["accounts"]["password"]
-  )
+  password = config_accounts("password")
+  @front_app.register_create_pw_page.submit_password password
 end
 
 Given(/^that agent can switch between those companies' licences$/) do

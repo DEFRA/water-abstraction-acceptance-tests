@@ -1,5 +1,6 @@
 require_relative "sections/govuk_banner.rb"
 require_relative "sections/nav_bar.rb"
+require_relative "sections/cookie_banner.rb"
 
 class LicencesPage < SitePrism::Page
 
@@ -7,6 +8,7 @@ class LicencesPage < SitePrism::Page
 
   section(:govuk_banner, GovukBanner, GovukBanner::SELECTOR)
   section(:nav_bar, NavBar, NavBar::SELECTOR)
+  section(:cookie_banner, CookieBanner, CookieBanner::SELECTOR)
 
   element(:company_switcher, ".company-switcher")
   element(:change_company_link, ".company-switcher__link")

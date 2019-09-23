@@ -17,7 +17,52 @@ def click_url_text(elements, search_val)
 end
 
 def production?
-  @environment = Quke::Quke.config.custom["environment"].to_s
+  @environment = config_environment
   return true if @environment == "prod" || @environment == "prod2"
   false
+end
+
+def config_environment
+  Quke::Quke.config.custom["environment"].to_s
+end
+
+# Takes the URLS found in the config.yml file and presents the
+# data in a hash per application.
+#
+# - external water resources
+# - internal admin
+# - developer admin
+def config_urls
+  urls = Quke::Quke.config.custom["urls"][config_environment]
+
+  {
+    external: {
+      root: urls["root_url"],
+      welcome: urls["front_office"],
+      sign_in: urls["front_office_sign_in"]
+    },
+    internal: {
+      root: urls["back_office_internal_root"],
+      sign_in: urls["back_office_internal"]
+    },
+    developer: {
+      login: urls["back_office_login"]
+    }
+  }
+end
+
+def external_url(key)
+  config_urls[:external][key]
+end
+
+def internal_url(key)
+  config_urls[:internal][key]
+end
+
+def developer_url(key)
+  config_urls[:developer][key]
+end
+
+def config_accounts(key)
+  Quke::Quke.config.custom["data"]["accounts"][key]
 end

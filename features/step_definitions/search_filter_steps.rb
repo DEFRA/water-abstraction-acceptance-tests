@@ -23,7 +23,6 @@ end
 
 Given(/^I search for (?:a|an) "([^"]*)" licence$/) do |licencetype|
   @licencetype = licencetype
-  @environment = Quke::Quke.config.custom["environment"].to_s
   @expected_search_result = Quke::Quke.config.custom["data"]["licence_" + licencetype.to_s].to_s
   @front_app.licences_page.search(
     search_input: @expected_search_result.to_s
@@ -63,20 +62,13 @@ Then(/^I can access the return details$/) do
 end
 
 When(/^I search for an "([^"]*)"$/) do |user_type|
-  @expected_search_result = Quke::Quke.config.custom["data"]["accounts"][user_type.to_s]
-  @expected_result_count = if user_type == "external_user"
-                             1
-                           else
-                             2 # because the internal user also has an admin account which is shown
-                           end
-  @expected_user_type = if user_type == "external_user"
-                          "External"
-                        else
-                          "Internal"
-                        end
-  @front_app.licences_page.search(
-    search_input: @expected_search_result.to_s
-  )
+  @expected_search_result = config_accounts(user_type.to_s)
+
+  # because the internal user also has an admin account which is shown
+  @expected_result_count = user_type == "external_user" ? 1 : 2
+  @expected_user_type = user_type == "external_user" ? "External" : "Internal"
+
+  @front_app.licences_page.search(search_input: @expected_search_result)
 end
 
 Then(/^I can access the user details$/) do
@@ -146,9 +138,7 @@ Given(/^I can see the original number of licences$/) do
 end
 
 Given(/^I enter an email address on the licence holder's email field$/) do
-  @expected_search_result = Quke::Quke.config.custom["data"]["accounts"]["external_user"].to_s
+  @expected_search_result = config_accounts("external_user")
   @expected_result_count = 1
-  @front_app.licences_page.search(
-    search_input: Quke::Quke.config.custom["data"]["accounts"]["external_user"]
-  )
+  @front_app.licences_page.search(search_input: expected_search_result)
 end

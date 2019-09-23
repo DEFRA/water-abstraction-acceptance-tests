@@ -38,9 +38,12 @@ Given(/^I propose changes to a licence$/) do
   expect(@front_app.digitise_review_page.content).to have_text(@ar_licence)
 
   # Edit data on one of three different pages at random
-  # rubocop:disable Metrics/LineLength
-  digitise_sections = [["Edit licence data", "Edit licence"], ["Edit licence holder party", "Edit party"], ["Edit current licence version", "Edit version"]]
-  # rubocop:enable Metrics/LineLength
+  digitise_sections = [
+    ["Edit licence data", "Edit licence"],
+    ["Edit licence holder party", "Edit party"],
+    ["Edit current licence version", "Edit version"]
+  ]
+
   section_number = rand(0..2)
   # Use the link and heading text corresponding to the random number:
   find_link(digitise_sections[section_number][0]).click

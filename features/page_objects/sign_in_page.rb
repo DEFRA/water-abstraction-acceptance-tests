@@ -1,6 +1,6 @@
 class SignInPage < SitePrism::Page
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  set_url(Quke::Quke.config.custom["urls"][@environment]["front_office_sign_in"])
+  url = external_url(:sign_in)
+  set_url(url)
 
   element(:email, "#email")
   element(:password, "#password")
@@ -13,6 +13,10 @@ class SignInPage < SitePrism::Page
     email.set(args[:email]) if args.key?(:email)
     password.set(args[:password]) if args.key?(:password)
     submit_button.click
+  end
+
+  def submit_credentials(email = "", password = "")
+    submit(email: email, password: password)
   end
 
   def lock_account(args = {})

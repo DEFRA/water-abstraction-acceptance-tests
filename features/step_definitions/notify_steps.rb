@@ -209,9 +209,9 @@ end
 
 Given(/^the notifications appear in the log$/) do
   expect(@front_app.notify_report_summary_page.first_notification).to have_text(@notification_type_long)
-  # rubocop:disable Metrics/LineLength
-  expect(@front_app.notify_report_summary_page.first_sender).to have_text(Quke::Quke.config.custom["data"]["accounts"]["internal_user"])
-  # rubocop:enable Metrics/LineLength
+
+  internal_user = config_accounts "internal_user"
+  expect(@front_app.notify_report_summary_page.first_sender).to have_text(internal_user)
 end
 
 Given(/^I can view the details of the latest batch$/) do

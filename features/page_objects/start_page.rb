@@ -1,10 +1,6 @@
 class StartPage < SitePrism::Page
 
-  # This page is not currently being used and should be reinstated as part of a step.
-
-  @environment = Quke::Quke.config.custom["environment"].to_s
-  set_url(Quke::Quke.config.custom["urls"][@environment]["front_office"])
-
+  set_url external_url(:welcome)
   # Water management managing your water abstraction or impoundment licence
 
   element(:sign_in, "a[href$='/signin']")

@@ -12,4 +12,7 @@ class RegisterCreatePasswordPage < SitePrism::Page
     submit_button.click
   end
 
+  def submit_password(password)
+    submit(password: password, confirmpw: password)
+  end
 end
