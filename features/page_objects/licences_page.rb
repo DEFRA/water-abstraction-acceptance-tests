@@ -35,7 +35,7 @@ class LicencesPage < SitePrism::Page
   element(:pagination_text, ".pagination__current-page")
   element(:disclaimer, ".panel-border-wide p")
   element(:account_settings, "#account-settings a")
-  element(:change_password,"#main-content .govuk-link")
+  element(:change_password, "#main-content .govuk-link")
 
   def search(args = {})
     search_input.set(args[:search_input]) if args.key?(:search_input)

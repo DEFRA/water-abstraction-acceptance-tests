@@ -102,13 +102,11 @@ Given(/^the correct search results are shown$/) do
     expect(@front_app.licences_page).to have_email_links count: @expected_result_count.to_i
   elsif @user_type == "external_user"
     expect(@front_app.licences_page).to have_licence_links_external count: @expected_result_count.to_i
+  elsif @front_app.licences_page.has_licence_links_internal?
+    puts @expected_result_count
+    expect(@front_app.licences_page).to have_licence_links_internal count: @expected_result_count.to_i
   else
-    if @front_app.licences_page.has_licence_links_internal?
-      p @expected_result_count
-      expect(@front_app.licences_page).to have_licence_links_internal count: @expected_result_count.to_i
-    else
-      expect(@front_app.licences_page).to have_licence_links_internal1 count: @expected_result_count.to_i
-    end
+    expect(@front_app.licences_page).to have_licence_links_internal1 count: @expected_result_count.to_i
   end
 end
 
@@ -122,16 +120,13 @@ end
 
 Given(/^I cannot see any licences$/) do
   case @licencetype
-  when 'expired'
+  when "expired"
     expect(@front_app.licences_page).to have_text("EXPIRED")
-  when 'revoked'
+  when "revoked"
     expect(@front_app.licences_page).to have_text("EXPIRED")
-  when 'lapsed'
+  when "lapsed"
     expect(@front_app.licences_page).to have_text("EXPIRED")
-  when 'future'
-    #expect(@front_app.licences_page).to have_text("") #update this when you get future licence data -chandra
   end
-
 end
 
 Given(/^I remove a search term$/) do

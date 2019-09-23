@@ -20,7 +20,7 @@ class DigitiseReviewPage < SitePrism::Page
 
   def submit(args = {})
     notes_box.set(args[:notes_box]) if args.key?(:notes_box)
-    status_radio1.click if args.key?(:status)&&self.has_status_radio1?
+    status_radio1.click if args.key?(:status) && has_status_radio1?
     submit_button.click
   end
 

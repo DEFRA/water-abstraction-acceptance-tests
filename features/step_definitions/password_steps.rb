@@ -82,19 +82,18 @@ Given(/^I request a password reset as an "([^"]*)"$/) do |account|
     @front_app.request_pw_reset_page.submit(
       email_address: @password_reset_email
     )
-    end
+  end
 
   # Also test the "not received email" link:
-  #@front_app.reset_password_check_page.havent_received_link.click
   find_link("Has the email not arrived?").click
   expect(@front_app.request_pw_reset_page.paragraph).to have_text("The email might take a few minutes to reach you")
   if @front_app.request_pw_reset_page.has_email_address2?
     @front_app.request_pw_reset_page.submit2(
-        email_address: @password_reset_email
+      email_address: @password_reset_email
     )
   else
     @front_app.request_pw_reset_page.submit(
-        email_address: @password_reset_email
+      email_address: @password_reset_email
     )
   end
 end
@@ -109,7 +108,7 @@ Given(/^I can reset my password$/) do
     # rubocop:disable Metrics/LineLength
     @email_api_url = ((Quke::Quke.config.custom["urls"][@environment]["root_url"]) + "/notifications/last?email=" + @password_reset_email).to_s
     # rubocop:enable Metrics/LineLength
-    p @email_api_url
+    puts @email_api_url
     visit(@email_api_url)
     @email_json = @front_app.email_content_page.email_content.text
 

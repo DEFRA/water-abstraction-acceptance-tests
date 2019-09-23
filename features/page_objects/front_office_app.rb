@@ -241,10 +241,6 @@ class FrontOfficeApp
     @last_page = ReturnUnitsPage.new
   end
 
-  #def sign_in_page
-  # @last_page = SignInPage.new
-  #end
-
   def sign_in_page
     @last_page = SignInPage.new
   end

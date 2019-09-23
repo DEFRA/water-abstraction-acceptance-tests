@@ -9,8 +9,9 @@ Given(/^I am on the sign in page for "([^"]*)"$/) do |account|
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load
   @environment = Quke::Quke.config.custom["environment"].to_s
-  @url = (Quke::Quke.config.custom["urls"][@environment]["back_office_internal"]) if @user_type == "internal_user" || @user_type == "ar_user"
-  p "user type: #{@user_type}    url: #{@url}"
+  back_office_internal_url = Quke::Quke.config.custom["urls"][@environment]["back_office_internal"]
+  @url = back_office_internal_url if @user_type == "internal_user" || @user_type == "ar_user"
+  puts "user type: #{@user_type} url: #{@url}"
   visit(@url) if @user_type == "internal_user" || @user_type == "ar_user"
 end
 
@@ -43,7 +44,6 @@ end
 Then(/^I am informed "([^"]*)"$/) do |message|
   expect(@front_app.sign_in_page).to have_text(message)
 end
-
 
 Given(/^I lock my account by attempting to sign in with an incorrect password "([^"]*)" times$/) do |attempts|
   @environment = Quke::Quke.config.custom["environment"].to_s

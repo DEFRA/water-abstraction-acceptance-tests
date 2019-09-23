@@ -19,7 +19,7 @@ class ReturnRoutesPage < SitePrism::Page
   # What is the unit of measurement?
   element(:unit_gal_radio, ".govuk-radios__item:nth-child(4) .govuk-radios__label", visible: false)
 
-  element(:nil_return_heading, "h2", match: :first )
+  element(:nil_return_heading, "h2", match: :first)
   element(:continue_button, "button")
 
   def submit(args = {})

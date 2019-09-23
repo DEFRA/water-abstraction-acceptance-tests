@@ -18,7 +18,7 @@ class LicenceDetailsPage < SitePrism::Page
   element(:confirmation_only_code, ".bold-small") # works for single code only
 
   element(:confirmation_first_code, :xpath, "(//span[@class='govuk-body govuk-!-font-weight-bold'])[1]")
-  element( :registered_to_link, :xpath, "//p[text()='Registered to ']/a")
+  element(:registered_to_link, :xpath, "//p[text()='Registered to ']/a")
 
   # Summary tab selectors
   element(:name_rename_link, ".govuk-summary-list__row:nth-child(1) a")

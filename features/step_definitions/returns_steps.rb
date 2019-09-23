@@ -90,9 +90,8 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
   @return_flow = flow.to_s
 
   # Edit or submit a return using a particular flow.
-  find_link('Licences').click
+  find_link("Licences").click
   # Decide whether to start on the edit or submit path:
-  #@licence_returns = Quke::Quke.config.custom["data"]["licence_returns"].to_s
   @licence_returns = Quke::Quke.config.custom["data"]["return_nil"].to_s
 
   if action == "edit"
@@ -121,7 +120,8 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
   expect(@front_app.return_date_received_page.question).to have_text("When was the return received?")
   @front_app.return_date_received_page.yesterday.click
   @front_app.return_date_received_page.continue_button.click
-  expect(@front_app.return_has_water_been_abstracted.question).to have_text("Has water been abstracted in this return period?")
+  exptected_text = "Has water been abstracted in this return period?"
+  expect(@front_app.return_has_water_been_abstracted.question).to have_text(exptected_text)
 
   if @return_flow == "nil"
     # Report a nil return
@@ -188,7 +188,7 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
       @front_app.return_routes_page.continue_button.click
       @front_app.return_routes_page.submit(
         manufacturer: "Gopher Meter Co",
-        serial: "081-811-8181",
+        serial: "081-811-8181"
       )
       sleep 5
       expect(@front_app.return_quantities_page.heading1).to have_text("Meter Readings")
@@ -239,7 +239,6 @@ Given(/^I "([^"]*)" a return of type "([^"]*)"$/) do |action, flow|
 end
 
 Given(/^I can view the return I just submitted$/) do
-  #@front_app.return_submitted_page.view_return_link.click
   click_link("View this return")
   expect(@front_app.return_details_page.licence_number_heading).to have_text(@licence_returns)
 
@@ -259,9 +258,6 @@ Given(/^I can view the return I just submitted$/) do
     # Check the volume in the table against what was entered
     expect(@front_app.return_details_page.heading_mini).to have_text("Abstraction volumes")
     expect(@front_app.return_details_page.data_table_full).to have_text(@return_unit)
-    # Read total from bottom of table, removing commas:
-    table_total = @front_app.return_details_page.table_total_first.text.tap { |s| s.delete!(",") }
-    # expect(table_total.to_f.round).to eq(@abstraction_total.round)
   end
 
   # Go back to licences page:
