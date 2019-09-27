@@ -1,4 +1,5 @@
 require_relative "../../sections/error_summary.rb"
+require_relative "../sections/return_details.rb"
 
 module Pages
   module External
@@ -15,25 +16,8 @@ module Pages
         element(:yes, "#isNil-1", visible: false)
         element(:no, "#isNil-2", visible: false)
 
-        elements(:return_details, "dl.meta .meta__value")
-
+        section(:return_details, Pages::External::Sections::ReturnDetails, ".meta")
         section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
-
-        def site_description_text
-          return_details.first.text
-        end
-
-        def purpose_text
-          return_details[1].text
-        end
-
-        def return_period_text
-          return_details[2].text
-        end
-
-        def abstraction_period_text
-          return_details[3].text
-        end
 
         def submit_answer(answer)
           yes.click if answer.casecmp? "yes"

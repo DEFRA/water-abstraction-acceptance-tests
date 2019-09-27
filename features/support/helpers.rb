@@ -76,11 +76,3 @@ end
 def config_accounts(key)
   Quke::Quke.config.custom["data"]["accounts"][key]
 end
-
-def external_returns_page_from_question(text)
-  return Pages::External::Returns::HasWaterBeenAbstracted.new if text == "Have you abstracted water"
-  return Pages::External::Returns::HowAreYouReportingFigures.new if text == "How are you reporting your figures"
-  return Pages::External::Returns::NilReturn.new if text == "Nil return"
-
-  raise "Cannot resolve question text to page: #{text}"
-end

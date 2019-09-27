@@ -13,13 +13,102 @@ Then("I submit a valid answer and am routed to the expected page") do |table|
   return_id = return_data["return_id"]
 
   table.hashes.each do |journey|
-    origin_page = external_returns_page_from_question(journey["origin"])
+    origin_page = Pages::External::Returns.page_from_question(journey["origin"])
 
     origin_page.load(returnId: return_id)
     origin_page.submit_answer(journey["answer"])
 
-    destination_page = external_returns_page_from_question(journey["destination"])
+    destination_page = Pages::External::Returns.page_from_question(journey["destination"])
     expect(destination_page).to be_displayed
     expect(destination_page.current_url).to end_with(return_id)
   end
+end
+
+And("I progress through the external returns flow") do |table|
+
+  return_data = @test_data.current_licence_with_return["return"]
+  return_id = return_data["return_id"]
+
+  table.hashes.each_with_index do |journey, index|
+    origin_page = Pages::External::Returns.page_from_question(journey["origin"])
+
+    # only load the first page and rely of the submission of pages
+    # for all future navigation
+    origin_page.load(returnId: return_id) if index.zero?
+    expect(origin_page).to be_displayed
+
+    origin_page.submit_answer(journey["answer"])
+  end
+end
+
+Then("the {string} page displays the expected details for the test return") do |question_text|
+  return_data = @test_data.current_licence_with_return["return"]
+  assert_displays_expected_details(question_text, return_data)
+end
+
+Given("I answer {string} on the {string} page") do |response, page_text|
+  page = Pages::External::Returns.page_from_question(page_text)
+  page.submit_answer response
+end
+
+Then("I am on the {string} page of the external returns flow") do |page_text|
+  page = Pages::External::Returns.page_from_question(page_text)
+  expect(page).to be_displayed
+end
+
+def assert_displays_expected_details(question_text, return_data)
+  page = Pages::External::Returns.page_from_question(question_text)
+
+  unless question_text == Pages::External::Returns::SUBMITTED
+    assert_heading_details(page, return_data)
+    assert_return_details(page, return_data)
+  end
+
+  case question_text
+  when Pages::External::Returns::NIL_RETURN_QUESTION
+    assert_nil_return_details page
+  when Pages::External::Returns::HAVE_YOU_ABSTRACTED_WATER_QUESTION
+    assert_has_water_been_abstracted_details page
+  when Pages::External::Returns::SUBMITTED
+    assert_submitted_details(page, return_data)
+  else
+    raise "Cannot check details for page with question #{question_text}"
+  end
+end
+
+def assert_return_details(page, return_data)
+  description = return_data["metadata"]["description"]
+  purpose = return_data["metadata"]["purposes"][0]["alias"]
+
+  expect(page.return_details.site_description_text).to eq(description)
+  expect(page.return_details.purpose_text).to eq(purpose)
+  expect(page.return_details.return_period_text).to match(/^\d{1,2} \w{3,9} \d{4} to \d{1,2} \w{3,9} \d{4}$/)
+  expect(page.return_details.abstraction_period_text).to match(/^\d{1,2} \w{3,9} to \d{1,2} \w{3,9}$/)
+end
+
+def assert_heading_details(page, return_data)
+  licence_number = return_data["licence_ref"]
+
+  expect(page.heading).to have_text("Abstraction return")
+  expect(page.licence_number).to have_text("Licence number #{licence_number}")
+end
+
+def assert_has_water_been_abstracted_details(page)
+  expect(page.question).to have_text("Have you abstracted water in this return period?")
+end
+
+def assert_nil_return_details(page)
+  expect(page.sub_heading).to have_text("Nil return")
+end
+
+def assert_submitted_details(page, return_data)
+  licence_number = return_data["licence_ref"]
+  description = return_data["metadata"]["description"]
+  purpose = return_data["metadata"]["purposes"][0]["alias"]
+
+  expect(page.title).to have_text("Return submitted")
+  expect(page.details).to have_text(licence_number)
+  expect(page.details).to have_text(description)
+  expect(page.details).to have_text(purpose)
+  expect(page).to have_view_return_link
 end
