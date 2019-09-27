@@ -66,16 +66,23 @@ GEM
     geckodriver-helper (0.23.0)
       archive-zip (~> 0.7)
     gherkin (5.1.0)
+    httparty (0.17.1)
+      mime-types (~> 3.0)
+      multi_xml (>= 0.5.2)
     i18n (0.9.4)
       concurrent-ruby (~> 1.0)
     io-like (0.3.0)
     json (2.1.0)
     launchy (2.4.3)
       addressable (~> 2.3)
+    mime-types (3.3)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2019.0904)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     multi_json (1.13.1)
     multi_test (0.1.2)
+    multi_xml (0.6.0)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.3-x64-mingw32)
@@ -132,10 +139,11 @@ PLATFORMS
 DEPENDENCIES
   cucumber-report-format (~> 0.0.3)
   faker
+  httparty (~> 0.17)
   quke!
   rake
   report_builder (~> 1.5)
   rubocop
 
 BUNDLED WITH
-   2.0.1
+   2.0.2

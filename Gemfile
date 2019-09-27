@@ -19,3 +19,5 @@ gem "faker"
 gem "cucumber-report-format", "~> 0.0.3"
 
 gem "report_builder", "~> 1.5"
+
+gem "httparty", "~>0.17"

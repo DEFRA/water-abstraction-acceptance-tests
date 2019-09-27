@@ -1,0 +1,8 @@
+Given("I log in at the external test user") do
+  sign_in_page = ExternalSignInPage.new
+  sign_in_page.load
+
+  data = @test_data.current_licence_with_return
+  user_name = data["externalPrimaryUser"]["user"]["user_name"]
+  sign_in_page.submit_credentials(user_name, "P@55word")
+end
