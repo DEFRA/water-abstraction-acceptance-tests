@@ -7,6 +7,11 @@ Given("I navigate to the external {string} test return") do |return_status|
   page.load(returnId: return_id)
 end
 
+And("I submit nothing on the {string} page") do |question_text|
+  page = Pages::External::Returns.page_from_question question_text
+  page.continue_button.click
+end
+
 Then("I submit a valid answer and am routed to the expected page") do |table|
 
   return_data = @test_data.current_licence_with_return["return"]
@@ -46,6 +51,11 @@ Then("the {string} page displays the expected details for the test return") do |
   assert_displays_expected_details(question_text, return_data)
 end
 
+Given("I submit no answer on the {string} page") do |page_text|
+  page = Pages::External::Returns.page_from_question(page_text)
+  page.submit_answer
+end
+
 Given("I answer {string} on the {string} page") do |response, page_text|
   page = Pages::External::Returns.page_from_question(page_text)
   page.submit_answer response
@@ -59,18 +69,19 @@ end
 def assert_displays_expected_details(question_text, return_data)
   page = Pages::External::Returns.page_from_question(question_text)
 
-  unless question_text == Pages::External::Returns::SUBMITTED
-    assert_heading_details(page, return_data)
-    assert_return_details(page, return_data)
-  end
+  assert_heading_details(page, return_data) unless question_text == Pages::External::Returns::SUBMITTED
 
   case question_text
-  when Pages::External::Returns::NIL_RETURN_QUESTION
-    assert_nil_return_details page
-  when Pages::External::Returns::HAVE_YOU_ABSTRACTED_WATER_QUESTION
-    assert_has_water_been_abstracted_details page
+  when Pages::External::Returns::HAVE_YOU_ABSTRACTED_WATER
+    assert_has_water_been_abstracted_details(page)
+    assert_return_details(page, return_data)
+  when Pages::External::Returns::NIL_RETURN
+    assert_nil_return_details(page)
+    assert_return_details(page, return_data)
   when Pages::External::Returns::SUBMITTED
     assert_submitted_details(page, return_data)
+  when Pages::External::Returns::HOW_FIGURES_REPORTED
+    assert_how_figures_reported_details(page)
   else
     raise "Cannot check details for page with question #{question_text}"
   end
@@ -84,6 +95,13 @@ def assert_return_details(page, return_data)
   expect(page.return_details.purpose_text).to eq(purpose)
   expect(page.return_details.return_period_text).to match(/^\d{1,2} \w{3,9} \d{4} to \d{1,2} \w{3,9} \d{4}$/)
   expect(page.return_details.abstraction_period_text).to match(/^\d{1,2} \w{3,9} to \d{1,2} \w{3,9}$/)
+end
+
+def assert_how_figures_reported_details(page)
+  expect(page.question).to have_text("How are you reporting your figures?")
+  expect(page).to have_meter_readings
+  expect(page).to have_volumes
+  expect(page).to have_estimates
 end
 
 def assert_heading_details(page, return_data)
@@ -101,14 +119,16 @@ def assert_nil_return_details(page)
   expect(page.sub_heading).to have_text("Nil return")
 end
 
+# rubocop:disable Metrics/AbcSize
 def assert_submitted_details(page, return_data)
-  licence_number = return_data["licence_ref"]
-  description = return_data["metadata"]["description"]
-  purpose = return_data["metadata"]["purposes"][0]["alias"]
+  return_id = return_data["return_id"]
+  metadata = return_data["metadata"]
 
   expect(page.title).to have_text("Return submitted")
-  expect(page.details).to have_text(licence_number)
-  expect(page.details).to have_text(description)
-  expect(page.details).to have_text(purpose)
-  expect(page).to have_view_return_link
+  expect(page.details).to have_text(return_data["licence_ref"])
+  expect(page.details).to have_text(metadata["description"])
+  expect(page.details).to have_text(metadata["purposes"][0]["alias"])
+  expect(page.view_return_link).to have_text("View this return")
+  expect(page.view_return_link["href"]).to end_with("/returns/return?id=#{return_id}")
 end
+# rubocop:enable Metrics/AbcSize

@@ -8,7 +8,7 @@ module Pages
 
         element(:title, "h1.panel__title")
         element(:details, ".panel__body.panel__body--small")
-        element :view_return_link, "a", text: "View this return"
+        element(:view_return_link, "a", text: "View this return")
       end
     end
   end

@@ -13,7 +13,7 @@ Scenario: Have you abstracted water page details
   Then the "Have you abstracted water" page displays the expected details for the test return
 
 Scenario: Have you abstracted water page validation
-  And I submit no answer on the Have you abstracted water page
+  And I submit no answer on the "Have you abstracted water" page
   Then the Have you abstracted water page displays the validation errors
 
 Scenario: Have you abstracted water routes to expected destination

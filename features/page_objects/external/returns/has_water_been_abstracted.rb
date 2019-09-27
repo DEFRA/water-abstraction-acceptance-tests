@@ -19,7 +19,7 @@ module Pages
         section(:return_details, Pages::External::Sections::ReturnDetails, ".meta")
         section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
 
-        def submit_answer(answer)
+        def submit_answer(answer = "no answer")
           yes.click if answer.casecmp? "yes"
           no.click if answer.casecmp? "no"
           continue_button.click

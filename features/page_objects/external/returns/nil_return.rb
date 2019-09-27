@@ -16,7 +16,7 @@ module Pages
 
         section(:return_details, Pages::External::Sections::ReturnDetails, ".meta")
 
-        def submit_answer(answer)
+        def submit_answer(answer = "no answer")
           submit_button.click if answer.casecmp? "submit"
         end
       end
