@@ -1,4 +1,4 @@
 Then("I navigate to the account settings page") do
-  page = ExternalAccountSettingsPage.new
+  page = Pages::External::Account::Settings.new
   page.load
 end

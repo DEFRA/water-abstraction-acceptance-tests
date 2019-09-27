@@ -3,7 +3,7 @@ Given("I navigate to the external {string} test return") do |return_status|
   return_data = @test_data.current_licence_with_return["return"] if return_status == "due"
   return_id = return_data["return_id"]
 
-  page = ExternalReturnsHasWaterBeenAbstractedPage.new
+  page = Pages::External::Returns::HasWaterBeenAbstracted.new
   page.load(returnId: return_id)
 end
 

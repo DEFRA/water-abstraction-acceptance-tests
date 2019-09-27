@@ -1,5 +1,5 @@
 Given("I log in at the external test user") do
-  sign_in_page = ExternalSignInPage.new
+  sign_in_page = Pages::External::Account::SignIn.new
   sign_in_page.load
 
   data = @test_data.current_licence_with_return

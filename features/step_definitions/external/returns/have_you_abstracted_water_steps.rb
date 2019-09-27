@@ -1,6 +1,6 @@
 
 Then("the Have you abstracted water page displays the expected details") do
-  page = ExternalReturnsHasWaterBeenAbstractedPage.new
+  page = Pages::External::Returns::HasWaterBeenAbstracted.new
 
   expect(page).to be_displayed
 
@@ -20,13 +20,13 @@ Then("the Have you abstracted water page displays the expected details") do
 end
 
 Then("the Have you abstracted water page displays the validation errors") do
-  page = ExternalReturnsHasWaterBeenAbstractedPage.new
+  page = Pages::External::Returns::HasWaterBeenAbstracted.new
 
   expect(page.error_summary.heading).to have_text("There is a problem")
   expect(page.error_summary.links.first).to have_text("Has any water been abstracted?")
 end
 
 And("I submit no answer on the Have you abstracted water page") do
-  page = ExternalReturnsHasWaterBeenAbstractedPage.new
+  page = Pages::External::Returns::HasWaterBeenAbstracted.new
   page.continue_button.click
 end
