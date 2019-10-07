@@ -11,10 +11,10 @@ module Pages
         element(:heading, "h1.govuk-heading-l")
         element(:continue_button, "button[type=submit]")
 
-        element(:cubic_metres, "#units-1")
-        element(:litres, "#units-2")
-        element(:megalitres, "#units-3")
-        element(:gallons, "#units-4")
+        element(:cubic_metres, "#units-1", visible: false)
+        element(:litres, "#units-2", visible: false)
+        element(:megalitres, "#units-3", visible: false)
+        element(:gallons, "#units-4", visible: false)
 
         def submit_answer(answer = "no answer")
           choose_answer answer

@@ -1,7 +1,7 @@
-Given("I navigate to the external {string} test return") do |return_status|
+Given("I navigate to the external {string} {string} return") do |return_status, frequency|
 
-  return_data = @test_data.current_licence_with_return["return"] if return_status == "due"
-  return_id = return_data["return_id"]
+  return_data = @test_data.current_licences_with_returns["returns"] if return_status == "due"
+  return_id = return_data[frequency]["return_id"]
 
   page = Pages::External::Returns::HasWaterBeenAbstracted.new
   page.load(returnId: return_id)
@@ -13,11 +13,11 @@ And("I submit nothing on the {string} page") do |question_text|
 end
 
 Then("I submit a valid answer and am routed to the expected page") do |table|
-
-  return_data = @test_data.current_licence_with_return["return"]
-  return_id = return_data["return_id"]
-
   table.hashes.each do |journey|
+    frequency = journey["return_frequency"]
+    return_data = @test_data.current_licence_return(frequency)
+    return_id = return_data["return_id"]
+
     origin_page = Pages::External::Returns.page_from_question(journey["origin"])
 
     origin_page.load(returnId: return_id)
@@ -31,10 +31,11 @@ end
 
 And("I progress through the external returns flow") do |table|
 
-  return_data = @test_data.current_licence_with_return["return"]
-  return_id = return_data["return_id"]
-
   table.hashes.each_with_index do |journey, index|
+    frequency = journey["return_frequency"]
+    return_data = @test_data.current_licence_return(frequency)
+    return_id = return_data["return_id"]
+
     origin_page = Pages::External::Returns.page_from_question(journey["origin"])
 
     # only load the first page and rely of the submission of pages
@@ -46,8 +47,8 @@ And("I progress through the external returns flow") do |table|
   end
 end
 
-Then("the {string} page displays the expected details for the test return") do |question_text|
-  return_data = @test_data.current_licence_with_return["return"]
+Then("the {string} page displays the expected details for the {string} return") do |question_text, return_frequency|
+  return_data = @test_data.current_licence_return(return_frequency)
   assert_displays_expected_details(question_text, return_data)
 end
 
@@ -89,6 +90,8 @@ def assert_displays_expected_details(question_text, return_data)
     assert_how_figures_reported_details(page)
   when Pages::External::Returns::DID_METER_RESET
     assert_did_meter_reset_details(page, return_data)
+  when Pages::External::Returns::ENTER_METER_READINGS
+    assert_meter_readings(page, return_data)
   else
     raise "Cannot check details for page with question #{question_text}"
   end
@@ -144,4 +147,10 @@ def assert_did_meter_reset_details(page, return_data)
   expect(page.question).to have_text("Did your meter reset in this abstraction period?")
   expect(page).to have_yes
   expect(page).to have_no
+end
+
+def assert_meter_readings(page, return_data)
+  expect(page.sub_heading).to have_text("Enter your readings exactly as they appear on your meter")
+  expect(page).to have_start_reading
+  expect(page.meter_readings.size).to be > 1
 end

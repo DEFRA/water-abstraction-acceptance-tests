@@ -28,7 +28,24 @@ class TestData
     raise "Could not tidy up test data" unless response.code == 200
   end
 
-  def current_licence_with_return
-    @response_data["currentLicenceWithReturn"]
+  def current_licences_with_returns
+    @response_data["currentLicencesWithReturns"]
   end
+
+  def current_licence_return(frequency = "daily")
+    current_licences_with_returns["returns"][normalize_frequency(frequency)]
+  end
+
+  private
+
+    def normalize_frequency(frequency)
+      case frequency.downcase
+      when "day", "daily"
+        return "daily"
+      when "week", "weekly"
+        return "weekly"
+      when "month", "monthly"
+        return "monthly"
+      end
+    end
 end

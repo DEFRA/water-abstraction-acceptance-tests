@@ -15,6 +15,10 @@ module Pages
           DidMeterReset.new
         when WHICH_UNITS
           WhichUnits.new
+        when ENTER_METER_READINGS
+          EnterMeterReadings.new
+        when METER_DETAILS
+          MeterDetails.new
         else
           raise "Cannot resolve question text to page: #{question}"
         end
@@ -26,6 +30,9 @@ module Pages
       SUBMITTED = "Submitted".freeze
       DID_METER_RESET = "Did your meter reset".freeze
       WHICH_UNITS = "Which units".freeze
+      ENTER_METER_READINGS = "Enter meter readings".freeze
+      ENTER_VOLUMES = "Enter volumes".freeze
+      METER_DETAILS = "Meter details".freeze
     end
   end
 end

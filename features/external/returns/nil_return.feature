@@ -7,9 +7,9 @@ Feature: External user is shown relevant information on the nil returns page
 
   Background: User is logged in
     Given I log in at the external test user
-    And I navigate to the external "due" test return
+    And I navigate to the external "due" "monthly" return
     And I answer "no" on the "Have you abstracted water" page
 
 Scenario: Nil return page details
   Then I am on the "Nil return" page of the external returns flow
-  And the "Nil return" page displays the expected details for the test return
+  And the "Nil return" page displays the expected details for the "monthly" return
