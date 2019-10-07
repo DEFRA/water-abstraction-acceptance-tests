@@ -20,9 +20,13 @@ module Pages
         section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
 
         def submit_answer(answer = "no answer")
+          choose_answer answer
+          continue_button.click
+        end
+
+        def choose_answer(answer = "no answer")
           yes.click if answer.casecmp? "yes"
           no.click if answer.casecmp? "no"
-          continue_button.click
         end
       end
     end

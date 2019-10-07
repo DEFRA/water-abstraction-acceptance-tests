@@ -17,12 +17,15 @@ module Pages
         element(:gallons, "#units-4")
 
         def submit_answer(answer = "no answer")
+          choose_answer answer
+          continue_button.click
+        end
+
+        def choose_answer(answer = "no answer")
           cubic_metres.click if answer.casecmp? "cubic meters"
           litres.click if answer.casecmp? "litres"
           megalitres.click if answer.casecmp? "megalitres"
           gallons.click if answer.casecmp? "gallons"
-
-          continue_button.click
         end
       end
     end

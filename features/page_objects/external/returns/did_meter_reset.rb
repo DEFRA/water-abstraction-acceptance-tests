@@ -1,3 +1,5 @@
+require_relative "../../sections/error_summary.rb"
+
 module Pages
   module External
     module Returns
@@ -6,17 +8,26 @@ module Pages
         set_url "#{external_application_url}return/meter/reset{?returnId}"
         set_url_matcher %r{\/return\/meter\/reset\?returnId=}
 
-        element(:question, "govuk-fieldset__legend")
+        element(:question, "legend.govuk-fieldset__legend")
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
         element(:continue_button, "button[type=submit]")
 
-        element(:yes, "#meterReset-1")
-        element(:no, "#meterReset-2")
+        section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
 
-        def submit_answer(answer = "no answer")
+        element(:yes, "#meterReset-1", visible: false)
+        element(:no, "#meterReset-2", visible: false)
+
+        element(:meter_reset_error, "#meterReset-error")
+        element(:meter_reset_hint, "#meterReset-1-item-hint")
+
+        def choose_answer(answer = "no answer")
           yes.click if answer.casecmp? "yes"
           no.click if answer.casecmp? "no"
+        end
+
+        def submit_answer(answer = "no answer")
+          choose_answer answer
           continue_button.click
         end
       end

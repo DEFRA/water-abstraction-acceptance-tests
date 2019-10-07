@@ -61,6 +61,11 @@ Given("I answer {string} on the {string} page") do |response, page_text|
   page.submit_answer response
 end
 
+Given("I choose {string} on the {string} page") do |response, page_text|
+  page = Pages::External::Returns.page_from_question(page_text)
+  page.choose_answer response
+end
+
 Then("I am on the {string} page of the external returns flow") do |page_text|
   page = Pages::External::Returns.page_from_question(page_text)
   expect(page).to be_displayed
@@ -82,6 +87,8 @@ def assert_displays_expected_details(question_text, return_data)
     assert_submitted_details(page, return_data)
   when Pages::External::Returns::HOW_FIGURES_REPORTED
     assert_how_figures_reported_details(page)
+  when Pages::External::Returns::DID_METER_RESET
+    assert_did_meter_reset_details(page, return_data)
   else
     raise "Cannot check details for page with question #{question_text}"
   end
@@ -132,3 +139,9 @@ def assert_submitted_details(page, return_data)
   expect(page.view_return_link["href"]).to end_with("/returns/return?id=#{return_id}")
 end
 # rubocop:enable Metrics/AbcSize
+
+def assert_did_meter_reset_details(page, return_data)
+  expect(page.question).to have_text("Did your meter reset in this abstraction period?")
+  expect(page).to have_yes
+  expect(page).to have_no
+end

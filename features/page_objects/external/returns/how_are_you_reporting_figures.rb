@@ -21,11 +21,14 @@ module Pages
         element(:method_error, "#method-error")
 
         def submit_answer(answer = "no answer")
+          choose_answer answer
+          continue_button.click
+        end
+
+        def choose_answer(answer = "no answer")
           meter_readings.click if answer.casecmp? "readings"
           volumes.click if answer.casecmp? "volumes"
           estimates.click if answer.casecmp? "estimates"
-
-          continue_button.click
         end
       end
     end
