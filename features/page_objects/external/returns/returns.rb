@@ -2,26 +2,21 @@ module Pages
   module External
     module Returns
       def self.page_from_question(question)
-        case question
-        when NIL_RETURN
-          NilReturn.new
-        when HAVE_YOU_ABSTRACTED_WATER
-          HasWaterBeenAbstracted.new
-        when HOW_FIGURES_REPORTED
-          HowAreYouReportingFigures.new
-        when SUBMITTED
-          Submitted.new
-        when DID_METER_RESET
-          DidMeterReset.new
-        when WHICH_UNITS
-          WhichUnits.new
-        when ENTER_METER_READINGS
-          EnterMeterReadings.new
-        when METER_DETAILS
-          MeterDetails.new
-        else
-          raise "Cannot resolve question text to page: #{question}"
-        end
+        question_to_page = {
+          NIL_RETURN => NilReturn,
+          HAVE_YOU_ABSTRACTED_WATER => HasWaterBeenAbstracted,
+          HOW_FIGURES_REPORTED => HowAreYouReportingFigures,
+          SUBMITTED => Submitted,
+          DID_METER_RESET => DidMeterReset,
+          WHICH_UNITS => WhichUnits,
+          ENTER_METER_READINGS => EnterMeterReadings,
+          METER_DETAILS => MeterDetails,
+          ENTER_VOLUMES => EnterVolumes,
+          CONFIRM_RETURN => ConfirmReturn
+        }
+
+        raise "Cannot resolve question text to page: #{question}" unless question_to_page.key? question
+        question_to_page[question].new
       end
 
       NIL_RETURN = "Nil return".freeze
@@ -33,6 +28,7 @@ module Pages
       ENTER_METER_READINGS = "Enter meter readings".freeze
       ENTER_VOLUMES = "Enter volumes".freeze
       METER_DETAILS = "Meter details".freeze
+      CONFIRM_RETURN = "Confirm return".freeze
     end
   end
 end

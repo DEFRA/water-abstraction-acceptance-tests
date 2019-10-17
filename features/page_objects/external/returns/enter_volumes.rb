@@ -3,10 +3,10 @@ require_relative "../../sections/error_summary.rb"
 module Pages
   module External
     module Returns
-      class EnterMeterReadings < SitePrism::Page
+      class EnterVolumes < SitePrism::Page
 
-        set_url "#{external_application_url}return/meter/readings{?returnId}"
-        set_url_matcher %r{\/return\/meter\/readings\?returnId=.*}
+        set_url "#{external_application_url}return/quantities{?returnId}"
+        set_url_matcher %r{\/return\/quantities\?returnId=.*}
 
         element(:sub_heading, "h3.govuk-heading-m")
         element(:licence_number, ".govuk-caption-l")
@@ -18,7 +18,7 @@ module Pages
 
         element(:start_reading, "#startReading")
         element(:start_reading_error, "#startReading-error")
-        elements(:meter_readings, ".govuk-input.input--meter-reading")
+        elements(:volumes, ".govuk-input[type=number]")
         elements(:error_messages, ".govuk-error-message")
 
         element(:back_link, "a.govuk-back-link")
@@ -33,30 +33,14 @@ module Pages
         end
 
         def choose_answer(answer = "no answer")
-          start_reading.set(100) if answer.casecmp? "start reading only"
-          enter_valid_readings if answer.casecmp? "valid readings"
-          enter_valid_equal_readings if answer.casecmp? "valid equal readings"
-          enter_invalid_readings if answer.casecmp? "invalid readings"
+          enter_valid_equal_readings if answer.casecmp? "identical volumes"
         end
 
         private
 
-        def enter_valid_readings
-          meter_readings.each_with_index do |reading, index|
-            value = (index + 1) * 5
-            reading.set value
-          end
-        end
-
         def enter_valid_equal_readings
-          meter_readings.each do |reading|
-            reading.set(5)
-          end
-        end
-
-        def enter_invalid_readings
-          meter_readings.each_with_index do |reading, index|
-            reading.set(1000 - index)
+          volumes.each do |volume|
+            volume.set(5)
           end
         end
       end

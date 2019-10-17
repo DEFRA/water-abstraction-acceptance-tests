@@ -1,4 +1,4 @@
-@new-returns @with-test-data @just-me
+@new-returns @with-test-data
 Feature: External user can enter returns meter readings
 
  Background: User is logged in

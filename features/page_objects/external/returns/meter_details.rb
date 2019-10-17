@@ -17,16 +17,43 @@ module Pages
         section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
 
         element(:manufacturer, "#manufacturer")
+        element(:manufacturer_error, "#manufacturer-error")
+
         element(:serial_number, "#serialNumber")
-        element(:is_multiplier, "#isMultiplier-1")
+        element(:serial_number_error, "#serialNumber-error")
+
+        element(:multiplier, "#isMultiplier-1", visible: false)
+
+        element(:back_link, "a.govuk-back-link")
 
         def submit_answer(answer = "no answer")
-          choose_answer answer
-          continue_button.click
+          if answer.casecmp? "back"
+            back_link.click
+          else
+            choose_answer answer
+            continue_button.click
+          end
         end
 
         def choose_answer(answer = "no answer")
+          enter_meter_make if answer.casecmp? "meter make only"
+          enter_serial_number if answer.casecmp? "serial number only"
+          enter_valid_readings if answer.casecmp? "valid readings"
+        end
 
+        private
+
+        def enter_meter_make
+          manufacturer.set "Test meter make"
+        end
+
+        def enter_serial_number
+          serial_number.set "abc123"
+        end
+
+        def enter_valid_readings
+          enter_meter_make
+          enter_serial_number
         end
       end
     end

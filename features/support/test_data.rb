@@ -38,14 +38,14 @@ class TestData
 
   private
 
-    def normalize_frequency(frequency)
-      case frequency.downcase
-      when "day", "daily"
-        return "daily"
-      when "week", "weekly"
-        return "weekly"
-      when "month", "monthly"
-        return "monthly"
-      end
+  def normalize_frequency(frequency)
+    case frequency.downcase
+    when "day", "daily"
+      return "daily"
+    when "week", "weekly"
+      return "weekly"
+    when "month", "monthly"
+      return "monthly"
     end
+  end
 end

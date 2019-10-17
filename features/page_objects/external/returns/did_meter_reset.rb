@@ -21,14 +21,20 @@ module Pages
         element(:meter_reset_error, "#meterReset-error")
         element(:meter_reset_hint, "#meterReset-1-item-hint")
 
+        element(:back_link, "a.govuk-back-link")
+
         def choose_answer(answer = "no answer")
           yes.click if answer.casecmp? "yes"
           no.click if answer.casecmp? "no"
         end
 
         def submit_answer(answer = "no answer")
-          choose_answer answer
-          continue_button.click
+          if answer.casecmp? "back"
+            back_link.click
+          else
+            choose_answer answer
+            continue_button.click
+          end
         end
       end
     end

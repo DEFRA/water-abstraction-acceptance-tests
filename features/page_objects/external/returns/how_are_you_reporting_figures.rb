@@ -20,9 +20,15 @@ module Pages
         section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
         element(:method_error, "#method-error")
 
+        element(:back_link, "a.govuk-back-link")
+
         def submit_answer(answer = "no answer")
-          choose_answer answer
-          continue_button.click
+          if answer.casecmp? "back"
+            back_link.click
+          else
+            choose_answer answer
+            continue_button.click
+          end
         end
 
         def choose_answer(answer = "no answer")
