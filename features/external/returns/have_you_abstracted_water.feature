@@ -1,4 +1,4 @@
-@new-returns @with-test-data
+@new-returns @use-test-data
 Feature: External user can inform DEFRA if they have abstracted water
 
    As an external user

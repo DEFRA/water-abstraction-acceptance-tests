@@ -1,4 +1,4 @@
-@new-returns @with-test-data
+@new-returns @use-test-data
 Feature: External user can enter returns volumes
 
  Background: User is logged in

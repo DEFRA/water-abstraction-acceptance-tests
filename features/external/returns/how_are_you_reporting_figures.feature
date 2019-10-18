@@ -1,4 +1,4 @@
-@new-returns @with-test-data
+@new-returns @use-test-data
 Feature: External user can inform DEFRA how they are reporting the figures
 
    As an external user

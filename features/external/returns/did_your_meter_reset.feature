@@ -1,4 +1,4 @@
-@new-returns @with-test-data
+@new-returns @use-test-data
 Feature: External user can inform DEFRA if thier meter reset in the abstraction period
 
    As an external user

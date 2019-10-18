@@ -1,4 +1,4 @@
-@new-returns @with-test-data
+@new-returns @use-test-data
 Feature: External user can enter detail about thier meter
 
  Background: User is logged in

@@ -1,4 +1,4 @@
-@new-returns @with-test-data
+@new-returns @use-test-data
 Feature: External user is shown relevant information on the nil returns page
 
    As an external user

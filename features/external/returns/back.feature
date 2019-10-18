@@ -1,4 +1,4 @@
-@new-returns @with-test-data @just-me
+@new-returns @use-test-data
 Feature: External user can use the back button in the returns flows
 
    As an external user
