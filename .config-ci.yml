@@ -17,11 +17,14 @@ custom:
     qa:
       front_office: "https://example.com"
       back_office: "https://example.com"
+      external_application: "https://example.com"
     dev:
       front_office: "https://example.com"
+      external_application: "https://example.com"
       back_office: "https://example.com"
     sand:
       front_office: "https://example.com"
       back_office: "https://example.com"
       back_office_internal_root: "https://example.com"
       root_url: "https://example.com"
+      external_application: "https://example.com"
