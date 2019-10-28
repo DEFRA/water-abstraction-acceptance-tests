@@ -11,9 +11,9 @@ module Pages
         element(:question, "form .govuk-fieldset__legend.govuk-fieldset__legend--m")
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
-        element(:continue_button, "button[type=submit]")
+        element(:continue_button, "form button.govuk-button")
 
-        element(:yes, "#isNil-1", visible: false)
+        element(:yes, "#isNil", visible: false)
         element(:no, "#isNil-2", visible: false)
 
         section(:return_details, Pages::External::Sections::ReturnDetails, ".meta")

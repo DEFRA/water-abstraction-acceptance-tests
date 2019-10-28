@@ -11,7 +11,7 @@ module Pages
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
         element(:sub_heading, "h2.govuk-heading-l")
-        element(:submit_button, "button[type=submit]")
+        element(:submit_button, "form button.govuk-button")
         element(:edit_volumes_link, "a", text: "Edit your volumes")
         element(:edit_readings_link, "a", text: "Edit your meter readings")
         element(:back_link, "a.govuk-back-link")

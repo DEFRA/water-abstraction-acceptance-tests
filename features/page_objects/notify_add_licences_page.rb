@@ -1,7 +1,7 @@
 class NotifyAddLicencesPage < SitePrism::Page
 
   element(:heading, ".heading-large")
-  element(:error_heading, "#error-summary-heading-example-1")
+  element(:error_heading, "#error-summary-heading-example")
   element(:error_detail, ".error-summary-list a")
   element(:instructions, ".form-label-bold")
   element(:licence_box, "#system_external_id")

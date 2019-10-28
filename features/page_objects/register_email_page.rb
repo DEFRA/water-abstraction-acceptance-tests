@@ -2,7 +2,7 @@ class RegisterEmailPage < SitePrism::Page
 
   element(:heading, "h1.govuk-heading-l")
   element(:email_address, "#email")
-  element(:continue_button, "button[type=submit]")
+  element(:continue_button, "form button.govuk-button")
   element(:not_received_email_link, "main a")
 
   def submit(args = {})

@@ -4,6 +4,6 @@ class ManageChangeAccessPage < SitePrism::Page
   element(:content, "#content")
   element(:manage_returns_checkbox, "input[name='returns']", visible: false)
   element(:remove_access_link, "form a.govuk-link")
-  element(:update_access_button, "button[type=submit]")
+  element(:update_access_button, "form button.govuk-button")
 
 end

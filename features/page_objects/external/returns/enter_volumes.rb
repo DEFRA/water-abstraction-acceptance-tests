@@ -12,7 +12,7 @@ module Pages
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
 
-        element(:continue_button, "button[type=submit]")
+        element(:continue_button, "form button.govuk-button")
 
         section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
 

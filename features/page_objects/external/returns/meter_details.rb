@@ -12,7 +12,7 @@ module Pages
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
 
-        element(:continue_button, "button[type=submit]")
+        element(:continue_button, "form button.govuk-button")
 
         section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
 
@@ -22,7 +22,7 @@ module Pages
         element(:serial_number, "#serialNumber")
         element(:serial_number_error, "#serialNumber-error")
 
-        element(:multiplier, "#isMultiplier-1", visible: false)
+        element(:multiplier, "#isMultiplier", visible: false)
 
         element(:back_link, "a.govuk-back-link")
 

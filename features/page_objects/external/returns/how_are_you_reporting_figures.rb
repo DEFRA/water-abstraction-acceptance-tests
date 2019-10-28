@@ -11,9 +11,9 @@ module Pages
         element(:question, "h3.govuk-heading-m")
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
-        element(:continue_button, "button[type=submit]")
+        element(:continue_button, "form button.govuk-button")
 
-        element(:meter_readings, "#method-1", visible: false)
+        element(:meter_readings, "#method", visible: false)
         element(:volumes, "#method-2", visible: false)
         element(:estimates, "#method-3", visible: false)
 
@@ -25,6 +25,7 @@ module Pages
         def submit_answer(answer = "no answer")
           if answer.casecmp? "back"
             back_link.click
+            sleep 2
           else
             choose_answer answer
             continue_button.click

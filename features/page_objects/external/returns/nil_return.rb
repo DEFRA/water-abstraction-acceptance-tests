@@ -12,7 +12,7 @@ module Pages
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
         element(:sub_heading, "h2.govuk-heading-l")
-        element(:submit_button, "button[type=submit]")
+        element(:submit_button, "form button.govuk-button")
 
         section(:return_details, Pages::External::Sections::ReturnDetails, ".meta")
 

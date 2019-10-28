@@ -9,9 +9,9 @@ module Pages
         element(:question, "govuk-fieldset__legend")
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
-        element(:continue_button, "button[type=submit]")
+        element(:continue_button, "form button.govuk-button")
 
-        element(:cubic_metres, "#units-1", visible: false)
+        element(:cubic_metres, "#units", visible: false)
         element(:litres, "#units-2", visible: false)
         element(:megalitres, "#units-3", visible: false)
         element(:gallons, "#units-4", visible: false)

@@ -5,7 +5,7 @@ class SignInPage < SitePrism::Page
   element(:email, "#email")
   element(:password, "#password")
   element(:error_heading, ".govuk-error-summary__list")
-  element(:submit_button, "button[type='submit']")
+  element(:submit_button, "button.govuk-button.govuk-button--start")
   element(:forgotten_password, "#main-content a:nth-child(1)")
   element(:create_account_link, "br+ a")
 

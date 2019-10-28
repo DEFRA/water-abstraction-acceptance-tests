@@ -11,15 +11,15 @@ module Pages
         element(:question, "legend.govuk-fieldset__legend")
         element(:licence_number, ".govuk-caption-l")
         element(:heading, "h1.govuk-heading-l")
-        element(:continue_button, "button[type=submit]")
+        element(:continue_button, "form button.govuk-button")
 
         section(:error_summary, ErrorSummarySection, ".govuk-error-summary")
 
-        element(:yes, "#meterReset-1", visible: false)
+        element(:yes, "#meterReset", visible: false)
         element(:no, "#meterReset-2", visible: false)
 
         element(:meter_reset_error, "#meterReset-error")
-        element(:meter_reset_hint, "#meterReset-1-item-hint")
+        element(:meter_reset_hint, "#meterReset-item-hint")
 
         element(:back_link, "a.govuk-back-link")
 
