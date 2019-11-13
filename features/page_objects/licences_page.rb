@@ -28,7 +28,7 @@ class LicencesPage < SitePrism::Page
   elements(:licence_links_external, ".govuk-table__cell a")
   elements(:licence_links_internal, ".govuk-table__cell a")
   elements(:licence_links_internal1, "#main-content a")
-  element(:first_licence_external, ".license-results-header+ .license-result a")
+  element(:first_licence_external, ".licence-results__header+ .licence-result a")
   element(:first_licence_internal, ".govuk-table__row:nth-child(1) a")
   element(:search_input, ".search__input")
   element(:search_button, ".search__button")
