@@ -9,7 +9,7 @@ class DigitisePage < SitePrism::Page
   element(:heading, ".govuk-heading-l")
   element(:search_form, "#q")
   element(:search_button, ".govuk-button")
-  element(:single_result, :xpath,'//tr/td[1]/a')
+  element(:single_result, :xpath, '//tr/td[1]/a')
   element(:licence_table, ".grid-row+ .grid-row .column-full")
 
   def search(args = {})
