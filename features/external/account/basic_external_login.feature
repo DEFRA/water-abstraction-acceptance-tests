@@ -23,8 +23,3 @@ Feature: [WATER-420] Basic login
     Given I am on the sign in page for "external_user"
     When I request a password reset as an "external_user"
     Then I am on the Check Your Email page
-
-  Scenario: [WATER-420] Valid logi
-    Given I am on the sign in page for "internal_user"
-    When I sign into my account as "internal_user"
-    Then I am on the internal abstraction licences page

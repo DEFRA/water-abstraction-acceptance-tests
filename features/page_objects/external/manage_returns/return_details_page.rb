@@ -1,4 +1,4 @@
-require_relative "sections/nav_bar.rb"
+require_relative "../../../page_objects/sections/nav_bar"
 
 class ReturnDetailsPage < SitePrism::Page
 

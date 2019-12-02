@@ -1,5 +1,5 @@
-require_relative "sections/govuk_banner.rb"
-require_relative "sections/nav_bar.rb"
+require_relative "../../../../page_objects/sections/govuk_banner"
+require_relative "../../../../page_objects/sections/nav_bar"
 
 class LicenceDetailsPage < SitePrism::Page
 

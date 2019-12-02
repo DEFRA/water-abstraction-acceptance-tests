@@ -1,4 +1,4 @@
-require_relative "sections/govuk_banner.rb"
+require_relative "../../page_objects/sections/govuk_banner"
 
 class ManagePage < SitePrism::Page
   url = internal_url(:root)

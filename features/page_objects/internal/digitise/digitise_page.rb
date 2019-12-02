@@ -6,10 +6,10 @@ class DigitisePage < SitePrism::Page
   section(:govuk_banner, GovukBanner, GovukBanner::SELECTOR)
   section(:nav_bar, NavBar, NavBar::SELECTOR)
 
-  element(:heading, ".heading-large")
+  element(:heading, ".govuk-heading-l")
   element(:search_form, "#q")
-  element(:search_button, ".button")
-  element(:single_result, ".column-full a")
+  element(:search_button, ".govuk-button")
+  element(:single_result, :xpath,'//tr/td[1]/a')
   element(:licence_table, ".grid-row+ .grid-row .column-full")
 
   def search(args = {})

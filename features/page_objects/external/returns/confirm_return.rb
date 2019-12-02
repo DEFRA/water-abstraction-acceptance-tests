@@ -1,4 +1,4 @@
-require_relative "../sections/return_details"
+require_relative "../../external/sections/return_details"
 
 module Pages
   module External
