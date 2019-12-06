@@ -1,5 +1,5 @@
 class BackOfficeStartPage < SitePrism::Page
 
-  element(:heading, ".heading-xlarge")
+  element(:heading, ".govuk-label--xl")
 
 end
