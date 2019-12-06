@@ -7,15 +7,8 @@ module Pages
         current_page_url
       end
 
-      element(:heading, ".govuk-heading-l")
-      element(:manage_tab, "#navbar-notifications")
-      element(:create_a_bill_run, :xpath, "//*[@id='main-content']/ul[4]/li[1]/a")
-      element(:view_past_and_open_bill_runs, :xpath, "//*[@id='main-content']/ul[4]/li[2]/a")
-
-      section(:govuk_banner, GovukBanner, GovukBanner::NUNJUCKS_SELECTOR)
-
-      def click_manage_tab
-        manage_tab.click
+      def click_tab section
+        find("#navbar-notifications", :text => section).click
       end
 
       def create_a_bill_run

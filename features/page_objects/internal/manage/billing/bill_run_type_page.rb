@@ -11,11 +11,11 @@ module Pages
         element(:supp_bill_run_type, "#selectedBillingType-2", visible: false)
 
         def submit_bill_run_type(args = {})
-          if args[:type].downcase === page.find('#selectedBillingType-2', :visible => false).value.downcase
-            supp_bill_run_type.click
-            @base_page = BasePage.new
-            @base_page.click_continue
-          end
+          return unless args[:type].downcase.eql? page.find("#selectedBillingType-2", visible: false).value.downcase
+
+          supp_bill_run_type.click
+          @base_page = BasePage.new
+          @base_page.click_continue
         end
       end
     end

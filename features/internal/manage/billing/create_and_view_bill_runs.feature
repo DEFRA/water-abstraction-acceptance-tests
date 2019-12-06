@@ -5,9 +5,9 @@ Feature: Create and View bill runs
   I can ensure customers receive accurate bills as soon as possible after their licence starts or changes.
 
   Scenario Outline: [WATER-2386] Create a supplementary bill run
-    Given I log in as <user> user
-    And I navigate to the "manage" section
-    When I "create" a "supplementary" bill run for "Anglian" region
+    Given I logged in as <user> user
+    And I navigate to the "Manage" section
+    When I trigger a "supplementary" bill run for <region> region
     Then I can see the "bill run started"
     Examples:
       | user             | region     |
@@ -16,7 +16,7 @@ Feature: Create and View bill runs
 
   Scenario Outline: [WATER-2386] View past and open bill runs
     Given I logged in as <user> user
-    And I navigate to the "manage" section
+    And I navigate to the "Manage" section
     When I select the past and open bill runs option
     Then I can see the "bill runs"
     Examples:
@@ -25,8 +25,8 @@ Feature: Create and View bill runs
       | super            |
 
   Scenario Outline: [WATER-2386] Users without billing and data permission can't see the billing section
-    Given I log in as <user> user
-    When I navigate to the "manage" section
+    Given I logged in as <user> user
+    When I navigate to the "Manage" section
     Then I can't see the billing section
     Examples:
       | user |
