@@ -3,7 +3,6 @@ class BasePage < SitePrism::Page
   element(:h1_heading, ".govuk-heading-l")
   element(:continue_button, ".govuk-button")
 
-
   def click_continue
     continue_button.click
   end

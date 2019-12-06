@@ -7,16 +7,16 @@ module Pages
         current_page_url
       end
 
-      def click_tab section
-        find("#navbar-notifications", :text => section).click
+      def click_tab(section)
+        find("#navbar-notifications", text: section).click
       end
 
       def create_a_bill_run
-        find("a", :text => "Create a bill run").click
+        find("a", text: "Create a bill run").click
       end
 
       def view_past_open_bill_runs
-        find("a", :text => "View past and open bill runs").click
+        find("a", text: "View past and open bill runs").click
       end
     end
   end

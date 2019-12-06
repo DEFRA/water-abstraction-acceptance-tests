@@ -14,7 +14,7 @@ module Pages
         def submit(args = {})
           email.set(args[:email]) if args.key?(:email)
           password.set(args[:password]) if args.key?(:password)
-          puts 'Logged in as: ' + args[:email] + ' user on ' + config_environment  + ' env: ' + url
+          puts "Logged in as: " + args[:email] + " user on " + config_environment + " env: " + url
           submit_button.click
         end
 
