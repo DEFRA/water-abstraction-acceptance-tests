@@ -1,8 +1,9 @@
-@use-internal-test-data @billing @preprod
+@use-internal-test-data @billing
 Feature: Create and View bill runs
   As a Billing and Data user
   I want to be able to trigger and view bill runs for my region so that
   I can ensure customers receive accurate bills as soon as possible after their licence starts or changes.
+  Note: This feature will not be releasing to production for the moment.
 
   Scenario Outline: [WATER-2386] Create a supplementary bill run
     Given I logged in as <user> user
