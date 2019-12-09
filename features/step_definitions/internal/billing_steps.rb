@@ -11,7 +11,7 @@ When(/^I trigger a "([^"]*)" bill run for ([^"]*) region$/) do |bill_run_type, r
   @page.create_a_bill_run
   @bill_run_page = Pages::Internal::Manage::BillRunTypePage.new
   expect(@bill_run_page.current_url).to include("/billing/batch/type")
-  @bill_run_page.submit_bill_run_type(type: bill_run_type)
+  @bill_run_page.submit_bill_run_type(bill_run_type)
   @region_type = Pages::Internal::Manage::SelectTheRegionPage.new
   @region_type.submit_region_type(type: region)
 end

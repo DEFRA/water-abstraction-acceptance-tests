@@ -10,10 +10,15 @@ module Pages
 
         element(:supp_bill_run_type, "#selectedBillingType-2", visible: false)
 
-        def submit_bill_run_type(args = {})
-          return unless args[:type].casecmp.eql? page.find("#selectedBillingType-2", visible: false).value.casecmp
+        def submit_bill_run_type(bill_run_type)
+          type = page.find("#selectedBillingType-2", visible: false).value
+          if type.casecmp(bill_run_type).zero?
+            supp_bill_run_type.click
+            continue
+          end
+        end
 
-          supp_bill_run_type.click
+        def continue
           @base_page = BasePage.new
           @base_page.click_continue
         end

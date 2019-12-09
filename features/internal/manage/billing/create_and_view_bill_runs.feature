@@ -7,7 +7,7 @@ Feature: Create and View bill runs
   Scenario Outline: [WATER-2386] Create a supplementary bill run
     Given I logged in as <user> user
     And I navigate to the "Manage" section
-    When I trigger a "supplementary" bill run for <region> region
+    When I trigger a "Supplementary" bill run for <region> region
     Then I can see the "bill run started"
     Examples:
       | user             | region     |
