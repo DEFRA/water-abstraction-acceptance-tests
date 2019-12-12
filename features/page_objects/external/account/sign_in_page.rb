@@ -6,7 +6,7 @@ class SignInPage < SitePrism::Page
   element(:password, "#password")
   element(:error_heading, ".govuk-error-summary__list")
   element(:submit_button, "button.govuk-button.govuk-button--start")
-  element(:forgotten_password, "#main-content a:nth-child(1)")
+  element(:forgotten_password, "a[href*='/reset_password']")
   element(:create_account_link, "br+ a")
 
   def submit(args = {})
