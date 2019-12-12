@@ -4,7 +4,7 @@ Given("I log in at the external test user") do
 
   data = @test_data.current_licences_with_returns
   user_name = data["externalPrimaryUser"]["user"]["user_name"]
-  sign_in_page.submit_credentials(user_name, "P@55word")
+  sign_in_page.submit_credentials(user_name, @test_data.password)
 end
 
 Given(/^I logged in as ([^"]*) user$/) do |user|
@@ -13,5 +13,5 @@ Given(/^I logged in as ([^"]*) user$/) do |user|
 
   data = @test_data.internal_users
   user_name = data[user]["user_name"]
-  sign_in_page.submit_credentials(user_name, "P@55word")
+  sign_in_page.submit_credentials(user_name , @test_data.password)
 end

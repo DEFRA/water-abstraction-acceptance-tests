@@ -56,6 +56,10 @@ class TestData
     current_licences_with_returns["returns"][normalize_frequency(frequency)]
   end
 
+  def password
+    Quke::Quke.config.custom["data"]["accounts"]["test_data_password"]
+  end
+
   private
 
   def normalize_frequency(frequency)
