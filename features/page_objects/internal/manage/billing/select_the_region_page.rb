@@ -10,21 +10,15 @@ module Pages
 
         element(:regions, ".govuk-radios", visible: false)
 
-        def submit_region_type(args = {})
-          page.all(:css, ".govuk-radios__item", visible: false).each do |s|
-            if s.text.eql? args[:type]
-              find("#selectedBillingRegion", visible: false).click
+        def submit_region_type(region_name)
+          page.all(:css, ".govuk-radios__label", visible: false).each do |region|
+            if region.text == region_name
+              region.click
               break
             end
           end
-          continue
+          continue_button.click
         end
-
-        def continue
-          @base_page = BasePage.new
-          @base_page.click_continue
-        end
-
       end
     end
   end
