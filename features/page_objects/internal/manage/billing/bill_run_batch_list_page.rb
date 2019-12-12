@@ -7,7 +7,6 @@ module Pages
         def initialize
           current_page_url
         end
-
       end
     end
   end

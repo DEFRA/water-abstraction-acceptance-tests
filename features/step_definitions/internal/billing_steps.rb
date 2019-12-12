@@ -4,7 +4,7 @@ Given("I navigate to the {string} section") do |section|
   @page = Pages::Internal::ManagePage.new
   @page.click_tab section
   @base_page = BasePage.new
-  expect(@base_page.heading_title).to have_text("Manage reports and notices")
+  expect(@base_page. h1_heading.text).to have_text("Manage reports and notices")
 end
 
 When(/^I trigger a "([^"]*)" bill run for ([^"]*) region$/) do |bill_run_type, region|
@@ -13,7 +13,7 @@ When(/^I trigger a "([^"]*)" bill run for ([^"]*) region$/) do |bill_run_type, r
   expect(@bill_run_page.current_url).to include("/billing/batch/type")
   @bill_run_page.submit_bill_run_type(bill_run_type)
   @region_type = Pages::Internal::Manage::SelectTheRegionPage.new
-  @region_type.submit_region_type(type: region)
+  @region_type.submit_region_type(region)
 end
 
 When("I select the past and open bill runs option") do
