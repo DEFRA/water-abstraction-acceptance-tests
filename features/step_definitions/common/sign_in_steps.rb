@@ -13,5 +13,5 @@ Given(/^I logged in as ([^"]*) user$/) do |user|
 
   data = @test_data.internal_users
   user_name = data[user]["user_name"]
-  sign_in_page.submit_credentials(user_name , @test_data.password)
+  sign_in_page.submit_credentials(user_name, @test_data.password)
 end
