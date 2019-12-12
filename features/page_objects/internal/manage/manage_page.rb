@@ -1,4 +1,3 @@
-require_relative "../../../page_objects/sections/govuk_banner"
 module Pages
   module Internal
     class ManagePage < BasePage
@@ -12,11 +11,11 @@ module Pages
       end
 
       def create_a_bill_run
-        find("a", text: "Create a bill run").click
+        find_link("Create a bill run").click
       end
 
       def view_past_open_bill_runs
-        find("a", text: "View past and open bill runs").click
+        find_link("View past and open bill runs").click
       end
     end
   end
