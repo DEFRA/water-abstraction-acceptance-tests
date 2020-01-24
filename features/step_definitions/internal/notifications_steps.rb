@@ -43,3 +43,9 @@ Then(/^the send paper forms page displays validation errors$/) do
   expect(@paper_forms_page.error_summary.links.first).to have_text(error_message)
   expect(@paper_forms_page.licence_numbers_error).to have_text(error_message)
 end
+
+Then(/^I can't see the paper forms link$/) do
+  page = Pages::Internal::ManagePage.new
+  expect(page).to have_no_text("Send return notices")
+  expect(page).to have_no_text("Paper Forms")
+end

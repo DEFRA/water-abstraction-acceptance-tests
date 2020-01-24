@@ -20,8 +20,8 @@ Feature: Internal user is able to send paper forms
     When I submit "invalid" licence number
     Then I can see the paper forms "issues" page
     Examples:
-      | user             |
-      | billing_and_data |
+      | user |
+      | wirs |
 
   Scenario Outline: Submitting a blank form results in validation errors
     Given I logged in as <user> user
@@ -29,7 +29,15 @@ Feature: Internal user is able to send paper forms
     When I submit an empty form
     Then the send paper forms page displays validation errors
     Examples:
-      | user             |
-      | billing_and_data |
+      | user  |
+      | super |
 
-# Scenario: Users without billing and data or WIRS permission can't send paper forms
+  Scenario Outline: Users without billing and data or wirs permission can't send paper forms
+    Given I logged in as <user> user
+    When I navigate to the "Manage" section
+    Then I can't see the paper forms link
+    Examples:
+      | user                |
+      | nps                 |
+      | psc                 |
+      | environment_officer |
