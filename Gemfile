@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source "http://rubygems.org"
 
 gem "quke",
     git: "https://github.com/DEFRA/quke",

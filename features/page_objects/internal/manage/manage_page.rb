@@ -10,6 +10,10 @@ module Pages
         find("#navbar-notifications", text: section).click
       end
 
+      def send_paper_forms
+        find_link("Paper forms").click
+      end
+
       def create_a_bill_run
         find_link("Create a bill run").click
       end

@@ -1,12 +1,3 @@
-Given("I navigate to the {string} section") do |section|
-  @back_app = BackOfficeApp.new
-  expect(@back_app.back_office_start_page.heading).to have_text("Licences, users and returns")
-  @page = Pages::Internal::ManagePage.new
-  @page.click_tab section
-  @base_page = BasePage.new
-  expect(@base_page. h1_heading.text).to have_text("Manage reports and notices")
-end
-
 When(/^I trigger a "([^"]*)" bill run for ([^"]*) region$/) do |bill_run_type, region|
   @page.create_a_bill_run
   @bill_run_page = Pages::Internal::Manage::BillRunTypePage.new
