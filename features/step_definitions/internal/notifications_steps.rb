@@ -18,15 +18,28 @@ When(/^I submit "([^"]*)" licence number$/) do |valid|
 end
 
 Then(/^I can see the paper forms "([^"]*)" page$/) do |page_type|
-if page_type.eql? "success"
-  @paper_forms_sent_page = Pages::Internal::Manage::PaperFormsSentConfirmation.new
-  expect(@paper_forms_sent_page.current_url).to include("returns-notifications/forms-success")
-  expect(@paper_forms_sent_page.confirmation_message_title).to have_text("Paper forms have been sent")
-  expect(@paper_forms_sent_page.confirmation_message_body).to have_text("They should arrive within the next five days")
-  expect(@paper_forms_sent_page.notices_report_link).to have_text("See report for notices")
-elsif page_type.eql? "issue"
-  @paper_forms_issue_page = Pages::Internal::Manage::SendPaperFormsIssue.new
-  expect(@paper_forms_issue_page.current_url).to include("returns-notifications/forms")
-  expect(@paper_forms_issue_page.invalid_licence_numbers).to have_text(invalid_licence_ref)
+  if page_type.eql? "success"
+    @paper_forms_sent_page = Pages::Internal::Manage::PaperFormsSentConfirmation.new
+    expect(@paper_forms_sent_page.current_url).to include("returns-notifications/forms-success")
+    expect(@paper_forms_sent_page.confirmation_message_title).to have_text("Paper forms have been sent")
+    expect(@paper_forms_sent_page.confirmation_message_body).to have_text("They should arrive within the next five days")
+    expect(@paper_forms_sent_page.notices_report_link).to have_text("See report for notices")
+  elsif page_type.eql? "issue"
+    @paper_forms_issue_page = Pages::Internal::Manage::SendPaperFormsIssue.new
+    expect(@paper_forms_issue_page.current_url).to include("returns-notifications/forms")
+    expect(@paper_forms_issue_page.invalid_licence_numbers).to have_text(invalid_licence_ref)
+  end
 end
+
+When(/^I submit an empty form$/) do
+  @page.paper_forms
+  @paper_forms_page = Pages::Internal::Manage::SendPaperForms.new
+  @paper_forms_page.submit_empty_form
+end
+
+Then(/^the send paper forms page displays validation errors$/) do
+  error_message = "Enter at least one licence number"
+  expect(@paper_forms_page.error_summary.heading).to have_text("There is a problem")
+  expect(@paper_forms_page.error_summary.links.first).to have_text(error_message)
+  expect(@paper_forms_page.licence_numbers_error).to have_text(error_message)
 end

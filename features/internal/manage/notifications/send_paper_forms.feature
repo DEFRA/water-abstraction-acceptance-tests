@@ -14,7 +14,7 @@ Feature: Internal user is able to send paper forms
       | user             |
       | billing_and_data |
 
-Scenario Outline: User can't send paper forms for a licence without due returns
+  Scenario Outline: User can't send paper forms for a licence without due returns
     Given I logged in as <user> user
     And I navigate to the "Manage" section
     When I submit "invalid" licence number
@@ -23,8 +23,13 @@ Scenario Outline: User can't send paper forms for a licence without due returns
       | user             |
       | billing_and_data |
 
-
-# Scenario: Send paper return forms page validation
-
+  Scenario Outline: Submitting a blank form results in validation errors
+    Given I logged in as <user> user
+    And I navigate to the "Manage" section
+    When I submit an empty form
+    Then the send paper forms page displays validation errors
+    Examples:
+      | user             |
+      | billing_and_data |
 
 # Scenario: Users without billing and data or WIRS permission can't send paper forms
