@@ -9,7 +9,7 @@ module Pages
 
         element(:licence_numbers_field, "#licenceNumbers")
 
-        def submit_valid_licence_numbers(licence_numbers)
+        def submit_licence_numbers(licence_numbers)
           licence_numbers_field.set(licence_numbers)
           continue_button.click
         end
