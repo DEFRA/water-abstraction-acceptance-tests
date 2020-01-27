@@ -15,7 +15,7 @@ Given(/^I logged in as "([^"]*)" user$/) do |user|
   log_in_as_user(user)
 end
 
-private 
+private
 
 def log_in_as_user(user)
   sign_in_page = Pages::Internal::Account::SignIn.new
