@@ -8,6 +8,16 @@ Given("I log in at the external test user") do
 end
 
 Given(/^I logged in as ([^"]*) user$/) do |user|
+  log_in_as_user(user)
+end
+
+Given(/^I logged in as "([^"]*)" user$/) do |user|
+  log_in_as_user(user)
+end
+
+private 
+
+def log_in_as_user(user)
   sign_in_page = Pages::Internal::Account::SignIn.new
   sign_in_page.load
 
