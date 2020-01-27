@@ -1,4 +1,3 @@
-
 Given(/^I select a licence with a "([^"]*)" condition$/) do |conditiontype|
   @environment = config_environment
   conditionvar = "licence_" + conditiontype.to_s

@@ -1,4 +1,3 @@
-
 Given(/^I am on the sign in page$/) do
   @front_app = FrontOfficeApp.new
   @front_app.sign_in_page.load

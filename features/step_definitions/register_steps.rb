@@ -1,4 +1,3 @@
-
 Given(/^I have no registered licences for "([^"]*)"$/) do |tasktype|
   expect(production?).to be false
 

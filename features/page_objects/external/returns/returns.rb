@@ -16,6 +16,7 @@ module Pages
         }
 
         raise "Cannot resolve question text to page: #{question}" unless question_to_page.key? question
+
         question_to_page[question].new
       end
 

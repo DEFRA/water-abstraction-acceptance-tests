@@ -1,4 +1,3 @@
-
 Given(/^I add an agent to view my licences$/) do
   expect(production?).to be false
   expect(@front_app.licences_page.navbar).to have_text("Add licences or give access")

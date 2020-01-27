@@ -5,7 +5,7 @@ module Pages
 
         def initialize
           current_page_url
-        end 
+        end
 
         element(:invalid_licence_numbers, ".govuk-list")
 

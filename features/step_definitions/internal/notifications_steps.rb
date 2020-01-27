@@ -4,7 +4,6 @@ When(/^I submit "([^"]*)" licence number$/) do |valid|
   expect(@paper_forms_page.current_url).to include("/returns-notifications/forms")
   if valid.eql? "valid"
     @paper_forms_page.submit_licence_numbers(@test_data.current_licence_return["licence_ref"])
-  
     @paper_forms_confirm_page = Pages::Internal::Manage::SendPaperFormsConfirm.new
     expect(@paper_forms_confirm_page.current_url).to include("returns-notifications/forms")
     expected_warning_text = "You are about to send paper return forms for the following licences."
@@ -22,7 +21,8 @@ Then(/^I can see the paper forms "([^"]*)" page$/) do |page_type|
     @paper_forms_sent_page = Pages::Internal::Manage::PaperFormsSentConfirmation.new
     expect(@paper_forms_sent_page.current_url).to include("returns-notifications/forms-success")
     expect(@paper_forms_sent_page.confirmation_message_title).to have_text("Paper forms have been sent")
-    expect(@paper_forms_sent_page.confirmation_message_body).to have_text("They should arrive within the next five days")
+    message_body = "They should arrive within the next five days"
+    expect(@paper_forms_sent_page.confirmation_message_body).to have_text(message_body)
     expect(@paper_forms_sent_page.notices_report_link).to have_text("See report for notices")
   elsif page_type.eql? "issue"
     @paper_forms_issue_page = Pages::Internal::Manage::SendPaperFormsIssue.new

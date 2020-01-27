@@ -46,6 +46,7 @@ class LicencesPage < SitePrism::Page
 
   def click_first_link(args = {})
     return unless args.key?(:link)
+
     click_url_text(links, args[:link].to_s)
   end
 

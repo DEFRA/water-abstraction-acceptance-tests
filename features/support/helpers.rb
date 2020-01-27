@@ -3,11 +3,11 @@
 def scroll_to(element)
   element = element.root_element if element.respond_to?(:root_element)
   Capybara.evaluate_script <<-SCRIPT
-       function() {
-         var element = document.evaluate('#{element.path}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-         window.scrollTo(0, element.getBoundingClientRect().top + pageYOffset - 200);
-       }();
-     SCRIPT
+    function() {
+      var element = document.evaluate('#{element.path}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+      window.scrollTo(0, element.getBoundingClientRect().top + pageYOffset - 200);
+    }();
+  SCRIPT
 end
 
 # Function to click the first element where link text includes search_val
@@ -19,6 +19,7 @@ end
 def production?
   @environment = config_environment
   return true if @environment == "prod" || @environment == "prod2"
+
   false
 end
 

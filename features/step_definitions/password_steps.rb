@@ -1,4 +1,3 @@
-
 Given(/^I select Change Password$/) do
   @front_app.licences_page.wait_until_account_settings_visible
   # Wait for helps because the page object is not always found straight away on load
