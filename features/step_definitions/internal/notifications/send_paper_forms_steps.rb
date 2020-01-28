@@ -1,7 +1,4 @@
 When(/^I submit "([^"]*)" licence number$/) do |valid|
-  @page.paper_forms
-  @paper_forms_page = Pages::Internal::Manage::SendPaperForms.new
-  expect(@paper_forms_page.current_url).to include("/returns-notifications/forms")
   if valid.eql? "valid"
     @paper_forms_page.submit_licence_numbers(@test_data.current_licence_return["licence_ref"])
     @paper_forms_confirm_page = Pages::Internal::Manage::SendPaperFormsConfirm.new
@@ -13,7 +10,6 @@ When(/^I submit "([^"]*)" licence number$/) do |valid|
     invalid_licence_ref = "INVALID/REF/01"
     @paper_forms_page.submit_licence_numbers(invalid_licence_ref)
   end
-
 end
 
 Then(/^I can see the paper forms "([^"]*)" page$/) do |page_type|
@@ -32,8 +28,6 @@ Then(/^I can see the paper forms "([^"]*)" page$/) do |page_type|
 end
 
 When(/^I submit an empty form$/) do
-  @page.paper_forms
-  @paper_forms_page = Pages::Internal::Manage::SendPaperForms.new
   @paper_forms_page.submit_empty_form
 end
 
