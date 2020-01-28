@@ -9,5 +9,3 @@ Given(/^I navigate to the "([^"]*)" page$/) do |page|
     expect(@returns_invitations_page.current_url).to include("/returns-notifications/invitations")
   end
 end
-
-

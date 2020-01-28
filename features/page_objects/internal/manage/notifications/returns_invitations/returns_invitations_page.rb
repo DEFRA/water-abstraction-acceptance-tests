@@ -2,7 +2,7 @@ module Pages
   module Internal
     module Manage
       class ReturnsInvitations < BasePage
-        
+
         def initialize
           current_page_url
         end

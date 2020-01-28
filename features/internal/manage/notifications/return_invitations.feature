@@ -10,8 +10,14 @@ Feature: Internal user is able to send returns invitations
     And I navigate to the "Manage" section
     And I navigate to the "returns invitations" page
 
-  Scenario: User can send returns invitations
+  Scenario: User can send returns invitations to all relevant licences
     When I exclude "no" licences
     Then I can see the waiting page
     And I can confirm sending the returns invitations
-    And I can see the returns invitations "success" page
+    And I can see the returns invitations success page
+
+  Scenario: User can send returns invitations excluding some licences
+    When I exclude "some" licences
+    Then I can see the waiting page
+    And I can confirm sending the returns invitations
+    And I can see the returns invitations success page
