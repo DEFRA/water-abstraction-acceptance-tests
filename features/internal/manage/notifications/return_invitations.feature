@@ -1,23 +1,35 @@
-@use-internal-test-data @notifications @wip
+@use-internal-test-data @notifications
 Feature: Internal user is able to send returns invitations
 
   As an internal user
   I want to be able to send returns invitations
   So that I can invite licence holders to complete their returns
 
-  Background: 
+  Scenario: User can send returns invitations to all relevant licences
     Given I logged in as "billing_and_data" user
     And I navigate to the "Manage" section
     And I navigate to the "returns invitations" page
-
-  Scenario: User can send returns invitations to all relevant licences
     When I exclude "no" licences
     Then I can see the waiting page
     And I can confirm sending the returns invitations
     And I can see the returns invitations success page
 
   Scenario: User can send returns invitations excluding some licences
+    Given I logged in as "billing_and_data" user
+    And I navigate to the "Manage" section
+    And I navigate to the "returns invitations" page
     When I exclude "some" licences
     Then I can see the waiting page
     And I can confirm sending the returns invitations
     And I can see the returns invitations success page
+
+  Scenario Outline: Users without billing and data permission can't send returns invitations
+    Given I logged in as <user> user
+    And I navigate to the "Manage" section
+    Then I can't see the "returns invitations" link as <user>
+    Examples:
+      | user                |
+      | wirs                |
+      | nps                 |
+      | psc                 |
+      | environment_officer |
