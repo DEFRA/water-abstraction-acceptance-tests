@@ -55,7 +55,7 @@ Given(/^I select a template at random$/) do
   @front_app.licences_page.nav_bar.manage_link.click
   expect(@front_app.manage_page.heading).to have_text("Manage reports and notices")
 
-  r = rand(1..3)
+  r = rand(1..4)
   if r == 1
     @front_app.manage_page.click_restriction_link
     expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow warning")
@@ -71,6 +71,11 @@ Given(/^I select a template at random$/) do
     expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow resume notice")
     @notification_type = "hands off flow resume notice"
     @notification_type_long = "Hands off flow: resume abstraction"
+  elsif r == 4
+    @front_app.manage_page.click_renewal_link
+    expect(@front_app.notify_add_licences_page.heading).to have_text("Send an invitation to renew")
+    @notification_type = "invitation to renew"
+    @notification_type_long = "Expiring licence(s): invitation to renew"
   end
 end
 
@@ -236,5 +241,9 @@ Given(/^I see an error message telling me to enter missing data$/) do
   # rubocop:disable Metrics/LineLength
   expect(@front_app.notify_custom_info_page.error_heading).to have_text("There was a problem with some of the information entered")
   # rubocop:enable Metrics/LineLength
-  expect(@front_app.notify_custom_info_page.error_detail).to have_text("The Gauging station field is required")
+  if @notification_type == "invitation to renew"
+    expect(@front_app.notify_custom_info_page.error_detail).to have_text("The Renewal application deadline field is required")
+  else
+    expect(@front_app.notify_custom_info_page.error_detail).to have_text("The Gauging station field is required")
+  end
 end
