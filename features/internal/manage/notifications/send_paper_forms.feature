@@ -29,7 +29,7 @@ Feature: Internal user is able to send paper forms
   Scenario Outline: Users without billing and data or wirs permission can't send paper forms
     Given I logged in as <user> user
     When I navigate to the "Manage" section
-    Then I can't see the "paper forms" link as <user>
+    Then I can't see the "paper forms" link
     Examples:
       | user                |
       | nps                 |

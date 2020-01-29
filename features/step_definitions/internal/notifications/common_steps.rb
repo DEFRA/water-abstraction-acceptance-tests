@@ -10,12 +10,11 @@ Given(/^I navigate to the "([^"]*)" page$/) do |page|
   end
 end
 
-Then(/^I can't see the "([^"]*)" link as ([^"]*)$/) do |notification_type, user|
+Then(/^I can't see the "([^"]*)" link$/) do |notification_type|
   link_text = {
     "paper forms" => "Paper forms",
     "returns invitations" => "Invitations"
   }
   page = Pages::Internal::ManagePage.new
-  expect(page).to have_no_text("Send return notices") unless user.eql? "wirs"
   expect(page).to have_no_text(link_text[notification_type])
 end

@@ -1,8 +1,8 @@
-When(/^I exclude "([^"]*)" licences$/) do |amount|
-  if amount.eql? "some"
+When(/^I exclude ([^"]*) licences$/) do |licence|
+  if licence.eql? "some"
     licence_numbers = "AT/CURR/DAILY/01, AT/CURR/WEEKLY/01, AT/CURR/MONTHLY/01"
     @returns_invitations_page.generate_returns_invitations(licence_numbers)
-  elsif amount.eql? "no"
+  elsif licence.eql? "no"
     @returns_invitations_page.generate_returns_invitations
   end
 end
@@ -12,8 +12,9 @@ Then(/^I can see the waiting page$/) do
   url_regex = %r{^https://([a-z.-]+)/waiting/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$}
   expect(@waiting_page.current_url).to match(url_regex)
   expect(@waiting_page.h1_heading).to have_text("Send returns invitations")
-  expected_message = "Please wait while the mailing list is assembled. " \
-    "This may take a few minutes. The letters will not be sent yet."
+  # rubocop:disable Layout/LineLength
+  expected_message = "Please wait while the mailing list is assembled. This may take a few minutes. The letters will not be sent yet."
+  # rubocop:enable Layout/LineLength
   expect(@waiting_page.waiting_page_message).to have_text(expected_message)
 end
 
