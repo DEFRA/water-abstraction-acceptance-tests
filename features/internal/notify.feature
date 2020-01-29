@@ -8,9 +8,9 @@ Feature: [WATER-1013] Notify user of hands off flow
     Given I am on the sign in page for "internal_user"
     And I sign into my account as "internal_user"
     And I am on the internal abstraction licences page
-    And I go to the Hands-off flow screen
 
   Scenario: [WATER-1125] Autopopulate contact details
+    And I go to the Hands-off flow screen
     When I remove my contact information
     And I am on the internal abstraction licences page
     And I go to the Hands-off flow screen

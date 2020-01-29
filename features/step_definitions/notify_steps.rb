@@ -3,11 +3,6 @@ Given(/^I go to the Hands-off flow screen$/) do
   @front_app.licences_page.nav_bar.manage_link.click
   expect(@front_app.manage_page.heading).to have_text("Manage reports and notices")
   @front_app.manage_page.click_hands_off_flow_link
-
-  @notify_licences = Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
-  @notify_hof_recipient_count = Quke::Quke.config.custom["data"]["notify_hof_recipient_count"].to_s
-  @notify_exp_recipient_count = Quke::Quke.config.custom["data"]["notify_exp_recipient_count"].to_s
-  @notify_licence_count = Quke::Quke.config.custom["data"]["notify_licence_count"].to_s
 end
 
 Given(/^I remove my contact information$/) do
@@ -53,13 +48,14 @@ Given(/^I can see my autopopulated details$/) do
 end
 
 Given(/^I select a template at random$/) do
-  # This step chooses one of 4 notification templates to send.
+  # This step chooses one of 3 hof notification templates to send.
   # Because the code is the same for each template, we only need to test one per run.
   # The advantage of this is that the test is quicker to run and doesn't
   # clog up Notify with extra messages.
-  @front_app.manage_page.load
+  @front_app.licences_page.nav_bar.manage_link.click
+  expect(@front_app.manage_page.heading).to have_text("Manage reports and notices")
 
-  r = rand(1..4)
+  r = rand(1..3)
   if r == 1
     @front_app.manage_page.click_restriction_link
     expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow warning")
@@ -75,11 +71,6 @@ Given(/^I select a template at random$/) do
     expect(@front_app.notify_add_licences_page.heading).to have_text("Send a hands off flow resume notice")
     @notification_type = "hands off flow resume notice"
     @notification_type_long = "Hands off flow: resume abstraction"
-  elsif r == 4
-    @front_app.manage_page.click_renewal_link
-    expect(@front_app.notify_add_licences_page.heading).to have_text("Send an invitation to renew")
-    @notification_type = "invitation to renew"
-    @notification_type_long = "Expiring licence(s): invitation to renew"
   end
 end
 
@@ -228,7 +219,7 @@ end
 
 Given(/^I see an error message telling me I need at least one licence$/) do
   # rubocop:disable Metrics/LineLength
-  expect(@front_app.notify_add_licences_page.error_heading).to have_text("There was a problem with some of the information entered")
+  expect(@front_app.notify_add_licences_page.error_heading).to have_text("There is a problem")
   expect(@front_app.notify_add_licences_page.error_detail).to have_text("At least 1 value is required in the licence number(s) field")
   # rubocop:enable Metrics/LineLength
 end

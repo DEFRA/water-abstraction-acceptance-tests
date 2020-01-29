@@ -1,8 +1,8 @@
 class NotifyCustomInfoPage < SitePrism::Page
 
   element(:heading, ".govuk-heading-l")
-  element(:error_heading, "#error-summary-heading-example")
-  element(:error_detail, ".error-summary")
+  element(:error_heading, "#error-summary-title")
+  element(:error_detail, ".govuk-error-summary__list")
   element(:form_fields, ".column-full")
   # Pick and choose from the following elements depending on notification type:
   element(:gauging_station, "#gauging_station")

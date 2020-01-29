@@ -16,6 +16,11 @@ Then(/^I am on the internal abstraction licences page$/) do
   expect(@front_app.licences_page.internal_heading).to have_text("Licences, users and returns")
   @front_app.licences_page.search(search_input: "/")
   @total_licences = @front_app.licences_page.licence_links_internal.count.to_s
+
+  @notify_licences = Quke::Quke.config.custom["data"]["licence_reg_some"].to_s
+  @notify_hof_recipient_count = Quke::Quke.config.custom["data"]["notify_hof_recipient_count"].to_s
+  @notify_exp_recipient_count = Quke::Quke.config.custom["data"]["notify_exp_recipient_count"].to_s
+  @notify_licence_count = Quke::Quke.config.custom["data"]["notify_licence_count"].to_s
 end
 
 Then(/^I am on the licence details page$/) do

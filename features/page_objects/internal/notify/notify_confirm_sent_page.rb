@@ -1,8 +1,8 @@
 class NotifyConfirmSentPage < SitePrism::Page
 
-  element(:heading, "h1")
-  element(:confirmation_box, ".govuk-box-highlight--accessible")
-  element(:number_of_recipients, ".bold-medium")
-  element(:report_link, ".column-two-thirds a")
+  element(:heading, "h1.govuk-heading-l")
+  element(:confirmation_box, ".govuk-panel--confirmation")
+  element(:number_of_recipients, ".govuk-panel__body > span")
+  element(:report_link, ".govuk-grid-column-two-thirds a")
 
 end
