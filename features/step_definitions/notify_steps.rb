@@ -29,9 +29,9 @@ Given(/^I am prompted to add my contact details$/) do
   @front_app.notify_add_contact_details_page.submit(
     contact_email: "autopopulated_email@example.com",
     contact_tel: "0117 496 0000",
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     contact_address: "Test Autopopulated Address\nDepartment for Environment, Food & Rural Affairs\nHorizon House\nDeanery Road\nBristol\nBS1 5AH"
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   )
 end
 
@@ -42,9 +42,9 @@ Given(/^I can see my autopopulated details$/) do
     gauging_station: "THIS IS A TEST",
     hof_threshold: "0 metres cubed per second"
   )
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Autopopulated name on 0117 496 0000 or autopopulated_email@example.com")
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
 end
 
 Given(/^I select a template at random$/) do
@@ -82,9 +82,9 @@ end
 Given(/^I am on the notification add licences page$/) do
   @front_app.notify_add_licences_page.wait_until_licence_box_visible
   expect(@front_app.notify_add_licences_page.heading).to have_text(@notification_type.to_s)
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   expect(@front_app.notify_add_licences_page.instructions).to have_text("Enter the licence number(s) you want to send a notification about")
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
 end
 
 Given(/^I add licences for a notification$/) do
@@ -152,28 +152,28 @@ Given(/^I can see the correct information on the confirm message page$/) do
   expect(@front_app.notify_confirm_message_page.number_of_licences).to have_text(@notify_licence_count.to_s)
   if @notification_type == "hands off flow warning"
     expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("This is an advance warning that you may be asked to stop or reduce your water abstraction soon")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on water_abstractiondigital@environment-agency.gov.uk")
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   elsif @notification_type == "hands off flow restriction notice"
     expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("We need to enforce the hands off flow condition of your licence")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on water_abstractiondigital@environment-agency.gov.uk")
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   elsif @notification_type == "hands off flow resume notice"
     expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_hof_recipient_count.to_s)
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("You can now start or increase your water abstraction, if the terms of your licence")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("If you have any questions about this notification, please contact Water Abstraction Digital Team on water_abstractiondigital@environment-agency.gov.uk")
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   elsif @notification_type == "invitation to renew"
     expect(@front_app.notify_confirm_message_page.number_of_recipients).to have_text(@notify_exp_recipient_count.to_s)
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("All or part of the following abstraction licence")
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("please send your renewal application")
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
     expect(@front_app.notify_confirm_message_page.message_preview).to have_text("to us by 31 December 1999")
   end
 
@@ -184,9 +184,9 @@ Given(/^I send the notification$/) do
 end
 
 Given(/^I can see the correct information on the confirm sent page$/) do
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   expect(@front_app.notify_confirm_sent_page.heading).to have_text("Your " + @notification_type_long.downcase.to_s + " has been sent")
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
   expect(@front_app.notify_confirm_sent_page.confirmation_box).to have_text("You sent this notification to")
   if @notification_type == "invitation to renew"
     expect(@front_app.notify_confirm_sent_page.number_of_recipients).to have_text(@notify_exp_recipient_count.to_s)
@@ -223,10 +223,10 @@ Given(/^I select no licences$/) do
 end
 
 Given(/^I see an error message telling me I need at least one licence$/) do
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   expect(@front_app.notify_add_licences_page.error_heading).to have_text("There is a problem")
   expect(@front_app.notify_add_licences_page.error_detail).to have_text("At least 1 value is required in the licence number(s) field")
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
 end
 
 Given(/^I leave mandatory fields blank$/) do
@@ -238,11 +238,13 @@ Given(/^I leave mandatory fields blank$/) do
 end
 
 Given(/^I see an error message telling me to enter missing data$/) do
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   expect(@front_app.notify_custom_info_page.error_heading).to have_text("There was a problem with some of the information entered")
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
   if @notification_type == "invitation to renew"
+    # rubocop:disable Layout/LineLength
     expect(@front_app.notify_custom_info_page.error_detail).to have_text("The Renewal application deadline field is required")
+    # rubocop:enable Layout/LineLength
   else
     expect(@front_app.notify_custom_info_page.error_detail).to have_text("The Gauging station field is required")
   end
