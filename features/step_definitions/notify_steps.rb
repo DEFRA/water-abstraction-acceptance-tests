@@ -96,10 +96,6 @@ Given(/^I add licences for a notification$/) do
     licence_box: @notify_licences
   )
   expect(@front_app.notify_confirm_licences_page.heading).to have_text(@notification_type.to_s)
-  # rubocop:disable Metrics/LineLength
-  expect(@front_app.notify_confirm_licences_page.instructions).to have_text("You can remove any licences you want to exclude from this notification below.")
-  # rubocop:enable Metrics/LineLength
-  @front_app.notify_confirm_licences_page.wait_until_continue_button_visible
   expect(@front_app.notify_confirm_licences_page).to have_licence_checkboxes count: @notify_licence_count
   @front_app.notify_confirm_licences_page.continue_button.click
 end
