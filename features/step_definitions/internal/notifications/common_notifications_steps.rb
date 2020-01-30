@@ -9,7 +9,7 @@ Given(/^I navigate to the "([^"]*)" page$/) do |notification_type|
     @page.click_reminders
     @notifications_page = Pages::Internal::Manage::ReturnsReminders.new
   end
-  url_parts = notification_type.split(' ')
+  url_parts = notification_type.split(" ")
   expect(@notifications_page.current_url).to include("/returns-notifications/#{url_parts.last}")
 end
 
@@ -49,7 +49,7 @@ Then(/^I can confirm sending the "([^"]*)"$/) do |notification_type|
 end
 
 Then(/^I can see the "([^"]*)" success page$/) do |notification_type|
-if notification_type.eql? "return invitations"
+  if notification_type.eql? "return invitations"
     @success_page = Pages::Internal::Manage::ReturnsInvitationsSuccess.new
   elsif notification_type.eql? "return reminders"
     @success_page = Pages::Internal::Manage::ReturnsRemindersSuccess.new
