@@ -10,9 +10,9 @@ Feature: Internal user is able to send returns invitations
     And I navigate to the "Manage" section
     And I navigate to the "returns invitations" page
     When I exclude <licence> licences
-    Then I can see the waiting page
-    And I can confirm sending the returns invitations
-    And I can see the returns invitations success page
+    Then I can see the "returns invitations" waiting page
+    And I can confirm sending the "returns invitations"
+    And I can see the "return invitations" success page
     Examples:
       | licence |
       | no      |

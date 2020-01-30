@@ -1,6 +1,6 @@
 When(/^I submit "([^"]*)" licence number$/) do |valid|
   if valid.eql? "valid"
-    @paper_forms_page.submit_licence_numbers(@test_data.current_licence_return["licence_ref"])
+    @notifications_page.submit_licence_numbers(@test_data.current_licence_return["licence_ref"])
     @paper_forms_confirm_page = Pages::Internal::Manage::SendPaperFormsConfirm.new
     expect(@paper_forms_confirm_page.current_url).to include("returns-notifications/forms")
     expected_warning_text = "You are about to send paper return forms for the following licences."
@@ -8,7 +8,7 @@ When(/^I submit "([^"]*)" licence number$/) do |valid|
     @paper_forms_confirm_page.send_paper_forms
   elsif valid.eql? "invalid"
     invalid_licence_ref = "INVALID/REF/01"
-    @paper_forms_page.submit_licence_numbers(invalid_licence_ref)
+    @notifications_page.submit_licence_numbers(invalid_licence_ref)
   end
 end
 
@@ -28,12 +28,12 @@ Then(/^I can see the paper forms "([^"]*)" page$/) do |page_type|
 end
 
 When(/^I submit an empty form$/) do
-  @paper_forms_page.submit_empty_form
+  @notifications_page.submit_empty_form
 end
 
 Then(/^the send paper forms page displays validation errors$/) do
   error_message = "Enter at least one licence number"
-  expect(@paper_forms_page.error_summary.heading).to have_text("There is a problem")
-  expect(@paper_forms_page.error_summary.links.first).to have_text(error_message)
-  expect(@paper_forms_page.licence_numbers_error).to have_text(error_message)
+  expect(@notifications_page.error_summary.heading).to have_text("There is a problem")
+  expect(@notifications_page.error_summary.links.first).to have_text(error_message)
+  expect(@notifications_page.licence_numbers_error).to have_text(error_message)
 end

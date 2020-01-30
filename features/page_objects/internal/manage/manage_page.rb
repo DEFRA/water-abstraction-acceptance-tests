@@ -18,6 +18,10 @@ module Pages
         find_link("Invitations").click
       end
 
+      def click_reminders
+        find_link("Reminders").click
+      end
+
       def create_a_bill_run
         find_link("Create a bill run").click
       end
