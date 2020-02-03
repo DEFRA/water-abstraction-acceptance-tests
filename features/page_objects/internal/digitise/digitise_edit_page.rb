@@ -4,9 +4,9 @@ class DigitiseEditPage < SitePrism::Page
 
   section(:govuk_banner, GovukBanner, GovukBanner::SELECTOR)
 
-  element(:heading, ".heading-xlarge")
-  elements(:input_box, ".form-control")
-  element(:submit_button, ".button")
+  element(:heading, ".govuk-heading-xl")
+  elements(:input_box, ".govuk-input")
+  element(:submit_button, ".govuk-button")
 
   def populate_edits
     # Populate random volumes and blanks throughout the return period, regardless of frequency.

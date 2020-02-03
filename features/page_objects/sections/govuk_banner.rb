@@ -2,7 +2,7 @@ class GovukBanner < SitePrism::Section
 
   # GOV.UK black banner and menu items
 
-  SELECTOR ||= "#global-header".freeze
+  SELECTOR ||= ".govuk-header".freeze
   NUNJUCKS_SELECTOR ||= "#navigation".freeze
 
   element(:sign_out_link, "#signout")

@@ -10,7 +10,7 @@ class DigitisePage < SitePrism::Page
   element(:search_form, "#q")
   element(:search_button, ".govuk-button")
   element(:single_result, :xpath, "//tr/td[1]/a")
-  element(:licence_table, ".grid-row+ .grid-row .column-full")
+  element(:licence_table, ".govuk-table")
 
   def search(args = {})
     search_form.set(args[:search_form]) if args.key?(:search_form)
