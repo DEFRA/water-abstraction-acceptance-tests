@@ -86,7 +86,7 @@ GEM
     regexp_parser (1.7.1)
     report_builder (1.9)
       json (>= 2.3.0)
-    rexml (3.2.4)
+    rexml (3.2.5)
     rspec-expectations (3.9.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
