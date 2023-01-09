@@ -1,0 +1,95 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "📺 Open (Tests)",
+      "detail": "Open Cypress test runner to manually run the tests",
+      "type": "shell",
+      "command": "npm run cy:open; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "📻 Run (Tests)",
+      "detail": "Run Cypress tests headless using the runner",
+      "type": "shell",
+      "command": "npm run cy:run; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "🔍 Lint (Tests)",
+      "detail": "Run linting for system",
+      "type": "shell",
+      "command": "npm run lint; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "📋 Report (Tests)",
+      "detail": "Open the html report generated during last run",
+      "type": "shell",
+      "command": "open cypress/reports/html/index.html; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "👷 Build (Tests)",
+      "detail": "Run npm ci",
+      "type": "shell",
+      "command": "npm ci; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "👍 Verify (Tests)",
+      "detail": "Verify that Cypress is installed correctly",
+      "type": "shell",
+      "command": "npm run cy:verify",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    }
+  ]
+}

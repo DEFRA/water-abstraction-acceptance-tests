@@ -1,0 +1,11 @@
+{
+  "config": {
+    "baseUrl": "http://localhost:8008"
+  },
+  "values": {
+    "defaultPassword": "Sup@rS3cure",
+    "externalUrl": "http://localhost:8000",
+    "jwtToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "notifyCallbackToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFsYW4gQ3J1aWtzaGFua3MiLCJpYXQiOjE1MTYyMzkwMjJ9.TZPTTAF2JFyphaNZ1U4IZ3A3NeOcG2oC-phkBW-xZxs"
+  }
+}
