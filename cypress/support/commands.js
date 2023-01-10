@@ -36,7 +36,6 @@ Cypress.Commands.add('setUp', (testKey) => {
     headers: {
       authorization: `Bearer ${Cypress.env('jwtToken')}`
     },
-    body: { dummy: 'Because the WAF blocks empty POST requests' },
     timeout: 60000
   }).its('status', { log: false }).should('equal', 204)
 })
@@ -51,7 +50,6 @@ Cypress.Commands.add('tearDown', () => {
     headers: {
       authorization: `Bearer ${Cypress.env('jwtToken')}`
     },
-    body: { dummy: 'Because the WAF blocks empty POST requests' },
     timeout: 60000
   }).its('status', { log: false }).should('equal', 200)
 })
