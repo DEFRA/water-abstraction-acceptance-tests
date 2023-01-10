@@ -56,7 +56,7 @@ Cypress.Commands.add('lastNotification', (email) => {
   cy.log('Getting last email sent to Notify')
 
   cy.request({
-    url: `${Cypress.env('externalUrl')}/notifications/last?email=${email}`,
+    url: `/notifications/last?email=${email}`,
     log: false,
     method: 'GET'
   }).then((response) => {
