@@ -27,10 +27,9 @@ describe('Reset password journey (external)', () => {
 
     cy.get('@userEmail').then((userEmail) => {
       cy.lastNotification(userEmail).then((body) => {
-        let resetUrl = body.data[0].personalisation.reset_url
-        resetUrl = resetUrl.replace((/^https?:\/\/[^/]+\//g).exec(resetUrl), Cypress.env('externalUrl') + '/')
-        cy.log(resetUrl)
-        cy.visit(resetUrl)
+        cy.extractNotificationLink(body, 'reset_url', Cypress.env('externalUrl')).then((link) => {
+          cy.visit(link)
+        })
 
         cy.contains('Change your password').should('be.visible')
         cy.contains('Enter a new password').should('be.visible')

@@ -66,6 +66,15 @@ Cypress.Commands.add('lastNotification', (email) => {
   })
 })
 
+Cypress.Commands.add('extractNotificationLink', (body, linkType, url) => {
+  cy.log(`Extracting ${linkType} link from Notify email`)
+
+  let link = body.data[0].personalisation[linkType]
+  link = link.replace((/^https?:\/\/[^/]+\//g).exec(link), url + '/')
+
+  return cy.wrap(link)
+})
+
 Cypress.Commands.add('simulateNotifyCallback', (notificationId) => {
   cy.log('Simulating a Notify callback request')
 
