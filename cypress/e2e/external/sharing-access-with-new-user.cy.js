@@ -37,16 +37,8 @@ describe('Sharing license access with a new user (external)', () => {
     cy.get('@secondUserEmail').then((email) => {
       cy.lastNotification(email).then((body) => {
         cy.extractNotificationLink(body, 'link', Cypress.env('externalUrl')).then((link) => {
-          cy.log(link)
           cy.visit(link)
         })
-
-        // let registrationUrl = body.data[0].personalisation.link
-        // registrationUrl = registrationUrl.replace(
-        //   (/^https?:\/\/[^/]+\//g).exec(registrationUrl), Cypress.env('externalUrl') + '/'
-        // )
-        // cy.log(registrationUrl)
-        // cy.visit(registrationUrl)
 
         cy.get('input#password').type(Cypress.env('defaultPassword'))
         cy.get('input#confirmPassword').type(Cypress.env('defaultPassword'))
