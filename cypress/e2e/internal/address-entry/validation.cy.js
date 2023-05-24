@@ -1,0 +1,164 @@
+'use strict'
+
+describe('Address lookup validation (internal)', () => {
+  before(() => {
+    cy.tearDown()
+    cy.setUp('bulk-return')
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
+  })
+
+  it('does stuff', () => {
+    cy.visit('/')
+
+    //  Enter the user name and Password
+    cy.get('@userEmail').then((userEmail) => {
+      cy.get('input#email').type(userEmail)
+    })
+    cy.get('input#password').type(Cypress.env('defaultPassword'))
+
+    //  Click Sign in Button
+    cy.get('.govuk-button.govuk-button--start').click()
+
+    //  Assert the user signed in and we're on the search page
+    cy.contains('Search')
+
+    // Navigate to the paper returns flow. We'll use it's address entry screens to test the address lookup and entry
+    // functionality
+    cy.get('#navbar-notifications').click()
+    cy.get('a[href="/returns-notifications/forms"]').click()
+
+    // Select a licence to generate paper returns for
+    cy.get('#licenceNumbers').type('AT/CURR/MONTHLY/02')
+    cy.get('button.govuk-button').click()
+
+    // MANUAL ADDRESS ENTRY
+    // Select the option to change the address then the option to setup a one-time address - manual address entry
+    cy.get('[href*="/select-address"]').click()
+    cy.get('#selectedRole-3').check()
+    cy.get('button.govuk-button').click()
+
+    // Who should receive the form?
+    // enter an empty string and continue
+    cy.get('input[name="fullName"]').type(' ')
+    cy.get('button.govuk-button').click()
+    cy.get('.govuk-error-summary__title').should('contain', 'There is a problem')
+    cy.get('.govuk-error-summary__body').should('contain', 'Enter a full name')
+    cy.get('#fullName-error').should('contain', 'Enter a full name')
+
+    cy.get('input[name="fullName"]').type('Manual Address')
+    cy.get('button.govuk-button').click()
+
+    // Enter the UK postcode
+    // enter an empty string and continue
+    cy.get('input[name="postcode"]').type(' ')
+    cy.get('button.govuk-button').click()
+    cy.get('.govuk-error-summary__title').should('contain', 'There is a problem')
+    cy.get('.govuk-error-summary__body').should('contain', 'Enter a UK postcode')
+    cy.get('#postcode-error').should('contain', 'Enter a UK postcode')
+
+    cy.get('input[name="postcode"]').type('EX1 1QA')
+    cy.get('button.govuk-button').click()
+
+    // Select the address
+    // click continue without selecting an address
+    cy.get('button.govuk-button').click()
+    cy.get('.govuk-error-summary__title').should('contain', 'There is a problem')
+    cy.get('.govuk-error-summary__body').should('contain', 'Select an address from the list')
+    cy.get('#uprn-error').should('contain', 'Select an address from the list')
+
+    cy.get('a.govuk-link').eq(4).should('contain', 'I cannot find the address in the list').click()
+
+    // Enter the address
+    // enter empty string and select invalid country
+    cy.get('input[name="postcode"]').type(' ')
+    cy.get('select[name="country"]').select('Select a country')
+    cy.get('button.govuk-button').click()
+    cy.get('.govuk-error-summary').should('be.visible')
+    cy.get('.govuk-error-summary__title').should('contain', 'There is a problem')
+    cy.get('a[href="#addressLine2"]').should('contain', 'Enter either a building number or building name')
+    cy.get('a[href="#addressLine4"]').should('contain', 'Enter either a street name or town or city')
+    cy.get('a[href="#country"]').should('contain', 'Select a country')
+
+    cy.get('input[name="addressLine1"]').type('Sub-building')
+    cy.get('input[name="addressLine2"]').type('Building number')
+    cy.get('input[name="addressLine3"]').type('Building Name')
+    cy.get('input[name="addressLine4"]').type('Street Name')
+    cy.get('input[name="town"]').type('Test Town')
+    cy.get('input[name="county"]').type('RainingAllTheTimeShire')
+    cy.get('input[name="postcode"]').clear()
+    cy.get('input[name="postcode"]').type('RA1 1AN')
+    cy.get('select[name="country"]').select('United Kingdom')
+    cy.get('button.govuk-button').click()
+
+    // Check returns details
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Manual Address')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Sub-building')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Building number')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Test Town')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('RA1 1AN')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('United Kingdom')
+
+    // ADDRESS LOOKUP
+    // Select the option to change the address then the option to setup a one-time address - address lookup
+    cy.get('[href*="/select-address"]').click()
+    cy.get('#selectedRole-3').check()
+    cy.get('button.govuk-button').click()
+
+    // Who should receive the form?
+    cy.get('input[name="fullName"]').type('Lookup Address')
+    cy.get('button.govuk-button').click()
+
+    // Enter the UK postcode
+    cy.get('input[name="postcode"]').type('BS1 5AH')
+    cy.get('button.govuk-button').click()
+
+    // Select the address
+    cy.get('.govuk-select').select('340116')
+    cy.get('button.govuk-button').click()
+
+    // Check returns details
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Address Lookup')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('ENVIRONMENT AGENCY')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('HORIZON HOUSE')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('DEANERY ROAD')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('BRISTOL')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('BS1 5AH')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('United Kingdom')
+
+    // OUTSIDE UK
+    // Select the option to change the address then the option to setup a one-time address - outside UK
+    cy.get('[href*="/select-address"]').click()
+    cy.get('#selectedRole-3').check()
+    cy.get('button.govuk-button').click()
+
+    // Who should receive the form?
+    cy.get('input[name="fullName"]').type('Outside United')
+    cy.get('button.govuk-button').click()
+
+    // Enter the UK postcode
+    // click the 'This address is outside the UK' link
+    cy.get("a[href*='manual-entry']").click()
+
+    // Enter the address
+    cy.get('input[name="addressLine1"]').type('Sub-building')
+    cy.get('input[name="addressLine2"]').type('Building number')
+    cy.get('input[name="addressLine3"]').type('Building Name')
+    cy.get('input[name="addressLine4"]').type('Street Name')
+    cy.get('input[name="town"]').type('Test Town')
+    cy.get('input[name="county"]').type('RainingAllTheTimeShire')
+    cy.get('input[name="postcode"]').type('RA1 N')
+    cy.get('select[name="country"]').select('Croatia')
+    cy.get('button.govuk-button').click()
+
+    // Check returns details
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Lookup Address')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Sub-building')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Building number')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Building Name')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Street Name')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Test Town')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('RainingAllTheTimeShire')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('RA1 N')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Croatia')
+  })
+})
