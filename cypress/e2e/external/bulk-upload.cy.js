@@ -1,7 +1,7 @@
 'use strict'
 
 describe.skip('Bulk upload returns (external)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('bulk-return')
     cy.fixture('users.json').its('external').as('userEmail')

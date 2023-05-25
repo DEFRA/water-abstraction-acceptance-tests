@@ -1,13 +1,13 @@
 'use strict'
 
 describe('Address lookup validation (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('bulk-return')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('does stuff', () => {
+  it('allows addresses to be entered manually or via the lookup', () => {
     cy.visit('/')
 
     //  Enter the user name and Password
@@ -60,6 +60,10 @@ describe('Address lookup validation (internal)', () => {
     cy.get('button.govuk-button').click()
 
     // Select the address
+    // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
+    // has rate monitoring protection. Because we're automating the calls, they happen to quickly so the facade rejects
+    // the second call. Hence we need to wait a second.
+    cy.wait(1000)
     // click continue without selecting an address
     cy.get('button.govuk-button').click()
     cy.get('.govuk-error-summary__title').should('contain', 'There is a problem')
@@ -105,7 +109,7 @@ describe('Address lookup validation (internal)', () => {
     cy.get('button.govuk-button').click()
 
     // Who should receive the form?
-    cy.get('input[name="fullName"]').type('Lookup Address')
+    cy.get('input[name="fullName"]').type('Address Lookup')
     cy.get('button.govuk-button').click()
 
     // Enter the UK postcode
@@ -113,6 +117,10 @@ describe('Address lookup validation (internal)', () => {
     cy.get('button.govuk-button').click()
 
     // Select the address
+    // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
+    // has rate monitoring protection. Because we're automating the calls, they happen to quickly so the facade rejects
+    // the second call. Hence we need to wait a second.
+    cy.wait(1000)
     cy.get('.govuk-select').select('340116')
     cy.get('button.govuk-button').click()
 
@@ -151,7 +159,7 @@ describe('Address lookup validation (internal)', () => {
     cy.get('button.govuk-button').click()
 
     // Check returns details
-    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Lookup Address')
+    cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Outside United')
     cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Sub-building')
     cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Building number')
     cy.get('div.govuk-summary-list__row').eq(2).children(1).contains('Building Name')

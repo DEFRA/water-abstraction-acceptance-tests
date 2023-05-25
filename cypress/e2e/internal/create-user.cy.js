@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Creating a user (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
     cy.fixture('users.json').its('super').as('userEmail')

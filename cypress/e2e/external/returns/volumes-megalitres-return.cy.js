@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Submit volumes in megalitres return (external)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
     cy.fixture('users.json').its('external').as('userEmail')

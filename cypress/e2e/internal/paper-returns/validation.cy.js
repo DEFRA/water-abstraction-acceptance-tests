@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Paper returns validation (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('bulk-return')
     cy.fixture('users.json').its('billingAndData').as('userEmail')

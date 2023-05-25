@@ -1,7 +1,7 @@
 'use strict'
 
 describe('mBOD abstraction alert validation (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
     cy.fixture('users.json').its('environmentOfficer').as('userEmail')
@@ -112,6 +112,7 @@ describe('mBOD abstraction alert validation (internal)', () => {
     cy.get('h1').contains('Processing notifications')
 
     // Check the alert for each licence and send
+    // spinner page was the previous page. Because this takes some time we need to amend the timeout in the next command
     cy.get('table > caption', { timeout: 30000 }).contains("You're sending this alert for 1 licence.")
 
     cy.get('.govuk-button').contains('Confirm and send').click()
