@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Paper returns journey (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('bulk-return')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
@@ -39,6 +39,6 @@ describe('Paper returns journey (internal)', () => {
     cy.get('button.govuk-button').contains('Send paper forms').click()
 
     // Paper return forms sent
-    cy.get('.govuk-panel__title', { timeout: 10000 }).contains('Paper return forms sent')
+    cy.get('.govuk-panel__title', { timeout: 15000 }).contains('Paper return forms sent')
   })
 })

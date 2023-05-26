@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Sharing license access with another user (external)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
     cy.fixture('users.json').its('external').as('firstUserEmail')

@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Notify callback endpoint', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('notify-mock-notification')
     cy.fixture('users.json').its('notifyCallbackTestEmail').as('userEmail')

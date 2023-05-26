@@ -1,12 +1,9 @@
 'use strict'
 
 describe('Reset password journey (external)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
-  })
-
-  beforeEach(() => {
     cy.fixture('users.json').its('external').as('userEmail')
   })
 

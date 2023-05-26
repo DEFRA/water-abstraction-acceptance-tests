@@ -1,7 +1,7 @@
 'use strict'
 
 describe('View Licences as external user', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
     cy.fixture('users.json').its('external').as('userEmail')

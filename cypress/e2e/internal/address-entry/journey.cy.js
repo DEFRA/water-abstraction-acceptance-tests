@@ -1,13 +1,13 @@
 'use strict'
 
 describe('Address lookup journey (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('bulk-return')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('does stuff', () => {
+  it('allows addresses to be entered manually or via the lookup', () => {
     cy.visit('/')
 
     //  Enter the user name and Password
@@ -73,6 +73,10 @@ describe('Address lookup journey (internal)', () => {
     cy.get('button.govuk-button').click()
 
     // Select the address
+    // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
+    // has rate monitoring protection. Because we're automating the calls, they happen to quickly so the facade rejects
+    // the second call. Hence we need to wait a second.
+    cy.wait(1000)
     cy.get('.govuk-select').select('340116')
     cy.get('button.govuk-button').click()
 

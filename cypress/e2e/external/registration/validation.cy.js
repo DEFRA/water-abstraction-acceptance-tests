@@ -1,12 +1,9 @@
 'use strict'
 
 describe('User registration validation (external)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
-  })
-
-  beforeEach(() => {
     cy.fixture('users.json').its('externalNew').as('userEmail')
   })
 

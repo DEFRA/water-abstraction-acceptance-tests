@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Search for a licence (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('billing-data')
     cy.fixture('users.json').its('super').as('userEmail')

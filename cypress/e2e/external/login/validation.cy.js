@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Login validation (external)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.fixture('users.json').its('external').as('userEmail')
   })
 

@@ -1,7 +1,7 @@
 'use strict'
 
 describe('mBOD abstraction alert journey (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
     cy.fixture('users.json').its('environmentOfficer').as('userEmail')
@@ -69,7 +69,9 @@ describe('mBOD abstraction alert journey (internal)', () => {
     cy.get('.govuk-radios__input[value="true"]').click()
     cy.get('.govuk-button').contains('Continue').click()
 
-    cy.get('.govuk-button').contains('Confirm and send').click()
+    // spinner page appears here. Because this takes some time we need to amend the timeout in the next command
+    cy.get('h1').contains('Processing notifications')
+    cy.get('.govuk-button').contains('Confirm and send', { timeout: 20000 }).click()
 
     // Return to the monitoring station
     cy.get('.govuk-link').contains('Return to monitoring station').click()

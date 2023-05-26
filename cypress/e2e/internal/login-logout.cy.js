@@ -1,7 +1,7 @@
 'use strict'
 
 describe('Login and log out (internal)', () => {
-  before(() => {
+  beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
