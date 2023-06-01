@@ -32,11 +32,11 @@ describe('New licence agreement journey (internal)', () => {
     cy.contains('AT/CURR/DAILY/01')
     cy.get('#tab_charge').click()
 
-    // Confirm we are on the tab page and then click Set up a new charge
+    // Confirm we are on the tab page and then click Set up a new agreement
     cy.get('#charge > .govuk-heading-l').contains('Charge information')
     cy.get('#charge').contains('Set up a new agreement').click()
 
-    // Select reason for new charge information
+    // Select agreement
     // select Canal and Rivers Trust, unsupported source (S130U) then continue
     cy.get('#financialAgreementCode-3').check()
     cy.get('form > .govuk-button').click()
