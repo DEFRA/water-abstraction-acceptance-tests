@@ -7,7 +7,7 @@ describe('SROC charge information journey (internal)', () => {
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('adds a new charge information with a new billing account, note and charge element note then sets up the charge reference including additional charges and adjustments and then approves it', () => {
+  it('adds a new charge information with a new billing account, note and charge element then sets up the charge reference including additional charges and adjustments and then approves it and confirms licence is flagged for supplementary billing', () => {
     cy.visit('/')
 
     //  Enter the user name and Password
@@ -209,9 +209,12 @@ describe('SROC charge information journey (internal)', () => {
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Charge information
-    // confirm our new charge information is APPROVED
+    // confirm our new charge information is APPROVED and that the licence has been flagged for the next supplementary
+    // bill run
     cy.get('#charge > table > tbody > tr:nth-child(1)').within(() => {
       cy.get('td:nth-child(4) > strong').should('contain.text', 'Approved')
     })
+    cy.get('.govuk-notification-banner__content')
+      .should('contain.text', 'This licence has been marked for the next supplementary bill run.')
   })
 })
