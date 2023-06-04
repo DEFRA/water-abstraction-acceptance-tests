@@ -136,7 +136,7 @@ describe('SROC charge information validation (internal)', () => {
       cy.get('div:nth-child(4) > dd.govuk-summary-list__value').should('contain.text', '15.54ML authorised')
       // time limit
       cy.get('div:nth-child(5) > dd.govuk-summary-list__value').should('contain.text', 'No')
-      // medium
+      // loss
       cy.get('div:nth-child(6) > dd.govuk-summary-list__value').should('contain.text', 'Medium')
     })
     cy.get('section:nth-child(2) > p > a').click()

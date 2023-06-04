@@ -74,7 +74,7 @@ describe('Address lookup journey (internal)', () => {
 
     // Select the address
     // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
-    // has rate monitoring protection. Because we're automating the calls, they happen to quickly so the facade rejects
+    // has rate monitoring protection. Because we're automating the calls, they happen too quickly so the facade rejects
     // the second call. Hence we need to wait a second.
     cy.wait(1000)
     cy.get('.govuk-select').select('340116')
