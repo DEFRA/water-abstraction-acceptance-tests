@@ -25,11 +25,11 @@
   "author": "Department for Environment, Food & Rural Affairs",
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "cypress": "^12.3.0",
-    "cypress-mochawesome-reporter": "^3.2.3"
+    "cypress": "^12.13.0",
+    "cypress-mochawesome-reporter": "^3.5.0"
   },
   "devDependencies": {
-    "standard": "^17.0.0"
+    "standard": "^17.1.0"
   },
   "standard": {
     "globals": [
