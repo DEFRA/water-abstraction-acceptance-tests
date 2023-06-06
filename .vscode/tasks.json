@@ -3,9 +3,9 @@
   "tasks": [
     {
       "label": "📺 Open (Tests)",
-      "detail": "Open Cypress test runner to manually run the tests",
+      "detail": "Open Cypress test UI to manually run the tests",
       "type": "shell",
-      "command": "npm run cy:open; echo 'All done! 🎉'",
+      "command": "npm run cy:open:${input:environments}; echo 'All done! 🎉'",
       "group": "test",
       "presentation": {
         "echo": true,
@@ -20,7 +20,7 @@
       "label": "📻 Run (Tests)",
       "detail": "Run Cypress tests headless using the runner",
       "type": "shell",
-      "command": "npm run cy:run; echo 'All done! 🎉'",
+      "command": "npm run cy:run:${input:environments}; echo 'All done! 🎉'",
       "group": "test",
       "presentation": {
         "echo": true,
@@ -90,6 +90,19 @@
         "showReuseMessage": false,
         "clear": true
       }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "environments",
+      "description": "Cypress environments",
+      "type": "pickString",
+      "options": [
+        "local",
+        "dev",
+        "tst",
+        "pre"
+      ]
     }
   ]
 }

@@ -5,11 +5,11 @@
   "homepage": "https://github.com/DEFRA/water-abstraction-team",
   "main": "index.js",
   "scripts": {
-    "cy:open": "cypress open --e2e --env environment=local",
+    "cy:open:local": "cypress open --e2e --env environment=local",
     "cy:open:dev": "cypress open --e2e --env environment=dev",
     "cy:open:tst": "cypress open --e2e --env environment=tst",
     "cy:open:pre": "cypress open --e2e --env environment=pre",
-    "cy:run": "npm run cy:reports:delete && cypress run --e2e --env environment=local",
+    "cy:run:local": "npm run cy:reports:delete && cypress run --e2e --env environment=local",
     "cy:run:dev": "npm run cy:reports:delete && cypress run --e2e --env environment=dev",
     "cy:run:tst": "npm run cy:reports:delete && cypress run --e2e --env environment=tst",
     "cy:run:pre": "npm run cy:reports:delete && cypress run --e2e --env environment=pre",
