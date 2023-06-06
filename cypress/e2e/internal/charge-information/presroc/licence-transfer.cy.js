@@ -72,7 +72,7 @@ describe('PRESROC licence transfer (internal)', () => {
     // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
     // has rate monitoring protection. Because we're automating the calls, they happen too quickly so the facade rejects
     // the second call. Hence we need to wait a second.
-    cy.wait(1000)
+    cy.wait(2000)
     cy.get('.govuk-select').select('340116')
     cy.get('form > .govuk-button').contains('Continue').click()
 
@@ -123,9 +123,9 @@ describe('PRESROC licence transfer (internal)', () => {
     cy.get('form > section > h2').should('contain.text', 'Element')
     cy.get('form > section > dl').within(() => {
       // purpose
-      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'Animal Watering & General Use In Non Farming Situations')
+      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'General Use Relating To Secondary Category (Medium Loss)')
       // description
-      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', 'Animal Watering & General Use In Non Farming Situations')
+      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', 'General Use Relating To Secondary Category (Medium Loss)')
       // abstraction period
       cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', '1 April to 31 March')
       // annual quantities

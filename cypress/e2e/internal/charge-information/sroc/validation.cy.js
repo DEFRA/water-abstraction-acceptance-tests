@@ -127,7 +127,7 @@ describe('SROC charge information validation (internal)', () => {
     cy.get('form > section > h2').should('contain.text', 'Element')
     cy.get('form > section > dl').within(() => {
       // purpose
-      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'Animal Watering & General Use In Non Farming Situations')
+      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'General Use Relating To Secondary Category (Medium Loss)')
       // description
       cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', 'Test Charge Element!')
       // abstraction period

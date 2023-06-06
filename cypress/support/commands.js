@@ -99,3 +99,41 @@ Cypress.Commands.add('simulateNotifyCallback', (notificationId) => {
     return cy.wrap(response)
   })
 })
+
+// The output date format of methods such as toLocaleString() are based on the Unicode CLDR which is subject to
+// change and cannot be relied on to be consistent: https://github.com/nodejs/node/issues/42030. We therefore
+// generate the formatted date ourselves.
+Cypress.Commands.add('dayMonthYearFormattedDate', (date) => {
+  if (!date) {
+    date = new Date()
+  }
+
+  const day = date.getDate()
+
+  const monthStrings = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
+  const month = monthStrings[date.getMonth()]
+
+  const year = date.getFullYear()
+
+  return cy.wrap(`${day} ${month} ${year}`)
+})
+
+// Created when we needed to wait until the status of a bill run changed from BUILDING to EMPTY. We have made it generic
+// so it can be used in any other similar scenarios.
+Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 3, retryWait = 1000) => {
+  if (retries === 0) {
+    throw new Error(`Exhausted retries looking for ${textToMatch} in ${selector}.`)
+  }
+
+  const text = Cypress.$(selector).text()
+  if (text.trim().startsWith(textToMatch)) {
+    return
+  }
+
+  cy.wait(retryWait)
+  cy.reload()
+  cy.reloadUntilTextFound(selector, textToMatch, retries - 1, retryWait)
+})
