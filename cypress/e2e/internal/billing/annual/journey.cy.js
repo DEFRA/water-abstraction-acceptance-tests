@@ -5,6 +5,11 @@ describe('Create and send annual bill run (internal)', () => {
     cy.tearDown()
     cy.setUp('sroc-billing-data')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    // Get the current date as a string, for example 12 July 2023
+    cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
+      cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
+    })
   })
 
   it('creates an SROC annual bill run and once built confirms and sends it', () => {
@@ -59,8 +64,8 @@ describe('Create and send annual bill run (internal)', () => {
     // check the details then click Send bill run
     cy.get('dl').within(() => {
       // date created
-      cy.dayMonthYearFormattedDate().then((formattedDate) => {
-        cy.get('div:nth-child(1) > dd').should('contain.text', formattedDate)
+      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
       })
       // region
       cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
@@ -93,9 +98,9 @@ describe('Create and send annual bill run (internal)', () => {
 
     // Bill runs
     // back on the bill runs page confirm our bill run is present and listed as SENT
-    cy.dayMonthYearFormattedDate().then((formattedDate) => {
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
-        .should('contain.text', formattedDate)
+        .should('contain.text', formattedCurrentDate)
         .and('contain.text', 'Test Region')
         .and('contain.text', 'Annual')
         .and('contain.text', '2,171.00')
