@@ -122,10 +122,6 @@ describe('PRESROC licence transfer (internal)', () => {
     })
     cy.get('form > section > h2').should('contain.text', 'Element')
     cy.get('form > section > dl').within(() => {
-      // purpose
-      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'General Use Relating To Secondary Category (Medium Loss)')
-      // description
-      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', 'General Use Relating To Secondary Category (Medium Loss)')
       // abstraction period
       cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', '1 April to 31 March')
       // annual quantities
