@@ -44,14 +44,11 @@ Cypress.Commands.add('tearDown', () => {
   cy.log('Tearing down existing test data')
 
   cy.request({
-    url: '/acceptance-tests/tear-down',
+    url: '/system/data/tear-down',
     log: false,
     method: 'POST',
-    headers: {
-      authorization: `Bearer ${Cypress.env('jwtToken')}`
-    },
     timeout: 60000
-  }).its('status', { log: false }).should('equal', 200)
+  }).its('status', { log: false }).should('equal', 204)
 })
 
 Cypress.Commands.add('lastNotification', (email) => {
