@@ -143,7 +143,7 @@ Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 3
 // the current year to avoid additional calculations for previous years.
 //
 // It defaults to the last possible date. If the current date was 2023-06-05 it would return 2024-03-31. You can
-// override the day and month (don't worry and month being zero-indexed - it gets dealt with!) and adjust the year
+// override the day and month (don't worry about month being zero-indexed - it gets dealt with!) and adjust the year
 // by plus or minus as many years as you need.
 Cypress.Commands.add('currentFinancialYearDate', (day = 31, month = 3, yearAdjuster = 0) => {
   // IMPORTANT! getMonth returns an integer (0-11). So, January is represented as 0 and December as 11. This is why
@@ -166,7 +166,7 @@ Cypress.Commands.add('currentFinancialYearDate', (day = 31, month = 3, yearAdjus
   // we provide the result as this so callers of this function can choose to use the date value or access the
   // individual elements for use in input fields
   const result = {
-    date: new Date(Date.UTC(endYear, day, month - 1)),
+    date: new Date(Date.UTC(endYear, month - 1, day)),
     day,
     month,
     year: endYear
@@ -174,4 +174,26 @@ Cypress.Commands.add('currentFinancialYearDate', (day = 31, month = 3, yearAdjus
 
   // We generate the date value using Date.UTC() to avoid 31 March becoming 30 March 23:00 because of pesky BST
   return cy.wrap(result)
+})
+
+// Both the PRE-SROC and SROC schemes support calculating bill runs up to 5 years back. So, when you make a change
+// to a licence's charge versions the supplementary billing engine is expected to calculate the charges for each
+// year (what we refer to as a billing period). The tests need to be able to determine this in order to work out
+// how many bills will appear in a supplementary bill run.
+//
+// However, 2022-04-01 was the date PRE-SROC was replaced by SROC. So, when we calculate how many billing periods a
+// bill run will be generating bills for, we know it will be for the number of years from 2023 to whatever
+// financialYearToBaseItOn is. For example
+//
+// - financialYearToBaseItOn is 2024 (2023-04-01 to 2024-03-31) so result will be 2
+// - financialYearToBaseItOn is 2029 (2028-04-01 to 2029-03-31) so result will be 5
+Cypress.Commands.add('numberOfSrocBillingPeriods', (financialYearToBaseItOn) => {
+  if (isNaN(financialYearToBaseItOn)) {
+    throw new Error('numberOfSrocBillingPeriods: financialYearToBaseItOn must be set and a number')
+  }
+
+  const earliestPossibleFinancialYear = Math.max(2023, financialYearToBaseItOn - 5)
+  const numberOfBillingPeriods = Math.min((financialYearToBaseItOn - earliestPossibleFinancialYear) + 1, 5)
+
+  return cy.wrap(numberOfBillingPeriods)
 })

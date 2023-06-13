@@ -8,6 +8,11 @@ describe.skip('Cancel an in progress Two-part tariff bill run (internal)', () =>
     cy.tearDown()
     cy.setUp('two-part-tariff-billing-data')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    // Get the current date as a string, for example 12 July 2023
+    cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
+      cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
+    })
   })
 
   it("starts a Two-part tariff bill run and then immediately cancels the PRESROC one from the 'building' page", () => {
@@ -61,8 +66,8 @@ describe.skip('Cancel an in progress Two-part tariff bill run (internal)', () =>
     // confirm we are deleting the right bill run and click Cancel bill run
     cy.get('dl').within(() => {
       // date created
-      cy.dayMonthYearFormattedDate().then((formattedDate) => {
-        cy.get('div:nth-child(1) > dd').should('contain.text', formattedDate)
+      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
       })
       // region
       cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
@@ -73,9 +78,9 @@ describe.skip('Cancel an in progress Two-part tariff bill run (internal)', () =>
 
     // Bill runs
     // back on the bill runs page confirm our cancelled bill run is not present
-    cy.dayMonthYearFormattedDate().then((formattedDate) => {
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
-        .should('not.contain.text', formattedDate)
+        .should('not.contain.text', formattedCurrentDate)
         .and('not.contain.text', 'Old charge scheme')
         .and('not.contain.text', 'Test Region')
         .and('not.contain.text', 'Two-part tariff')
