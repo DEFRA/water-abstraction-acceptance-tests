@@ -1,6 +1,6 @@
 # Water Abstraction acceptance tests
 
-> WIP: We are still in the process of migrating our existing tests from the [water-abstraction-ui](https://github.com/DEFRA/water-abstraction-ui). It uses Cypress v8 and does not have test isolation. It therefore is not a simple copy & paste exercise.
+> This project originated with the migration of existing tests from the [water-abstraction-ui](https://github.com/DEFRA/water-abstraction-ui). It used Cypress v8 and did not have test isolation so all had to be restructured. The quality of these tests is not great but it's our aim to review and improve all tests as soon as we can.
 
 These acceptance tests support the [Manage your water abstraction or impoundment licence service](https://manage-water-abstraction-impoundment-licence.service.gov.uk/) and it's internal counterpart.
 
