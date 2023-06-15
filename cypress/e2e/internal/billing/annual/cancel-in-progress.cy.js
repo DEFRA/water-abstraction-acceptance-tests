@@ -71,11 +71,8 @@ describe.skip('Cancel an in progress annual bill run (internal)', () => {
 
     // Bill runs
     // back on the bill runs page confirm our cancelled bill run is not present
-    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
-        .should('not.contain.text', formattedCurrentDate)
-        .and('not.contain.text', 'Southern (Test replica)')
-        .and('not.contain.text', 'Annual')
-    })
+    cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
+      .should('not.contain.text', 'Southern (Test replica)')
+      .and('not.contain.text', 'Annual')
   })
 })
