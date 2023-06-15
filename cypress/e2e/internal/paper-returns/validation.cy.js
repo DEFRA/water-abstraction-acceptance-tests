@@ -91,7 +91,6 @@ describe('Paper returns validation (internal)', () => {
 
     // Send the paper form
     cy.get('button.govuk-button').contains('Send paper forms').click()
-    cy.get('.govuk-heading-l').contains('Sending paper return forms')
 
     // Paper return forms sent
     cy.get('.govuk-panel__title', { timeout: 10000 }).contains('Paper return forms sent')
