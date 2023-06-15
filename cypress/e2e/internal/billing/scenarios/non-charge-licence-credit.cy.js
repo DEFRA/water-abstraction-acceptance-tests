@@ -53,7 +53,7 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     // Bill runs
     // we immediately select the SROC bill run. We don't expect it to be ready and to hit the spinner page but it
     // might be super quick and already done. So we do no checks at this point
-    cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(2) > td:nth-child(1) > a').click()
+    cy.get(':nth-child(2) > :nth-child(1) > .govuk-link').click()
 
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
@@ -167,7 +167,7 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     // Bill runs
     // we immediately select the SROC bill run. We don't expect it to be ready and to hit the spinner page but it
     // might be super quick and already done. So we do no checks at this point
-    cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1) > td:nth-child(1) > a').click()
+    cy.get(':nth-child(1) > :nth-child(1) > .govuk-link').click()
 
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
