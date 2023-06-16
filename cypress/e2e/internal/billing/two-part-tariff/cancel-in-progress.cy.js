@@ -78,9 +78,19 @@ describe.skip('Cancel an in progress Two-part tariff bill run (internal)', () =>
 
     // Bill runs
     // back on the bill runs page confirm our cancelled bill run is not present
-    cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
-      .should('not.contain.text', 'Old charge scheme')
-      .and('not.contain.text', 'Test Region')
-      .and('not.contain.text', 'Two-part tariff')
+    cy.get('#main-content')
+      .then((mainContent) => {
+        if (mainContent.find('tr').length) {
+          return '#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)'
+        }
+
+        return '#main-content'
+      })
+      .then((selector) => {
+        cy.get(selector)
+          .should('not.contain.text', 'Old charge scheme')
+          .and('not.contain.text', 'Test Region')
+          .and('not.contain.text', 'Two-part tariff')
+      })
   })
 })
