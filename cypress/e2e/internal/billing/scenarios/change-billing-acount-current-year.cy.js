@@ -174,8 +174,6 @@ describe('Change billing account in current financial year (internal)', () => {
     // confirm we see it is now SENT
     cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
 
-    // -------------------------------------------------------------------------
-
     // click the Bill runs menu link
     cy.get('#navbar-bill-runs').contains('Bill runs').click()
 
@@ -272,8 +270,6 @@ describe('Change billing account in current financial year (internal)', () => {
     cy.get('.govuk-radios > :nth-child(1) > #reviewOutcome').click()
     cy.get('.govuk-button').contains('Continue').click()
 
-    // -------------------------------------------------------------------------
-
     // click the Bill runs menu link
     cy.get('#navbar-bill-runs').contains('Bill runs').click()
 
@@ -293,6 +289,9 @@ describe('Change billing account in current financial year (internal)', () => {
 
     // click the Bill runs menu link
     cy.get('#navbar-bill-runs').contains('Bill runs').click()
+
+    // -------------------------------------------------------------------------
+    cy.log('Confirming and sending the SROC supplementary bill run')
 
     // Bill runs
     // we immediately select the SROC bill run. We don't expect it to be ready and to hit the spinner page but it
