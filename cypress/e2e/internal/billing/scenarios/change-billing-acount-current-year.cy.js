@@ -22,7 +22,7 @@ describe('Change billing account in current financial year (internal)', () => {
     })
   })
 
-  it('creates both the PRESROC and SROC supplementary bill runs and once built sends the SROC bill run then adds a new charge version with a new billing account creates a new SROC bil run and confirms previous account is credited', () => {
+  it('creates both the PRESROC and SROC supplementary bill runs and once built sends the SROC bill run then adds a new charge version with a new billing account and creates a new SROC bill run and confirms previous account is credited', () => {
     cy.visit('/')
 
     //  Enter the user name and Password
