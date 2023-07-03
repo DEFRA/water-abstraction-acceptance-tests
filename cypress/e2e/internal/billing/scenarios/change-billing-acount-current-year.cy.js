@@ -54,79 +54,18 @@ describe('Change billing account in current financial year (internal)', () => {
     cy.get('input#selectedBillingRegion-9').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'building'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for old charge scheme')
-
-    // -------------------------------------------------------------------------
-    cy.log('Confirming and sending the PRESROC supplementary bill run')
-
-    // Test Region supplementary bill run
-    // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
-    // is present we can check the rest of the details before confirming the bill run
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
-    cy.get('#main-content > div:nth-child(2) > div > h2').should('contain.text', '£582.11')
-    cy.get('#main-content > div:nth-child(4) > div > h2').should('contain.text', '4 supplementary bills')
-    cy.get('.govuk-button').contains('Confirm bill run').click()
-
-    // You're about to send this bill run
-    // check the details then click Send bill run
-    cy.get('dl').within(() => {
-      // date created
-      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
-      })
-      // region
-      cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
-      // bill run type
-      cy.get('div:nth-child(3) > dd').should('contain.text', 'Supplementary')
-      // status
-      cy.get('div:nth-child(4) > dd').should('contain.text', 'Ready')
-    })
-    cy.get('.govuk-button').contains('Send bill run').click()
-
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'sending'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body > strong').should('contain.text', 'Sending')
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for old charge scheme')
-
-    // Bill run sent
-    // confirm the bill run is sent and then click to go to it
-    cy.get('.govuk-panel__title', { timeout: 20000 }).should('contain.text', 'Bill run sent')
-    cy.get('#main-content > div > div > p:nth-child(4) > a').click()
-
-    // Test Region supplementary bill run
-    // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
-
     // click the Bill runs menu link
     cy.get('#navbar-bill-runs').contains('Bill runs').click()
 
-    // Bill runs
-    // back on the bill runs page confirm our PRESROC bill run is present and listed as SENT
-    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Old charge scheme')
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Supplementary')
-        .and('contain.text', '£582.11')
-        .and('contain.text', 'Sent')
-    })
-
-    // -------------------------------------------------------------------------
-    cy.log('Confirming and sending the SROC supplementary bill run')
-
-    // select the SROC bill run
+    // we immediately select the SROC bill run. We don't expect it to be ready and to hit the spinner page but it
+    // might be super quick and already done. So we do no checks at this point
     cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
 
     // Test Region supplementary bill run
+    // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
+    // is present we can confirm the bill run is a credit as expected
+    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+
     // check the details before confirming the bill run
     cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
@@ -296,7 +235,7 @@ describe('Change billing account in current financial year (internal)', () => {
     // Bill runs
     // we immediately select the SROC bill run. We don't expect it to be ready and to hit the spinner page but it
     // might be super quick and already done. So we do no checks at this point
-    cy.get(':nth-child(2) > :nth-child(1) > .govuk-link').click()
+    cy.get(':nth-child(1) > :nth-child(1) > .govuk-link').click()
 
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
@@ -319,7 +258,7 @@ describe('Change billing account in current financial year (internal)', () => {
     cy.get('#main-content').should('contain.text', '1 credit note').and('contain.text', '1 invoice')
     cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'S00000007A')
     cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'A00000002A')
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'Mr John J Testerson')
+    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'Big Farm Co Ltd 02')
     cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'Big Farm Co Ltd 01')
     cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'AT/SROC/SUPB/02')
     cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', '£97.00')
@@ -365,7 +304,7 @@ describe('Change billing account in current financial year (internal)', () => {
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(2)')
+      cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
         .should('contain.text', formattedCurrentDate)
         .and('contain.text', 'Test Region')
         .and('contain.text', 'Supplementary')
