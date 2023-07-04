@@ -67,7 +67,6 @@ describe('Change billing account in current financial year (internal)', () => {
     cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
 
     // check the details before confirming the bill run
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const { billingPeriodCount } = currentFinancialYearInfo
       if (billingPeriodCount === 1) {
