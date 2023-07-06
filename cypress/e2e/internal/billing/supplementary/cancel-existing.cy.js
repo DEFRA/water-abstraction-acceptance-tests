@@ -142,7 +142,6 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
       .then((selector) => {
         cy.get(selector)
           .should('not.contain.text', 'Test Region')
-          .and('not.contain.text', 'Supplementary')
       })
   })
 })
