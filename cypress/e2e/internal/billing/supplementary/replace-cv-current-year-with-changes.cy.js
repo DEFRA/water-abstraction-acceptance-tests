@@ -209,7 +209,7 @@ describe('Replace charge version in current financial year change the charge ref
     })
 
     // -------------------------------------------------------------------------
-    cy.log('Setting up a new charge changing the charge reference and adding adjustments and additional charges then creating a supplementary bill run')
+    cy.log('Setting up a new charge changing the charge volume and adding adjustments and additional charges then creating a supplementary bill run')
 
     // click the Search menu link
     cy.get('#navbar-view').click()
@@ -342,7 +342,7 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
-    // is present we can confirm the bill run is a credit as expected
+    // is present we can confirm the bill run is as expected
     cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
 
     // check the details and then click Confirm bill run
@@ -363,7 +363,9 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').should('contain.text', 'S00000007A')
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(2)').should('contain.text', 'Big Farm Co Ltd 02')
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(3)').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(4)').should('contain.text', '2024')
+    cy.currentFinancialYearDate().then((result) => {
+      cy.get('.govuk-table__body > .govuk-table__row > :nth-child(4)').should('contain.text', result.year)
+    })
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(5)').should('contain.text', '£6,142.50')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
@@ -423,7 +425,7 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Bill for Big Farm Co Ltd 02
     // check the adjustments and addional charges have been applied
-    cy.get(':nth-child(1) > .govuk-table__header > .govuk-list > li > .govuk-body-s')
+    cy.get(':nth-child(4) > .govuk-grid-column-full')
       .should('contain.text', 'Additional charges:')
       .and('contain.text', 'Supported source Earl Soham - Deben (£10,696.00)')
       .and('contain.text', 'Adjustments:')
