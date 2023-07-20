@@ -41,7 +41,7 @@ describe('Replace charge version in current financial year change the charge ref
     cy.log('Replacing initial Charge Version')
     // There is currently an issue with the initial Charge Version that is created by the service that prevents it from
     // being replaced with the same billing account, which is essential for this test. As a work around the initial
-    // charge version that was created in the test data is going to be replaced extirely before the initial bill run.
+    // charge version that was created in the test data is going to be replaced entirely before the initial bill run.
     // This will then enable the subsequent Charge Version to be created with the same billing account.
 
     // click the Search menu link
