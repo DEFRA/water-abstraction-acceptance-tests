@@ -22,7 +22,7 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     })
   })
 
-  it('creates both the PRESROC and SROC supplementary bill runs and once built sends the SROC bill run then adds a new charge version in the current FY with no changes and creates a new SROC bill run and confirms Empty bill run', () => {
+  it('creates both the PRESROC and SROC supplementary bill runs and once built sends the SROC bill run then adds a new charge version in the 2023 FY with no changes and creates a new SROC bill run and confirms zero value bill run', () => {
     cy.visit('/')
 
     //  Enter the user name and Password
