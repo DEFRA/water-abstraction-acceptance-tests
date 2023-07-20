@@ -231,7 +231,7 @@ describe('Replace charge version in current financial year change the charge ref
     // Set charge start date
     // set a charge start date of the 1st April in the current financial year
     cy.get('#startDate-4').click()
-    cy.currentFinancialYearDate(1, 4, -1).then((result) => {
+    cy.currentFinancialYearDate(1, 9, -1).then((result) => {
       cy.get('#customDate-day').type(result.day)
       cy.get('#customDate-month').type(result.month)
       cy.get('#customDate-year').type(result.year)
@@ -358,7 +358,7 @@ describe('Replace charge version in current financial year change the charge ref
       // charge scheme
       cy.get('div:nth-child(4) > dd').should('contain.text', 'Current')
     })
-    cy.get(':nth-child(2) > .govuk-grid-column-two-thirds').should('contain.text', '£6,142.50')
+    cy.get(':nth-child(2) > .govuk-grid-column-two-thirds').should('contain.text', '£3,574.73')
     cy.get('.govuk-heading-l').should('contain.text', '1 supplementary bill')
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').should('contain.text', 'S00000007A')
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(2)').should('contain.text', 'Big Farm Co Ltd 02')
@@ -366,7 +366,7 @@ describe('Replace charge version in current financial year change the charge ref
     cy.currentFinancialYearDate().then((result) => {
       cy.get('.govuk-table__body > .govuk-table__row > :nth-child(4)').should('contain.text', result.year)
     })
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(5)').should('contain.text', '£6,142.50')
+    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(5)').should('contain.text', '£3,574.73')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
     // You're about to send this bill run
@@ -413,7 +413,7 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(2)').should('contain.text', 'Test Region')
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(3)').should('contain.text', 'Supplementary')
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(4)').should('contain.text', '1')
-    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(5)').should('contain.text', '£6,142.50')
+    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(5)').should('contain.text', '£3,574.73')
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(6)').should('contain.text', 'Sent')
 
     // select the bill run to check the adjustments and addional charges have been applied
@@ -424,9 +424,23 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get(':nth-child(6) > .govuk-link').click()
 
     // Bill for Big Farm Co Ltd 02
-    // check the adjustments and addional charges have been applied
+    // check the debits, credits, adjustments and addional charges have been applied
+    cy.get('.govuk-template__body')
+      .should('contain.text', '£3,574.73')
+      .and('contain.text', '£97.00')
+      .and('contain.text', '£3,671.73')
     cy.get(':nth-child(4) > .govuk-grid-column-full')
-      .should('contain.text', 'Additional charges:')
+      .should('contain.text', '213/366')
+      .and('contain.text', '153/366')
+      .and('contain.text', '366/366')
+      .and('contain.text', '1000ML')
+      .and('contain.text', '100ML')
+      .and('contain.text', '£3,631.18')
+      .and('contain.text', '£40.55')
+      .and('contain.text', '£97.00')
+      .and('contain.text', '£3,671.73')
+      .and('contain.text', '£3,574.73')
+      .and('contain.text', 'Additional charges:')
       .and('contain.text', 'Supported source Earl Soham - Deben (£10,696.00)')
       .and('contain.text', 'Adjustments:')
       .and('contain.text', 'Winter discount (0.5)')
