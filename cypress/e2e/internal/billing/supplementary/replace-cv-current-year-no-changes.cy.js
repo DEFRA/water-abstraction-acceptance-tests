@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Replace charge version in current financial year with no changes (internal)', () => {
+describe('Replace charge version in the 2023 financial year with no changes (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.setUp('sroc-billing-data')
@@ -209,7 +209,7 @@ describe('Replace charge version in current financial year with no changes (inte
     })
 
     // -------------------------------------------------------------------------
-    cy.log('Setting up a new charge with no changes and creating a supplementary bill run')
+    cy.log('Setting up a new charge in 2023 Financial Year with no changes, then creating a supplementary bill run')
 
     // click the Search menu link
     cy.get('#navbar-view').click()
@@ -223,19 +223,17 @@ describe('Replace charge version in current financial year with no changes (inte
     // click the Charge information link
     cy.get('#tab_charge').click()
 
-    // set up a new charge for the current financial year that doesn't change anything
+    // set up a new charge for the 2023 financial year that doesn't change anything
     cy.get('#charge > a.govuk-button').contains('Set up a new charge').click()
     cy.get('#reason-8').click()
     cy.get('form > .govuk-button').click()
 
     // Set charge start date
-    // set a charge start date of the 1st April in the current financial year
+    // set a charge start date of the 1st September 2022
     cy.get('#startDate-4').click()
-    cy.currentFinancialYearDate(1, 4, -1).then((result) => {
-      cy.get('#customDate-day').type(result.day)
-      cy.get('#customDate-month').type(result.month)
-      cy.get('#customDate-year').type(result.year)
-    })
+    cy.get('#customDate-day').type(1)
+    cy.get('#customDate-month').type(9)
+    cy.get('#customDate-year').type(2022)
     cy.get('form > .govuk-button').click()
 
     // Select an existing billing account for Big Farm Co Ltd 02
@@ -294,9 +292,9 @@ describe('Replace charge version in current financial year with no changes (inte
     cy.get(':nth-child(1) > :nth-child(1) > .govuk-link').click()
 
     // Test Region supplementary bill run
-    // we have to wait till the bill run has finished generating. The thing we wait on is the EMPTY label. Once that
-    // is present we can confirm the bill run is empty as expected
-    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'Empty')
+    // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
+    // is present we can confirm the bill run is as expected
+    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
 
     // check the details and then click Confirm bill run
     cy.get('dl').within(() => {
@@ -311,18 +309,62 @@ describe('Replace charge version in current financial year with no changes (inte
       // charge scheme
       cy.get('div:nth-child(4) > dd').should('contain.text', 'Current')
     })
+    cy.get(':nth-child(2) > .govuk-grid-column-two-thirds').should('contain.text', '£0.00')
+    cy.get('.govuk-heading-l').should('contain.text', '1 supplementary bill')
+    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').should('contain.text', 'S00000007A')
+    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(2)').should('contain.text', 'Big Farm Co Ltd 02')
+    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(3)').should('contain.text', 'AT/SROC/SUPB/02')
+    cy.currentFinancialYearDate().then((result) => {
+      cy.get('.govuk-table__body > .govuk-table__row > :nth-child(4)').should('contain.text', '2023')
+    })
+    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(5)').should('contain.text', '£0.00')
+    cy.get('.govuk-button').contains('Confirm bill run').click()
 
-    // click the Return to bill runs link
-    cy.get('#main-content > :nth-child(4) > a').click()
+    // You're about to send this bill run
+    // check the details then click Send bill run
+    cy.get('dl').within(() => {
+      // date created
+      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
+      })
+      // region
+      cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
+      // bill run type
+      cy.get('div:nth-child(3) > dd').should('contain.text', 'Supplementary')
+      // status
+      cy.get('div:nth-child(4) > dd').should('contain.text', 'Ready')
+    })
+    cy.get('.govuk-button').contains('Send bill run').click()
+
+    // Test Region Supplementary bill run
+    // spinner page displayed whilst the bill run is 'sending'. Confirm we're on it
+    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body > strong').should('contain.text', 'Sending')
+    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
+      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
+    cy.get('#main-content > div:nth-child(7) > div > p')
+      .should('contain.text', 'Gathering transactions for current charge scheme')
+
+    // Bill run sent
+    // confirm the bill run is sent and then click to go to it
+    cy.get('.govuk-panel__title', { timeout: 20000 }).should('contain.text', 'Bill run sent')
+    cy.get('#main-content > div > div > p:nth-child(4) > a').click()
+
+    // Test Region supplementary bill run
+    // confirm we see it is now SENT
+    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+
+    // click the Bill runs menu link
+    cy.get('#navbar-bill-runs').contains('Bill runs').click()
 
     // Bill runs
-    // back on the bill runs page confirm our SROC bill run is present and listed as EMPTY
+    // back on the bill runs page confirm our zero value SROC bill run is present and listed as SENT
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Supplementary')
-        .and('contain.text', 'Empty')
+      cy.get('.govuk-table__body > :nth-child(1) > :nth-child(1)').should('contain.text', formattedCurrentDate)
     })
+    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(2)').should('contain.text', 'Test Region')
+    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(3)').should('contain.text', 'Supplementary')
+    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(4)').should('contain.text', '0')
+    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(5)').should('contain.text', '£0.00')
+    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(6)').should('contain.text', 'Sent')
   })
 })
