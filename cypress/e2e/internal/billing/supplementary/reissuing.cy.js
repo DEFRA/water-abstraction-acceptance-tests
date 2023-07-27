@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Change billing account in current financial year (internal)', () => {
+describe('Reissue bill in supplementary bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.setUp('sroc-billing-data')
