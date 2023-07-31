@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Reissue bill in supplementary bill run (internal)', () => {
+describe('Reissue PRESROC bill in supplementary bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.setUp('sroc-billing-data')
