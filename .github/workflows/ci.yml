@@ -20,7 +20,6 @@ jobs:
         run: |
           ! grep -R 'describe.only(\|it.only(' cypress/e2e/
 
-      # Gets the version to use by referring to the previous step
       - name: Install Node
         uses: actions/setup-node@v3
         with:
