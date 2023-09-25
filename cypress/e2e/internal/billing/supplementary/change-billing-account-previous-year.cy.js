@@ -255,7 +255,8 @@ describe('Change billing account in previous financial year (internal)', () => {
       cy.get('div:nth-child(4) > dd').should('contain.text', 'Current')
     })
     cy.get('#main-content').should('contain.text', '2 credit notes').and('contain.text', '2 invoices')
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'S00000007A')
+    // NOTE: We cannot assert the new billing account number because it will be different in each environment and
+    // unpredictable because the new number is based on existing data
     cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'A00000002A')
     cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'Big Farm Co Ltd 02')
     cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'Big Farm Co Ltd 01')

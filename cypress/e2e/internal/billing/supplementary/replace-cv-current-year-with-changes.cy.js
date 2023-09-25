@@ -360,7 +360,8 @@ describe('Replace charge version in current financial year change the charge ref
     })
     cy.get(':nth-child(2) > .govuk-grid-column-two-thirds').should('contain.text', '£3,574.73')
     cy.get('.govuk-heading-l').should('contain.text', '1 supplementary bill')
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').should('contain.text', 'S00000007A')
+    // NOTE: We cannot assert the new billing account number because it will be different in each environment and
+    // unpredictable because the new number is based on existing data
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(2)').should('contain.text', 'Big Farm Co Ltd 02')
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(3)').should('contain.text', 'AT/SROC/SUPB/02')
     cy.currentFinancialYearDate().then((result) => {
