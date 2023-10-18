@@ -1,6 +1,7 @@
 'use strict'
 
-describe('Send returns reminder to customer (internal)', () => {
+// TODO: remove skip() once the licence NW/072/0417/002/R01\r has been fixed
+describe.skip('Send returns reminder to customer (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.setUp('barebones')
