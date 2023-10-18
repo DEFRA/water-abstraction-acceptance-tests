@@ -26,6 +26,9 @@ describe('Send returns invite to customer (internal)', () => {
     cy.get('#navbar-notifications').click()
     cy.get('a[href="/returns-notifications/invitations"]').click()
 
+    // TODO: remove once the licence NW/072/0417/002/R01\r has been fixed
+    cy.get('textarea#excludeLicences').type('NW/072/0417/002/R01\r')
+
     // Send returns invitations
     // just click continue. The page is for submitting licences to be excluded which this test doesn't cover
     cy.get('form > .govuk-button').click()
