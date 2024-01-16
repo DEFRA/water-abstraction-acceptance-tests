@@ -67,9 +67,9 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can check the rest of the details before confirming the bill run
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
-    cy.get('#main-content > div:nth-child(2) > div > h2').should('contain.text', '£582.11')
-    cy.get('#main-content > div:nth-child(4) > div > h2').should('contain.text', '4 supplementary bills')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£582.11')
+    cy.get('[data-test="bills-count"]').should('contain.text', '4 Supplementary bills')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
     // You're about to send this bill run
@@ -103,10 +103,10 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our PRESROC bill run is present and listed as SENT
@@ -128,15 +128,15 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // check the details before confirming the bill run
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const { billingPeriodCount } = currentFinancialYearInfo
       if (billingPeriodCount === 1) {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', '1 supplementary bill')
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', `${billingPeriodCount} supplementary bills`)
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Confirm bill run').click()
@@ -172,10 +172,10 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
