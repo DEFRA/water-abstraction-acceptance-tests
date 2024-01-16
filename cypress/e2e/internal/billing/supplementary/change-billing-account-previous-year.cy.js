@@ -64,17 +64,17 @@ describe('Change billing account in previous financial year (internal)', () => {
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is a credit as expected
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
     // check the details before confirming the bill run
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const { billingPeriodCount } = currentFinancialYearInfo
       if (billingPeriodCount === 1) {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', '1 supplementary bill')
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', `${billingPeriodCount} supplementary bills`)
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Confirm bill run').click()
@@ -110,10 +110,10 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
@@ -239,7 +239,7 @@ describe('Change billing account in previous financial year (internal)', () => {
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is a credit as expected
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
     // check the details and then click Confirm bill run
     cy.get('dl').within(() => {
@@ -254,16 +254,25 @@ describe('Change billing account in previous financial year (internal)', () => {
       // charge scheme
       cy.get('div:nth-child(4) > dd').should('contain.text', 'Current')
     })
-    cy.get('#main-content').should('contain.text', '2 credit notes').and('contain.text', '2 invoices')
+    cy.get('[data-test="credits-count"]').should('contain.text', '2 credit notes')
+    cy.get('[data-test="debits-count"]').should('contain.text', '2 invoices')
     // NOTE: We cannot assert the new billing account number because it will be different in each environment and
     // unpredictable because the new number is based on existing data
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'A00000002A')
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'Big Farm Co Ltd 02')
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'Big Farm Co Ltd 01')
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', '£97.00')
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', '£80.79')
-    cy.get(':nth-child(6) > .govuk-grid-column-full').should('contain.text', 'Credit note')
+    cy.get('[data-test="billing-contact-0"]').should('contain.text', 'Big Farm Co Ltd 02')
+    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/SROC/SUPB/02')
+    cy.get('[data-test="total-0"]').should('contain.text', '-£97.00')
+
+    cy.get('[data-test="billing-contact-1"]').should('contain.text', 'Big Farm Co Ltd 02')
+    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/SROC/SUPB/02')
+    cy.get('[data-test="total-1"]').should('contain.text', '-£80.79')
+
+    cy.get('[data-test="billing-contact-2"]').should('contain.text', 'Big Farm Co Ltd 01')
+    cy.get('[data-test="licence-2"]').should('contain.text', 'AT/SROC/SUPB/02')
+    cy.get('[data-test="total-2"]').should('contain.text', '£97.00')
+
+    cy.get('[data-test="billing-contact-3"]').should('contain.text', 'Big Farm Co Ltd 01')
+    cy.get('[data-test="licence-3"]').should('contain.text', 'AT/SROC/SUPB/02')
+    cy.get('[data-test="total-3"]').should('contain.text', '£80.79')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
     // You're about to send this bill run
@@ -297,10 +306,10 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
