@@ -140,17 +140,17 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is a credit as expected
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
     // check the details before confirming the bill run
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const { billingPeriodCount } = currentFinancialYearInfo
       if (billingPeriodCount === 1) {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', '1 supplementary bill')
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', `${billingPeriodCount} supplementary bills`)
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Confirm bill run').click()
@@ -186,10 +186,10 @@ describe('Replace charge version in the 2023 financial year with no changes (int
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
@@ -294,7 +294,7 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is as expected
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
     // check the details and then click Confirm bill run
     cy.get('dl').within(() => {
@@ -309,8 +309,8 @@ describe('Replace charge version in the 2023 financial year with no changes (int
       // charge scheme
       cy.get('div:nth-child(4) > dd').should('contain.text', 'Current')
     })
-    cy.get(':nth-child(2) > .govuk-grid-column-two-thirds').should('contain.text', '£0.00')
-    cy.get('.govuk-heading-l').should('contain.text', '1 supplementary bill')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£0.00')
+    cy.get('[data-test="bills-count"]').should('contain.text', '0 Supplementary bills and 1 zero value bill')
     // NOTE: We cannot assert the new billing account number because it will be different in each environment and
     // unpredictable because the new number is based on existing data
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(2)').should('contain.text', 'Big Farm Co Ltd 02')
@@ -350,10 +350,10 @@ describe('Replace charge version in the 2023 financial year with no changes (int
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our zero value SROC bill run is present and listed as SENT
