@@ -313,10 +313,10 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     cy.get('[data-test="bills-count"]').should('contain.text', '0 Supplementary bills and 1 zero value bill')
     // NOTE: We cannot assert the new billing account number because it will be different in each environment and
     // unpredictable because the new number is based on existing data
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(2)').should('contain.text', 'Big Farm Co Ltd 02')
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(3)').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(4)').should('contain.text', '2023')
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(5)').should('contain.text', '£0.00')
+    cy.get('[data-test="billing-contact-0"]').should('contain.text', 'Big Farm Co Ltd 02')
+    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/SROC/SUPB/02')
+    cy.get('[data-test="financial-year-0"]').should('contain.text', '2023')
+    cy.get('[data-test="total-0"]').should('contain.text', '£0.00')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
     // You're about to send this bill run
