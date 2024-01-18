@@ -140,17 +140,17 @@ describe('Replace charge version in current financial year change the charge ref
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is a credit as expected
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
     // check the details before confirming the bill run
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const { billingPeriodCount } = currentFinancialYearInfo
       if (billingPeriodCount === 1) {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', '1 supplementary bill')
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', `${billingPeriodCount} supplementary bills`)
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Confirm bill run').click()
@@ -186,10 +186,10 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
@@ -343,7 +343,7 @@ describe('Replace charge version in current financial year change the charge ref
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is as expected
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
     // check the details and then click Confirm bill run
     cy.get('dl').within(() => {
@@ -358,16 +358,16 @@ describe('Replace charge version in current financial year change the charge ref
       // charge scheme
       cy.get('div:nth-child(4) > dd').should('contain.text', 'Current')
     })
-    cy.get(':nth-child(2) > .govuk-grid-column-two-thirds').should('contain.text', '£3,574.73')
-    cy.get('.govuk-heading-l').should('contain.text', '1 supplementary bill')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£3,574.73')
+    cy.get('[data-test="bills-count"]').should('contain.text', '1 Supplementary bill')
     // NOTE: We cannot assert the new billing account number because it will be different in each environment and
     // unpredictable because the new number is based on existing data
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(2)').should('contain.text', 'Big Farm Co Ltd 02')
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(3)').should('contain.text', 'AT/SROC/SUPB/02')
+    cy.get('[data-test="billing-contact-0"]').should('contain.text', 'Big Farm Co Ltd 02')
+    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/SROC/SUPB/02')
     cy.currentFinancialYearDate().then((result) => {
-      cy.get('.govuk-table__body > .govuk-table__row > :nth-child(4)').should('contain.text', result.year)
+      cy.get('[data-test="financial-year-0"]').should('contain.text', result.year)
     })
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(5)').should('contain.text', '£3,574.73')
+    cy.get('[data-test="total-0"]').should('contain.text', '£3,574.73')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
     // You're about to send this bill run
@@ -401,10 +401,10 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
@@ -417,7 +417,7 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(5)').should('contain.text', '£3,574.73')
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(6)').should('contain.text', 'Sent')
 
-    // select the bill run to check the adjustments and addional charges have been applied
+    // select the bill run to check the adjustments and additional charges have been applied
     cy.get(':nth-child(1) > :nth-child(1) > .govuk-link').click()
 
     // Test Region supplementary bill run
@@ -425,25 +425,23 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get(':nth-child(6) > .govuk-link').click()
 
     // Bill for Big Farm Co Ltd 02
-    // check the debits, credits, adjustments and addional charges have been applied
-    cy.get('.govuk-template__body')
-      .should('contain.text', '£3,574.73')
-      .and('contain.text', '£97.00')
-      .and('contain.text', '£3,671.73')
-    cy.get(':nth-child(4) > .govuk-grid-column-full')
-      .should('contain.text', '213/366')
-      .and('contain.text', '153/366')
-      .and('contain.text', '366/366')
-      .and('contain.text', '1000ML')
-      .and('contain.text', '100ML')
-      .and('contain.text', '£3,631.18')
-      .and('contain.text', '£40.55')
-      .and('contain.text', '£97.00')
-      .and('contain.text', '£3,671.73')
-      .and('contain.text', '£3,574.73')
-      .and('contain.text', 'Additional charges:')
-      .and('contain.text', 'Supported source Earl Soham - Deben (£10,696.00)')
-      .and('contain.text', 'Adjustments:')
-      .and('contain.text', 'Winter discount (0.5)')
+    // check the debits, credits, adjustments and additional charges have been applied
+    cy.get('[data-test="credits-total"]').should('contain.text', '£97.00')
+    cy.get('[data-test="debits-total"]').should('contain.text', '£3,671.73')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£3,574.73')
+    cy.get('[data-test="additional-charges-0"]').should('contain.text', 'Supported source Earl Soham - Deben (£106.96)')
+    cy.get('[data-test="adjustments-0"]').should('contain.text', 'Winter discount (0.5)')
+
+    cy.get('[data-test="billable-days-0"]').should('contain.text', '213/366')
+    cy.get('[data-test="quantity-0"]').should('contain.text', '1000ML')
+    cy.get('[data-test="debit-0"]').should('contain.text', '£3,631.18')
+
+    cy.get('[data-test="billable-days-1"]').should('contain.text', '366/366')
+    cy.get('[data-test="quantity-1"]').should('contain.text', '100ML')
+    cy.get('[data-test="credit-1"]').should('contain.text', '£97.00')
+
+    cy.get('[data-test="billable-days-2"]').should('contain.text', '153/366')
+    cy.get('[data-test="quantity-2"]').should('contain.text', '100ML')
+    cy.get('[data-test="debit-2"]').should('contain.text', '£40.55')
   })
 })
