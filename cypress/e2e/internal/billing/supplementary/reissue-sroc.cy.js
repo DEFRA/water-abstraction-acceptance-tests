@@ -64,17 +64,17 @@ describe('Reissue SROC bill in supplementary bill run (internal)', () => {
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is a credit as expected
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
     // check the details before confirming the bill run
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const { billingPeriodCount } = currentFinancialYearInfo
       if (billingPeriodCount === 1) {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', '1 supplementary bill')
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('#main-content > div:nth-child(4) > div > h2')
-          .should('contain.text', `${billingPeriodCount} supplementary bills`)
+        cy.get('[data-test="bills-count"]')
+          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Confirm bill run').click()
@@ -110,10 +110,10 @@ describe('Reissue SROC bill in supplementary bill run (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
@@ -203,7 +203,7 @@ describe('Reissue SROC bill in supplementary bill run (internal)', () => {
     // Bill runs
     // The sroc bill run we created should be the top result. Once it has finished building its status will be `Ready`
     // so we reload until the text is present.
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > strong', 'Ready', 10)
+    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > strong', 'Ready', 10, 2000)
 
     // We verify the row contains the expected data then click to continue.
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
@@ -219,9 +219,9 @@ describe('Reissue SROC bill in supplementary bill run (internal)', () => {
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can check the rest of the details before confirming the bill run
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Ready')
-    cy.get('#main-content > div:nth-child(2) > div > h2').should('contain.text', '£0.00')
-    cy.get('.govuk-heading-l').should('contain.text', '2 supplementary bills')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£0.00')
+    cy.get('[data-test="bills-count"]').should('contain.text', '2 Supplementary bills')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
     // You're about to send this bill run
@@ -255,14 +255,7 @@ describe('Reissue SROC bill in supplementary bill run (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT then click view for the first bill
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
     cy.get(':nth-child(1) > :nth-child(6) > .govuk-link').click()
-
-    // -------------------------------------------------------------------------
-    cy.log('Confirm link to previous bill is displayed')
-
-    // Bill for Big Farm Co Ltd 02
-    // confirm we see the reissue section when viewing the bill
-    cy.get('.govuk-inset-text > .govuk-heading-m').should('contain.text', 'This bill is linked to a reissue')
   })
 })

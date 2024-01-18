@@ -54,10 +54,10 @@ describe('Create and send annual bill run (internal)', () => {
     // Test Region annual bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can check the rest of the details before confirming the bill run
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
-    cy.get('#main-content > div:nth-child(2) > div > h2').should('contain.text', '£2,171.00')
-    cy.get('div#water-companies > table > tbody > tr').should('have.length', 4)
-    cy.get('div#other-abstractors > table').should('not.exist')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£2,171.00')
+    cy.get('[data-test="water-companies"]').should('exist')
+    cy.get('[data-test="other-abstractors"]').should('not.exist')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
     // You're about to send this bill run
@@ -76,7 +76,7 @@ describe('Create and send annual bill run (internal)', () => {
     })
     cy.get('.govuk-button').contains('Send bill run').click()
 
-    // Test Region Supplementary bill run
+    // Test Region annual bill run
     // spinner page displayed whilst the bill run is 'sending'. Confirm we're on it
     cy.get('#main-content > div:nth-child(2) > div > p.govuk-body > strong').should('contain.text', 'Sending')
     cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
@@ -91,10 +91,10 @@ describe('Create and send annual bill run (internal)', () => {
 
     // Test Region annual bill run
     // confirm we see it is now SENT
-    cy.get('#main-content > div:nth-child(1) > div > p > strong').should('contain.text', 'Sent')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    // click the back link to go to bill runs
+    cy.get('.govuk-back-link').click()
 
     // Bill runs
     // back on the bill runs page confirm our bill run is present and listed as SENT

@@ -58,7 +58,7 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
     cy.get('.govuk-button').contains('Confirm bill run').click()
 
     // You're about to send this bill run
@@ -172,7 +172,8 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is a credit as expected
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
-    cy.get('#main-content').should('contain.text', '1 credit note').and('contain.text', '0 invoices')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('[data-test="credits-count"]').should('contain.text', '1 credit note')
+    cy.get('[data-test="debits-count"]').should('contain.text', '0 invoices')
   })
 })

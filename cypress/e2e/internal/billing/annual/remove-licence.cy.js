@@ -49,14 +49,16 @@ describe('Remove bill from annual bill run (internal)', () => {
     // Test Region annual bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm we have 4 bills then click to view the first one
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
-    cy.get('#main-content > div:nth-child(2) > div > h2').should('contain.text', '£2,171.00')
-    cy.get('div#water-companies > table > tbody > tr').should('have.length', 4)
-    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(5)').contains('View').click()
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£2,171.00')
+    cy.get('[data-test="water-companies"]').should('exist')
+    cy.get('[data-test="other-abstractors"]').should('not.exist')
+    cy.get('[data-test="water-companies"] > tbody > tr').should('have.length', 4)
+    cy.get('[data-test="action-3"] > .govuk-link').click()
 
     // Bill for Big Farm Co Ltd 04
     // click the Remove bill
-    cy.get('.govuk-grid-column-two-thirds > .govuk-button').contains('Remove bill').click()
+    cy.get('.govuk-button').contains('Remove bill').click()
 
     // You're about to remove this bill from the annual bill run
     // confirm we are on the remove bill confirmation page and then click Remove this bill
@@ -76,8 +78,10 @@ describe('Remove bill from annual bill run (internal)', () => {
     // Test Region annual bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm we're down to 3 bills
-    cy.get('#main-content > div:nth-child(1) > div > p > strong', { timeout: 20000 }).should('contain.text', 'Ready')
-    cy.get('#main-content > div:nth-child(2) > div > h2').should('contain.text', '£291.00')
-    cy.get('div#water-companies > table > tbody > tr').should('have.length', 3)
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£291.00')
+    cy.get('[data-test="water-companies"]').should('exist')
+    cy.get('[data-test="other-abstractors"]').should('not.exist')
+    cy.get('[data-test="water-companies"] > tbody > tr').should('have.length', 3)
   })
 })
