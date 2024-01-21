@@ -203,7 +203,7 @@ describe('Reissue SROC bill in supplementary bill run (internal)', () => {
     // Bill runs
     // The sroc bill run we created should be the top result. Once it has finished building its status will be `Ready`
     // so we reload until the text is present.
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > strong', 'Ready', 10, 2000)
+    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > strong', 'Ready')
 
     // We verify the row contains the expected data then click to continue.
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {

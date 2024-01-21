@@ -120,7 +120,7 @@ Cypress.Commands.add('dayMonthYearFormattedDate', (date) => {
 
 // Created when we needed to wait until the status of a bill run changed from BUILDING to EMPTY. We have made it generic
 // so it can be used in any other similar scenarios.
-Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 3, retryWait = 1000) => {
+Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 10, retryWait = 2000) => {
   if (retries === 0) {
     throw new Error(`Exhausted retries looking for ${textToMatch} in ${selector}.`)
   }
