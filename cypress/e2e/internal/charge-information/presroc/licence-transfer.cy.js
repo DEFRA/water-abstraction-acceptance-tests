@@ -103,7 +103,7 @@ describe('PRESROC licence transfer (internal)', () => {
 
     // Use abstraction data to set up the element?
     // choose Yes and continue
-    cy.get('input#useAbstractionData').click()
+    cy.get('input#useAbstractionData-4').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Check charge information
@@ -125,7 +125,7 @@ describe('PRESROC licence transfer (internal)', () => {
       // abstraction period
       cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', '1 April to 31 March')
       // annual quantities
-      cy.get('div:nth-child(4) > dd.govuk-summary-list__value').should('contain.text', '1.554ML authorised')
+      cy.get('div:nth-child(4) > dd.govuk-summary-list__value').should('contain.text', '15.54ML authorised')
       // time limit
       cy.get('div:nth-child(5) > dd.govuk-summary-list__value').should('contain.text', 'No')
       // source
