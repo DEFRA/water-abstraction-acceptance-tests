@@ -69,11 +69,8 @@ describe('Remove bill from annual bill run (internal)', () => {
     cy.get('form > .govuk-button').contains('Remove this bill').click()
 
     // Test Region Annual bill run
-    // spinner page displayed whilst the bill run is 'building'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for current charge scheme')
+    // spinner page displayed whilst the bill run is 'building'. We don't confirm we are on it because in some
+    // environments the process is to quick to for the page to have a chance to appear
 
     // Test Region annual bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
