@@ -171,13 +171,9 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     })
     cy.get('.govuk-button').contains('Send bill run').click()
 
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'sending'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body > strong').should('contain.text', 'Sending')
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for current charge scheme')
+    // Test Region Supplementary bill run spinner page displayed whilst the bill run is 'sending'. We don't confirm
+    // we're on it because in some environments this step is so fast the test will fail because it doesn't see the
+    // element
 
     // Bill run sent
     // confirm the bill run is sent and then click to go to it
@@ -335,13 +331,9 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     })
     cy.get('.govuk-button').contains('Send bill run').click()
 
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'sending'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body > strong').should('contain.text', 'Sending')
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for current charge scheme')
+    // Test Region Supplementary bill run spinner page displayed whilst the bill run is 'sending'. We don't confirm
+    // we're on it because in some environments this step is so fast the test will fail because it doesn't see the
+    // element
 
     // Bill run sent
     // confirm the bill run is sent and then click to go to it
