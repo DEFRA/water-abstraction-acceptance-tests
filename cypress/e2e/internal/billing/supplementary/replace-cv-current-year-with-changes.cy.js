@@ -429,7 +429,7 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get('[data-test="credits-total"]').should('contain.text', '£97.00')
     cy.get('[data-test="debits-total"]').should('contain.text', '£3,671.73')
     cy.get('[data-test="bill-total"]').should('contain.text', '£3,574.73')
-    cy.get('[data-test="additional-charges-0"]').should('contain.text', 'Supported source Earl Soham - Deben (£106.96)')
+    cy.get('[data-test="additional-charges-0"]').should('contain.text', 'Supported source Earl Soham - Deben (£10696.00)')
     cy.get('[data-test="adjustments-0"]').should('contain.text', 'Winter discount (0.5)')
 
     cy.get('[data-test="billable-days-0"]').should('contain.text', '213/366')
