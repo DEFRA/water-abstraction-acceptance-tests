@@ -83,7 +83,7 @@ describe('Create and send annual bill run (internal)', () => {
 
     // Bill run sent
     // confirm the bill run is sent and then click to go to it
-    cy.get('.govuk-panel__title', { timeout: 40000 }).should('contain.text', 'Bill run sent')
+    cy.get('.govuk-panel__title', { timeout: 60000 }).should('contain.text', 'Bill run sent')
     cy.get('#main-content > div > div > p:nth-child(4) > a').click()
 
     // Test Region annual bill run

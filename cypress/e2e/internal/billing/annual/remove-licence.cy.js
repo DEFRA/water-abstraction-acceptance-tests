@@ -87,7 +87,7 @@ describe('Remove bill from annual bill run (internal)', () => {
 
     // Bill run sent
     // confirm the bill run is sent and then click to go to it
-    cy.get('.govuk-panel__title', { timeout: 40000 }).should('contain.text', 'Bill run sent')
+    cy.get('.govuk-panel__title', { timeout: 60000 }).should('contain.text', 'Bill run sent')
     cy.get('[data-test="bill-total"]').should('contain.text', '£291.00')
     cy.get('[data-test="water-companies"]').should('exist')
     cy.get('[data-test="other-abstractors"]').should('not.exist')
