@@ -85,9 +85,10 @@ describe('Remove bill from annual bill run (internal)', () => {
     // Displayed whilst the bill run is 'sending'. We don't confirm we're on it because in some environments this step
     // is so fast the test will fail because it doesn't see the element
 
-    // Bill run sent
-    // confirm the bill run is sent and then click to go to it
-    cy.get('.govuk-panel__title', { timeout: 60000 }).should('contain.text', 'Bill run sent')
+    // Test Region annual bill run
+    // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
+    // is present we can confirm we're down to 3 bills
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
     cy.get('[data-test="bill-total"]').should('contain.text', '£291.00')
     cy.get('[data-test="water-companies"]').should('exist')
     cy.get('[data-test="other-abstractors"]').should('not.exist')
