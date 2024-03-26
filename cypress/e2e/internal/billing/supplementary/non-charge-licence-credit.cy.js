@@ -5,6 +5,11 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     cy.tearDown()
     cy.setUp('sroc-billing-data')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    // Get the current date as a string, for example 12 July 2023
+    cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
+      cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
+    })
   })
 
   it('create a SROC supplementary bill run, confirm and send it then make a licence non-chargeable using an SROC period date. Then create another SROC supplementary bill run and confirm a credit has been raised for the licence', () => {
@@ -34,43 +39,56 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
-    cy.get('input#selectedBillingType-2').click()
+    cy.get('label.govuk-radios__label').contains('Supplementary').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the region
     // choose Test Region and continue
-    cy.get('input#selectedBillingRegion-9').click()
+    cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'building'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
-
     // Bill runs
-    // we immediately select the SROC bill run. We don't expect it to be ready and to hit the spinner page but it
-    // might be super quick and already done. So we do no checks at this point
-    cy.get(':nth-child(2) > :nth-child(1) > .govuk-link').click()
+    //
+    // The bill run we created will be the second from top result. We expect it's status to be BUILDING. Building might
+    // take a few seconds though so to avoid the test failing we use our custom Cypress command to look for the status
+    // READY, and if not found reload the page and try again. We then select it using the link on the date created
+    cy.reloadUntilTextFound('tr:nth-child(2) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('tr:nth-child(1)')
+        .should('contain.text', formattedCurrentDate)
+        .and('contain.text', 'Test Region')
+        .and('contain.text', 'Supplementary')
+    })
+    cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
 
     // Test Region supplementary bill run
-    // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
-    // is present we can confirm the bill run
-    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
-    cy.get('.govuk-button').contains('Confirm bill run').click()
-
-    // You're about to send this bill run
-    // click Send bill run
+    // check the details before sending the bill run
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
+    })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('.govuk-button').contains('Send bill run').click()
 
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'sending'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body > strong').should('contain.text', 'Sending')
+    // You're about to send this bill run
+    // check the details then click Send bill run
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
+    })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
+    cy.get('.govuk-button').contains('Send bill run').click()
+
+    // Test Region Supplementary bill run spinner page
+    //
+    // Displayed whilst the bill run is 'sending'. We don't confirm we're on it because in some environments this step
+    // is so fast the test will fail because it doesn't see the element
 
     // Bill run sent
-    // confirm the bill run is sent
+    // confirm the bill run is sent and then click to go to it
     cy.get('.govuk-panel__title', { timeout: 20000 }).should('contain.text', 'Bill run sent')
 
     // -------------------------------------------------------------------------
@@ -147,32 +165,37 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
-    cy.get('input#selectedBillingType-2').click()
+    cy.get('label.govuk-radios__label').contains('Supplementary').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the region
     // choose Test Region and continue
-    cy.get('input#selectedBillingRegion-9').click()
+    cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
-    // There is already a bill run in progress for this region
-    // we expect this page because the PRESROC bill run takes precedence in the flow and we never confirmed the one
-    // generated during the initial run
-    cy.get('#main-content > div > div.govuk-grid-column-two-thirds > h1')
-      .should('contain.text', 'There is already a bill run in progress for this region')
-
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
-
     // Bill runs
-    // we immediately select the SROC bill run. We don't expect it to be ready and to hit the spinner page but it
-    // might be super quick and already done. So we do no checks at this point
-    cy.get(':nth-child(1) > :nth-child(1) > .govuk-link').click()
+    //
+    // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
+    // seconds though so to avoid the test failing we use our custom Cypress command to look for the status READY, and
+    // if not found reload the page and try again. We then select it using the link on the date created
+    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('tr:nth-child(1)')
+        .should('contain.text', formattedCurrentDate)
+        .and('contain.text', 'Test Region')
+        .and('contain.text', 'Supplementary')
+    })
+    cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
 
     // Test Region supplementary bill run
-    // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
-    // is present we can confirm the bill run is a credit as expected
-    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    // check the details before sending the bill run
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
+    })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('[data-test="credits-count"]').should('contain.text', '1 credit note')
     cy.get('[data-test="debits-count"]').should('contain.text', '0 invoices')
   })
