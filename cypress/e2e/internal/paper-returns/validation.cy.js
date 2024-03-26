@@ -57,7 +57,6 @@ describe('Paper returns validation (internal)', () => {
     cy.get('div.govuk-summary-list__row').eq(0).should('contain.text', 'Licence holder')
     cy.get('div.govuk-summary-list__row').eq(0).children(1).should('contain.text', 'Big Farm Co Ltd')
     cy.get('div.govuk-summary-list__row').eq(1).contains('Returns reference number')
-    cy.screenshot('temp/2.png')
     cy.get('div.govuk-summary-list__row').eq(1).children(3).should('contain.text', 'Change')
 
     cy.get('div.govuk-summary-list__row').eq(2).contains('Address')

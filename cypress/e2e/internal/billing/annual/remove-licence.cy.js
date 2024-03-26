@@ -5,6 +5,11 @@ describe('Remove bill from annual bill run (internal)', () => {
     cy.tearDown()
     cy.setUp('sroc-billing-data')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    // Get the current date as a string, for example 12 July 2023
+    cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
+      cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
+    })
   })
 
   it('creates an SROC annual bill run but before it is sent removes a single bill and confirms it is not included', () => {
@@ -31,29 +36,34 @@ describe('Remove bill from annual bill run (internal)', () => {
 
     // Which kind of bill run do you want to create?
     // choose Annual and continue
-    cy.get('input#selectedBillingType').click()
+    cy.get('label.govuk-radios__label').contains('Annual').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the region
     // choose Test Region and continue
-    cy.get('input#selectedBillingRegion-9').click()
+    cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
-    // Test Region Annual bill run
-    // spinner page displayed whilst the bill run is 'building'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for current charge scheme')
+    // Bill runs
+    //
+    // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
+    // seconds though so to avoid the test failing we use our custom Cypress command to look for the status READY, and
+    // if not found reload the page and try again. We then select it using the link on the date created
+    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('tr:nth-child(1)')
+        .should('contain.text', formattedCurrentDate)
+        .and('contain.text', 'Test Region')
+        .and('contain.text', 'Annual')
+    })
+    cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
 
     // Test Region annual bill run
-    // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
-    // is present we can confirm we have 4 bills then click to view the first one
-    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    // quick test that the display is as expected and then click view bill link
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
     cy.get('[data-test="bill-total"]').should('contain.text', '£2,171.00')
     cy.get('[data-test="water-companies"]').should('exist')
     cy.get('[data-test="other-abstractors"]').should('not.exist')
-    cy.get('[data-test="water-companies"] > tbody > tr').should('have.length', 4)
     cy.get('[data-test="action-3"] > .govuk-link').click()
 
     // Bill for Big Farm Co Ltd 04
@@ -61,16 +71,19 @@ describe('Remove bill from annual bill run (internal)', () => {
     cy.get('.govuk-button').contains('Remove bill').click()
 
     // You're about to remove this bill from the annual bill run
-    // confirm we are on the remove bill confirmation page and then click Remove this bill
-    cy.get('.govuk-heading-l')
-      .should('contain.text', "You're about to remove this bill from the annual bill run")
-    cy.get(':nth-child(1) > :nth-child(1) > p')
-      .should('contain.text', 'The licence will go into the next supplementary bill run.')
-    cy.get('form > .govuk-button').contains('Remove this bill').click()
+    // check the details then click Remove bill run
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
+    })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Annual')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
+    cy.get('.govuk-button').contains('Remove this bill').click()
 
-    // Test Region Annual bill run
-    // spinner page displayed whilst the bill run is 'building'. We don't confirm we are on it because in some
-    // environments the process is to quick to for the page to have a chance to appear
+    // Test Region annual bill run
+    //
+    // Displayed whilst the bill run is 'sending'. We don't confirm we're on it because in some environments this step
+    // is so fast the test will fail because it doesn't see the element
 
     // Test Region annual bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that

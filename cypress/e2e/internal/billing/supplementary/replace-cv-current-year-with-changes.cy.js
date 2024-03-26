@@ -122,27 +122,31 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
-    cy.get('input#selectedBillingType-2').click()
+    cy.get('label.govuk-radios__label').contains('Supplementary').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the region
     // choose Test Region and continue
-    cy.get('input#selectedBillingRegion-9').click()
+    cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
-
-    // we immediately select the SROC bill run. We don't expect it to be ready and to hit the spinner page but it
-    // might be super quick and already done. So we do no checks at this point
+    // Bill runs
+    //
+    // The bill run we created will be the second from top result. We expect it's status to be BUILDING. Building might
+    // take a few seconds though so to avoid the test failing we use our custom Cypress command to look for the status
+    // READY, and if not found reload the page and try again. We then select it using the link on the date created
+    cy.reloadUntilTextFound('tr:nth-child(2) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('tr:nth-child(1)')
+        .should('contain.text', formattedCurrentDate)
+        .and('contain.text', 'Test Region')
+        .and('contain.text', 'Supplementary')
+    })
     cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
 
     // Test Region supplementary bill run
-    // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
-    // is present we can confirm the bill run is a credit as expected
-    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
-
-    // check the details before confirming the bill run
+    // check the details before sending the bill run
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const { billingPeriodCount } = currentFinancialYearInfo
       if (billingPeriodCount === 1) {
@@ -153,31 +157,22 @@ describe('Replace charge version in current financial year change the charge ref
           .should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
-    cy.get('.govuk-button').contains('Confirm bill run').click()
+    cy.get('.govuk-button').contains('Send bill run').click()
 
     // You're about to send this bill run
     // check the details then click Send bill run
-    cy.get('dl').within(() => {
-      // date created
-      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
-      })
-      // region
-      cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
-      // bill run type
-      cy.get('div:nth-child(3) > dd').should('contain.text', 'Supplementary')
-      // status
-      cy.get('div:nth-child(4) > dd').should('contain.text', 'Ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('.govuk-button').contains('Send bill run').click()
 
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'sending'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body > strong').should('contain.text', 'Sending')
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for current charge scheme')
+    // Test Region Supplementary bill run spinner page
+    //
+    // Displayed whilst the bill run is 'sending'. We don't confirm we're on it because in some environments this step
+    // is so fast the test will fail because it doesn't see the element
 
     // Bill run sent
     // confirm the bill run is sent and then click to go to it
@@ -321,43 +316,45 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
-    cy.get('input#selectedBillingType-2').click()
+    cy.get('label.govuk-radios__label').contains('Supplementary').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the region
     // choose Test Region and continue
-    cy.get('input#selectedBillingRegion-9').click()
+    cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
-
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
 
     // -------------------------------------------------------------------------
     cy.log('Confirming and sending the SROC supplementary bill run')
 
     // Bill runs
-    // we immediately select the SROC bill run. We don't expect it to be finished and to hit the spinner page but it
-    // might be super quick and already done. So we do no checks at this point
-    cy.get(':nth-child(1) > :nth-child(1) > .govuk-link').click()
+    //
+    // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
+    // seconds though so to avoid the test failing we use our custom Cypress command to look for the status READY, and
+    // if not found reload the page and try again. We then select it using the link on the date created
+    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('tr:nth-child(1)')
+        .should('contain.text', formattedCurrentDate)
+        .and('contain.text', 'Test Region')
+        .and('contain.text', 'Supplementary')
+    })
+    cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
 
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is as expected
     cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
-    // check the details and then click Confirm bill run
-    cy.get('dl').within(() => {
-      // date created
-      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
-      })
-      // region
-      cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
-      // bill run type
-      cy.get('div:nth-child(3) > dd').should('contain.text', 'Supplementary')
-      // charge scheme
-      cy.get('div:nth-child(4) > dd').should('contain.text', 'Current')
+    // Test Region supplementary bill run
+    // check the details before sending the bill run
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('[data-test="bill-total"]').should('contain.text', '£3,574.73')
     cy.get('[data-test="bills-count"]').should('contain.text', '1 Supplementary bill')
     // NOTE: We cannot assert the new billing account number because it will be different in each environment and
@@ -368,31 +365,22 @@ describe('Replace charge version in current financial year change the charge ref
       cy.get('[data-test="financial-year-0"]').should('contain.text', result.year)
     })
     cy.get('[data-test="total-0"]').should('contain.text', '£3,574.73')
-    cy.get('.govuk-button').contains('Confirm bill run').click()
+    cy.get('.govuk-button').contains('Send bill run').click()
 
     // You're about to send this bill run
     // check the details then click Send bill run
-    cy.get('dl').within(() => {
-      // date created
-      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
-      })
-      // region
-      cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
-      // bill run type
-      cy.get('div:nth-child(3) > dd').should('contain.text', 'Supplementary')
-      // status
-      cy.get('div:nth-child(4) > dd').should('contain.text', 'Ready')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('.govuk-button').contains('Send bill run').click()
 
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'sending'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body > strong').should('contain.text', 'Sending')
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for current charge scheme')
+    // Test Region Supplementary bill run spinner page
+    //
+    // Displayed whilst the bill run is 'sending'. We don't confirm we're on it because in some environments this step
+    // is so fast the test will fail because it doesn't see the element
 
     // Bill run sent
     // confirm the bill run is sent and then click to go to it

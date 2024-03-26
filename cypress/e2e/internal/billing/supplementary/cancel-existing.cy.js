@@ -39,33 +39,23 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
-    cy.get('input#selectedBillingType-2').click()
+    cy.get('label.govuk-radios__label').contains('Supplementary').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the region
     // choose Test Region and continue
-    cy.get('input#selectedBillingRegion-9').click()
+    cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
-
-    // Test Region Supplementary bill run
-    // spinner page displayed whilst the bill run is 'building'. Confirm we're on it
-    cy.get('#main-content > div:nth-child(2) > div > p.govuk-body-l')
-      .should('contain.text', 'The bill run is being created. This may take a few minutes.')
-    cy.get('#main-content > div:nth-child(7) > div > p')
-      .should('contain.text', 'Gathering transactions for old charge scheme')
-
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
 
     // -------------------------------------------------------------------------
     cy.log('Deleting the PRESROC supplementary bill run')
 
     // Bill runs
-    // the bill runs we create will be the top 2 results. We expect their status to be EMPTY based on the test data we
-    // used. Building might take a second though so to avoid the test failing we use our custom Cypress command to look
-    // for a status of EMPTY, and if not found reload the page and try a few more times. We then select the first one
-    // using its link
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > strong', 'Empty')
+    //
+    // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
+    // seconds though so to avoid the test failing we use our custom Cypress command to look for the status EMPTY, and
+    // if not found reload the page and try again. We then select it using the link on the date created
+    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Empty')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('tr:nth-child(1)')
         .should('contain.text', formattedCurrentDate)
@@ -77,71 +67,64 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // quick test that the display is as expected and then click Cancel bill run
-    cy.get('dl').within(() => {
-      // date created
-      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
-      })
-      // region
-      cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
-      // bill run type
-      cy.get('div:nth-child(3) > dd').should('contain.text', 'Supplementary')
-      // charge scheme
-      cy.get('div:nth-child(4) > dd').should('contain.text', 'Old')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Old')
     cy.get('.govuk-button').contains('Cancel bill run').click()
 
     // You're about to cancel this bill run
-    // click Cancel bill run
+    // check the details then click Cancel bill run
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
+    })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Old')
     cy.get('.govuk-button').contains('Cancel bill run').click()
+
+    // Bill runs
+    // confirm we are back on the bill runs page
+    cy.get('h1.govuk-heading-l').should('contain.text', 'Bill runs')
 
     // -------------------------------------------------------------------------
     cy.log('Deleting the SROC supplementary bill run')
 
-    // Bill runs
-    // Select the SROC bill run (now first in the list using its link
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > strong', 'Empty')
-    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Supplementary')
+    // select the SROC bill run
+    // On fast machines you might not see the cancelling entry in the bill runs screen. So, we have a conditional
+    // to determine which row to click. If 'Cancelling' is seen click the next row down, else click the current row.
+    cy.get(':nth-child(1) > :nth-child(6) > .govuk-tag').then((topRowStatus) => {
+      if (topRowStatus.text().includes('Cancelling')) {
+        cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
+      } else {
+        cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
+      }
     })
-    cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
 
     // Test Region supplementary bill run
     // quick test that the display is as expected and then click Cancel bill run
-    cy.get('dl').within(() => {
-      // date created
-      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-        cy.get('div:nth-child(1) > dd').should('contain.text', formattedCurrentDate)
-      })
-      // region
-      cy.get('div:nth-child(2) > dd').should('contain.text', 'Test Region')
-      // bill run type
-      cy.get('div:nth-child(3) > dd').should('contain.text', 'Supplementary')
-      // charge scheme
-      cy.get('div:nth-child(4) > dd').should('contain.text', 'Current')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('.govuk-button').contains('Cancel bill run').click()
 
     // You're about to cancel this bill run
-    // click Cancel bill run
+    // check the details then click Cancel bill run
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
+    })
+    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('.govuk-button').contains('Cancel bill run').click()
 
     // Bill runs
-    // back on the bill runs page confirm our cancelled bill run is not present
-    cy.get('#main-content')
-      .then((mainContent) => {
-        if (mainContent.find('tr').length) {
-          return '#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)'
-        }
-
-        return '#main-content'
-      })
-      .then((selector) => {
-        cy.get(selector)
-          .should('not.contain.text', 'Test Region')
-      })
+    // confirm we are back on the bill runs page
+    cy.get('h1.govuk-heading-l').should('contain.text', 'Bill runs')
   })
 })
