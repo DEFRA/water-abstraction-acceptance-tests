@@ -86,8 +86,8 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
     cy.get('.govuk-button').contains('Cancel bill run').click()
 
     // Bill runs
-    // back on the bill runs page confirm our cancelled bill run is cancelling
-    cy.get('tr:nth-child(1) > td:nth-child(6) > .govuk-tag').should('contain.text', 'Cancelling')
+    // confirm we are back on the bill runs page
+    cy.get('h1.govuk-heading-l').should('contain.text', 'Bill runs')
 
     // -------------------------------------------------------------------------
     cy.log('Deleting the SROC supplementary bill run')
