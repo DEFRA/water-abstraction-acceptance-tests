@@ -93,7 +93,15 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
     cy.log('Deleting the SROC supplementary bill run')
 
     // select the SROC bill run
-    cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
+    // On fast machines you might not see the cancelling entry in the bill runs screen. So, we have a conditional
+    // to determine which row to click. If 'Cancelling' is seen click the next row down, else click the current row.
+    cy.get(':nth-child(1) > :nth-child(6) > .govuk-tag').then((topRowStatus) => {
+      if (topRowStatus.text().includes('Cancelling')) {
+        cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
+      } else {
+        cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
+      }
+    })
 
     // Test Region supplementary bill run
     // quick test that the display is as expected and then click Cancel bill run
