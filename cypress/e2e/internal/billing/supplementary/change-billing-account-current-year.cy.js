@@ -3,7 +3,7 @@
 describe('Change billing account in current financial year (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('sroc-billing-data')
+    cy.setUp('sroc-billing-current')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
@@ -243,16 +243,7 @@ describe('Change billing account in current financial year (internal)', () => {
     // Test Region supplementary bill run
     // check the details before sending the bill run
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
-    cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      const { billingPeriodCount } = currentFinancialYearInfo
-      if (billingPeriodCount === 1) {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', '1 Supplementary bill')
-      } else {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
-      }
-    })
+    cy.get('[data-test="bills-count"]').should('contain.text', '2 Supplementary bills')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })

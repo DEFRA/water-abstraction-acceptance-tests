@@ -3,7 +3,7 @@
 describe('Change billing account in previous financial year (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('sroc-billing-data')
+    cy.setUp('sroc-billing-current')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
@@ -253,21 +253,23 @@ describe('Change billing account in previous financial year (internal)', () => {
     cy.get('[data-test="debits-count"]').should('contain.text', '2 invoices')
     // NOTE: We cannot assert the new billing account number because it will be different in each environment and
     // unpredictable because the new number is based on existing data
+    // We also can assert exactly what the total will be because it can differ year to year depending on whether we have
+    // a leap year or not.
     cy.get('[data-test="billing-contact-0"]').should('contain.text', 'Big Farm Co Ltd 02')
     cy.get('[data-test="licence-0"]').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get('[data-test="total-0"]').should('contain.text', '-£97.00')
+    cy.get('[data-test="total-0"]').should('contain.text', '-£97')
 
     cy.get('[data-test="billing-contact-1"]').should('contain.text', 'Big Farm Co Ltd 02')
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get('[data-test="total-1"]').should('contain.text', '-£80.79')
+    cy.get('[data-test="total-1"]').should('contain.text', '-£80')
 
     cy.get('[data-test="billing-contact-2"]').should('contain.text', 'Big Farm Co Ltd 01')
     cy.get('[data-test="licence-2"]').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get('[data-test="total-2"]').should('contain.text', '£97.00')
+    cy.get('[data-test="total-2"]').should('contain.text', '£97')
 
     cy.get('[data-test="billing-contact-3"]').should('contain.text', 'Big Farm Co Ltd 01')
     cy.get('[data-test="licence-3"]').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get('[data-test="total-3"]').should('contain.text', '£80.79')
+    cy.get('[data-test="total-3"]').should('contain.text', '£80')
     cy.get('.govuk-button').contains('Send bill run').click()
 
     // You're about to send this bill run
