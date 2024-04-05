@@ -3,7 +3,7 @@
 describe('Remove bill from annual bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('sroc-supplementary-current')
+    cy.setUp('sroc-billing-previous')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023

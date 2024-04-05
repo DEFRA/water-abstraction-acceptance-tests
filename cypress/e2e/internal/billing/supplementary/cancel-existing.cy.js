@@ -6,7 +6,7 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
     // NOTE: Using 2PT test data in this test is intended. The supplementary test data inserts an Annual bill run that
     // confuses this test and its assertion that all bill runs for the test region have been deleted. The 2PT test data
     // doesn't add any bill runs so the test works
-    cy.setUp('sroc-supplementary-current')
+    cy.setUp('sroc-billing-current')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
