@@ -6,7 +6,7 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
     // NOTE: Using 2PT test data in this test is intended. The supplementary test data inserts an Annual bill run that
     // confuses this test and its assertion that all bill runs for the test region have been deleted. The 2PT test data
     // doesn't add any bill runs so the test works
-    cy.setUp('two-part-tariff-billing-data')
+    cy.setUp('sroc-billing-data')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
@@ -53,9 +53,9 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
     // Bill runs
     //
     // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
-    // seconds though so to avoid the test failing we use our custom Cypress command to look for the status EMPTY, and
+    // seconds though so to avoid the test failing we use our custom Cypress command to look for the status READY, and
     // if not found reload the page and try again. We then select it using the link on the date created
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Empty')
+    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('tr:nth-child(1)')
         .should('contain.text', formattedCurrentDate)
