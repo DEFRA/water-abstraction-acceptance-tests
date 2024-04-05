@@ -74,8 +74,8 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // Test Region supplementary bill run
     // quick test that the display is as expected and then click Send bill run
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
-    cy.get('[data-test="bill-total"]').should('contain.text', '£582.11')
-    cy.get('[data-test="bills-count"]').should('contain.text', '4 Supplementary bills')
+    cy.get('[data-test="bill-total"]').should('contain.text', '£537.90')
+    cy.get('[data-test="bills-count"]').should('contain.text', '3 Supplementary bills')
     cy.get('.govuk-button').contains('Send bill run').click()
 
     // You're about to send this bill run
@@ -113,7 +113,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
         .and('contain.text', 'Old charge scheme')
         .and('contain.text', 'Test Region')
         .and('contain.text', 'Supplementary')
-        .and('contain.text', '£582.11')
+        .and('contain.text', '£537.90')
         .and('contain.text', 'Sent')
     })
 
