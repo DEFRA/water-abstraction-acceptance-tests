@@ -32,7 +32,7 @@ describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
 
     // Bill runs
     // click the Create a bill run button
-    cy.get('#main-content > a.govuk-button').contains('Create a bill run').click()
+    cy.get('.govuk-button').contains('Create a bill run').click()
 
     // Which kind of bill run do you want to create?
     // choose Two-part tariff then continue
@@ -59,14 +59,13 @@ describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
     // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
     // seconds though so to avoid the test failing we use our custom Cypress command to look for the status REVIEW, and
     // if not found reload the page and try again. We then select it using the link on the date created
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Review')
+    cy.reloadUntilTextFound('[data-test="bill-run-status-0"] > .govuk-tag', 'review')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Two-part tariff')
+      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate)
     })
-    cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
+    cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Two-part tariff winter and all year')
+    cy.get('[data-test="date-created-0"] > .govuk-link').click()
 
     // Review data issues
     // check the rest of the details before completing the review
@@ -158,13 +157,11 @@ describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
     // Bill runs
     // back on the bill runs page confirm our PRESROC bill run is present and listed as SENT
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Old charge scheme')
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Two-part tariff')
-        .and('contain.text', '£660.24')
-        .and('contain.text', 'Sent')
+      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate).and('contain.text', 'Old charge scheme')
     })
+    cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Two-part tariff winter and all year')
+    cy.get('[data-test="number-of-bills-0"]').should('contain.text', '1')
+    cy.get('[data-test="bill-run-status-0"] > .govuk-tag').should('contain.text', 'sent')
   })
 })

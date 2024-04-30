@@ -35,7 +35,7 @@ describe('Cancel an existing annual bill run (internal)', () => {
 
     // Bill runs
     // click the Create a bill run button
-    cy.get('#main-content > a.govuk-button').contains('Create a bill run').click()
+    cy.get('.govuk-button').contains('Create a bill run').click()
 
     // Which kind of bill run do you want to create?
     // choose Annual and continue
@@ -52,14 +52,13 @@ describe('Cancel an existing annual bill run (internal)', () => {
     // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
     // seconds though so to avoid the test failing we use our custom Cypress command to look for the status EMPTY, and
     // if not found reload the page and try again. We then select it using the link on the date created
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Empty')
+    cy.reloadUntilTextFound('[data-test="bill-run-status-0"] > .govuk-tag', 'empty')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Annual')
+      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate)
     })
-    cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
+    cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Annual')
+    cy.get('[data-test="date-created-0"] > .govuk-link').click()
 
     // Test Region annual bill run
     // quick test that the display is as expected and then click Cancel bill run
@@ -84,6 +83,6 @@ describe('Cancel an existing annual bill run (internal)', () => {
 
     // Bill runs
     // confirm we are back on the bill runs page
-    cy.get('h1.govuk-heading-l').should('contain.text', 'Bill runs')
+    cy.get('.govuk-heading-xl').should('contain.text', 'Bill runs')
   })
 })
