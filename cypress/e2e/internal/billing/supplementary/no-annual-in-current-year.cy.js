@@ -45,7 +45,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Bill runs
     // click the Create a bill run button
-    cy.get('#main-content > a.govuk-button').contains('Create a bill run').click()
+    cy.get('.govuk-button').contains('Create a bill run').click()
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
@@ -62,14 +62,13 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // The bill run we created will be the second from top result. We expect it's status to be BUILDING. Building might
     // take a few seconds though so to avoid the test failing we use our custom Cypress command to look for the status
     // READY, and if not found reload the page and try again. We then select it using the link on the date created
-    cy.reloadUntilTextFound('tr:nth-child(2) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.reloadUntilTextFound('[data-test="bill-run-status-1"] > .govuk-tag', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Supplementary')
+      cy.get('[data-test="date-created-1"]').should('contain.text', formattedCurrentDate)
     })
-    cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
+    cy.get('[data-test="region-1"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-1"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="date-created-1"] > .govuk-link').click()
 
     // Test Region supplementary bill run
     // check the the financial end year is not the current year

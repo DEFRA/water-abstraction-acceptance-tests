@@ -35,7 +35,7 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
 
     // Bill runs
     // click the Create a bill run button
-    cy.get('#main-content > a.govuk-button').contains('Create a bill run').click()
+    cy.get('.govuk-button').contains('Create a bill run').click()
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
@@ -55,15 +55,13 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
     // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
     // seconds though so to avoid the test failing we use our custom Cypress command to look for the status READY, and
     // if not found reload the page and try again. We then select it using the link on the date created
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.reloadUntilTextFound('[data-test="bill-run-status-0"] > .govuk-tag', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Old charge scheme')
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Supplementary')
+      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate).and('contain.text', 'Old charge scheme')
     })
-    cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
+    cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="date-created-0"] > .govuk-link').click()
 
     // Test Region supplementary bill run
     // quick test that the display is as expected and then click Cancel bill run
@@ -87,21 +85,18 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
 
     // Bill runs
     // confirm we are back on the bill runs page
-    cy.get('h1.govuk-heading-l').should('contain.text', 'Bill runs')
+    cy.get('.govuk-heading-xl').should('contain.text', 'Bill runs')
 
     // -------------------------------------------------------------------------
     cy.log('Deleting the SROC supplementary bill run')
 
-    // select the SROC bill run
-    // On fast machines you might not see the cancelling entry in the bill runs screen. So, we have a conditional
-    // to determine which row to click. If 'Cancelling' is seen click the next row down, else click the current row.
-    cy.get(':nth-child(1) > :nth-child(6) > .govuk-tag').then((topRowStatus) => {
-      if (topRowStatus.text().includes('Cancelling')) {
-        cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
-      } else {
-        cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
-      }
-    })
+    // Bill runs
+    //
+    // The bill run we created will be the top result. We expect it's status to be CANCELLING. Cancelling might take a
+    // few seconds though so to avoid the test failing we use our custom Cypress command to look for the status READY,
+    // and if not found reload the page and try again. We then select it using the link on the date created
+    cy.reloadUntilTextFound('[data-test="bill-run-status-0"] > .govuk-tag', 'ready')
+    cy.get('[data-test="date-created-0"] > .govuk-link').click()
 
     // Test Region supplementary bill run
     // quick test that the display is as expected and then click Cancel bill run
@@ -125,6 +120,6 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
 
     // Bill runs
     // confirm we are back on the bill runs page
-    cy.get('h1.govuk-heading-l').should('contain.text', 'Bill runs')
+    cy.get('.govuk-heading-xl').should('contain.text', 'Bill runs')
   })
 })

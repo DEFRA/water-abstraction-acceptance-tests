@@ -42,7 +42,7 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Bill runs
     // click the Create a bill run button
-    cy.get('#main-content > a.govuk-button').contains('Create a bill run').click()
+    cy.get('.govuk-button').contains('Create a bill run').click()
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
@@ -59,14 +59,13 @@ describe('Change billing account in previous financial year (internal)', () => {
     // The bill run we created will be the second from top result. We expect it's status to be BUILDING. Building might
     // take a few seconds though so to avoid the test failing we use our custom Cypress command to look for the status
     // READY, and if not found reload the page and try again. We then select it using the link on the date created
-    cy.reloadUntilTextFound('tr:nth-child(2) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.reloadUntilTextFound('[data-test="bill-run-status-1"] > .govuk-tag', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Supplementary')
+      cy.get('[data-test="date-created-1"] > .govuk-link').should('contain.text', formattedCurrentDate)
     })
-    cy.get('tr:nth-child(2) > td:nth-child(1) > a').click()
+    cy.get('[data-test="region-1"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-1"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="date-created-1"] > .govuk-link').click()
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
@@ -112,25 +111,20 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
-    cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(2)').within(() => {
-      cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-        cy.get('td:nth-child(1)').should('contain.text', formattedCurrentDate)
-      })
-
-      cy.get('td:nth-child(2)').should('contain.text', 'Test Region')
-      cy.get('td:nth-child(3)').should('contain.text', 'Supplementary')
-
-      cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-        cy.get('td:nth-child(4)').should('contain.text', currentFinancialYearInfo.billingPeriodCount)
-      })
-
-      cy.get('td:nth-child(6)').should('contain.text', 'Sent')
+    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
+      cy.get('[data-test="date-created-1"] > .govuk-link').should('contain.text', formattedCurrentDate)
     })
+    cy.get('[data-test="region-1"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-1"]').should('contain.text', 'Supplementary')
+    cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
+      cy.get('[data-test="number-of-bills-1"]').should('contain.text', currentFinancialYearInfo.billingPeriodCount)
+    })
+    cy.get('[data-test="bill-run-status-1"] > .govuk-tag').should('contain.text', 'sent')
 
     // -------------------------------------------------------------------------
 
     // click the Search menu link
-    cy.get('#navbar-view').click()
+    cy.get('#nav-search').click()
 
     // Search
     // search for a licence and select it
@@ -208,7 +202,7 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Bill runs
     // click the Create a bill run button
-    cy.get('#main-content > a.govuk-button').contains('Create a bill run').click()
+    cy.get('.govuk-button').contains('Create a bill run').click()
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue
@@ -220,9 +214,6 @@ describe('Change billing account in previous financial year (internal)', () => {
     cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
-
     // -------------------------------------------------------------------------
     cy.log('Confirming and sending the SROC supplementary bill run')
 
@@ -231,14 +222,13 @@ describe('Change billing account in previous financial year (internal)', () => {
     // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
     // seconds though so to avoid the test failing we use our custom Cypress command to look for the status READY, and
     // if not found reload the page and try again. We then select it using the link on the date created
-    cy.reloadUntilTextFound('tr:nth-child(1) > td:nth-child(6) > .govuk-tag', 'Ready')
+    cy.reloadUntilTextFound('[data-test="bill-run-status-0"] > .govuk-tag', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Supplementary')
+      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate)
     })
-    cy.get('tr:nth-child(1) > td:nth-child(1) > a').click()
+    cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="date-created-0"] > .govuk-link').click()
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
@@ -302,13 +292,12 @@ describe('Change billing account in previous financial year (internal)', () => {
     // Bill runs
     // back on the bill runs page confirm our SROC bill run is present and listed as SENT
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('#main-content > div:nth-child(5) > div > table > tbody > tr:nth-child(1)')
-        .should('contain.text', formattedCurrentDate)
-        .and('contain.text', 'Test Region')
-        .and('contain.text', 'Supplementary')
-        .and('contain.text', '4')
-        .and('contain.text', '£0.00')
-        .and('contain.text', 'Sent')
+      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate)
     })
+    cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
+    cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Supplementary')
+    cy.get('[data-test="number-of-bills-0"]').should('contain.text', '4')
+    cy.get('[data-test="bill-run-total-0"]').should('contain.text', '£0.00')
+    cy.get('[data-test="bill-run-status-0"] > .govuk-tag').should('contain.text', 'sent')
   })
 })
