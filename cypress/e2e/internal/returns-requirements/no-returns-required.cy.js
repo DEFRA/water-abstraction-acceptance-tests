@@ -1,29 +1,31 @@
 'use strict'
 
-describe('Create and send supplementary bill runs (internal)', () => {
+describe('Submit and cancel no returns requirement (internal)', () => {
   beforeEach(() => {
-    // cy.tearDown()
-    // cy.setUp('sroc-billing-current')
+    cy.tearDown()
+    cy.setUp('sroc-billing-current')
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('creates both the PRESROC and SROC supplementary bill runs and once built sends them', () => {
+  it('creates a no returns requirement and approves the requirement', () => {
     cy.visit('/')
 
+    // enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
       cy.get('#email').type(userEmail)
     })
 
     cy.get('#password').type(Cypress.env('defaultPassword'))
 
+    // click Sign in Button
     cy.get('form > .govuk-button').click()
 
+    // assert the user signed in and we're on the search page
     cy.contains('Search')
 
+    // search for a licence
     cy.get('#query').type('AT/SROC/SUPB/01')
-
     cy.get('.search__button').click()
-
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
     // confirm we are on the licence page and select charge information tab
@@ -137,5 +139,30 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // confirm no notes are added
     cy.get('#main-content > :nth-child(4)').contains('No notes added')
+
+    // click the approve return requirements button
+    cy.get('[data-test="meta-data-approve"]').click({ force: true })
+
+    // confirm we are on the approved page
+    cy.get('.govuk-panel__title').contains('Returns requirements approved')
+
+    // go back to the check page
+    cy.go('back')
+
+    // click the cancel return requirements button
+    cy.get('.govuk-button--secondary').click()
+
+    // confirm we are on the cancel return requirements page
+    cy.get('.govuk-heading-xl').contains('You are about to cancel these requirements for returns')
+
+    // check we are seeing the details we selected
+    cy.get(':nth-child(1) > .govuk-summary-list__value').should('contain.text', 'Transfer licence')
+    cy.get(':nth-child(2) > .govuk-summary-list__value').should('contain.text', '25 October 2022')
+
+    // click the confirm cancel button
+    cy.get('.govuk-button').click()
+
+    // confirm we are redirected to the charge information tab on licence page
+    cy.get('#charge > :nth-child(1)').contains('Charge information')
   })
 })
