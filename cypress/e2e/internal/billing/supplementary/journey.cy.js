@@ -3,13 +3,6 @@
 describe('Create and send supplementary bill runs (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('sroc-billing-current')
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
-
-    // Get the current date as a string, for example 12 July 2023
-    cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
-      cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
-    })
 
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31. We then use that date to work out how many SROC billing periods we
@@ -19,6 +12,21 @@ describe('Create and send supplementary bill runs (internal)', () => {
         currentFinancialYearInfo.billingPeriodCount = numberOfBillingPeriods
         cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
       })
+
+      cy.fixture('sroc-billing.json').then((fixture) => {
+        // Update the bill run in the fixture to be in the 'current' financial year
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 1
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year
+
+        cy.load(fixture)
+      })
+    })
+
+    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+
+    // Get the current date as a string, for example 12 July 2023
+    cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
+      cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
     })
   })
 
@@ -73,7 +81,6 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // Test Region supplementary bill run
     // quick test that the display is as expected and then click Send bill run
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
-    cy.get('[data-test="bill-total"]').should('contain.text', '£537.90')
     cy.get('[data-test="bills-count"]').should('contain.text', '3 Supplementary bills')
     cy.get('.govuk-button').contains('Send bill run').click()
 

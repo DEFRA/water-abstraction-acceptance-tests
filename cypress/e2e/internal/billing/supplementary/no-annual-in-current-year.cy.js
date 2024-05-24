@@ -3,13 +3,6 @@
 describe('Create and send supplementary bill runs (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('sroc-billing-previous')
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
-
-    // Get the current date as a string, for example 12 July 2023
-    cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
-      cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
-    })
 
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31. We then use that date to work out how many SROC billing periods we
@@ -22,6 +15,21 @@ describe('Create and send supplementary bill runs (internal)', () => {
         currentFinancialYearInfo.billingPeriodCount = numberOfBillingPeriods - 1
         cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
       })
+
+      cy.fixture('sroc-billing.json').then((fixture) => {
+        // Update the bill run in the fixture to be in the 'previous' financial year
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 2
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year - 1
+
+        cy.load(fixture)
+      })
+    })
+
+    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+
+    // Get the current date as a string, for example 12 July 2023
+    cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
+      cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
     })
   })
 

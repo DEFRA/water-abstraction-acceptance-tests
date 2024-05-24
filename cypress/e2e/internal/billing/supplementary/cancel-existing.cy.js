@@ -3,11 +3,18 @@
 describe('Cancel existing supplementary bill runs (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    // NOTE: Using 2PT test data in this test is intended. The supplementary test data inserts an Annual bill run that
-    // confuses this test and its assertion that all bill runs for the test region have been deleted. The 2PT test data
-    // doesn't add any bill runs so the test works
-    cy.setUp('sroc-billing-current')
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
+      cy.fixture('sroc-billing.json').then((fixture) => {
+        // Update the bill run in the fixture to be in the 'current' financial year
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 1
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year
+
+        cy.load(fixture)
+      })
+    })
+
+    cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {

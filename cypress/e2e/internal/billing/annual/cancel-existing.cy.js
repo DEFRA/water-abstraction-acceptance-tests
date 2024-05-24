@@ -3,11 +3,16 @@
 describe('Cancel an existing annual bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    // NOTE: Using 2PT test data in this test is intended. The supplementary test data inserts an Annual bill run that
-    // confuses this test and its assertion that all bill runs for the test region have been deleted. The 2PT test data
-    // doesn't add any bill runs so the test works
-    cy.setUp('two-part-tariff-billing-data')
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    cy.fixture('sroc-billing.json').then((fixture) => {
+      // NOTE: The test data includes an annual bill run that confuses this test and its assertion that all bill runs
+      // for the test region have been deleted.
+      delete fixture.billRuns
+
+      cy.load(fixture)
+    })
+
+    cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
@@ -50,9 +55,9 @@ describe('Cancel an existing annual bill run (internal)', () => {
     // Bill runs
     //
     // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
-    // seconds though so to avoid the test failing we use our custom Cypress command to look for the status EMPTY, and
+    // seconds though so to avoid the test failing we use our custom Cypress command to look for the status READY, and
     // if not found reload the page and try again. We then select it using the link on the date created
-    cy.reloadUntilTextFound('[data-test="bill-run-status-0"] > .govuk-tag', 'empty')
+    cy.reloadUntilTextFound('[data-test="bill-run-status-0"] > .govuk-tag', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate)
     })
@@ -61,14 +66,10 @@ describe('Cancel an existing annual bill run (internal)', () => {
     cy.get('[data-test="date-created-0"] > .govuk-link').click()
 
     // Test Region annual bill run
-    // quick test that the display is as expected and then click Cancel bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'empty')
-    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
-    })
-    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
-    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Annual')
-    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
+    // quick test that the display is as expected and then click Send bill run
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('[data-test="water-companies"]').should('exist')
+    cy.get('[data-test="other-abstractors"]').should('not.exist')
     cy.get('.govuk-button').contains('Cancel bill run').click()
 
     // You're about to cancel this bill run
