@@ -26,6 +26,20 @@
 
 import 'querystring'
 
+Cypress.Commands.add('load', (body) => {
+  cy.log('Loading test data')
+
+  cy.request({
+    url: '/system/data/load',
+    log: false,
+    method: 'POST',
+    body,
+    timeout: 60000
+  }).then((response) => {
+    return cy.wrap(response.body)
+  })
+})
+
 Cypress.Commands.add('setUp', (testKey) => {
   cy.log(`Setting up ${testKey} test data`)
 
