@@ -36,7 +36,7 @@ describe('Submit and cancel no returns requirement (internal)', () => {
     cy.get('#charge > :nth-child(1)').contains('Charge information')
 
     // click the no returns required button
-    cy.get('[href="/system/licences/3c28f53e-22ad-4c20-aa42-2db9909b9e21/no-returns-required"]').click()
+    cy.get('[data-test="meta-data-no-returns"]').click()
 
     // confirm we are on the start date page
     cy.get('.govuk-fieldset__heading').contains('start date')
@@ -144,7 +144,7 @@ describe('Submit and cancel no returns requirement (internal)', () => {
     cy.get('[data-test="meta-data-approve"]').click({ force: true })
 
     // confirm we are on the approved page
-    cy.get('.govuk-panel__title').contains('Returns requirements approved')
+    cy.get('.govuk-panel__title').contains('Requirements for returns approved')
 
     // go back to the check page
     cy.go('back')
