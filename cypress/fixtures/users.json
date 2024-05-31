@@ -13,5 +13,6 @@
   "npsDigitiseApprover": "acceptance-test.internal.nps_digitise_approver@defra.gov.uk",
   "environmentOfficer": "acceptance-test.internal.environment_officer@defra.gov.uk",
   "billingAndData": "acceptance-test.internal.billing_and_data@defra.gov.uk",
+  "billingAndData1": "billing.data@wrls.gov.uk",
   "psc": "acceptance-test.internal.psc@defra.gov.uk"
 }

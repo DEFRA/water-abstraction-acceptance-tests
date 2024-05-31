@@ -3,8 +3,18 @@
 describe('Make licence non-chargeable then see credit in next bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('sroc-billing-current')
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
+      cy.fixture('sroc-billing.json').then((fixture) => {
+        // Update the bill run in the fixture to be in the 'current' financial year
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 1
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year
+
+        cy.load(fixture)
+      })
+    })
+
+    cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
