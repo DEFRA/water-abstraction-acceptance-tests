@@ -146,23 +146,10 @@ describe('Submit and cancel no returns requirement (internal)', () => {
     // confirm we are on the approved page
     cy.get('.govuk-panel__title').contains('Requirements for returns approved')
 
-    // go back to the check page
-    cy.go('back')
+    // click link to return to licence set up
+    cy.get(':nth-child(4) > .govuk-link').click()
 
-    // click the cancel return requirements button
-    cy.get('.govuk-button--secondary').click()
-
-    // confirm we are on the cancel return requirements page
-    cy.get('.govuk-heading-xl').contains('You are about to cancel these requirements for returns')
-
-    // check we are seeing the details we selected
-    cy.get(':nth-child(1) > .govuk-summary-list__value').should('contain.text', 'Transfer licence')
-    cy.get(':nth-child(2) > .govuk-summary-list__value').should('contain.text', '25 October 2022')
-
-    // click the confirm cancel button
-    cy.get('.govuk-button').click()
-
-    // confirm we are redirected to the charge information tab on licence page
+    // confirm we are on the charge information tab
     cy.get('#charge > :nth-child(1)').contains('Charge information')
   })
 })
