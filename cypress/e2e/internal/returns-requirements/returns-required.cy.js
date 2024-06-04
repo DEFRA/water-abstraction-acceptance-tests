@@ -121,5 +121,43 @@ describe('Submit and cancel no returns requirement (internal)', () => {
 
     // confirm we are on the check page
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
+
+    // confirm we can see the information we have selected and make changes
+    // start date
+    cy.get('#main-content > :nth-child(2)').contains('1 April 2022')
+    cy.get('[data-test="meta-data-change-start-date"]').click()
+
+    // change start date and continue
+    cy.get('#another-start-date').check()
+    cy.get('#other-start-date-day').type('02')
+    cy.get('#other-start-date-month').type('08')
+    cy.get('#other-start-date-year').type('2023')
+    cy.get('.govuk-button').click()
+
+    // confirm we are back on check page and start date changes
+    cy.get('#main-content > :nth-child(2)').contains('2 August 2023')
+
+    // // reason
+    // cy.get('#main-content > :nth-child(2)').contains('Licence holder name or address change')
+
+    // // purposes
+
+    // // points
+
+    // // abstraction period
+    // cy.get(':nth-child(3) > .govuk-summary-list__value').contains('From 1 December to 3 September')
+
+    // // returns cycle
+
+    // // site description
+    // cy.get(':nth-child(5) > .govuk-summary-list__value').contains('This is a valid site description')
+
+    // // collection frequency
+    // cy.get(':nth-child(6) > .govuk-summary-list__value').contains('Daily')
+
+    // // reporting frequency
+    // cy.get(':nth-child(7) > .govuk-summary-list__value').contains('Daily')
+
+    // // agreements and exceptions
   })
 })
