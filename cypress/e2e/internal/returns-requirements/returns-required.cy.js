@@ -3,8 +3,12 @@
 describe('Submit and cancel no returns requirement (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('sroc-billing-current')
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    cy.fixture('returns-requirements.json').then((fixture) => {
+      cy.load(fixture)
+    })
+
+    cy.fixture('users.json').its('billingAndData1').as('userEmail')
   })
 
   it('creates a no returns requirement and approves the requirement', () => {
@@ -24,12 +28,12 @@ describe('Submit and cancel no returns requirement (internal)', () => {
     cy.contains('Search')
 
     // search for a licence
-    cy.get('#query').type('AT/SROC/SUPB/01')
+    cy.get('#query').type('AT/TEST/01')
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
     // confirm we are on the licence page and select charge information tab
-    cy.contains('AT/SROC/SUPB/01')
+    cy.contains('AT/TEST/01')
     cy.get('#tab_charge').click()
 
     // confirm we are on the charge information tab
