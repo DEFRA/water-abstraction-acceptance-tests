@@ -345,5 +345,26 @@ describe('Submit and cancel no returns requirement (internal)', () => {
 
     // confirm we see the new requirement
     cy.get(':nth-child(4) > .govuk-summary-card > .govuk-summary-card__title-wrapper').contains('second requirement')
+
+    // choose the remove requirement the second requirement
+    cy.get(':nth-child(4) > .govuk-button').click()
+
+    // confirm we are on the remove page
+    cy.get('.govuk-heading-xl').contains('You are about to remove these requirements for returns')
+
+    // confirm we see the correct requirement to be removed
+    cy.get('div.govuk-body > .govuk-body').contains('Summer daily requirements for returns, This is a valid site description for the second requirement.')
+
+    // choose the remove button
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the check page
+    cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
+
+    // confirm we receive a notification pop up confirming the removed requirement
+    cy.get('.govuk-notification-banner').contains('Requirement removed')
+
+    // confirm the second requirement has been removed
+    cy.contains('This is a valid site description for the second requirement').should('not.exist')
   })
 })
