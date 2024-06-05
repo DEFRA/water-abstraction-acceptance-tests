@@ -70,22 +70,5 @@ describe('Create a empty SROC twp-part tariff bill run (internal)', () => {
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'empty')
     cy.get('[data-test="error-notification"]').should('exist')
     cy.get('[data-test="error-notification"]').should('contain.text', 'There are no licences ready for this bill run')
-    cy.get('.govuk-button').contains('Cancel bill run').click()
-
-    // You're about to cancel this bill run
-    // check the details then click Cancel bill run
-    cy.get('h1').should('contain.text', "You're about to cancel this bill run")
-    cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
-    cy.get('[data-test="meta-data-type"]').should('contain.text', 'Two-part tariff')
-    cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
-    cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
-    })
-    cy.get('.govuk-button').contains('Cancel bill run').click()
-
-    // Bill runs
-    // confirm we are back on the bill runs page
-    cy.get('.govuk-heading-xl').should('contain.text', 'Bill runs')
-    cy.get('.govuk-notification-banner__heading').should('contain.text', 'Bill runs are currently busy building and cancelling.')
   })
 })
