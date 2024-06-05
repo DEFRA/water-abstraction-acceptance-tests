@@ -16,7 +16,7 @@ describe('Create a empty SROC twp-part tariff bill run (internal)', () => {
     })
   })
 
-  it('creates an empty SROC two-part tariff bill run and cancels it', () => {
+  it('creates an empty SROC two-part tariff bill run', () => {
     cy.visit('/')
 
     // Enter the user name and password
