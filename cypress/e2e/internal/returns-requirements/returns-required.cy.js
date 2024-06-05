@@ -277,5 +277,73 @@ describe('Submit and cancel no returns requirement (internal)', () => {
     // confirm we are back on the check page and see the agreements exceptions changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
     cy.get(':nth-child(8) > .govuk-summary-list__value').contains('requirement.agreementsExceptions')
+
+    // click the add another requirement button
+    cy.get('form > .govuk-button').click()
+
+    // confirm we are on the purpose page
+    cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
+
+    // choose a purpose for the requirement and continue
+    cy.get('#purposes').check()
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the points page
+    cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
+
+    // choose a points for the requirement and continue
+    cy.get('#points').check()
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the abstraction period page
+    cy.get('.govuk-heading-xl').contains('Enter the abstraction period for the requirements for returns')
+
+    // enter start and end dates for the abstraction period and click continue
+    cy.get('#abstraction-period-start-day').type('07')
+    cy.get('#abstraction-period-start-month').type('07')
+    cy.get('#abstraction-period-end-day').type('08')
+    cy.get('#abstraction-period-end-month').type('12')
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the returns cycle page
+    cy.get('.govuk-heading-xl').contains('Select the returns cycle for the requirements for returns')
+
+    // choose a returns cycle and continue
+    cy.get('#returnsCycle').check()
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the site description page
+    cy.get('.govuk-label').contains('Enter a site description for the requirements for returns')
+
+    // enter a site description and continue
+    cy.get('#site-description').type('This is a valid site description for the second requirement')
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the readings collected page
+    cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are collected')
+
+    // choose a collected time frame and continue
+    cy.get('#frequencyCollected-3').check()
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the readings reported page
+    cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are reported')
+
+    // choose a reporting time frame and continue
+    cy.get('#frequencyReported').check()
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the agreements and exceptions page
+    cy.get('.govuk-heading-l').contains('Select agreements and exceptions for the requirements for returns')
+
+    // choose a agreement and exception and continue
+    cy.get('#agreementsExceptions').check()
+    cy.get('.govuk-button').click()
+
+    // confirm we are on the check page
+    cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
+
+    // confirm we see the new requirement
+    cy.get(':nth-child(4) > .govuk-summary-card > .govuk-summary-card__title-wrapper').contains('second requirement')
   })
 })
