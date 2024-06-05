@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Submit and cancel no returns requirement (internal)', () => {
+describe('Submit returns requirement (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
@@ -11,7 +11,7 @@ describe('Submit and cancel no returns requirement (internal)', () => {
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
   })
 
-  it('creates a no returns requirement and approves the requirement', () => {
+  it('creates a return requirement and approves the requirement', () => {
     cy.visit('/')
 
     // enter the user name and Password
