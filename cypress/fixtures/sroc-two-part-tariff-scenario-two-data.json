@@ -1,0 +1,506 @@
+{
+  "regions": [
+    {
+      "id": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "chargeRegionId": "S",
+      "naldRegionId": 9,
+      "displayName": "Test Region",
+      "name": "Test Region"
+    }
+  ],
+  "addresses": [
+    {
+      "id": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "address1": "Big Farm",
+      "address2": "Windy road",
+      "address3": "Buttercup meadow",
+      "address4": "Buttercup Village",
+      "address5": "Testington",
+      "address6": "Testingshire",
+      "postcode": "TT1 1TT",
+      "country": "UK",
+      "dataSource": "nald"
+    },
+    {
+      "id": "6d07a08f-4903-46a7-9d8e-66a0521e25db",
+      "address1": "Little Farm",
+      "address2": "Windy road",
+      "address3": "Buttercup meadow",
+      "address4": "Buttercup Village",
+      "address5": "Testington",
+      "address6": "Testingshire",
+      "postcode": "TT1 1TT",
+      "country": "UK",
+      "dataSource": "nald"
+    }
+  ],
+  "companies": [
+    {
+      "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "name": "Big Farm Co Ltd 01",
+      "type": "organisation",
+      "companyNumber": "1234501"
+    },
+    {
+      "id": "89dd5558-3af4-4878-8d09-1ba0b5fbaa00",
+      "name": "Big Farm Co Ltd 02",
+      "type": "organisation",
+      "companyNumber": "1234502"
+    },
+    {
+      "id": "951f5383-d87c-41eb-bf54-8b6269045ff2",
+      "name": "Big Farm Co Ltd 03",
+      "type": "organisation",
+      "companyNumber": "1234503"
+    },
+    {
+      "id": "cd6cefb2-260f-4292-8228-21ab23abb8f4",
+      "name": "Big Farm Co Ltd 04",
+      "type": "organisation",
+      "companyNumber": "1234504"
+    }
+  ],
+  "contacts": [
+    {
+      "id": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
+      "salutation": "Mr",
+      "firstName": "John",
+      "lastName": "Testerson",
+      "middleInitials": "J",
+      "contactType": "person",
+      "dataSource": "nald"
+    }
+  ],
+  "billingAccounts": [
+    {
+      "id": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "accountNumber": "A99999991A",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
+    },
+    {
+      "id": "03300909-111a-458e-aebe-db0af17d2de9",
+      "accountNumber": "A99999992A",
+      "companyId": "89dd5558-3af4-4878-8d09-1ba0b5fbaa00"
+    },
+    {
+      "id": "3551d4fe-f2b0-4eb9-a2d2-932497ae5b1e",
+      "accountNumber": "A99999993A",
+      "companyId": "951f5383-d87c-41eb-bf54-8b6269045ff2"
+    },
+    {
+      "id": "17b094f5-5eb7-40fe-9911-5a014cfe213d",
+      "accountNumber": "A99999994A",
+      "companyId": "cd6cefb2-260f-4292-8228-21ab23abb8f4"
+    }
+  ],
+  "billingAccountAddresses": [
+    {
+      "id": "ab9a24ec-80b8-40dc-82f8-7df3e885245a",
+      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2022-04-01"
+    },
+    {
+      "id": "68627f8e-088f-44df-a177-6a6d4a0bc693",
+      "billingAccountId": "03300909-111a-458e-aebe-db0af17d2de9",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2019-01-01"
+    },
+    {
+      "id": "3a949458-d08e-45df-8d61-78ca9807abf6",
+      "billingAccountId": "3551d4fe-f2b0-4eb9-a2d2-932497ae5b1e",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2015-01-01"
+    },
+    {
+      "id": "9a0be69f-57e2-4feb-b920-a0a65ab42a65",
+      "billingAccountId": "17b094f5-5eb7-40fe-9911-5a014cfe213d",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2022-04-01"
+    }
+  ],
+  "licenceDocuments": [
+    {
+      "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceRef": "AT/TEST/01",
+      "startDate": "2022-04-01"
+    },
+    {
+      "id": "d6d5efd1-ffcb-44f2-bf86-a1707b4b2933",
+      "licenceRef": "AT/TEST/02",
+      "startDate": "2019-01-01"
+    },
+    {
+      "id": "29356c41-e12d-4e24-8f25-b30199730cdd",
+      "licenceRef": "AT/TEST/03",
+      "startDate": "2015-01-01"
+    },
+    {
+      "id": "756a8e80-f717-4585-8656-054c132d84f5",
+      "licenceRef": "AT/TEST/04",
+      "startDate": "2022-04-01"
+    }
+  ],
+  "licenceDocumentRoles": [
+    {
+      "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2022-04-01",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    },
+    {
+      "licenceDocumentId": "d6d5efd1-ffcb-44f2-bf86-a1707b4b2933",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2022-04-01",
+      "companyId": "89dd5558-3af4-4878-8d09-1ba0b5fbaa00",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    },
+    {
+      "licenceDocumentId": "29356c41-e12d-4e24-8f25-b30199730cdd",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2022-04-01",
+      "companyId": "951f5383-d87c-41eb-bf54-8b6269045ff2",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    },
+    {
+      "licenceDocumentId": "756a8e80-f717-4585-8656-054c132d84f5",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2022-04-01",
+      "companyId": "cd6cefb2-260f-4292-8228-21ab23abb8f4",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    }
+  ],
+  "licences": [
+    {
+      "id": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
+      "licenceRef": "AT/TEST/01",
+      "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "regions": {
+        "historicalAreaCode": "SAAR",
+        "regionalChargeArea": "Test Region"
+      },
+      "startDate": "1962-02-01",
+      "waterUndertaker": false
+    }
+  ],
+  "licenceVersions": [
+    {
+      "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
+      "issue": 1,
+      "increment": 0,
+      "status": "current",
+      "startDate": "2022-04-01",
+      "externalId": "6:1234:1:0"
+    }
+  ],
+  "chargeVersions": [
+    {
+      "id": "8e5626ee-5e4c-48f6-a668-471d35997e2c",
+      "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
+      "licenceRef": "AT/TES/01",
+      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "regionCode": 9,
+      "scheme": "sroc",
+      "versionNumber": 100,
+      "startDate": "2022-04-01",
+      "status": "current",
+      "source": "wrls",
+      "changeReasonId": "db394fa0-55a8-412f-a170-16888e424b37"
+    }
+  ],
+  "chargeReferences": [
+    {
+      "id": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
+      "chargeVersionId": "8e5626ee-5e4c-48f6-a668-471d35997e2c",
+      "description": "SROC Charge Reference 01",
+      "source": "tidal",
+      "loss": "medium",
+      "factorsOverridden": false,
+      "chargeCategoryId": {
+        "schema": "public",
+        "table": "chargeCategories",
+        "lookup": "reference",
+        "value": "4.6.11",
+        "select": "id"
+      },
+      "adjustments": {
+        "s126": null,
+        "s127": true,
+        "s130": false,
+        "charge": null,
+        "winter": false
+      },
+      "waterModel": "no model",
+      "volume": 25.921,
+      "eiucRegion": "Southern",
+      "section127Agreement": true
+    }
+  ],
+  "chargeElements": [
+    {
+      "id": "0be51375-17b9-40f6-81f5-bd769ba10508",
+      "chargeReferenceId": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "authorisedAnnualQuantity": 32,
+      "section127Agreement": true,
+      "description": "SROC Charge Purpose 01",
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "400",
+        "select": "id"
+      },
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      }
+    },
+    {
+      "id": "b61f0b33-0250-4f28-a58c-c369eea8be36",
+      "chargeReferenceId": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 10,
+      "authorisedAnnualQuantity": 32,
+      "section127Agreement": false,
+      "description": "SROC Charge Purpose 02",
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "280",
+        "select": "id"
+      },
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      }
+    }
+  ],
+  "returnLogs": [
+    {
+      "id": "v1:1:01/67/21/2336:10055412:2022-04-01:2023-03-31",
+      "returnReference": "10055412",
+      "licenceRef": "AT/TEST/01",
+      "metadata": {
+        "description": "A DRAIN SOMEWHERE",
+        "purposes": [
+          {
+            "primary": {
+              "code": "A",
+              "description": "Agriculture"
+            },
+            "tertiary": {
+              "code": "400",
+              "description": "Spray Irrigation - Direct"
+            },
+            "secondary": {
+              "code": "AGR",
+              "description": "General Agriculture"
+            }
+          }
+        ],
+        "isTwoPartTariff": true,
+        "nald": {
+          "periodStartDay": "1",
+          "periodStartMonth": "4",
+          "periodEndDay": "31",
+          "periodEndMonth": "10"
+        }
+      },
+      "startDate": "2021-11-01",
+      "endDate": "2022-10-31",
+      "receivedDate": "2022-10-31",
+      "dueDate": "2022-11-28",
+      "status": "completed",
+      "underQuery": false
+    },
+    {
+      "id": "v1:1:01/38/38/9275:10055412:2022-04-01:2023-03-31",
+      "returnReference": "10055412",
+      "licenceRef": "AT/TEST/01",
+      "metadata": {
+        "description": "A DRAIN SOMEWHERE",
+        "purposes": [
+          {
+            "primary": {
+              "code": "A",
+              "description": "Agriculture"
+            },
+            "tertiary": {
+              "code": "400",
+              "description": "Spray Irrigation - Direct"
+            },
+            "secondary": {
+              "code": "AGR",
+              "description": "General Agriculture"
+            }
+          }
+        ],
+        "isTwoPartTariff": true,
+        "nald": {
+          "periodStartDay": "1",
+          "periodStartMonth": "4",
+          "periodEndDay": "31",
+          "periodEndMonth": "10"
+        }
+      },
+      "startDate": "2021-11-01",
+      "endDate": "2022-10-31",
+      "receivedDate": null,
+      "dueDate": "2023-10-31",
+      "status": "due",
+      "underQuery": false
+    },
+    {
+      "id": "v1:1:01/38/38/9275:10055412:2022-04-01:2023-03-31",
+      "returnReference": "10055412",
+      "licenceRef": "AT/TEST/01",
+      "metadata": {
+        "description": "A DRAIN SOMEWHERE",
+        "purposes": [
+          {
+            "primary": {
+              "code": "A",
+              "description": "Agriculture"
+            },
+            "tertiary": {
+              "code": "400",
+              "description": "Spray Irrigation - Direct"
+            },
+            "secondary": {
+              "code": "AGR",
+              "description": "General Agriculture"
+            }
+          }
+        ],
+        "isTwoPartTariff": false,
+        "nald": {
+          "periodStartDay": "1",
+          "periodStartMonth": "4",
+          "periodEndDay": "31",
+          "periodEndMonth": "10"
+        }
+      },
+      "startDate": "2021-11-01",
+      "endDate": "2022-10-31",
+      "receivedDate": null,
+      "dueDate": "2023-11-28",
+      "status": "completed",
+      "underQuery": false
+    }
+  ],
+  "returnSubmissions": [
+    {
+      "id": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "returnLogId": "v1:1:01/67/21/2336:10055412:2022-04-01:2023-03-31",
+      "nilReturn": false,
+      "current": true
+    }
+  ],
+  "returnSubmissionLines": [
+    {
+      "id": "89966f6f-bc62-40bf-97a5-3c7bfeeb2a3b",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-04-01",
+      "endDate": "2022-04-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "7e503eb2-323e-4b17-9d0c-2c8ad1ebe575",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-05-01",
+      "endDate": "2022-05-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "0438b460-52d6-40b5-9dfd-963a63ada23d",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-06-01",
+      "endDate": "2022-06-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "e6a493df-241a-47de-ae62-b976d2ff9941",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-07-01",
+      "endDate": "2022-07-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "fb9d239e-0428-4ca4-a7fd-49ae9ac1d6c7",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-08-01",
+      "endDate": "2022-08-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "85216196-0191-4fa3-9d3d-c1dba7d167ab",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-09-01",
+      "endDate": "2022-09-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "802c7690-0006-4267-af3e-7dcf29dda03c",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-10-01",
+      "endDate": "2022-10-31",
+      "quantity": "3274"
+    }
+  ]
+}
