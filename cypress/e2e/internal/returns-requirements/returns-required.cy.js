@@ -366,5 +366,17 @@ describe('Submit and cancel no returns requirement (internal)', () => {
 
     // confirm the second requirement has been removed
     cy.contains('This is a valid site description for the second requirement').should('not.exist')
+
+    // choose the approve return requirement button
+    cy.get('[data-test="meta-data-approve"]').click({ force: true })
+
+    // confirm we are on the approved page
+    cy.get('.govuk-panel__title').contains('Requirements for returns approved')
+
+    // click link to return to licence set up
+    cy.get(':nth-child(4) > .govuk-link').click()
+
+    // confirm we are on the charge information tab
+    cy.get('#charge > :nth-child(1)').contains('Charge information')
   })
 })
