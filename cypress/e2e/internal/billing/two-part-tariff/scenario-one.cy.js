@@ -183,20 +183,20 @@ describe('Testing a two-part tariff bill run with scenario one', () => {
     cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '20.123 ML / 32 ML')
 
     // Review Licence AT/TEST/01 ~ Put licence into review
-    cy.get('[value="review"]').click()
+    cy.contains('Put licence into review').click()
     cy.get('.govuk-notification-banner').should('exist')
     cy.get('.govuk-notification-banner__heading').should('contain.text', 'Licence changed to review.')
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'review')
     cy.get('.govuk-button--primary').should('contain.text', 'Confirm licence is ready')
 
     // Review Licence AT/TEST/01 ~ Mark licence progress
-    cy.get('[value="mark"]').click()
+    cy.contains('Mark progress').click()
     cy.get('.govuk-notification-banner').should('exist')
     cy.get('.govuk-notification-banner__heading').should('contain.text', 'This licence has been marked.')
     cy.get('button.govuk-button--secondary').should('contain.text', 'Remove progress mark')
 
     // Review Licence AT/TEST/01 ~ Remove licence from bill run
-    cy.get('a.govuk-button').click()
+    cy.contains('Remove from bill run').click()
     cy.get('.govuk-heading-xl').should('contain.text', "You're about to remove AT/TEST/01 from the bill run")
     cy.get('.govuk-inset-text').should('contain.text', 'The licence will go into the next two-part tariff supplementary bill run.')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
