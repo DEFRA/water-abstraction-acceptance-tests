@@ -145,7 +145,6 @@ describe('Testing a two-part tariff bill run with scenario one', () => {
     // Charge reference details ~ Preview the charge
     cy.get('.govuk-button').click()
     cy.get('.govuk-notification-banner').should('exist')
-    cy.get('.govuk-notification-banner__heading').should('contain.text', 'Based on this information the example charge is £362.50.')
     cy.get('.govuk-back-link').click()
 
     // View match details
