@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Testing a two-part tariff bill run with scenario one', () => {
+describe('Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just on return, and it and the charge element exactly match', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('sroc-two-part-tariff-scenario-one-data.json').then((fixture) => {
@@ -14,7 +14,7 @@ describe('Testing a two-part tariff bill run with scenario one', () => {
     })
   })
 
-  it('creates a SROC two-part tariff bill run and reviews all the pages', () => {
+  it('creates a SROC two-part tariff bill run and once built navigates through all the review pages, changing the billable returns volume on the charge element, checking the "preview the charge" button, marking the licence as "review", marking the progress on the licence and finally removing the licence from the bill run all together', () => {
     cy.visit('/')
 
     // Enter the user name and password
