@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Create a empty SROC twp-part tariff bill run (internal)', () => {
+describe('Create a empty SROC two-part tariff bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
