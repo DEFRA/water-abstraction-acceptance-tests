@@ -213,7 +213,7 @@
   ],
   "returnLogs": [
     {
-      "id": "v1:1:01/67/21/2336:10055412:2022-04-01:2023-03-31",
+      "id": "v1:1:01/67/21/2336:10055412:2021-11-01:2022-10-31",
       "returnReference": "10055412",
       "licenceRef": "AT/TEST/01",
       "metadata": {
@@ -250,7 +250,7 @@
       "underQuery": false
     },
     {
-      "id": "v1:1:01/38/38/9275:10055412:2022-04-01:2023-03-31",
+      "id": "v1:1:01/38/38/9275:10055412:2022-11-01:2023-10-31",
       "returnReference": "10055412",
       "licenceRef": "AT/TEST/01",
       "metadata": {
@@ -279,15 +279,15 @@
           "periodEndMonth": "10"
         }
       },
-      "startDate": "2021-11-01",
-      "endDate": "2022-10-31",
+      "startDate": "2022-11-01",
+      "endDate": "2023-10-31",
       "receivedDate": null,
       "dueDate": "2023-10-31",
       "status": "due",
       "underQuery": false
     },
     {
-      "id": "v1:1:01/38/38/9275:10055412:2022-04-01:2023-03-31",
+      "id": "v2:1:01/38/38/9275:10055412:2021-11-01:2022-10-31",
       "returnReference": "10055412",
       "licenceRef": "AT/TEST/01",
       "metadata": {
@@ -327,7 +327,7 @@
   "returnSubmissions": [
     {
       "id": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
-      "returnLogId": "v1:1:01/67/21/2336:10055412:2022-04-01:2023-03-31",
+      "returnLogId": "v1:1:01/67/21/2336:10055412:2021-11-01:2022-10-31",
       "nilReturn": false,
       "current": true
     }
