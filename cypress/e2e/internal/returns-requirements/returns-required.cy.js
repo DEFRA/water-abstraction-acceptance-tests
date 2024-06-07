@@ -154,7 +154,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('[data-test="meta-data-reason"]').contains('New licence')
 
     // confirm we see the purposes selected
-    cy.get('.govuk-summary-card__content').contains('requirement.purposes')
+    cy.get(':nth-child(1) > .govuk-summary-list__value > p').contains('General Farming & Domestic')
 
     // choose the change option for purposes
     cy.get('[data-test="meta-data-change-purpose"]').click()
@@ -166,10 +166,10 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the purpose changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('.govuk-summary-card__content').contains('requirement.purposes')
+    cy.get(':nth-child(1) > .govuk-summary-list__value > p').contains('Hydroelectric Power Generation')
 
     // confirm we see the points selected
-    cy.get('.govuk-summary-card__content').contains('requirement.points')
+    cy.get('.govuk-summary-card__content').contains('At National Grid Reference TQ 1234 1234 (Test local name 1)')
 
     // choose the change option for points
     cy.get('[data-test="meta-data-change-points"]').click()
@@ -181,7 +181,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the points changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('.govuk-summary-card__content').contains('requirement.points')
+    cy.get('.govuk-summary-card__content').contains('At National Grid Reference TT 5678 5678 (Test local name 2)')
 
     // confirm we see the abstraction period selected
     cy.get(':nth-child(3) > .govuk-summary-list__value').contains('From 1 December to 3 September')
@@ -206,7 +206,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get(':nth-child(3) > .govuk-summary-list__value').contains('From 2 October to 5 December')
 
     // confirm we see the returns cycle selected
-    cy.get(':nth-child(4) > .govuk-summary-list__value').contains('requirement.returnsCycle')
+    cy.get(':nth-child(4) > .govuk-summary-list__value').contains('Summer')
 
     // choose the change option for the returns cycle
     cy.get('[data-test="meta-data-change-returns-cycle"]').click()
@@ -217,7 +217,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the returns cycle changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get(':nth-child(4) > .govuk-summary-list__value').contains('requirement.returnsCycle')
+    cy.get(':nth-child(4) > .govuk-summary-list__value').contains('Winter')
 
     // confirm we see the site description we selected
     cy.get(':nth-child(5) > .govuk-summary-list__value').contains('This is a valid site description')
@@ -263,7 +263,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get(':nth-child(7) > .govuk-summary-list__value').contains('Monthly')
 
     // confirm we see the agreements and exceptions we selected
-    cy.get(':nth-child(8) > .govuk-summary-list__value').contains('requirement.agreementsExceptions')
+    cy.get(':nth-child(8) > .govuk-summary-list__value').contains('Gravity fill')
 
     // choose the change option for agreements exceptions
     cy.get('[data-test="meta-data-change-agreements-exceptions"]').click()
@@ -276,7 +276,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the agreements exceptions changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get(':nth-child(8) > .govuk-summary-list__value').contains('requirement.agreementsExceptions')
+    cy.get(':nth-child(8) > .govuk-summary-list__value').contains('Transfer re-abstraction scheme and Two-part tariff')
 
     // click the add another requirement button
     cy.get('form > .govuk-button').click()
@@ -346,8 +346,8 @@ describe('Submit returns requirement (internal)', () => {
     // confirm we see the new requirement
     cy.get(':nth-child(4) > .govuk-summary-card > .govuk-summary-card__title-wrapper').contains('second requirement')
 
-    // choose the remove requirement the second requirement
-    cy.get(':nth-child(4) > .govuk-button').click()
+    // choose the remove requirement button for the second requirement
+    cy.get('.govuk-button').eq(2).should('contain', 'Remove requirement').click()
 
     // confirm we are on the remove page
     cy.get('.govuk-heading-xl').contains('You are about to remove these requirements for returns')
