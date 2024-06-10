@@ -44,35 +44,35 @@ describe('Submit returns requirement (internal)', () => {
 
     // choose the licence version start date and click continue
     cy.get('#licence-start-date').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the reason page
     cy.get('.govuk-fieldset__heading').contains('Select the reason for the requirements for returns')
 
     // choose returns exception and click continue
     cy.get('#reason-2').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the set up page
     cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
 
     // click set up manually and continue
     cy.get('#setup-4').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the purpose page
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
     // choose a purpose for the requirement and continue
     cy.get('#purposes').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the points page
     cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
 
     // choose a points for the requirement and continue
     cy.get('#points').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the abstraction period page
     cy.get('.govuk-heading-xl').contains('Enter the abstraction period for the requirements for returns')
@@ -82,42 +82,42 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('#abstraction-period-start-month').type('12')
     cy.get('#abstraction-period-end-day').type('03')
     cy.get('#abstraction-period-end-month').type('09')
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page
     cy.get('.govuk-heading-xl').contains('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
     cy.get('#returnsCycle').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the site description page
     cy.get('.govuk-label').contains('Enter a site description for the requirements for returns')
 
     // enter a site description and continue
     cy.get('#site-description').type('This is a valid site description')
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the readings collected page
     cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are collected')
 
     // choose a collected time frame and continue
     cy.get('#frequencyCollected').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the readings reported page
     cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are reported')
 
     // choose a reporting time frame and continue
     cy.get('#frequencyReported').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the agreements and exceptions page
     cy.get('.govuk-heading-l').contains('Select agreements and exceptions for the requirements for returns')
 
     // choose an agreement and exception and continue
     cy.get('#agreementsExceptions').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the check page
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -133,7 +133,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('#other-start-date-day').type('02')
     cy.get('#other-start-date-month').type('08')
     cy.get('#other-start-date-year').type('2023')
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on check page and see the start date changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -147,7 +147,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // change the reason and continue
     cy.get('#reason-8').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the reason changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -162,7 +162,7 @@ describe('Submit returns requirement (internal)', () => {
     // change the purpose and continue
     cy.get('#purposes').uncheck()
     cy.get('#purposes-2').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the purpose changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -177,7 +177,7 @@ describe('Submit returns requirement (internal)', () => {
     // change the points and continue
     cy.get('#points').uncheck()
     cy.get('#points-2').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the points changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -199,7 +199,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('#abstraction-period-start-month').type('10')
     cy.get('#abstraction-period-end-day').type('05')
     cy.get('#abstraction-period-end-month').type('12')
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the abstraction period changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -213,7 +213,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // change the returns cycle and continue
     cy.get('#returnsCycle-2').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the returns cycle changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -228,7 +228,7 @@ describe('Submit returns requirement (internal)', () => {
     // change the site description and continue
     cy.get('#site-description').clear()
     cy.get('#site-description').type('This is another valid site description')
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the site description changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -242,7 +242,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // change the collection frequency and continue
     cy.get('#frequencyCollected-2').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the collection frequency changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -256,7 +256,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // change the reporting frequency and continue
     cy.get('#frequencyReported-3').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the reporting frequency changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -272,7 +272,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('#agreementsExceptions').uncheck()
     cy.get('#agreementsExceptions-2').check()
     cy.get('#agreementsExceptions-3').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the agreements exceptions changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -286,14 +286,14 @@ describe('Submit returns requirement (internal)', () => {
 
     // choose a purpose for the requirement and continue
     cy.get('#purposes').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the points page
     cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
 
     // choose a points for the requirement and continue
     cy.get('#points').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the abstraction period page
     cy.get('.govuk-heading-xl').contains('Enter the abstraction period for the requirements for returns')
@@ -303,42 +303,42 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('#abstraction-period-start-month').type('07')
     cy.get('#abstraction-period-end-day').type('08')
     cy.get('#abstraction-period-end-month').type('12')
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page
     cy.get('.govuk-heading-xl').contains('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
     cy.get('#returnsCycle').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the site description page
     cy.get('.govuk-label').contains('Enter a site description for the requirements for returns')
 
     // enter a site description and continue
     cy.get('#site-description').type('This is a valid site description for the second requirement')
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the readings collected page
     cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are collected')
 
     // choose a collected time frame and continue
     cy.get('#frequencyCollected-3').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the readings reported page
     cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are reported')
 
     // choose a reporting time frame and continue
     cy.get('#frequencyReported').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the agreements and exceptions page
     cy.get('.govuk-heading-l').contains('Select agreements and exceptions for the requirements for returns')
 
     // choose a agreement and exception and continue
     cy.get('#agreementsExceptions').check()
-    cy.get('.govuk-button').click()
+    cy.contains('Continue').click()
 
     // confirm we are on the check page
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
@@ -356,7 +356,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('div.govuk-body > .govuk-body').contains('Summer daily requirements for returns, This is a valid site description for the second requirement.')
 
     // choose the remove button
-    cy.get('.govuk-button').click()
+    cy.contains('Remove').click()
 
     // confirm we are on the check page
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
