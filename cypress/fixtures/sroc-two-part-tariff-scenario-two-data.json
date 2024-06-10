@@ -88,7 +88,7 @@
         "historicalAreaCode": "SAAR",
         "regionalChargeArea": "Test Region"
       },
-      "startDate": "1962-02-01",
+      "startDate": "1966-04-18",
       "waterUndertaker": false
     }
   ],
@@ -152,7 +152,7 @@
       "abstractionPeriodStartDay": 1,
       "abstractionPeriodStartMonth": 4,
       "abstractionPeriodEndDay": 31,
-      "abstractionPeriodEndMonth": 3,
+      "abstractionPeriodEndMonth": 10,
       "authorisedAnnualQuantity": 32,
       "section127Agreement": true,
       "description": "SROC Charge Purpose 01",
@@ -280,7 +280,7 @@
         }
       },
       "startDate": "2022-11-01",
-      "endDate": "2023-10-31",
+      "endDate": "2023-03-31",
       "receivedDate": null,
       "dueDate": "2023-10-31",
       "status": "due",
@@ -317,7 +317,7 @@
         }
       },
       "startDate": "2021-11-01",
-      "endDate": "2022-10-31",
+      "endDate": "2022-10-30",
       "receivedDate": null,
       "dueDate": "2023-11-28",
       "status": "completed",
