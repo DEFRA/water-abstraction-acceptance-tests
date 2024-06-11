@@ -114,7 +114,13 @@
       "startDate": "2022-04-01",
       "status": "current",
       "source": "wrls",
-      "changeReasonId": "db394fa0-55a8-412f-a170-16888e424b37"
+      "changeReasonId": {
+        "schema" : "water",
+        "table" : "changeReasons",
+        "lookup" : "description",
+        "value" : "Strategic review of charges (SRoC)",
+        "select" : "changeReasonId"
+      }
     }
   ],
   "chargeReferences": [
