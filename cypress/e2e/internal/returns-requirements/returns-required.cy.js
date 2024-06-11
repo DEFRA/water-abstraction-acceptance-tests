@@ -344,7 +344,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
 
     // confirm we see the new requirement
-    cy.get(':nth-child(4) > .govuk-summary-card > .govuk-summary-card__title-wrapper').contains('second sdfsdf requirement')
+    cy.get('[data-test="meta-data-requirement-1"]').contains('This is a valid site description for the second requirement')
 
     // choose the remove requirement button for the second requirement
     cy.get('[data-test="meta-data-remove-1"]').click()
@@ -365,7 +365,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-notification-banner').contains('Requirement removed')
 
     // confirm the second requirement has been removed
-    cy.contains('This is a valid site description for the second requirement').should('not.exist')
+    cy.get('[data-test="meta-data-requirement-1"]').should('not.exist')
 
     // choose the approve return requirement button
     cy.contains('Approve returns requirement').click()
@@ -374,9 +374,9 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-panel__title').contains('Requirements for returns approved')
 
     // click link to return to licence set up
-    cy.get(':nth-child(4) > .govuk-link').click()
+    cy.contains('Return to licence set up').click()
 
     // confirm we are on the charge information tab
-    cy.get('#charge > :nth-child(1)').contains('Charge information')
+    cy.get('#charge').contains('Charge information')
   })
 })
