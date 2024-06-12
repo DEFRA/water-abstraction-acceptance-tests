@@ -123,10 +123,10 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
 
     // confirm we see the start date information we expect
-    cy.get('[data-test="meta-data-start-date"]').contains('1 April 2022')
+    cy.get('[data-test="start-date"]').contains('1 April 2022')
 
     // choose the change option for the start date
-    cy.get('[data-test="meta-data-change-start-date"]').click()
+    cy.get('[data-test="change-start-date"]').click()
 
     // change start date and continue
     cy.get('#another-start-date').check()
@@ -137,13 +137,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on check page and see the start date changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-start-date"]').contains('2 August 2023')
+    cy.get('[data-test="start-date"]').contains('2 August 2023')
 
     // confirm we see the reason we selected
-    cy.get('[data-test="meta-data-reason"]').contains('Licence holder name or address change')
+    cy.get('[data-test="reason"]').contains('Licence holder name or address change')
 
     // choose the change option for reason
-    cy.get('[data-test="meta-data-change-reason"]').click()
+    cy.get('[data-test="change-reason"]').click()
 
     // change the reason and continue
     cy.get('#reason-8').check()
@@ -151,13 +151,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the reason changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-reason"]').contains('New licence')
+    cy.get('[data-test="reason"]').contains('New licence')
 
     // confirm we see the purposes selected
-    cy.get('[data-test="meta-data-purposes-0"]').should('contain', 'General Farming & Domestic')
+    cy.get('[data-test="purposes-0"]').should('contain', 'General Farming & Domestic')
 
     // choose the change option for purposes
-    cy.get('[data-test="meta-data-change-purposes-0"]').click()
+    cy.get('[data-test="change-purposes-0"]').click()
 
     // change the purpose and continue
     cy.get('#purposes').uncheck()
@@ -166,13 +166,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the purpose changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-purposes-0"]').contains('Hydroelectric Power Generation')
+    cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation')
 
     // confirm we see the points selected
-    cy.get('[data-test="meta-data-points-0"]').should('contain', 'At National Grid Reference TQ 1234 1234 (Test local name 1)')
+    cy.get('[data-test="points-0"]').should('contain', 'At National Grid Reference TQ 1234 1234 (Test local name 1)')
 
     // choose the change option for points
-    cy.get('[data-test="meta-data-change-points-0"]').click()
+    cy.get('[data-test="change-points-0"]').click()
 
     // change the points and continue
     cy.get('#points').uncheck()
@@ -181,13 +181,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the points changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-points-0"]').contains('At National Grid Reference TT 5678 5678 (Test local name 2)')
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 5678 5678 (Test local name 2)')
 
     // confirm we see the abstraction period selected
-    cy.get('[data-test="meta-data-abstraction-period-0"]').contains('From 1 December to 3 September')
+    cy.get('[data-test="abstraction-period-0"]').contains('From 1 December to 3 September')
 
     // choose the change option for the abstraction period
-    cy.get('[data-test="meta-data-change-abstraction-period-0"]').click()
+    cy.get('[data-test="change-abstraction-period-0"]').click()
 
     // change the abstraction period and continue
     cy.get('#abstraction-period-start-day').clear()
@@ -203,13 +203,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the abstraction period changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-abstraction-period-0"]').contains('From 2 October to 5 December')
+    cy.get('[data-test="abstraction-period-0"]').contains('From 2 October to 5 December')
 
     // confirm we see the returns cycle selected
-    cy.get('[data-test="meta-data-returns-cycle-0"]').contains('Summer')
+    cy.get('[data-test="returns-cycle-0"]').contains('Summer')
 
     // choose the change option for the returns cycle
-    cy.get('[data-test="meta-data-change-returns-cycle-0"]').click()
+    cy.get('[data-test="change-returns-cycle-0"]').click()
 
     // change the returns cycle and continue
     cy.get('#returnsCycle-2').check()
@@ -217,13 +217,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the returns cycle changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-returns-cycle-0"]').contains('Winter')
+    cy.get('[data-test="returns-cycle-0"]').contains('Winter')
 
     // confirm we see the site description we selected
-    cy.get('[data-test="meta-data-site-description-0"]').contains('This is a valid site description')
+    cy.get('[data-test="site-description-0"]').contains('This is a valid site description')
 
     // choose the change option for the site description
-    cy.get('[data-test="meta-data-change-site-description-0"]').click()
+    cy.get('[data-test="change-site-description-0"]').click()
 
     // change the site description and continue
     cy.get('#site-description').clear()
@@ -232,13 +232,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the site description changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-site-description-0"]').contains('This is another valid site description')
+    cy.get('[data-test="site-description-0"]').contains('This is another valid site description')
 
     // confirm we see the collection frequency we selected
-    cy.get('[data-test="meta-data-frequency-collected-0"]').contains('Daily')
+    cy.get('[data-test="frequency-collected-0"]').contains('Daily')
 
     // choose the change option for the collection frequency
-    cy.get('[data-test="meta-data-change-frequency-collected-0"]').click()
+    cy.get('[data-test="change-frequency-collected-0"]').click()
 
     // change the collection frequency and continue
     cy.get('#frequencyCollected-2').check()
@@ -246,13 +246,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the collection frequency changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-frequency-collected-0"]').contains('Weekly')
+    cy.get('[data-test="frequency-collected-0"]').contains('Weekly')
 
     // confirm we see the reporting frequency we selected
-    cy.get('[data-test="meta-data-frequency-reported-0"]').contains('Daily')
+    cy.get('[data-test="frequency-reported-0"]').contains('Daily')
 
     // choose the change option for the reporting frequency
-    cy.get('[data-test="meta-data-change-frequency-reported-0"]').click()
+    cy.get('[data-test="change-frequency-reported-0"]').click()
 
     // change the reporting frequency and continue
     cy.get('#frequencyReported-3').check()
@@ -260,13 +260,13 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the reporting frequency changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-frequency-reported-0"]').contains('Monthly')
+    cy.get('[data-test="frequency-reported-0"]').contains('Monthly')
 
     // confirm we see the agreements and exceptions we selected
-    cy.get('[data-test="meta-data-agreements-exceptions-0"]').contains('Gravity fill')
+    cy.get('[data-test="agreements-exceptions-0"]').contains('Gravity fill')
 
     // choose the change option for agreements exceptions
-    cy.get('[data-test="meta-data-change-agreements-exceptions-0"]').click()
+    cy.get('[data-test="change-agreements-exceptions-0"]').click()
 
     // change the agreements exceptions and continue
     cy.get('#agreementsExceptions').uncheck()
@@ -276,7 +276,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the agreements exceptions changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-agreements-exceptions-0"]').contains('Transfer re-abstraction scheme and Two-part tariff')
+    cy.get('[data-test="agreements-exceptions-0"]').contains('Transfer re-abstraction scheme and Two-part tariff')
 
     // click the add another requirement button
     cy.contains('Add another requirement').click()
@@ -344,10 +344,10 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
 
     // confirm we see the new requirement
-    cy.get('[data-test="meta-data-requirement-1"]').contains('This is a valid site description for the second requirement')
+    cy.get('[data-test="requirement-1"]').contains('This is a valid site description for the second requirement')
 
     // choose the remove requirement button for the second requirement
-    cy.get('[data-test="meta-data-remove-1"]').click()
+    cy.get('[data-test="remove-1"]').click()
 
     // confirm we are on the remove page
     cy.get('.govuk-heading-xl').contains('You are about to remove these requirements for returns')
@@ -365,7 +365,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-notification-banner').contains('Requirement removed')
 
     // confirm the second requirement has been removed
-    cy.get('[data-test="meta-data-requirement-1"]').should('not.exist')
+    cy.get('[data-test="requirement-1"]').should('not.exist')
 
     // choose the approve return requirement button
     cy.contains('Approve returns requirement').click()
