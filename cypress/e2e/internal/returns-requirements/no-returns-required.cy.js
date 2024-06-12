@@ -63,11 +63,11 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Returns are not required for this licence')
 
     // confirm we are seeing the details we selected
-    cy.get('[data-test="meta-data-start-date"]').should('contain.text', '1 January 2022')
-    cy.get('[data-test="meta-data-reason"]').should('contain.text', 'Returns exception')
+    cy.get('[data-test="start-date"]').should('contain.text', '12 June 2023')
+    cy.get('[data-test="reason"]').should('contain.text', 'Returns exception')
 
     // click the change link for the start date
-    cy.get('[data-test="meta-data-change-start-date"]').click()
+    cy.get('[data-test="change-start-date"]').click()
 
     // change start date and continue
     cy.get('#another-start-date').check()
@@ -78,10 +78,10 @@ describe('Submit no returns requirement (internal)', () => {
 
     // confirm we are back on check page and see the start date changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-start-date"]').contains('2 August 2023')
+    cy.get('[data-test="start-date"]').contains('2 August 2023')
 
     // click the change link for the reason
-    cy.get('[data-test="meta-data-change-reason"]').click()
+    cy.get('[data-test="change-reason"]').click()
 
     // confirm we are on the why no returns required page
     cy.get('.govuk-fieldset__heading').contains('Why are no returns required?')
@@ -92,7 +92,7 @@ describe('Submit no returns requirement (internal)', () => {
 
     // confirm we are back on check page and see the reason changes
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="meta-data-reason"]').contains('Transfer licence')
+    cy.get('[data-test="reason"]').contains('Transfer licence')
 
     // confirm we see the option to add note
     cy.get('.govuk-heading-l').contains('Notes')
@@ -119,9 +119,8 @@ describe('Submit no returns requirement (internal)', () => {
     // confirm we see the node added
     cy.contains('This is a note for a no returns requirement.').should('exist')
 
-    // CHANGE THISSSSS!!!!
     // click the change note link
-    cy.get(':nth-child(1) > .govuk-link').click()
+    cy.get('[data-test="note"]').click()
 
     // make changes to the note and confirm
     cy.get('#note').clear()
