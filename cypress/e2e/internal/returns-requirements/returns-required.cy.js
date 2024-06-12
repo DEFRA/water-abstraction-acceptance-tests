@@ -123,7 +123,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
 
     // confirm we see the start date information we expect
-    cy.get('[data-test="start-date"]').contains('1 April 2022')
+    cy.get('[data-test="start-date"]').contains('12 June 2023')
 
     // choose the change option for the start date
     cy.get('[data-test="change-start-date"]').click()
