@@ -194,19 +194,19 @@
         "value": "140",
         "select": "id"
       },
-      "purposePrimaryId": {
-        "schema": "water",
-        "table": "purposesPrimary",
+      "primaryPurposeId": {
+        "schema": "public",
+        "table": "primaryPurposes",
         "lookup": "legacyId",
         "value": "A",
-        "select": "purposePrimaryId"
+        "select": "id"
       },
-      "purposeSecondaryId": {
-        "schema": "water",
-        "table": "purposesSecondary",
+      "secondaryPurposeId": {
+        "schema": "public",
+        "table": "secondaryPurposes",
         "lookup": "legacyId",
         "value": "AGR",
-        "select": "purposeSecondaryId"
+        "select": "id"
       }
     },
     {
@@ -219,20 +219,27 @@
         "value": "240",
         "select": "id"
       },
-      "purposePrimaryId": {
-        "schema": "water",
-        "table": "purposesPrimary",
+      "primaryPurposeId": {
+        "schema": "public",
+        "table": "primaryPurposes",
         "lookup": "legacyId",
         "value": "W",
-        "select": "purposePrimaryId"
+        "select": "id"
       },
-      "purposeSecondaryId": {
-        "schema": "water",
-        "table": "purposesSecondary",
+      "secondaryPurposeId": {
+        "schema": "public",
+        "table": "secondaryPurposes",
         "lookup": "legacyId",
         "value": "FAD",
-        "select": "purposeSecondaryId"
+        "select": "id"
       }
+    }
+  ],
+  "returnVersions": [
+    {
+      "id": "e581d4ff-edbe-4b5c-a244-b4a9bf7988dd",
+      "externalId": "7:7894:3:1"
+
     }
   ]
 }
