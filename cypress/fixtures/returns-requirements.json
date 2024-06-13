@@ -237,9 +237,57 @@
   ],
   "returnVersions": [
     {
-      "id": "e581d4ff-edbe-4b5c-a244-b4a9bf7988dd",
-      "externalId": "7:7894:3:1"
-
+      "id": "a63cd63f-64b2-4adf-9bd0-b6d4a13f04e3",
+      "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
+      "externalId": "9:5674:100",
+      "version":"100",
+      "startDate": "2023-12-10",
+      "status": "current",
+      "multipleUpload": false
+    }
+  ],
+  "returnRequirements": [
+    {
+      "id": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
+      "returnVersionId": "a63cd63f-64b2-4adf-9bd0-b6d4a13f04e3",
+      "twoPartTariff": true,
+      "externalId": "9:100",
+      "siteDescription": "AT/TEST/01 description"
+    }
+  ],
+  "returnRequirementPurposes": [
+    {
+      "id": "96340b33-3173-4007-9a1d-28664b334e5c",
+      "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "240",
+        "select": "id"
+      },
+      "primaryPurposeId": {
+        "schema": "public",
+        "table": "primaryPurposes",
+        "lookup": "legacyId",
+        "value": "P",
+        "select": "id"
+      },
+      "secondaryPurposeId": {
+        "schema": "public",
+        "table": "secondaryPurposes",
+        "lookup": "legacyId",
+        "value": "ELC",
+        "select": "id"
+      }
+    }
+  ],
+  "returnRequirementPoints": [
+    {
+      "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
+      "description": "CLAY WOOD BROOK/OAKSCAR RESERVOIR",
+      "ngr1": "TQ 9000031 100",
+      "naldPointId": "9000031"
     }
   ]
 }
