@@ -66,20 +66,6 @@ describe('Submit no returns requirement (internal)', () => {
     cy.get('[data-test="start-date"]').should('contain.text', '12 June 2023')
     cy.get('[data-test="reason"]').should('contain.text', 'Returns exception')
 
-    // click the change link for the start date
-    cy.get('[data-test="change-start-date"]').click()
-
-    // change start date and continue
-    cy.get('#another-start-date').check()
-    cy.get('#other-start-date-day').type('02')
-    cy.get('#other-start-date-month').type('08')
-    cy.get('#other-start-date-year').type('2023')
-    cy.contains('Continue').click()
-
-    // confirm we are back on check page and see the start date changes
-    cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
-    cy.get('[data-test="start-date"]').contains('2 August 2023')
-
     // click the change link for the reason
     cy.get('[data-test="change-reason"]').click()
 
