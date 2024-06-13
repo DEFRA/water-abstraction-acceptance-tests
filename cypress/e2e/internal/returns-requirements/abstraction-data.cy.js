@@ -60,7 +60,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('#setup').check()
     cy.contains('Continue').click()
 
-    // confirm we are back on the check page and see the reporting frequency changes
+    // confirm we are back on the check page
     cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
 
     // confirm we see the start data and reason options selected previously
