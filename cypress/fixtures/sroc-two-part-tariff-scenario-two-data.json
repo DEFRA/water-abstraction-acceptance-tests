@@ -140,7 +140,7 @@
         "winter": false
       },
       "waterModel": "no model",
-      "volume": 25.921,
+      "volume": 32,
       "eiucRegion": "Southern",
       "section127Agreement": true
     }
@@ -152,7 +152,7 @@
       "abstractionPeriodStartDay": 1,
       "abstractionPeriodStartMonth": 4,
       "abstractionPeriodEndDay": 31,
-      "abstractionPeriodEndMonth": 10,
+      "abstractionPeriodEndMonth": 3,
       "authorisedAnnualQuantity": 32,
       "section127Agreement": true,
       "description": "SROC Charge Purpose 01",
@@ -237,53 +237,16 @@
         "isTwoPartTariff": true,
         "nald": {
           "periodStartDay": "1",
-          "periodStartMonth": "4",
+          "periodStartMonth": "3",
           "periodEndDay": "31",
           "periodEndMonth": "10"
         }
       },
-      "startDate": "2021-11-01",
-      "endDate": "2022-10-31",
-      "receivedDate": "2022-10-31",
-      "dueDate": "2022-11-28",
+      "startDate": "2022-04-01",
+      "endDate": "2023-03-21",
+      "receivedDate": "2023-03-01",
+      "dueDate": "2023-04-28",
       "status": "completed",
-      "underQuery": false
-    },
-    {
-      "id": "v1:1:01/38/38/9275:10055412:2022-11-01:2023-10-31",
-      "returnReference": "10055412",
-      "licenceRef": "AT/TEST/01",
-      "metadata": {
-        "description": "A DRAIN SOMEWHERE",
-        "purposes": [
-          {
-            "primary": {
-              "code": "A",
-              "description": "Agriculture"
-            },
-            "tertiary": {
-              "code": "400",
-              "description": "Spray Irrigation - Direct"
-            },
-            "secondary": {
-              "code": "AGR",
-              "description": "General Agriculture"
-            }
-          }
-        ],
-        "isTwoPartTariff": true,
-        "nald": {
-          "periodStartDay": "1",
-          "periodStartMonth": "4",
-          "periodEndDay": "31",
-          "periodEndMonth": "10"
-        }
-      },
-      "startDate": "2022-11-01",
-      "endDate": "2023-03-31",
-      "receivedDate": null,
-      "dueDate": "2023-10-31",
-      "status": "due",
       "underQuery": false
     },
     {
@@ -330,6 +293,12 @@
       "returnLogId": "v1:1:01/67/21/2336:10055412:2021-11-01:2022-10-31",
       "nilReturn": false,
       "current": true
+    },
+    {
+      "id": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "returnLogId": "v2:1:01/38/38/9275:10055412:2021-11-01:2022-10-31",
+      "nilReturn": false,
+      "current": true
     }
   ],
   "returnSubmissionLines": [
@@ -338,46 +307,102 @@
       "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
       "startDate": "2022-04-01",
       "endDate": "2022-04-30",
-      "quantity": "3274"
+      "quantity": "400"
     },
     {
       "id": "7e503eb2-323e-4b17-9d0c-2c8ad1ebe575",
       "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
       "startDate": "2022-05-01",
       "endDate": "2022-05-31",
-      "quantity": "3274"
+      "quantity": "4000"
     },
     {
       "id": "0438b460-52d6-40b5-9dfd-963a63ada23d",
       "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
       "startDate": "2022-06-01",
       "endDate": "2022-06-30",
-      "quantity": "3274"
+      "quantity": "4000"
     },
     {
       "id": "e6a493df-241a-47de-ae62-b976d2ff9941",
       "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
       "startDate": "2022-07-01",
       "endDate": "2022-07-31",
-      "quantity": "3274"
+      "quantity": "4000"
     },
     {
       "id": "fb9d239e-0428-4ca4-a7fd-49ae9ac1d6c7",
       "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
       "startDate": "2022-08-01",
       "endDate": "2022-08-31",
-      "quantity": "3274"
+      "quantity": "4000"
     },
     {
       "id": "85216196-0191-4fa3-9d3d-c1dba7d167ab",
       "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
       "startDate": "2022-09-01",
       "endDate": "2022-09-30",
-      "quantity": "3274"
+      "quantity": "4000"
     },
     {
       "id": "802c7690-0006-4267-af3e-7dcf29dda03c",
       "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-10-01",
+      "endDate": "2022-10-31",
+      "quantity": "4000"
+    },
+    {
+      "id": "5c542386-f351-45eb-8cea-754ba24a4bf1",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2023-03-01",
+      "endDate": "2023-03-31",
+      "quantity": "4000"
+    },
+    {
+      "id": "0bb51d21-8a49-41de-b119-f5272f5dda61",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-04-01",
+      "endDate": "2022-04-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "2aff73f1-e6c4-422b-9361-57731e380757",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-05-01",
+      "endDate": "2022-05-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "b55d7df8-a1a8-4776-acdd-ba38120b77c7",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-06-01",
+      "endDate": "2022-06-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "9c120c33-e7d2-45c4-b52c-dd090241454c",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-07-01",
+      "endDate": "2022-07-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "8426538c-ce68-4796-96ef-fcf1ff6ef3e7",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-08-01",
+      "endDate": "2022-08-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "5d143d5c-0c8d-451b-9013-1befe487e206",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-09-01",
+      "endDate": "2022-09-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "7b5df9a5-41b8-4fd9-843c-1f1e3c42dbd9",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
       "startDate": "2022-10-01",
       "endDate": "2022-10-31",
       "quantity": "3274"
