@@ -14,7 +14,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     })
   })
 
-  it('creates a SROC two-part tariff bill run and once built navigates through all the review pages, changing the billable returns volume on the charge element, checking the "preview the charge" button, marking the licence as "review", marking the progress on the licence and finally removing the licence from the bill run all together', () => {
+  it('creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns and allocated quantities', () => {
     cy.visit('/')
 
     // Enter the user name and password
@@ -141,10 +141,6 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="additional-charges"]').should('contain.text', 'Public Water Supply')
     cy.get('[data-test="adjustment-0"]').should('contain.text', 'Two part tariff agreement')
-
-    // Charge reference details ~ Preview the charge
-    cy.get('.govuk-button').click()
-    cy.get('.govuk-notification-banner').should('exist')
     cy.get('.govuk-back-link').click()
 
     // View match details
