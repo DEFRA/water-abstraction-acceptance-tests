@@ -74,6 +74,18 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('[data-test="meta-data-year"]').should('contain.text', '2022 to 2023')
 
+    // Review licences ~ Test you can filter by licence issue
+    cy.get('.govuk-details__summary').click()
+    cy.get('[data-test="aggregate-factor"]').click()
+    cy.contains('Apply filters').click()
+    cy.get('.govuk-table__caption').should('contain.text', 'Showing 0 of 1 licences')
+    cy.contains('Clear filters').click()
+    cy.get('.govuk-details__summary').click()
+    cy.get('[data-test="returns-late"]').click()
+    cy.contains('Apply filters').click()
+    cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
+    cy.contains('Clear filters').click()
+
     // Review licences ~ Test it has the correct licence
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
