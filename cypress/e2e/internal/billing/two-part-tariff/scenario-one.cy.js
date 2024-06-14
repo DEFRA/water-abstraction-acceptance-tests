@@ -148,7 +148,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="element-dates-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
     cy.get('[data-test="charge-element-issues-0"]').should('contain.text', '')
     cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-element-return volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
 
     // Review Licence AT/TEST/01 ~ Check there is only 1 charge version, charge reference and charge element
     cy.get('#charge-version-1 > .govuk-heading-l').should('not.exist')
