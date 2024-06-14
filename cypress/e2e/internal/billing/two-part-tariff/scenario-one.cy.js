@@ -3,7 +3,7 @@
 describe('Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-scenario-one-data.json').then((fixture) => {
+    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
       cy.load(fixture)
     })
     cy.fixture('users.json').its('billingAndData1').as('userEmail')

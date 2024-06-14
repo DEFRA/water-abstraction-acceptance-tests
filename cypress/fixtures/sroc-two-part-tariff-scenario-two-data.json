@@ -1,0 +1,134 @@
+{
+  "chargeElements": [
+    {
+      "id": "b61f0b33-0250-4f28-a58c-c369eea8be36",
+      "chargeReferenceId": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 10,
+      "authorisedAnnualQuantity": 32,
+      "section127Agreement": false,
+      "description": "SROC Charge Purpose 02",
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "280",
+        "select": "id"
+      },
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      }
+    }
+  ],
+  "returnLogs": [
+    {
+      "id": "v2:1:01/38/38/9275:10055412:2021-11-01:2022-10-31",
+      "returnReference": "10055412",
+      "licenceRef": "AT/TEST/01",
+      "metadata": {
+        "description": "A DRAIN SOMEWHERE",
+        "purposes": [
+          {
+            "primary": {
+              "code": "A",
+              "description": "Agriculture"
+            },
+            "tertiary": {
+              "code": "400",
+              "description": "Spray Irrigation - Direct"
+            },
+            "secondary": {
+              "code": "AGR",
+              "description": "General Agriculture"
+            }
+          }
+        ],
+        "isTwoPartTariff": false,
+        "nald": {
+          "periodStartDay": "1",
+          "periodStartMonth": "4",
+          "periodEndDay": "31",
+          "periodEndMonth": "10"
+        }
+      },
+      "startDate": "2021-11-01",
+      "endDate": "2022-10-30",
+      "receivedDate": null,
+      "dueDate": "2023-11-28",
+      "status": "completed",
+      "underQuery": false
+    }
+  ],
+  "returnSubmissions": [
+    {
+      "id": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "returnLogId": "v2:1:01/38/38/9275:10055412:2021-11-01:2022-10-31",
+      "nilReturn": false,
+      "current": true
+    }
+  ],
+  "returnSubmissionLines": [
+    {
+      "id": "0bb51d21-8a49-41de-b119-f5272f5dda61",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-04-01",
+      "endDate": "2022-04-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "2aff73f1-e6c4-422b-9361-57731e380757",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-05-01",
+      "endDate": "2022-05-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "b55d7df8-a1a8-4776-acdd-ba38120b77c7",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-06-01",
+      "endDate": "2022-06-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "9c120c33-e7d2-45c4-b52c-dd090241454c",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-07-01",
+      "endDate": "2022-07-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "8426538c-ce68-4796-96ef-fcf1ff6ef3e7",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-08-01",
+      "endDate": "2022-08-31",
+      "quantity": "3274"
+    },
+    {
+      "id": "5d143d5c-0c8d-451b-9013-1befe487e206",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-09-01",
+      "endDate": "2022-09-30",
+      "quantity": "3274"
+    },
+    {
+      "id": "7b5df9a5-41b8-4fd9-843c-1f1e3c42dbd9",
+      "returnSubmissionId": "3138bd28-ace6-449a-8293-6213ac1a66df",
+      "startDate": "2022-10-01",
+      "endDate": "2022-10-31",
+      "quantity": "3274"
+    }
+  ]
+}
