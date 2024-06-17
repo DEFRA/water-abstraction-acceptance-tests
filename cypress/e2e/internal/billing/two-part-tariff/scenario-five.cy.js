@@ -94,7 +94,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
     cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
-    cy.get('[data-test="licence-issue-1"]').should('contain.text', '')
+    cy.get('[data-test="licence-issue-1"]').should('contain.text', 'Overlap of charge dates')
     cy.get('[data-test="licence-progress-1"]').should('contain.text', '')
     // Licence should be a review status due to the issue "overlap of charge dates"
     cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'review')
