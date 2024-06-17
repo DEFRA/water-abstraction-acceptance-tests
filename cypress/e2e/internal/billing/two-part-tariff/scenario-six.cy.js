@@ -4,7 +4,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      // We set the received date to be after the 'dueDate' so its a late return
+      // We set under query to true to flag the issue
       fixture.returnLogs[0].underQuery = true
 
       cy.load(fixture)
@@ -106,7 +106,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff bill run')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2022 to 31 March 2023')
 
-    // Review Licence AT/TEST/01 ~ Check the first matched return details include the returns received late issue
+    // Review Licence AT/TEST/01 ~ Check the first matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
