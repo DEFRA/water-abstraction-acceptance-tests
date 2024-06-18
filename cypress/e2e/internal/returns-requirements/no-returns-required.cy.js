@@ -102,7 +102,7 @@ describe('Submit no returns requirement (internal)', () => {
     // confirm we see pop up notification confirming changes have been made
     cy.get('.govuk-notification-banner').contains('Changes made')
 
-    // confirm we see the node added
+    // confirm we see the note added
     cy.contains('This is a note for a no returns requirement.').should('exist')
 
     // click the change note link
@@ -119,7 +119,7 @@ describe('Submit no returns requirement (internal)', () => {
     // confirm we see pop up notification confirming changes have been made
     cy.get('.govuk-notification-banner').contains('Changes made')
 
-    // confirm we see the node added
+    // confirm we see the note added
     cy.contains('This is new and improved note for a no return requirement.').should('exist')
 
     // click the delete note link
