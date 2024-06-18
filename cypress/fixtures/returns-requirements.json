@@ -252,7 +252,7 @@
       "returnVersionId": "a63cd63f-64b2-4adf-9bd0-b6d4a13f04e3",
       "twoPartTariff": true,
       "externalId": "9:100",
-      "siteDescription": "AT/TEST/01 description"
+      "siteDescription": "AT/TEST/01 Description"
     }
   ],
   "returnRequirementPurposes": [
@@ -287,7 +287,17 @@
       "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
       "description": "CLAY WOOD BROOK/OAKSCAR RESERVOIR",
       "ngr1": "TQ 9000031 100",
-      "naldPointId": "9000031"
+      "ngr2": null,
+      "ngr3": null,
+      "ngr4": null
+    },
+    {
+      "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
+      "description": "Example Point Location 2",
+      "ngr1": "TT 9000032 200",
+      "ngr2": null,
+      "ngr3": null,
+      "ngr4": null
     }
   ]
 }
