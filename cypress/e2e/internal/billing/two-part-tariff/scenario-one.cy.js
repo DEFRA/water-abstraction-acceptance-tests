@@ -3,7 +3,7 @@
 describe('Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-scenario-one-data.json').then((fixture) => {
+    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
       cy.load(fixture)
     })
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
@@ -74,6 +74,29 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
     cy.get('[data-test="meta-data-year"]').should('contain.text', '2022 to 2023')
 
+    // Review licences ~ Test you can filter by licence ref
+    cy.get('.govuk-details__summary').click()
+    cy.get('#filter-licence-holder-number').type('AT/1')
+    cy.contains('Apply filters').click()
+    cy.get('.govuk-table__caption').should('contain.text', 'Showing 0 of 1 licences')
+    cy.contains('Clear filters').click()
+    cy.get('.govuk-details__summary').click()
+    cy.get('#filter-licence-holder-number').type('AT/TEST/01')
+    cy.contains('Apply filters').click()
+    cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
+    cy.contains('Clear filters').click()
+
+    // Review licences ~ Test you can filter by licence holder
+    cy.get('.govuk-details__summary').click()
+    cy.get('#filter-licence-holder-number').type('Miss A Test')
+    cy.contains('Apply filters').click()
+    cy.get('.govuk-table__caption').should('contain.text', 'Showing 0 of 1 licences')
+    cy.contains('Clear filters').click()
+    cy.get('.govuk-details__summary').click()
+    cy.get('#filter-licence-holder-number').type('Mr J J Testerson')
+    cy.contains('Apply filters').click()
+    cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
+
     // Review licences ~ Test it has the correct licence
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
@@ -121,10 +144,11 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="charge-reference-link-0"]').should('contain.text', 'View details')
     cy.get('[data-test="element-count-0"]').should('contain.text', 'Element 1 of 1')
     cy.get('[data-test="element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
+    cy.get('[data-test="element-description-0"]').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="element-dates-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
     cy.get('[data-test="charge-element-issues-0"]').should('contain.text', '')
     cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-element-return volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
 
     // Review Licence AT/TEST/01 ~ Check there is only 1 charge version, charge reference and charge element
     cy.get('#charge-version-1 > .govuk-heading-l').should('not.exist')
