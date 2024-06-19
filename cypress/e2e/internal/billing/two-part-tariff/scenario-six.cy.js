@@ -1,11 +1,11 @@
 'use strict'
 
-describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one return however this was received late', () => {
+describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one return however this is under query', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      // We set the received date to be after the 'dueDate' so its a late return
-      fixture.returnLogs[0].receivedDate = '2023-05-01'
+      // We set under query to true to flag the issue
+      fixture.returnLogs[0].underQuery = true
 
       cy.load(fixture)
     })
@@ -83,8 +83,9 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.contains('Apply filters').click()
     cy.get('.govuk-table__caption').should('contain.text', 'Showing 0 of 1 licences')
     cy.contains('Clear filters').click()
+
     cy.get('.govuk-details__summary').click()
-    cy.get('[data-test="returns-late"]').click()
+    cy.get('[data-test="checking-query"]').click()
     cy.contains('Apply filters').click()
     cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
     cy.contains('Clear filters').click()
@@ -93,33 +94,41 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
     cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
-    cy.get('[data-test="licence-issue-1"]').should('contain.text', 'Returns received late')
+    cy.get('[data-test="licence-issue-1"]').should('contain.text', 'Multiple Issues')
     cy.get('[data-test="licence-progress-1"]').should('contain.text', '')
-    cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'ready')
+    // Licence should be a review status due to the "query" issue
+    cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'review')
     cy.get('[data-test="licence-1"] > .govuk-link').click()
 
     // Review Licence AT/TEST/01 ~ Check the licence details
     cy.get('h1').should('contain.text', 'Licence AT/TEST/01')
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'review')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff bill run')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2022 to 31 March 2023')
 
-    // Review Licence AT/TEST/01 ~ Check the first matched return details include the returns received late issue
+    // Review Licence AT/TEST/01 ~ Check the first matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
-    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
-    cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'Returns received late')
+    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'query')
+    // When a return is under query we don't expect the engine to allocate any of its quantities, this will therefore
+    // also mark the return as having the issue 'Over abstracted'
+    cy.get('[data-test="matched-return-total-0"]').should('contain.text', '0 ML / 32 ML')
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'Checking query')
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(3)').should('contain.text', 'Over abstraction')
 
     // Review Licence AT/TEST/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('not.exist')
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
-    // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with a late returns issue
+    // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with the "Under query"
+    // issue
+    cy.get('[data-test="total-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
+    // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
+    cy.get('[data-test="charge-reference-link-0"]').should('contain.text', 'View details')
     cy.get('[data-test="charge-element-issues-0"]').should('contain.text', '')
-    cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
+    cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
     cy.get('[data-test="charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
 
     // View match details
@@ -127,8 +136,10 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"]').contains('General Farming & Domestic A DRAIN SOMEWHERE')
-    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'Returns received late')
+    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'query')
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '0 ML / 32 ML')
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'Checking query')
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(3)').should('contain.text', 'Over abstraction')
+    cy.get('.govuk-back-link').click()
   })
 })
