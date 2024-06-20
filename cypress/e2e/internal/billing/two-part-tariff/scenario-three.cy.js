@@ -118,12 +118,12 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
     // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with a late returns issue
-    cy.get('[data-test="charge-element-issues-0"]').should('contain.text', '')
-    cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', '')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
 
     // View match details
-    cy.get('[data-test="charge-element-match-details-0"]').click()
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"]').contains('General Farming & Domestic A DRAIN SOMEWHERE')
