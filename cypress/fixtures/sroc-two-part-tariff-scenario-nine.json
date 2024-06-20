@@ -1,0 +1,124 @@
+{
+  "chargeVersions": [
+    {
+      "id": "284738d4-9d31-4278-84b5-4a4eb68bd7ed",
+      "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
+      "licenceRef": "AT/TES/01",
+      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "regionCode": 9,
+      "scheme": "sroc",
+      "versionNumber": 100,
+      "startDate": "2022-04-01",
+      "status": "current",
+      "source": "wrls",
+      "changeReasonId": {
+        "schema" : "water",
+        "table" : "changeReasons",
+        "lookup" : "description",
+        "value" : "Strategic review of charges (SRoC)",
+        "select" : "changeReasonId"
+      }
+    }
+  ],
+  "chargeReferences": [
+    {
+      "id": "678997c5-1157-4b80-9800-c32960d05299",
+      "chargeVersionId": "284738d4-9d31-4278-84b5-4a4eb68bd7ed",
+      "description": "SROC Charge Reference 02",
+      "source": "tidal",
+      "loss": "medium",
+      "factorsOverridden": false,
+      "chargeCategoryId": {
+        "schema": "public",
+        "table": "chargeCategories",
+        "lookup": "reference",
+        "value": "4.6.12",
+        "select": "id"
+      },
+      "adjustments": {
+        "s126": null,
+        "s127": true,
+        "s130": false,
+        "charge": null,
+        "winter": false
+      },
+      "waterModel": "no model",
+      "volume": 22,
+      "eiucRegion": "Southern",
+      "section127Agreement": true
+    }
+  ],
+  "chargeElements": [
+    {
+      "id": "6125a201-6d2e-41f8-85bd-8a5bbf455943",
+      "chargeReferenceId": "678997c5-1157-4b80-9800-c32960d05299",
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "authorisedAnnualQuantity": 42,
+      "section127Agreement": true,
+      "description": "SROC Charge Purpose 02",
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "300",
+        "select": "id"
+      },
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      }
+    }
+  ],
+  "returnLogs": [
+    {
+      "id": "v2:1:AT/TEST/01:10021668:2022-10-01:2023-03-31",
+      "returnReference": "10021668",
+      "licenceRef": "AT/TEST/01",
+      "metadata": {
+        "description": "A DRAIN SOMEWHERE",
+        "purposes": [
+          {
+            "primary": {
+              "code": "A",
+              "description": "Agriculture"
+            },
+            "tertiary": {
+              "code": "300",
+              "description": "Mineral Washing"
+            },
+            "secondary": {
+              "code": "AGR",
+              "description": "General Agriculture"
+            }
+          }
+        ],
+        "isTwoPartTariff": true,
+        "nald": {
+          "periodStartDay": "1",
+          "periodStartMonth": "3",
+          "periodEndDay": "31",
+          "periodEndMonth": "10"
+        }
+      },
+      "startDate": "2022-10-01",
+      "endDate": "2023-03-31",
+      "receivedDate": "2023-03-01",
+      "dueDate": "2023-04-28",
+      "status": "due",
+      "underQuery": false
+    }
+  ]
+}
