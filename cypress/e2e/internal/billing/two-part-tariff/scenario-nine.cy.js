@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has two applicable charge version both with a single charge reference and one charge element. Both elements have a matching return that has a status of "due"', () => {
+describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has two applicable charge versions both with a single charge reference and one charge element. Both elements have a matching return that has a status of "due"', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
