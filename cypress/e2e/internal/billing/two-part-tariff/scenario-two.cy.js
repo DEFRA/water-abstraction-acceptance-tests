@@ -105,17 +105,17 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
     // Review Licence AT/TEST/01 ~ Check charge Information details
-    cy.get('[data-test="reference-0"]').should('contain.text', 'Charge reference 4.6.12')
-    cy.get('[data-test="charge-description-0"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
-    cy.get('[data-test="total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
-    cy.get('[data-test="charge-element-issues-0"]').should('contain.text', '')
-    cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.12')
+    cy.get('[data-test="charge-version-0-charge-description-0"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
+    cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', '')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
 
     // Review Licence AT/TEST/01 ~ Check there is only 1 charge version, charge reference and charge element
     cy.get('#charge-version-1 > .govuk-heading-l').should('not.exist')
-    cy.get('[data-test="charge-reference-1"]').should('not.exist')
-    cy.get('[data-test="element-count-1"]').should('not.exist')
+    cy.get('[data-test="charge-version-0-reference-1"]').should('not.exist')
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-count-1"]').should('not.exist')
   })
 })
