@@ -97,7 +97,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
     cy.get('[data-test="licence-issue-1"]').should('contain.text', 'Unable to match return')
     cy.get('[data-test="licence-progress-1"]').should('contain.text', '')
-    // Licence should be a review status due to the "returns received but not processed" issue
+    // Licence should be a review status due to the "unable to match returns" issue
     cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'review')
     cy.get('[data-test="licence-1"] > .govuk-link').click()
 
