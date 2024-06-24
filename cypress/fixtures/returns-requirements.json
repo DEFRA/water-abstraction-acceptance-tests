@@ -120,7 +120,7 @@
       "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
       "regions": {
         "historicalAreaCode": "SAAR",
-        "regionalChargeArea": "Southern"
+        "regionalChargeArea": "Test Region"
       },
       "startDate": "2022-04-01",
       "waterUndertaker": true
@@ -289,7 +289,8 @@
       "ngr1": "TQ 9000031 100",
       "ngr2": null,
       "ngr3": null,
-      "ngr4": null
+      "ngr4": null,
+      "naldPointId": "9000031"
     },
     {
       "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
@@ -297,7 +298,8 @@
       "ngr1": "TT 9000032 200",
       "ngr2": null,
       "ngr3": null,
-      "ngr4": null
+      "ngr4": null,
+      "naldPointId": "9000032"
     }
   ]
 }
