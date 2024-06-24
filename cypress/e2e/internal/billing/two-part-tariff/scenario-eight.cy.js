@@ -1,12 +1,14 @@
 'use strict'
 
-describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference but it has two charge element only one of which is 2pt. It also has two return, one 2pt and one not', () => {
+describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one nil return', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('sroc-two-part-tariff-scenario-two-data.json').then((fixture) => {
+      // We set the nilReturn flag to true on the return submission
+      fixture.returnSubmissions[0].nilReturn = true
+      // Remove all the submission lines, since a nil return wouldn't have any
+      fixture.returnSubmissionLines = []
+
       cy.load(fixture)
     })
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
@@ -17,7 +19,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     })
   })
 
-  it('creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns and allocated quantities', () => {
+  it('creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns and the allocated quantities', () => {
     cy.visit('/')
 
     // Enter the user name and password
@@ -83,6 +85,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
     cy.get('[data-test="licence-issue-1"]').should('contain.text', '')
     cy.get('[data-test="licence-progress-1"]').should('contain.text', '')
+    // Licence should be a ready status since there are no issues
     cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'ready')
     cy.get('[data-test="licence-1"] > .govuk-link').click()
 
@@ -98,24 +101,28 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
-    cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
+    // When a return status is a nil return we don't expect anything to be allocated and no issues to be raised
+    cy.get('[data-test="matched-return-total-0"]').should('contain.text', '0 ML / 0 ML')
 
     // Review Licence AT/TEST/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('not.exist')
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
-    // Review Licence AT/TEST/01 ~ Check charge Information details
-    cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.12')
-    cy.get('[data-test="charge-version-0-charge-description-0"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
-    cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
+    // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with a nil return
+    cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
+    // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
+    cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', '')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '0 ML (10021668)')
 
-    // Review Licence AT/TEST/01 ~ Check there is only 1 charge version, charge reference and charge element
-    cy.get('#charge-version-1 > .govuk-heading-l').should('not.exist')
-    cy.get('[data-test="charge-version-0-reference-1"]').should('not.exist')
-    cy.get('[data-test="charge-version-0-charge-reference-0-element-count-1"]').should('not.exist')
+    // View match details
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+    cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
+    cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
+    cy.get('[data-test="matched-return-summary-0"]').contains('General Farming & Domestic A DRAIN SOMEWHERE')
+    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
+    cy.get('[data-test="matched-return-total-0"]').should('contain.text', '0 ML / 0 ML')
+    cy.get('.govuk-back-link').click()
   })
 })
