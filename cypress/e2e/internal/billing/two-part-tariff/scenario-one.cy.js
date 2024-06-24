@@ -123,7 +123,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
-    cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', '\n          General Farming & Domestic\n       ')
+    cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
 
@@ -134,27 +134,28 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     // Review Licence AT/TEST/01 ~ Check charge Information details
     cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2022 to 2023')
     cy.get('#charge-version-0 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2022 to 31 March 2023')
+    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 1 two-part tariff charge element')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
     cy.get('.govuk-details__summary').click()
     cy.get('[data-test="billing-account"]').should('contain.text', 'A99999991A')
     cy.get('[data-test="account-name"]').should('contain.text', 'Big Farm Co Ltd 01')
-    cy.get('[data-test="reference-0"]').should('contain.text', 'Charge reference 4.6.12')
-    cy.get('[data-test="charge-description-0"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
-    cy.get('[data-test="total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-reference-link-0"]').should('contain.text', 'View details')
-    cy.get('[data-test="element-count-0"]').should('contain.text', 'Element 1 of 1')
-    cy.get('[data-test="element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
-    cy.get('[data-test="element-description-0"]').should('contain.text', 'General Farming & Domestic')
-    cy.get('[data-test="element-dates-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
-    cy.get('[data-test="charge-element-issues-0"]').should('contain.text', '')
-    cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.12')
+    cy.get('[data-test="charge-version-0-charge-description-0"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
+    cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-count-0"]').should('contain.text', 'Element 1 of 1')
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', 'General Farming & Domestic')
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-dates-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', '')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
 
     // Review Licence AT/TEST/01 ~ Check there is only 1 charge version, charge reference and charge element
     cy.get('#charge-version-1 > .govuk-heading-l').should('not.exist')
-    cy.get('[data-test="charge-reference-1"]').should('not.exist')
-    cy.get('[data-test="element-count-1"]').should('not.exist')
-    cy.get('[data-test="charge-reference-link-0"]').click()
+    cy.get('[data-test="charge-version-0-reference-1"]').should('not.exist')
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-count-1"]').should('not.exist')
+    cy.get('[data-test="charge-version-0-charge-reference-link-0"]').click()
 
     // Charge reference details
     cy.get('[data-test="charge-reference"]').should('contain.text', 'Charge reference 4.6.12')
@@ -172,8 +173,9 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('.govuk-back-link').click()
 
     // View match details
-    cy.get('[data-test="charge-element-match-details-0"]').click()
-    cy.get('.govuk-heading-l').should('contain.text', '\n        SROC Charge Purpose 01\n         1 April 2022 to 31 March 2023 \n      ')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+    cy.get('.govuk-heading-l').should('contain.text', 'SROC Charge Purpose 01')
+    cy.get('.govuk-heading-l').should('contain.text', '1 April 2022 to 31 March 2023')
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
     cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2022 to 2023')
     cy.get('[data-test="charge-period"]').should('contain.text', 'Charge period 1 April 2022 to 31 March 2023')
@@ -182,7 +184,8 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="issues-0"]').should('not.exist')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
-    cy.get('[data-test="matched-return-summary-0"]').should('contain.text', '\n        \n          General Farming & Domestic\n        \n          A DRAIN SOMEWHERE\n      ')
+    cy.get('[data-test="matched-return-summary-0"]').should('contain.text', 'General Farming & Domestic')
+    cy.get('[data-test="matched-return-summary-0"]').should('contain.text', 'A DRAIN SOMEWHERE')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '32 ML / 32 ML')
 
@@ -204,7 +207,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('.govuk-back-link').click()
 
     // Review Licence AT/TEST/01 ~ Check billable returns has updated on licence review page
-    cy.get('[data-test="charge-element-billable-returns-0"]').should('contain.text', '20.123 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '20.123 ML / 32 ML')
 
     // Review Licence AT/TEST/01 ~ Put licence into review
     cy.contains('Put licence into review').click()

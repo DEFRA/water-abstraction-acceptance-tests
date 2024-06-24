@@ -120,7 +120,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the check page
-    cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
+    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start date information we expect
     cy.get('[data-test="start-date"]').contains('12 June 2023')

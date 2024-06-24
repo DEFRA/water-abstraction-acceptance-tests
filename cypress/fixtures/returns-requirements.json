@@ -194,14 +194,14 @@
         "value": "140",
         "select": "id"
       },
-      "purposePrimaryId": {
+      "primaryPurposeId": {
         "schema": "water",
         "table": "purposesPrimary",
         "lookup": "legacyId",
         "value": "A",
         "select": "purposePrimaryId"
       },
-      "purposeSecondaryId": {
+      "secondaryPurposeId": {
         "schema": "water",
         "table": "purposesSecondary",
         "lookup": "legacyId",
@@ -219,14 +219,14 @@
         "value": "240",
         "select": "id"
       },
-      "purposePrimaryId": {
+      "primaryPurposeId": {
         "schema": "water",
         "table": "purposesPrimary",
         "lookup": "legacyId",
         "value": "W",
         "select": "purposePrimaryId"
       },
-      "purposeSecondaryId": {
+      "secondaryPurposeId": {
         "schema": "water",
         "table": "purposesSecondary",
         "lookup": "legacyId",
