@@ -1,0 +1,64 @@
+{
+  "chargeReferences": [
+    {
+      "id": "f5c0a971-2f9c-46d5-877d-b560ae6003e2",
+      "chargeVersionId": "8e5626ee-5e4c-48f6-a668-471d35997e2c",
+      "description": "SROC Charge Reference 01",
+      "source": "tidal",
+      "loss": "medium",
+      "factorsOverridden": false,
+      "chargeCategoryId": {
+        "schema": "public",
+        "table": "chargeCategories",
+        "lookup": "reference",
+        "value": "4.6.12",
+        "select": "id"
+      },
+      "adjustments": {
+        "s126": null,
+        "s127": true,
+        "s130": false,
+        "charge": null,
+        "winter": false
+      },
+      "waterModel": "no model",
+      "volume": 32,
+      "eiucRegion": "Southern",
+      "section127Agreement": true
+    }
+  ],
+  "chargeElements": [
+    {
+      "id": "9bfc9f79-70cd-4c8c-bc78-178bf262fc7e",
+      "chargeReferenceId": "f5c0a971-2f9c-46d5-877d-b560ae6003e2",
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "authorisedAnnualQuantity": 14,
+      "section127Agreement": true,
+      "description": "SROC Charge Purpose 02",
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      }
+    }
+  ]
+}
