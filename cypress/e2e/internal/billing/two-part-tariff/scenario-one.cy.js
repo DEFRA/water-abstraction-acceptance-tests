@@ -113,9 +113,9 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2022 to 31 March 2023')
 
     // Review Licence AT/TEST/01 ~ Check the Licence links
-    cy.get('[data-test="summary-link"] > .govuk-link').should('exist')
-    cy.get('[data-test="returns-link"] > .govuk-link').should('exist')
-    cy.get('[data-test="charge-information-link"] > .govuk-link').should('exist')
+    cy.get('[data-test="summary-link"]').should('exist')
+    cy.get('[data-test="returns-link"]').should('exist')
+    cy.get('[data-test="charge-information-link"]').should('exist')
     cy.get('[data-test="charge-period-0"]').should('exist')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('exist')
 
