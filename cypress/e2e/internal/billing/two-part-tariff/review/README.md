@@ -71,7 +71,7 @@ This README provides an overview of the acceptance test scenarios for the Two-Pa
 - **Acceptance Criteria**:
   - Licence has no issues flagged
   - Licence status is ’ready’
-  - Nothing is allocated to the charge element of reference
+  - Nothing is allocated to the charge element or reference
 
 ### Scenario 9: A Licence Without Return Submissions
 - **Description**: Tests handling of licences with no return submissions and verifies correct flagging and allocation.
