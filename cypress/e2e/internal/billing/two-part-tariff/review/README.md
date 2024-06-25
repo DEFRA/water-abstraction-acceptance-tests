@@ -119,7 +119,7 @@ This README provides an overview of the acceptance test scenarios for the Two-Pa
 
 
 ### Scenario 14: Allocation of Returns to Charge Elements by Authorised Amounts
-- **Description**: Demonstrates allocation of returns to charge elements based on authorised volumes, ensuring correct prioritization.
+- **Description**: Demonstrates allocation of returns to charge elements based on authorised volumes, ensuring correct prioritisation.
 - **Acceptance Criteria**:
   - No issues are reported on the licence, the returns or the charging information.
   - Licence status is ’ready’
