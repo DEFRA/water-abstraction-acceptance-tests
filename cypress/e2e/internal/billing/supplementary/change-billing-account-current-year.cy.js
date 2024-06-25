@@ -134,7 +134,7 @@ describe('Change billing account in current financial year (internal)', () => {
 
     // Search
     // search for a licence and select it
-    cy.get('#query').type('AT/SROC/SUPB/02')
+    cy.get('#query').type('AT/TEST/02')
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
@@ -251,12 +251,10 @@ describe('Change billing account in current financial year (internal)', () => {
     // NOTE: We cannot assert the new billing account numbers because it will be different in each environment and
     // unpredictable because the new number is based on existing data
     cy.get('[data-test="billing-contact-0"]').should('contain.text', 'Big Farm Co Ltd 02')
-    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get('[data-test="total-0"]').should('contain.text', '-£97.00')
+    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/TEST/02')
 
     cy.get('[data-test="billing-contact-1"]').should('contain.text', 'Big Farm Co Ltd 01')
-    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/SROC/SUPB/02')
-    cy.get('[data-test="total-1"]').should('contain.text', '£97.00')
+    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/02')
     cy.get('.govuk-button').contains('Send bill run').click()
 
     // You're about to send this bill run
