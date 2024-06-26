@@ -60,6 +60,104 @@
       "companyNumber": "1234504"
     }
   ],
+  "companyAddresses": [
+    {
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2022-04-01",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "id"
+      }
+    },
+    {
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "6d07a08f-4903-46a7-9d8e-66a0521e25db",
+      "startDate": "2022-04-01",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "id"
+      }
+    },
+    {
+      "companyId": "89dd5558-3af4-4878-8d09-1ba0b5fbaa00",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2019-01-01",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "id"
+      }
+    },
+    {
+      "companyId": "89dd5558-3af4-4878-8d09-1ba0b5fbaa00",
+      "addressId": "6d07a08f-4903-46a7-9d8e-66a0521e25db",
+      "startDate": "2019-01-01",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "id"
+      }
+    },
+    {
+      "companyId": "951f5383-d87c-41eb-bf54-8b6269045ff2",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2022-04-01",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "id"
+      }
+    },
+    {
+      "companyId": "951f5383-d87c-41eb-bf54-8b6269045ff2",
+      "addressId": "6d07a08f-4903-46a7-9d8e-66a0521e25db",
+      "startDate": "2022-04-01",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "id"
+      }
+    },
+    {
+      "companyId": "cd6cefb2-260f-4292-8228-21ab23abb8f4",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2022-04-01",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "id"
+      }
+    },
+    {
+      "companyId": "cd6cefb2-260f-4292-8228-21ab23abb8f4",
+      "addressId": "6d07a08f-4903-46a7-9d8e-66a0521e25db",
+      "startDate": "2022-04-01",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "id"
+      }
+    }
+  ],
   "contacts": [
     {
       "id": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",

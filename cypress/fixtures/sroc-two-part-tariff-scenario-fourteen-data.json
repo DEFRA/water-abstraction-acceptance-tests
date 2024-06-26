@@ -1,0 +1,73 @@
+{
+  "chargeElements": [
+    {
+      "id": "f661d265-18ff-42f6-85d8-5c91f636611c",
+      "chargeReferenceId": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "authorisedAnnualQuantity": 20,
+      "section127Agreement": true,
+      "description": "SROC Charge Purpose 02",
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      }
+    }
+  ],
+  "returnSubmissionLines": [
+    {
+      "id": "89966f6f-bc62-40bf-97a5-3c7bfeeb2a3b",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-04-01",
+      "endDate": "2022-04-30",
+      "quantity": "8000"
+    },
+    {
+      "id": "7e503eb2-323e-4b17-9d0c-2c8ad1ebe575",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-05-01",
+      "endDate": "2022-05-31",
+      "quantity": "8000"
+    },
+    {
+      "id": "0438b460-52d6-40b5-9dfd-963a63ada23d",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-06-01",
+      "endDate": "2022-06-30",
+      "quantity": "8000"
+    },
+    {
+      "id": "e6a493df-241a-47de-ae62-b976d2ff9941",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-07-01",
+      "endDate": "2022-07-31",
+      "quantity": "8000"
+    },
+    {
+      "id": "fb9d239e-0428-4ca4-a7fd-49ae9ac1d6c7",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-08-01",
+      "endDate": "2022-08-31",
+      "quantity": "8000"
+    }
+  ]
+}
