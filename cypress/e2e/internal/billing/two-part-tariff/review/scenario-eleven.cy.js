@@ -3,18 +3,15 @@
 describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and two charge elements. The matching return for charge element one is over-abstracted and the matching return for charge element 2 is over-abstracted and abstracted outside the charge period', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      // Update the charge reference volume to allow both elements to fully allocate
-      fixture.chargeReferences[0].volume = '64'
-      // Update the return submission line quantity to make it an over abstracted volume
-      fixture.returnSubmissionLines[0].quantity = '10000'
+    // Load the base licence information into the DB
+    cy.fixture('review-scenario-licence.json').then((fixture) => {
       cy.load(fixture)
     })
-
-    cy.fixture('sroc-two-part-tariff-scenario-eleven-data.json').then((fixture) => {
+    // Load the charge and returns information into the DB
+    cy.fixture('review-scenario-eleven.json').then((fixture) => {
       cy.load(fixture)
     })
-
+    // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
