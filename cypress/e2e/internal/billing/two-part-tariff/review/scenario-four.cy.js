@@ -3,12 +3,15 @@
 describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. The charge reference has an aggregate value. It has one return that matches.', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      // We set the aggregate value on the charge reference
-      fixture.chargeReferences[0].adjustments.aggregate = '0.5'
-
+    // Load the base licence information into the DB
+    cy.fixture('review-scenario-licence.json').then((fixture) => {
       cy.load(fixture)
     })
+    // Load the charge and returns information into the DB
+    cy.fixture('review-scenario-four.json').then((fixture) => {
+      cy.load(fixture)
+    })
+    // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023

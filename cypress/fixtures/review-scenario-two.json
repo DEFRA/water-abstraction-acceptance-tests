@@ -36,6 +36,7 @@
         "select": "id"
       },
       "adjustments": {
+        "aggregate": null,
         "s126": null,
         "s127": true,
         "s130": false,
