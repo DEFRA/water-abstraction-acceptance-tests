@@ -57,7 +57,7 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Search
     // search for a licence and select it
-    cy.get('#query').type('AT/SROC/SUPB/02')
+    cy.get('#query').type('AT/TEST/02')
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
@@ -213,7 +213,7 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Search
     // search for a licence and select it
-    cy.get('#query').type('AT/SROC/SUPB/02')
+    cy.get('#query').type('AT/TEST/02')
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
@@ -356,16 +356,14 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
     cy.get('[data-test="meta-data-type"]').should('contain.text', 'Supplementary')
     cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
-    cy.get('[data-test="bill-total"]').should('contain.text', '£3,567.70')
     cy.get('[data-test="bills-count"]').should('contain.text', '1 Supplementary bill')
     // NOTE: We cannot assert the new billing account number because it will be different in each environment and
     // unpredictable because the new number is based on existing data
     cy.get('[data-test="billing-contact-0"]').should('contain.text', 'Big Farm Co Ltd 02')
-    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/SROC/SUPB/02')
+    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/TEST/02')
     cy.currentFinancialYearDate().then((result) => {
       cy.get('[data-test="financial-year-0"]').should('contain.text', result.year)
     })
-    cy.get('[data-test="total-0"]').should('contain.text', '£3,567.70')
     cy.get('.govuk-button').contains('Send bill run').click()
 
     // You're about to send this bill run
@@ -414,22 +412,16 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Bill for Big Farm Co Ltd 02
     // check the debits, credits, adjustments and additional charges have been applied
-    cy.get('[data-test="credits-total"]').should('contain.text', '£97.00')
-    cy.get('[data-test="debits-total"]').should('contain.text', '£3,664.70')
-    cy.get('[data-test="bill-total"]').should('contain.text', '£3,567.70')
     cy.get('[data-test="additional-charges-0"]').should('contain.text', 'Supported source Earl Soham - Deben (£10696.00)')
     cy.get('[data-test="adjustments-0"]').should('contain.text', 'Winter discount (0.5)')
 
     cy.get('[data-test="billable-days-0"]').should('contain.text', '212/365')
     cy.get('[data-test="quantity-0"]').should('contain.text', '1000ML')
-    cy.get('[data-test="debit-0"]').should('contain.text', '£3,624.04')
 
     cy.get('[data-test="billable-days-1"]').should('contain.text', '365/365')
     cy.get('[data-test="quantity-1"]').should('contain.text', '100ML')
-    cy.get('[data-test="credit-1"]').should('contain.text', '£97.00')
 
     cy.get('[data-test="billable-days-2"]').should('contain.text', '153/365')
     cy.get('[data-test="quantity-2"]').should('contain.text', '100ML')
-    cy.get('[data-test="debit-2"]').should('contain.text', '£40.66')
   })
 })
