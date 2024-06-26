@@ -3,9 +3,15 @@
 describe('Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
+    // Load the base licence information into the DB
+    cy.fixture('review-scenario-licence.json').then((fixture) => {
       cy.load(fixture)
     })
+    // Load the charge and returns information into the DB
+    cy.fixture('review-scenario-one.json').then((fixture) => {
+      cy.load(fixture)
+    })
+    // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
@@ -137,7 +143,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 1 two-part tariff charge element')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
     cy.get('.govuk-details__summary').click()
-    cy.get('[data-test="billing-account"]').should('contain.text', 'A99999991A')
+    cy.get('[data-test="billing-account"]').should('contain.text', 'S99999991A')
     cy.get('[data-test="account-name"]').should('contain.text', 'Big Farm Co Ltd 01')
     cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.12')
     cy.get('[data-test="charge-version-0-charge-description-0"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
