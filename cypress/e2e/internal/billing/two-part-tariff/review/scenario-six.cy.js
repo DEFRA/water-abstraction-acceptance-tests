@@ -3,12 +3,15 @@
 describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one return however this is under query', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      // We set under query to true to flag the issue
-      fixture.returnLogs[0].underQuery = true
-
+    // Load the base licence information into the DB
+    cy.fixture('review-scenario-licence.json').then((fixture) => {
       cy.load(fixture)
     })
+    // Load the charge and returns information into the DB
+    cy.fixture('review-scenario-six.json').then((fixture) => {
+      cy.load(fixture)
+    })
+    // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
