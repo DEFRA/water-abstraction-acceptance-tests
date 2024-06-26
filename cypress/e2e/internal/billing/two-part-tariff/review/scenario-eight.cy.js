@@ -3,14 +3,15 @@
 describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one nil return', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      // We set the nilReturn flag to true on the return submission
-      fixture.returnSubmissions[0].nilReturn = true
-      // Remove all the submission lines, since a nil return wouldn't have any
-      fixture.returnSubmissionLines = []
-
+    // Load the base licence information into the DB
+    cy.fixture('review-scenario-licence.json').then((fixture) => {
       cy.load(fixture)
     })
+    // Load the charge and returns information into the DB
+    cy.fixture('review-scenario-eight.json').then((fixture) => {
+      cy.load(fixture)
+    })
+    // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
