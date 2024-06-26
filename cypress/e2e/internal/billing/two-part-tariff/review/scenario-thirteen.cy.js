@@ -3,13 +3,15 @@
 describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has one applicable charge version with 1 charge reference and a charge element. It has one unmatched return', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      // We change the returns purpose to be different to the charge elements so they don't match
-      fixture.returnLogs[0].metadata.purposes[0].tertiary = { code: 300, description: 'Mineral Washing' }
-
+    // Load the base licence information into the DB
+    cy.fixture('review-scenario-licence.json').then((fixture) => {
       cy.load(fixture)
     })
-
+    // Load the charge and returns information into the DB
+    cy.fixture('review-scenario-thirteen.json').then((fixture) => {
+      cy.load(fixture)
+    })
+    // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
