@@ -8,6 +8,8 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
       cy.load(fixture)
     })
     // Load the charge and returns information into the DB
+    // NOTE: We update the charge reference volume to allow both elements to fully allocate and the return submission
+    // line quantity to make it an over abstracted volume
     cy.fixture('review-scenario-11.json').then((fixture) => {
       cy.load(fixture)
     })

@@ -8,6 +8,8 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
       cy.load(fixture)
     })
     // Load the charge and returns information into the DB
+    // NOTE: We set the charge elements authorisedAnnualQuantity to be smaller so it allocated both elements on this
+    // licence
     cy.fixture('review-scenario-12.json').then((fixture) => {
       cy.load(fixture)
     })

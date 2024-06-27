@@ -8,6 +8,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
       cy.load(fixture)
     })
     // Load the charge and returns information into the DB
+    // NOTE: We set the aggregate value on the charge reference
     cy.fixture('review-scenario-04.json').then((fixture) => {
       cy.load(fixture)
     })
