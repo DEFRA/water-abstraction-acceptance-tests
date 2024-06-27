@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has two applicable charge versions both with a single charge reference and one charge element. Both elements have a matching return that has a status of "due"', () => {
+describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has one applicable charge version with two charge references, each with one charge element. Both elements have a matching return that has a status of "due"', () => {
   beforeEach(() => {
     cy.tearDown()
     // Load the base licence information into the DB
