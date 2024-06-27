@@ -1,28 +1,22 @@
 'use strict'
 
-describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has two applicable charge versions both with a single charge reference and one charge element. Both elements have a matching return that has a status of "due"', () => {
+describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has one applicable charge version with two charge references, each with one charge element. Both elements have a matching return that has a status of "due"', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('sroc-two-part-tariff-simple-licence-data.json').then((fixture) => {
-      // We set the status to "due" to flag the issue "No returns received"
-      fixture.chargeReferences[0].volume = 52
-      fixture.returnLogs[0].status = 'due'
-      fixture.returnSubmissions = []
-      fixture.returnSubmissionLines = []
-
+    // Load the base licence information into the DB
+    cy.fixture('review-scenario-licence.json').then((fixture) => {
       cy.load(fixture)
     })
-
-    // Load in the second charge version, charge reference and charge element with its matching return
-    // The reason for loading two sets of data for this license is to test how the engine allocates volumes when a
-    // return has a status of "due." We expect the engine to allocate the full amount from either the charge reference
-    // or the charge element, whichever is lower. The two datasets switch the lower volume between the charge reference
-    // and the charge element. This ensures we can verify that the engine allocates only up to the lower of the two
-    // volumes.
-    cy.fixture('sroc-two-part-tariff-scenario-nine.json').then((fixture) => {
+    // Load the charge and returns information into the DB
+    // NOTE: We set the status to "due" to flag the issue "No
+    // returns received". We include 2 charge references to test how the engine allocates volumes when a return has a
+    // status of "due." We expect the engine to allocate the full amount from either the charge reference or the charge
+    // element, whichever is lower. The two datasets switch the lower volume between the charge reference and the charge
+    // element. This ensures we can verify that the engine allocates only up to the lower of the two volumes.
+    cy.fixture('review-scenario-09.json').then((fixture) => {
       cy.load(fixture)
     })
-
+    // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
@@ -121,8 +115,6 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff bill run')
     // On this licence there are two charge versions meaning we have two charge period links
     cy.get('[data-test="charge-period-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
-    cy.get('[data-test="charge-period-1"]').should('contain.text', '1 April 2022 to 31 March 2023')
-    cy.get('[data-test="charge-period-2"]').should('not.exist')
 
     // Review Licence AT/TEST/01 ~ Check the first matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
@@ -146,12 +138,12 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="matched-return-action-2"] > .govuk-link').should('not.exist')
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
-    // Review Licence AT/TEST/01 ~ Check charge Information details are correct for charge version 1
+    // Review Licence AT/TEST/01 ~ Check charge information details are correct
     cy.get('#charge-version-0 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2022 to 31 March 2023')
-    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 1 two-part tariff charge element')
-    cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.12')
-    // For the first charge version the charge reference has a lower authorised volume than its charge element. This
-    // means we expect the return to only allocate to the charge reference volume of 22ML
+    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '2 charge references  with 2 two-part tariff charge elements ')
+    cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.19')
+    // The first charge reference has a lower authorised volume than its charge element. This means we expect the return
+    // to only allocate to the charge reference volume of 22ML
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '22 ML / 22 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
@@ -162,7 +154,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '22 ML / 42 ML')
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '0 ML (10021668)')
 
-    // View match details ~ For charge version 1's element
+    // View match details ~ For charge reference 1's element
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
     cy.get('[data-test="billable-returns"]').should('contain.text', '22ML')
     cy.get('[data-test="authorised-volume"]').should('contain.text', '42ML')
@@ -176,23 +168,21 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('.govuk-back-link').click()
 
     // Review Licence AT/TEST/01 ~ Check charge Information details are correct for charge version 2
-    cy.get('#charge-version-1 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2022 to 31 March 2023')
-    cy.get('[data-test="charge-version-1-details"]').should('contain.text', '1 charge reference  with 1 two-part tariff charge element')
-    cy.get('[data-test="charge-version-1-reference-0"]').should('contain.text', 'Charge reference 4.6.12')
-    // For the second charge version the charge element has a lower authorised volume than its charge reference. This
+    cy.get('[data-test="charge-version-0-reference-1"]').should('contain.text', 'Charge reference 4.6.12')
+    // For the second charge reference the charge element has a lower authorised volume than its charge reference. This
     // means we expect the return to only allocate to the charge element volume of 32ML
-    cy.get('[data-test="charge-version-1-total-billable-returns-0"]').should('contain.text', '32 ML / 52 ML')
+    cy.get('[data-test="charge-version-0-total-billable-returns-1"]').should('contain.text', '32 ML / 52 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
-    cy.get('[data-test="charge-version-1-charge-reference-link-0"]').should('contain.text', 'View details')
-    cy.get('[data-test="charge-version-1-charge-reference-0-element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
-    cy.get('[data-test="charge-version-1-charge-reference-0-element-description-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
-    cy.get('[data-test="charge-version-1-charge-reference-0-element-description-0"]').should('contain.text', 'General Farming & Domestic')
-    cy.get('[data-test="charge-version-1-charge-reference-0-charge-element-issues-0"]').should('contain.text', 'Some returns not received')
-    cy.get('[data-test="charge-version-1-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-version-1-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '0 ML (10021668)')
+    cy.get('[data-test="charge-version-0-charge-reference-link-1"]').should('contain.text', 'View details')
+    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
+    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
+    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should('contain.text', 'General Farming & Domestic')
+    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-issues-0"]').should('contain.text', 'Some returns not received')
+    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-return-volumes-0"]').should('contain.text', '0 ML (10021668)')
 
-    // View match details ~ For charge version 2's element
-    cy.get('[data-test="charge-version-1-charge-reference-0-charge-element-match-details-0"]').click()
+    // View match details ~ For charge reference 2's element
+    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-match-details-0"]').click()
     cy.get('[data-test="billable-returns"]').should('contain.text', '32ML')
     cy.get('[data-test="authorised-volume"]').should('contain.text', '32ML')
     cy.get('[data-test="issues-0"]').should('contain.text', 'Some returns not received')
