@@ -64,7 +64,7 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start data and reason options selected previously
-    cy.get('[data-test="start-date"]').contains('12 June 2023')
+    cy.get('[data-test="start-date"]').contains('1 April 2022')
     cy.get('[data-test="reason"]').contains('Licence holder name or address change')
 
     // // choose the approve return requirement button
