@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one return however this is under query', () => {
+describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one matching return with submitted lines straddling the charge period.', () => {
   beforeEach(() => {
     cy.tearDown()
     // Load the base licence information into the DB
@@ -8,7 +8,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
       cy.load(fixture)
     })
     // Load the charge and returns information into the DB
-    cy.fixture('review-scenario-six.json').then((fixture) => {
+    cy.fixture('review-scenario-05.json').then((fixture) => {
       cy.load(fixture)
     })
     // Grab the user email to use
@@ -20,7 +20,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     })
   })
 
-  it('creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns, the returns issues and the allocated quantities', () => {
+  it('creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns, the elements issues and the allocated quantities', () => {
     cy.visit('/')
 
     // Enter the user name and password
@@ -82,13 +82,13 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // Review licences ~ Test you can filter by licence issue
     cy.get('.govuk-details__summary').click()
-    cy.get('[data-test="aggregate-factor"]').click()
+    cy.get('[data-test="returns-late"]').click()
     cy.contains('Apply filters').click()
     cy.get('.govuk-table__caption').should('contain.text', 'Showing 0 of 1 licences')
     cy.contains('Clear filters').click()
 
     cy.get('.govuk-details__summary').click()
-    cy.get('[data-test="checking-query"]').click()
+    cy.get('[data-test="overlap-of-charge-dates"]').click()
     cy.contains('Apply filters').click()
     cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
     cy.contains('Clear filters').click()
@@ -97,9 +97,9 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
     cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
-    cy.get('[data-test="licence-issue-1"]').should('contain.text', 'Multiple Issues')
+    cy.get('[data-test="licence-issue-1"]').should('contain.text', 'Overlap of charge dates')
     cy.get('[data-test="licence-progress-1"]').should('contain.text', '')
-    // Licence should be a review status due to the "query" issue
+    // Licence should be a review status due to the issue "overlap of charge dates"
     cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'review')
     cy.get('[data-test="licence-1"] > .govuk-link').click()
 
@@ -109,40 +109,38 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff bill run')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2022 to 31 March 2023')
 
-    // Review Licence AT/TEST/01 ~ Check the first matched return details
+    // Review Licence AT/TEST/01 ~ Check the matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
-    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'query')
-    // When a return is under query we don't expect the engine to allocate any of its quantities, this will therefore
-    // also mark the return as having the issue 'Over abstracted'
-    cy.get('[data-test="matched-return-total-0"]').should('contain.text', '0 ML / 32 ML')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'Checking query')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(3)').should('contain.text', 'Over abstraction')
+    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
+    cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
+    // Should be no issues on the return
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', '')
 
     // Review Licence AT/TEST/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('not.exist')
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
-    // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with the "Under query"
-    // issue
-    cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
+    // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with "overlap of charge
+    // dates"
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', 'Overlap of charge dates')
+    // Even with the issue "overlap of charge dates" we still expect the return to allocate fully to the charge element
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', '')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"]').contains('General Farming & Domestic A DRAIN SOMEWHERE')
-    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'query')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '0 ML / 32 ML')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'Checking query')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(3)').should('contain.text', 'Over abstraction')
+    cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '32 ML / 32 ML')
+    // The "overlap of charge dates" issue should be flagged on the element
+    cy.get('[data-test="issues-0"]').should('contain.text', 'Overlap of charge dates')
     cy.get('.govuk-back-link').click()
   })
 })
