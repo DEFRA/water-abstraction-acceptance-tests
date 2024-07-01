@@ -67,16 +67,117 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     cy.get('[data-test="start-date"]').contains('1 April 2022')
     cy.get('[data-test="reason"]').contains('Licence holder name or address change')
 
-    // // choose the approve return requirement button
-    // cy.contains('Approve returns requirement').click()
+    // choose the change purpose button for the requirement
+    cy.get('[data-test="change-purposes-0"]').click()
 
-    // // confirm we are on the approved page
-    // cy.get('.govuk-panel__title').contains('Requirements for returns approved')
+    // choose another purpose and continue
+    cy.get('#purposes').uncheck()
+    cy.get('#purposes-2').check()
+    cy.contains('Continue').click()
 
-    // // click link to return to licence set up
-    // cy.contains('Return to licence set up').click()
+    // confirm we see the changed purpose for the requirement
+    cy.get('[data-test="purposes-0"]').contains('Laundry Use')
 
-    // // confirm we are on the charge information tab
-    // cy.get('#charge').contains('Charge information')
+    // choose the change points button for the requirement
+    cy.get('[data-test="change-points-0"]').click()
+
+    // choose another point and continue
+    cy.get('#points').uncheck()
+    cy.get('#points-2').check()
+    cy.contains('Continue').click()
+
+    // confirm we see the changed points for the requirement
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (AT/TEST/01 Requirement')
+
+    // choose the add another requirement
+    cy.contains('Add another requirement').click()
+
+    // confirm we are on the purpose page
+    cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
+
+    // choose a purpose and click continue
+    cy.get('#purposes').check()
+    cy.get('#purposes-2').check()
+    cy.contains('Continue').click()
+
+    // confirm we are on the points page
+    cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
+
+    // choose a point and click continue
+    cy.get('#points').check()
+    cy.contains('Continue').click()
+
+    // confirm we are on the abstraction period page
+    cy.get('.govuk-heading-xl').contains('Enter the abstraction period for the requirements for returns')
+
+    // choose start and end dates for the abstraction period and click continue
+    cy.get('#abstraction-period-start-day').type('01')
+    cy.get('#abstraction-period-start-month').type('12')
+    cy.get('#abstraction-period-end-day').type('03')
+    cy.get('#abstraction-period-end-month').type('09')
+    cy.contains('Continue').click()
+
+    // confirm we are on the returns cycle page
+    cy.get('.govuk-heading-xl').contains('Select the returns cycle for the requirements for returns')
+
+    // choose a returns cycle and continue
+    cy.get('#returnsCycle').check()
+    cy.contains('Continue').click()
+
+    // confirm we are on the site description page
+    cy.get('.govuk-label').contains('Enter a site description for the requirements for returns')
+
+    // enter a site description and continue
+    cy.get('#site-description').type('This is a valid site description')
+    cy.contains('Continue').click()
+
+    // confirm we are on the readings collected page
+    cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are collected')
+
+    // choose a collected time frame and continue
+    cy.get('#frequencyCollected').check()
+    cy.contains('Continue').click()
+
+    // confirm we are on the readings reported page
+    cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are reported')
+
+    // choose a reporting time frame and continue
+    cy.get('#frequencyReported').check()
+    cy.contains('Continue').click()
+
+    // confirm we are on the agreements and exceptions page
+    cy.get('.govuk-heading-l').contains('Select agreements and exceptions for the requirements for returns')
+
+    // choose an agreement and exception and continue
+    cy.get('#agreementsExceptions').check()
+    cy.contains('Continue').click()
+
+    // confirm we are on the check page
+    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
+
+    // confirm we see the newly created return requirement
+    cy.contains('This is a valid site description')
+
+    // confirm we see the information entered for the return requirement
+    cy.get('[data-test="purposes-2"]').contains('General Farming & Domestic Laundry Use')
+    cy.get('[data-test="points-2"]').contains('At National Grid Reference TQ 1234 5678 (AT/TEST/01 Requirement')
+    cy.get('[data-test="abstraction-period-2"]').contains('From 1 December to 3 September')
+    cy.get('[data-test="returns-cycle-2"]').contains('Summer')
+    cy.get('[data-test="site-description-2"]').contains('This is a valid site description')
+    cy.get('[data-test="frequency-collected-2"]').contains('Daily')
+    cy.get('[data-test="frequency-reported-2"]').contains('Daily')
+    cy.get('[data-test="agreements-exceptions-2"]').contains('Gravity fill')
+
+    // choose the approve return requirement button
+    cy.contains('Approve returns requirement').click()
+
+    // confirm we are on the approved page
+    cy.get('.govuk-panel__title').contains('Requirements for returns approved')
+
+    // click link to return to licence set up
+    cy.contains('Return to licence set up').click()
+
+    // confirm we are on the charge information tab
+    cy.get('#charge').contains('Charge information')
   })
 })
