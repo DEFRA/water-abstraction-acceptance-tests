@@ -1,14 +1,14 @@
 {
   "chargeVersions": [
     {
-      "id": "284738d4-9d31-4278-84b5-4a4eb68bd7ed",
+      "id": "8e5626ee-5e4c-48f6-a668-471d35997e2c",
       "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
       "licenceRef": "AT/TES/01",
       "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
       "regionCode": 9,
       "scheme": "sroc",
       "versionNumber": 100,
-      "startDate": "2022-03-31",
+      "startDate": "2022-04-01",
       "status": "current",
       "source": "wrls",
       "changeReasonId": {
@@ -22,9 +22,9 @@
   ],
   "chargeReferences": [
     {
-      "id": "678997c5-1157-4b80-9800-c32960d05299",
-      "chargeVersionId": "284738d4-9d31-4278-84b5-4a4eb68bd7ed",
-      "description": "SROC Charge Reference 02",
+      "id": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
+      "chargeVersionId": "8e5626ee-5e4c-48f6-a668-471d35997e2c",
+      "description": "SROC Charge Reference 01",
       "source": "tidal",
       "loss": "medium",
       "factorsOverridden": false,
@@ -36,6 +36,7 @@
         "select": "id"
       },
       "adjustments": {
+        "aggregate": null,
         "s126": null,
         "s127": true,
         "s130": false,
@@ -43,27 +44,27 @@
         "winter": false
       },
       "waterModel": "no model",
-      "volume": 22,
+      "volume": 32,
       "eiucRegion": "Southern",
       "section127Agreement": true
     }
   ],
   "chargeElements": [
     {
-      "id": "6125a201-6d2e-41f8-85bd-8a5bbf455943",
-      "chargeReferenceId": "678997c5-1157-4b80-9800-c32960d05299",
+      "id": "0be51375-17b9-40f6-81f5-bd769ba10508",
+      "chargeReferenceId": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
       "abstractionPeriodStartDay": 1,
       "abstractionPeriodStartMonth": 4,
       "abstractionPeriodEndDay": 31,
       "abstractionPeriodEndMonth": 3,
-      "authorisedAnnualQuantity": 42,
+      "authorisedAnnualQuantity": 32,
       "section127Agreement": true,
-      "description": "SROC Charge Purpose 02",
+      "description": "SROC Charge Purpose 01",
       "purposeId": {
         "schema": "public",
         "table": "purposes",
         "lookup": "legacyId",
-        "value": "300",
+        "value": "140",
         "select": "id"
       },
       "purposePrimaryId": {
@@ -84,7 +85,7 @@
   ],
   "returnLogs": [
     {
-      "id": "v2:1:AT/TEST/01:10021668:2022-10-01:2023-03-31",
+      "id": "v1:1:AT/TEST/01:10021668:2022-04-01:2023-03-31",
       "returnReference": "10021668",
       "licenceRef": "AT/TEST/01",
       "metadata": {
@@ -113,12 +114,78 @@
           "periodEndMonth": "10"
         }
       },
-      "startDate": "2022-10-01",
-      "endDate": "2023-03-31",
+      "startDate": "2022-04-01",
+      "endDate": "2023-03-21",
       "receivedDate": "2023-03-01",
       "dueDate": "2023-04-28",
-      "status": "due",
+      "status": "completed",
       "underQuery": false
+    }
+  ],
+  "returnSubmissions": [
+    {
+      "id": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "returnLogId": "v1:1:AT/TEST/01:10021668:2022-04-01:2023-03-31",
+      "nilReturn": false,
+      "current": true
+    }
+  ],
+  "returnSubmissionLines": [
+    {
+      "id": "89966f6f-bc62-40bf-97a5-3c7bfeeb2a3b",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-04-01",
+      "endDate": "2022-04-30",
+      "quantity": "4000"
+    },
+    {
+      "id": "7e503eb2-323e-4b17-9d0c-2c8ad1ebe575",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-05-01",
+      "endDate": "2022-05-31",
+      "quantity": "4000"
+    },
+    {
+      "id": "0438b460-52d6-40b5-9dfd-963a63ada23d",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-06-01",
+      "endDate": "2022-06-30",
+      "quantity": "4000"
+    },
+    {
+      "id": "e6a493df-241a-47de-ae62-b976d2ff9941",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-07-01",
+      "endDate": "2022-07-31",
+      "quantity": "4000"
+    },
+    {
+      "id": "fb9d239e-0428-4ca4-a7fd-49ae9ac1d6c7",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-08-01",
+      "endDate": "2022-08-31",
+      "quantity": "4000"
+    },
+    {
+      "id": "85216196-0191-4fa3-9d3d-c1dba7d167ab",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-09-01",
+      "endDate": "2022-09-30",
+      "quantity": "4000"
+    },
+    {
+      "id": "802c7690-0006-4267-af3e-7dcf29dda03c",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2022-10-01",
+      "endDate": "2022-10-31",
+      "quantity": "4000"
+    },
+    {
+      "id": "30854030-2b23-4a3a-b4e4-1a30d3d6d260",
+      "returnSubmissionId": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
+      "startDate": "2023-03-01",
+      "endDate": "2023-03-31",
+      "quantity": "4000"
     }
   ]
 }
