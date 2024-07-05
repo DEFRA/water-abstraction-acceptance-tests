@@ -32,15 +32,15 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
-    // confirm we are on the licence page and select charge information tab
+    // confirm we are on the licence page and select licence set up tab
     cy.contains('AT/TEST/01')
-    cy.get('#tab_charge').click()
+    cy.contains('Licence set up').click()
 
-    // confirm we are on the charge information tab
-    cy.get('#charge > :nth-child(1)').contains('Charge information')
+    // confirm we are on the licence set up tab
+    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
 
-    // click set up new returns requirement
-    cy.contains('Set up new returns requirement').click()
+    // click set up new requirements
+    cy.contains('Set up new requirements').click()
 
     // choose the licence version start date and click continue
     cy.get('#licence-start-date').check()
@@ -177,7 +177,7 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     // click link to return to licence set up
     cy.contains('Return to licence set up').click()
 
-    // confirm we are on the charge information tab
-    cy.get('#charge').contains('Charge information')
+    // confirm we are on the licence set up tab
+    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
   })
 })
