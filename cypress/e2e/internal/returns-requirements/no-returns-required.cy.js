@@ -32,15 +32,15 @@ describe('Submit no returns requirement (internal)', () => {
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
-    // confirm we are on the licence page and select charge information tab
+    // confirm we are on the licence page and select licence set up tab
     cy.contains('AT/TEST/01')
-    cy.get('#tab_charge').click()
+    cy.contains('Licence set up').click()
 
-    // confirm we are on the charge information tab
-    cy.get('#charge > :nth-child(1)').contains('Charge information')
+    // confirm we are on the licence set up tab
+    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
 
     // click set up no returns requirement
-    cy.contains('No returns required').click()
+    cy.contains("Mark licence as 'no returns needed'").click()
 
     // confirm we are on the start date page
     cy.get('.govuk-fieldset__heading').contains('Select the start date for the requirements for returns')
@@ -57,7 +57,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the check page
-    cy.get('.govuk-heading-xl').contains('Check the return requirements')
+    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see text about no returns required
     cy.contains('Returns are not required for this licence')
@@ -77,7 +77,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are back on check page and see the reason changes
-    cy.get('.govuk-heading-xl').contains('Check the return requirements for Mr J J Testerson')
+    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
     cy.get('[data-test="reason"]').contains('Transfer licence')
 
     // confirm we see the option to add note
@@ -97,7 +97,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Confirm').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-xl').contains('Check the return requirements')
+    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see pop up notification confirming changes have been made
     cy.get('.govuk-notification-banner').contains('Changes made')
@@ -114,7 +114,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Confirm').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-xl').contains('Check the return requirements')
+    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see pop up notification confirming changes have been made
     cy.get('.govuk-notification-banner').contains('Changes made')
@@ -140,7 +140,7 @@ describe('Submit no returns requirement (internal)', () => {
     // click link to return to licence set up
     cy.contains('Return to licence set up').click()
 
-    // confirm we are on the charge information tab
-    cy.get('#charge').contains('Charge information')
+    // confirm we are on the licence set up tab
+    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
   })
 })
