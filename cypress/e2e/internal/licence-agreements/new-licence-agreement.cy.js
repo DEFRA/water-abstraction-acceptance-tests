@@ -28,13 +28,13 @@ describe('New licence agreement journey (internal)', () => {
     cy.contains('Licences')
     cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
 
-    // Confirm we are on the licence page and select charge information tab
+    // Confirm we are on the licence page and select the licence set up tab
     cy.contains('AT/CURR/DAILY/01')
-    cy.get('#tab_charge').click()
+    cy.contains('Licence set up').click()
 
     // Confirm we are on the tab page and then click Set up a new agreement
-    cy.get('#charge > .govuk-heading-l').contains('Charge information')
-    cy.get('#charge').contains('Set up a new agreement').click()
+    cy.contains('Charge information')
+    cy.contains('Set up a new agreement').click()
 
     // Select agreement
     // select Canal and Rivers Trust, unsupported source (S130U) then continue
@@ -63,19 +63,20 @@ describe('New licence agreement journey (internal)', () => {
 
     // Charge information
     // confirm we are back on the Charge Information tab and our licence agreement is present
-    cy.get('#charge').should('be.visible')
-    cy.get('#charge > table:nth-child(8) > tbody > tr').within(() => {
+    cy.get('#set-up').should('be.visible')
+
+    cy.get(':nth-child(12) > .govuk-table__body > .govuk-table__row').within(() => {
       // start date
-      cy.get('td:nth-child(1)').should('contain.text', '1 January 2018')
+      cy.get(':nth-child(1)').should('contain.text', '1 January 2018')
       // end date
-      cy.get('td:nth-child(2)').should('contain.text', ' ')
+      cy.get(':nth-child(2)').should('contain.text', '')
       // agreement
-      cy.get('td:nth-child(3)').should('contain.text', 'Canal and Rivers Trust, unsupported source (S130U)')
+      cy.get(':nth-child(3)').should('contain.text', 'Canal and Rivers Trust, unsupported source (S130U)')
       // date signed
-      cy.get('td:nth-child(4)').should('contain.text', ' ')
+      cy.get(':nth-child(4)').should('contain.text', '')
       // actions
-      cy.get('td:nth-child(5) > a:nth-child(1)').should('contain.text', 'Delete')
-      cy.get('td:nth-child(5) > a:nth-child(2)').should('contain.text', 'End')
+      cy.get(':nth-child(5) > a:nth-child(1)').should('contain.text', 'Delete')
+      cy.get(':nth-child(5) > a:nth-child(2)').should('contain.text', 'End')
     })
   })
 })
