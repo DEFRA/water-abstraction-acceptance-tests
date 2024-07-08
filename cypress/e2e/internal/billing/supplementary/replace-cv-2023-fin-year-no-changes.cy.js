@@ -61,11 +61,11 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
-    // click the Charge information link
-    cy.get('#tab_charge').click()
+    // click the licence set up tab
+    cy.contains('Licence set up').click()
 
     // set up a new replacement charge making no changes. This will correct the issue with the billing account
-    cy.get('#charge > a.govuk-button').contains('Set up a new charge').click()
+    cy.contains('Set up a new charge').click()
     cy.get('#reason-8').click()
     cy.get('form > .govuk-button').click()
 
@@ -122,7 +122,7 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     cy.log('Creating, confirming and sending the SROC supplementary bill run')
 
     // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.contains('Bill runs').click()
 
     // Bill runs
     // click the Create a bill run button
@@ -217,11 +217,11 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
-    // click the Charge information link
-    cy.get('#tab_charge').click()
+    // click the licence set up tab
+    cy.contains('Licence set up').click()
 
     // set up a new charge for the 2023 financial year that doesn't change anything
-    cy.get('#charge > a.govuk-button').contains('Set up a new charge').click()
+    cy.contains('Set up a new charge').click()
     cy.get('#reason-8').click()
     cy.get('form > .govuk-button').click()
 
@@ -261,7 +261,7 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     cy.get('.govuk-button').contains('Continue').click()
 
     // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.contains('Bill runs').click()
 
     // Bill runs
     // click the Create a bill run button
