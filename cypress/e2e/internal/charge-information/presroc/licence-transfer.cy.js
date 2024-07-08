@@ -28,13 +28,13 @@ describe('PRESROC licence transfer (internal)', () => {
     cy.contains('Licences')
     cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
 
-    // Confirm we are on the licence page and select charge information tab
+    // Confirm we are on the licence page and select licence set up tab
     cy.contains('AT/CURR/DAILY/01')
-    cy.get('#tab_charge').click()
+    cy.contains('Licence set up').click()
 
     // Confirm we are on the tab page and then click Set up a new charge
-    cy.get('#charge > .govuk-heading-l').contains('Charge information')
-    cy.get('#charge').contains('Set up a new charge').click()
+    cy.contains('Licence set up')
+    cy.contains('Set up a new charge').click()
 
     // Select reason for new charge information
     // choose Licence transferred and now chargeable and continue
@@ -146,7 +146,7 @@ describe('PRESROC licence transfer (internal)', () => {
 
     // Charge information
     // select to review it
-    cy.get('#charge > table > tbody > tr:nth-child(1) > td:nth-child(5) > a').contains('Review').click()
+    cy.contains('Review').click()
 
     // Check charge information
     // approve the new charge version
@@ -157,9 +157,8 @@ describe('PRESROC licence transfer (internal)', () => {
     // Charge information
     // confirm our new charge information is APPROVED and that the licence has been flagged for the next supplementary
     // bill run
-    cy.get('#charge > table > tbody > tr:nth-child(1)').within(() => {
-      cy.get('td:nth-child(4) > strong').should('contain.text', 'Approved')
-    })
+    cy.contains('Review').should('not.exist')
+
     cy.get('.govuk-notification-banner__content')
       .should('contain.text', 'This licence has been marked for the next supplementary bill run for the old charge scheme.')
   })
