@@ -65,7 +65,7 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
 
     // confirm we see the start data and reason options selected previously
     cy.get('[data-test="start-date"]').contains('1 April 2022')
-    cy.get('[data-test="reason"]').contains('Licence holder name or address change')
+    cy.get('[data-test="reason"]').contains('Change to special agreement')
 
     // choose the change purpose button for the requirement
     cy.get('[data-test="change-purposes-0"]').click()
