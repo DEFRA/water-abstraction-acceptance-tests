@@ -140,7 +140,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('[data-test="start-date"]').contains('2 August 2023')
 
     // confirm we see the reason we selected
-    cy.get('[data-test="reason"]').contains('Licence holder name or address change')
+    cy.get('[data-test="reason"]').contains('Change to special agreement')
 
     // choose the change option for reason
     cy.get('[data-test="change-reason"]').click()
@@ -151,7 +151,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the reason changes
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="reason"]').contains('New licence')
+    cy.get('[data-test="reason"]').contains('Minor change')
 
     // confirm we see the purposes selected
     cy.get('[data-test="purposes-0"]').should('contain', 'General Farming & Domestic')
