@@ -34,11 +34,12 @@ describe('Billing & Data permissions (internal)', () => {
     // confirm we are on the licence page
     cy.contains('AT/CURR/DAILY/01')
 
-    // confirm we can see the summary, contacts, returns, communications, bill runs and charge information tabs
-    cy.get('#tab_summary').should('have.text', 'Summary')
-    cy.get('#tab_returns').should('have.text', 'Returns')
-    cy.get('#tab_communications').should('have.text', 'Communications')
-    cy.get('#tab_bills').should('have.text', 'Bills')
-    cy.get('#tab_charge').should('have.text', 'Charge information')
+    // confirm we can see the summary, contact details, returns, communications, bill runs and licence set up tabs
+    cy.get('.govuk-tabs__list-item--selected > .govuk-tabs__tab').should('contain.text', 'Summary')
+    cy.get(':nth-child(2) > .govuk-tabs__tab').should('contain.text', 'Contact details')
+    cy.get(':nth-child(3) > .govuk-tabs__tab').should('contain.text', 'Returns')
+    cy.get(':nth-child(4) > .govuk-tabs__tab').should('contain.text', 'Communications')
+    cy.get(':nth-child(5) > .govuk-tabs__tab').should('contain.text', 'Bills')
+    cy.get(':nth-child(6) > .govuk-tabs__tab').should('contain.text', 'Licence set up')
   })
 })

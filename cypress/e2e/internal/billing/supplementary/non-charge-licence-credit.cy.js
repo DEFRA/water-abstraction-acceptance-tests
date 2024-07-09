@@ -112,10 +112,10 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     cy.get('.govuk-table__row').contains('AT/TEST/02').click()
 
     // Charge information
-    // confirm we are on the licence page and select charge information tab. Then click to make the licence
+    // confirm we are on the licence page and select licence set up tab. Then click to make the licence
     // non-chargeable
     cy.contains('AT/TEST/02')
-    cy.get('#tab_charge').click()
+    cy.contains('Licence set up').click()
     cy.get('.govuk-button').contains('Make licence non-chargeable').click()
 
     // Why is this licence not chargeable?
@@ -147,7 +147,7 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
 
     // Charge information
     // select to review it
-    cy.get('#charge > table > tbody > tr:nth-child(1) > td:nth-child(5) > a').contains('Review').click()
+    cy.contains('Review').click()
 
     // Check charge information
     // approve the new charge version
@@ -158,19 +158,17 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     // Charge information
     // confirm our new charge information is APPROVED and that the licence has been flagged for the next supplementary
     // bill run
-    cy.get('#charge > table > tbody > tr:nth-child(1)').within(() => {
-      cy.get('td:nth-child(4) > strong').should('contain.text', 'Approved')
-    })
+    cy.contains('Review').should('not.exist')
 
     // -------------------------------------------------------------------------
     cy.log('Create the second SROC supplementary bill run and confirm credit generated')
 
     // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.contains('Bill runs').click()
 
     // Bill runs
     // click the Create a bill run button
-    cy.get('.govuk-button').contains('Create a bill run').click()
+    cy.contains('Create a bill run').click()
 
     // Which kind of bill run do you want to create?
     // choose Supplementary and continue

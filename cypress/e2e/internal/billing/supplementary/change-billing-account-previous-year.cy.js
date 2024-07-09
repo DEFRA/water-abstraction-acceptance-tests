@@ -140,11 +140,11 @@ describe('Change billing account in previous financial year (internal)', () => {
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
-    // click the Charge information link
-    cy.get('#tab_charge').click()
+    // click the licence set up tab
+    cy.contains('Licence set up').click()
 
     // set up a new charge for the previous financial year to change the billing account
-    cy.get('#charge > a.govuk-button').contains('Set up a new charge').click()
+    cy.contains('Set up a new charge').click()
     cy.get('.govuk-radios > :nth-child(1) > #reason').click()
     cy.get('form > .govuk-button').click()
 
@@ -206,7 +206,7 @@ describe('Change billing account in previous financial year (internal)', () => {
     cy.get('.govuk-button').contains('Continue').click()
 
     // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.contains('Bill runs').click()
 
     // Bill runs
     // click the Create a bill run button

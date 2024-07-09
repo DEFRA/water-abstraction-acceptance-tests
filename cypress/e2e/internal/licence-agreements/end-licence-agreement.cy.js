@@ -32,8 +32,8 @@ describe('End licence agreement journey (internal)', () => {
     // cypress/e2e/internal/licence-agreements/new-licence-agreement.cy.js. But for this test we have to use the UI to
     // create a record to then end it. So, the following also creates a new licence agreement but we strip out the
     // checks and assertions for brevity
-    cy.get('#tab_charge').click()
-    cy.get('#charge').contains('Set up a new agreement').click()
+    cy.contains('Licence set up').click()
+    cy.contains('Set up a new agreement').click()
     cy.get('#financialAgreementCode-3').check()
     cy.get('form > .govuk-button').click()
     cy.get('#isDateSignedKnown-2').check()
@@ -47,8 +47,8 @@ describe('End licence agreement journey (internal)', () => {
 
     // Charge information
     // back on the Charge Information tab select to end the licence
-    cy.get('#charge').should('be.visible')
-    cy.get('#charge > table:nth-child(8) > tbody > tr > td:nth-child(5) > a:nth-child(2)').click()
+    cy.get('#set-up').should('be.visible')
+    cy.get(':nth-child(12) > .govuk-table__body > .govuk-table__row > :nth-child(5)').contains('End').click()
 
     // Set agreement end date
     // first check the validation for invalid dates is working
@@ -79,21 +79,22 @@ describe('End licence agreement journey (internal)', () => {
     cy.get('form > .govuk-button').contains('End agreement').click()
 
     // Charge information
-    // confirm we are back on the Charge Information tab and our licence agreement is present with an end date and only
+    // confirm we are back on the licence set up tab and our licence agreement is present with an end date and only
     // the delete action available
-    cy.get('#charge').should('be.visible')
-    cy.get('#charge > table:nth-child(8) > tbody > tr').within(() => {
+    cy.get('#set-up').should('be.visible')
+
+    cy.get(':nth-child(12) > .govuk-table__body > .govuk-table__row').within(() => {
       // start date
-      cy.get('td:nth-child(1)').should('contain.text', '1 January 2018')
+      cy.get(':nth-child(1)').should('contain.text', '1 January 2018')
       // end date
-      cy.get('td:nth-child(2)').should('contain.text', '31 March 2022')
+      cy.get(':nth-child(2)').should('contain.text', '31 March 2022')
       // agreement
-      cy.get('td:nth-child(3)').should('contain.text', 'Canal and Rivers Trust, unsupported source (S130U)')
+      cy.get(':nth-child(3)').should('contain.text', 'Canal and Rivers Trust, unsupported source (S130U)')
       // date signed
-      cy.get('td:nth-child(4)').should('contain.text', ' ')
+      cy.get(':nth-child(4)').should('contain.text', '')
       // actions
-      cy.get('td:nth-child(5) > a:nth-child(1)').should('contain.text', 'Delete')
-      cy.get('td:nth-child(5) > a:nth-child(2)').should('not.exist')
+      cy.get(':nth-child(5) > a:nth-child(1)').should('contain.text', 'Delete')
+      cy.get(':nth-child(5) > a:nth-child(2)').should('not.exist')
     })
   })
 })
