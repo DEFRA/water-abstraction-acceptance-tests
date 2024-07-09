@@ -126,7 +126,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('[data-test="start-date"]').contains('12 June 2023')
 
     // confirm we see the reason we selected
-    cy.get('[data-test="reason"]').contains('Licence holder name or address change')
+    cy.get('[data-test="reason"]').contains('Change to special agreement')
 
     // confirm we see the purposes selected
     cy.get('[data-test="purposes-0"]').should('contain', 'General Farming & Domestic')

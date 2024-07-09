@@ -72,7 +72,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
 
     // confirm we see the start date and reason selected
     cy.get('[data-test="start-date"]').contains('12 June 2023')
-    cy.get('[data-test="reason"]').contains('Licence holder name or address change')
+    cy.get('[data-test="reason"]').contains('Change to special agreement')
 
     // confirm we see the purpose for the requirement copied from existing
     cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation')
