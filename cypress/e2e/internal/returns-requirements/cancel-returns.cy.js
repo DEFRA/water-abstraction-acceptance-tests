@@ -64,7 +64,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
     // choose a purpose for the requirement and continue
-    cy.get('#purposes').check()
+    cy.get('[data-test="purpose-0"]').check()
     cy.contains('Continue').click()
 
     // confirm we are on the points page
