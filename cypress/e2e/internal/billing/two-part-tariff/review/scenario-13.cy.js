@@ -116,6 +116,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('.govuk-table__caption').should('contain.text', 'Unmatched returns')
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="unmatched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
+    cy.get('[data-test="unmatched-return-action-0"] > :nth-child(3)').should('contain.text', '1 March to 31 October')
     cy.get('[data-test="unmatched-return-summary-0"] > div').should('contain.text', 'Mineral Washing')
     cy.get('[data-test="unmatched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="unmatched-return-total-0"] > :nth-child(2)').should('contain.text', 'Over abstraction')

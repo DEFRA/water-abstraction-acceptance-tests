@@ -67,6 +67,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     })
     cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
     cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Two-part tariff')
+    cy.get('[data-test="bill-run-total-0"]').should('contain.text', '')
     cy.get('[data-test="date-created-0"] > .govuk-link').click()
 
     // Review licences ~ Test its the correct bill run
@@ -129,6 +130,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
+    cy.get('[data-test="matched-return-action-0"] > :nth-child(3)').should('contain.text', '1 March to 31 October')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
