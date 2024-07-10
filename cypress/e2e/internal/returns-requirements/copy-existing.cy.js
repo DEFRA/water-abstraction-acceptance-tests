@@ -82,8 +82,8 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
     // choose another purpose and continue
-    cy.get('#purposes-2').uncheck()
-    cy.get('#purposes').check()
+    cy.get('[data-test="purpose-1"]').uncheck()
+    cy.get('[data-test="purpose-0"]').check()
     cy.contains('Continue').click()
 
     // confirm we see the purpose changes on the check page
@@ -113,7 +113,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
     // choose a purpose and continue
-    cy.get('#purposes-2').check()
+    cy.get('[data-test="purpose-1"]').check()
     cy.contains('Continue').click()
 
     // confirm we are on the points page

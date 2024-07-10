@@ -71,8 +71,8 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     cy.get('[data-test="change-purposes-0"]').click()
 
     // choose another purpose and continue
-    cy.get('#purposes').uncheck()
-    cy.get('#purposes-2').check()
+    cy.get('[data-test="purpose-0"]').uncheck()
+    cy.get('[data-test="purpose-1"]').check()
     cy.contains('Continue').click()
 
     // confirm we see the changed purpose for the requirement
@@ -96,8 +96,8 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
     // choose a purpose and click continue
-    cy.get('#purposes').check()
-    cy.get('#purposes-2').check()
+    cy.get('[data-test="purpose-0"]').check()
+    cy.get('[data-test="purpose-1"]').check()
     cy.contains('Continue').click()
 
     // confirm we are on the points page
