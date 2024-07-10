@@ -100,6 +100,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
+    cy.get('[data-test="matched-return-action-0"] > :nth-child(3)').should('contain.text', '1 April to 31 March')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', '')
@@ -115,7 +116,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 2 two-part tariff charge elements')
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '50 ML / 50 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
-    cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
+    cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'Change details')
     //  Charge element 1
     cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
     cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', '1 April 2022 to 31 October 2022')
@@ -135,5 +136,29 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     // allocate here
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-1"]').should('contain.text', '20 ML / 20 ML')
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-1"]').should('contain.text', '50 ML (10021668)')
+
+    // To test the warning text that appears when the sum of the allocated charge elements exceeds the charge reference,
+    // we need to manipulate the data. First, we reduce the allocated quantity on one of the charge elements. Next, we
+    // decrease the authorised amount on the charge reference. Finally, we return to the same charge element and
+    // increase its quantity back to its authorised amount. This will cause the sum of the charge elements to exceed the
+    // authorised volume of the charge reference, triggering the warning.
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+    cy.get('.govuk-button').contains('Edit the billable returns').click()
+    cy.get('#custom-quantity').click()
+    cy.get('#custom-quantity-input').type('10')
+    cy.get('.govuk-button').contains('Confirm').click()
+    cy.get('.govuk-back-link').click()
+    cy.get('[data-test="charge-version-0-charge-reference-link-0"]').click()
+    cy.get('.govuk-button').contains('Change the authorised volume').click()
+    cy.get('#authorised-volume').clear().type('40')
+    cy.get('.govuk-button').contains('Confirm').click()
+    cy.get('.govuk-back-link').click()
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+    cy.get('.govuk-button').contains('Edit the billable returns').click()
+    cy.get('#authorised-quantity').click()
+    cy.get('.govuk-button').contains('Confirm').click()
+    cy.get('.govuk-back-link').click()
+    cy.get('.govuk-warning-text__icon').should('exist')
+    cy.get('.govuk-warning-text__text').should('contain.text', 'The total billable return volume exceeds the total authorised volume')
   })
 })

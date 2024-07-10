@@ -40,7 +40,7 @@
         "s126": null,
         "s127": true,
         "s130": false,
-        "charge": null,
+        "charge": 1.5,
         "winter": false
       },
       "waterModel": "no model",
