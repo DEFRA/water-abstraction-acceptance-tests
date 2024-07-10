@@ -1,17 +1,17 @@
 'use strict'
 
-describe('Submit returns requirement using copy existing (internal)', () => {
+describe('Submit returns requirement (internal) using abstraction data', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('returns-requirements.json').then((fixture) => {
+    cy.fixture('generate-using-abstraction-data.json').then((fixture) => {
       cy.load(fixture)
     })
 
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
   })
 
-  it('creates a return requirement by copying existing and approves the requirement', () => {
+  it('creates a return requirement using abstraction data and approves the requirement', () => {
     cy.visit('/')
 
     // enter the user name and Password
@@ -49,88 +49,72 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     // confirm we are on the reason page
     cy.get('.govuk-fieldset__heading').contains('Select the reason for the requirements for returns')
 
-    // choose a reason for the return and click continue
+    // choose returns exception and click continue
     cy.get('#reason-2').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
     cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
 
-    // choose copy from existing requirements and continue
-    cy.get('#setup-2').check()
+    // choose the start by using abstraction data checkbox and continue
+    cy.get('#setup').check()
     cy.contains('Continue').click()
 
-    // confirm we are on the existing requirements page
-    cy.get('.govuk-fieldset__heading').contains('Use previous requirements for returns')
-
-    // choose a previous requirements for returns and continue
-    cy.get('#existing').check()
-    cy.contains('Continue').click()
-
-    // confirm we are on the check page
+    // confirm we are back on the check page
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
-    // confirm we see the start date and reason selected
-    cy.get('[data-test="start-date"]').contains('12 June 2023')
+    // confirm we see the start data and reason options selected previously
+    cy.get('[data-test="start-date"]').contains('1 April 2022')
     cy.get('[data-test="reason"]').contains('Change to special agreement')
 
-    // confirm we see the purpose for the requirement copied from existing
-    cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation')
-
-    // choose the change link for the purpose and confirm we are on the purpose page
+    // choose the change purpose button for the requirement
     cy.get('[data-test="change-purposes-0"]').click()
-    cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
     // choose another purpose and continue
-    cy.get('#purposes-2').uncheck()
-    cy.get('#purposes').check()
+    cy.get('#purposes').uncheck()
+    cy.get('#purposes-2').check()
     cy.contains('Continue').click()
 
-    // confirm we see the purpose changes on the check page
-    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="purposes-0"]').contains('General Farming & Domestic')
+    // confirm we see the changed purpose for the requirement
+    cy.get('[data-test="purposes-0"]').contains('Laundry Use')
 
-    // confirm we see the points for the requirement copied from existing
-    cy.get('[data-test="points-0"]').contains('At National Grid Reference TQ 1234 1234 (Test local name 1)')
-
-    // choose the change link for the points and confirm we are on the points page
+    // choose the change points button for the requirement
     cy.get('[data-test="change-points-0"]').click()
-    cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
 
-    // choose another points and continue
+    // choose another point and continue
     cy.get('#points').uncheck()
     cy.get('#points-2').check()
     cy.contains('Continue').click()
 
-    // confirm we see the points changes on the check page
-    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 5678 5678 (Test local name 2)')
+    // confirm we see the changed points for the requirement
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (AT/TEST/01 Requirement')
 
-    // choose add another requirement
+    // choose the add another requirement
     cy.contains('Add another requirement').click()
 
     // confirm we are on the purpose page
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
-    // choose a purpose and continue
+    // choose a purpose and click continue
+    cy.get('#purposes').check()
     cy.get('#purposes-2').check()
     cy.contains('Continue').click()
 
     // confirm we are on the points page
     cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
 
-    // choose a points and continue
-    cy.get('#points-2').check()
+    // choose a point and click continue
+    cy.get('#points').check()
     cy.contains('Continue').click()
 
     // confirm we are on the abstraction period page
     cy.get('.govuk-heading-xl').contains('Enter the abstraction period for the requirements for returns')
 
-    // choose a start and end date then continue
+    // choose start and end dates for the abstraction period and click continue
     cy.get('#abstraction-period-start-day').type('01')
     cy.get('#abstraction-period-start-month').type('12')
     cy.get('#abstraction-period-end-day').type('03')
-    cy.get('#abstraction-period-end-month').type('11')
+    cy.get('#abstraction-period-end-month').type('09')
     cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page
@@ -143,47 +127,49 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     // confirm we are on the site description page
     cy.get('.govuk-label').contains('Enter a site description for the requirements for returns')
 
-    // input a site description and continue
-    cy.get('#site-description').type('Site description for another return requirement')
+    // enter a site description and continue
+    cy.get('#site-description').type('This is a valid site description')
     cy.contains('Continue').click()
 
-    // confirm we are on the frequency collected page
+    // confirm we are on the readings collected page
     cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are collected')
 
-    // choose a frequency for collection and continue
-    cy.get('#frequencyCollected-2').check()
+    // choose a collected time frame and continue
+    cy.get('#frequencyCollected').check()
     cy.contains('Continue').click()
 
-    // confirm we are on the frequency reported page
+    // confirm we are on the readings reported page
     cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are reported')
 
-    // choose a frequency for reporting and continue
-    cy.get('#frequencyReported-2').check()
+    // choose a reporting time frame and continue
+    cy.get('#frequencyReported').check()
     cy.contains('Continue').click()
 
     // confirm we are on the agreements and exceptions page
     cy.get('.govuk-heading-l').contains('Select agreements and exceptions for the requirements for returns')
 
-    // choose some agreements and exceptions and continue
-    cy.get('#agreementsExceptions-2').check()
-    cy.get('#agreementsExceptions-3').check()
+    // choose an agreement and exception and continue
+    cy.get('#agreementsExceptions').check()
     cy.contains('Continue').click()
 
-    // confirm we are back on the check page
+    // confirm we are on the check page
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
-    // confirm we see the new added requirement and details selected
-    cy.get('[data-test="purposes-1"]').contains('Hydroelectric Power Generation')
-    cy.get('[data-test="points-1"]').contains('At National Grid Reference TT 5678 5678 (Test local name 2)')
-    cy.get('[data-test="abstraction-period-1"]').contains('From 1 December to 3 November')
-    cy.get('[data-test="returns-cycle-1"]').contains('Summer')
-    cy.get('[data-test="site-description-1"]').contains('Site description for another return requirement')
-    cy.get('[data-test="frequency-collected-1"]').contains('Weekly')
-    cy.get('[data-test="frequency-reported-1"]').contains('Weekly')
-    cy.get('[data-test="agreements-exceptions-1"]').contains('Transfer re-abstraction scheme and Two-part tariff')
+    // confirm we see the newly created return requirement
+    cy.contains('This is a valid site description')
 
-    // choose the approve returns requirements button
-    cy.contains('Approve returns requirements').click()
+    // confirm we see the information entered for the return requirement
+    cy.get('[data-test="purposes-2"]').contains('General Farming & Domestic Laundry Use')
+    cy.get('[data-test="points-2"]').contains('At National Grid Reference TQ 1234 5678 (AT/TEST/01 Requirement')
+    cy.get('[data-test="abstraction-period-2"]').contains('From 1 December to 3 September')
+    cy.get('[data-test="returns-cycle-2"]').contains('Summer')
+    cy.get('[data-test="site-description-2"]').contains('This is a valid site description')
+    cy.get('[data-test="frequency-collected-2"]').contains('Daily')
+    cy.get('[data-test="frequency-reported-2"]').contains('Daily')
+    cy.get('[data-test="agreements-exceptions-2"]').contains('Gravity fill')
+
+    // choose the approve return requirement button
+    cy.contains('Approve returns requirement').click()
 
     // confirm we are on the approved page
     cy.get('.govuk-panel__title').contains('Requirements for returns approved')

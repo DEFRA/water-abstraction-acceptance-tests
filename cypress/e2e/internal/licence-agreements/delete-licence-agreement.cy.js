@@ -32,8 +32,8 @@ describe('Delete licence agreement journey (internal)', () => {
     // cypress/e2e/internal/licence-agreements/new-licence-agreement.cy.js. But for this test we have to use the UI to
     // create a record to then delete it. So, the following also creates a new licence agreement but we strip out the
     // checks and assertions for brevity
-    cy.get('#tab_charge').click()
-    cy.get('#charge').contains('Set up a new agreement').click()
+    cy.contains('Licence set up').click()
+    cy.contains('Set up a new agreement').click()
     cy.get('#financialAgreementCode-3').check()
     cy.get('form > .govuk-button').click()
     cy.get('#isDateSignedKnown-2').check()
@@ -47,8 +47,8 @@ describe('Delete licence agreement journey (internal)', () => {
 
     // Charge information
     // back on the Charge Information tab select to delete the licence
-    cy.get('#charge').should('be.visible')
-    cy.get('#charge > table:nth-child(8) > tbody > tr > td:nth-child(5) > a:nth-child(1)').click()
+    cy.get('#set-up').should('be.visible')
+    cy.contains('Delete').click()
 
     // You're about to delete this agreement
     // confirm we are on the right page and it is showing the right agreement then delete it
@@ -64,11 +64,15 @@ describe('Delete licence agreement journey (internal)', () => {
       // end date
       cy.get('td:nth-child(4)').should('contain.text', ' ')
     })
-    cy.get('form > .govuk-button').contains('Delete agreement').click()
+    cy.contains('Delete').click()
+
+    // confirm we are on the delete agreement page and click delete agreement
+    cy.get('.govuk-heading-l').contains("You're about to delete this agreement")
+    cy.contains('Delete agreement').click()
 
     // Charge information
     // confirm we are back on the Charge Information tab and our licence agreement is no longer present
-    cy.get('#charge').should('be.visible')
-    cy.get('#charge > p').should('contain.text', 'No agreements for this licence.')
+    cy.get('#set-up').should('be.visible')
+    cy.should('contain.text', 'No agreements for this licence.')
   })
 })

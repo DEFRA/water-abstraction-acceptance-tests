@@ -32,15 +32,15 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('.search__button').click()
     cy.get('.govuk-table__row > :nth-child(1) > a').click()
 
-    // confirm we are on the licence page and select charge information tab
+    // confirm we are on the licence page and select licence set up tab
     cy.contains('AT/TEST/01')
-    cy.get('#tab_charge').click()
+    cy.contains('Licence set up').click()
 
-    // confirm we are on the charge information tab
-    cy.get('#charge > :nth-child(1)').contains('Charge information')
+    // confirm we are on the licence set up tab
+    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
 
-    // click set up new returns requirement
-    cy.contains('Set up new returns requirement').click()
+    // click set up new requirements
+    cy.contains('Set up new requirements').click()
 
     // choose the licence version start date and click continue
     cy.get('#licence-start-date').check()
@@ -126,7 +126,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('[data-test="start-date"]').contains('12 June 2023')
 
     // confirm we see the reason we selected
-    cy.get('[data-test="reason"]').contains('Licence holder name or address change')
+    cy.get('[data-test="reason"]').contains('Change to special agreement')
 
     // confirm we see the purposes selected
     cy.get('[data-test="purposes-0"]').should('contain', 'General Farming & Domestic')
@@ -164,7 +164,7 @@ describe('Cancel a return requirement (internal)', () => {
     // click the confirm cancel button
     cy.contains('Confirm cancel').click()
 
-    // confirm we are on the charge information tab
-    cy.get('#charge').contains('Charge information')
+    // confirm we are on the licence set up tab
+    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
   })
 })
