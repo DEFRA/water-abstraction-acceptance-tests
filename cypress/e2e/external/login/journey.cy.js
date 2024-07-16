@@ -3,7 +3,6 @@
 describe('Login and log out (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    // cy.setUp('barebones')
     cy.fixture('barebones.json').then((fixture) => {
       cy.load(fixture)
     })
