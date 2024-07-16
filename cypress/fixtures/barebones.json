@@ -83,6 +83,7 @@
         "dataType": "acceptance-test-setup",
         "IsCurrent": true
       },
+      "licence_name": "the daily cupcake licence",
       "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
     },
     {
@@ -107,6 +108,7 @@
         "dataType": "acceptance-test-setup",
         "IsCurrent": true
       },
+      "licence_name": "the weekly crumpet licence",
       "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
     },
     {
@@ -131,6 +133,7 @@
         "dataType": "acceptance-test-setup",
         "IsCurrent": true
       },
+      "licence_name": "the monthly pie licence",
       "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
     },
     {
@@ -155,6 +158,7 @@
         "dataType": "acceptance-test-setup",
         "IsCurrent": true
       },
+      "licence_name": "the monthly doughnut licence",
       "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
     }
   ],
@@ -210,7 +214,7 @@
       "id": "e01e7717-719f-47ed-8431-362f6b4de422",
       "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
       "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "roleId": {
+      "licenceRoleId": {
         "schema": "crm_v2",
         "table": "roles",
         "lookup": "name",
@@ -242,17 +246,17 @@
       "startDate": "2018-01-01"
     },
     {
-      "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "id": "4fe682ac-c558-41fc-aead-85dca40efc89",
       "licenceRef": "AT/CURR/WEEKLY/01",
       "startDate": "2020-01-01"
     },
     {
-      "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "id": "1305f637-eea8-455c-92ae-f52015aa001b",
       "licenceRef": "AT/CURR/MONTHLY/01",
       "startDate": "2018-01-01"
     },
     {
-      "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "id": "74498584-b26b-405a-9111-743fc46a185e",
       "licenceRef": "AT/CURR/MONTHLY/02",
       "startDate": "2018-01-01"
     }
@@ -273,7 +277,7 @@
       "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
     },
     {
-      "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceDocumentId": "4fe682ac-c558-41fc-aead-85dca40efc89",
       "licenceRoleId": {
         "schema": "public",
         "table": "licenceRoles",
@@ -287,7 +291,7 @@
       "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
     },
     {
-      "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceDocumentId": "1305f637-eea8-455c-92ae-f52015aa001b",
       "licenceRoleId": {
         "schema": "public",
         "table": "licenceRoles",
@@ -301,7 +305,7 @@
       "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
     },
     {
-      "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceDocumentId": "74498584-b26b-405a-9111-743fc46a185e",
       "licenceRoleId": {
         "schema": "public",
         "table": "licenceRoles",
@@ -387,7 +391,7 @@
       "increment": 0,
       "status": "current",
       "startDate": "2020-01-01",
-      "externalId": "6:1236:1:0"
+      "externalId": "6:1235:1:0"
     },
     {
       "id": "eede57aa-f8d7-492a-bb6a-b5bccead5ce4",
@@ -396,7 +400,7 @@
       "increment": 0,
       "status": "current",
       "startDate": "2020-01-01",
-      "externalId": "6:1234:1:0"
+      "externalId": "6:1236:1:0"
     }
   ],
   "licenceVersionPurposes": [
@@ -529,7 +533,7 @@
       "licenceId": "844e5fd5-f21c-418e-8d64-0be4d283133a"
     }
   ],
-  "returnRequirement": [
+  "returnRequirements": [
     {
       "id": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
       "returnsFrequency": "month",
