@@ -696,5 +696,346 @@
         "select": "id"
       }
     }
+  ],
+  "chargeVersions": [
+    {
+      "id": "fb1c7c5d-e723-4ab2-861e-5aae6d428019",
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "regionCode": 9,
+      "scheme": "alcs",
+      "versionNumber": 1,
+      "startDate": "2018-01-01",
+      "status": "current",
+      "source": "wrls"
+    }
+  ],
+  "chargeReferences": [
+    {
+      "id": "69ea7fd9-961b-4d5d-be8b-ecd0e9cc8482",
+      "chargeVersionId": "fb1c7c5d-e723-4ab2-861e-5aae6d428019",
+      "factorsOverridden": false,
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "description": "Test Charge Element!",
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "authorisedAnnualQuantity": 15.54,
+      "season": "all year",
+      "seasonDerived": "all year",
+      "source": "unsupported",
+      "loss": "medium",
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      }
+    }
+  ],
+  "gaugingStations": [
+    {
+      "label": "Test Station 500"
+    }
+  ],
+  "returnLogs": [
+    {
+      "id": "v1:1:AT/CURR/MONTHLY/02:9999990:2019-01-01:2019-12-31",
+      "returnReference": "9999990",
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999990,
+            "regionCode": 6,
+            "periodEndDay": "31",
+            "periodEndMonth": "12",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "The Name of this",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2019-01-01",
+      "endDate": "2019-12-31",
+      "receivedDate": null,
+      "dueDate": "2020-01-28",
+      "status": "due",
+      "underQuery": false
+    },
+    {
+      "id": "v1:1:AT/CURR/MONTHLY/02:9999991:2020-01-01:2020-12-31",
+      "returnReference": "9999991",
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999991,
+            "regionCode": 6,
+            "periodEndDay": "31",
+            "periodEndMonth": "12",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "The Name of this",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2020-01-01",
+      "endDate": "2020-12-31",
+      "receivedDate": null,
+      "dueDate": "2021-01-28",
+      "status": "due",
+      "underQuery": false
+    },
+    {
+      "id": "v1:1:AT/CURR/MONTHLY/02:9999992:2021-01-01:2021-02-28",
+      "returnReference": "9999992",
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999992,
+            "regionCode": 6,
+            "periodEndDay": "28",
+            "periodEndMonth": "02",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "Winter",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2021-01-01",
+      "endDate": "2021-02-28",
+      "receivedDate": null,
+      "dueDate": {
+        "dateHelper": true
+      },
+      "status": "due",
+      "underQuery": false
+    },
+    {
+      "id": "v1:2:AT/CURR/MONTHLY/02:9999993:2021-01-01:2021-02-28",
+      "returnReference": "9999993",
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999993,
+            "regionCode": 6,
+            "periodEndDay": "28",
+            "periodEndMonth": "02",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "Winter",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 2,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2021-01-01",
+      "endDate": "2021-02-28",
+      "receivedDate": null,
+      "dueDate": "2023-04-28",
+      "status": "void",
+      "underQuery": false
+    },
+    {
+      "id": "v1:1:AT/CURR/MONTHLY/02:9999992:2020-01-01:2020-02-28",
+      "returnReference": "9999992",
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999992,
+            "regionCode": 6,
+            "periodEndDay": "28",
+            "periodEndMonth": "02",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "Winter",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2020-01-01",
+      "endDate": "2020-02-28",
+      "receivedDate": null,
+      "dueDate": "2020-04-28",
+      "status": "completed",
+      "underQuery": false
+    }
   ]
 }
