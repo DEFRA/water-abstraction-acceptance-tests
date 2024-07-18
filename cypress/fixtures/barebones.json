@@ -1018,7 +1018,7 @@
       "endDate": "2021-02-28",
       "receivedDate": null,
       "dueDate": {
-        "dateHelper": true
+        "dueDateHelper": true
       },
       "status": "due",
       "underQuery": false
