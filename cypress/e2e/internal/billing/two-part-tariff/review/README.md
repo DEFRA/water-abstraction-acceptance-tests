@@ -86,8 +86,7 @@ This README provides an overview of the acceptance test scenarios for the Two-Pa
 - **Description**: Tests handling of licences with no return submissions and verifies correct flagging and allocation.
 - **Acceptance Criteria**:
   - Filter by no returns received issue on review page
-  - Licence has a ‘No returns received’ issue flagged
-  - Licence has a ‘Some returns not received’’ issue flagged
+  - Licence only has a ‘No returns received’ issue flagged
   - Both the issues on the licence are a status 'ready', putting the overall licence status as ready
   - Both charge elements get allocated amounts
 
