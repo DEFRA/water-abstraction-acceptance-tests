@@ -115,7 +115,8 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
 
     // Review Licence AT/TEST/01 ~ Check the licence details
     cy.get('h1').should('contain.text', 'Licence AT/TEST/01')
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
+    cy.get('div > .govuk-tag').should('contain.text', 'ready')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff bill run')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2022 to 31 March 2023')
 
@@ -143,7 +144,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2022 to 2023')
     cy.get('#charge-version-0 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2022 to 31 March 2023')
     cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 1 two-part tariff charge element')
-    cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
+    cy.get('.govuk-details__summary-text').should('contain.text', 'Big Farm Co Ltd 01 billing account details')
     cy.get('.govuk-details__summary').click()
     cy.get('[data-test="billing-account"]').should('contain.text', 'S99999991A')
     cy.get('[data-test="account-name"]').should('contain.text', 'Big Farm Co Ltd 01')
@@ -221,7 +222,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.contains('Put licence into review').click()
     cy.get('.govuk-notification-banner').should('exist')
     cy.get('.govuk-notification-banner__heading').should('contain.text', 'Licence changed to review.')
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'review')
+    cy.get('div > .govuk-tag').should('contain.text', 'review')
     cy.get('.govuk-button--primary').should('contain.text', 'Confirm licence is ready')
 
     // Review Licence AT/TEST/01 ~ Mark licence progress
