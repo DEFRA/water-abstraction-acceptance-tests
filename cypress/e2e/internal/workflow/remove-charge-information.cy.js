@@ -3,7 +3,15 @@
 describe('Remove charge information journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('charge-version-workflow')
+
+    cy.fixture('barebones.json').then((fixture) => {
+      fixture.licences[0].waterUndertaker = false
+      cy.load(fixture)
+    })
+
+    cy.fixture('charge-version-workflow.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
@@ -36,7 +44,7 @@ describe('Remove charge information journey (internal)', () => {
     cy.get('#toSetUp > div > table > tbody').within(() => {
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'AT/CURR/DAILY/01')
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Big Farm Co Ltd')
-      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 March 2020')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 January 2020')
 
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Set up')
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Remove')
@@ -50,7 +58,7 @@ describe('Remove charge information journey (internal)', () => {
     cy.get('.govuk-table__body').within(() => {
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'AT/CURR/DAILY/01')
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Big Farm Co Ltd')
-      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 April 1920')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 January 2020')
     })
     cy.get('button.govuk-button').click()
 
