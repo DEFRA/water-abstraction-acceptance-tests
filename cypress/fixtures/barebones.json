@@ -848,7 +848,7 @@
       },
       "chargeCategoryId": null,
       "additionalCharges": {},
-      "scheme": null,
+      "scheme": "alcs",
       "adjustments": null,
       "eiucRegion": null,
       "section127Agreement": null,
