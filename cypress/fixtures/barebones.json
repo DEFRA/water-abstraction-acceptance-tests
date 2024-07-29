@@ -806,7 +806,8 @@
       "versionNumber": 1,
       "startDate": "2018-01-01",
       "status": "current",
-      "source": "wrls"
+      "source": "wrls",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
     }
   ],
   "chargeReferences": [
@@ -844,7 +845,14 @@
         "lookup": "legacyId",
         "value": "140",
         "select": "id"
-      }
+      },
+      "chargeCategoryId": null,
+      "additionalCharges": {},
+      "scheme": null,
+      "adjustments": null,
+      "eiucRegion": null,
+      "section127Agreement": null,
+      "restrictedSource": false
     }
   ],
   "gaugingStations": [
