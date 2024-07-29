@@ -177,7 +177,7 @@
         "select": "id"
       },
       "metadata": {
-        "name": "cupcake factory",
+        "Name": "cupcake factory",
         "dataType": "acceptance-test-setup",
         "IsCurrent": true
       },
@@ -202,7 +202,7 @@
         "select": "id"
       },
       "metadata": {
-        "name": "barber bakery",
+        "Name": "barber bakery",
         "dataType": "acceptance-test-setup",
         "IsCurrent": true
       },
@@ -227,7 +227,7 @@
         "select": "id"
       },
       "metadata": {
-        "name": "shop",
+        "Name": "shop",
         "dataType": "acceptance-test-setup",
         "IsCurrent": true
       },
@@ -252,7 +252,7 @@
         "select": "id"
       },
       "metadata": {
-        "name": "doughnut store",
+        "Name": "doughnut store",
         "dataType": "acceptance-test-setup",
         "IsCurrent": true
       },
