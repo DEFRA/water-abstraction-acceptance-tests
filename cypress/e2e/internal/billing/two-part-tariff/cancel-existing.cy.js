@@ -3,9 +3,7 @@
 describe('Cancel an existing two-part tariff bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('two-part-tariff-billing-data.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.fixture('two-part-tariff-billing-data.json').then(cy.load)
     cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023

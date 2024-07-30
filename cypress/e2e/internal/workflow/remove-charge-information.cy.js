@@ -9,9 +9,7 @@ describe('Remove charge information journey (internal)', () => {
       cy.load(fixture)
     })
 
-    cy.fixture('charge-version-workflow.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.fixture('charge-version-workflow.json').then(cy.load)
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 

@@ -3,9 +3,7 @@
 describe('Reset password journey (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.fixture('barebones.json').then(cy.load)
     cy.fixture('users.json').its('external').as('userEmail')
   })
 

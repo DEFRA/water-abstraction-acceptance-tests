@@ -4,14 +4,12 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
   beforeEach(() => {
     cy.tearDown()
     // Load the base licence information into the DB
-    cy.fixture('review-scenario-licence.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.fixture('review-scenario-licence.json').then(cy.load)
+
     // Load the charge and returns information into the DB
     // NOTE: We change the returns purpose to be different to the charge elements so they don't match
-    cy.fixture('review-scenario-13.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.fixture('review-scenario-13.json').then(cy.load)
+
     // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
