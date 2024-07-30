@@ -1,0 +1,425 @@
+{
+  "users": [
+    {
+      "username": "acceptance-test.internal.super@example.com",
+      "password": "P@55word",
+      "resetRequired": 0,
+      "application": "water_admin",
+      "badLogins": 0,
+      "enabled": true
+    },
+    {
+      "username": "acceptance-test.internal.billing_and_data@example.com",
+      "password": "P@55word",
+      "resetRequired": 0,
+      "application": "water_admin",
+      "badLogins": 0,
+      "enabled": true
+    },
+    {
+      "username": "acceptance-test.internal.psc@example.com",
+      "password": "P@55word",
+      "resetRequired": 0,
+      "application": "water_admin",
+      "badLogins": 0,
+      "enabled": true
+    },
+    {
+      "username": "acceptance-test.internal.environment_officer@example.com",
+      "password": "P@55word",
+      "resetRequired": 0,
+      "application": "water_admin",
+      "badLogins": 0,
+      "enabled": true
+    }
+  ],
+  "userGroups": [
+    {
+      "userId": {
+        "schema": "idm",
+        "table": "users",
+        "lookup": "userName",
+        "value": "acceptance-test.internal.super@example.com",
+        "select": "userId"
+      },
+      "groupId": {
+        "schema": "idm",
+        "table": "groups",
+        "lookup": "group",
+        "value": "super",
+        "select": "groupId"
+      }
+    },
+    {
+      "userId": {
+        "schema": "idm",
+        "table": "users",
+        "lookup": "userName",
+        "value": "acceptance-test.internal.billing_and_data@example.com",
+        "select": "userId"
+      },
+      "groupId": {
+        "schema": "idm",
+        "table": "groups",
+        "lookup": "group",
+        "value": "billing_and_data",
+        "select": "groupId"
+      }
+    },
+    {
+      "userId": {
+        "schema": "idm",
+        "table": "users",
+        "lookup": "userName",
+        "value": "acceptance-test.internal.environment_officer@example.com",
+        "select": "userId"
+      },
+      "groupId": {
+        "schema": "idm",
+        "table": "groups",
+        "lookup": "group",
+        "value": "environment_officer",
+        "select": "groupId"
+      }
+    },
+    {
+      "userId": {
+        "schema": "idm",
+        "table": "users",
+        "lookup": "userName",
+        "value": "acceptance-test.internal.psc@example.com",
+        "select": "userId"
+      },
+      "groupId": {
+        "schema": "idm",
+        "table": "groups",
+        "lookup": "group",
+        "value": "psc",
+        "select": "groupId"
+      }
+    }
+  ],
+  "permitLicences": [
+    {
+      "licenceRef": "L1",
+      "startDate": "2008-04-01",
+      "metadata": {
+        "source": "acceptance-test-setup"
+      }
+    }
+  ],
+  "licenceEntities": [
+    {
+      "id": "1742895f-5e18-41e0-94bd-d5c9845cb558",
+      "name": "acceptance-test.external@example.com",
+      "type": "individual"
+    },
+    {
+      "id": "e86c312b-222d-404f-ae08-eb90a80bec18",
+      "name": "Big Farm Co Ltd",
+      "type": "company"
+    }
+  ],
+  "licenceEntityRoles": [
+    {
+      "id": "f99998c5-0676-43c3-bf6c-41b1103111bf",
+      "licenceEntityId": "1742895f-5e18-41e0-94bd-d5c9845cb558",
+      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18",
+      "role": "primary_user",
+      "createdBy": "acceptance-test-setup"
+    }
+  ],
+  "licenceDocumentHeaders": [
+    {
+      "id": "c86c9d49-e06f-4792-8307-8e2c38aa6838",
+      "regimeEntityId": {
+        "schema": "crm",
+        "table": "entity",
+        "lookup": "entityType",
+        "value": "regime",
+        "select": "entityId"
+      },
+      "licenceRef": "L1",
+      "naldId": {
+        "schema": "public",
+        "table": "permitLicences",
+        "lookup": "licenceRef",
+        "value": "L1",
+        "select": "id"
+      },
+      "metadata": {
+        "Name": "cupcake factory",
+        "dataType": "acceptance-test-setup",
+        "IsCurrent": true
+      },
+      "licence_name": "the L1 temporary licence",
+      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
+    }
+  ],
+  "companies": [
+    {
+      "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "name": "Big Farm Co Ltd",
+      "type": "organisation",
+      "companyNumber": "12345"
+    }
+  ],
+  "addresses": [
+    {
+      "id": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "address1": "Big Farm",
+      "address2": "Windy road",
+      "address3": "Buttercup meadow",
+      "address4": "Buttercup Village",
+      "address5": "Testington",
+      "address6": "Testingshire",
+      "postcode": "TT1 1TT",
+      "country": "UK",
+      "dataSource": "nald"
+    }
+  ],
+  "companyAddresses": [
+    {
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2008-04-01",
+      "licenceRoleId": {
+        "schema": "crm_v2",
+        "table": "roles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "roleId"
+      }
+    }
+  ],
+  "licenceDocuments": [
+    {
+      "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceRef": "L1",
+      "startDate": "2008-04-01"
+    }
+  ],
+  "contacts": [
+    {
+      "id": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
+      "salutation": "Mr",
+      "firstName": "John",
+      "lastName": "Testerson",
+      "middleInitials": "J",
+      "contactType": "person",
+      "dataSource": "nald"
+    }
+  ],
+  "companyContacts": [
+    {
+      "id": "e01e7717-719f-47ed-8431-362f6b4de422",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "licenceRoleId": {
+        "schema": "crm_v2",
+        "table": "roles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "roleId"
+      },
+      "startDate": "2018-01-01"
+    }
+  ],
+  "licenceDocumentRoles": [
+    {
+      "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2008-04-01",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    }
+  ],
+  "billingAccounts": [
+    {
+      "id": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "accountNumber": "A99999999A",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
+    }
+  ],
+  "billingAccountAddresses": [
+    {
+      "id": "ab9a24ec-80b8-40dc-82f8-7df3e885245a",
+      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2008-04-01"
+    }
+  ],
+  "regions": [
+    {
+      "id": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "chargeRegionId": "S",
+      "naldRegionId": 9,
+      "displayName": "Test Region",
+      "name": "Test Region"
+    }
+  ],
+  "licences": [
+    {
+      "id": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "licenceRef": "L1",
+      "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "regions": {
+        "historicalAreaCode": "ARCA",
+        "regionalChargeArea": "Anglian"
+      },
+      "startDate": "2008-04-01",
+      "waterUndertaker": false
+    }
+  ],
+  "licenceVersions": [
+    {
+      "id": "7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b",
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "issue": 1,
+      "increment": 0,
+      "status": "current",
+      "startDate": "2019-03-01",
+      "externalId": "6:1234:1:0"
+    }
+  ],
+  "licenceAgreements": [
+    {
+      "id": "",
+      "licenceRef": "L1",
+      "startDate": "2008-05-05",
+      "signedOn": "2008-05-05",
+      "financialAgreementId": {
+        "schema": "water",
+        "table": "financialAgreementTypes",
+        "lookup": "financialAgreementCode",
+        "value": "S127",
+        "select": "financialAgreementTypeId"
+      }
+    }
+  ],
+  "chargeVersions": [
+    {
+      "id": "fb1c7c5d-e723-4ab2-861e-5aae6d428019",
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "licenceRef": "L1",
+      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "regionCode": 9,
+      "scheme": "alcs",
+      "versionNumber": 1,
+      "startDate": {
+        "startDateHelper": true
+      },
+      "status": "current",
+      "source": "nald",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
+    }
+  ],
+  "chargeReferences": [
+    {
+      "id": "69ea7fd9-961b-4d5d-be8b-ecd0e9cc8482",
+      "chargeVersionId": "fb1c7c5d-e723-4ab2-861e-5aae6d428019",
+      "factorsOverridden": false,
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "description": "CR2",
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 10,
+      "authorisedAnnualQuantity": 25,
+      "billableAnnualQuantity": 25,
+      "season": "summer",
+      "seasonDerived": "summer",
+      "source": "unsupported",
+      "loss": "high",
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "chargeCategoryId": null,
+      "additionalCharges": {},
+      "scheme": "alcs",
+      "adjustments": null,
+      "eiucRegion": null,
+      "section127Agreement": null,
+      "restrictedSource": false
+    }
+  ],
+  "returnVersions": [
+    {
+      "id": "bcd4e8c7-16ed-419c-915d-d8f184e45ed5",
+      "version": 101,
+      "startDate": "2008-04-01",
+      "endDate": null,
+      "status": "current",
+      "externalId": "1:12345678",
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055"
+    }
+  ],
+  "returnRequirements": [
+    {
+      "id": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
+      "returnsFrequency": "month",
+      "returnVersionId": "bcd4e8c7-16ed-419c-915d-d8f184e45ed5",
+      "summer": true,
+      "upload": false,
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 12,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "siteDescription": "WELL POINTS AT MARS",
+      "legacyId": 12345678,
+      "externalId": "1:12345678"
+    }
+  ],
+  "returnRequirementPurposes": [
+    {
+      "returnRequirementId": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
+      "externalId": "1:12345678:A:AGR:400",
+      "alias": "SPRAY IRRIGATION DIRECT",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      }
+    }
+  ]
+}
