@@ -1,0 +1,11 @@
+{
+  "regions": [
+    {
+      "id": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "chargeRegionId": "S",
+      "naldRegionId": 9,
+      "displayName": "Test Region",
+      "name": "Test Region"
+    }
+  ]
+}
