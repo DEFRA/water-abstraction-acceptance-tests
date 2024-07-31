@@ -3,8 +3,7 @@
 describe('Notify callback endpoint', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('notify-mock-notification.json').then(cy.load)
-
+    cy.setUp('notify-mock-notification')
     cy.fixture('users.json').its('notifyCallbackTestEmail').as('userEmail')
   })
 
