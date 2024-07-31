@@ -4,7 +4,10 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('generate-using-abstraction-data.json').then(cy.load)
+    cy.fixture('generate-using-abstraction-data.json').then((fixture) => {
+      cy.load(fixture)
+    })
+
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
   })
 

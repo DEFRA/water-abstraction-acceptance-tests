@@ -3,7 +3,9 @@
 describe('Submit volumes in gallons return (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then(cy.load)
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('external').as('userEmail')
   })
 

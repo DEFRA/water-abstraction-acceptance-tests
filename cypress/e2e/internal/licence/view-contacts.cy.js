@@ -3,7 +3,9 @@
 describe("View a licence's contacts (internal)", () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then(cy.load)
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('super').as('userEmail')
   })
 

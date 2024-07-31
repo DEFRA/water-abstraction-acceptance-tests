@@ -3,7 +3,9 @@
 describe('Submit a return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then(cy.load)
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 

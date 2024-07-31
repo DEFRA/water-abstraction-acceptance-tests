@@ -4,7 +4,10 @@ describe('Submit returns requirement using copy existing (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('returns-requirements.json').then(cy.load)
+    cy.fixture('returns-requirements.json').then((fixture) => {
+      cy.load(fixture)
+    })
+
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
   })
 

@@ -3,8 +3,8 @@
 describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('five-year-two-part-tariff-bill-runs.json').then(cy.load)
-    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+    cy.setUp('five-year-two-part-tariff-bill-runs')
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {

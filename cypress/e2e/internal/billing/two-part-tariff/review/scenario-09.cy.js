@@ -4,7 +4,9 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
   beforeEach(() => {
     cy.tearDown()
     // Load the base licence information into the DB
-    cy.fixture('review-scenario-licence.json').then(cy.load)
+    cy.fixture('review-scenario-licence.json').then((fixture) => {
+      cy.load(fixture)
+    })
 
     // Load the charge and returns information into the DB
     // NOTE: We set the status to "due" to flag the issue "No
@@ -12,7 +14,9 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     // status of "due." We expect the engine to allocate the full amount from either the charge reference or the charge
     // element, whichever is lower. The two datasets switch the lower volume between the charge reference and the charge
     // element. This ensures we can verify that the engine allocates only up to the lower of the two volumes.
-    cy.fixture('review-scenario-09.json').then(cy.load)
+    cy.fixture('review-scenario-09.json').then((fixture) => {
+      cy.load(fixture)
+    })
 
     // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
