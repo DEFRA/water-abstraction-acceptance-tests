@@ -1,4 +1,32 @@
 {
+  "users": [
+    {
+      "username": "acceptance-test.internal.billing_and_data@example.com",
+      "password": "P@55word",
+      "resetRequired": 0,
+      "application": "water_admin",
+      "badLogins": 0,
+      "enabled": true
+    }
+  ],
+  "userGroups": [
+    {
+      "userId": {
+        "schema": "idm",
+        "table": "users",
+        "lookup": "userName",
+        "value": "acceptance-test.internal.billing_and_data@example.com",
+        "select": "userId"
+      },
+      "groupId": {
+        "schema": "idm",
+        "table": "groups",
+        "lookup": "group",
+        "value": "billing_and_data",
+        "select": "groupId"
+      }
+    }
+  ],
   "permitLicences": [
     {
       "licenceRef": "L1",
@@ -185,14 +213,14 @@
       "issue": 1,
       "increment": 0,
       "status": "current",
-      "startDate": "2019-03-01",
+      "startDate": "2017-03-01",
       "externalId": "6:1234:1:0"
     }
   ],
   "licenceAgreements": [
     {
       "licenceRef": "L1",
-      "startDate": "2008-05-05",
+      "startDate": "2008-04-01",
       "signedOn": "2008-05-05",
       "financialAgreementId": {
         "schema": "water",
@@ -212,9 +240,7 @@
       "regionCode": 9,
       "scheme": "alcs",
       "versionNumber": 1,
-      "startDate": {
-        "startDateHelper": true
-      },
+      "startDate": "2017-04-01",
       "status": "current",
       "source": "nald",
       "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
@@ -230,7 +256,7 @@
       "description": "CR2",
       "abstractionPeriodEndDay": 31,
       "abstractionPeriodEndMonth": 10,
-      "authorisedAnnualQuantity": 25,
+      "authorisedAnnualQuantity": 30,
       "billableAnnualQuantity": 25,
       "season": "summer",
       "seasonDerived": "summer",
@@ -254,7 +280,7 @@
         "schema": "public",
         "table": "purposes",
         "lookup": "legacyId",
-        "value": "140",
+        "value": "400",
         "select": "id"
       },
       "chargeCategoryId": null,
@@ -263,7 +289,8 @@
       "adjustments": null,
       "eiucRegion": null,
       "section127Agreement": null,
-      "restrictedSource": false
+      "restrictedSource": false,
+      "volume": 0
     }
   ],
   "returnVersions": [
@@ -282,7 +309,7 @@
       "id": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
       "returnsFrequency": "month",
       "returnVersionId": "bcd4e8c7-16ed-419c-915d-d8f184e45ed5",
-      "summer": true,
+      "summer": false,
       "upload": false,
       "abstractionPeriodStartDay": 1,
       "abstractionPeriodStartMonth": 12,
@@ -316,7 +343,7 @@
         "schema": "public",
         "table": "purposes",
         "lookup": "legacyId",
-        "value": "140",
+        "value": "400",
         "select": "id"
       }
     }
