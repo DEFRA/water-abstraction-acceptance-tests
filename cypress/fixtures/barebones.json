@@ -1025,9 +1025,7 @@
       "startDate": "2021-01-01",
       "endDate": "2021-02-28",
       "receivedDate": null,
-      "dueDate": {
-        "dueDateHelper": true
-      },
+      "dueDate": "2023-04-28",
       "status": "due",
       "underQuery": false
     },
