@@ -7,14 +7,12 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.fixture('review-scenario-licence.json').then((fixture) => {
       cy.load(fixture)
     })
-
     // Load the charge and returns information into the DB
     // NOTE: We set the isTwoPartTariff to false so the return, the return submission, and return lines don't get picked
     // up by the engine
     cy.fixture('review-scenario-10.json').then((fixture) => {
       cy.load(fixture)
     })
-
     // Grab the user email to use
     cy.fixture('users.json').its('billingAndData1').as('userEmail')
 
