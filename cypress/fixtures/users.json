@@ -6,5 +6,6 @@
   "wirs": "waster.industry.regulatory.services@wrls.gov.uk",
   "billingAndData": "billing.data@wrls.gov.uk",
   "psc": "permitting.support.centre@wrls.gov.uk",
-  "loadedPsc": "acceptance-test.internal.psc@example.com"
+  "loadedPsc": "acceptance-test.internal.psc@example.com",
+  "loadedEnvironmentOfficer": "environment.officer@example.com"
 }
