@@ -3,10 +3,11 @@
 describe('Reset password journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
+    cy.fixture('psc-user.json').then((fixture) => {
       cy.load(fixture)
     })
-    cy.fixture('users.json').its('psc').as('userEmail')
+
+    cy.fixture('users.json').its('loadedPsc').as('userEmail')
   })
 
   it('displays the change password page when the link in the email is clicked and automatically logs in when the password is changed', () => {
