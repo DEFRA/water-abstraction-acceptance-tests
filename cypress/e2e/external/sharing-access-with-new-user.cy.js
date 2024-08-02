@@ -3,11 +3,16 @@
 describe('Sharing license access with a new user (external)', () => {
   beforeEach(() => {
     cy.tearDown()
+    cy.fixture('external-user.json').then((fixture) => {
+      cy.load(fixture)
+    })
+
     cy.fixture('barebones.json').then((fixture) => {
       cy.load(fixture)
     })
-    cy.fixture('users.json').its('external').as('firstUserEmail')
-    cy.fixture('users.json').its('externalAccessSharingNew').as('secondUserEmail')
+
+    cy.fixture('users.json').its('loadedExternal').as('firstUserEmail')
+    cy.fixture('users.json').its('loadedExternal1').as('secondUserEmail')
   })
 
   it('allows a user to grant access to a licence to new user', () => {
