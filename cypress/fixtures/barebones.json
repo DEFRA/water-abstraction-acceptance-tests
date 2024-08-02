@@ -32,7 +32,7 @@
   "licenceEntities": [
     {
       "id": "1742895f-5e18-41e0-94bd-d5c9845cb558",
-      "name": "acceptance-test.external@example.com",
+      "name": "external@example.com",
       "type": "individual"
     },
     {
