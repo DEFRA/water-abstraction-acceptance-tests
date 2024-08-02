@@ -104,7 +104,7 @@ describe('mBOD abstraction alert validation (internal)', () => {
     // Select an email address to include in the alerts
     cy.get('.govuk-radios').children().should('have.lengthOf', 4)
     // 4 children, which is comprised of two radios, a divider, and a conditional input box
-    cy.get('.govuk-radios').children(0).should('contain', '@example.com')
+    cy.get('.govuk-radios').children(0).should('contain', '@wrls.gov.uk')
     cy.get('.govuk-radios').children(1).should('contain', 'or')
     cy.get('.govuk-radios').children(2).should('contain', 'Use another email address')
     cy.get('.govuk-radios__input[value="true"]').click()
