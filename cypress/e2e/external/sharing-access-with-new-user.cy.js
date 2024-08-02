@@ -12,7 +12,7 @@ describe('Sharing license access with a new user (external)', () => {
     })
 
     cy.fixture('users.json').its('loadedExternal').as('firstUserEmail')
-    cy.fixture('users.json').its('loadedExternal1').as('secondUserEmail')
+    cy.fixture('users.json').its('loadedSharingExternalNew').as('secondUserEmail')
   })
 
   it('allows a user to grant access to a licence to new user', () => {
