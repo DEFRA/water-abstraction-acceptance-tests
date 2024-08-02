@@ -8,7 +8,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
       cy.load(fixture)
     })
 
-    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates a return requirement by copying existing and approves the requirement', () => {

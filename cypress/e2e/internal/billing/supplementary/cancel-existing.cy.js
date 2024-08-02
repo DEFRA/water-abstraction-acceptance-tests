@@ -14,7 +14,7 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
       })
     })
 
-    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
