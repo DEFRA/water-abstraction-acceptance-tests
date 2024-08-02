@@ -3,7 +3,9 @@
 describe('Reset password journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('barebones')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('psc').as('userEmail')
   })
 
