@@ -3,7 +3,9 @@
 describe('Login and log out (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('barebones')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
     cy.fixture('users.json').its('environmentOfficer').as('userToBeUpdatedEmail')
   })

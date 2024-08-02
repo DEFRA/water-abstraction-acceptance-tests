@@ -3,7 +3,16 @@
 describe('View returns (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('barebones')
+    cy.fixture('barebones.json').then((fixture) => {
+      const futureDate = new Date()
+      const additionalMonths = 3
+
+      futureDate.setMonth(futureDate.getMonth() + additionalMonths)
+
+      fixture.returnLogs[2].dueDate = futureDate.toISOString()
+      cy.load(fixture)
+    })
+
     cy.fixture('users.json').its('external').as('userEmail')
   })
 

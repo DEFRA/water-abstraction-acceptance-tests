@@ -3,7 +3,9 @@
 describe('mBOD abstraction alert journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('barebones')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('environmentOfficer').as('userEmail')
   })
 

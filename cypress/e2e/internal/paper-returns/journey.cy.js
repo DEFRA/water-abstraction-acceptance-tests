@@ -3,7 +3,9 @@
 describe('Paper returns journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('bulk-return')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 

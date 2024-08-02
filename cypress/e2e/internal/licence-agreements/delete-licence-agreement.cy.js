@@ -3,7 +3,9 @@
 describe('Delete licence agreement journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('barebones')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
@@ -64,10 +66,6 @@ describe('Delete licence agreement journey (internal)', () => {
       // end date
       cy.get('td:nth-child(4)').should('contain.text', ' ')
     })
-    cy.contains('Delete').click()
-
-    // confirm we are on the delete agreement page and click delete agreement
-    cy.get('.govuk-heading-l').contains("You're about to delete this agreement")
     cy.contains('Delete agreement').click()
 
     // Charge information

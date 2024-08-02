@@ -3,7 +3,9 @@
 describe('SROC charge information validation (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('billing-data')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
@@ -151,7 +153,7 @@ describe('SROC charge information validation (internal)', () => {
     // Check charge information
     // back on this page we confirm the note we added is present then set the charge reference
     cy.get('#main-content > :nth-child(1) > :nth-child(2) > :nth-child(2)').within(() => {
-      cy.get('dt').should('contain.text', 'acceptance-test.internal.billing_and_data@defra.gov.uk')
+      cy.get('dt').should('contain.text', 'acceptance-test.internal.billing_and_data@example.com')
       cy.get('dd.govuk-summary-list__value').should('contain.text', 'This is Automation Testing')
     })
     cy.get('button:nth-child(3)').click()

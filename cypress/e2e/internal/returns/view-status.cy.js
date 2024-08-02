@@ -3,7 +3,9 @@
 describe('View returns and their status (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('barebones')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
@@ -29,27 +31,27 @@ describe('View returns and their status (internal)', () => {
 
     // confirm we are on the licence page and select returns tab
     cy.contains('AT/CURR/MONTHLY/02')
-    cy.get('#tab_returns').click()
+    cy.get('[data-test="#tab_returns"]').click()
 
     // confirm we are on the tab page
     cy.get('#returns > .govuk-heading-l').contains('Returns')
 
     // confirm we see the expected returns and their statuses
-    cy.get('section#returns > .govuk-table > .govuk-table__body').within(() => {
+    cy.get('#returns').within(() => {
       cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', '9999992')
-      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', 'Due')
+      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', 'due')
 
       cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', '9999993')
-      cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', 'Void')
+      cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', 'void')
 
       cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', '9999991')
-      cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', 'Overdue')
+      cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', 'overdue')
 
       cy.get('.govuk-table__row:nth-child(4)').should('be.visible').and('contain.text', '9999992')
-      cy.get('.govuk-table__row:nth-child(4)').should('be.visible').and('contain.text', 'Complete')
+      cy.get('.govuk-table__row:nth-child(4)').should('be.visible').and('contain.text', 'complete')
 
       cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', '9999990')
-      cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', 'Overdue')
+      cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', 'overdue')
     })
   })
 })

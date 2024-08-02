@@ -64,7 +64,7 @@ describe('Submit no returns requirement (internal)', () => {
 
     // confirm we are seeing the details we selected
     cy.get('[data-test="start-date"]').should('contain.text', '12 June 2023')
-    cy.get('[data-test="reason"]').should('contain.text', 'Returns exception')
+    cy.get('[data-test="reason"]').should('contain.text', 'Licence conditions do not require returns')
 
     // click the change link for the reason
     cy.get('[data-test="change-reason"]').click()
@@ -78,7 +78,7 @@ describe('Submit no returns requirement (internal)', () => {
 
     // confirm we are back on check page and see the reason changes
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="reason"]').contains('Transfer licence')
+    cy.get('[data-test="reason"]').contains('Returns exception')
 
     // confirm we see the option to add note
     cy.get('.govuk-heading-l').contains('Notes')

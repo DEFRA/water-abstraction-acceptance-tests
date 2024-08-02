@@ -3,7 +3,9 @@
 describe('SROC charge information journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('billing-data')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 

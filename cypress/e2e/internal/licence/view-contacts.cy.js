@@ -3,7 +3,9 @@
 describe("View a licence's contacts (internal)", () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('billing-data')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('super').as('userEmail')
   })
 
@@ -30,17 +32,17 @@ describe("View a licence's contacts (internal)", () => {
 
     // Confirm we are on the licence page and select contact details tab
     cy.contains('AT/CURR/DAILY/01')
-    cy.get('#tab_contacts').click()
+    cy.get('[data-test="#tab_contact"]').click()
 
     // Confirm we are on the tab page and expected controls are present
-    cy.get('#contacts > .govuk-heading-l').contains('Contact detail')
-    cy.get('#contacts').contains('Go to customer contacts')
+    cy.get('#contact-details > .govuk-heading-l').contains('Contact details')
+    cy.get('.govuk-body > .govuk-link').contains('Go to customer contacts')
 
     // Confirm we can see expected licence holder contact details
     cy.get('.govuk-table__row').contains('John Testerson')
 
     // Click the 'Go to customer contacts' link
-    cy.get('#contacts > :nth-child(2) > a').click()
+    cy.contains('Go to customer contacts').click()
 
     // Confirm expected tabs are present
     cy.get('#main-content').contains('Licences')

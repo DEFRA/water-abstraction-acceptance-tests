@@ -3,7 +3,9 @@
 describe('User registration validation (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('barebones')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('externalNew').as('userEmail')
   })
 

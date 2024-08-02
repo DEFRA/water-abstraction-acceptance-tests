@@ -3,7 +3,9 @@
 describe('Record receipt for return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.setUp('barebones')
+    cy.fixture('barebones.json').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
@@ -29,15 +31,15 @@ describe('Record receipt for return (internal)', () => {
 
     // confirm we are on the licence page and select returns tab
     cy.contains('AT/CURR/MONTHLY/02')
-    cy.get('#tab_returns').click()
+    cy.get('[data-test="#tab_returns"]').click()
 
     // confirm we are on the tab page
     cy.get('#returns > .govuk-heading-l').contains('Returns')
 
     // confirm we see the overdue return
-    cy.get('section#returns > .govuk-table > .govuk-table__body').within(() => {
+    cy.get('#returns').within(() => {
       cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', '9999990')
-      cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', 'Overdue')
+      cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', 'overdue')
 
       cy.get('.govuk-table__row:nth-child(5) a').contains('9999990').click()
     })
