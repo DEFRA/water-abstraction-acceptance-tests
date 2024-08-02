@@ -6,7 +6,10 @@ describe('Submit volumes in megalitres return (external)', () => {
     cy.fixture('barebones.json').then((fixture) => {
       cy.load(fixture)
     })
-    cy.fixture('users.json').its('external').as('userEmail')
+    cy.fixture('external-user.json').then((fixture) => {
+      cy.load(fixture)
+    })
+    cy.fixture('users.json').its('loadedExternal').as('userEmail')
   })
 
   it('login as an existing user and submit returns', () => {

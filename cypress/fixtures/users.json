@@ -1,4 +1,5 @@
 {
+  "external": "external@example.co.uk",
   "admin": "admin-internal@wrls.gov.uk",
   "super": "super.user@wrls.gov.uk",
   "environmentOfficer": "environment.officer@wrls.gov.uk",
