@@ -309,15 +309,6 @@
       "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
     }
   ],
-  "regions": [
-    {
-      "id": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
-      "chargeRegionId": "S",
-      "naldRegionId": 9,
-      "displayName": "Test Region",
-      "name": "Test Region"
-    }
-  ],
   "licences": [
     {
       "id": "8717da0e-28d4-4833-8e32-1da050b60055",
