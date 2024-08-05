@@ -22,7 +22,7 @@ describe('Replace charge version in the 2023 financial year with no changes (int
       })
     })
 
-    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {

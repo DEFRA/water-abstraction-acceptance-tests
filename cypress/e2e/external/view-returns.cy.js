@@ -13,7 +13,10 @@ describe('View returns (external)', () => {
       cy.load(fixture)
     })
 
-    cy.fixture('users.json').its('external').as('userEmail')
+    cy.fixture('external-user.json').then((fixture) => {
+      cy.load(fixture)
+    })
+    cy.fixture('users.json').its('loadedExternal').as('userEmail')
   })
 
   it('login as an existing user and view returns', () => {

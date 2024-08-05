@@ -6,7 +6,10 @@ describe('Reset password journey (external)', () => {
     cy.fixture('barebones.json').then((fixture) => {
       cy.load(fixture)
     })
-    cy.fixture('users.json').its('external').as('userEmail')
+    cy.fixture('external-user.json').then((fixture) => {
+      cy.load(fixture)
+    })
+    cy.fixture('users.json').its('loadedExternal').as('userEmail')
   })
 
   it('displays the change password page when the link in the email is clicked and automatically logs in when the password is changed', () => {

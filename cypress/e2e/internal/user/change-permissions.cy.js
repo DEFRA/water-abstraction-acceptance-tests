@@ -3,11 +3,11 @@
 describe('Login and log out (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
+    cy.fixture('environment-officer-user.json').then((fixture) => {
       cy.load(fixture)
     })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
-    cy.fixture('users.json').its('environmentOfficer').as('userToBeUpdatedEmail')
+    cy.fixture('users.json').its('loadedEnvironmentOfficer').as('userToBeUpdatedEmail')
   })
 
   it('can log in and out as an internal user', () => {

@@ -8,7 +8,7 @@ describe('Cancel a return requirement (internal)', () => {
       cy.load(fixture)
     })
 
-    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('cancels a return requirement after completing the journey', () => {

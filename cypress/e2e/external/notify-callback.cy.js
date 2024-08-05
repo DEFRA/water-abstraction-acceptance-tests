@@ -6,7 +6,7 @@ describe('Notify callback endpoint', () => {
     cy.fixture('notify-mock-notification.json').then((fixture) => {
       cy.load(fixture)
     })
-    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('when called by Notify sets the status of the notification to delivered', () => {

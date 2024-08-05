@@ -8,7 +8,7 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
       cy.load(fixture)
     })
 
-    cy.fixture('users.json').its('billingAndData1').as('userEmail')
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates a return requirement using abstraction data and approves the requirement', () => {
