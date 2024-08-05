@@ -6,10 +6,6 @@ describe('Create a empty SROC two-part tariff bill run (internal)', () => {
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
 
-    cy.fixture('sroc-two-part-tariff.json').then((fixture) => {
-      cy.load(fixture)
-    })
-
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
       cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
