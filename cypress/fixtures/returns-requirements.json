@@ -178,6 +178,7 @@
     {
       "id": "a4f9b0b5-11ac-4aa2-98c9-61c6c12088bb",
       "licenceVersionId": "b846afb6-9334-42c4-8da3-1d559a6e3ea7",
+      "externalId": "6:12345",
       "purposeId": {
         "schema": "public",
         "table": "purposes",
@@ -203,6 +204,7 @@
     {
       "id": "b1fa0800-9028-4a46-872c-7f70676701ca",
       "licenceVersionId": "2f9362e8-4fdc-4018-880a-31bba8d9b23b",
+      "externalId": "6:123456",
       "purposeId": {
         "schema": "public",
         "table": "purposes",
