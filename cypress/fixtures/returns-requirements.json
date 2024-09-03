@@ -272,7 +272,8 @@
         "lookup": "legacyId",
         "value": "ELC",
         "select": "id"
-      }
+      },
+      "alias": "This is a test purpose alias"
     }
   ],
   "returnRequirementPoints": [
