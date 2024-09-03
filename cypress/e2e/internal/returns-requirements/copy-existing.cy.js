@@ -74,21 +74,22 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('[data-test="start-date"]').contains('12 June 2023')
     cy.get('[data-test="reason"]').contains('Change to special agreement')
 
-    // confirm we see the purpose and purpose alias for the requirement copied from existing
+    // confirm we see the purpose and purpose description for the requirement copied from existing
     cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation (This is a test purpose alias)')
 
     // choose the change link for the purpose and confirm we are on the purpose page
     cy.get('[data-test="change-purposes-0"]').click()
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
-    // choose another purpose and continue
+    // choose another purpose and add another purpose description and click continue
     cy.get('[data-test="purpose-1"]').uncheck()
     cy.get('[data-test="purpose-0"]').check()
+    cy.get('[data-test="purpose-alias-0"]').type('This is another purpose description')
     cy.contains('Continue').click()
 
     // confirm we see the purpose changes on the check page
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="purposes-0"]').contains('General Farming & Domestic')
+    cy.get('[data-test="purposes-0"]').contains('General Farming & Domestic (This is another purpose description)')
 
     // confirm we see the points for the requirement copied from existing
     cy.get('[data-test="points-0"]').contains('At National Grid Reference TQ 1234 1234 (Test local name 1)')
