@@ -74,8 +74,8 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('[data-test="start-date"]').contains('12 June 2023')
     cy.get('[data-test="reason"]').contains('Change to special agreement')
 
-    // confirm we see the purpose for the requirement copied from existing
-    cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation')
+    // confirm we see the purpose and purpose alias for the requirement copied from existing
+    cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation (This is a test purpose alias)')
 
     // choose the change link for the purpose and confirm we are on the purpose page
     cy.get('[data-test="change-purposes-0"]').click()
