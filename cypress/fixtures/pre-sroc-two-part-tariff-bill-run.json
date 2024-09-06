@@ -160,7 +160,7 @@
     {
       "id": "8717da0e-28d4-4833-8e32-1da050b60055",
       "licenceRef": "L1",
-      "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "ARCA",
         "regionalChargeArea": "Anglian"

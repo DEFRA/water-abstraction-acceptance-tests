@@ -416,7 +416,7 @@
     {
       "id": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
       "licenceRef": "AT/TEST/01",
-      "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
         "regionalChargeArea": "Southern"
@@ -427,7 +427,7 @@
     {
       "id": "482bf7ed-e2d9-426e-bfba-183784e6d459",
       "licenceRef": "AT/TEST/02",
-      "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
         "regionalChargeArea": "Southern"
@@ -440,7 +440,7 @@
     {
       "id": "d1599b0f-2343-41c8-bc49-6a25ba5fe4c2",
       "licenceRef": "AT/TEST/03",
-      "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
         "regionalChargeArea": "Southern"
@@ -451,7 +451,7 @@
     {
       "id": "85f74e84-e0de-45ac-b9d4-f21a1913eb95",
       "licenceRef": "AT/TEST/04",
-      "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
         "regionalChargeArea": "Southern"
@@ -964,7 +964,7 @@
   "billRuns": [
     {
       "id": "44ee8b2a-5557-490f-90cd-676d1b8038bf",
-      "regionId": "d0a4123d-1e19-480d-9dd4-f70f3387c4b9",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "batchType": "annual",
       "fromFinancialYearEnding": 2023,
       "toFinancialYearEnding": 2024,
