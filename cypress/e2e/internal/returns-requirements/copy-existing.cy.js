@@ -49,8 +49,8 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     // confirm we are on the reason page
     cy.get('.govuk-fieldset__heading').contains('Select the reason for the requirements for returns')
 
-    // choose a reason for the return and click continue
-    cy.get('#reason-2').check()
+    // choose a reason (minor change) for the return and click continue
+    cy.get('#reason-8').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
@@ -72,7 +72,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
 
     // confirm we see the start date and reason selected
     cy.get('[data-test="start-date"]').contains('12 June 2023')
-    cy.get('[data-test="reason"]').contains('Change to special agreement')
+    cy.get('[data-test="reason"]').contains('Minor change')
 
     // confirm we see the purpose and purpose description for the requirement copied from existing
     cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation (This is a test purpose alias)')
@@ -82,17 +82,18 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
     // choose another purpose and add another purpose description and click continue
-    cy.get('[data-test="purpose-1"]').uncheck()
-    cy.get('[data-test="purpose-0"]').check()
-    cy.get('[data-test="purpose-alias-0"]').type('This is another purpose description')
+    cy.get('[data-test="purpose-0"]').uncheck()
+    cy.get('[data-test="purpose-1"]').check()
+    cy.get('[data-test="purpose-alias-1"]').type('This is another purpose description')
     cy.contains('Continue').click()
 
     // confirm we see the purpose changes on the check page
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="purposes-0"]').contains('General Farming & Domestic (This is another purpose description)')
+    cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
 
     // confirm we see the points for the requirement copied from existing
-    cy.get('[data-test="points-0"]').contains('At National Grid Reference TQ 1234 1234 (Test local name 1)')
+    cy.get('[data-test="points-0"] > :nth-child(1)').contains('At National Grid Reference TQ 1234 5678 (Example licence point 1)')
+    cy.get('[data-test="points-0"] > :nth-child(2)').contains('At National Grid Reference TT 9876 5432 (Example licence point 2)')
 
     // choose the change link for the points and confirm we are on the points page
     cy.get('[data-test="change-points-0"]').click()
@@ -100,12 +101,11 @@ describe('Submit returns requirement using copy existing (internal)', () => {
 
     // choose another points and continue
     cy.get('#points').uncheck()
-    cy.get('#points-2').check()
     cy.contains('Continue').click()
 
     // confirm we see the points changes on the check page
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 5678 5678 (Test local name 2)')
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example licence point 2)')
 
     // choose add another requirement
     cy.contains('Add another requirement').click()
@@ -114,23 +114,23 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
 
     // choose a purpose and continue
-    cy.get('[data-test="purpose-1"]').check()
+    cy.get('[data-test="purpose-0"]').check()
     cy.contains('Continue').click()
 
     // confirm we are on the points page
     cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
 
     // choose a points and continue
-    cy.get('#points-2').check()
+    cy.get('#points').check()
     cy.contains('Continue').click()
 
     // confirm we are on the abstraction period page
     cy.get('.govuk-heading-xl').contains('Enter the abstraction period for the requirements for returns')
 
     // choose a start and end date then continue
-    cy.get('#abstraction-period-start-day').type('01')
+    cy.get('#abstraction-period-start-day').type('1')
     cy.get('#abstraction-period-start-month').type('12')
-    cy.get('#abstraction-period-end-day').type('03')
+    cy.get('#abstraction-period-end-day').type('3')
     cy.get('#abstraction-period-end-month').type('11')
     cy.contains('Continue').click()
 
@@ -173,9 +173,12 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     // confirm we are back on the check page
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
+    // confirm we see the new requirement added message
+    cy.get('.govuk-notification-banner__heading').contains('New requirement added')
+
     // confirm we see the new added requirement and details selected
     cy.get('[data-test="purposes-1"]').contains('Hydroelectric Power Generation')
-    cy.get('[data-test="points-1"]').contains('At National Grid Reference TT 5678 5678 (Test local name 2)')
+    cy.get('[data-test="points-1"]').contains('At National Grid Reference TQ 1234 5678 (Example licence point 1)')
     cy.get('[data-test="abstraction-period-1"]').contains('From 1 December to 3 November')
     cy.get('[data-test="returns-cycle-1"]').contains('Summer')
     cy.get('[data-test="site-description-1"]').contains('Site description for another return requirement')
