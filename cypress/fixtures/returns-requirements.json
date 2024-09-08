@@ -18,7 +18,7 @@
       "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
       "name": "Big Farm Co Ltd 01",
       "type": "organisation",
-      "companyNumber": "1234501"
+      "companyNumber": "999000999"
     }
   ],
   "contacts": [
@@ -30,21 +30,6 @@
       "middleInitials": "J",
       "contactType": "person",
       "dataSource": "nald"
-    }
-  ],
-  "billingAccounts": [
-    {
-      "id": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
-      "accountNumber": "A99999991A",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
-    }
-  ],
-  "billingAccountAddresses": [
-    {
-      "id": "ab9a24ec-80b8-40dc-82f8-7df3e885245a",
-      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "startDate": "2022-04-01"
     }
   ],
   "licenceDocuments": [
@@ -114,97 +99,34 @@
         "regionalChargeArea": "Test Region"
       },
       "startDate": "2022-04-01",
-      "waterUndertaker": true
+      "waterUndertaker": false
     }
   ],
   "licenceVersions": [
     {
       "id": "b846afb6-9334-42c4-8da3-1d559a6e3ea7",
       "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
-      "issue": 1,
+      "issue": 100,
       "increment": 0,
-      "status": "current",
+      "status": "superseded",
       "startDate": "2022-04-01",
-      "externalId": "6:1234:1:0"
+      "endDate": "2023-06-11",
+      "externalId": "9:1234:100:0"
     },
     {
       "id": "2f9362e8-4fdc-4018-880a-31bba8d9b23b",
       "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
-      "issue": 2,
+      "issue": 101,
       "increment": 0,
       "status": "current",
       "startDate": "2023-06-12",
-      "externalId": "6:1234:2:0"
-    }
-  ],
-  "chargeVersions": [
-    {
-      "id": "8e5626ee-5e4c-48f6-a668-471d35997e2c",
-      "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
-      "licenceRef": "AT/TES/01",
-      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
-      "regionCode": 9,
-      "scheme": "sroc",
-      "versionNumber": 100,
-      "startDate": "2022-04-01",
-      "status": "current",
-      "source": "wrls"
-    }
-  ],
-  "chargeReferences": [
-    {
-      "id": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
-      "chargeVersionId": "8e5626ee-5e4c-48f6-a668-471d35997e2c",
-      "description": "SROC Charge Reference 01",
-      "scheme": "sroc",
-      "source": "tidal",
-      "loss": "medium",
-      "restrictedSource": false,
-      "factorsOverridden": false,
-      "chargeCategoryId": {
-        "schema": "public",
-        "table": "chargeCategories",
-        "lookup": "reference",
-        "value": "4.2.1",
-        "select": "id"
-      },
-      "waterModel": "no model",
-      "volume": 100,
-      "eiucRegion": "Southern",
-      "section127Agreement": false
+      "externalId": "9:1234:102:0"
     }
   ],
   "licenceVersionPurposes": [
     {
       "id": "a4f9b0b5-11ac-4aa2-98c9-61c6c12088bb",
-      "licenceVersionId": "b846afb6-9334-42c4-8da3-1d559a6e3ea7",
-      "externalId": "6:12345",
-      "purposeId": {
-        "schema": "public",
-        "table": "purposes",
-        "lookup": "legacyId",
-        "value": "140",
-        "select": "id"
-      },
-      "primaryPurposeId": {
-        "schema": "public",
-        "table": "primaryPurposes",
-        "lookup": "legacyId",
-        "value": "A",
-        "select": "id"
-      },
-      "secondaryPurposeId": {
-        "schema": "public",
-        "table": "secondaryPurposes",
-        "lookup": "legacyId",
-        "value": "AGR",
-        "select": "id"
-      }
-    },
-    {
-      "id": "b1fa0800-9028-4a46-872c-7f70676701ca",
       "licenceVersionId": "2f9362e8-4fdc-4018-880a-31bba8d9b23b",
-      "externalId": "6:123456",
       "purposeId": {
         "schema": "public",
         "table": "purposes",
@@ -216,16 +138,69 @@
         "schema": "public",
         "table": "primaryPurposes",
         "lookup": "legacyId",
-        "value": "W",
+        "value": "P",
         "select": "id"
       },
       "secondaryPurposeId": {
         "schema": "public",
         "table": "secondaryPurposes",
         "lookup": "legacyId",
-        "value": "FAD",
+        "value": "ELC",
         "select": "id"
-      }
+      },
+      "abstractionPeriodEndDay": "31",
+      "abstractionPeriodEndMonth": "12",
+      "abstractionPeriodStartDay": "1",
+      "abstractionPeriodStartMonth": "3",
+      "externalId": "9:1234:1:0",
+      "dailyQuantity": "100"
+    },
+    {
+      "id": "e1f22696-6a86-4b95-b8e5-6abb68fcf5e0",
+      "licenceVersionId": "2f9362e8-4fdc-4018-880a-31bba8d9b23b",
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "270",
+        "select": "id"
+      },
+      "primaryPurposeId": {
+        "schema": "public",
+        "table": "primaryPurposes",
+        "lookup": "legacyId",
+        "value": "P",
+        "select": "id"
+      },
+      "secondaryPurposeId": {
+        "schema": "public",
+        "table": "secondaryPurposes",
+        "lookup": "legacyId",
+        "value": "CHE",
+        "select": "id"
+      },
+      "abstractionPeriodEndDay": "29",
+      "abstractionPeriodEndMonth": "11",
+      "abstractionPeriodStartDay": "12",
+      "abstractionPeriodStartMonth": "06",
+      "externalId": "9:1234:2:0",
+      "dailyQuantity": "101"
+    }
+  ],
+  "licenceVersionPurposePoints": [
+    {
+      "id": "cda7facf-0dab-4e9b-9215-999ac9c24fbd",
+      "licenceVersionPurposeId": "a4f9b0b5-11ac-4aa2-98c9-61c6c12088bb",
+      "description": "Example licence point 1",
+      "ngr1": "TQ 1234 5678",
+      "naldPointId": 9000031
+    },
+    {
+      "id": "2ab25adb-78e6-4504-a8eb-641e4bf99db7",
+      "licenceVersionPurposeId": "e1f22696-6a86-4b95-b8e5-6abb68fcf5e0",
+      "description": "Example licence point 2",
+      "ngr1": "TT 9876 5432",
+      "naldPointId": 9000032
     }
   ],
   "returnVersions": [
@@ -234,7 +209,7 @@
       "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
       "externalId": "9:5674:100",
       "version":"100",
-      "startDate": "2023-12-10",
+      "startDate": "2023-06-12",
       "status": "current",
       "multipleUpload": false
     }
@@ -245,7 +220,7 @@
       "returnVersionId": "a63cd63f-64b2-4adf-9bd0-b6d4a13f04e3",
       "twoPartTariff": true,
       "externalId": "9:100",
-      "siteDescription": "AT/TEST/01 Description"
+      "siteDescription": "Borehole in top field"
     }
   ],
   "returnRequirementPurposes": [
@@ -279,21 +254,21 @@
   "returnRequirementPoints": [
     {
       "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
-      "description": "CLAY WOOD BROOK/OAKSCAR RESERVOIR",
-      "ngr1": "TQ 9000031 100",
+      "description": "Example return point 1",
+      "ngr1": "TQ 1234 5678",
       "ngr2": null,
       "ngr3": null,
       "ngr4": null,
-      "naldPointId": "9000031"
+      "naldPointId": 9000031
     },
     {
       "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
-      "description": "Example Point Location 2",
-      "ngr1": "TT 9000032 200",
+      "description": "Example return point 2",
+      "ngr1": "TT 9876 5432",
       "ngr2": null,
       "ngr3": null,
       "ngr4": null,
-      "naldPointId": "9000032"
+      "naldPointId": 9000032
     }
   ]
 }
