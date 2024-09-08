@@ -155,7 +155,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('[data-test="reason"]').contains('Minor change')
 
     // confirm we see the purposes selected
-    cy.get('[data-test="purposes-0"]').should('contain', 'General Farming & Domestic (This is a purpose description)')
+    cy.get('[data-test="purposes-0"]').should('contain', 'Hydroelectric Power Generation (This is a purpose description)')
 
     // choose the change option for purposes
     cy.get('[data-test="change-purposes-0"]').click()
@@ -168,10 +168,10 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the purpose changes
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation (This is another purpose description)')
+    cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
 
     // confirm we see the points selected
-    cy.get('[data-test="points-0"]').should('contain', 'At National Grid Reference TQ 1234 1234 (Test local name 1)')
+    cy.get('[data-test="points-0"]').should('contain', 'At National Grid Reference TQ 1234 5678 (Example licence point 1)')
 
     // choose the change option for points
     cy.get('[data-test="change-points-0"]').click()
@@ -183,7 +183,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the points changes
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 5678 5678 (Test local name 2)')
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example licence point 2)')
 
     // confirm we see the abstraction period selected
     cy.get('[data-test="abstraction-period-0"]').contains('From 1 December to 3 September')
