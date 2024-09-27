@@ -187,20 +187,44 @@
       "dailyQuantity": "101"
     }
   ],
+  "points": [
+    {
+      "id": "1cb602f8-6a01-4435-96b0-541e03f460da",
+      "description": "Example point 1",
+      "ngr1": "TQ 1234 5678",
+      "externalId": "9:9000031",
+      "sourceId": {
+        "schema": "public",
+        "table": "sources",
+        "lookup": "legacyId",
+        "value": "S",
+        "select": "id"
+      }
+    },
+    {
+      "id": "82fab927-ef31-45a2-a4e6-104315cb9764",
+      "description": "Example point 2",
+      "ngr1": "TT 9876 5432",
+      "externalId": "9:9000032",
+      "sourceId": {
+        "schema": "public",
+        "table": "sources",
+        "lookup": "legacyId",
+        "value": "S",
+        "select": "id"
+      }
+    }
+  ],
   "licenceVersionPurposePoints": [
     {
       "id": "cda7facf-0dab-4e9b-9215-999ac9c24fbd",
       "licenceVersionPurposeId": "a4f9b0b5-11ac-4aa2-98c9-61c6c12088bb",
-      "description": "Example licence point 1",
-      "ngr1": "TQ 1234 5678",
-      "naldPointId": 9000031
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
     },
     {
       "id": "2ab25adb-78e6-4504-a8eb-641e4bf99db7",
       "licenceVersionPurposeId": "e1f22696-6a86-4b95-b8e5-6abb68fcf5e0",
-      "description": "Example licence point 2",
-      "ngr1": "TT 9876 5432",
-      "naldPointId": 9000032
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
     }
   ],
   "returnVersions": [
@@ -254,21 +278,11 @@
   "returnRequirementPoints": [
     {
       "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
-      "description": "Example return point 1",
-      "ngr1": "TQ 1234 5678",
-      "ngr2": null,
-      "ngr3": null,
-      "ngr4": null,
-      "naldPointId": 9000031
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
     },
     {
       "returnRequirementId": "afa416d5-9b44-4ac5-a717-ead4e769c75f",
-      "description": "Example return point 2",
-      "ngr1": "TT 9876 5432",
-      "ngr2": null,
-      "ngr3": null,
-      "ngr4": null,
-      "naldPointId": 9000032
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
     }
   ]
 }

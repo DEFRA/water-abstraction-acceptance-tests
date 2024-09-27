@@ -132,7 +132,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('[data-test="purposes-0"]').should('contain', 'Hydroelectric Power Generation')
 
     // confirm we see the points selected
-    cy.get('[data-test="points-0"]').should('contain', 'At National Grid Reference TQ 1234 5678 (Example licence point 1)')
+    cy.get('[data-test="points-0"]').should('contain', 'At National Grid Reference TQ 1234 5678 (Example point 1)')
 
     // confirm we see the abstraction period selected
     cy.get('[data-test="abstraction-period-0"]').contains('From 1 December to 3 September')

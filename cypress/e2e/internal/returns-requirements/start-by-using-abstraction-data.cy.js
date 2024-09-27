@@ -69,23 +69,23 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
 
     // confirm we see return requirements generated from abstraction data
     // Return requirement 1
-    cy.get('#requirement-0 > div.govuk-summary-card__title-wrapper > h2').contains('Example licence point 1')
+    cy.get('#requirement-0 > div.govuk-summary-card__title-wrapper > h2').contains('Example point 1')
     cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation')
-    cy.get('[data-test="points-0"]').contains('At National Grid Reference TQ 1234 5678 (Example licence point 1)')
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TQ 1234 5678 (Example point 1)')
     cy.get('[data-test="abstraction-period-0"]').contains('From 1 March to 31 December')
     cy.get('[data-test="returns-cycle-0"]').contains('Winter and all year')
-    cy.get('[data-test="site-description-0"]').contains('Example licence point 1')
+    cy.get('[data-test="site-description-0"]').contains('Example point 1')
     cy.get('[data-test="frequency-collected-0"]').contains('Daily')
     cy.get('[data-test="frequency-reported-0"]').contains('Daily')
     cy.get('[data-test="agreements-exceptions-0"]').contains('None')
 
     // Return requirement 2
-    cy.get('#requirement-1 > div.govuk-summary-card__title-wrapper > h2').contains('Example licence point 2')
+    cy.get('#requirement-1 > div.govuk-summary-card__title-wrapper > h2').contains('Example point 2')
     cy.get('[data-test="purposes-1"]').contains('Laundry Use')
-    cy.get('[data-test="points-1"]').contains('At National Grid Reference TT 9876 5432 (Example licence point 2)')
+    cy.get('[data-test="points-1"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
     cy.get('[data-test="abstraction-period-1"]').contains('From 12 June to 29 November')
     cy.get('[data-test="returns-cycle-1"]').contains('Winter and all year')
-    cy.get('[data-test="site-description-1"]').contains('Example licence point 2')
+    cy.get('[data-test="site-description-1"]').contains('Example point 2')
     cy.get('[data-test="frequency-collected-1"]').contains('Monthly')
     cy.get('[data-test="frequency-reported-1"]').contains('Monthly')
     cy.get('[data-test="agreements-exceptions-1"]').contains('None')
