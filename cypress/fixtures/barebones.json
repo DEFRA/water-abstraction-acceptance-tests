@@ -156,8 +156,7 @@
     {
       "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
       "name": "Big Farm Co Ltd",
-      "type": "organisation",
-      "companyNumber": "12345"
+      "type": "organisation"
     }
   ],
   "addresses": [
@@ -367,7 +366,7 @@
     },
     {
       "id": "5649a988-3cdf-4a19-91ee-8a61355f8c9d",
-      "licenceId": "bb5605c9-5c28-43d3-a8b3-875013366b69",
+      "licenceId": "bcdf5049-fd2d-4e45-a3d6-37bcd443d431",
       "issue": 1,
       "increment": 0,
       "status": "current",
@@ -376,16 +375,54 @@
     },
     {
       "id": "eede57aa-f8d7-492a-bb6a-b5bccead5ce4",
-      "licenceId": "844e5fd5-f21c-418e-8d64-0be4d283133a",
+      "licenceId": "bb5605c9-5c28-43d3-a8b3-875013366b69",
       "issue": 1,
       "increment": 0,
       "status": "current",
       "startDate": "2020-01-01",
       "externalId": "6:1236:1:0"
+    },
+    {
+      "id": "49bf4843-8d2c-4667-8950-56d472f02bf6",
+      "licenceId": "844e5fd5-f21c-418e-8d64-0be4d283133a",
+      "issue": 1,
+      "increment": 0,
+      "status": "current",
+      "startDate": "2020-01-01",
+      "externalId": "6:1237:1:0"
+    }
+  ],
+  "points": [
+    {
+      "id": "1cb602f8-6a01-4435-96b0-541e03f460da",
+      "description": "Example point 1",
+      "ngr1": "TQ 1234 5678",
+      "externalId": "9:9000031",
+      "sourceId": {
+        "schema": "public",
+        "table": "sources",
+        "lookup": "legacyId",
+        "value": "S",
+        "select": "id"
+      }
+    },
+    {
+      "id": "82fab927-ef31-45a2-a4e6-104315cb9764",
+      "description": "Example point 2",
+      "ngr1": "TT 9876 5432",
+      "externalId": "9:9000032",
+      "sourceId": {
+        "schema": "public",
+        "table": "sources",
+        "lookup": "legacyId",
+        "value": "S",
+        "select": "id"
+      }
     }
   ],
   "licenceVersionPurposes": [
     {
+      "id": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
       "licenceVersionId": "7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b",
       "primaryPurposeId": {
         "schema": "water",
@@ -416,6 +453,7 @@
       "externalId": "6:1234"
     },
     {
+      "id": "fb82d30d-49e5-4295-96f9-03abf126cbd7",
       "licenceVersionId": "5649a988-3cdf-4a19-91ee-8a61355f8c9d",
       "primaryPurposeId": {
         "schema": "water",
@@ -446,6 +484,7 @@
       "externalId": "6:1235"
     },
     {
+      "id": "b663bab5-9875-4823-9b3d-d0a66ef22b9a",
       "licenceVersionId": "eede57aa-f8d7-492a-bb6a-b5bccead5ce4",
       "primaryPurposeId": {
         "schema": "water",
@@ -474,6 +513,55 @@
       "abstractionPeriodEndMonth": 3,
       "annualQuantity": 1554,
       "externalId": "6:1236"
+    },
+    {
+      "id": "2088b5cd-3fd9-425c-a4bd-0331596e6d94",
+      "licenceVersionId": "49bf4843-8d2c-4667-8950-56d472f02bf6",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "annualQuantity": 1554,
+      "externalId": "6:1237"
+    }
+  ],
+  "licenceVersionPurposePoints": [
+    {
+      "licenceVersionPurposeId": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "licenceVersionPurposeId": "fb82d30d-49e5-4295-96f9-03abf126cbd7",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
+    },
+    {
+      "licenceVersionPurposeId": "b663bab5-9875-4823-9b3d-d0a66ef22b9a",
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "licenceVersionPurposeId": "2088b5cd-3fd9-425c-a4bd-0331596e6d94",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
     }
   ],
   "returnVersions": [
@@ -484,7 +572,7 @@
       "endDate": null,
       "status": "current",
       "externalId": "6:9999990",
-      "licenceId": "844e5fd5-f21c-418e-8d64-0be4d283133a"
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055"
     },
     {
       "id": "c1c06cf3-5f81-4ebd-b814-b60b782f795b",
@@ -493,7 +581,7 @@
       "endDate": null,
       "status": "current",
       "externalId": "6:9999991",
-      "licenceId": "844e5fd5-f21c-418e-8d64-0be4d283133a"
+      "licenceId": "bcdf5049-fd2d-4e45-a3d6-37bcd443d431"
     },
     {
       "id": "5def1d92-0de9-4a31-aab6-b4373755c483",
@@ -502,7 +590,7 @@
       "endDate": null,
       "status": "current",
       "externalId": "6:9999992",
-      "licenceId": "844e5fd5-f21c-418e-8d64-0be4d283133a"
+      "licenceId": "bb5605c9-5c28-43d3-a8b3-875013366b69"
     },
     {
       "id": "4bba499d-c68c-433f-8f4b-d495ab7c8b34",
@@ -570,6 +658,24 @@
       "siteDescription": "WELL POINTS AT MARS",
       "legacyId": 9999993,
       "externalId": "6:9999993"
+    }
+  ],
+  "returnRequirementPoints": [
+    {
+      "returnRequirementId": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "returnRequirementId": "35eb023b-0911-4876-9093-5f10406c4a2d",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
+    },
+    {
+      "returnRequirementId": "7fe49b9d-4e6a-48da-9c7f-751689c7dd4f",
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "returnRequirementId": "f4bcab6f-906a-4929-9ce7-87480364331b",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
     }
   ],
   "returnRequirementPurposes": [

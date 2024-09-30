@@ -92,8 +92,8 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
 
     // confirm we see the points for the requirement copied from existing
-    cy.get('[data-test="points-0"] > :nth-child(1)').contains('At National Grid Reference TQ 1234 5678 (Example licence point 1)')
-    cy.get('[data-test="points-0"] > :nth-child(2)').contains('At National Grid Reference TT 9876 5432 (Example licence point 2)')
+    cy.get('[data-test="points-0"] > :nth-child(1)').contains('At National Grid Reference TQ 1234 5678 (Example point 1)')
+    cy.get('[data-test="points-0"] > :nth-child(2)').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
 
     // choose the change link for the points and confirm we are on the points page
     cy.get('[data-test="change-points-0"]').click()
@@ -105,7 +105,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
 
     // confirm we see the points changes on the check page
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example licence point 2)')
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
 
     // choose add another requirement
     cy.contains('Add another requirement').click()
@@ -178,7 +178,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
 
     // confirm we see the new added requirement and details selected
     cy.get('[data-test="purposes-1"]').contains('Hydroelectric Power Generation')
-    cy.get('[data-test="points-1"]').contains('At National Grid Reference TQ 1234 5678 (Example licence point 1)')
+    cy.get('[data-test="points-1"]').contains('At National Grid Reference TQ 1234 5678 (Example point 1)')
     cy.get('[data-test="abstraction-period-1"]').contains('From 1 December to 3 November')
     cy.get('[data-test="returns-cycle-1"]').contains('Summer')
     cy.get('[data-test="site-description-1"]').contains('Site description for another return requirement')
