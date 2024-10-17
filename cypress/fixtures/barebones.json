@@ -844,7 +844,7 @@
       "restrictedSource": false
     }
   ],
-  "gaugingStations": [
+  "monitoringStations": [
     {
       "label": "Test Station 500"
     }
