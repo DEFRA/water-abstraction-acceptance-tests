@@ -22,7 +22,7 @@ describe('Login and log out (external)', () => {
     cy.get('.govuk-button.govuk-button--start').click()
 
     //  Assert the user signed in
-    cy.contains('Add licences or give access')
+    cy.get('#navbar-view').should('exist')
 
     //  Click Sign out Button
     cy.get('#signout').click()
