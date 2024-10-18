@@ -120,16 +120,16 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
     // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with no returns
-    cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', 'Unable to match return')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '')
 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
-    cy.get('[data-test="billable-returns"]').should('contain.text', '0ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '32ML')
     cy.get('[data-test="authorised-volume"]').should('contain.text', '32ML')
     cy.get('[data-test="issues-0"]').should('contain.text', 'Unable to match return')
     cy.get('#main-content > :nth-child(6)').should('contain.text', 'No two-part tariff returns')
