@@ -57,7 +57,7 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
 
     // choose the start by using abstraction data checkbox and continue
-    cy.get('#method').check()
+    cy.get('#setup').check()
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
