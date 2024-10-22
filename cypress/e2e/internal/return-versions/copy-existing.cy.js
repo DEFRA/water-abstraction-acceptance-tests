@@ -57,7 +57,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
 
     // choose copy from existing requirements and continue
-    cy.get('#setup-2').check()
+    cy.get('#method-2').check()
     cy.contains('Continue').click()
 
     // confirm we are on the existing requirements page

@@ -57,7 +57,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
 
     // click set up manually and continue
-    cy.get('#setup-4').check()
+    cy.get('#method-4').check()
     cy.contains('Continue').click()
 
     // confirm we are on the purpose page
