@@ -92,7 +92,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // Review Licence AT/TEST/01 ~ Check the licence details
     cy.get('h1').should('contain.text', 'Licence AT/TEST/01')
-    cy.get('[data-test="licence-holder"]').should('contain.text', 'Licence holder Mr J J Testerson')
+    cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
     cy.get('div > .govuk-tag').should('contain.text', 'ready')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff bill run')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2022 to 31 March 2023')
@@ -104,7 +104,8 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="matched-return-action-0"] > :nth-child(3)').should('contain.text', '1 April to 31 March')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', '')
+    // Should be no issues on the return
+    cy.get('[data-test="matched-0-issue-0"]').should('not.exist')
     // The return should be fully allocated over the two charge elements
     cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '50 ML / 50 ML')
 
@@ -114,7 +115,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // Review Licence AT/TEST/01 ~ Check charge Information details are correct for 2 charge elements with one matching
     // return
-    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 2 two-part tariff charge elements')
+    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference with 2 two-part tariff charge elements')
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '50 ML / 50 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'Change details')
@@ -145,13 +146,13 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     // authorised volume of the charge reference, triggering the warning.
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
     cy.get('.govuk-button').contains('Edit the billable returns').click()
-    cy.get('#custom-quantity').click()
-    cy.get('#custom-quantity-input').type('10')
+    cy.get('#custom-quantity-selector').click()
+    cy.get('#custom-quantity').type('10')
     cy.get('.govuk-button').contains('Confirm').click()
     cy.get('.govuk-back-link').click()
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').click()
     cy.get('.govuk-button').contains('Change the authorised volume').click()
-    cy.get('#authorised-volume').clear().type('40')
+    cy.get('#amended-authorised-volume').clear().type('40')
     cy.get('.govuk-button').contains('Confirm').click()
     cy.get('.govuk-back-link').click()
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()

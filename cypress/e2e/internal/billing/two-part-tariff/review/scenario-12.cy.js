@@ -129,7 +129,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with returns that are
     // split over charge references
-    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '2 charge references  with 2 two-part tariff charge elements')
+    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '2 charge references with 2 two-part tariff charge elements')
     // Charge reference 1 & 2
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '14 ML / 32 ML')
     cy.get('[data-test="charge-version-0-total-billable-returns-1"]').should('contain.text', '18 ML / 32 ML')
@@ -155,8 +155,8 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // View match details ~ Charge element 1
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
-    cy.get('[data-test="billable-returns"]').should('contain.text', '14ML')
-    cy.get('[data-test="authorised-volume"]').should('contain.text', '14ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '14 ML')
+    cy.get('[data-test="authorised-volume"]').should('contain.text', '14 ML')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"]').contains('General Farming & Domestic A DRAIN SOMEWHERE')
