@@ -146,7 +146,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '62 ML / 64 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
-    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 2 two-part tariff charge elements')
+    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference with 2 two-part tariff charge elements')
     // Charge element 1
     cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
     cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
@@ -166,8 +166,8 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // View match details ~ Charge element 1
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
-    cy.get('[data-test="billable-returns"]').should('contain.text', '32ML')
-    cy.get('[data-test="authorised-volume"]').should('contain.text', '32ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '32 ML')
+    cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"]').contains('General Farming & Domestic A DRAIN SOMEWHERE')
@@ -178,8 +178,8 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // View match details ~ Charge element 2
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-1"]').click()
-    cy.get('[data-test="billable-returns"]').should('contain.text', '30ML')
-    cy.get('[data-test="authorised-volume"]').should('contain.text', '30ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '30 ML')
+    cy.get('[data-test="authorised-volume"]').should('contain.text', '30 ML')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021669')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 May 2022 to 21 March 2023')
     cy.get('[data-test="matched-return-summary-0"]').contains('Mineral Washing A DRAIN SOMEWHERE')

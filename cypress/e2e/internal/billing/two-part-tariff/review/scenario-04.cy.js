@@ -120,7 +120,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
     // Should be no issues on the return
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', '')
+    cy.get('[data-test="matched-0-issue-0"]').should('not.exist')
 
     // Review Licence AT/TEST/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('not.exist')
@@ -156,17 +156,18 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="total-billable-returns"]').should('contain.text', '32 ML')
     cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="additional-charges"]').should('contain.text', 'Public Water Supply')
-    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Aggregate factor (0.5)')
+    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Aggregate factor (0.5 / 0.5)')
+    cy.get('[data-test="adjustment-1"]').should('contain.text', 'Charge adjustment (1 / 1)')
     cy.contains('Change factors').click()
 
     // Change factors page ~ Amend the aggregate
     cy.get('.govuk-heading-xl').should('contain.text', 'Set the adjustment factors')
-    cy.get('.govuk-inset-text > :nth-child(4)').should('contain.text', 'Public Water Supply')
-    cy.get('.govuk-inset-text > :nth-child(5)').should('contain.text', 'Two part tariff agreement')
-    cy.get('#amended-aggregate-factor').should('have.value', '0.5')
+    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Public Water Supply')
+    cy.get('[data-test="adjustment-1"]').should('contain.text', 'Two part tariff agreement')
+    cy.get('#amended-aggregate').should('have.value', '0.5')
     cy.get('#amended-charge-adjustment').should('have.value', '1')
     // By changing the aggregate factor to 1 this removes it
-    cy.get('#amended-aggregate-factor')
+    cy.get('#amended-aggregate')
       .clear()
       .type('1')
     cy.contains('Confirm').click()
@@ -174,17 +175,17 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     // Charge reference details page ~ Checking the amended aggregate
     cy.get('.govuk-notification-banner').should('exist')
     cy.get('#govuk-notification-banner-title').should('contain.text', 'Adjustment updated')
-    // Check the aggregate value has been removed
-    cy.get('[data-test="adjustment-1"]').should('not.exist')
+    // Check the aggregate value has been updated
+    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Aggregate factor (1 / 0.5)')
     // Check the link still exists once all charge adjustments have been removed
     cy.get('.govuk-summary-list__actions > .govuk-link').should('contain.text', 'Change factors')
     cy.contains('Change factors').click()
 
     // Change factors page ~ Amend the charge adjustment
     cy.get('.govuk-heading-xl').should('contain.text', 'Set the adjustment factors')
-    cy.get('.govuk-inset-text > :nth-child(4)').should('contain.text', 'Public Water Supply')
-    cy.get('.govuk-inset-text > :nth-child(5)').should('contain.text', 'Two part tariff agreement')
-    cy.get('#amended-aggregate-factor').should('have.value', '1')
+    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Public Water Supply')
+    cy.get('[data-test="adjustment-1"]').should('contain.text', 'Two part tariff agreement')
+    cy.get('#amended-aggregate').should('have.value', '1')
     cy.get('#amended-charge-adjustment').should('have.value', '1')
     cy.get('#amended-charge-adjustment')
       .clear()
@@ -195,6 +196,6 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('.govuk-notification-banner').should('exist')
     cy.get('#govuk-notification-banner-title').should('contain.text', 'Adjustment updated')
     // This is checking the charge adjustment has been added
-    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Charge adjustment (0.5)')
+    cy.get('[data-test="adjustment-1"]').should('contain.text', 'Charge adjustment (0.5 / 1)')
   })
 })

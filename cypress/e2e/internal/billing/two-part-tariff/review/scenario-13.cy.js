@@ -122,14 +122,14 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="unmatched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="unmatched-return-total-0"] > :nth-child(2)').should('contain.text', 'Over abstraction')
     // When a return hasn't matched to a charge element we don't expect it to allocate
-    cy.get('[data-test="unmatched-return-total-0"] > :nth-child(1)').should('contain.text', '0 / 32 ML')
+    cy.get('[data-test="unmatched-return-total-0"] > :nth-child(1)').should('contain.text', '0 ML / 32 ML')
 
     // Review Licence AT/TEST/01 ~ Check there are no other returns
     cy.get('[data-test="unmatched-return-action-1"] > .govuk-link').should('not.exist')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('not.exist')
 
     // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a charge element with no matching returns
-    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 1 two-part tariff charge element')
+    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference with 1 two-part tariff charge element')
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
@@ -144,10 +144,10 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
-    cy.get('[data-test="billable-returns"]').should('contain.text', '32ML')
-    cy.get('[data-test="authorised-volume"]').should('contain.text', '32ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '32 ML')
+    cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="issues-0"]').should('contain.text', 'Unable to match return')
-    cy.get('#main-content > :nth-child(6)').should('contain.text', 'No two-part tariff returns')
+    cy.get('[data-test="no-returns-message"]').should('contain.text', 'No matching two-part tariff returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('not.exist')
     cy.get('.govuk-back-link').click()
   })

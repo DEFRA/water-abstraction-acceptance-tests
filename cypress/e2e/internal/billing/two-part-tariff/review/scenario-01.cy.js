@@ -143,7 +143,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     // Review Licence AT/TEST/01 ~ Check charge Information details
     cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2022 to 2023')
     cy.get('#charge-version-0 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2022 to 31 March 2023')
-    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference  with 1 two-part tariff charge element')
+    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference with 1 two-part tariff charge element')
     cy.get('.govuk-details__summary-text').should('contain.text', 'Big Farm Co Ltd 01 billing account details')
     cy.get('.govuk-details__summary').click()
     cy.get('[data-test="billing-account"]').should('contain.text', 'S99999991A')
@@ -184,12 +184,12 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
     cy.get('.govuk-heading-l').should('contain.text', 'SROC Charge Purpose 01')
-    cy.get('.govuk-heading-l').should('contain.text', '1 April 2022 to 31 March 2023')
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('[data-test="charge-period-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
+    cy.get('.govuk-grid-column-full > .govuk-tag').should('contain.text', 'ready')
     cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2022 to 2023')
     cy.get('[data-test="charge-period"]').should('contain.text', 'Charge period 1 April 2022 to 31 March 2023')
-    cy.get('[data-test="billable-returns"]').should('contain.text', '32ML')
-    cy.get('[data-test="authorised-volume"]').should('contain.text', '32ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '32 ML')
+    cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="issues-0"]').should('not.exist')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
@@ -200,19 +200,20 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
 
     // View match details ~ Edit the billable returns
     cy.get('.govuk-button').click()
-    cy.get('.govuk-caption-l').should('contain.text', 'SROC Charge Purpose 01 1 April 2022 to 31 March 2023')
-    cy.get('[data-test="title"]').should('contain.text', 'Set the billable returns quantity for this bill run')
+    cy.get('.govuk-caption-l').should('contain.text', 'SROC Charge Purpose 01')
+    cy.get('[data-test="charge-period-0"]').should('contain.text', '1 April 2022 to 31 March 2023')
+    cy.get('h1').should('contain.text', 'Set the billable returns quantity for this bill run')
     cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2022 to 2023')
     cy.get('[data-test="charge-period"]').should('contain.text', 'Charge period 1 April 2022 to 31 March 2023')
     cy.get('[data-test="authorised-quantity"]').should('contain.text', 'Authorised 32ML')
-    cy.get('#custom-quantity').click()
-    cy.get('#custom-quantity-input').type('20.123')
+    cy.get('#custom-quantity-selector').click()
+    cy.get('#custom-quantity').type('20.123')
     cy.get('.govuk-button').click()
 
     // View match details ~ Check billable returns has updated
     cy.get('.govuk-notification-banner').should('exist')
     cy.get('.govuk-notification-banner__heading').should('contain.text', 'The billable returns for this licence have been updated')
-    cy.get('[data-test="billable-returns"]').should('contain.text', '20.123ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '20.123 ML')
     cy.get('.govuk-back-link').click()
 
     // Review Licence AT/TEST/01 ~ Check billable returns has updated on licence review page

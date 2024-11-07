@@ -120,7 +120,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
     // Should be no issues on the return
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', '')
+    cy.get('[data-test="matched-0-issue-0"]').should('not.exist')
 
     // Review Licence AT/TEST/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('not.exist')

@@ -129,10 +129,10 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
-    cy.get('[data-test="billable-returns"]').should('contain.text', '32ML')
-    cy.get('[data-test="authorised-volume"]').should('contain.text', '32ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '32 ML')
+    cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="issues-0"]').should('contain.text', 'Unable to match return')
-    cy.get('#main-content > :nth-child(6)').should('contain.text', 'No two-part tariff returns')
+    cy.get('[data-test="no-returns-message"]').should('contain.text', 'No matching two-part tariff returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('not.exist')
     cy.get('[data-test="matched-return-summary-0"]').should('not.exist')
   })

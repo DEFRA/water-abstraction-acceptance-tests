@@ -142,7 +142,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // Review Licence AT/TEST/01 ~ Check charge information details are correct
     cy.get('#charge-version-0 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2022 to 31 March 2023')
-    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '2 charge references  with 2 two-part tariff charge elements ')
+    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '2 charge references with 2 two-part tariff charge elements')
     cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.19')
     // The first charge reference has a lower authorised volume than its charge element. This means we expect the return
     // to only allocate to the charge reference volume of 22ML
@@ -158,8 +158,8 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // View match details ~ For charge reference 1's element
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
-    cy.get('[data-test="billable-returns"]').should('contain.text', '22ML')
-    cy.get('[data-test="authorised-volume"]').should('contain.text', '42ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '22 ML')
+    cy.get('[data-test="authorised-volume"]').should('contain.text', '42 ML')
     cy.get('[data-test="issues-0"]').should('contain.text', 'No returns received')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 October 2022 to 31 March 2023')
@@ -185,8 +185,8 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // View match details ~ For charge reference 2's element
     cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-match-details-0"]').click()
-    cy.get('[data-test="billable-returns"]').should('contain.text', '32ML')
-    cy.get('[data-test="authorised-volume"]').should('contain.text', '32ML')
+    cy.get('[data-test="billable-returns"]').should('contain.text', '32 ML')
+    cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="issues-0"]').should('contain.text', 'No returns received')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
