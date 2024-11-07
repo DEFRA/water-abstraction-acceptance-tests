@@ -104,8 +104,8 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="matched-return-action-0"] > :nth-child(3)').should('contain.text', '1 April to 31 March')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
-   // Should be no issues on the return
-   cy.get('[data-test="matched-0-issue-0"]').should('not.exist')
+    // Should be no issues on the return
+    cy.get('[data-test="matched-0-issue-0"]').should('not.exist')
     // The return should be fully allocated over the two charge elements
     cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '50 ML / 50 ML')
 
