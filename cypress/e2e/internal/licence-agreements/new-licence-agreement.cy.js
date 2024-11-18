@@ -39,8 +39,8 @@ describe('New licence agreement journey (internal)', () => {
     cy.contains('Set up a new agreement').click()
 
     // Select agreement
-    // select Canal and Rivers Trust, unsupported source (S130U) then continue
-    cy.get('#financialAgreementCode-3').check()
+    // select Two-part tariff then continue
+    cy.get('.govuk-radios > :nth-child(1) > #financialAgreementCode').check()
     cy.get('form > .govuk-button').click()
 
     // Do you know the date the agreement was signed?
@@ -60,7 +60,7 @@ describe('New licence agreement journey (internal)', () => {
     // Check agreement details
     // confirm the details match what was entered and continue
     cy.get('.govuk-heading-l').contains('Check agreement details').should('be.visible')
-    cy.get('.govuk-summary-list__value').contains('Canal and Rivers Trust, unsupported source (S130U)').should('be.visible')
+    cy.get('.govuk-summary-list__value').contains('Two-part tariff').should('be.visible')
     cy.get('form > .govuk-button').click()
 
     // Charge information
@@ -73,12 +73,16 @@ describe('New licence agreement journey (internal)', () => {
       // end date
       cy.get(':nth-child(2)').should('contain.text', '')
       // agreement
-      cy.get(':nth-child(3)').should('contain.text', 'Canal and Rivers Trust, unsupported source (S130U)')
+      cy.get(':nth-child(3)').should('contain.text', 'Two-part tariff')
       // date signed
       cy.get(':nth-child(4)').should('contain.text', '')
       // actions
       cy.get(':nth-child(5) > a:nth-child(1)').should('contain.text', 'Delete')
       cy.get(':nth-child(5) > a:nth-child(2)').should('contain.text', 'End')
     })
+
+    // Check the new licence agreement has flagged the licence for supplementary billing
+    cy.get('.govuk-notification-banner__content')
+      .should('contain.text', 'This licence has been marked for the next supplementary bill run for the old charge scheme.')
   })
 })
