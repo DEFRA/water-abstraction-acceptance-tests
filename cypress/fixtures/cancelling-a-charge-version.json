@@ -2,9 +2,30 @@
   "workflows": [
     {
       "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
-      "status": "to_setup",
+      "status": "review",
       "createdAt": "2020-04-01",
-      "licenceVersionId": "7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b"
+      "updatedAt": "2020-04-01",
+      "createdBy": {
+        "id": 100331,
+        "email": "billing.data@wrls.gov.uk"
+      },
+      "data": {
+        "chargeVersion": {
+          "scheme": "alcs",
+          "status": "draft",
+          "dateRange": {
+            "startDate": "2020-01-01"
+          },
+          "changeReason": {
+            "id": "db22c827-c74d-40d9-aab8-282fd9843933",
+            "type": "new_non_chargeable_charge_version",
+            "description": "Aggregate licence",
+            "triggersMinimumCharge": false,
+            "isEnabledForNewChargeVersions": true
+          },
+          "chargeElements": []
+        }
+      }
     }
   ],
   "billRuns": [
