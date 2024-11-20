@@ -6,7 +6,7 @@ describe('Deleting a licence from workflow (internal)', () => {
     cy.fixture('barebones.json').then((fixture) => {
       cy.load(fixture)
     })
-    cy.fixture('removing-licence-from-workflow').then((fixture) => {
+    cy.fixture('deleting-licence-from-workflow').then((fixture) => {
       cy.load(fixture)
     })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
