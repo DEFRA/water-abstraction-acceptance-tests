@@ -45,8 +45,17 @@ describe('Create and send supplementary bill runs (internal)', () => {
     //  Assert the user signed in and we're on the search page
     cy.contains('Search')
 
+    // Search the licence
+    cy.get('#query').type('AT/TEST/02')
+    cy.get('.search__button').click()
+    cy.get('.govuk-table__row').contains('AT/TEST/02').click()
+
+    // Confirm there are no flags already on the licence
+    cy.get('.govuk-notification-banner__content')
+      .should('contain.text', 'This licence has been marked for the next supplementary bill runs for the current and old charge schemes.')
+
     // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.get('#nav-bill-runs').contains('Bill runs').click()
 
     // Bill runs
     // click the Create a bill run button
@@ -127,9 +136,15 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // select the SROC bill run
     cy.get('[data-test="date-created-1"] > .govuk-link').click()
 
+    // Remove a licence from the bill run
+    cy.get('[data-test="action-0"] > .govuk-link').click()
+    cy.get('.govuk-button').click()
+    cy.get('.govuk-heading-xl').contains("You're about to remove the bill for A99999992A from the bill run")
+    cy.get('.govuk-button').click()
+
     // Test Region supplementary bill run
     // check the details before sending the bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const { billingPeriodCount } = currentFinancialYearInfo
       if (billingPeriodCount === 1) {
@@ -137,7 +152,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
           .should('contain.text', '1 Supplementary bill')
       } else {
         cy.get('[data-test="bills-count"]')
-          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
+          .should('contain.text', `${billingPeriodCount - 1} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Send bill run').click()
@@ -177,8 +192,19 @@ describe('Create and send supplementary bill runs (internal)', () => {
     cy.get('[data-test="region-1"]').should('contain.text', 'Test Region')
     cy.get('[data-test="bill-run-type-1"]').should('contain.text', 'Supplementary')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      cy.get('[data-test="number-of-bills-1"]').should('contain.text', currentFinancialYearInfo.billingPeriodCount)
+      cy.get('[data-test="number-of-bills-1"]').should('contain.text', currentFinancialYearInfo.billingPeriodCount - 1)
     })
     cy.get('[data-test="bill-run-status-1"] > .govuk-tag').should('contain.text', 'sent')
+
+    // Search the licence that was removed
+    cy.get('#nav-search').click()
+    cy.get('#query').type('AT/TEST/02')
+    cy.get('.search__button').click()
+    cy.get('.govuk-table__row').contains('AT/TEST/02').click()
+
+    // Confirm the licence is still flagged for sroc supplementary but the pre sroc flag has been dropped since the pre
+    // sroc bill run has been created and sent
+    cy.get('.govuk-notification-banner__content')
+      .should('contain.text', 'This licence has been marked for the next supplementary bill run.')
   })
 })

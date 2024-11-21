@@ -44,6 +44,17 @@ To test if the flag has been correctly added to a licence, we compare the banner
 - **Acceptance Criteria**:
   - Flags are added for pre-SROC supplementary billing.
 
+### Removing a licence from a bill run
+- **Description**: Users can remove licences from any annual bill run. If this happens, the licence is flagged for supplementary billing for the same year to ensure it is billed correctly.
+
+Scenario 1 of the two-part tariff annual bill run scenarios covers removing a licence on the review screen and checking it flags the licence for two-part tariff supplementary billing.
+
+The remove-licence test in the billing/annual test folder covers removing a licence from an annual bill run and checking it is flagged for sroc supplementary billing.
+
+The journey test in the billing/supplementary test folder covers removing a licence from a  sroc bill run and checking the flag remains on the licence after.
+- **Acceptance Criteria**:
+  - Flags are added for pre-SROC, SROC, and two-part tariff supplementary billing.
+
 ### Scenario 1: Editing a return
 - **Description**: Editing a submitted return brings the user to a confirmation page where they can manually flag the return for supplementary billing. The service determines which flags to add based on the return's dates and whether it is for a two-part tariff. We already have a test that checks editing a return raises an sroc flag so this additional test is specific to two-part tariff supplementary billing flags.
 - **Acceptance Criteria**:
@@ -67,15 +78,6 @@ To test if the flag has been correctly added to a licence, we compare the banner
 
 ### Scenario 5: Approving a charge version
 - **Description**: Approving a new charge version indicates a change to the charging information. The service determines if supplementary billing is needed based on the charge version’s dates. Future-dated charge versions are excluded from supplementary billing runs, while past-dated ones are flagged as required. We already have a charge version test that checks for an sroc charge version so this additional test is specific to two-part tariff supplementary billing flags.
-- **Acceptance Criteria**:
-  - Flags are added for pre-SROC, SROC, and two-part tariff supplementary billing.
-
-### Scenario 6: Removing a licence from a bill run
-- **Description**: Users can remove licences from any annual bill run. If this happens, the licence is flagged for supplementary billing for the same year to ensure it is billed correctly.
-
-Scenario 1 of the two-part tariff annual bill run scenarios covers removing a licence on the review screen and checking it flags the licence for two-part tariff supplementary billing.
-
-The remove-licence test in the billing/annual test folder covers removing a licence from an annual bill run and checking it is flagged for sroc supplementary billing.
 - **Acceptance Criteria**:
   - Flags are added for pre-SROC, SROC, and two-part tariff supplementary billing.
 
