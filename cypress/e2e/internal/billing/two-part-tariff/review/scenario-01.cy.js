@@ -36,8 +36,16 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     // Assert the user signed in and we're on the search page
     cy.contains('Search')
 
+    // Search the licence
+    cy.get('#query').type('AT/TEST/01')
+    cy.get('.search__button').click()
+    cy.get('.govuk-table__row').contains('AT/TEST/01').click()
+
+    // Confirm there are no flags already on the licence
+    cy.get('.govuk-notification-banner__content').should('not.exist')
+
     // Click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.get('#nav-bill-runs').contains('Bill runs').click()
 
     // Bill runs
     // Click the Create a bill run button
@@ -247,5 +255,15 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
 
     // Bill runs ~ Check the bill run is now empty as the licence has been removed
     cy.get('[data-test="bill-run-status-0"] > .govuk-tag').should('contain.text', 'empty')
+
+    // Search the licence that was removed
+    cy.get('#nav-search').click()
+    cy.get('#query').type('AT/TEST/01')
+    cy.get('.search__button').click()
+    cy.get('.govuk-table__row').contains('AT/TEST/01').click()
+
+    // Confirm the licence has been flagged for two-part tariff supplementary billing
+    cy.get('.govuk-notification-banner__content')
+      .should('contain.text', 'This licence has been marked for the next two-part tariff supplementary bill run.')
   })
 })

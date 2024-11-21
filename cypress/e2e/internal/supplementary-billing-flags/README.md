@@ -45,7 +45,7 @@ To test if the flag has been correctly added to a licence, we compare the banner
   - Flags are added for pre-SROC supplementary billing.
 
 ### Scenario 1: Editing a return
-- **Description**: Editing a submitted return brings the user to a confirmation page where they can manually flag the return for supplementary billing. The service determines which flags to add based on the return's dates and whether it is for a two-part tariff.
+- **Description**: Editing a submitted return brings the user to a confirmation page where they can manually flag the return for supplementary billing. The service determines which flags to add based on the return's dates and whether it is for a two-part tariff. We already have a test that checks editing a return raises an sroc flag so this additional test is specific to two-part tariff supplementary billing flags.
 - **Acceptance Criteria**:
   - Flags are added for pre-SROC, SROC, and two-part tariff supplementary billing.
 
@@ -66,7 +66,7 @@ To test if the flag has been correctly added to a licence, we compare the banner
   - Flags are added for SROC and two-part tariff supplementary billing.
 
 ### Scenario 5: Approving a charge version
-- **Description**: Approving a new charge version indicates a change to the charging information. The service determines if supplementary billing is needed based on the charge version’s dates. Future-dated charge versions are excluded from supplementary billing runs, while past-dated ones are flagged as required.
+- **Description**: Approving a new charge version indicates a change to the charging information. The service determines if supplementary billing is needed based on the charge version’s dates. Future-dated charge versions are excluded from supplementary billing runs, while past-dated ones are flagged as required. We already have a charge version test that checks for an sroc charge version so this additional test is specific to two-part tariff supplementary billing flags.
 - **Acceptance Criteria**:
   - Flags are added for pre-SROC, SROC, and two-part tariff supplementary billing.
 
