@@ -30,6 +30,12 @@ describe('mBOD abstraction alert journey (internal)', () => {
     cy.contains('Monitoring stations')
     cy.get('.govuk-table__row').contains('Test Station 500').click()
 
+    // Confirm we are on the monitoring station page
+    cy.get('.govuk-heading-xl').contains('Test Station 500').should('be.visible')
+    cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST5820172718')
+    cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
+    cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
+
     // Tag a licence to the monitoring station
     cy.get('.govuk-button').contains('Tag a licence').click()
 
