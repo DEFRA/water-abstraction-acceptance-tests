@@ -846,7 +846,8 @@
   ],
   "monitoringStations": [
     {
-      "label": "Test Station 500"
+      "label": "Test Station 500",
+      "gridReference": "ST5820172718"
     }
   ],
   "returnLogs": [
