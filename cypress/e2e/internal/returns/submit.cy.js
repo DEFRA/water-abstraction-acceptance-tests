@@ -120,7 +120,7 @@ describe('Submit a return (internal)', () => {
 
     // You've marked this licence for the next supplementary bill run
     // confirm we see the success panel and then click the link to return to the licence
-    cy.get('.govuk-panel').should('contain.text', 'You’ve marked this licence for the next supplementary bill run')
+    cy.get('.govuk-panel').should('contain.text', "You've marked this licence for the next supplementary bill run")
     cy.get('#main-content > div > div > p:nth-child(4) > a').click()
 
     // Summary
