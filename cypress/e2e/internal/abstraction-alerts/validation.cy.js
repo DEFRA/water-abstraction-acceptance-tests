@@ -76,7 +76,7 @@ describe('mBOD abstraction alert validation (internal)', () => {
       .should('contain', 'mBOD')
 
     // Issue a stop warning
-    cy.get('.govuk-grid-column-full').contains('Create a water abstraction alert').click()
+    cy.get('.govuk-button').contains('Create a water abstraction alert').click()
 
     // Validations
     // Select the type of alert you need to send?
@@ -136,7 +136,7 @@ describe('mBOD abstraction alert validation (internal)', () => {
     cy.get('.govuk-fieldset__heading').contains('You are about to remove tags from this licence').should('be.visible')
     cy.get('form > .govuk-button').contains('Confirm').click()
 
-    cy.get('.govuk-heading-l').contains('Test Station 500').should('be.visible')
+    cy.get('.govuk-heading-xl').contains('Test Station 500').should('be.visible')
     cy.get('.govuk-body').contains('There are no licences tagged with restrictions for this monitoring station').should('be.visible')
     cy.get('.govuk-button').contains('Tag a licence').should('be.visible')
   })

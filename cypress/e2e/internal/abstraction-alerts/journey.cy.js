@@ -30,6 +30,12 @@ describe('mBOD abstraction alert journey (internal)', () => {
     cy.contains('Monitoring stations')
     cy.get('.govuk-table__row').contains('Test Station 500').click()
 
+    // Confirm we are on the monitoring station page
+    cy.get('.govuk-heading-xl').contains('Test Station 500').should('be.visible')
+    cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST5820172718')
+    cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
+    cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
+
     // Tag a licence to the monitoring station
     cy.get('.govuk-button').contains('Tag a licence').click()
 
@@ -59,7 +65,7 @@ describe('mBOD abstraction alert journey (internal)', () => {
     cy.get('.govuk-link').contains('Return to monitoring station').click()
 
     // Issue a stop warning
-    cy.get('.govuk-grid-column-full').contains('Create a water abstraction alert').click()
+    cy.get('.govuk-button').contains('Create a water abstraction alert').click()
     cy.get('.govuk-radios__input[value="warning"]').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
@@ -86,8 +92,8 @@ describe('mBOD abstraction alert journey (internal)', () => {
 
     cy.get('form > .govuk-button').contains('Confirm').click()
 
-    cy.get('.govuk-heading-l').contains('Test Station 500').should('be.visible')
-    cy.get('.govuk-body').contains('There are no licences tagged with restrictions for this monitoring station').should('be.visible')
+    cy.get('.govuk-heading-xl').contains('Test Station 500').should('be.visible')
+    cy.get('p.govuk-body').contains('There are no licences tagged with restrictions for this monitoring station').should('be.visible')
     cy.get('.govuk-button').contains('Tag a licence').should('be.visible')
   })
 })
