@@ -51,7 +51,6 @@ Scenario 1 of the two-part tariff annual bill run scenarios covers removing a li
 
 The remove-licence test in the billing/annual test folder covers removing a licence from an annual bill run and checking it is flagged for sroc supplementary billing.
 
-The journey test in the billing/supplementary test folder covers removing a licence from a  sroc bill run and checking the flag remains on the licence after.
 - **Acceptance Criteria**:
   - Flags are added for pre-SROC, SROC, and two-part tariff supplementary billing.
 
