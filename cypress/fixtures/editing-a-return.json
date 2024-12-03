@@ -1,0 +1,68 @@
+{
+  "returnLogs": [
+    {
+      "id": "v1:1:AT/CURR/MONTHLY/02:9999992:2022-04-01:2023-03-31",
+      "returnReference": "9999994",
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999992,
+            "regionCode": 6,
+            "periodEndDay": "28",
+            "periodEndMonth": "02",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "Winter",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2022-04-01",
+      "endDate": "2023-03-31",
+      "dueDate": "2023-04-01",
+      "status": "completed",
+      "underQuery": false
+    }
+  ],
+  "billRuns": [
+    {
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
+      "batchType": "two_part_tariff",
+      "fromFinancialYearEnding": "2023",
+      "toFinancialYearEnding": "2023",
+      "status": "sent"
+    }
+  ]
+}

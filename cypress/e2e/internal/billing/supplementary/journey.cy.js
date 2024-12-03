@@ -45,8 +45,17 @@ describe('Create and send supplementary bill runs (internal)', () => {
     //  Assert the user signed in and we're on the search page
     cy.contains('Search')
 
+    // Search the licence
+    cy.get('#query').type('AT/TEST/02')
+    cy.get('.search__button').click()
+    cy.get('.govuk-table__row').contains('AT/TEST/02').click()
+
+    // Confirm the licence has the correct flags (we will check these have been removed after the bill runs have been sent)
+    cy.get('.govuk-notification-banner__content')
+      .should('contain.text', 'This licence has been marked for the next supplementary bill runs for the current and old charge schemes.')
+
     // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.get('#nav-bill-runs').contains('Bill runs').click()
 
     // Bill runs
     // click the Create a bill run button
@@ -180,5 +189,14 @@ describe('Create and send supplementary bill runs (internal)', () => {
       cy.get('[data-test="number-of-bills-1"]').should('contain.text', currentFinancialYearInfo.billingPeriodCount)
     })
     cy.get('[data-test="bill-run-status-1"] > .govuk-tag').should('contain.text', 'sent')
+
+    // Search the licence that was included in the bill run
+    cy.get('#nav-search').click()
+    cy.get('#query').type('AT/TEST/02')
+    cy.get('.search__button').click()
+    cy.get('.govuk-table__row').contains('AT/TEST/02').click()
+
+    // Confirm there are no flags already on the licence
+    cy.get('.govuk-notification-banner__content').should('not.exist')
   })
 })

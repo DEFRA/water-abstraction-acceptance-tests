@@ -6,10 +6,13 @@ describe('Delete licence agreement journey (internal)', () => {
     cy.fixture('barebones.json').then((fixture) => {
       cy.load(fixture)
     })
+    cy.fixture('licence-agreement').then((fixture) => {
+      cy.load(fixture)
+    })
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('sets up a new agreement for a license and then deletes it', () => {
+  it('deletes a licence agreement and check its flags the licence for supplementary billing', () => {
     cy.visit('/')
 
     //  Enter the user name and Password
@@ -29,23 +32,7 @@ describe('Delete licence agreement journey (internal)', () => {
     cy.get('.search__button').click()
     cy.contains('Licences')
     cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // Creating a new licence agreement is also covered with assertions in
-    // cypress/e2e/internal/licence-agreements/new-licence-agreement.cy.js. But for this test we have to use the UI to
-    // create a record to then delete it. So, the following also creates a new licence agreement but we strip out the
-    // checks and assertions for brevity
     cy.contains('Licence set up').click()
-    cy.contains('Set up a new agreement').click()
-    cy.get('#financialAgreementCode-3').check()
-    cy.get('form > .govuk-button').click()
-    cy.get('#isDateSignedKnown-2').check()
-    cy.get('form > .govuk-button').click()
-    cy.get('input#isCustomStartDate').check()
-    cy.get('#startDate-day').type('01')
-    cy.get('#startDate-month').type('01')
-    cy.get('#startDate-year').type('2018')
-    cy.get('form > .govuk-button').click()
-    cy.get('form > .govuk-button').click()
 
     // Charge information
     // back on the Charge Information tab select to delete the licence
@@ -58,7 +45,7 @@ describe('Delete licence agreement journey (internal)', () => {
 
     cy.get('#main-content > table > tbody > tr').within(() => {
       // agreement
-      cy.get('td:nth-child(1)').should('contain.text', 'Canal and Rivers Trust, unsupported source (S130U)')
+      cy.get('td:nth-child(1)').should('contain.text', 'Two-part tariff')
       // date signed
       cy.get('td:nth-child(2)').should('contain.text', ' ')
       // start date
@@ -72,5 +59,9 @@ describe('Delete licence agreement journey (internal)', () => {
     // confirm we are back on the Charge Information tab and our licence agreement is no longer present
     cy.get('#set-up').should('be.visible')
     cy.should('contain.text', 'No agreements for this licence.')
+
+    // Check the new licence agreement has flagged the licence for supplementary billing
+    cy.get('.govuk-notification-banner__content')
+      .should('contain.text', 'This licence has been marked for the next supplementary bill run for the old charge scheme.')
   })
 })
