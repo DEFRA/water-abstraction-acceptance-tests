@@ -65,6 +65,9 @@ describe('Create and send supplementary bill runs (internal)', () => {
     cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
+    // Check the bill run
+    cy.get('.govuk-button').contains('Create bill run').click()
+
     // Bill runs
     //
     // The bill run we created will be the second from top result. We expect it's status to be BUILDING. Building might

@@ -53,6 +53,9 @@ describe('Cancel an existing two-part tariff bill run (internal)', () => {
     cy.get('label.govuk-radios__label').contains('Winter and All year').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
+    // Check the bill run
+    cy.get('.govuk-button').contains('Create bill run').click()
+
     // Bill runs
     //
     // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few

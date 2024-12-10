@@ -50,6 +50,9 @@ describe('Create a empty SROC two-part tariff bill run (internal)', () => {
     cy.get('label.govuk-radios__label').contains('2023 to 2024').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
+    // Check the bill run
+    cy.get('.govuk-button').contains('Create bill run').click()
+
     // The bill run we created will be the top result. We expect it's status to be BUILDING. Building might take a few
     // seconds though so to avoid the test failing we use our custom Cypress command to look for the status EMPTY, and
     // if not found reload the page and try again. We then select it using the link on the date created

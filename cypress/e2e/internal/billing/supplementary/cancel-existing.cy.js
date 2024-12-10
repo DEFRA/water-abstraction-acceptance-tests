@@ -54,6 +54,9 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
     cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
+    // Check the bill run
+    cy.get('.govuk-button').contains('Create bill run').click()
+
     // -------------------------------------------------------------------------
     cy.log('Deleting the PRESROC supplementary bill run')
 
