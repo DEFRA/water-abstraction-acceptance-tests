@@ -138,6 +138,9 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
+    // Check the bill run
+    cy.get('.govuk-button').contains('Create bill run').click()
+
     // Bill runs
     //
     // The bill run we created will be the second from top result. We expect it's status to be BUILDING. Building might
@@ -276,6 +279,9 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     // choose Test Region and continue
     cy.get('label.govuk-radios__label').contains('Test Region').click()
     cy.get('form > .govuk-button').contains('Continue').click()
+
+    // Check the bill run
+    cy.get('.govuk-button').contains('Create bill run').click()
 
     // -------------------------------------------------------------------------
     cy.log('Confirming and sending the SROC supplementary bill run')
