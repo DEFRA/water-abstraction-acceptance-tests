@@ -111,7 +111,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('h1').should('contain.text', 'Licence AT/TEST/01')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
     cy.get('div > .govuk-tag').should('contain.text', 'review')
-    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff bill run')
+    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2022 to 31 March 2023')
 
     // Review Licence AT/TEST/01 ~ Check the matched return details
