@@ -151,6 +151,6 @@ describe('SROC charge information journey (internal)', () => {
     cy.contains('Review').should('not.exist')
 
     cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next two-part tariff supplementary bill run.')
+      .should('contain.text', 'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run.')
   })
 })
