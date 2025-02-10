@@ -38,10 +38,10 @@ describe('Submit a return (internal)', () => {
 
     // confirm we see the due return
     cy.get('#returns').within(() => {
-      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', '9999992')
-      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', 'Due')
+      cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', '9999992')
+      cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', 'overdue')
 
-      cy.get('.govuk-table__row:nth-child(1) a').contains('9999992').click()
+      cy.get('.govuk-table__row:nth-child(2) a').contains('9999992').click()
     })
 
     // What do you want to do with this return?
