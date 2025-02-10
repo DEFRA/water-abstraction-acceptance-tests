@@ -5,7 +5,7 @@
  *
  * @returns {string} The date formatted as a 'DD MMMM YYYY' string
  */
-function formatLongDate(date) {
+function formatLongDate (date) {
   return date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 

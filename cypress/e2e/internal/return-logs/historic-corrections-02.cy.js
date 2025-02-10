@@ -2,7 +2,6 @@
 
 const {
   determineCycleDueDate,
-  determineCycleEndDate,
   determineCycleStartDate
 } = require('../../../lib/return-cycle-dates.lib.js')
 const { formatLongDate } = require('../../../lib/formatters.lib.js')
@@ -10,13 +9,8 @@ const { formatLongDate } = require('../../../lib/formatters.lib.js')
 describe('Submit summer and winter and all year historic correction using abstraction data', () => {
   let returnCycleDueDate
   let longDueDate
-  let year = new Date().getFullYear()
   let winterYear = new Date().getFullYear()
   let summerYear = new Date().getFullYear()
-
-  if (new Date().getMonth() < 4) {
-    year = year - 1
-  }
 
   beforeEach(() => {
     cy.tearDown()
@@ -43,7 +37,6 @@ describe('Submit summer and winter and all year historic correction using abstra
           fixture.returnLogs[i].startDate = `${summerYear}-11-01`
           fixture.returnLogs[i].returnCycleId.value = `${summerYear}-11-01`
         }
-
       }
       cy.load(fixture)
     })

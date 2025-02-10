@@ -15,7 +15,7 @@ const { returnCycleDates } = require('./static-lookups.lib.js')
  *
  * @returns {Date} the due date of the next cycle
  */
-function determineCycleDueDate(summer, determinationDate = new Date()) {
+function determineCycleDueDate (summer, determinationDate = new Date()) {
   if (summer) {
     return _dueDate(determinationDate, returnCycleDates.summer)
   }
@@ -31,7 +31,7 @@ function determineCycleDueDate(summer, determinationDate = new Date()) {
  *
  * @returns {Date} the end date of the next cycle
  */
-function determineCycleEndDate(summer, determinationDate = new Date()) {
+function determineCycleEndDate (summer, determinationDate = new Date()) {
   if (summer) {
     return _endDate(determinationDate, returnCycleDates.summer)
   }
@@ -48,7 +48,7 @@ function determineCycleEndDate(summer, determinationDate = new Date()) {
  *
  * @returns {Date} the start date of the next cycle.
  */
-function determineCycleStartDate(summer, determinationDate = new Date()) {
+function determineCycleStartDate (summer, determinationDate = new Date()) {
   if (summer) {
     return _startDate(determinationDate, returnCycleDates.summer)
   }
@@ -56,7 +56,7 @@ function determineCycleStartDate(summer, determinationDate = new Date()) {
   return _startDate(determinationDate, returnCycleDates.allYear)
 }
 
-function _dueDate(determinationDate, cycle) {
+function _dueDate (determinationDate, cycle) {
   const year = determinationDate.getFullYear()
   const month = determinationDate.getMonth()
 
@@ -67,7 +67,7 @@ function _dueDate(determinationDate, cycle) {
   return new Date(`${cycleDueYear}-${cycleDueMonth}-${cycleDueDay}`)
 }
 
-function _endDate(determinationDate, cycle) {
+function _endDate (determinationDate, cycle) {
   const year = determinationDate.getFullYear()
   const month = determinationDate.getMonth()
 
@@ -78,7 +78,7 @@ function _endDate(determinationDate, cycle) {
   return new Date(`${cycleEndYear}-${cycleEndMonth}-${cycleEndDay}`)
 }
 
-function _startDate(determinationDate, cycle) {
+function _startDate (determinationDate, cycle) {
   const year = determinationDate.getFullYear()
   const month = determinationDate.getMonth()
 
