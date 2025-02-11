@@ -38,11 +38,11 @@ describe('View returns and their status (internal)', () => {
 
     // confirm we see the expected returns and their statuses
     cy.get('#returns').within(() => {
-      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', '9999992')
-      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', 'due')
+      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', '9999993')
+      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', 'void')
 
-      cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', '9999993')
-      cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', 'void')
+      cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', '9999992')
+      cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', 'overdue')
 
       cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', '9999991')
       cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', 'overdue')
