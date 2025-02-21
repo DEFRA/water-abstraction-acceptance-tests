@@ -25,7 +25,6 @@ describe('Submit historic correction using abstraction data for two abstraction 
         fixture.returnLogs[i].endDate = `${calculatedYear + 1}-03-31`
         fixture.returnLogs[i].startDate = `${calculatedYear}-04-01`
         fixture.returnLogs[i].returnCycleId.value = `${calculatedYear}-04-01`
-
       }
 
       cy.load(fixture)
