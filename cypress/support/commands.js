@@ -210,5 +210,5 @@ Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
   const srocBillingPeriods = Math.min((financialYearToBaseItOn - earliestPossibleFinancialYear) + 1, 5)
   const presrocBillingPeriods = 6 - srocBillingPeriods
 
-  return cy.wrap({ presroc: presrocBillingPeriods, sroc: srocBillingPeriods})
+  return cy.wrap({ presroc: presrocBillingPeriods, sroc: srocBillingPeriods })
 })
