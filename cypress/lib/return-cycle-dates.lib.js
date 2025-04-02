@@ -24,22 +24,6 @@ function determineCycleDueDate (summer, determinationDate = new Date()) {
 }
 
 /**
- * Determine the end date of next provided cycle, either summer and winter or all year
- *
- * @param {boolean} summer - true for summer, false for winter and all year
- * @param {Date} [determinationDate] - the date by which to determine the cycle's 'end date' (defaults to current date)
- *
- * @returns {Date} the end date of the next cycle
- */
-function determineCycleEndDate (summer, determinationDate = new Date()) {
-  if (summer) {
-    return _endDate(determinationDate, returnCycleDates.summer)
-  }
-
-  return _endDate(determinationDate, returnCycleDates.allYear)
-}
-
-/**
  * Determine the start date of next provided cycle, either summer or winter and all year
  *
  * @param {boolean} summer - true for summer, false for winter and all year
@@ -91,6 +75,5 @@ function _startDate (determinationDate, cycle) {
 
 module.exports = {
   determineCycleDueDate,
-  determineCycleEndDate,
   determineCycleStartDate
 }
