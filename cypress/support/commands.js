@@ -132,6 +132,13 @@ Cypress.Commands.add('dayMonthYearFormattedDate', (date) => {
   return cy.wrap(`${day} ${month} ${year}`)
 })
 
+// Formats a date into a human readable day, month and year string, for example, '12 September 2021'
+Cypress.Commands.add('formatLongDate', (date) => {
+  const formattedDate = date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+
+  return cy.wrap(formattedDate)
+})
+
 // Created when we needed to wait until the status of a bill run changed from BUILDING to EMPTY. We have made it generic
 // so it can be used in any other similar scenarios.
 Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 10, retryWait = 2000) => {
