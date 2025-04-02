@@ -5,7 +5,21 @@
  * @module ReturnCycleDatesLib
  */
 
-const { returnCycleDates } = require('./static-lookups.lib.js')
+/**
+ * The start, end and due dates for each return cycle
+ */
+const RETURN_CYCLE_DATES = {
+  allYear: {
+    dueDate: { day: 28, month: 3 },
+    endDate: { day: 31, month: 2 },
+    startDate: { day: 1, month: 3 }
+  },
+  summer: {
+    dueDate: { day: 28, month: 10 },
+    endDate: { day: 31, month: 9 },
+    startDate: { day: 1, month: 10 }
+  }
+}
 
 /**
  * Determine the due date of next provided cycle, either summer or winter and all year
@@ -17,10 +31,10 @@ const { returnCycleDates } = require('./static-lookups.lib.js')
  */
 function determineCycleDueDate (summer, determinationDate = new Date()) {
   if (summer) {
-    return _dueDate(determinationDate, returnCycleDates.summer)
+    return _dueDate(determinationDate, RETURN_CYCLE_DATES.summer)
   }
 
-  return _dueDate(determinationDate, returnCycleDates.allYear)
+  return _dueDate(determinationDate, RETURN_CYCLE_DATES.allYear)
 }
 
 /**
@@ -34,10 +48,10 @@ function determineCycleDueDate (summer, determinationDate = new Date()) {
  */
 function determineCycleStartDate (summer, determinationDate = new Date()) {
   if (summer) {
-    return _startDate(determinationDate, returnCycleDates.summer)
+    return _startDate(determinationDate, RETURN_CYCLE_DATES.summer)
   }
 
-  return _startDate(determinationDate, returnCycleDates.allYear)
+  return _startDate(determinationDate, RETURN_CYCLE_DATES.allYear)
 }
 
 function _dueDate (determinationDate, cycle) {
