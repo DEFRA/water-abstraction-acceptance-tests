@@ -11,8 +11,10 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // this test we use a fixture that creates it in the previous year. We then combine these results into one value for
     // use in our tests.
     cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
-      cy.numberOfSrocBillingPeriods(currentFinancialYearInfo.year).then((numberOfBillingPeriods) => {
-        currentFinancialYearInfo.billingPeriodCount = numberOfBillingPeriods - 1
+      // NOTE: We minus 1 here to reflect that, for example, 2025/26 might be the current financial year, but because
+      // the annual has not been generated the financial year to use for the counts is 2024/25
+      cy.billingPeriodCounts(currentFinancialYearInfo.year - 1).then((billingPeriodCount) => {
+        currentFinancialYearInfo.billingPeriodCounts = billingPeriodCount
         cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
       })
 
@@ -85,7 +87,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // check the the financial end year is not the current year
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      const { billingPeriodCount } = currentFinancialYearInfo
+      const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
         cy.get('[data-test="bills-count"]')
           .should('contain.text', '1 Supplementary bill')
