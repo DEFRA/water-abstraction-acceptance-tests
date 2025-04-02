@@ -127,7 +127,12 @@ describe('Change billing account in current financial year (internal)', () => {
     })
     cy.get('[data-test="region-1"]').should('contain.text', 'Test Region')
     cy.get('[data-test="bill-run-type-1"]').should('contain.text', 'Supplementary')
-    cy.get('[data-test="number-of-bills-1"]').should('contain.text', '3')
+
+    cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
+      const { billingPeriodCount } = currentFinancialYearInfo
+      cy.get('[data-test="number-of-bills-1"]').should('contain.text', billingPeriodCount)
+    })
+
     cy.get('[data-test="bill-run-status-1"] > .govuk-tag').should('contain.text', 'sent')
 
     // -------------------------------------------------------------------------
