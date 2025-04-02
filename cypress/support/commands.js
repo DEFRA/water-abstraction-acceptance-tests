@@ -196,15 +196,19 @@ Cypress.Commands.add('currentFinancialYearDate', (day = 31, month = 3, yearAdjus
 // bill run will be generating bills for, we know it will be for the number of years from 2023 to whatever
 // financialYearToBaseItOn is. For example
 //
-// - financialYearToBaseItOn is 2024 (2023-04-01 to 2024-03-31) so result will be 2
-// - financialYearToBaseItOn is 2029 (2028-04-01 to 2029-03-31) so result will be 5
-Cypress.Commands.add('numberOfSrocBillingPeriods', (financialYearToBaseItOn) => {
+// - financialYearToBaseItOn is 2024 (2023-04-01 to 2024-03-31) so result will be 2 SROC and 3 PRESROC
+// - financialYearToBaseItOn is 2025 (2024-04-01 to 2025-03-31) so result will be 3 SROC and 2 PRESROC
+// - financialYearToBaseItOn is 2026 (2025-04-01 to 2026-03-31) so result will be 4 SROC and 1 PRESROC
+// - financialYearToBaseItOn is 2027 (2026-04-01 to 2027-03-31) so result will be 5 SROC and 0 PRESROC
+// - financialYearToBaseItOn is 2028 (2027-04-01 to 2028-03-31) so result will be 5 SROC and 0 PRESROC
+Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
   if (isNaN(financialYearToBaseItOn)) {
-    throw new Error('numberOfSrocBillingPeriods: financialYearToBaseItOn must be set and a number')
+    throw new Error('billingPeriodCounts: financialYearToBaseItOn must be set and a number')
   }
 
   const earliestPossibleFinancialYear = Math.max(2023, financialYearToBaseItOn - 5)
-  const numberOfBillingPeriods = Math.min((financialYearToBaseItOn - earliestPossibleFinancialYear) + 1, 5)
+  const srocBillingPeriods = Math.min((financialYearToBaseItOn - earliestPossibleFinancialYear) + 1, 5)
+  const presrocBillingPeriods = 6 - srocBillingPeriods
 
-  return cy.wrap(numberOfBillingPeriods)
+  return cy.wrap({ presroc: presrocBillingPeriods, sroc: srocBillingPeriods })
 })

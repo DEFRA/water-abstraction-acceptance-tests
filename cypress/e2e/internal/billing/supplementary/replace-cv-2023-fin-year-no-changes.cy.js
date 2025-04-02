@@ -8,8 +8,8 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     // day and month we'll get back 20XX-03-31. We then use that date to work out how many SROC billing periods we
     // expect to be calculated. We combine these results into one value for use in our tests
     cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
-      cy.numberOfSrocBillingPeriods(currentFinancialYearInfo.year).then((numberOfBillingPeriods) => {
-        currentFinancialYearInfo.billingPeriodCount = numberOfBillingPeriods
+      cy.billingPeriodCounts(currentFinancialYearInfo.year).then((billingPeriodCount) => {
+        currentFinancialYearInfo.billingPeriodCounts = billingPeriodCount
         cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
       })
 
@@ -158,7 +158,7 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     // check the details before sending the bill run
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      const { billingPeriodCount } = currentFinancialYearInfo
+      const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
         cy.get('[data-test="bills-count"]')
           .should('contain.text', '1 Supplementary bill')
@@ -204,7 +204,8 @@ describe('Replace charge version in the 2023 financial year with no changes (int
     cy.get('[data-test="region-1"]').should('contain.text', 'Test Region')
     cy.get('[data-test="bill-run-type-1"]').should('contain.text', 'Supplementary')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      cy.get('[data-test="number-of-bills-1"]').should('contain.text', currentFinancialYearInfo.billingPeriodCount)
+      const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
+      cy.get('[data-test="number-of-bills-1"]').should('contain.text', billingPeriodCount)
     })
     cy.get('[data-test="bill-run-status-1"] > .govuk-tag').should('contain.text', 'sent')
 
