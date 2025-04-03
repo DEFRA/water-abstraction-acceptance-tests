@@ -219,3 +219,27 @@ Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
 
   return cy.wrap({ presroc: presrocBillingPeriods, sroc: srocBillingPeriods })
 })
+
+Cypress.Commands.add('returnLogDueData', (yearToBaseItOn, winter) => {
+  const dueDate = winter ? new Date(`${yearToBaseItOn}-04-28`) : new Date(`${yearToBaseItOn}-11-28`)
+  const text = dueDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+
+  const today = new Date()
+  // A return is considered "due" for 28 days, starting 28 days before the due date. Any date before this period should
+  // be marked as "not due yet"
+  const notDueUntil = new Date(dueDate)
+  notDueUntil.setDate(notDueUntil.getDate() - 27)
+
+  // If today is greater than the due date then the return log is overdue
+  if (today.getTime() > dueDate.getTime()) {
+    return cy.wrap({ label: 'overdue', text })
+  }
+
+  // If today is before the "due" period starts, the return log is "not due yet"
+  if (today.getTime() < notDueUntil.getTime()) {
+    return cy.wrap({ label: 'not due yet', text })
+  }
+
+  // Else the return log is due
+  return cy.wrap({ label: 'due', text })
+})
