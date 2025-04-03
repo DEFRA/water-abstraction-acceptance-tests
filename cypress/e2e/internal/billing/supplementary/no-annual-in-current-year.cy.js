@@ -96,7 +96,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
           .should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
       cy.get('[data-test="meta-data-year"]')
-        .should('contain.text', `${currentFinancialYearInfo.year - 2} to ${currentFinancialYearInfo.year - 1}`)
+        .should('contain.text', `${currentFinancialYearInfo.end.year - 2} to ${currentFinancialYearInfo.end.year - 1}`)
     })
   })
 })
