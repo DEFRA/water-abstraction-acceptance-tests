@@ -163,7 +163,7 @@ Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 1
 // It defaults to the last possible date. If the current date was 2023-06-05 it would return 2024-03-31. You can
 // override the day and month (don't worry about month being zero-indexed - it gets dealt with!) and adjust the year
 // by plus or minus as many years as you need.
-Cypress.Commands.add('currentFinancialYearDate', (day = 31, month = 3, yearAdjuster = 0) => {
+Cypress.Commands.add('currentFinancialYear', (day = 31, month = 3, yearAdjuster = 0) => {
   // IMPORTANT! getMonth returns an integer (0-11). So, January is represented as 0 and December as 11. This is why
   // MARCH is 2 rather than 3
   const MARCH = 2
@@ -181,13 +181,11 @@ Cypress.Commands.add('currentFinancialYearDate', (day = 31, month = 3, yearAdjus
     endYear = (currentYear + 1) + yearAdjuster
   }
 
-  // we provide the result as this so callers of this function can choose to use the date value or access the
-  // individual elements for use in input fields
+  // Rather than just return the start and end dates, we return them as objects with the both the dates and the date
+  // parts so the tests can use them for input fields.
   const result = {
-    date: new Date(Date.UTC(endYear, month - 1, day)),
-    day,
-    month,
-    year: endYear
+    end: { date: new Date(`${endYear}-${month}-${day}`), day, month, year: endYear },
+    start: { date: new Date(`${endYear - 1}-04-01`), day: 1, month: 4, year: endYear - 1 },
   }
 
   // We generate the date value using Date.UTC() to avoid 31 March becoming 30 March 23:00 because of pesky BST
