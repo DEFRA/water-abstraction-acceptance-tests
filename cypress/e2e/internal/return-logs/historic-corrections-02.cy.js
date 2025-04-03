@@ -10,7 +10,7 @@ describe('Submit summer and winter and all year historic correction using abstra
       cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
 
       const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
-      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1}
+      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1 }
 
       cy.fixture('return-logs-historic-02.json').then((fixture) => {
         fixture.returnLogs[0].id = `v1:9:AT/CURR/DAILY/01:9999990:${winter.start}-04-01:${winter.end}-03-31`
@@ -76,7 +76,7 @@ describe('Submit summer and winter and all year historic correction using abstra
 
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
-      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1}
+      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1 }
 
       cy.returnLogDueData(winter.end, true).then((data) => {
         cy.get('[data-test="return-due-date-0"]').contains(data.text)
@@ -156,7 +156,7 @@ describe('Submit summer and winter and all year historic correction using abstra
 
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
-      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1}
+      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1 }
 
       cy.returnLogDueData(winter.end, true).then((data) => {
         cy.get('[data-test="return-due-date-0"]').contains(data.text)

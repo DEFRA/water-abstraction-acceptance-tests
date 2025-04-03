@@ -185,7 +185,7 @@ Cypress.Commands.add('currentFinancialYear', (day = 31, month = 3, yearAdjuster 
   // parts so the tests can use them for input fields.
   const result = {
     end: { date: new Date(`${endYear}-${month}-${day}`), day, month, year: endYear },
-    start: { date: new Date(`${endYear - 1}-04-01`), day: 1, month: 4, year: endYear - 1 },
+    start: { date: new Date(`${endYear - 1}-04-01`), day: 1, month: 4, year: endYear - 1 }
   }
 
   // We generate the date value using Date.UTC() to avoid 31 March becoming 30 March 23:00 because of pesky BST

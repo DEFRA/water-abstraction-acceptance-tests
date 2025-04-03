@@ -161,7 +161,7 @@ describe('Submit winter and all year historic correction using abstraction data'
         cy.get('[data-test="return-status-5"] > .govuk-tag').contains(data.label)
 
         cy.get('[data-test="return-due-date-6"]').contains(data.text)
-      cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
       })
 
       cy.returnLogDueData(startYear - 2, true).then((data) => {
