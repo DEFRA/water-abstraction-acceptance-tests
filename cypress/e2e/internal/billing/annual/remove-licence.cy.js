@@ -4,10 +4,10 @@ describe('Remove bill from annual bill run (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('sroc-billing.json').then((fixture) => {
-      cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
+      cy.currentFinancialYear().then((currentFinancialYearInfo) => {
         // Update the bill run in the fixture to be in the 'previous' financial year
-        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 2
-        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year - 1
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.end.year - 2
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.end.year - 1
 
         cy.load(fixture)
       })

@@ -6,13 +6,11 @@ describe('Submit winter and all year historic correction using abstraction data'
 
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31.
-    cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
-      currentFinancialYearInfo.startYear = currentFinancialYearInfo.year - 1
-
+    cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
 
-      const startYear = currentFinancialYearInfo.startYear
-      const endYear = currentFinancialYearInfo.year
+      const startYear = currentFinancialYearInfo.start.year
+      const endYear = currentFinancialYearInfo.end.year
 
       cy.fixture('return-logs-historic-01.json').then((fixture) => {
         for (let i = 0; i < fixture.returnLogs.length; i++) {
@@ -59,8 +57,8 @@ describe('Submit winter and all year historic correction using abstraction data'
     // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      const startYear = currentFinancialYearInfo.startYear
-      const endYear = currentFinancialYearInfo.year
+      const startYear = currentFinancialYearInfo.start.year
+      const endYear = currentFinancialYearInfo.end.year
 
       cy.returnLogDueData(endYear, true).then((data) => {
         cy.get('[data-test="return-due-date-0"]').contains(data.text)
@@ -102,9 +100,7 @@ describe('Submit winter and all year historic correction using abstraction data'
     cy.get('#other-start-date-day').type('01')
     cy.get('#other-start-date-month').type('11')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      const startYear = currentFinancialYearInfo.startYear
-
-      cy.get('#other-start-date-year').type(startYear - 2)
+      cy.get('#other-start-date-year').type(currentFinancialYearInfo.start.year - 2)
     })
     cy.contains('Continue').click()
 
@@ -138,8 +134,8 @@ describe('Submit winter and all year historic correction using abstraction data'
     // confirm we are on the licence set up tab
     cy.get('#returns > .govuk-heading-l').contains('Returns')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      const startYear = currentFinancialYearInfo.startYear
-      const endYear = currentFinancialYearInfo.year
+      const startYear = currentFinancialYearInfo.start.year
+      const endYear = currentFinancialYearInfo.end.year
 
       cy.returnLogDueData(endYear, true).then((data) => {
         cy.get('[data-test="return-due-date-0"]').contains(data.text)

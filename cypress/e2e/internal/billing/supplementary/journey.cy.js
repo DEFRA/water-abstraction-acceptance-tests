@@ -7,16 +7,16 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31. We then use that date to work out how many SROC billing periods we
     // expect to be calculated. We combine these results into one value for use in our tests
-    cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
-      cy.billingPeriodCounts(currentFinancialYearInfo.year).then((billingPeriodCount) => {
+    cy.currentFinancialYear().then((currentFinancialYearInfo) => {
+      cy.billingPeriodCounts(currentFinancialYearInfo.end.year).then((billingPeriodCount) => {
         currentFinancialYearInfo.billingPeriodCounts = billingPeriodCount
         cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
       })
 
       cy.fixture('sroc-billing.json').then((fixture) => {
         // Update the bill run in the fixture to be in the 'current' financial year
-        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 1
-        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.end.year - 1
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.end.year
 
         cy.load(fixture)
       })

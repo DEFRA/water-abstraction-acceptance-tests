@@ -4,11 +4,11 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
   beforeEach(() => {
     cy.tearDown()
 
-    cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
+    cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       cy.fixture('sroc-billing.json').then((fixture) => {
         // Update the bill run in the fixture to be in the 'current' financial year
-        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 1
-        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.end.year - 1
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.end.year
 
         cy.load(fixture)
       })
@@ -130,10 +130,10 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     // choose another date, enter 30 June for the current financial year so only the last bill needs crediting (avoids
     // slowing the test down with unnecessary calculations for previous years) and continue
     cy.get('input#startDate-4').click()
-    cy.currentFinancialYearDate(30, 6, -1).then((result) => {
-      cy.get('input#customDate-day').type(result.day)
-      cy.get('input#customDate-month').type(result.month)
-      cy.get('input#customDate-year').type(result.year)
+    cy.currentFinancialYear(30, 6, -1).then((result) => {
+      cy.get('input#customDate-day').type(result.end.day)
+      cy.get('input#customDate-month').type(result.end.month)
+      cy.get('input#customDate-year').type(result.end.year)
     })
     cy.get('.govuk-button').contains('Continue').click()
 
