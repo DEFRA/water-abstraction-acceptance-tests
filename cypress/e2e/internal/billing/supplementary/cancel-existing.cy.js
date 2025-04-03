@@ -4,11 +4,11 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
+    cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       cy.fixture('sroc-billing.json').then((fixture) => {
         // Update the bill run in the fixture to be in the 'current' financial year
-        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 1
-        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.end.year - 1
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.end.year
 
         cy.load(fixture)
       })

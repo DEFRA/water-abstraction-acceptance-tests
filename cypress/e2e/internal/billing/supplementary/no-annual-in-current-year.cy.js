@@ -10,18 +10,18 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // sent annual bill run. In other tests our SROC test fixture creates an annual bill run in the current year. For
     // this test we use a fixture that creates it in the previous year. We then combine these results into one value for
     // use in our tests.
-    cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
+    cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       // NOTE: We minus 1 here to reflect that, for example, 2025/26 might be the current financial year, but because
       // the annual has not been generated the financial year to use for the counts is 2024/25
-      cy.billingPeriodCounts(currentFinancialYearInfo.year - 1).then((billingPeriodCount) => {
+      cy.billingPeriodCounts(currentFinancialYearInfo.end.year - 1).then((billingPeriodCount) => {
         currentFinancialYearInfo.billingPeriodCounts = billingPeriodCount
         cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
       })
 
       cy.fixture('sroc-billing.json').then((fixture) => {
         // Update the bill run in the fixture to be in the 'previous' financial year
-        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 2
-        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year - 1
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.end.year - 2
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.end.year - 1
 
         cy.load(fixture)
       })
@@ -96,7 +96,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
           .should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
       cy.get('[data-test="meta-data-year"]')
-        .should('contain.text', `${currentFinancialYearInfo.year - 2} to ${currentFinancialYearInfo.year - 1}`)
+        .should('contain.text', `${currentFinancialYearInfo.end.year - 2} to ${currentFinancialYearInfo.end.year - 1}`)
     })
   })
 })

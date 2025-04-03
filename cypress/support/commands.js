@@ -132,6 +132,13 @@ Cypress.Commands.add('dayMonthYearFormattedDate', (date) => {
   return cy.wrap(`${day} ${month} ${year}`)
 })
 
+// Formats a date into a human readable day, month and year string, for example, '12 September 2021'
+Cypress.Commands.add('formatLongDate', (date) => {
+  const formattedDate = date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+
+  return cy.wrap(formattedDate)
+})
+
 // Created when we needed to wait until the status of a bill run changed from BUILDING to EMPTY. We have made it generic
 // so it can be used in any other similar scenarios.
 Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 10, retryWait = 2000) => {
@@ -156,7 +163,7 @@ Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 1
 // It defaults to the last possible date. If the current date was 2023-06-05 it would return 2024-03-31. You can
 // override the day and month (don't worry about month being zero-indexed - it gets dealt with!) and adjust the year
 // by plus or minus as many years as you need.
-Cypress.Commands.add('currentFinancialYearDate', (day = 31, month = 3, yearAdjuster = 0) => {
+Cypress.Commands.add('currentFinancialYear', (day = 31, month = 3, yearAdjuster = 0) => {
   // IMPORTANT! getMonth returns an integer (0-11). So, January is represented as 0 and December as 11. This is why
   // MARCH is 2 rather than 3
   const MARCH = 2
@@ -174,13 +181,11 @@ Cypress.Commands.add('currentFinancialYearDate', (day = 31, month = 3, yearAdjus
     endYear = (currentYear + 1) + yearAdjuster
   }
 
-  // we provide the result as this so callers of this function can choose to use the date value or access the
-  // individual elements for use in input fields
+  // Rather than just return the start and end dates, we return them as objects with the both the dates and the date
+  // parts so the tests can use them for input fields.
   const result = {
-    date: new Date(Date.UTC(endYear, month - 1, day)),
-    day,
-    month,
-    year: endYear
+    end: { date: new Date(`${endYear}-${month}-${day}`), day, month, year: endYear },
+    start: { date: new Date(`${endYear - 1}-04-01`), day: 1, month: 4, year: endYear - 1 }
   }
 
   // We generate the date value using Date.UTC() to avoid 31 March becoming 30 March 23:00 because of pesky BST
@@ -211,4 +216,28 @@ Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
   const presrocBillingPeriods = 6 - srocBillingPeriods
 
   return cy.wrap({ presroc: presrocBillingPeriods, sroc: srocBillingPeriods })
+})
+
+Cypress.Commands.add('returnLogDueData', (yearToBaseItOn, winter) => {
+  const dueDate = winter ? new Date(`${yearToBaseItOn}-04-28`) : new Date(`${yearToBaseItOn}-11-28`)
+  const text = dueDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+
+  const today = new Date()
+  // A return is considered "due" for 28 days, starting 28 days before the due date. Any date before this period should
+  // be marked as "not due yet"
+  const notDueUntil = new Date(dueDate)
+  notDueUntil.setDate(notDueUntil.getDate() - 27)
+
+  // If today is greater than the due date then the return log is overdue
+  if (today.getTime() > dueDate.getTime()) {
+    return cy.wrap({ label: 'overdue', text })
+  }
+
+  // If today is before the "due" period starts, the return log is "not due yet"
+  if (today.getTime() < notDueUntil.getTime()) {
+    return cy.wrap({ label: 'not due yet', text })
+  }
+
+  // Else the return log is due
+  return cy.wrap({ label: 'due', text })
 })
