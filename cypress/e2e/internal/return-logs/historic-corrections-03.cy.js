@@ -89,7 +89,7 @@ describe('Submit historic correction using abstraction data for two abstraction 
     // click returns tab
     cy.contains('Returns').click()
 
-    // confirm we are on the licence returns tab and that there are previous reuturn logs
+    // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const startYear = currentFinancialYearInfo.start.year
