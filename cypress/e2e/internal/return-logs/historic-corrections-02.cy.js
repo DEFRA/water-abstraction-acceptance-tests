@@ -1,44 +1,48 @@
 'use strict'
 
 const {
-  determineCycleDueDate,
   determineCycleStartDate
 } = require('../../../lib/return-cycle-dates.lib.js')
-const { formatLongDate } = require('../../../lib/formatters.lib.js')
 
 describe('Submit summer and winter and all year historic correction using abstraction data', () => {
-  let returnCycleDueDate
-  let longDueDate
-  let winterYear = new Date().getFullYear()
-  let summerYear = new Date().getFullYear()
-
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('return-logs-historic-02.json').then((fixture) => {
-      for (let i = 0; i < fixture.returnLogs.length; i++) {
-        if (i % 2 === 0) {
-          if (new Date().getMonth() < 4) {
-            winterYear = winterYear - 1
-          }
-          fixture.returnLogs[i].id = `v1:9:AT/CURR/DAILY/01:9999990:${winterYear}-04-01:${winterYear + 1}-03-31`
-          fixture.returnLogs[i].dueDate = `${winterYear + 1}-04-28`
-          fixture.returnLogs[i].endDate = `${winterYear + 1}-03-31`
-          fixture.returnLogs[i].startDate = `${winterYear}-04-01`
-          fixture.returnLogs[i].returnCycleId.value = `${winterYear}-04-01`
-        } else {
-          if (new Date().getMonth() < 11) {
-            summerYear = summerYear - 1
-          }
+    // Work out current financial year info using the current date. So, what the end year will be. As we don't override
+    // day and month we'll get back 20XX-03-31.
+    cy.currentFinancialYear().then((currentFinancialYearInfo) => {
+      cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
 
-          fixture.returnLogs[i].id = `v1:9:AT/CURR/DAILY/01:9999991:${summerYear}-11-01:${summerYear + 1}-10-31`
-          fixture.returnLogs[i].dueDate = `${summerYear + 1}-11-28`
-          fixture.returnLogs[i].endDate = `${summerYear + 1}-10-31`
-          fixture.returnLogs[i].startDate = `${summerYear}-11-01`
-          fixture.returnLogs[i].returnCycleId.value = `${summerYear}-11-01`
-        }
-      }
-      cy.load(fixture)
+      const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
+      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1}
+
+      cy.fixture('return-logs-historic-02.json').then((fixture) => {
+        fixture.returnLogs[0].id = `v1:9:AT/CURR/DAILY/01:9999990:${winter.start}-04-01:${winter.end}-03-31`
+        fixture.returnLogs[0].dueDate = `${winter.end}-04-28`
+        fixture.returnLogs[0].endDate = `${winter.end}-03-31`
+        fixture.returnLogs[0].startDate = `${winter.start}-04-01`
+        fixture.returnLogs[0].returnCycleId.value = `${winter.start}-04-01`
+
+        fixture.returnLogs[1].id = `v1:9:AT/CURR/DAILY/01:9999991:${summer.start}-11-01:${summer.end}-10-31`
+        fixture.returnLogs[1].dueDate = `${summer.end}-11-28`
+        fixture.returnLogs[1].endDate = `${summer.end}-10-31`
+        fixture.returnLogs[1].startDate = `${summer.start}-11-01`
+        fixture.returnLogs[1].returnCycleId.value = `${summer.start}-11-01`
+
+        fixture.returnLogs[2].id = `v1:9:AT/CURR/DAILY/01:9999990:${winter.start - 1}-04-01:${winter.end - 1}-03-31`
+        fixture.returnLogs[2].dueDate = `${winter.end - 1}-04-28`
+        fixture.returnLogs[2].endDate = `${winter.end - 1}-03-31`
+        fixture.returnLogs[2].startDate = `${winter.start - 1}-04-01`
+        fixture.returnLogs[2].returnCycleId.value = `${winter.start - 1}-04-01`
+
+        fixture.returnLogs[3].id = `v1:9:AT/CURR/DAILY/01:9999991:${summer.start - 1}-11-01:${summer.end - 1}-10-31`
+        fixture.returnLogs[3].dueDate = `${summer.end - 1}-11-28`
+        fixture.returnLogs[3].endDate = `${summer.end - 1}-10-31`
+        fixture.returnLogs[3].startDate = `${summer.start - 1}-11-01`
+        fixture.returnLogs[3].returnCycleId.value = `${summer.start - 1}-11-01`
+
+        cy.load(fixture)
+      })
     })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
@@ -71,26 +75,33 @@ describe('Submit summer and winter and all year historic correction using abstra
     // click returns tab
     cy.contains('Returns').click()
 
-    // confirm we are on the licence returns tab and that there are previous reuturn logs
+    // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')
 
-    const determinationDate = new Date()
-    returnCycleDueDate = determineCycleDueDate(true, determinationDate)
-    cy.get('[data-test="return-due-date-0"]').contains(formatLongDate(returnCycleDueDate))
-    cy.get('[data-test="return-status-0"] > .govuk-tag').contains('due')
+    cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
+      const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
+      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1}
 
-    returnCycleDueDate = determineCycleDueDate(false, determinationDate)
-    cy.get('[data-test="return-due-date-1"]').contains(formatLongDate(returnCycleDueDate))
-    cy.get('[data-test="return-status-1"] > .govuk-tag').contains('due')
+      cy.returnLogDueData(winter.end, true).then((data) => {
+        cy.get('[data-test="return-due-date-0"]').contains(data.text)
+        cy.get('[data-test="return-status-0"] > .govuk-tag').contains(data.label)
+      })
 
-    determinationDate.setFullYear(determinationDate.getFullYear() - 1)
-    returnCycleDueDate = determineCycleDueDate(true, determinationDate)
-    cy.get('[data-test="return-due-date-2"]').contains(formatLongDate(returnCycleDueDate))
-    cy.get('[data-test="return-status-2"] > .govuk-tag').contains('complete')
+      cy.returnLogDueData(summer.end, false).then((data) => {
+        cy.get('[data-test="return-due-date-1"]').contains(data.text)
+        cy.get('[data-test="return-status-1"] > .govuk-tag').contains(data.label)
+      })
 
-    returnCycleDueDate = determineCycleDueDate(false, determinationDate)
-    cy.get('[data-test="return-due-date-3"]').contains(formatLongDate(returnCycleDueDate))
-    cy.get('[data-test="return-status-3"] > .govuk-tag').contains('complete')
+      cy.returnLogDueData(winter.end - 1, true).then((data) => {
+        cy.get('[data-test="return-due-date-2"]').contains(data.text)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('complete')
+      })
+
+      cy.returnLogDueData(summer.end - 1, false).then((data) => {
+        cy.get('[data-test="return-due-date-3"]').contains(data.text)
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('complete')
+      })
+    })
 
     // click licence set up tab
     cy.contains('Licence set up').click()
@@ -146,35 +157,36 @@ describe('Submit summer and winter and all year historic correction using abstra
     // confirm we are on the licence set up tab
     cy.get('#returns > .govuk-heading-l').contains('Returns')
 
-    const dueDate = new Date()
-    returnCycleDueDate = determineCycleDueDate(true, dueDate)
-    longDueDate = formatLongDate(returnCycleDueDate)
-    cy.get('[data-test="return-due-date-0"]').contains(longDueDate)
-    cy.get('[data-test="return-status-0"] > .govuk-tag').contains('due')
-    cy.get('[data-test="return-due-date-1"]').contains(longDueDate)
-    cy.get('[data-test="return-status-1"] > .govuk-tag').contains('void')
+    cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
+      const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
+      const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1}
 
-    returnCycleDueDate = determineCycleDueDate(false, dueDate)
-    longDueDate = formatLongDate(returnCycleDueDate)
-    cy.get('[data-test="return-due-date-2"]').contains(longDueDate)
-    cy.get('[data-test="return-status-2"] > .govuk-tag').contains('due')
-    cy.get('[data-test="return-due-date-3"]').contains(longDueDate)
-    cy.get('[data-test="return-status-3"] > .govuk-tag').contains('void')
+      cy.returnLogDueData(winter.end, true).then((data) => {
+        cy.get('[data-test="return-due-date-0"]').contains(data.text)
+        cy.get('[data-test="return-status-0"] > .govuk-tag').contains(data.label)
 
-    dueDate.setFullYear(dueDate.getFullYear() - 1)
-    returnCycleDueDate = determineCycleDueDate(true, dueDate)
-    longDueDate = formatLongDate(returnCycleDueDate)
-    cy.get('[data-test="return-due-date-4"]').contains(longDueDate)
-    cy.get('[data-test="return-status-4"] > .govuk-tag').contains('due')
-    cy.get('[data-test="return-due-date-5"]').contains(longDueDate)
-    cy.get('[data-test="return-status-5"] > .govuk-tag').contains('due')
-    cy.get('[data-test="return-due-date-6"]').contains(longDueDate)
-    cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-due-date-1"]').contains(data.text)
+        cy.get('[data-test="return-status-1"] > .govuk-tag').contains('void')
+      })
 
-    dueDate.setFullYear(dueDate.getFullYear())
-    returnCycleDueDate = determineCycleDueDate(false, dueDate)
-    longDueDate = formatLongDate(returnCycleDueDate)
-    cy.get('[data-test="return-due-date-7"]').contains(longDueDate)
-    cy.get('[data-test="return-status-7"] > .govuk-tag').contains('complete')
+      cy.returnLogDueData(summer.end, false).then((data) => {
+        cy.get('[data-test="return-due-date-2"]').contains(data.text)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-due-date-3"]').contains(data.text)
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-due-date-4"]').contains(data.text)
+        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
+      })
+
+      cy.returnLogDueData(winter.end - 1, true).then((data) => {
+        cy.get('[data-test="return-due-date-5"]').contains(data.text)
+        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('complete')
+      })
+
+      cy.returnLogDueData(summer.end - 1, false).then((data) => {
+        cy.get('[data-test="return-due-date-6"]').contains(data.text)
+        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('complete')
+      })
+    })
   })
 })
