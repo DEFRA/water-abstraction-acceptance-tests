@@ -9,25 +9,51 @@ describe('Submit historic correction using abstraction data for two abstraction 
     cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
 
-      const startYear = currentFinancialYearInfo.start.year
+      let startYear = currentFinancialYearInfo.start.year
+      let endYear = currentFinancialYearInfo.end.year
 
       cy.fixture('return-logs-historic-03.json').then((fixture) => {
-        let calculatedYear = startYear
-        for (let i = 0; i < fixture.returnLogs.length; i++) {
-          if (i % 2 === 0) {
-            if (i !== 0) {
-              calculatedYear = calculatedYear - 1
-            }
-            fixture.returnLogs[i].id = `v1:9:AT/CURR/DAILY/01:9999990:${calculatedYear}-04-01:${calculatedYear + 1}-03-31`
-          } else {
-            fixture.returnLogs[i].id = `v1:9:AT/CURR/DAILY/01:9999991:${calculatedYear}-04-01:${calculatedYear + 1}-03-31`
-          }
+        fixture.returnLogs[0].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
+        fixture.returnLogs[0].dueDate = `${endYear}-04-28`
+        fixture.returnLogs[0].endDate = `${endYear}-03-31`
+        fixture.returnLogs[0].startDate = `${startYear}-04-01`
+        fixture.returnLogs[0].returnCycleId.value = `${startYear}-04-01`
 
-          fixture.returnLogs[i].dueDate = `${calculatedYear + 1}-04-28`
-          fixture.returnLogs[i].endDate = `${calculatedYear + 1}-03-31`
-          fixture.returnLogs[i].startDate = `${calculatedYear}-04-01`
-          fixture.returnLogs[i].returnCycleId.value = `${calculatedYear}-04-01`
-        }
+        fixture.returnLogs[1].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
+        fixture.returnLogs[1].dueDate = `${endYear}-04-28`
+        fixture.returnLogs[1].endDate = `${endYear}-03-31`
+        fixture.returnLogs[1].startDate = `${startYear}-04-01`
+        fixture.returnLogs[1].returnCycleId.value = `${startYear}-04-01`
+
+        startYear = startYear - 1
+        endYear = endYear - 1
+
+        fixture.returnLogs[2].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
+        fixture.returnLogs[2].dueDate = `${endYear}-04-28`
+        fixture.returnLogs[2].endDate = `${endYear}-03-31`
+        fixture.returnLogs[2].startDate = `${startYear}-04-01`
+        fixture.returnLogs[2].returnCycleId.value = `${startYear}-04-01`
+
+        fixture.returnLogs[3].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
+        fixture.returnLogs[3].dueDate = `${endYear}-04-28`
+        fixture.returnLogs[3].endDate = `${endYear}-03-31`
+        fixture.returnLogs[3].startDate = `${startYear}-04-01`
+        fixture.returnLogs[3].returnCycleId.value = `${startYear}-04-01`
+
+        startYear = startYear - 1
+        endYear = endYear - 1
+
+        fixture.returnLogs[4].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
+        fixture.returnLogs[4].dueDate = `${endYear}-04-28`
+        fixture.returnLogs[4].endDate = `${endYear}-03-31`
+        fixture.returnLogs[4].startDate = `${startYear}-04-01`
+        fixture.returnLogs[4].returnCycleId.value = `${startYear}-04-01`
+
+        fixture.returnLogs[5].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
+        fixture.returnLogs[5].dueDate = `${endYear}-04-28`
+        fixture.returnLogs[5].endDate = `${endYear}-03-31`
+        fixture.returnLogs[5].startDate = `${startYear}-04-01`
+        fixture.returnLogs[5].returnCycleId.value = `${startYear}-04-01`
 
         cy.load(fixture)
       })
