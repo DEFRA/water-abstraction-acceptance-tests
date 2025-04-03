@@ -1,9 +1,5 @@
 'use strict'
 
-const {
-  determineCycleStartDate
-} = require('../../../lib/return-cycle-dates.lib.js')
-
 describe('Submit summer and winter and all year historic correction using abstraction data', () => {
   beforeEach(() => {
     cy.tearDown()
@@ -113,11 +109,12 @@ describe('Submit summer and winter and all year historic correction using abstra
     cy.contains('Set up new requirements').click()
 
     // set the start date to be the beginning of the current winter and all year cycle
-    const winterAndAllYearStartDate = determineCycleStartDate(false)
     cy.get('#another-start-date').check()
     cy.get('#other-start-date-day').type('01')
     cy.get('#other-start-date-month').type('04')
-    cy.get('#other-start-date-year').type(winterAndAllYearStartDate.getFullYear())
+    cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
+      cy.get('#other-start-date-year').type(currentFinancialYearInfo.start.year)
+    })
     cy.contains('Continue').click()
 
     // confirm we are on the reason page
