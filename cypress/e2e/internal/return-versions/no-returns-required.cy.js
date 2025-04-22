@@ -100,7 +100,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see pop up notification confirming changes have been made
-    cy.get('.govuk-notification-banner').contains('Changes made')
+    cy.get('.govuk-notification-banner').contains('Note added')
 
     // confirm we see the note added
     cy.contains('This is a note for a no returns requirement.').should('exist')
@@ -117,7 +117,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see pop up notification confirming changes have been made
-    cy.get('.govuk-notification-banner').contains('Changes made')
+    cy.get('.govuk-notification-banner').contains('Note updated')
 
     // confirm we see the note added
     cy.contains('This is new and improved note for a no return requirement.').should('exist')
@@ -126,7 +126,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Delete').click()
 
     // confirm we see pop notification confirming deleted note
-    cy.get('.govuk-notification-banner').contains('Note removed')
+    cy.get('.govuk-notification-banner').contains('Note deleted')
 
     // confirm no notes have been added
     cy.contains('No notes added').should('exist')
