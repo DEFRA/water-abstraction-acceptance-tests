@@ -46,8 +46,8 @@ describe('Create a empty SROC two-part tariff bill run (internal)', () => {
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the financial year
-    // choose 2021 to 2022 and continue
-    cy.get('label.govuk-radios__label').contains('2023 to 2024').click()
+    // choose top option and continue
+    cy.get('#year').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Check the bill run
