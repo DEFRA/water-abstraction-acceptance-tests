@@ -85,7 +85,7 @@
   ],
   "returnLogs": [
     {
-      "id": "v1:1:AT/TEST/01:10021668:2022-04-01:2023-03-31",
+      "id": "v1:1:AT/TEST/01:10021668:2024-04-01:2025-03-31",
       "returnReference": "10021668",
       "licenceRef": "AT/TEST/01",
       "metadata": {
@@ -114,10 +114,10 @@
           "periodEndMonth": "10"
         }
       },
-      "startDate": "2022-04-01",
-      "endDate": "2023-03-21",
-      "receivedDate": "2023-03-01",
-      "dueDate": "2023-04-28",
+      "startDate": "2024-04-01",
+      "endDate": "2025-03-21",
+      "receivedDate": "2025-03-01",
+      "dueDate": "2025-04-28",
       "status": "completed",
       "underQuery": false
     }
@@ -125,7 +125,7 @@
   "returnSubmissions": [
     {
       "id": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
-      "returnLogId": "v1:1:AT/TEST/01:10021668:2022-04-01:2023-03-31",
+      "returnLogId": "v1:1:AT/TEST/01:10021668:2024-04-01:2025-03-31",
       "nilReturn": true,
       "current": true
     }
