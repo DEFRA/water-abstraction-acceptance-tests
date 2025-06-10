@@ -139,29 +139,29 @@ describe('Submit winter and all year historic correction using abstraction data'
 
       cy.returnLogDueData(endYear, true).then((data) => {
         cy.get('[data-test="return-due-date-0"]').contains(data.text)
-        cy.get('[data-test="return-status-0"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-status-0"] > .govuk-tag').contains('void')
 
         cy.get('[data-test="return-due-date-1"]').contains(data.text)
-        cy.get('[data-test="return-status-1"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-status-1"] > .govuk-tag').contains(data.label)
       })
 
       cy.returnLogDueData(startYear, true).then((data) => {
         cy.get('[data-test="return-due-date-2"]').contains(data.text)
-        cy.get('[data-test="return-status-2"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('void')
 
         cy.get('[data-test="return-due-date-3"]').contains(data.text)
-        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains(data.label)
       })
 
       cy.returnLogDueData(startYear - 1, true).then((data) => {
         cy.get('[data-test="return-due-date-4"]').contains(data.text)
-        cy.get('[data-test="return-status-4"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
 
         cy.get('[data-test="return-due-date-5"]').contains(data.text)
         cy.get('[data-test="return-status-5"] > .govuk-tag').contains(data.label)
 
         cy.get('[data-test="return-due-date-6"]').contains(data.text)
-        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-status-6"] > .govuk-tag').contains(data.label)
       })
 
       cy.returnLogDueData(startYear - 2, true).then((data) => {
