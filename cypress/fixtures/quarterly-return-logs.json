@@ -1,0 +1,1104 @@
+{
+  "permitLicences": [
+    {
+      "licenceRef": "AT/CURR/DAILY/01",
+      "startDate": "2020-01-01",
+      "metadata": {
+        "source": "acceptance-test-setup"
+      }
+    },
+    {
+      "licenceRef": "AT/CURR/WEEKLY/01",
+      "startDate": "2020-01-01",
+      "metadata": {
+        "source": "acceptance-test-setup"
+      }
+    },
+    {
+      "licenceRef": "AT/CURR/MONTHLY/01",
+      "startDate": "2020-01-01",
+      "metadata": {
+        "source": "acceptance-test-setup"
+      }
+    },
+    {
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "startDate": "2020-01-01",
+      "metadata": {
+        "source": "acceptance-test-setup"
+      }
+    }
+  ],
+  "licenceEntities": [
+    {
+      "id": "1742895f-5e18-41e0-94bd-d5c9845cb558",
+      "name": "external@example.com",
+      "type": "individual"
+    },
+    {
+      "id": "e86c312b-222d-404f-ae08-eb90a80bec18",
+      "name": "Big Farm Co Ltd",
+      "type": "company"
+    }
+  ],
+  "licenceEntityRoles": [
+    {
+      "id": "f99998c5-0676-43c3-bf6c-41b1103111bf",
+      "licenceEntityId": "1742895f-5e18-41e0-94bd-d5c9845cb558",
+      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18",
+      "role": "primary_user",
+      "createdBy": "acceptance-test-setup"
+    }
+  ],
+  "licenceDocumentHeaders": [
+    {
+      "id": "c86c9d49-e06f-4792-8307-8e2c38aa6838",
+      "regimeEntityId": {
+        "schema": "crm",
+        "table": "entity",
+        "lookup": "entityType",
+        "value": "regime",
+        "select": "entityId"
+      },
+      "licenceRef": "AT/CURR/DAILY/01",
+      "naldId": {
+        "schema": "public",
+        "table": "permitLicences",
+        "lookup": "licenceRef",
+        "value": "AT/CURR/DAILY/01",
+        "select": "id"
+      },
+      "metadata": {
+        "Name": "cupcake factory",
+        "dataType": "acceptance-test-setup",
+        "IsCurrent": true
+      },
+      "licence_name": "the daily cupcake licence",
+      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
+    },
+    {
+      "id": "f5dbd812-4238-4b02-8eaa-8f7b3de467d4",
+      "regimeEntityId": {
+        "schema": "crm",
+        "table": "entity",
+        "lookup": "entityType",
+        "value": "regime",
+        "select": "entityId"
+      },
+      "licenceRef": "AT/CURR/WEEKLY/01",
+      "naldId": {
+        "schema": "public",
+        "table": "permitLicences",
+        "lookup": "licenceRef",
+        "value": "AT/CURR/WEEKLY/01",
+        "select": "id"
+      },
+      "metadata": {
+        "Name": "barber bakery",
+        "dataType": "acceptance-test-setup",
+        "IsCurrent": true
+      },
+      "licence_name": "the weekly crumpet licence",
+      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
+    },
+    {
+      "id": "7660ae8b-d619-43ca-bead-5ff6e24e2d11",
+      "regimeEntityId": {
+        "schema": "crm",
+        "table": "entity",
+        "lookup": "entityType",
+        "value": "regime",
+        "select": "entityId"
+      },
+      "licenceRef": "AT/CURR/MONTHLY/01",
+      "naldId": {
+        "schema": "public",
+        "table": "permitLicences",
+        "lookup": "licenceRef",
+        "value": "AT/CURR/MONTHLY/01",
+        "select": "id"
+      },
+      "metadata": {
+        "Name": "shop",
+        "dataType": "acceptance-test-setup",
+        "IsCurrent": true
+      },
+      "licence_name": "the monthly pie licence",
+      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
+    },
+    {
+      "id": "91b89b5d-ebf4-48be-ba92-a89e65118ba8",
+      "regimeEntityId": {
+        "schema": "crm",
+        "table": "entity",
+        "lookup": "entityType",
+        "value": "regime",
+        "select": "entityId"
+      },
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "naldId": {
+        "schema": "public",
+        "table": "permitLicences",
+        "lookup": "licenceRef",
+        "value": "AT/CURR/MONTHLY/02",
+        "select": "id"
+      },
+      "metadata": {
+        "Name": "doughnut store",
+        "dataType": "acceptance-test-setup",
+        "IsCurrent": true
+      },
+      "licence_name": "the monthly doughnut licence",
+      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
+    }
+  ],
+  "companies": [
+    {
+      "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "name": "Big Farm Co Ltd",
+      "type": "organisation"
+    }
+  ],
+  "addresses": [
+    {
+      "id": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "address1": "Big Farm",
+      "address2": "Windy road",
+      "address3": "Buttercup meadow",
+      "address4": "Buttercup Village",
+      "address5": "Testington",
+      "address6": "Testingshire",
+      "postcode": "TT1 1TT",
+      "country": "UK",
+      "dataSource": "nald"
+    }
+  ],
+  "companyAddresses": [
+    {
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2008-04-01",
+      "licenceRoleId": {
+        "schema": "crm_v2",
+        "table": "roles",
+        "lookup": "name",
+        "value": "billing",
+        "select": "roleId"
+      }
+    }
+  ],
+  "contacts": [
+    {
+      "id": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
+      "salutation": "Mr",
+      "firstName": "John",
+      "lastName": "Testerson",
+      "middleInitials": "J",
+      "contactType": "person",
+      "dataSource": "nald"
+    }
+  ],
+  "companyContacts": [
+    {
+      "id": "e01e7717-719f-47ed-8431-362f6b4de422",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "licenceRoleId": {
+        "schema": "crm_v2",
+        "table": "roles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "roleId"
+      },
+      "startDate": "2018-01-01"
+    }
+  ],
+  "billingAccounts": [
+    {
+      "id": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "accountNumber": "A99999999A",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
+    }
+  ],
+  "billingAccountAddresses": [
+    {
+      "id": "ab9a24ec-80b8-40dc-82f8-7df3e885245a",
+      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "startDate": "2008-04-01"
+    }
+  ],
+  "licenceDocuments": [
+    {
+      "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "startDate": "2018-01-01"
+    },
+    {
+      "id": "4fe682ac-c558-41fc-aead-85dca40efc89",
+      "licenceRef": "AT/CURR/WEEKLY/01",
+      "startDate": "2020-01-01"
+    },
+    {
+      "id": "1305f637-eea8-455c-92ae-f52015aa001b",
+      "licenceRef": "AT/CURR/MONTHLY/01",
+      "startDate": "2018-01-01"
+    },
+    {
+      "id": "74498584-b26b-405a-9111-743fc46a185e",
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "startDate": "2018-01-01"
+    }
+  ],
+  "licenceDocumentRoles": [
+    {
+      "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2018-01-01",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    },
+    {
+      "licenceDocumentId": "4fe682ac-c558-41fc-aead-85dca40efc89",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2018-01-01",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    },
+    {
+      "licenceDocumentId": "1305f637-eea8-455c-92ae-f52015aa001b",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2018-01-01",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    },
+    {
+      "licenceDocumentId": "74498584-b26b-405a-9111-743fc46a185e",
+      "licenceRoleId": {
+        "schema": "public",
+        "table": "licenceRoles",
+        "lookup": "name",
+        "value": "licenceHolder",
+        "select": "id"
+      },
+      "startDate": "2018-01-01",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
+      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
+    }
+  ],
+  "licences": [
+    {
+      "id": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
+      "regions": {
+        "historicalAreaCode": "SAAR",
+        "regionalChargeArea": "Southern"
+      },
+      "startDate": "2020-01-01",
+      "waterUndertaker": true
+    },
+    {
+      "id": "bcdf5049-fd2d-4e45-a3d6-37bcd443d431",
+      "licenceRef": "AT/CURR/WEEKLY/01",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
+      "regions": {
+        "historicalAreaCode": "SAAR",
+        "regionalChargeArea": "Southern"
+      },
+      "startDate": "2020-01-01",
+      "waterUndertaker": false
+    },
+    {
+      "id": "bb5605c9-5c28-43d3-a8b3-875013366b69",
+      "licenceRef": "AT/CURR/MONTHLY/01",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
+      "regions": {
+        "historicalAreaCode": "SAAR",
+        "regionalChargeArea": "Southern"
+      },
+      "startDate": "2020-01-01",
+      "waterUndertaker": false
+    },
+    {
+      "id": "844e5fd5-f21c-418e-8d64-0be4d283133a",
+      "licenceRef": "AT/CURR/MONTHLY/02",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
+      "regions": {
+        "historicalAreaCode": "SAAR",
+        "regionalChargeArea": "Southern"
+      },
+      "startDate": "2020-01-01",
+      "waterUndertaker": false
+    }
+  ],
+  "licenceVersions": [
+    {
+      "id": "7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b",
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "issue": 1,
+      "increment": 0,
+      "status": "current",
+      "startDate": "2020-01-01",
+      "externalId": "6:1234:1:0"
+    },
+    {
+      "id": "5649a988-3cdf-4a19-91ee-8a61355f8c9d",
+      "licenceId": "bcdf5049-fd2d-4e45-a3d6-37bcd443d431",
+      "issue": 1,
+      "increment": 0,
+      "status": "current",
+      "startDate": "2020-01-01",
+      "externalId": "6:1235:1:0"
+    },
+    {
+      "id": "eede57aa-f8d7-492a-bb6a-b5bccead5ce4",
+      "licenceId": "bb5605c9-5c28-43d3-a8b3-875013366b69",
+      "issue": 1,
+      "increment": 0,
+      "status": "current",
+      "startDate": "2020-01-01",
+      "externalId": "6:1236:1:0"
+    },
+    {
+      "id": "49bf4843-8d2c-4667-8950-56d472f02bf6",
+      "licenceId": "844e5fd5-f21c-418e-8d64-0be4d283133a",
+      "issue": 1,
+      "increment": 0,
+      "status": "current",
+      "startDate": "2020-01-01",
+      "externalId": "6:1237:1:0"
+    }
+  ],
+  "points": [
+    {
+      "id": "1cb602f8-6a01-4435-96b0-541e03f460da",
+      "description": "Example point 1",
+      "ngr1": "TQ 1234 5678",
+      "externalId": "9:9000031",
+      "sourceId": {
+        "schema": "public",
+        "table": "sources",
+        "lookup": "legacyId",
+        "value": "S",
+        "select": "id"
+      }
+    },
+    {
+      "id": "82fab927-ef31-45a2-a4e6-104315cb9764",
+      "description": "Example point 2",
+      "ngr1": "TT 9876 5432",
+      "externalId": "9:9000032",
+      "sourceId": {
+        "schema": "public",
+        "table": "sources",
+        "lookup": "legacyId",
+        "value": "S",
+        "select": "id"
+      }
+    }
+  ],
+  "licenceVersionPurposes": [
+    {
+      "id": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
+      "licenceVersionId": "7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "annualQuantity": 1554,
+      "externalId": "6:1234"
+    },
+    {
+      "id": "fb82d30d-49e5-4295-96f9-03abf126cbd7",
+      "licenceVersionId": "5649a988-3cdf-4a19-91ee-8a61355f8c9d",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "annualQuantity": 1554,
+      "externalId": "6:1235"
+    },
+    {
+      "id": "b663bab5-9875-4823-9b3d-d0a66ef22b9a",
+      "licenceVersionId": "eede57aa-f8d7-492a-bb6a-b5bccead5ce4",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "annualQuantity": 1554,
+      "externalId": "6:1236"
+    },
+    {
+      "id": "2088b5cd-3fd9-425c-a4bd-0331596e6d94",
+      "licenceVersionId": "49bf4843-8d2c-4667-8950-56d472f02bf6",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "annualQuantity": 1554,
+      "externalId": "6:1237"
+    }
+  ],
+  "licenceVersionPurposePoints": [
+    {
+      "licenceVersionPurposeId": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "licenceVersionPurposeId": "fb82d30d-49e5-4295-96f9-03abf126cbd7",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
+    },
+    {
+      "licenceVersionPurposeId": "b663bab5-9875-4823-9b3d-d0a66ef22b9a",
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "licenceVersionPurposeId": "2088b5cd-3fd9-425c-a4bd-0331596e6d94",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
+    }
+  ],
+  "returnVersions": [
+    {
+      "id": "bcd4e8c7-16ed-419c-915d-d8f184e45ed5",
+      "version": 101,
+      "startDate": "2019-01-01",
+      "endDate": null,
+      "status": "current",
+      "externalId": "6:9999990",
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "quarterlyReturns": true
+    },
+    {
+      "id": "c1c06cf3-5f81-4ebd-b814-b60b782f795b",
+      "version": 101,
+      "startDate": "2020-01-01",
+      "endDate": null,
+      "status": "current",
+      "externalId": "6:9999991",
+      "licenceId": "bcdf5049-fd2d-4e45-a3d6-37bcd443d431"
+    },
+    {
+      "id": "5def1d92-0de9-4a31-aab6-b4373755c483",
+      "version": 101,
+      "startDate": "2021-01-01",
+      "endDate": null,
+      "status": "current",
+      "externalId": "6:9999992",
+      "licenceId": "bb5605c9-5c28-43d3-a8b3-875013366b69"
+    },
+    {
+      "id": "4bba499d-c68c-433f-8f4b-d495ab7c8b34",
+      "version": 102,
+      "startDate": "2021-01-01",
+      "endDate": null,
+      "status": "superseded",
+      "externalId": "6:9999993",
+      "licenceId": "844e5fd5-f21c-418e-8d64-0be4d283133a"
+    }
+  ],
+  "returnRequirements": [
+    {
+      "id": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
+      "returnsFrequency": "month",
+      "returnVersionId": "bcd4e8c7-16ed-419c-915d-d8f184e45ed5",
+      "summer": false,
+      "upload": false,
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 1,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 12,
+      "siteDescription": "WELL POINTS AT MARS",
+      "legacyId": 9999990,
+      "externalId": "9:9999990"
+    },
+    {
+      "id": "35eb023b-0911-4876-9093-5f10406c4a2d",
+      "returnsFrequency": "month",
+      "returnVersionId": "c1c06cf3-5f81-4ebd-b814-b60b782f795b",
+      "summer": false,
+      "upload": false,
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 1,
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 12,
+      "siteDescription": "WELL POINTS AT MARS",
+      "legacyId": 9999991,
+      "externalId": "6:9999991"
+    },
+    {
+      "id": "7fe49b9d-4e6a-48da-9c7f-751689c7dd4f",
+      "returnsFrequency": "month",
+      "returnVersionId": "5def1d92-0de9-4a31-aab6-b4373755c483",
+      "summer": false,
+      "upload": false,
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 1,
+      "abstractionPeriodEndDay": 28,
+      "abstractionPeriodEndMonth": 2,
+      "siteDescription": "WELL POINTS AT MARS",
+      "legacyId": 9999992,
+      "externalId": "6:9999992"
+    },
+    {
+      "id": "f4bcab6f-906a-4929-9ce7-87480364331b",
+      "returnsFrequency": "month",
+      "returnVersionId": "4bba499d-c68c-433f-8f4b-d495ab7c8b34",
+      "summer": false,
+      "upload": false,
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 1,
+      "abstractionPeriodEndDay": 28,
+      "abstractionPeriodEndMonth": 2,
+      "siteDescription": "WELL POINTS AT MARS",
+      "legacyId": 9999993,
+      "externalId": "6:9999993"
+    }
+  ],
+  "returnRequirementPoints": [
+    {
+      "returnRequirementId": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "returnRequirementId": "35eb023b-0911-4876-9093-5f10406c4a2d",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
+    },
+    {
+      "returnRequirementId": "7fe49b9d-4e6a-48da-9c7f-751689c7dd4f",
+      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "returnRequirementId": "f4bcab6f-906a-4929-9ce7-87480364331b",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
+    }
+  ],
+  "returnRequirementPurposes": [
+    {
+      "returnRequirementId": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
+      "externalId": "6:9999990:A:AGR:420",
+      "alias": "SPRAY IRRIGATION STORAGE",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      }
+    },
+    {
+      "returnRequirementId": "35eb023b-0911-4876-9093-5f10406c4a2d",
+      "externalId": "6:9999991:A:AGR:420",
+      "alias": "SPRAY IRRIGATION STORAGE",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      }
+    },
+    {
+      "returnRequirementId": "7fe49b9d-4e6a-48da-9c7f-751689c7dd4f",
+      "externalId": "6:9999992:A:AGR:420",
+      "alias": "SPRAY IRRIGATION STORAGE",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      }
+    },
+    {
+      "returnRequirementId": "f4bcab6f-906a-4929-9ce7-87480364331b",
+      "externalId": "6:9999993:A:AGR:420",
+      "alias": "SPRAY IRRIGATION STORAGE",
+      "primaryPurposeId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "secondaryPurposeId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      }
+    }
+  ],
+  "chargeVersions": [
+    {
+      "id": "fb1c7c5d-e723-4ab2-861e-5aae6d428019",
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
+      "regionCode": 9,
+      "scheme": "alcs",
+      "versionNumber": 1,
+      "startDate": "2018-01-01",
+      "status": "current",
+      "source": "wrls",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
+    }
+  ],
+  "chargeReferences": [
+    {
+      "id": "69ea7fd9-961b-4d5d-be8b-ecd0e9cc8482",
+      "chargeVersionId": "fb1c7c5d-e723-4ab2-861e-5aae6d428019",
+      "factorsOverridden": false,
+      "abstractionPeriodStartDay": 1,
+      "abstractionPeriodStartMonth": 4,
+      "description": "Test Charge Element!",
+      "abstractionPeriodEndDay": 31,
+      "abstractionPeriodEndMonth": 3,
+      "authorisedAnnualQuantity": 15.54,
+      "season": "all year",
+      "seasonDerived": "all year",
+      "source": "unsupported",
+      "loss": "medium",
+      "purposePrimaryId": {
+        "schema": "water",
+        "table": "purposesPrimary",
+        "lookup": "legacyId",
+        "value": "A",
+        "select": "purposePrimaryId"
+      },
+      "purposeSecondaryId": {
+        "schema": "water",
+        "table": "purposesSecondary",
+        "lookup": "legacyId",
+        "value": "AGR",
+        "select": "purposeSecondaryId"
+      },
+      "purposeId": {
+        "schema": "public",
+        "table": "purposes",
+        "lookup": "legacyId",
+        "value": "140",
+        "select": "id"
+      },
+      "chargeCategoryId": null,
+      "additionalCharges": {},
+      "scheme": "alcs",
+      "adjustments": null,
+      "eiucRegion": null,
+      "section127Agreement": null,
+      "restrictedSource": false
+    }
+  ],
+  "monitoringStations": [
+    {
+      "label": "Test Station 500",
+      "gridReference": "ST5820172718"
+    }
+  ],
+  "returnLogs": [
+    {
+      "id": "v1:9:AT/CURR/DAILY/01:9999990:2025-01-01:2025-03-31",
+      "returnReference": "9999990",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999990,
+            "regionCode": 9,
+            "periodEndDay": "28",
+            "periodEndMonth": "02",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "Winter",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 2,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2025-01-01",
+      "endDate": "2025-03-31",
+      "dueDate": "2025-04-28",
+      "status": "due",
+      "underQuery": false,
+      "returnCycleId": {
+        "schema": "returns",
+        "table": "returnCycles",
+        "lookup": "startDate",
+        "value": "2024-04-01",
+        "select": "returnCycleId"
+      }
+    },
+    {
+      "id": "v1:9:AT/CURR/DAILY/01:9999990:2024-10-01:2024-12-31",
+      "returnReference": "9999990",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999990,
+            "regionCode": 9,
+            "periodEndDay": "28",
+            "periodEndMonth": "02",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "Winter",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2024-10-01",
+      "endDate": "2024-12-31",
+      "dueDate": "2025-01-28",
+      "status": "completed",
+      "underQuery": false,
+      "returnCycleId": {
+        "schema": "returns",
+        "table": "returnCycles",
+        "lookup": "startDate",
+        "value": "2024-04-01",
+        "select": "returnCycleId"
+      }
+    },
+    {
+      "id": "v1:9:AT/CURR/DAILY/01:9999990:2024-07-01:2024-09-30",
+      "returnReference": "9999990",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999990,
+            "regionCode": 9,
+            "periodEndDay": "31",
+            "periodEndMonth": "12",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "The Name of this",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2024-07-01",
+      "endDate": "2024-09-30",
+      "dueDate": "2024-10-28",
+      "status": "completed",
+      "underQuery": false,
+      "returnCycleId": {
+        "schema": "returns",
+        "table": "returnCycles",
+        "lookup": "startDate",
+        "value": "2024-04-01",
+        "select": "returnCycleId"
+      }
+    },
+    {
+      "id": "v1:9:AT/CURR/DAILY/01:9999990:2024-04-01:2024-06-30",
+      "returnReference": "9999990",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999990,
+            "regionCode": 9,
+            "periodEndDay": "31",
+            "periodEndMonth": "12",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "The Name of this",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2024-04-01",
+      "endDate": "2024-06-30",
+      "dueDate": "2024-07-28",
+      "status": "completed",
+      "underQuery": false,
+      "returnCycleId": {
+        "schema": "returns",
+        "table": "returnCycles",
+        "lookup": "startDate",
+        "value": "2024-04-01",
+        "select": "returnCycleId"
+      }
+    }
+  ]
+}
