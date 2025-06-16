@@ -6,27 +6,6 @@
       "metadata": {
         "source": "acceptance-test-setup"
       }
-    },
-    {
-      "licenceRef": "AT/CURR/WEEKLY/01",
-      "startDate": "2020-01-01",
-      "metadata": {
-        "source": "acceptance-test-setup"
-      }
-    },
-    {
-      "licenceRef": "AT/CURR/MONTHLY/01",
-      "startDate": "2020-01-01",
-      "metadata": {
-        "source": "acceptance-test-setup"
-      }
-    },
-    {
-      "licenceRef": "AT/CURR/MONTHLY/02",
-      "startDate": "2020-01-01",
-      "metadata": {
-        "source": "acceptance-test-setup"
-      }
     }
   ],
   "licenceEntities": [
@@ -74,81 +53,6 @@
         "IsCurrent": true
       },
       "licence_name": "the daily cupcake licence",
-      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
-    },
-    {
-      "id": "f5dbd812-4238-4b02-8eaa-8f7b3de467d4",
-      "regimeEntityId": {
-        "schema": "crm",
-        "table": "entity",
-        "lookup": "entityType",
-        "value": "regime",
-        "select": "entityId"
-      },
-      "licenceRef": "AT/CURR/WEEKLY/01",
-      "naldId": {
-        "schema": "public",
-        "table": "permitLicences",
-        "lookup": "licenceRef",
-        "value": "AT/CURR/WEEKLY/01",
-        "select": "id"
-      },
-      "metadata": {
-        "Name": "barber bakery",
-        "dataType": "acceptance-test-setup",
-        "IsCurrent": true
-      },
-      "licence_name": "the weekly crumpet licence",
-      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
-    },
-    {
-      "id": "7660ae8b-d619-43ca-bead-5ff6e24e2d11",
-      "regimeEntityId": {
-        "schema": "crm",
-        "table": "entity",
-        "lookup": "entityType",
-        "value": "regime",
-        "select": "entityId"
-      },
-      "licenceRef": "AT/CURR/MONTHLY/01",
-      "naldId": {
-        "schema": "public",
-        "table": "permitLicences",
-        "lookup": "licenceRef",
-        "value": "AT/CURR/MONTHLY/01",
-        "select": "id"
-      },
-      "metadata": {
-        "Name": "shop",
-        "dataType": "acceptance-test-setup",
-        "IsCurrent": true
-      },
-      "licence_name": "the monthly pie licence",
-      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
-    },
-    {
-      "id": "91b89b5d-ebf4-48be-ba92-a89e65118ba8",
-      "regimeEntityId": {
-        "schema": "crm",
-        "table": "entity",
-        "lookup": "entityType",
-        "value": "regime",
-        "select": "entityId"
-      },
-      "licenceRef": "AT/CURR/MONTHLY/02",
-      "naldId": {
-        "schema": "public",
-        "table": "permitLicences",
-        "lookup": "licenceRef",
-        "value": "AT/CURR/MONTHLY/02",
-        "select": "id"
-      },
-      "metadata": {
-        "Name": "doughnut store",
-        "dataType": "acceptance-test-setup",
-        "IsCurrent": true
-      },
-      "licence_name": "the monthly doughnut licence",
       "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
     }
   ],
@@ -213,88 +117,16 @@
       "startDate": "2018-01-01"
     }
   ],
-  "billingAccounts": [
-    {
-      "id": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
-      "accountNumber": "A99999999A",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
-    }
-  ],
-  "billingAccountAddresses": [
-    {
-      "id": "ab9a24ec-80b8-40dc-82f8-7df3e885245a",
-      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "startDate": "2008-04-01"
-    }
-  ],
   "licenceDocuments": [
     {
       "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
       "licenceRef": "AT/CURR/DAILY/01",
-      "startDate": "2018-01-01"
-    },
-    {
-      "id": "4fe682ac-c558-41fc-aead-85dca40efc89",
-      "licenceRef": "AT/CURR/WEEKLY/01",
-      "startDate": "2020-01-01"
-    },
-    {
-      "id": "1305f637-eea8-455c-92ae-f52015aa001b",
-      "licenceRef": "AT/CURR/MONTHLY/01",
-      "startDate": "2018-01-01"
-    },
-    {
-      "id": "74498584-b26b-405a-9111-743fc46a185e",
-      "licenceRef": "AT/CURR/MONTHLY/02",
       "startDate": "2018-01-01"
     }
   ],
   "licenceDocumentRoles": [
     {
       "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
-      "licenceRoleId": {
-        "schema": "public",
-        "table": "licenceRoles",
-        "lookup": "name",
-        "value": "licenceHolder",
-        "select": "id"
-      },
-      "startDate": "2018-01-01",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
-    },
-    {
-      "licenceDocumentId": "4fe682ac-c558-41fc-aead-85dca40efc89",
-      "licenceRoleId": {
-        "schema": "public",
-        "table": "licenceRoles",
-        "lookup": "name",
-        "value": "licenceHolder",
-        "select": "id"
-      },
-      "startDate": "2018-01-01",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
-    },
-    {
-      "licenceDocumentId": "1305f637-eea8-455c-92ae-f52015aa001b",
-      "licenceRoleId": {
-        "schema": "public",
-        "table": "licenceRoles",
-        "lookup": "name",
-        "value": "licenceHolder",
-        "select": "id"
-      },
-      "startDate": "2018-01-01",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
-    },
-    {
-      "licenceDocumentId": "74498584-b26b-405a-9111-743fc46a185e",
       "licenceRoleId": {
         "schema": "public",
         "table": "licenceRoles",
@@ -428,6 +260,10 @@
     {
       "licenceVersionPurposeId": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
       "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
+    },
+    {
+      "licenceVersionPurposeId": "fb82d30d-49e5-4295-96f9-03abf126cbd7",
+      "pointId": "82fab927-ef31-45a2-a4e6-104315cb9764"
     }
   ],
   "returnVersions": [
@@ -533,72 +369,6 @@
         "value": "140",
         "select": "id"
       }
-    }
-  ],
-  "chargeVersions": [
-    {
-      "id": "fb1c7c5d-e723-4ab2-861e-5aae6d428019",
-      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
-      "licenceRef": "AT/CURR/DAILY/01",
-      "billingAccountId": "16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c",
-      "regionCode": 9,
-      "scheme": "alcs",
-      "versionNumber": 1,
-      "startDate": "2018-01-01",
-      "status": "current",
-      "source": "wrls",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778"
-    }
-  ],
-  "chargeReferences": [
-    {
-      "id": "69ea7fd9-961b-4d5d-be8b-ecd0e9cc8482",
-      "chargeVersionId": "fb1c7c5d-e723-4ab2-861e-5aae6d428019",
-      "factorsOverridden": false,
-      "abstractionPeriodStartDay": 1,
-      "abstractionPeriodStartMonth": 4,
-      "description": "Test Charge Element!",
-      "abstractionPeriodEndDay": 31,
-      "abstractionPeriodEndMonth": 3,
-      "authorisedAnnualQuantity": 15.54,
-      "season": "all year",
-      "seasonDerived": "all year",
-      "source": "unsupported",
-      "loss": "medium",
-      "purposePrimaryId": {
-        "schema": "water",
-        "table": "purposesPrimary",
-        "lookup": "legacyId",
-        "value": "A",
-        "select": "purposePrimaryId"
-      },
-      "purposeSecondaryId": {
-        "schema": "water",
-        "table": "purposesSecondary",
-        "lookup": "legacyId",
-        "value": "AGR",
-        "select": "purposeSecondaryId"
-      },
-      "purposeId": {
-        "schema": "public",
-        "table": "purposes",
-        "lookup": "legacyId",
-        "value": "140",
-        "select": "id"
-      },
-      "chargeCategoryId": null,
-      "additionalCharges": {},
-      "scheme": "alcs",
-      "adjustments": null,
-      "eiucRegion": null,
-      "section127Agreement": null,
-      "restrictedSource": false
-    }
-  ],
-  "monitoringStations": [
-    {
-      "label": "Test Station 500",
-      "gridReference": "ST5820172718"
     }
   ],
   "returnLogs": [

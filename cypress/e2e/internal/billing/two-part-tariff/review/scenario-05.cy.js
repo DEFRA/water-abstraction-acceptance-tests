@@ -55,8 +55,8 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the financial year
-    // Choose 2021 to 2022 and continue
-    cy.get('label.govuk-radios__label').contains('2022 to 2023').click()
+    // choose top option and continue
+    cy.get('#year').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Check the bill run
@@ -82,7 +82,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
     cy.get('[data-test="meta-data-type"]').should('contain.text', 'Two-part tariff')
     cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
-    cy.get('[data-test="meta-data-year"]').should('contain.text', '2022 to 2023')
+    cy.get('[data-test="meta-data-year"]').should('contain.text', '2024 to 2025')
 
     // Review licences ~ Test you can filter by licence issue
     cy.get('.govuk-details__summary').click()
@@ -112,12 +112,12 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
     cy.get('div > .govuk-tag').should('contain.text', 'review')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
-    cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2022 to 31 March 2023')
+    cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
 
     // Review Licence AT/TEST/01 ~ Check the matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
-    cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
+    cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2024 to 21 March 2025')
     cy.get('[data-test="matched-return-action-0"] > :nth-child(3)').should('contain.text', '1 March to 31 October')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
@@ -141,7 +141,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
-    cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2022 to 21 March 2023')
+    cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2024 to 21 March 2025')
     cy.get('[data-test="matched-return-summary-0"]').contains('General Farming & Domestic A DRAIN SOMEWHERE')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '32 ML / 32 ML')

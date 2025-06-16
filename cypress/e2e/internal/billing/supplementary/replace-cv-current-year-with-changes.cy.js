@@ -7,16 +7,16 @@ describe('Replace charge version in current financial year change the charge ref
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31. We then use that date to work out how many SROC billing periods we
     // expect to be calculated. We combine these results into one value for use in our tests
-    cy.currentFinancialYearDate().then((currentFinancialYearInfo) => {
-      cy.numberOfSrocBillingPeriods(currentFinancialYearInfo.year).then((numberOfBillingPeriods) => {
-        currentFinancialYearInfo.billingPeriodCount = numberOfBillingPeriods
+    cy.currentFinancialYear().then((currentFinancialYearInfo) => {
+      cy.billingPeriodCounts(currentFinancialYearInfo.end.year).then((billingPeriodCount) => {
+        currentFinancialYearInfo.billingPeriodCounts = billingPeriodCount
         cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
       })
 
       cy.fixture('sroc-billing.json').then((fixture) => {
         // Update the bill run in the fixture to be in the 'current' financial year
-        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.year - 1
-        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.year
+        fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.end.year - 1
+        fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.end.year
 
         cy.load(fixture)
       })
@@ -158,7 +158,7 @@ describe('Replace charge version in current financial year change the charge ref
     // check the details before sending the bill run
     cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      const { billingPeriodCount } = currentFinancialYearInfo
+      const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
         cy.get('[data-test="bills-count"]')
           .should('contain.text', '1 Supplementary bill')
@@ -204,7 +204,8 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get('[data-test="region-1"]').should('contain.text', 'Test Region')
     cy.get('[data-test="bill-run-type-1"]').should('contain.text', 'Supplementary')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      cy.get('[data-test="number-of-bills-1"]').should('contain.text', currentFinancialYearInfo.billingPeriodCount)
+      const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
+      cy.get('[data-test="number-of-bills-1"]').should('contain.text', billingPeriodCount)
     })
     cy.get('[data-test="bill-run-status-1"] > .govuk-tag').should('contain.text', 'sent')
 
@@ -231,10 +232,10 @@ describe('Replace charge version in current financial year change the charge ref
     // Set charge start date
     // set a charge start date of the 1st April in the current financial year
     cy.get('#startDate-4').click()
-    cy.currentFinancialYearDate(1, 9, -1).then((result) => {
-      cy.get('#customDate-day').type(result.day)
-      cy.get('#customDate-month').type(result.month)
-      cy.get('#customDate-year').type(result.year)
+    cy.currentFinancialYear(1, 9, -1).then((result) => {
+      cy.get('#customDate-day').type(result.end.day)
+      cy.get('#customDate-month').type(result.end.month)
+      cy.get('#customDate-year').type(result.end.year)
     })
     cy.get('form > .govuk-button').click()
 
@@ -367,8 +368,8 @@ describe('Replace charge version in current financial year change the charge ref
     // unpredictable because the new number is based on existing data
     cy.get('[data-test="billing-contact-0"]').should('contain.text', 'Big Farm Co Ltd 02')
     cy.get('[data-test="licence-0"]').should('contain.text', 'AT/TEST/02')
-    cy.currentFinancialYearDate().then((result) => {
-      cy.get('[data-test="financial-year-0"]').should('contain.text', result.year)
+    cy.currentFinancialYear().then((result) => {
+      cy.get('[data-test="financial-year-0"]').should('contain.text', result.end.year)
     })
     cy.get('.govuk-button').contains('Send bill run').click()
 
