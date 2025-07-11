@@ -47,28 +47,28 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the reason page
-    cy.get('.govuk-fieldset__heading').contains('Select the reason for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the reason for the requirements for returns')
 
     // choose a reason (minor change) for the return and click continue
     cy.get('#reason-8').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
-    cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
+    cy.get('.govuk-heading-l').contains('How do you want to set up the requirements for returns?')
 
     // choose copy from existing requirements and continue
     cy.get('#method-2').check()
     cy.contains('Continue').click()
 
     // confirm we are on the existing requirements page
-    cy.get('.govuk-fieldset__heading').contains('Use previous requirements for returns')
+    cy.get('.govuk-heading-l').contains('Use previous requirements for returns')
 
     // choose a previous requirements for returns and continue
     cy.get('#existing').check()
     cy.contains('Continue').click()
 
     // confirm we are on the check page
-    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start date and reason selected
     cy.get('[data-test="start-date"]').contains('12 June 2023')
@@ -79,7 +79,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
 
     // choose the change link for the purpose and confirm we are on the purpose page
     cy.get('[data-test="change-purposes-0"]').click()
-    cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the purpose for the requirements for returns')
 
     // choose another purpose and add another purpose description and click continue
     cy.get('[data-test="purpose-0"]').uncheck()
@@ -88,7 +88,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we see the purpose changes on the check page
-    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
     cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
 
     // confirm we see the points for the requirement copied from existing
@@ -97,35 +97,35 @@ describe('Submit returns requirement using copy existing (internal)', () => {
 
     // choose the change link for the points and confirm we are on the points page
     cy.get('[data-test="change-points-0"]').click()
-    cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the points for the requirements for returns')
 
     // choose another points and continue
     cy.get('#points').uncheck()
     cy.contains('Continue').click()
 
     // confirm we see the points changes on the check page
-    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
     cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
 
     // choose add another requirement
     cy.contains('Add another requirement').click()
 
     // confirm we are on the purpose page
-    cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the purpose for the requirements for returns')
 
     // choose a purpose and continue
     cy.get('[data-test="purpose-0"]').check()
     cy.contains('Continue').click()
 
     // confirm we are on the points page
-    cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the points for the requirements for returns')
 
     // choose a points and continue
     cy.get('#points').check()
     cy.contains('Continue').click()
 
     // confirm we are on the abstraction period page
-    cy.get('.govuk-heading-xl').contains('Enter the abstraction period for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Enter the abstraction period for the requirements for returns')
 
     // choose a start and end date then continue
     cy.get('#abstraction-period-start-day').type('1')
@@ -135,7 +135,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page
-    cy.get('.govuk-heading-xl').contains('Select the returns cycle for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
     cy.get('#returnsCycle').check()
@@ -149,14 +149,14 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the frequency collected page
-    cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are collected')
+    cy.get('.govuk-heading-l').contains('Select how often readings or volumes are collected')
 
     // choose a frequency for collection and continue
     cy.get('#frequencyCollected-2').check()
     cy.contains('Continue').click()
 
     // confirm we are on the frequency reported page
-    cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are reported')
+    cy.get('.govuk-heading-l').contains('Select how often readings or volumes are reported')
 
     // choose a frequency for reporting and continue
     cy.get('#frequencyReported-2').check()
@@ -171,7 +171,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the new requirement added message
     cy.get('.govuk-notification-banner__heading').contains('New requirement added')

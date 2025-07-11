@@ -47,35 +47,35 @@ describe('Cancel a return requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the reason page
-    cy.get('.govuk-fieldset__heading').contains('Select the reason for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the reason for the requirements for returns')
 
     // choose returns exception and click continue
     cy.get('#reason-2').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
-    cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
+    cy.get('.govuk-heading-l').contains('How do you want to set up the requirements for returns?')
 
     // click set up manually and continue
     cy.get('#method-4').check()
     cy.contains('Continue').click()
 
     // confirm we are on the purpose page
-    cy.get('.govuk-heading-xl').contains('Select the purpose for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the purpose for the requirements for returns')
 
     // choose a purpose for the requirement and continue
     cy.get('[data-test="purpose-0"]').check()
     cy.contains('Continue').click()
 
     // confirm we are on the points page
-    cy.get('.govuk-heading-xl').contains('Select the points for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the points for the requirements for returns')
 
     // choose a points for the requirement and continue
     cy.get('#points').check()
     cy.contains('Continue').click()
 
     // confirm we are on the abstraction period page
-    cy.get('.govuk-heading-xl').contains('Enter the abstraction period for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Enter the abstraction period for the requirements for returns')
 
     // enter start and end dates for the abstraction period and click continue
     cy.get('#abstraction-period-start-day').type('01')
@@ -85,7 +85,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page
-    cy.get('.govuk-heading-xl').contains('Select the returns cycle for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
     cy.get('#returnsCycle').check()
@@ -99,14 +99,14 @@ describe('Cancel a return requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the readings collected page
-    cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are collected')
+    cy.get('.govuk-heading-l').contains('Select how often readings or volumes are collected')
 
     // choose a collected time frame and continue
     cy.get('#frequencyCollected').check()
     cy.contains('Continue').click()
 
     // confirm we are on the readings reported page
-    cy.get('.govuk-heading-xl').contains('Select how often readings or volumes are reported')
+    cy.get('.govuk-heading-l').contains('Select how often readings or volumes are reported')
 
     // choose a reporting time frame and continue
     cy.get('#frequencyReported').check()
@@ -120,7 +120,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the check page
-    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start date information we expect
     cy.get('[data-test="start-date"]').contains('12 June 2023')
