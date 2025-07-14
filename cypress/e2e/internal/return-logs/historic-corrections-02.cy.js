@@ -128,14 +128,7 @@ describe('Submit summer and winter and all year historic correction using abstra
     cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
 
     // choose copy from existing requirements and continue
-    cy.get('#method-2').check()
-    cy.contains('Continue').click()
-
-    // confirm we are on the existing requirements page
-    cy.get('.govuk-fieldset__heading').contains('Use previous requirements for returns')
-
-    // choose a previous requirements for returns and continue
-    cy.get('#existing').check()
+    cy.get('#method').check()
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
@@ -164,14 +157,14 @@ describe('Submit summer and winter and all year historic correction using abstra
 
         cy.get('[data-test="return-due-date-1"]').contains(data.text)
         cy.get('[data-test="return-status-1"] > .govuk-tag').contains(data.label)
+
+        cy.get('[data-test="return-due-date-2"]').contains(data.text)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains(data.label)
       })
 
       cy.returnLogDueData(summer.end, false).then((data) => {
-        cy.get('[data-test="return-due-date-2"]').contains(data.text)
-        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('void')
-
         cy.get('[data-test="return-due-date-3"]').contains(data.text)
-        cy.get('[data-test="return-status-3"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('void')
 
         cy.get('[data-test="return-due-date-4"]').contains(data.text)
         cy.get('[data-test="return-status-4"] > .govuk-tag').contains(data.label)
