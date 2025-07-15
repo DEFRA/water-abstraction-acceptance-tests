@@ -105,21 +105,21 @@ describe('Submit winter and all year historic correction using abstraction data'
     cy.contains('Continue').click()
 
     // confirm we are on the reason page
-    cy.get('.govuk-fieldset__heading').contains('Select the reason for the requirements for returns')
+    cy.get('.govuk-heading-l').contains('Select the reason for the requirements for returns')
 
     // choose reason (new licence) and click continue
     cy.get('#reason-10').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
-    cy.get('.govuk-fieldset__heading').contains('How do you want to set up the requirements for returns?')
+    cy.get('.govuk-heading-l').contains('How do you want to set up the requirements for returns?')
 
     // choose the start by using abstraction data checkbox and continue
     cy.get('#method').check()
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-xl').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // choose the approve return requirement button
     cy.contains('Approve returns requirement').click()
