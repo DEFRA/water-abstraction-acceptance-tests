@@ -26,23 +26,24 @@ describe('Send returns reminder to customer (internal)', () => {
 
     // navigate to the reminders flow
     cy.get('#navbar-notifications').click()
-    cy.get('a[href="/returns-notifications/reminders"]').click()
+    cy.get('a[href="/system/notices/setup/standard?noticeType=reminders"]').click()
 
-    // Send returns reminders
-    // just click continue. The page is for submitting licences to be excluded which this test doesn't cover
+    // Select the returns periods for the standard
+    // Select the first radio button and continue
+    cy.get('[type="radio"]').first().check()
     cy.get('form > .govuk-button').click()
 
     // Send returns reminders
     // spinner page appears here. Because this takes some time we need to amend the timeout in the next command
-    cy.get('h1').contains('Send returns reminders')
-    cy.get('.govuk-button').contains('Send', { timeout: 40000 }).click()
+    cy.get('h1').contains('Check the recipients')
+    cy.get('.govuk-button').contains('Send').click()
 
     // Return reminders sent
-    cy.get('.govuk-panel__title').should('contain', 'Return reminders sent')
-    cy.get('p > a').contains('View report').should('be.visible').click()
+    cy.get('.govuk-panel__title').should('contain', 'Returns reminders sent')
+    cy.get('p > a').contains('View notifications report').should('be.visible').click()
 
     // Returns: reminder
     // it can take some time to generate the report hence the extra timeout
-    cy.get('h1').contains('Notification report', { timeout: 40000 })
+    cy.get('h1').contains('Notification report')
   })
 })
