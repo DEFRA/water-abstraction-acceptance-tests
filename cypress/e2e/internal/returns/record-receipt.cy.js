@@ -44,25 +44,36 @@ describe('Record receipt for return (internal)', () => {
       cy.get('.govuk-table__row:nth-child(5) a').contains('9999990').click()
     })
 
-    // What do you want to do with this return?
-    // select record receipt
-    cy.get('#action-2').check()
-    cy.get('form > .govuk-button').click()
+    // Abstraction return
+    // submit return
+    cy.get('form > .govuk-button').first().click()
 
     // When was the return received?
-    // leave defaulted current date
+    // select today
+    cy.get('label.govuk-radios__label').contains('Today').click()
+    cy.get('form > .govuk-button').click()
+
+    // What do you want to do with this return?
+    // select Record receipt
+    cy.get('label.govuk-radios__label').contains('Record receipt').click()
     cy.get('form > .govuk-button').click()
 
     // Return received
-    cy.get('.panel').contains('Return received Licence number AT/CURR/MONTHLY/02').should('be.visible')
+    cy.get('.govuk-panel').contains('Return 9999990 received').should('be.visible')
+    cy.get('.govuk-panel').contains('AT/CURR/MONTHLY/02').should('be.visible')
+    cy.get('.govuk-panel').contains('Its all about the description').should('be.visible')
+    cy.get('.govuk-panel').contains('Spray Irrigation - Storage').should('be.visible')
 
     // View returns for the licence (this is a different view)
-    cy.get('p > a').contains('View returns for AT/CURR/MONTHLY/02').should('be.visible').click()
+    cy.get('div > a').contains('View returns for AT/CURR/MONTHLY/02').should('be.visible').click()
 
     // confirm we see the received return
     cy.get('.govuk-table > .govuk-table__body').within(() => {
-      cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', 'January 2019 to December 2019')
-      cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', 'received')
+      cy.get('.govuk-table__row:nth-child(1)')
+        .should('be.visible')
+        .and('contain.text', '1 January 2019 to 31 December 2019')
+
+      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', 'received')
     })
   })
 })
