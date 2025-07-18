@@ -69,11 +69,11 @@ describe('Record receipt for return (internal)', () => {
 
     // confirm we see the received return
     cy.get('.govuk-table > .govuk-table__body').within(() => {
-      cy.get('.govuk-table__row:nth-child(1)')
+      cy.get('.govuk-table__row:nth-child(5)')
         .should('be.visible')
         .and('contain.text', '1 January 2019 to 31 December 2019')
 
-      cy.get('.govuk-table__row:nth-child(1)').should('be.visible').and('contain.text', 'received')
+      cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', 'received')
     })
   })
 })
