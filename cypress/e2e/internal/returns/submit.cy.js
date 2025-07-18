@@ -44,24 +44,23 @@ describe('Submit a return (internal)', () => {
       cy.get('.govuk-table__row:nth-child(2) a').contains('9999992').click()
     })
 
-    // What do you want to do with this return?
-    // choose Enter and submit and continue
-    cy.get('input#action').check()
-    cy.get('form > .govuk-button').click()
+    // Abstraction return
+    // submit return
+    cy.get('form > .govuk-button').first().click()
 
     // When was the return received?
-    // choose Today and continue
-    cy.get('input#receivedDate').check()
+    // select today
+    cy.get('label.govuk-radios__label').contains('Today').click()
     cy.get('form > .govuk-button').click()
 
-    // Has water been abstracted in this return period?
-    // choose Yes and continue
-    cy.get('input#isNil').check()
+    // What do you want to do with this return?
+    // choose Enter and submit and continue
+    cy.get('label.govuk-radios__label').contains('Enter and submit').click()
     cy.get('form > .govuk-button').click()
 
     // How was this return reported?
     // choose Abstraction volumes and continue
-    cy.get('input#method-2').check()
+    cy.get('label.govuk-radios__label').contains('Abstraction Volumes').click()
     cy.get('form > .govuk-button').click()
 
     // Which units were used?
@@ -71,61 +70,35 @@ describe('Submit a return (internal)', () => {
 
     // Have meter details been provided?
     // choose No and continue
-    cy.get('input#meterDetailsProvided-2').check()
-    cy.get('form > .govuk-button').click()
-
-    // Did they use a meter or meters?
-    // choose No and continue
-    cy.get('input#meterUsed-2').check()
+    cy.get('label.govuk-radios__label').contains('No').click()
     cy.get('form > .govuk-button').click()
 
     // Is it a single volume?
     // choose Yes, enter 100 cubic metres and continue
-    cy.get('input#isSingleTotal').check()
-    cy.get('input#total').type('100')
+    cy.get('label.govuk-radios__label').contains('Yes').click()
+    cy.get('input#single-volume-quantity').type('100')
     cy.get('form > .govuk-button').click()
 
     // What period was used for this volume?
     // choose Default abstraction period and continue
-    cy.get('input#totalCustomDates').check()
+    cy.get('label.govuk-radios__label').contains('Default abstraction period').click()
     cy.get('form > .govuk-button').click()
 
     // Volumes
     // we leave the defaulted values of 50CM, which are 100CM split by the number of months in the abstraction
     // period (2) and continue
-    cy.get('form > .govuk-button').click()
-
-    // Confirm this return
-    // confirm we are seeing the details we entered then submit
-    cy.get('table > tbody').within(() => {
-      cy.get('tr:nth-child(1) > td:nth-child(1)').should('contain.text', 'January')
-      cy.get('tr:nth-child(1) > td:nth-child(2)').should('contain.text', '50')
-
-      cy.get('tr:nth-child(2) > td:nth-child(1)').should('contain.text', 'February')
-      cy.get('tr:nth-child(2) > td:nth-child(2)').should('contain.text', '50')
-
-      cy.get('tr:nth-child(3) > td:nth-child(1)').should('contain.text', 'Total volume of water abstracted')
-      cy.get('tr:nth-child(3) > td:nth-child(2)').should('contain.text', '100')
-    })
-    cy.get('form > .govuk-button').contains('Submit').click()
+    cy.get('div > .govuk-button').first().click()
 
     // Return submitted
     // confirm we see the success panel and then click the Mark for supplementary bill run button
-    cy.get('.panel').should('contain.text', 'Return submitted')
-    cy.get('.govuk-grid-column-two-thirds > .govuk-button').contains('Mark for supplementary bill run').click()
-
-    // You're about to mark this licence for the next supplementary bill run
-    // only options is to confirm or go back. We click the confirm button
-    cy.get('form > .govuk-button').contains('Confirm').click()
-
-    // You've marked this licence for the next supplementary bill run
-    // confirm we see the success panel and then click the link to return to the licence
-    cy.get('.govuk-panel').should('contain.text', "You've marked this licence for the next supplementary bill run")
-    cy.get('#main-content > div > div > p:nth-child(4) > a').click()
+    cy.get('.govuk-panel').should('contain.text', 'Return 9999992 submitted')
+    cy.get('.govuk-button').contains('Mark for supplementary bill run').click()
 
     // Summary
     // confirm the licence has been flagged for the next supplementary bill run for the old charge scheme
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next supplementary bill run for the old charge scheme.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+    )
   })
 })
