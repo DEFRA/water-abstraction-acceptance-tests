@@ -1,0 +1,20 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-BRACEEXPANSION-9789073:
+    - '*':
+        reason: Version jump is beyond scope for legacy
+        expires: 2025-09-05T14:35:35.291Z
+        created: 2025-08-06T14:35:35.293Z
+  SNYK-JS-INFLIGHT-6095116:
+    - '*':
+        reason: Version jump is beyond scope for legacy
+        expires: 2025-09-05T14:36:04.129Z
+        created: 2025-08-06T14:36:04.136Z
+  SNYK-JS-CROSSSPAWN-8303230:
+    - '*':
+        reason: No direct upgrade or patch
+        expires: 2025-09-05T14:36:55.741Z
+        created: 2025-08-06T14:36:55.744Z
+patch: {}
