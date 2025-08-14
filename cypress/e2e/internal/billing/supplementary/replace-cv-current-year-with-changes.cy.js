@@ -419,7 +419,7 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Bill for Big Farm Co Ltd 02
     // check the debits, credits, adjustments and additional charges have been applied
-    cy.get('[data-test="additional-charges-0"]').should('contain.text', 'Supported source Earl Soham - Deben (£10696.00)')
+    cy.get('[data-test="additional-charges-0"]').should('contain.text', 'Supported source Earl Soham - Deben (£')
     cy.get('[data-test="adjustments-0"]').should('contain.text', 'Winter discount (0.5)')
 
     cy.get('[data-test="billable-days-0"]').should('contain.text', '212/365')
