@@ -91,6 +91,6 @@ describe('Cancel an existing two-part tariff bill run (internal)', () => {
 
     // Bill runs
     // confirm we are back on the bill runs page
-    cy.get('.govuk-heading-xl').should('contain.text', 'Bill runs')
+    cy.get('.govuk-heading-l').should('contain.text', 'Bill runs')
   })
 })

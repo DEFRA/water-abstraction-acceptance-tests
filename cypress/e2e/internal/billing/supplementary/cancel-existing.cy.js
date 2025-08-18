@@ -95,7 +95,7 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
 
     // Bill runs
     // confirm we are back on the bill runs page
-    cy.get('.govuk-heading-xl').should('contain.text', 'Bill runs')
+    cy.get('.govuk-heading-l').should('contain.text', 'Bill runs')
 
     // -------------------------------------------------------------------------
     cy.log('Deleting the SROC supplementary bill run')
@@ -130,6 +130,6 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
 
     // Bill runs
     // confirm we are back on the bill runs page
-    cy.get('.govuk-heading-xl').should('contain.text', 'Bill runs')
+    cy.get('.govuk-heading-l').should('contain.text', 'Bill runs')
   })
 })

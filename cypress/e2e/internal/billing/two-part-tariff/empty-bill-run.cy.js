@@ -66,7 +66,7 @@ describe('Create a empty SROC two-part tariff bill run (internal)', () => {
 
     // Test Region two-part tariff bill run
     // quick test that the display is as expected and then click Cancel bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'empty')
+    cy.get('.govuk-tag').should('contain.text', 'empty')
     cy.get('[data-test="error-notification"]').should('exist')
     cy.get('[data-test="error-notification"]').should('contain.text', 'There are no licences ready for this bill run')
   })
