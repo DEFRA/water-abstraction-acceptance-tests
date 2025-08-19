@@ -128,9 +128,6 @@ describe('Submit summer and winter and all year historic correction using abstra
     cy.get('.govuk-heading-l').contains('How do you want to set up the requirements for returns?')
 
     // choose copy from existing requirements and continue
-<<<<<<< HEAD
-    cy.get('#method').check()
-=======
     cy.get('#method-2').check()
     cy.contains('Continue').click()
 
@@ -139,7 +136,6 @@ describe('Submit summer and winter and all year historic correction using abstra
 
     // choose a previous requirements for returns and continue
     cy.get('#existing').check()
->>>>>>> baa51a4 (Update return log historic changes tests (#172))
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
