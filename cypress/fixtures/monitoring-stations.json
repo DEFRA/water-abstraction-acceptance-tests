@@ -347,5 +347,17 @@
       "label": "Test Station Tagged",
       "gridReference": "ST1234567890"
     }
+  ],
+  "licenceMonitoringStations": [
+    {
+      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
+      "monitoringStationId": "3cfc9486-c3da-4a2e-b1be-020ce805be46",
+      "abstractionPeriodStartDay": 10,
+      "abstractionPeriodStartMonth": 10,
+      "abstractionPeriodEndDay": 11,
+      "abstractionPeriodEndMonth": 11,
+      "status": "resume",
+      "restrictionType": "stop"
+    }
   ]
 }
