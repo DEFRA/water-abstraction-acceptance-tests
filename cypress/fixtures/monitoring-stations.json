@@ -341,6 +341,11 @@
     {
       "label": "Test Station 500",
       "gridReference": "ST5820172718"
+    },
+    {
+      "id": "3cfc9486-c3da-4a2e-b1be-020ce805be46",
+      "label": "Test Station Tagged",
+      "gridReference": "ST1234567890"
     }
   ]
 }
