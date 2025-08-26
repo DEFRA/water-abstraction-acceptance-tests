@@ -70,7 +70,7 @@ describe('Cancel an existing annual bill run (internal)', () => {
 
     // Test Region annual bill run
     // quick test that the display is as expected and then click Send bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('[data-test="water-companies"]').should('exist')
     cy.get('[data-test="other-abstractors"]').should('not.exist')
     cy.get('.govuk-button').contains('Cancel bill run').click()

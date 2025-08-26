@@ -156,7 +156,7 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
@@ -191,7 +191,7 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'sent')
 
     // click the back link to go to bill runs
     cy.get('.govuk-back-link').click()
@@ -352,11 +352,11 @@ describe('Replace charge version in current financial year change the charge ref
     // Test Region supplementary bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm the bill run is as expected
-    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
@@ -395,7 +395,7 @@ describe('Replace charge version in current financial year change the charge ref
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'sent')
 
     // click the back link to go to bill runs
     cy.get('.govuk-back-link').click()

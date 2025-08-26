@@ -92,7 +92,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // quick test that the display is as expected and then click Send bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.presroc
       if (billingPeriodCount === 1) {
@@ -127,7 +127,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'sent')
 
     // click the back link to go to bill runs
     cy.get('.govuk-back-link').click()
@@ -153,7 +153,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
@@ -188,7 +188,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'sent')
 
     // click the back link to go to bill runs
     cy.get('.govuk-back-link').click()

@@ -75,7 +75,7 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
@@ -201,7 +201,7 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
