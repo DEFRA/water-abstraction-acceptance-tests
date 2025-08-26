@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Monitoring stations - Tag a licence (internal))', () => {
+describe('Monitoring stations - Tag a licence (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('monitoring-stations.json').then((fixture) => {

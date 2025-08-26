@@ -357,6 +357,7 @@
     },
     {
       "id": "3cfc9486-c3da-4a2e-b1be-020ce805be46",
+      "catchmentName": "Test Catchment",
       "label": "Test Station Tagged",
       "gridReference": "ST1234567890"
     }
