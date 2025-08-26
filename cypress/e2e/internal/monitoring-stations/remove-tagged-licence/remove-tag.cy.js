@@ -39,7 +39,7 @@ describe('Monitoring stations - Remove a tag (internal)', () => {
     // View the tag for the linked licence
     cy.get('[data-test="action-0"] > .govuk-link').contains('View').click()
 
-    //Confirm we are viewing the tag details
+    // Confirm we are viewing the tag details
     cy.get('.govuk-caption-l').contains('Test Station Tagged')
     cy.get('.govuk-heading-xl').contains('Details for AT/CURR/DAILY/01')
     cy.get('.govuk-summary-card__title').contains('Stop tag')
