@@ -327,6 +327,19 @@
       "externalId": "6:1235"
     }
   ],
+  "licenceVersionPurposeConditions": [
+    {
+      "licenceVersionPurposeId": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
+      "licenceVersionPurposeConditionTypeId": {
+        "schema": "public",
+        "table": "licenceVersionPurposeConditionTypes",
+        "lookup": "subcode",
+        "value": "LEV",
+        "select": "id"
+      },
+      "notes": "Test condition notes"
+    }
+  ],
   "licenceVersionPurposePoints": [
     {
       "licenceVersionPurposeId": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
