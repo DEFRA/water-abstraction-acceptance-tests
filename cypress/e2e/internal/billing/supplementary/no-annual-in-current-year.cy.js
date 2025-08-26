@@ -85,7 +85,7 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Test Region supplementary bill run
     // check the the financial end year is not the current year
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {

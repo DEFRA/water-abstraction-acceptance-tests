@@ -80,7 +80,7 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
@@ -115,7 +115,7 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'sent')
 
     // click the back link to go to bill runs
     cy.get('.govuk-back-link').click()
@@ -247,7 +247,7 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Test Region supplementary bill run
     // check the details before sending the bill run
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
       cy.get('[data-test="meta-data-created"]').should('contain.text', formattedCurrentDate)
     })
@@ -295,7 +295,7 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Test Region supplementary bill run
     // confirm we see it is now SENT
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'sent')
 
     // click the back link to go to bill runs
     cy.get('.govuk-back-link').click()
