@@ -1,6 +1,6 @@
 'use strict'
 
-describe('mBOD abstraction alert journey (internal)', () => {
+describe('Monitoring stations - Tag a licence (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('monitoring-stations.json').then((fixture) => {
@@ -9,7 +9,7 @@ describe('mBOD abstraction alert journey (internal)', () => {
     cy.fixture('users.json').its('environmentOfficer').as('userEmail')
   })
 
-  it('tags a licence to a monitoring station, sends a warning and then removes the tag', () => {
+  it('tags a licence linked to a condition, but the user chooses to enter the abstraction period manually', () => {
     cy.visit('/')
 
     //  Enter the user name and Password
