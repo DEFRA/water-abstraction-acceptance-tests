@@ -12,16 +12,16 @@ describe('Monitoring stations - Tag a licence (internal)', () => {
   it('tags a licence then changes the type from "Stop" to "Reduce"', () => {
     cy.visit('/')
 
-    //  Enter the user name and Password
+    // Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
       cy.get('input#email').type(userEmail)
     })
     cy.get('input#password').type(Cypress.env('defaultPassword'))
 
-    //  Click Sign in Button
+    // Click Sign in Button
     cy.get('.govuk-button.govuk-button--start').click()
 
-    //  Assert the user signed in and we're on the search page
+    // Assert the user signed in and we're on the search page
     cy.contains('Search')
 
     // Search for the monitoring station and select it from the results
