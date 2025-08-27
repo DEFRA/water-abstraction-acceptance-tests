@@ -31,7 +31,7 @@ describe('Monitoring stations - Tag a licence (internal)', () => {
     cy.get('.govuk-table__row').contains('Test Station 500').click()
 
     // Confirm we are on the monitoring station page
-    cy.get('.govuk-heading-xl').contains('Test Station 500').should('be.visible')
+    cy.get('.govuk-heading-xl').should('have.text', 'Test Station 500')
     cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST5820172718')
     cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
     cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
@@ -85,14 +85,14 @@ describe('Monitoring stations - Tag a licence (internal)', () => {
 
     // Confirm we are back on the monitoring station page and the licence is tagged
     cy.get('.govuk-notification-banner__heading').contains('Tag for licence AT/CURR/WEEKLY/01 added')
-    cy.get('.govuk-heading-xl').contains('Test Station 500')
-    cy.get('[data-test="licence-ref-0"]').contains('AT/CURR/WEEKLY/01')
-    cy.get('[data-test="abstraction-period-0"]').contains('10 October to 11 November')
-    cy.get('[data-test="restriction-0"]').contains('Stop or reduce')
-    cy.get('[data-test="threshold-0"]').contains('123mBOD')
+    cy.get('.govuk-heading-xl').should('have.text', 'Test Station 500')
+    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/CURR/WEEKLY/01')
+    cy.get('[data-test="abstraction-period-0"]').should('have.text', '10 October to 11 November')
+    cy.get('[data-test="restriction-0"]').should('have.text', 'Stop or reduce')
+    cy.get('[data-test="threshold-0"]').should('have.text', '123mBOD')
     cy.get('[data-test="alert-0"]').should('be.empty')
     cy.get('[data-test="alert-date-0"]').should('be.empty')
-    cy.get('[data-test="action-0"]').contains('View').should('be.visible')
+    cy.get('[data-test="action-0"]').should('have.text', 'View')
 
     // Confirm the licence is linked to the monitoring station in the licence summary
     cy.get('[data-test="licence-ref-0"]').contains('AT/CURR/WEEKLY/01').click()

@@ -31,7 +31,7 @@ describe('Monitoring stations - Tag a licence (internal)', () => {
     cy.get('.govuk-table__row').contains('Test Station 500').click()
 
     // Confirm we are on the monitoring station page
-    cy.get('.govuk-heading-xl').contains('Test Station 500').should('be.visible')
+    cy.get('.govuk-heading-xl').should('have.text', 'Test Station 500')
     cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST5820172718')
     cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
     cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
@@ -69,15 +69,15 @@ describe('Monitoring stations - Tag a licence (internal)', () => {
     cy.get('.govuk-button').contains('Confirm').click()
 
     // Confirm we are back on the monitoring station page and the licence is tagged
-    cy.get('.govuk-notification-banner__heading').contains('Tag for licence AT/CURR/DAILY/01 added')
-    cy.get('.govuk-heading-xl').contains('Test Station 500')
-    cy.get('[data-test="licence-ref-0"]').contains('AT/CURR/DAILY/01')
-    cy.get('[data-test="abstraction-period-0"]').contains('1 April to 31 March')
-    cy.get('[data-test="restriction-0"]').contains('Stop')
-    cy.get('[data-test="threshold-0"]').contains('123mBOD')
+    cy.get('.govuk-notification-banner__heading').should('have.text', 'Tag for licence AT/CURR/DAILY/01 added')
+    cy.get('.govuk-heading-xl').should('have.text', 'Test Station 500')
+    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/CURR/DAILY/01')
+    cy.get('[data-test="abstraction-period-0"]').should('have.text', '1 April to 31 March')
+    cy.get('[data-test="restriction-0"]').should('have.text', 'Stop')
+    cy.get('[data-test="threshold-0"]').should('have.text', '123mBOD')
     cy.get('[data-test="alert-0"]').should('be.empty')
     cy.get('[data-test="alert-date-0"]').should('be.empty')
-    cy.get('[data-test="action-0"]').contains('View').should('be.visible')
+    cy.get('[data-test="action-0"]').should('have.text', 'View')
 
     // Confirm the licence is linked to the monitoring station in the licence summary
     cy.get('[data-test="licence-ref-0"]').contains('AT/CURR/DAILY/01').click()
