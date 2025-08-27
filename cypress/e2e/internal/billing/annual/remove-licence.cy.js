@@ -79,7 +79,7 @@ describe('Remove bill from annual bill run (internal)', () => {
 
     // Test Region annual bill run
     // quick test that the display is as expected and then click view bill link
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'ready')
     cy.get('[data-test="water-companies"]').should('exist')
     cy.get('[data-test="other-abstractors"]').should('not.exist')
     cy.get('[data-test="action-3"] > .govuk-link').click()
@@ -106,7 +106,7 @@ describe('Remove bill from annual bill run (internal)', () => {
     // Test Region annual bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can confirm we're down to 3 bills
-    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
     cy.get('[data-test="water-companies"]').should('exist')
     cy.get('[data-test="other-abstractors"]').should('not.exist')
     cy.get('[data-test="water-companies"] > tbody > tr').should('have.length', 3)
