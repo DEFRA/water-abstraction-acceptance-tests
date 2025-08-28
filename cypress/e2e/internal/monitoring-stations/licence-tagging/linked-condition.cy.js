@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Monitoring stations - Tag a licence (internal)', () => {
+describe('Tag a licence linked to a condition. The abstraction period is derived from the condition (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('monitoring-stations.json').then((fixture) => {

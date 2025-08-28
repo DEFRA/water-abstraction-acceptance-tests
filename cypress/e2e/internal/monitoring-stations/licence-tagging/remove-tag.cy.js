@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Monitoring stations - Remove a tag (internal)', () => {
+describe('Attempt to remove a tag from a monitoring station (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('monitoring-stations.json').then((fixture) => {
