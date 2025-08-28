@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Monitoring stations - Abstraction alerts (internal)', () => {
+describe('Attempt set up of abstraction alert with no thresholds (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('monitoring-stations.json').then((fixture) => {
