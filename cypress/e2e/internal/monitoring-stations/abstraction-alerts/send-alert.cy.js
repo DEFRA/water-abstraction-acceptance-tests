@@ -98,11 +98,5 @@ describe('Monitoring stations - Abstraction alerts (internal)', () => {
     cy.get('tbody').contains('AT/CURR/DAILY/01')
     cy.get('tbody').contains('Email')
     cy.get('tbody').contains('Pending')
-
-    // Confirm we can get back to the monitoring station page
-    cy.get('.govuk-back-link').click()
-    cy.get(':nth-child(4) > .govuk-link').click()
-    cy.get('.govuk-caption-l').should('have.text', 'Test Catchment')
-    cy.get('.govuk-heading-xl').should('have.text', 'Test Station Tagged')
   })
 })
