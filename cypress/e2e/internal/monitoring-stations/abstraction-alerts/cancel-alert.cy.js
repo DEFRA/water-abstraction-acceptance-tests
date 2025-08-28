@@ -44,7 +44,7 @@ describe('Monitoring stations - Abstraction alerts (internal)', () => {
     cy.get('.govuk-caption-l').should('have.text', 'Test Station Tagged')
     cy.get('.govuk-fieldset__heading').contains('Select the type of alert you need to send')
 
-    // Select the warning alert type and continue
+    // Select the stop alert type and continue
     cy.get('[type="radio"]').check('stop')
     cy.get('.govuk-button').contains('Continue').click()
 
