@@ -1,8 +1,34 @@
 'use strict'
 
+import licence from '../../../support/fixture-builder/licence.js'
+import points from '../../../support/fixture-builder/points.js'
+import purposes from '../../../support/fixture-builder/purposes.js'
+import returnLogs from '../../../support/fixture-builder/return-logs.js'
+import returnRequirements from '../../../support/fixture-builder/return-requirements.js'
+import returnRequirementPoints from '../../../support/fixture-builder/return-requirement-points.js'
+import returnVersion from '../../../support/fixture-builder/return-version.js'
+
+const dataModel = {
+  ...licence(),
+  ...points(2),
+  ...purposes(2),
+  ...returnVersion(),
+  ...returnRequirements(2),
+  ...returnRequirementPoints(2),
+  ...returnLogs(4)
+}
+
 describe('Submit summer and winter and all year historic correction using abstraction data', () => {
   beforeEach(() => {
     cy.tearDown()
+
+    // Get the user email and login as the user
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
+    })
 
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31.
@@ -12,64 +38,42 @@ describe('Submit summer and winter and all year historic correction using abstra
       const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
       const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1 }
 
-      cy.fixture('return-logs-historic-02.json').then((fixture) => {
-        fixture.returnLogs[0].id = `v1:9:AT/CURR/DAILY/01:9999990:${winter.start}-04-01:${winter.end}-03-31`
-        fixture.returnLogs[0].dueDate = `${winter.end}-04-28`
-        fixture.returnLogs[0].endDate = `${winter.end}-03-31`
-        fixture.returnLogs[0].startDate = `${winter.start}-04-01`
-        fixture.returnLogs[0].returnCycleId.value = `${winter.start}-04-01`
+      dataModel.returnLogs[0].id = `v1:9:AT/CURR/DAILY/01:9999990:${winter.start}-04-01:${winter.end}-03-31`
+      dataModel.returnLogs[0].dueDate = `${winter.end}-04-28`
+      dataModel.returnLogs[0].endDate = `${winter.end}-03-31`
+      dataModel.returnLogs[0].metadata.isSummer = false
+      dataModel.returnLogs[0].startDate = `${winter.start}-04-01`
+      dataModel.returnLogs[0].status = 'due'
+      dataModel.returnLogs[0].returnCycleId.value = `${winter.start}-04-01`
 
-        fixture.returnLogs[1].id = `v1:9:AT/CURR/DAILY/01:9999991:${summer.start}-11-01:${summer.end}-10-31`
-        fixture.returnLogs[1].dueDate = `${summer.end}-11-28`
-        fixture.returnLogs[1].endDate = `${summer.end}-10-31`
-        fixture.returnLogs[1].startDate = `${summer.start}-11-01`
-        fixture.returnLogs[1].returnCycleId.value = `${summer.start}-11-01`
+      dataModel.returnLogs[1].id = `v1:9:AT/CURR/DAILY/01:9999991:${summer.start}-11-01:${summer.end}-10-31`
+      dataModel.returnLogs[1].dueDate = `${summer.end}-11-28`
+      dataModel.returnLogs[1].endDate = `${summer.end}-10-31`
+      dataModel.returnLogs[1].metadata.isSummer = true
+      dataModel.returnLogs[1].startDate = `${summer.start}-11-01`
+      dataModel.returnLogs[1].status = 'due'
+      dataModel.returnLogs[1].returnCycleId.value = `${summer.start}-11-01`
 
-        fixture.returnLogs[2].id = `v1:9:AT/CURR/DAILY/01:9999990:${winter.start - 1}-04-01:${winter.end - 1}-03-31`
-        fixture.returnLogs[2].dueDate = `${winter.end - 1}-04-28`
-        fixture.returnLogs[2].endDate = `${winter.end - 1}-03-31`
-        fixture.returnLogs[2].startDate = `${winter.start - 1}-04-01`
-        fixture.returnLogs[2].returnCycleId.value = `${winter.start - 1}-04-01`
+      dataModel.returnLogs[2].id = `v1:9:AT/CURR/DAILY/01:9999990:${winter.start - 1}-04-01:${winter.end - 1}-03-31`
+      dataModel.returnLogs[2].dueDate = `${winter.end - 1}-04-28`
+      dataModel.returnLogs[2].endDate = `${winter.end - 1}-03-31`
+      dataModel.returnLogs[2].metadata.isSummer = false
+      dataModel.returnLogs[2].startDate = `${winter.start - 1}-04-01`
+      dataModel.returnLogs[2].returnCycleId.value = `${winter.start - 1}-04-01`
 
-        fixture.returnLogs[3].id = `v1:9:AT/CURR/DAILY/01:9999991:${summer.start - 1}-11-01:${summer.end - 1}-10-31`
-        fixture.returnLogs[3].dueDate = `${summer.end - 1}-11-28`
-        fixture.returnLogs[3].endDate = `${summer.end - 1}-10-31`
-        fixture.returnLogs[3].startDate = `${summer.start - 1}-11-01`
-        fixture.returnLogs[3].returnCycleId.value = `${summer.start - 1}-11-01`
+      dataModel.returnLogs[3].id = `v1:9:AT/CURR/DAILY/01:9999991:${summer.start - 1}-11-01:${summer.end - 1}-10-31`
+      dataModel.returnLogs[3].dueDate = `${summer.end - 1}-11-28`
+      dataModel.returnLogs[3].endDate = `${summer.end - 1}-10-31`
+      dataModel.returnLogs[3].metadata.isSummer = true
+      dataModel.returnLogs[3].startDate = `${summer.start - 1}-11-01`
+      dataModel.returnLogs[3].returnCycleId.value = `${summer.start - 1}-11-01`
 
-        cy.load(fixture)
-      })
+      cy.load(dataModel)
     })
-
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates a return requirement using abstraction data and approves the requirement', () => {
-    cy.visit('/')
-
-    // enter the user name and Password
-    cy.get('@userEmail').then((userEmail) => {
-      cy.get('#email').type(userEmail)
-    })
-
-    cy.get('#password').type(Cypress.env('defaultPassword'))
-
-    // click Sign in Button
-    cy.get('form > .govuk-button').click()
-
-    // assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // search for a licence
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row > :nth-child(1) > a').click()
-
-    // confirm we are on the licence page
-    cy.contains('AT/CURR/DAILY/01')
-
-    // click returns tab
-    cy.contains('Returns').click()
+    cy.visit(`/system/licences/${dataModel.licences[0].id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')
@@ -164,14 +168,14 @@ describe('Submit summer and winter and all year historic correction using abstra
 
         cy.get('[data-test="return-due-date-1"]').contains(data.text)
         cy.get('[data-test="return-status-1"] > .govuk-tag').contains(data.label)
-
-        cy.get('[data-test="return-due-date-2"]').contains(data.text)
-        cy.get('[data-test="return-status-2"] > .govuk-tag').contains(data.label)
       })
 
       cy.returnLogDueData(summer.end, false).then((data) => {
+        cy.get('[data-test="return-due-date-2"]').contains(data.text)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('void')
+
         cy.get('[data-test="return-due-date-3"]').contains(data.text)
-        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains(data.label)
 
         cy.get('[data-test="return-due-date-4"]').contains(data.text)
         cy.get('[data-test="return-status-4"] > .govuk-tag').contains(data.label)

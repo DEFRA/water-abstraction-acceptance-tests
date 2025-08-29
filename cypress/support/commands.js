@@ -220,6 +220,17 @@ Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
 
 Cypress.Commands.add('returnLogDueData', (yearToBaseItOn, winter) => {
   const dueDate = winter ? new Date(`${yearToBaseItOn}-04-28`) : new Date(`${yearToBaseItOn}-11-28`)
+
+  return _dueDateObject(dueDate)
+})
+
+Cypress.Commands.add('quarterlyReturnLogDueData', (date) => {
+  const dueDate = new Date(date)
+
+  return _dueDateObject(dueDate)
+})
+
+function _dueDateObject(dueDate) {
   const text = dueDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
 
   const today = new Date()
@@ -240,4 +251,15 @@ Cypress.Commands.add('returnLogDueData', (yearToBaseItOn, winter) => {
 
   // Else the return log is due
   return cy.wrap({ label: 'due', text })
-})
+}
+
+Cypress.Commands.add('programmaticLogin', (overrides = {}) => {
+  const email = overrides.email || Cypress.env('USERNAME');
+  const password = overrides.password || Cypress.env('defaultPassword');
+
+    return cy.request({
+      method: 'POST',
+      url: '/signin',
+      body: { email, password }
+    })
+});

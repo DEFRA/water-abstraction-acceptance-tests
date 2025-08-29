@@ -1,285 +1,5 @@
-{
-  "permitLicences": [
-    {
-      "licenceRef": "AT/CURR/DAILY/01",
-      "startDate": "2020-01-01",
-      "metadata": {
-        "source": "acceptance-test-setup"
-      }
-    }
-  ],
-  "licenceEntities": [
-    {
-      "id": "1742895f-5e18-41e0-94bd-d5c9845cb558",
-      "name": "external@example.com",
-      "type": "individual"
-    },
-    {
-      "id": "e86c312b-222d-404f-ae08-eb90a80bec18",
-      "name": "Big Farm Co Ltd",
-      "type": "company"
-    }
-  ],
-  "licenceEntityRoles": [
-    {
-      "id": "f99998c5-0676-43c3-bf6c-41b1103111bf",
-      "licenceEntityId": "1742895f-5e18-41e0-94bd-d5c9845cb558",
-      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18",
-      "role": "primary_user",
-      "createdBy": "acceptance-test-setup"
-    }
-  ],
-  "licenceDocumentHeaders": [
-    {
-      "id": "c86c9d49-e06f-4792-8307-8e2c38aa6838",
-      "regimeEntityId": {
-        "schema": "crm",
-        "table": "entity",
-        "lookup": "entityType",
-        "value": "regime",
-        "select": "entityId"
-      },
-      "licenceRef": "AT/CURR/DAILY/01",
-      "naldId": {
-        "schema": "public",
-        "table": "permitLicences",
-        "lookup": "licenceRef",
-        "value": "AT/CURR/DAILY/01",
-        "select": "id"
-      },
-      "metadata": {
-        "Name": "cupcake factory",
-        "dataType": "acceptance-test-setup",
-        "IsCurrent": true
-      },
-      "licence_name": "the daily cupcake licence",
-      "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
-    }
-  ],
-  "companies": [
-    {
-      "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "name": "Big Farm Co Ltd",
-      "type": "organisation"
-    }
-  ],
-  "addresses": [
-    {
-      "id": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "address1": "Big Farm",
-      "address2": "Windy road",
-      "address3": "Buttercup meadow",
-      "address4": "Buttercup Village",
-      "address5": "Testington",
-      "address6": "Testingshire",
-      "postcode": "TT1 1TT",
-      "country": "UK",
-      "dataSource": "nald"
-    }
-  ],
-  "companyAddresses": [
-    {
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "startDate": "2008-04-01",
-      "licenceRoleId": {
-        "schema": "crm_v2",
-        "table": "roles",
-        "lookup": "name",
-        "value": "billing",
-        "select": "roleId"
-      }
-    }
-  ],
-  "contacts": [
-    {
-      "id": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
-      "salutation": "Mr",
-      "firstName": "John",
-      "lastName": "Testerson",
-      "middleInitials": "J",
-      "contactType": "person",
-      "dataSource": "nald"
-    }
-  ],
-  "companyContacts": [
-    {
-      "id": "e01e7717-719f-47ed-8431-362f6b4de422",
-      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "licenceRoleId": {
-        "schema": "crm_v2",
-        "table": "roles",
-        "lookup": "name",
-        "value": "licenceHolder",
-        "select": "roleId"
-      },
-      "startDate": "2018-01-01"
-    }
-  ],
-  "licenceDocuments": [
-    {
-      "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
-      "licenceRef": "AT/CURR/DAILY/01",
-      "startDate": "2018-01-01"
-    }
-  ],
-  "licenceDocumentRoles": [
-    {
-      "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
-      "licenceRoleId": {
-        "schema": "public",
-        "table": "licenceRoles",
-        "lookup": "name",
-        "value": "licenceHolder",
-        "select": "id"
-      },
-      "startDate": "2018-01-01",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
-    }
-  ],
-  "licences": [
-    {
-      "id": "8717da0e-28d4-4833-8e32-1da050b60055",
-      "licenceRef": "AT/CURR/DAILY/01",
-      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
-      "regions": {
-        "historicalAreaCode": "SAAR",
-        "regionalChargeArea": "Southern"
-      },
-      "startDate": "2020-01-01",
-      "waterUndertaker": true
-    }
-  ],
-  "licenceVersions": [
-    {
-      "id": "7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b",
-      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055",
-      "issue": 1,
-      "increment": 0,
-      "status": "current",
-      "startDate": "2020-01-01",
-      "externalId": "6:1234:1:0"
-    }
-  ],
-  "points": [
-    {
-      "id": "1cb602f8-6a01-4435-96b0-541e03f460da",
-      "description": "Example point 1",
-      "ngr1": "TQ 1234 5678",
-      "externalId": "9:9000031",
-      "sourceId": {
-        "schema": "public",
-        "table": "sources",
-        "lookup": "legacyId",
-        "value": "S",
-        "select": "id"
-      }
-    }
-  ],
-  "licenceVersionPurposes": [
-    {
-      "id": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
-      "licenceVersionId": "7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b",
-      "primaryPurposeId": {
-        "schema": "water",
-        "table": "purposesPrimary",
-        "lookup": "legacyId",
-        "value": "A",
-        "select": "purposePrimaryId"
-      },
-      "secondaryPurposeId": {
-        "schema": "water",
-        "table": "purposesSecondary",
-        "lookup": "legacyId",
-        "value": "AGR",
-        "select": "purposeSecondaryId"
-      },
-      "purposeId": {
-        "schema": "public",
-        "table": "purposes",
-        "lookup": "legacyId",
-        "value": "140",
-        "select": "id"
-      },
-      "abstractionPeriodStartDay": 1,
-      "abstractionPeriodStartMonth": 4,
-      "abstractionPeriodEndDay": 31,
-      "abstractionPeriodEndMonth": 3,
-      "annualQuantity": 1554,
-      "externalId": "6:1234"
-    }
-  ],
-  "licenceVersionPurposePoints": [
-    {
-      "licenceVersionPurposeId": "f264184b-22a7-4e26-bd90-d5738eb2e07e",
-      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
-    }
-  ],
-  "returnVersions": [
-    {
-      "id": "bcd4e8c7-16ed-419c-915d-d8f184e45ed5",
-      "version": 101,
-      "startDate": "2020-01-01",
-      "endDate": null,
-      "status": "current",
-      "externalId": "6:9999990",
-      "licenceId": "8717da0e-28d4-4833-8e32-1da050b60055"
-    }
-  ],
-  "returnRequirements": [
-    {
-      "id": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
-      "returnsFrequency": "month",
-      "returnVersionId": "bcd4e8c7-16ed-419c-915d-d8f184e45ed5",
-      "summer": false,
-      "upload": false,
-      "abstractionPeriodStartDay": 1,
-      "abstractionPeriodStartMonth": 1,
-      "abstractionPeriodEndDay": 31,
-      "abstractionPeriodEndMonth": 12,
-      "siteDescription": "WELL POINTS AT MARS",
-      "legacyId": 9999990,
-      "externalId": "9:9999990"
-    }
-  ],
-  "returnRequirementPoints": [
-    {
-      "returnRequirementId": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
-      "pointId": "1cb602f8-6a01-4435-96b0-541e03f460da"
-    }
-  ],
-  "returnRequirementPurposes": [
-    {
-      "returnRequirementId": "c33b9e4d-4d0f-4686-b1ac-6449ab014fd5",
-      "externalId": "6:9999990:A:AGR:420",
-      "alias": "SPRAY IRRIGATION STORAGE",
-      "primaryPurposeId": {
-        "schema": "water",
-        "table": "purposesPrimary",
-        "lookup": "legacyId",
-        "value": "A",
-        "select": "purposePrimaryId"
-      },
-      "secondaryPurposeId": {
-        "schema": "water",
-        "table": "purposesSecondary",
-        "lookup": "legacyId",
-        "value": "AGR",
-        "select": "purposeSecondaryId"
-      },
-      "purposeId": {
-        "schema": "public",
-        "table": "purposes",
-        "lookup": "legacyId",
-        "value": "140",
-        "select": "id"
-      }
-    }
-  ],
-  "returnLogs": [
+export default function returnLogs(howMany = 5) {
+  const returnLogs = [
     {
       "id": "v1:9:AT/CURR/DAILY/01:9999990:2020-01-01:2020-03-31",
       "returnReference": "9999990",
@@ -529,7 +249,7 @@
       }
     },
     {
-      "id": "v1:9:AT/CURR/DAILY/01:9999990:2023-04-01:2024-03-31",
+      "id": "v1:9:AT/CURR/DAILY/01:9999990:2024-04-01:2025-03-31",
       "returnReference": "9999990",
       "licenceRef": "AT/CURR/DAILY/01",
       "metadata": {
@@ -577,18 +297,84 @@
         "isTwoPartTariff": true
       },
       "returnsFrequency": "month",
-      "startDate": "2023-04-01",
-      "endDate": "2024-03-31",
-      "dueDate": "2024-04-28",
+      "startDate": "2024-04-01",
+      "endDate": "2025-03-31",
+      "dueDate": "2025-04-28",
       "status": "completed",
       "underQuery": false,
       "returnCycleId": {
         "schema": "returns",
         "table": "returnCycles",
         "lookup": "startDate",
-        "value": "2023-04-01",
+        "value": "2024-04-01",
+        "select": "returnCycleId"
+      }
+    },
+    {
+      "id": "v1:9:AT/CURR/DAILY/01:9999990:2025-04-01:2026-03-31",
+      "returnReference": "9999990",
+      "licenceRef": "AT/CURR/DAILY/01",
+      "metadata": {
+        "nald": {
+            "areaCode": "AREA",
+            "formatId": 9999990,
+            "regionCode": 9,
+            "periodEndDay": "31",
+            "periodEndMonth": "12",
+            "periodStartDay": "1",
+            "periodStartMonth": "1"
+        },
+        "points": [
+            {
+              "name": "The Name of this",
+              "ngr1": "TG 123 456",
+              "ngr2": null,
+              "ngr3": null,
+              "ngr4": null
+            }
+        ],
+        "isFinal": false,
+        "version": 1,
+        "isSummer": false,
+        "isUpload": false,
+        "purposes": [
+            {
+              "alias": "SPRAY IRRIGATION STORAGE",
+              "primary": {
+                  "code": "A",
+                  "description": "Agriculture"
+              },
+              "secondary": {
+                  "code": "AGR",
+                  "description": "General Agriculture"
+              },
+              "tertiary": {
+                  "code": "420",
+                  "description": "Spray Irrigation - Storage"
+              }
+            }
+        ],
+        "isCurrent": true,
+        "description": "Its all about the description",
+        "isTwoPartTariff": true
+      },
+      "returnsFrequency": "month",
+      "startDate": "2025-04-01",
+      "endDate": "2026-03-31",
+      "dueDate": "2026-04-28",
+      "status": "completed",
+      "underQuery": false,
+      "returnCycleId": {
+        "schema": "returns",
+        "table": "returnCycles",
+        "lookup": "startDate",
+        "value": "2025-04-01",
         "select": "returnCycleId"
       }
     }
   ]
+
+  return {
+    "returnLogs": JSON.parse(JSON.stringify(returnLogs.slice(0, howMany)))
+  }
 }
