@@ -127,7 +127,7 @@ describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
     // Test Region two-part tariff bill run
     // we have to wait till the bill run has finished generating. The thing we wait on is the READY label. Once that
     // is present we can check the rest of the details before confirming the bill run
-    cy.get('.govuk-body > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
+    cy.get('#main-content > p > .govuk-tag', { timeout: 20000 }).should('contain.text', 'ready')
     cy.get('[data-test="bill-total"]').should('contain.text', '£660.24')
     cy.get('[data-test="bills-count"]').should('contain.text', '1 Two-part tariff winter and all year bill')
     cy.get('.govuk-button').contains('Send bill run').click()
@@ -154,7 +154,7 @@ describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
 
     // Test Region two-part tariff bill run
     // confirm we see it is now SENT
-    cy.get('.govuk-body > .govuk-tag').should('contain.text', 'sent')
+    cy.get('#main-content > p > .govuk-tag').should('contain.text', 'sent')
 
     // click the back link to go to bill runs
     cy.get('.govuk-back-link').click()
