@@ -90,6 +90,7 @@ describe('Send an abstraction alert (internal)', () => {
     cy.get('.govuk-panel__body').contains('Your reference number is WAA-')
 
     // View the notifications report and check the data is correct
+    cy.wait(1000) // Pause for 1 second to ensure the DB is updated with the new notification
     cy.get('div.govuk-body > :nth-child(2) > .govuk-link').click()
     cy.get('.govuk-caption-xl').should('have.text', 'Notification report')
     cy.get('.govuk-heading-xl').should('have.text', 'Water abstraction alert')
