@@ -14,7 +14,7 @@ const dataModel = {
   ...purposes(),
   ...returnVersion(),
   ...returnRequirements(),
-  ...returnRequirementPoints()
+  ...returnRequirementPoints(),
   ...returnLogs(4)
 }
 

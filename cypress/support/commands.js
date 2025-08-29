@@ -51,7 +51,9 @@ Cypress.Commands.add('setUp', (testKey) => {
       authorization: `Bearer ${Cypress.env('jwtToken')}`
     },
     timeout: 60000
-  }).its('status', { log: false }).should('equal', 204)
+  })
+    .its('status', { log: false })
+    .should('equal', 204)
 })
 
 Cypress.Commands.add('tearDown', () => {
@@ -62,7 +64,9 @@ Cypress.Commands.add('tearDown', () => {
     log: false,
     method: 'POST',
     timeout: 60000
-  }).its('status', { log: false }).should('equal', 204)
+  })
+    .its('status', { log: false })
+    .should('equal', 204)
 })
 
 Cypress.Commands.add('lastNotification', (email) => {
@@ -81,7 +85,7 @@ Cypress.Commands.add('extractNotificationLink', (body, linkType, url) => {
   cy.log(`Extracting ${linkType} link from Notify email`)
 
   let link = body.data[0].personalisation[linkType]
-  link = link.replace((/^https?:\/\/[^/]+\//g).exec(link), url + '/')
+  link = link.replace(/^https?:\/\/[^/]+\//g.exec(link), url + '/')
 
   return cy.wrap(link)
 })
@@ -122,8 +126,18 @@ Cypress.Commands.add('dayMonthYearFormattedDate', (date) => {
   const day = date.getDate()
 
   const monthStrings = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ]
   const month = monthStrings[date.getMonth()]
 
@@ -178,7 +192,7 @@ Cypress.Commands.add('currentFinancialYear', (day = 31, month = 3, yearAdjuster 
     endYear = currentYear + yearAdjuster
   } else {
     // For example, if currentDate was 2022-06-15 it would fall in financial year 2022-04-01 to 2023-03-31
-    endYear = (currentYear + 1) + yearAdjuster
+    endYear = currentYear + 1 + yearAdjuster
   }
 
   // Rather than just return the start and end dates, we return them as objects with the both the dates and the date
@@ -212,7 +226,7 @@ Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
   }
 
   const earliestPossibleFinancialYear = Math.max(2023, financialYearToBaseItOn - 5)
-  const srocBillingPeriods = Math.min((financialYearToBaseItOn - earliestPossibleFinancialYear) + 1, 5)
+  const srocBillingPeriods = Math.min(financialYearToBaseItOn - earliestPossibleFinancialYear + 1, 5)
   const presrocBillingPeriods = 6 - srocBillingPeriods
 
   return cy.wrap({ presroc: presrocBillingPeriods, sroc: srocBillingPeriods })
@@ -230,7 +244,7 @@ Cypress.Commands.add('quarterlyReturnLogDueData', (date) => {
   return _dueDateObject(dueDate)
 })
 
-function _dueDateObject(dueDate) {
+function _dueDateObject (dueDate) {
   const text = dueDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
 
   const today = new Date()
@@ -254,12 +268,12 @@ function _dueDateObject(dueDate) {
 }
 
 Cypress.Commands.add('programmaticLogin', (overrides = {}) => {
-  const email = overrides.email || Cypress.env('USERNAME');
-  const password = overrides.password || Cypress.env('defaultPassword');
+  const email = overrides.email || Cypress.env('USERNAME')
+  const password = overrides.password || Cypress.env('defaultPassword')
 
-    return cy.request({
-      method: 'POST',
-      url: '/signin',
-      body: { email, password }
-    })
-});
+  return cy.request({
+    method: 'POST',
+    url: '/signin',
+    body: { email, password }
+  })
+})
