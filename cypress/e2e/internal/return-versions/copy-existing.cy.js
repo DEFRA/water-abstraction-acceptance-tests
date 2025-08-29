@@ -1,40 +1,40 @@
 'use strict'
 
+import licence from '../../../support/fixture-builder/licence.js'
+import points from '../../../support/fixture-builder/points.js'
+import purposes from '../../../support/fixture-builder/purposes.js'
+import returnRequirements from '../../../support/fixture-builder/return-requirements.js'
+import returnRequirementPoints from '../../../support/fixture-builder/return-requirement-points.js'
+import returnVersion from '../../../support/fixture-builder/return-version.js'
+
+const dataModel = {
+  ...licence(),
+  ...points(2),
+  ...purposes(2),
+  ...returnVersion(),
+  ...returnRequirements(),
+  ...returnRequirementPoints(2)
+}
+
 describe('Submit returns requirement using copy existing (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('returns-requirements.json').then((fixture) => {
-      cy.load(fixture)
+    // Get the user email and login as the user
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
 
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    dataModel.returnRequirementPoints[1].returnRequirementId = dataModel.returnRequirements[0].id
+
+    cy.load(dataModel)
   })
 
   it('creates a return requirement by copying existing and approves the requirement', () => {
-    cy.visit('/')
-
-    // enter the user name and Password
-    cy.get('@userEmail').then((userEmail) => {
-      cy.get('#email').type(userEmail)
-    })
-
-    cy.get('#password').type(Cypress.env('defaultPassword'))
-
-    // click Sign in Button
-    cy.get('form > .govuk-button').click()
-
-    // assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // search for a licence
-    cy.get('#query').type('AT/TEST/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row > :nth-child(1) > a').click()
-
-    // confirm we are on the licence page and select licence set up tab
-    cy.contains('AT/TEST/01')
-    cy.contains('Licence set up').click()
+    cy.visit(`/system/licences/${dataModel.licences[0].id}/set-up`)
 
     // confirm we are on the licence set up tab
     cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
@@ -71,11 +71,11 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start date and reason selected
-    cy.get('[data-test="start-date"]').contains('12 June 2023')
+    cy.get('[data-test="start-date"]').contains('1 January 2020')
     cy.get('[data-test="reason"]').contains('Minor change')
 
     // confirm we see the purpose and purpose description for the requirement copied from existing
-    cy.get('[data-test="purposes-0"]').contains('Hydroelectric Power Generation (This is a test purpose alias)')
+    cy.get('[data-test="purposes-0"]').contains('General Farming & Domestic')
 
     // choose the change link for the purpose and confirm we are on the purpose page
     cy.get('[data-test="change-purposes-0"]').click()
@@ -177,7 +177,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-notification-banner__heading').contains('New requirement added')
 
     // confirm we see the new added requirement and details selected
-    cy.get('[data-test="purposes-1"]').contains('Hydroelectric Power Generation')
+    cy.get('[data-test="purposes-1"]').contains('General Farming & Domestic')
     cy.get('[data-test="points-1"]').contains('At National Grid Reference TQ 1234 5678 (Example point 1)')
     cy.get('[data-test="abstraction-period-1"]').contains('From 1 December to 3 November')
     cy.get('[data-test="returns-cycle-1"]').contains('Summer')

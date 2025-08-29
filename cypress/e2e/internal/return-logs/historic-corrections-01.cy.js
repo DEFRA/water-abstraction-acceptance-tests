@@ -1,8 +1,34 @@
 'use strict'
 
+import licence from '../../../support/fixture-builder/licence.js'
+import points from '../../../support/fixture-builder/points.js'
+import purposes from '../../../support/fixture-builder/purposes.js'
+import returnLogs from '../../../support/fixture-builder/return-logs.js'
+import returnRequirements from '../../../support/fixture-builder/return-requirements.js'
+import returnRequirementPoints from '../../../support/fixture-builder/return-requirement-points.js'
+import returnVersion from '../../../support/fixture-builder/return-version.js'
+
+const dataModel = {
+  ...licence(),
+  ...points(),
+  ...purposes(),
+  ...returnVersion(),
+  ...returnRequirements(),
+  ...returnRequirementPoints(),
+  ...returnLogs()
+}
+
 describe('Submit winter and all year historic correction using abstraction data', () => {
   beforeEach(() => {
     cy.tearDown()
+
+    // Get the user email and login as the user
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
+    })
 
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31.
@@ -12,47 +38,20 @@ describe('Submit winter and all year historic correction using abstraction data'
       const startYear = currentFinancialYearInfo.start.year
       const endYear = currentFinancialYearInfo.end.year
 
-      cy.fixture('return-logs-historic-01.json').then((fixture) => {
-        for (let i = 0; i < fixture.returnLogs.length; i++) {
-          fixture.returnLogs[i].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear - i}-04-01:${endYear - i}-03-31`
-          fixture.returnLogs[i].dueDate = `${endYear - i}-04-28`
-          fixture.returnLogs[i].endDate = `${endYear - i}-03-31`
-          fixture.returnLogs[i].startDate = `${startYear - i}-04-01`
-          fixture.returnLogs[i].returnCycleId.value = `${startYear - i}-04-01`
-        }
-        cy.load(fixture)
-      })
-    })
+      for (let i = 0; i < dataModel.returnLogs.length; i++) {
+        dataModel.returnLogs[i].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear - i}-04-01:${endYear - i}-03-31`
+        dataModel.returnLogs[i].dueDate = `${endYear - i}-04-28`
+        dataModel.returnLogs[i].endDate = `${endYear - i}-03-31`
+        dataModel.returnLogs[i].startDate = `${startYear - i}-04-01`
+        dataModel.returnLogs[i].returnCycleId.value = `${startYear - i}-04-01`
+      }
 
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+      cy.load(dataModel)
+    })
   })
 
   it('creates a return requirement using abstraction data and approves the requirement', () => {
-    cy.visit('/')
-
-    // enter the user name and Password
-    cy.get('@userEmail').then((userEmail) => {
-      cy.get('#email').type(userEmail)
-    })
-
-    cy.get('#password').type(Cypress.env('defaultPassword'))
-
-    // click Sign in Button
-    cy.get('form > .govuk-button').click()
-
-    // assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // search for a licence
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row > :nth-child(1) > a').click()
-
-    // confirm we are on the licence page
-    cy.contains('AT/CURR/DAILY/01')
-
-    // click returns tab
-    cy.contains('Returns').click()
+    cy.visit(`/system/licences/${dataModel.licences[0].id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')
@@ -129,6 +128,7 @@ describe('Submit winter and all year historic correction using abstraction data'
 
     // click link to return to licence set up and the returns tabs
     cy.contains('Return to licence set up').click()
+
     cy.contains('Returns').click()
 
     // confirm we are on the licence set up tab

@@ -1,93 +1,108 @@
 'use strict'
 
+import licence from '../../../support/fixture-builder/licence.js'
+import points from '../../../support/fixture-builder/points.js'
+import purposes from '../../../support/fixture-builder/purposes.js'
+import returnLogs from '../../../support/fixture-builder/return-logs.js'
+import returnRequirements from '../../../support/fixture-builder/return-requirements.js'
+import returnRequirementPoints from '../../../support/fixture-builder/return-requirement-points.js'
+import returnVersion from '../../../support/fixture-builder/return-version.js'
+
+const dataModel = {
+  ...licence(),
+  ...points(2),
+  ...purposes(2),
+  ...returnVersion(),
+  ...returnRequirements(2),
+  ...returnRequirementPoints(2),
+  ...returnLogs(7)
+}
+
 describe('Submit historic correction using abstraction data for two abstraction points', () => {
   beforeEach(() => {
     cy.tearDown()
+
+    // Get the user email and login as the user
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
+    })
 
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31.
     cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
 
+      dataModel.returnRequirements[1].summer = false
+
       let startYear = currentFinancialYearInfo.start.year
       let endYear = currentFinancialYearInfo.end.year
 
-      cy.fixture('return-logs-historic-03.json').then((fixture) => {
-        fixture.returnLogs[0].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
-        fixture.returnLogs[0].dueDate = `${endYear}-04-28`
-        fixture.returnLogs[0].endDate = `${endYear}-03-31`
-        fixture.returnLogs[0].startDate = `${startYear}-04-01`
-        fixture.returnLogs[0].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[0].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
+      dataModel.returnLogs[0].dueDate = `${endYear}-04-28`
+      dataModel.returnLogs[0].endDate = `${endYear}-03-31`
+      dataModel.returnLogs[0].metadata.isSummer = false
+      dataModel.returnLogs[0].startDate = `${startYear}-04-01`
+      dataModel.returnLogs[0].status = 'due'
+      dataModel.returnLogs[0].returnCycleId.value = `${startYear}-04-01`
 
-        fixture.returnLogs[1].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
-        fixture.returnLogs[1].dueDate = `${endYear}-04-28`
-        fixture.returnLogs[1].endDate = `${endYear}-03-31`
-        fixture.returnLogs[1].startDate = `${startYear}-04-01`
-        fixture.returnLogs[1].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[1].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
+      dataModel.returnLogs[1].dueDate = `${endYear}-04-28`
+      dataModel.returnLogs[1].endDate = `${endYear}-03-31`
+      dataModel.returnLogs[1].metadata.isSummer = false
+      dataModel.returnLogs[1].startDate = `${startYear}-04-01`
+      dataModel.returnLogs[1].status = 'due'
+      dataModel.returnLogs[1].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[1].returnReference = '9999991'
 
-        startYear = startYear - 1
-        endYear = endYear - 1
+      startYear = startYear - 1
+      endYear = endYear - 1
 
-        fixture.returnLogs[2].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
-        fixture.returnLogs[2].dueDate = `${endYear}-04-28`
-        fixture.returnLogs[2].endDate = `${endYear}-03-31`
-        fixture.returnLogs[2].startDate = `${startYear}-04-01`
-        fixture.returnLogs[2].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[2].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
+      dataModel.returnLogs[2].dueDate = `${endYear}-04-28`
+      dataModel.returnLogs[2].endDate = `${endYear}-03-31`
+      dataModel.returnLogs[2].metadata.isSummer = false
+      dataModel.returnLogs[2].startDate = `${startYear}-04-01`
+      dataModel.returnLogs[2].status = 'completed'
+      dataModel.returnLogs[2].returnCycleId.value = `${startYear}-04-01`
 
-        fixture.returnLogs[3].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
-        fixture.returnLogs[3].dueDate = `${endYear}-04-28`
-        fixture.returnLogs[3].endDate = `${endYear}-03-31`
-        fixture.returnLogs[3].startDate = `${startYear}-04-01`
-        fixture.returnLogs[3].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[3].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
+      dataModel.returnLogs[3].dueDate = `${endYear}-04-28`
+      dataModel.returnLogs[3].endDate = `${endYear}-03-31`
+      dataModel.returnLogs[3].metadata.isSummer = false
+      dataModel.returnLogs[3].startDate = `${startYear}-04-01`
+      dataModel.returnLogs[3].status = 'completed'
+      dataModel.returnLogs[3].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[3].returnReference = '9999991'
 
-        startYear = startYear - 1
-        endYear = endYear - 1
+      startYear = startYear - 1
+      endYear = endYear - 1
 
-        fixture.returnLogs[4].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
-        fixture.returnLogs[4].dueDate = `${endYear}-04-28`
-        fixture.returnLogs[4].endDate = `${endYear}-03-31`
-        fixture.returnLogs[4].startDate = `${startYear}-04-01`
-        fixture.returnLogs[4].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[4].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear}-04-01:${endYear}-03-31`
+      dataModel.returnLogs[4].dueDate = `${endYear}-04-28`
+      dataModel.returnLogs[4].endDate = `${endYear}-03-31`
+      dataModel.returnLogs[4].metadata.isSummer = false
+      dataModel.returnLogs[4].startDate = `${startYear}-04-01`
+      dataModel.returnLogs[4].status = 'completed'
+      dataModel.returnLogs[4].returnCycleId.value = `${startYear}-04-01`
 
-        fixture.returnLogs[5].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
-        fixture.returnLogs[5].dueDate = `${endYear}-04-28`
-        fixture.returnLogs[5].endDate = `${endYear}-03-31`
-        fixture.returnLogs[5].startDate = `${startYear}-04-01`
-        fixture.returnLogs[5].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[5].id = `v1:9:AT/CURR/DAILY/01:9999991:${startYear}-04-01:${endYear}-03-31`
+      dataModel.returnLogs[5].dueDate = `${endYear}-04-28`
+      dataModel.returnLogs[5].endDate = `${endYear}-03-31`
+      dataModel.returnLogs[5].metadata.isSummer = false
+      dataModel.returnLogs[5].startDate = `${startYear}-04-01`
+      dataModel.returnLogs[5].status = 'completed'
+      dataModel.returnLogs[5].returnCycleId.value = `${startYear}-04-01`
+      dataModel.returnLogs[5].returnReference = '9999991'
 
-        cy.load(fixture)
-      })
+      cy.load(dataModel)
     })
-
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates a return requirement using abstraction data and approves the requirement', () => {
-    cy.visit('/')
-
-    // enter the user name and Password
-    cy.get('@userEmail').then((userEmail) => {
-      cy.get('#email').type(userEmail)
-    })
-
-    cy.get('#password').type(Cypress.env('defaultPassword'))
-
-    // click Sign in Button
-    cy.get('form > .govuk-button').click()
-
-    // assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // search for a licence
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row > :nth-child(1) > a').click()
-
-    // confirm we are on the licence page
-    cy.contains('AT/CURR/DAILY/01')
-
-    // click returns tab
-    cy.contains('Returns').click()
+    cy.visit(`/system/licences/${dataModel.licences[0].id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')

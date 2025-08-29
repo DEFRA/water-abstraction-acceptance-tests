@@ -1,40 +1,38 @@
 'use strict'
 
+import licence from '../../../support/fixture-builder/licence.js'
+import points from '../../../support/fixture-builder/points.js'
+import purposes from '../../../support/fixture-builder/purposes.js'
+import returnRequirements from '../../../support/fixture-builder/return-requirements.js'
+import returnRequirementPoints from '../../../support/fixture-builder/return-requirement-points.js'
+import returnVersion from '../../../support/fixture-builder/return-version.js'
+
+const dataModel = {
+  ...licence(),
+  ...points(2),
+  ...purposes(2),
+  ...returnVersion(),
+  ...returnRequirements(2),
+  ...returnRequirementPoints(2)
+}
+
 describe('Submit returns requirement (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('returns-requirements.json').then((fixture) => {
-      cy.load(fixture)
+    // Get the user email and login as the user
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
 
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    cy.load(dataModel)
   })
 
   it('creates a return requirement and approves the requirement', () => {
-    cy.visit('/')
-
-    // enter the user name and Password
-    cy.get('@userEmail').then((userEmail) => {
-      cy.get('#email').type(userEmail)
-    })
-
-    cy.get('#password').type(Cypress.env('defaultPassword'))
-
-    // click Sign in Button
-    cy.get('form > .govuk-button').click()
-
-    // assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // search for a licence
-    cy.get('#query').type('AT/TEST/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row > :nth-child(1) > a').click()
-
-    // confirm we are on the licence page and select licence set up tab
-    cy.contains('AT/TEST/01')
-    cy.contains('Licence set up').click()
+    cy.visit(`/system/licences/${dataModel.licences[0].id}/set-up`)
 
     // confirm we are on the licence set up tab
     cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
@@ -124,7 +122,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start date information we expect
-    cy.get('[data-test="start-date"]').contains('12 June 2023')
+    cy.get('[data-test="start-date"]').contains('1 January 2020')
 
     // choose the change option for the start date
     cy.get('[data-test="change-start-date"]').click()
@@ -155,7 +153,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('[data-test="reason"]').contains('Minor change')
 
     // confirm we see the purposes selected
-    cy.get('[data-test="purposes-0"]').should('contain', 'Hydroelectric Power Generation (This is a purpose description)')
+    cy.get('[data-test="purposes-0"]').should('contain', 'General Farming & Domestic (This is a purpose description)')
 
     // choose the change option for purposes
     cy.get('[data-test="change-purposes-0"]').click()
@@ -380,5 +378,24 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are on the licence set up tab
     cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
+
+    // Confirm we can display the return version details
+    cy.get('[data-test="return-version-0').click()
+
+    cy.get('.govuk-heading-l').contains('Requirements for returns for Mr J J Testerson')
+
+    cy.get('[data-test="start-date"]').contains('2 August 2023')
+    cy.get('[data-test="reason"]').contains('Minor change')
+
+    // Return requirement 1
+    cy.get('#requirement-0 > div.govuk-summary-card__title-wrapper > h2').contains('This is another valid site description')
+    cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
+    cy.get('[data-test="abstraction-period-0"]').contains('2 October to 5 December')
+    cy.get('[data-test="returns-cycle-0"]').contains('Winter and all year')
+    cy.get('[data-test="site-description-0"]').contains('This is another valid site description')
+    cy.get('[data-test="frequency-collected-0"]').contains('Weekly')
+    cy.get('[data-test="frequency-reported-0"]').contains('Monthly')
+    cy.get('[data-test="agreements-exceptions-0"]').contains('Transfer re-abstraction scheme and Two-part tariff')
   })
 })
