@@ -80,7 +80,7 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
     cy.get('.govuk-caption-l').contains('Notice WAA-')
     cy.get('.govuk-heading-l').contains('Check the recipients')
     cy.get('.govuk-body').contains('Showing all 1 recipients')
-    cy.get('.govuk-table__body').contains('external@example.co.uk')
+    cy.get('.govuk-table__body').contains('external@example.com')
     cy.get('.govuk-table__body').contains('AT/CURR/DAILY/01')
     cy.get('.govuk-table__body').contains('Email - Primary user')
     cy.get('.govuk-table__body').contains('Preview')
