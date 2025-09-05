@@ -167,5 +167,5 @@ export default function licence () {
     ]
   }
 
-  return JSON.parse(JSON.stringify(basicLicence))
+  return basicLicence
 }

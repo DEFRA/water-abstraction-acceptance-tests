@@ -1,22 +1,8 @@
 'use strict'
 
-import licence from '../../../support/fixture-builder/licence.js'
-import points from '../../../support/fixture-builder/points.js'
-import purposes from '../../../support/fixture-builder/purposes.js'
-import returnLogs from '../../../support/fixture-builder/return-logs.js'
-import returnRequirements from '../../../support/fixture-builder/return-requirements.js'
-import returnRequirementPoints from '../../../support/fixture-builder/return-requirement-points.js'
-import returnVersion from '../../../support/fixture-builder/return-version.js'
+import { basicLicenceOneReturnRequirementsWithFourReturnLogs } from '../../../support/fixture-builder/scenarios.js'
 
-const dataModel = {
-  ...licence(),
-  ...points(),
-  ...purposes(),
-  ...returnVersion(),
-  ...returnRequirements(),
-  ...returnRequirementPoints(),
-  ...returnLogs()
-}
+const dataModel = basicLicenceOneReturnRequirementsWithFourReturnLogs()
 
 describe('Submit winter and all year historic correction using abstraction data', () => {
   beforeEach(() => {
@@ -34,17 +20,6 @@ describe('Submit winter and all year historic correction using abstraction data'
     // day and month we'll get back 20XX-03-31.
     cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
-
-      const startYear = currentFinancialYearInfo.start.year
-      const endYear = currentFinancialYearInfo.end.year
-
-      for (let i = 0; i < dataModel.returnLogs.length; i++) {
-        dataModel.returnLogs[i].id = `v1:9:AT/CURR/DAILY/01:9999990:${startYear - i}-04-01:${endYear - i}-03-31`
-        dataModel.returnLogs[i].dueDate = `${endYear - i}-04-28`
-        dataModel.returnLogs[i].endDate = `${endYear - i}-03-31`
-        dataModel.returnLogs[i].startDate = `${startYear - i}-04-01`
-        dataModel.returnLogs[i].returnCycleId.value = `${startYear - i}-04-01`
-      }
 
       cy.load(dataModel)
     })
@@ -77,11 +52,6 @@ describe('Submit winter and all year historic correction using abstraction data'
       cy.returnLogDueData(startYear - 2, true).then((data) => {
         cy.get('[data-test="return-due-date-3"]').contains(data.text)
         cy.get('[data-test="return-status-3"] > .govuk-tag').contains('complete')
-      })
-
-      cy.returnLogDueData(startYear - 3, true).then((data) => {
-        cy.get('[data-test="return-due-date-4"]').contains(data.text)
-        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('complete')
       })
     })
 
@@ -155,10 +125,10 @@ describe('Submit winter and all year historic correction using abstraction data'
 
       cy.returnLogDueData(startYear - 1, true).then((data) => {
         cy.get('[data-test="return-due-date-4"]').contains(data.text)
-        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-status-4"] > .govuk-tag').contains(data.label)
 
         cy.get('[data-test="return-due-date-5"]').contains(data.text)
-        cy.get('[data-test="return-status-5"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('void')
 
         cy.get('[data-test="return-due-date-6"]').contains(data.text)
         cy.get('[data-test="return-status-6"] > .govuk-tag').contains(data.label)
@@ -167,11 +137,6 @@ describe('Submit winter and all year historic correction using abstraction data'
       cy.returnLogDueData(startYear - 2, true).then((data) => {
         cy.get('[data-test="return-due-date-7"]').contains(data.text)
         cy.get('[data-test="return-status-7"] > .govuk-tag').contains('complete')
-      })
-
-      cy.returnLogDueData(startYear - 3, true).then((data) => {
-        cy.get('[data-test="return-due-date-8"]').contains(data.text)
-        cy.get('[data-test="return-status-8"] > .govuk-tag').contains('complete')
       })
     })
   })

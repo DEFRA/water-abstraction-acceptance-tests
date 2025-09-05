@@ -1,20 +1,8 @@
 'use strict'
 
-import licence from '../../../support/fixture-builder/licence.js'
-import points from '../../../support/fixture-builder/points.js'
-import purposes from '../../../support/fixture-builder/purposes.js'
-import returnRequirements from '../../../support/fixture-builder/return-requirements.js'
-import returnRequirementPoints from '../../../support/fixture-builder/return-requirement-points.js'
-import returnVersion from '../../../support/fixture-builder/return-version.js'
+import { basicLicenceTwoReturnRequirementsWithPoints } from '../../../support/fixture-builder/scenarios.js'
 
-const dataModel = {
-  ...licence(),
-  ...points(2),
-  ...purposes(2),
-  ...returnVersion(),
-  ...returnRequirements(2),
-  ...returnRequirementPoints(2)
-}
+const dataModel = basicLicenceTwoReturnRequirementsWithPoints()
 
 describe('Cancel a return requirement (internal)', () => {
   beforeEach(() => {
@@ -27,6 +15,7 @@ describe('Cancel a return requirement (internal)', () => {
         email: userEmail
       })
     })
+
 
     cy.load(dataModel)
   })

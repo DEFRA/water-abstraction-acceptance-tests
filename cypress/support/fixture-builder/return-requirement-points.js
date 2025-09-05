@@ -11,6 +11,6 @@ export default function returnRequirements (howMany = 1) {
   ]
 
   return {
-    returnRequirementPoints: JSON.parse(JSON.stringify(returnRequirementPoints.slice(0, howMany)))
+    returnRequirementPoints: returnRequirementPoints.slice(0, howMany)
   }
 }

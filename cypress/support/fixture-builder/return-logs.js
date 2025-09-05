@@ -1,4 +1,4 @@
-export default function returnLogs (howMany = 5) {
+export default function returnLogs (howMany = 4) {
   const returnLogs = [
     {
       id: 'v1:9:AT/CURR/DAILY/01:9999990:2020-01-01:2020-03-31',
@@ -375,6 +375,6 @@ export default function returnLogs (howMany = 5) {
   ]
 
   return {
-    returnLogs: JSON.parse(JSON.stringify(returnLogs.slice(0, howMany)))
+    returnLogs: returnLogs.slice(0, howMany)
   }
 }

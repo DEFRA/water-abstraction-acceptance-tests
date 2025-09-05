@@ -29,6 +29,6 @@ export default function points (howMany = 1) {
   ]
 
   return {
-    points: JSON.parse(JSON.stringify(points.slice(0, howMany)))
+    points: points.slice(0, howMany)
   }
 }

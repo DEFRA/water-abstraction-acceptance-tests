@@ -76,7 +76,7 @@ export default function purposes (howMany = 1) {
   ]
 
   return {
-    licenceVersionPurposes: JSON.parse(JSON.stringify(licenceVersionPurposes.slice(0, howMany))),
-    licenceVersionPurposePoints: JSON.parse(JSON.stringify(licenceVersionPurposePoints.slice(0, howMany)))
+    licenceVersionPurposes: licenceVersionPurposes.slice(0, howMany),
+    licenceVersionPurposePoints: licenceVersionPurposePoints.slice(0, howMany)
   }
 }

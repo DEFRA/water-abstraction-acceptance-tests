@@ -12,6 +12,6 @@ export default function returnVersion (howMany = 1) {
   ]
 
   return {
-    returnVersions: JSON.parse(JSON.stringify(returnVersions.slice(0, howMany)))
+    returnVersions: returnVersions.slice(0, howMany)
   }
 }

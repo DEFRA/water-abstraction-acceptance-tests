@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import 'querystring'
+import currentFinancialYear from './helpers/currentFinancialYear'
 
 Cypress.Commands.add('load', (body) => {
   cy.log('Loading test data')
@@ -178,29 +179,7 @@ Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 1
 // override the day and month (don't worry about month being zero-indexed - it gets dealt with!) and adjust the year
 // by plus or minus as many years as you need.
 Cypress.Commands.add('currentFinancialYear', (day = 31, month = 3, yearAdjuster = 0) => {
-  // IMPORTANT! getMonth returns an integer (0-11). So, January is represented as 0 and December as 11. This is why
-  // MARCH is 2 rather than 3
-  const MARCH = 2
-
-  const currentDate = new Date()
-  const currentYear = currentDate.getFullYear()
-
-  let endYear
-
-  if (currentDate.getMonth() <= MARCH) {
-    // For example, if currentDate was 2022-02-15 it would fall in financial year 2021-04-01 to 2022-03-31
-    endYear = currentYear + yearAdjuster
-  } else {
-    // For example, if currentDate was 2022-06-15 it would fall in financial year 2022-04-01 to 2023-03-31
-    endYear = currentYear + 1 + yearAdjuster
-  }
-
-  // Rather than just return the start and end dates, we return them as objects with the both the dates and the date
-  // parts so the tests can use them for input fields.
-  const result = {
-    end: { date: new Date(`${endYear}-${month}-${day}`), day, month, year: endYear },
-    start: { date: new Date(`${endYear - 1}-04-01`), day: 1, month: 4, year: endYear - 1 }
-  }
+  const result = currentFinancialYear(day, month, yearAdjuster)
 
   // We generate the date value using Date.UTC() to avoid 31 March becoming 30 March 23:00 because of pesky BST
   return cy.wrap(result)

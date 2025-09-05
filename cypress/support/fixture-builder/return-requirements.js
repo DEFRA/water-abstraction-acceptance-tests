@@ -88,7 +88,7 @@ export default function returnRequirements (howMany = 1) {
   ]
 
   return {
-    returnRequirements: JSON.parse(JSON.stringify(returnRequirements.slice(0, howMany))),
-    returnRequirementPurposes: JSON.parse(JSON.stringify(returnRequirementPurposes.slice(0, howMany)))
+    returnRequirements: returnRequirements.slice(0, howMany),
+    returnRequirementPurposes: returnRequirementPurposes.slice(0, howMany)
   }
 }
