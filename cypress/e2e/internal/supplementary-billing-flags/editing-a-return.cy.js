@@ -1,6 +1,6 @@
 'use strict'
 
-describe('Editing a return', () => {
+describe('Editing a return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.fixture('barebones.json').then((fixture) => {
@@ -41,10 +41,10 @@ describe('Editing a return', () => {
 
     // confirm we see the return we are going to edit
     cy.get('#returns').within(() => {
-      cy.get('[data-test="return-reference-2"] > .govuk-link').should('be.visible').and('contain.text', '9999994')
-      cy.get('[data-test="return-status-2"] > .govuk-tag').should('be.visible').and('contain.text', 'complete')
+      cy.get('[data-test="return-reference-0"] > .govuk-link').should('be.visible').and('contain.text', '9999994')
+      cy.get('[data-test="return-status-0"] > .govuk-tag').should('be.visible').and('contain.text', 'complete')
 
-      cy.get('[data-test="return-reference-2"] > .govuk-link').contains('9999994').click()
+      cy.get('[data-test="return-reference-0"] > .govuk-link').contains('9999994').click()
     })
 
     // Edit return
