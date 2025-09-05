@@ -44,11 +44,11 @@ describe('View returns and their status (internal)', () => {
       cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', '9999992')
       cy.get('.govuk-table__row:nth-child(2)').should('be.visible').and('contain.text', 'overdue')
 
-      cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', '9999991')
-      cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', 'overdue')
+      cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', '9999992')
+      cy.get('.govuk-table__row:nth-child(3)').should('be.visible').and('contain.text', 'complete')
 
-      cy.get('.govuk-table__row:nth-child(4)').should('be.visible').and('contain.text', '9999992')
-      cy.get('.govuk-table__row:nth-child(4)').should('be.visible').and('contain.text', 'complete')
+      cy.get('.govuk-table__row:nth-child(4)').should('be.visible').and('contain.text', '9999991')
+      cy.get('.govuk-table__row:nth-child(4)').should('be.visible').and('contain.text', 'overdue')
 
       cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', '9999990')
       cy.get('.govuk-table__row:nth-child(5)').should('be.visible').and('contain.text', 'overdue')
