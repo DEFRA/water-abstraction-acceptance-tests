@@ -1,8 +1,8 @@
 'use strict'
 
-import { basicLicenceOneReturnRequirementQuarterlyReturns } from '../../../support/fixture-builder/scenarios.js'
+import oneReturnRequirementQuarterlyReturns from '../../../support/scenarios/one-return-requirement-quarterly-returns.js'
 
-const dataModel = basicLicenceOneReturnRequirementQuarterlyReturns()
+const dataModel = oneReturnRequirementQuarterlyReturns()
 
 describe('Submit winter and all year quarterly historic correction using abstraction data', () => {
   let year = new Date().getFullYear()

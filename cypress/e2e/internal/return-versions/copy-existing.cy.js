@@ -1,8 +1,8 @@
 'use strict'
 
-import { basicLicenceOneReturnRequirementsWithTwoPoints } from '../../../support/fixture-builder/scenarios.js'
+import oneReturnRequirementsTwoPoints from '../../../support/scenarios/one-return-requirement-two-points.js'
 
-const dataModel = basicLicenceOneReturnRequirementsWithTwoPoints()
+const dataModel = oneReturnRequirementsTwoPoints()
 
 describe('Submit returns requirement using copy existing (internal)', () => {
   beforeEach(() => {

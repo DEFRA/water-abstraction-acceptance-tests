@@ -1,8 +1,8 @@
 'use strict'
 
-import { basicLicenceTwoReturnRequirementsWithPoints } from '../../../support/fixture-builder/scenarios.js'
+import twoReturnRequirementsWithPoints from '../../../support/scenarios/two-return-requirements-with-points.js'
 
-const dataModel = basicLicenceTwoReturnRequirementsWithPoints()
+const dataModel = twoReturnRequirementsWithPoints()
 
 describe('Cancel a return requirement (internal)', () => {
   beforeEach(() => {

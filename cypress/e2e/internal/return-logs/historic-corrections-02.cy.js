@@ -1,8 +1,8 @@
 'use strict'
 
-import { basicLicenceTwoDifferentReturnRequirementsWithTwoReturnLogsEach } from '../../../support/fixture-builder/scenarios.js'
+import twoReturnRequirementsTwoReturnLogs from '../../../support/scenarios/two-return-requirements-two-return-logs.js'
 
-const dataModel = basicLicenceTwoDifferentReturnRequirementsWithTwoReturnLogsEach()
+const dataModel = twoReturnRequirementsTwoReturnLogs()
 
 describe('Submit summer and winter and all year historic correction using abstraction data', () => {
   beforeEach(() => {

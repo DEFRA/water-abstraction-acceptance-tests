@@ -1,8 +1,8 @@
 'use strict'
 
-import { basicLicenceOneReturnRequirement } from '../../../support/fixture-builder/scenarios.js'
+import oneReturnRequirement from '../../../support/scenarios/one-return-requirement.js'
 
-const dataModel = basicLicenceOneReturnRequirement()
+const dataModel = oneReturnRequirement()
 
 describe('Submit no returns requirement (internal)', () => {
   beforeEach(() => {
