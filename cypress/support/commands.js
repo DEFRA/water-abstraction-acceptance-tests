@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import 'querystring'
+import currentFinancialYear from './helpers/currentFinancialYear'
 
 Cypress.Commands.add('load', (body) => {
   cy.log('Loading test data')
@@ -51,7 +52,9 @@ Cypress.Commands.add('setUp', (testKey) => {
       authorization: `Bearer ${Cypress.env('jwtToken')}`
     },
     timeout: 60000
-  }).its('status', { log: false }).should('equal', 204)
+  })
+    .its('status', { log: false })
+    .should('equal', 204)
 })
 
 Cypress.Commands.add('tearDown', () => {
@@ -62,7 +65,9 @@ Cypress.Commands.add('tearDown', () => {
     log: false,
     method: 'POST',
     timeout: 60000
-  }).its('status', { log: false }).should('equal', 204)
+  })
+    .its('status', { log: false })
+    .should('equal', 204)
 })
 
 Cypress.Commands.add('lastNotification', (email) => {
@@ -81,7 +86,7 @@ Cypress.Commands.add('extractNotificationLink', (body, linkType, url) => {
   cy.log(`Extracting ${linkType} link from Notify email`)
 
   let link = body.data[0].personalisation[linkType]
-  link = link.replace((/^https?:\/\/[^/]+\//g).exec(link), url + '/')
+  link = link.replace(/^https?:\/\/[^/]+\//g.exec(link), url + '/')
 
   return cy.wrap(link)
 })
@@ -122,8 +127,18 @@ Cypress.Commands.add('dayMonthYearFormattedDate', (date) => {
   const day = date.getDate()
 
   const monthStrings = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ]
   const month = monthStrings[date.getMonth()]
 
@@ -164,29 +179,7 @@ Cypress.Commands.add('reloadUntilTextFound', (selector, textToMatch, retries = 1
 // override the day and month (don't worry about month being zero-indexed - it gets dealt with!) and adjust the year
 // by plus or minus as many years as you need.
 Cypress.Commands.add('currentFinancialYear', (day = 31, month = 3, yearAdjuster = 0) => {
-  // IMPORTANT! getMonth returns an integer (0-11). So, January is represented as 0 and December as 11. This is why
-  // MARCH is 2 rather than 3
-  const MARCH = 2
-
-  const currentDate = new Date()
-  const currentYear = currentDate.getFullYear()
-
-  let endYear
-
-  if (currentDate.getMonth() <= MARCH) {
-    // For example, if currentDate was 2022-02-15 it would fall in financial year 2021-04-01 to 2022-03-31
-    endYear = currentYear + yearAdjuster
-  } else {
-    // For example, if currentDate was 2022-06-15 it would fall in financial year 2022-04-01 to 2023-03-31
-    endYear = (currentYear + 1) + yearAdjuster
-  }
-
-  // Rather than just return the start and end dates, we return them as objects with the both the dates and the date
-  // parts so the tests can use them for input fields.
-  const result = {
-    end: { date: new Date(`${endYear}-${month}-${day}`), day, month, year: endYear },
-    start: { date: new Date(`${endYear - 1}-04-01`), day: 1, month: 4, year: endYear - 1 }
-  }
+  const result = currentFinancialYear(day, month, yearAdjuster)
 
   // We generate the date value using Date.UTC() to avoid 31 March becoming 30 March 23:00 because of pesky BST
   return cy.wrap(result)
@@ -212,7 +205,7 @@ Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
   }
 
   const earliestPossibleFinancialYear = Math.max(2023, financialYearToBaseItOn - 5)
-  const srocBillingPeriods = Math.min((financialYearToBaseItOn - earliestPossibleFinancialYear) + 1, 5)
+  const srocBillingPeriods = Math.min(financialYearToBaseItOn - earliestPossibleFinancialYear + 1, 5)
   const presrocBillingPeriods = 6 - srocBillingPeriods
 
   return cy.wrap({ presroc: presrocBillingPeriods, sroc: srocBillingPeriods })
@@ -220,6 +213,17 @@ Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
 
 Cypress.Commands.add('returnLogDueData', (yearToBaseItOn, winter) => {
   const dueDate = winter ? new Date(`${yearToBaseItOn}-04-28`) : new Date(`${yearToBaseItOn}-11-28`)
+
+  return _dueDateObject(dueDate)
+})
+
+Cypress.Commands.add('quarterlyReturnLogDueData', (date) => {
+  const dueDate = new Date(date)
+
+  return _dueDateObject(dueDate)
+})
+
+function _dueDateObject (dueDate) {
   const text = dueDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
 
   const today = new Date()
@@ -240,4 +244,15 @@ Cypress.Commands.add('returnLogDueData', (yearToBaseItOn, winter) => {
 
   // Else the return log is due
   return cy.wrap({ label: 'due', text })
+}
+
+Cypress.Commands.add('programmaticLogin', (overrides = {}) => {
+  const email = overrides.email || Cypress.env('USERNAME')
+  const password = overrides.password || Cypress.env('defaultPassword')
+
+  return cy.request({
+    method: 'POST',
+    url: '/signin',
+    body: { email, password }
+  })
 })

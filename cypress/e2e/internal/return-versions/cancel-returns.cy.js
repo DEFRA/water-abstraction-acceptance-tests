@@ -1,40 +1,26 @@
 'use strict'
 
+import twoReturnRequirementsWithPoints from '../../../support/scenarios/two-return-requirements-with-points.js'
+
+const dataModel = twoReturnRequirementsWithPoints()
+
 describe('Cancel a return requirement (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('returns-requirements.json').then((fixture) => {
-      cy.load(fixture)
+    // Get the user email and login as the user
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
 
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+    cy.load(dataModel)
   })
 
   it('cancels a return requirement after completing the journey', () => {
-    cy.visit('/')
-
-    // enter the user name and Password
-    cy.get('@userEmail').then((userEmail) => {
-      cy.get('#email').type(userEmail)
-    })
-
-    cy.get('#password').type(Cypress.env('defaultPassword'))
-
-    // click Sign in Button
-    cy.get('form > .govuk-button').click()
-
-    // assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // search for a licence
-    cy.get('#query').type('AT/TEST/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row > :nth-child(1) > a').click()
-
-    // confirm we are on the licence page and select licence set up tab
-    cy.contains('AT/TEST/01')
-    cy.contains('Licence set up').click()
+    cy.visit(`/system/licences/${dataModel.licences[0].id}/set-up`)
 
     // confirm we are on the licence set up tab
     cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
@@ -123,13 +109,13 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start date information we expect
-    cy.get('[data-test="start-date"]').contains('12 June 2023')
+    cy.get('[data-test="start-date"]').contains('1 January 2020')
 
     // confirm we see the reason we selected
     cy.get('[data-test="reason"]').contains('Change to special agreement')
 
     // confirm we see the purposes selected
-    cy.get('[data-test="purposes-0"]').should('contain', 'Hydroelectric Power Generation')
+    cy.get('[data-test="purposes-0"]').should('contain', 'General Farming & Domestic')
 
     // confirm we see the points selected
     cy.get('[data-test="points-0"]').should('contain', 'At National Grid Reference TQ 1234 5678 (Example point 1)')
