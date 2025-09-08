@@ -16,7 +16,6 @@ describe('Cancel a return requirement (internal)', () => {
       })
     })
 
-
     cy.load(dataModel)
   })
 
