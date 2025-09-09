@@ -119,19 +119,19 @@ describe('Submit summer and winter and all year historic correction using abstra
         cy.get('[data-test="return-due-date-0"]').contains(data.text)
         cy.get('[data-test="return-status-0"] > .govuk-tag').contains('void')
 
-        cy.get('[data-test="return-due-date-2"]').contains(data.text)
-        cy.get('[data-test="return-status-2"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-due-date-2"]').should('have.value', '')
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('not due yet')
       })
 
       cy.returnLogDueData(summer.end, false).then((data) => {
-        cy.get('[data-test="return-due-date-1"]').contains(data.text)
-        cy.get('[data-test="return-status-1"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-due-date-1"]').should('have.value', '')
+        cy.get('[data-test="return-status-1"] > .govuk-tag').contains('not due yet')
 
         cy.get('[data-test="return-due-date-3"]').contains(data.text)
         cy.get('[data-test="return-status-3"] > .govuk-tag').contains('void')
 
-        cy.get('[data-test="return-due-date-4"]').contains(data.text)
-        cy.get('[data-test="return-status-4"] > .govuk-tag').contains(data.label)
+        cy.get('[data-test="return-due-date-4"]').should('have.value', '')
+        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('not due yet')
       })
 
       cy.returnLogDueData(winter.end - 1, true).then((data) => {
