@@ -31,7 +31,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
     cy.get('.govuk-table__row').contains('Test Station Tagged').click()
 
     // Confirm we are on the monitoring station page
-    cy.get('.govuk-heading-xl').contains('Test Station Tagged')
+    cy.get('.govuk-heading-l').contains('Test Station Tagged')
     cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST1234567890')
     cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
     cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
@@ -41,7 +41,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
 
     // Confirm we are viewing the tag details
     cy.get('.govuk-caption-l').should('have.text', 'Test Station Tagged')
-    cy.get('.govuk-heading-xl').should('have.text', 'Details for AT/CURR/DAILY/01')
+    cy.get('.govuk-heading-l').should('have.text', 'Details for AT/CURR/DAILY/01')
     cy.get('.govuk-summary-card__title').contains('Stop tag')
     cy.get('[data-test="threshold-0"]').should('have.text', '100m3/s')
     cy.get('[data-test="type-0"]').should('have.text', 'Stop')
@@ -68,7 +68,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
 
     // Confirm we are back on the monitoring station page and the tag has been removed
     cy.get('.govuk-notification-banner__heading').contains('Tag removed for AT/CURR/DAILY/01')
-    cy.get('.govuk-heading-xl').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station Tagged')
     cy.get('p.govuk-body').should(
       'have.text', 'There are no licences tagged with restrictions for this monitoring station'
     )

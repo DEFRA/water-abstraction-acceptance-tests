@@ -32,7 +32,7 @@ describe('Attempt set up of abstraction alert with no thresholds (internal)', ()
 
     // Confirm we are on the monitoring station page
     cy.get('.govuk-caption-l').should('have.text', 'Test Catchment')
-    cy.get('.govuk-heading-xl').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station Tagged')
     cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST1234567890')
     cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
     cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
