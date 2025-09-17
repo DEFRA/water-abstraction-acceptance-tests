@@ -124,7 +124,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-l').contains('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
-    cy.get('#returnsCycle').check()
+    cy.get('#returns-cycle').check()
     cy.contains('Continue').click()
 
     // confirm we are on the site description page
@@ -138,22 +138,22 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-l').contains('Select how often readings or volumes are collected')
 
     // choose a frequency for collection and continue
-    cy.get('#frequencyCollected-2').check()
+    cy.get('#frequency-collected-2').check()
     cy.contains('Continue').click()
 
     // confirm we are on the frequency reported page
     cy.get('.govuk-heading-l').contains('Select how often readings or volumes are reported')
 
     // choose a frequency for reporting and continue
-    cy.get('#frequencyReported-2').check()
+    cy.get('#frequency-reported-2').check()
     cy.contains('Continue').click()
 
     // confirm we are on the agreements and exceptions page
     cy.get('.govuk-heading-l').contains('Select agreements and exceptions for the requirements for returns')
 
     // choose some agreements and exceptions and continue
-    cy.get('#agreementsExceptions-2').check()
-    cy.get('#agreementsExceptions-3').check()
+    cy.get('#agreements-exceptions-2').check()
+    cy.get('#agreements-exceptions-3').check()
     cy.contains('Continue').click()
 
     // confirm we are back on the check page

@@ -74,7 +74,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
-    cy.get('#returnsCycle').check()
+    cy.get('#returns-cycle').check()
     cy.contains('Continue').click()
 
     // confirm we are on the site description page
@@ -88,21 +88,21 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Select how often readings or volumes are collected')
 
     // choose a collected time frame and continue
-    cy.get('#frequencyCollected').check()
+    cy.get('#frequency-collected').check()
     cy.contains('Continue').click()
 
     // confirm we are on the readings reported page
     cy.get('.govuk-heading-l').contains('Select how often readings or volumes are reported')
 
     // choose a reporting time frame and continue
-    cy.get('#frequencyReported').check()
+    cy.get('#frequency-reported').check()
     cy.contains('Continue').click()
 
     // confirm we are on the agreements and exceptions page
     cy.get('.govuk-heading-l').contains('Select agreements and exceptions for the requirements for returns')
 
     // choose an agreement and exception and continue
-    cy.get('#agreementsExceptions').check()
+    cy.get('#agreements-exceptions').check()
     cy.contains('Continue').click()
 
     // confirm we are on the check page
