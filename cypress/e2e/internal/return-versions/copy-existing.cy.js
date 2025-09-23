@@ -29,21 +29,19 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Set up new requirements').click()
 
     // choose the licence version start date and click continue
-    cy.get('#licence-start-date').check()
+    cy.get('#licenceStartDate').check()
     cy.contains('Continue').click()
 
     // confirm we are on the reason page
     cy.get('.govuk-heading-l').contains('Select the reason for the requirements for returns')
 
-    // choose a reason (minor change) for the return and click continue
-    cy.get('#reason-8').check()
+    cy.get('#minorChange').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
     cy.get('.govuk-heading-l').contains('How do you want to set up the requirements for returns?')
 
-    // choose copy from existing requirements and continue
-    cy.get('#method-2').check()
+    cy.get('#useExistingRequirements').check()
     cy.contains('Continue').click()
 
     // confirm we are on the existing requirements page
@@ -124,36 +122,36 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-l').contains('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
-    cy.get('#returns-cycle').check()
+    cy.get('#summer').check()
     cy.contains('Continue').click()
 
     // confirm we are on the site description page
     cy.get('.govuk-label').contains('Enter a site description for the requirements for returns')
 
     // input a site description and continue
-    cy.get('#site-description').type('Site description for another return requirement')
+    cy.get('#siteDescription').type('Site description for another return requirement')
     cy.contains('Continue').click()
 
     // confirm we are on the frequency collected page
     cy.get('.govuk-heading-l').contains('Select how often readings or volumes are collected')
 
     // choose a frequency for collection and continue
-    cy.get('#frequency-collected-2').check()
+    cy.get('#frequencyCollectedWeek').check()
     cy.contains('Continue').click()
 
     // confirm we are on the frequency reported page
     cy.get('.govuk-heading-l').contains('Select how often readings or volumes are reported')
 
     // choose a frequency for reporting and continue
-    cy.get('#frequency-reported-2').check()
+    cy.get('#frequencyReportedWeek').check()
     cy.contains('Continue').click()
 
     // confirm we are on the agreements and exceptions page
     cy.get('.govuk-heading-l').contains('Select agreements and exceptions for the requirements for returns')
 
     // choose some agreements and exceptions and continue
-    cy.get('#agreements-exceptions-2').check()
-    cy.get('#agreements-exceptions-3').check()
+    cy.get('#transferReAbstractionScheme').check()
+    cy.get('#twoPartTariff').check()
     cy.contains('Continue').click()
 
     // confirm we are back on the check page

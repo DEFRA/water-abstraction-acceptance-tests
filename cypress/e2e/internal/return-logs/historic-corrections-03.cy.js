@@ -67,13 +67,13 @@ describe('Submit historic correction using abstraction data for two abstraction 
     cy.contains('Set up new requirements').click()
 
     // set the start date to be 2 years in the past
-    cy.get('#another-start-date').check()
-    cy.get('#other-start-date-day').type('01')
-    cy.get('#other-start-date-month').type('11')
+    cy.get('#anotherStartDate').check()
+    cy.get('#startDateDay').type('01')
+    cy.get('#startDateMonth').type('11')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const startYear = currentFinancialYearInfo.start.year
 
-      cy.get('#other-start-date-year').type(startYear - 2)
+      cy.get('#startDateYear').type(startYear - 2)
     })
     cy.contains('Continue').click()
 
@@ -81,14 +81,14 @@ describe('Submit historic correction using abstraction data for two abstraction 
     cy.get('.govuk-heading-l').contains('Select the reason for the requirements for returns')
 
     // choose reason (new licence) and click continue
-    cy.get('#reason-10').check()
+    cy.get('#newLicence').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
     cy.get('.govuk-heading-l').contains('How do you want to set up the requirements for returns?')
 
     // choose the start by using abstraction data checkbox and continue
-    cy.get('#method').check()
+    cy.get('#useAbstractionData').check()
     cy.contains('Continue').click()
 
     // confirm we are back on the check page

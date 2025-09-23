@@ -66,11 +66,11 @@ describe('Submit summer and winter and all year historic correction using abstra
     cy.contains('Set up new requirements').click()
 
     // set the start date to be the beginning of the current winter and all year cycle
-    cy.get('#another-start-date').check()
-    cy.get('#other-start-date-day').type('01')
-    cy.get('#other-start-date-month').type('04')
+    cy.get('#anotherStartDate').check()
+    cy.get('#startDateDay').type('01')
+    cy.get('#startDateMonth').type('04')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
-      cy.get('#other-start-date-year').type(currentFinancialYearInfo.start.year)
+      cy.get('#startDateYear').type(currentFinancialYearInfo.start.year)
     })
     cy.contains('Continue').click()
 
@@ -78,14 +78,14 @@ describe('Submit summer and winter and all year historic correction using abstra
     cy.get('.govuk-heading-l').contains('Select the reason for the requirements for returns')
 
     // choose reason (new licence) and click continue
-    cy.get('#reason-10').check()
+    cy.get('#newLicence').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
     cy.get('.govuk-heading-l').contains('How do you want to set up the requirements for returns?')
 
     // choose copy from existing requirements and continue
-    cy.get('#method-2').check()
+    cy.get('#useExistingRequirements').check()
     cy.contains('Continue').click()
 
     // confirm we are on the existing requirements page
