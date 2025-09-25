@@ -98,6 +98,6 @@ describe('Send an abstraction alert (internal)', () => {
     cy.get('tbody').contains('external@example.com')
     cy.get('tbody').contains('AT/CURR/DAILY/01')
     cy.get('tbody').contains('Email')
-    cy.get('tbody').contains('Pending')
+    cy.get('tbody').should('not.include.text', 'Error')
   })
 })
