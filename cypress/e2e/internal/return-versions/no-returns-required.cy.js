@@ -32,14 +32,14 @@ describe('Submit no returns requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Select the start date for the requirements for returns')
 
     // choose the licence version start date and click continue
-    cy.get('#licence-start-date').check()
+    cy.get('#licenceStartDate').check()
     cy.contains('Continue').click()
 
     // confirm we are on the why no returns required page
     cy.get('.govuk-heading-l').contains('Why are no returns required?')
 
     // choose returns exception and click continue
-    cy.get('#reason-2').check()
+    cy.get('#licenceConditionsDoNotRequireReturns').check()
     cy.contains('Continue').click()
 
     // confirm we are on the check page
@@ -59,7 +59,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Why are no returns required?')
 
     // choose returns exception and click continue
-    cy.get('#reason-3').check()
+    cy.get('#returnsException').check()
     cy.contains('Continue').click()
 
     // confirm we are back on check page and see the reason changes

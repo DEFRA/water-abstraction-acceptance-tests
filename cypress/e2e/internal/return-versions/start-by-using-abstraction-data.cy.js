@@ -29,21 +29,21 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     cy.contains('Set up new requirements').click()
 
     // choose the licence version start date and click continue
-    cy.get('#licence-start-date').check()
+    cy.get('#licenceStartDate').check()
     cy.contains('Continue').click()
 
     // confirm we are on the reason page
     cy.get('.govuk-heading-l').contains('Select the reason for the requirements for returns')
 
     // choose reason (new licence) and click continue
-    cy.get('#reason-10').check()
+    cy.get('#newLicence').check()
     cy.contains('Continue').click()
 
     // confirm we are on the set up page
     cy.get('.govuk-heading-l').contains('How do you want to set up the requirements for returns?')
 
     // choose the start by using abstraction data checkbox and continue
-    cy.get('#method').check()
+    cy.get('#useAbstractionData').check()
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
