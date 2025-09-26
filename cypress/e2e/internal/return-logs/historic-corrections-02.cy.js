@@ -135,7 +135,7 @@ describe('Submit summer and winter and all year historic correction using abstra
       })
 
       cy.get('[data-test="return-due-date-5"]').should('have.value', '')
-      cy.get('[data-test="return-status-5"] > .govuk-tag').contains('not due yet')
+      cy.get('[data-test="return-status-5"] > .govuk-tag').contains('open')
 
       cy.returnLogDueData(winter.end - 1, true).then((data) => {
         cy.get('[data-test="return-due-date-6"]').contains(data.text)

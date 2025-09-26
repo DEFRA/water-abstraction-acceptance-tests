@@ -38,7 +38,7 @@ describe('View returns (external)', () => {
     cy.contains('AT/CURR/MONTHLY/02').click()
     cy.get('#tab_returns').click()
     cy.get('#returns').should('be.visible')
-    cy.get('.govuk-tag').should('be.visible').and('contain.text', 'not due yet')
+    cy.get('.govuk-tag').should('be.visible').and('contain.text', 'open')
     cy.get('.govuk-tag').should('be.visible').and('contain.text', 'overdue')
     cy.get('.govuk-tag').should('be.visible').and('contain.text', 'complete')
     cy.get('.govuk-tag').should('be.visible').and('contain.text', 'overdue')
