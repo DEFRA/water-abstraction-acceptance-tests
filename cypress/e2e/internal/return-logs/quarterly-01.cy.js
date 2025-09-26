@@ -131,7 +131,7 @@ describe('Submit winter and all year quarterly historic correction using abstrac
       cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
 
       cy.get('[data-test="return-due-date-7"]').should('have.value', '')
-      cy.get('[data-test="return-status-7"] > .govuk-tag').contains('not due yet')
+      cy.get('[data-test="return-status-7"] > .govuk-tag').contains('open')
     })
   })
 })

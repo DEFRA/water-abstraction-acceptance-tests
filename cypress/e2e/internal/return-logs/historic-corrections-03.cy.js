@@ -132,18 +132,18 @@ describe('Submit historic correction using abstraction data for two abstraction 
         cy.get('[data-test="return-status-5"] > .govuk-tag').contains('void')
 
         cy.get('[data-test="return-due-date-6"]').should('have.value', '')
-        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('not due yet')
+        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('open')
 
         cy.get('[data-test="return-due-date-7"]').should('have.value', '')
-        cy.get('[data-test="return-status-7"] > .govuk-tag').contains('not due yet')
+        cy.get('[data-test="return-status-7"] > .govuk-tag').contains('open')
       })
 
       cy.returnLogDueData(startYear - 1, true).then((data) => {
         cy.get('[data-test="return-due-date-8"]').should('have.value', '')
-        cy.get('[data-test="return-status-8"] > .govuk-tag').contains('not due yet')
+        cy.get('[data-test="return-status-8"] > .govuk-tag').contains('open')
 
         cy.get('[data-test="return-due-date-9"]').should('have.value', '')
-        cy.get('[data-test="return-status-9"] > .govuk-tag').contains('not due yet')
+        cy.get('[data-test="return-status-9"] > .govuk-tag').contains('open')
 
         cy.get('[data-test="return-due-date-10"]').contains(data.text)
         cy.get('[data-test="return-status-10"] > .govuk-tag').contains('void')
@@ -152,7 +152,7 @@ describe('Submit historic correction using abstraction data for two abstraction 
         cy.get('[data-test="return-status-11"] > .govuk-tag').contains('void')
 
         cy.get('[data-test="return-due-date-12"]').should('have.value', '')
-        cy.get('[data-test="return-status-12"] > .govuk-tag').contains('not due yet')
+        cy.get('[data-test="return-status-12"] > .govuk-tag').contains('open')
       })
     })
   })
