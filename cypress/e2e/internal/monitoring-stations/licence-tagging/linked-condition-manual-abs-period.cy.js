@@ -59,10 +59,10 @@ describe('Tag a licence linked to a condition but manually enter the abstraction
 
     // Enter the abstraction period for the licence
     cy.get('.govuk-heading-l').contains('Enter an abstraction period for licence AT/CURR/DAILY/01')
-    cy.get('#abstraction-period-start-day').type('10')
-    cy.get('#abstraction-period-start-month').type('10')
-    cy.get('#abstraction-period-end-day').type('11')
-    cy.get('#abstraction-period-end-month').type('11')
+    cy.get('#abstractionPeriodStartDay').type('10')
+    cy.get('#abstractionPeriodStartMonth').type('10')
+    cy.get('#abstractionPeriodEndDay').type('11')
+    cy.get('#abstractionPeriodEndMonth').type('11')
     cy.get('.govuk-button').contains('Continue').click()
 
     // Check the restriction details

@@ -64,10 +64,10 @@ describe('Cancel a return requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Enter the abstraction period for the requirements for returns')
 
     // enter start and end dates for the abstraction period and click continue
-    cy.get('#abstraction-period-start-day').type('01')
-    cy.get('#abstraction-period-start-month').type('12')
-    cy.get('#abstraction-period-end-day').type('03')
-    cy.get('#abstraction-period-end-month').type('09')
+    cy.get('#abstractionPeriodStartDay').type('01')
+    cy.get('#abstractionPeriodStartMonth').type('12')
+    cy.get('#abstractionPeriodEndDay').type('03')
+    cy.get('#abstractionPeriodEndMonth').type('09')
     cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page

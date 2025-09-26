@@ -112,10 +112,10 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-l').contains('Enter the abstraction period for the requirements for returns')
 
     // choose a start and end date then continue
-    cy.get('#abstraction-period-start-day').type('1')
-    cy.get('#abstraction-period-start-month').type('12')
-    cy.get('#abstraction-period-end-day').type('3')
-    cy.get('#abstraction-period-end-month').type('11')
+    cy.get('#abstractionPeriodStartDay').type('1')
+    cy.get('#abstractionPeriodStartMonth').type('12')
+    cy.get('#abstractionPeriodEndDay').type('3')
+    cy.get('#abstractionPeriodEndMonth').type('11')
     cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page

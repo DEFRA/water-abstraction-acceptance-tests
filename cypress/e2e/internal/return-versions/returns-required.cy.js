@@ -65,10 +65,10 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Enter the abstraction period for the requirements for returns')
 
     // enter start and end dates for the abstraction period and click continue
-    cy.get('#abstraction-period-start-day').type('01')
-    cy.get('#abstraction-period-start-month').type('12')
-    cy.get('#abstraction-period-end-day').type('03')
-    cy.get('#abstraction-period-end-month').type('09')
+    cy.get('#abstractionPeriodStartDay').type('01')
+    cy.get('#abstractionPeriodStartMonth').type('12')
+    cy.get('#abstractionPeriodEndDay').type('03')
+    cy.get('#abstractionPeriodEndMonth').type('09')
     cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page
@@ -178,15 +178,15 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('[data-test="change-abstraction-period-0"]').click()
 
     // change the abstraction period and continue
-    cy.get('#abstraction-period-start-day').clear()
-    cy.get('#abstraction-period-start-month').clear()
-    cy.get('#abstraction-period-end-day').clear()
-    cy.get('#abstraction-period-end-month').clear()
+    cy.get('#abstractionPeriodStartDay').clear()
+    cy.get('#abstractionPeriodStartMonth').clear()
+    cy.get('#abstractionPeriodEndDay').clear()
+    cy.get('#abstractionPeriodEndMonth').clear()
 
-    cy.get('#abstraction-period-start-day').type('02')
-    cy.get('#abstraction-period-start-month').type('10')
-    cy.get('#abstraction-period-end-day').type('05')
-    cy.get('#abstraction-period-end-month').type('12')
+    cy.get('#abstractionPeriodStartDay').type('02')
+    cy.get('#abstractionPeriodStartMonth').type('10')
+    cy.get('#abstractionPeriodEndDay').type('05')
+    cy.get('#abstractionPeriodEndMonth').type('12')
     cy.contains('Continue').click()
 
     // confirm we are back on the check page and see the abstraction period changes
@@ -287,10 +287,10 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Enter the abstraction period for the requirements for returns')
 
     // enter start and end dates for the abstraction period and click continue
-    cy.get('#abstraction-period-start-day').type('07')
-    cy.get('#abstraction-period-start-month').type('07')
-    cy.get('#abstraction-period-end-day').type('08')
-    cy.get('#abstraction-period-end-month').type('12')
+    cy.get('#abstractionPeriodStartDay').type('07')
+    cy.get('#abstractionPeriodStartMonth').type('07')
+    cy.get('#abstractionPeriodEndDay').type('08')
+    cy.get('#abstractionPeriodEndMonth').type('12')
     cy.contains('Continue').click()
 
     // confirm we are on the returns cycle page
