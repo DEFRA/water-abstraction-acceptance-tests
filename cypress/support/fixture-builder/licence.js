@@ -1,4 +1,8 @@
+import pointsData from "./points.js"
+
 export default function licence () {
+  const points = pointsData().points
+
   const basicLicence = {
     permitLicences: [
       {
@@ -141,6 +145,7 @@ export default function licence () {
         contactId: '6e05db31-39cd-4bb0-83a0-0d985037ad8f'
       }
     ],
+    points,
     licences: [
       {
         id: '8717da0e-28d4-4833-8e32-1da050b60055',
@@ -163,6 +168,45 @@ export default function licence () {
         status: 'current',
         startDate: '2020-01-01',
         externalId: '6:1234:1:0'
+      }
+    ],
+    licenceVersionPurposes: [
+      {
+        id: 'f264184b-22a7-4e26-bd90-d5738eb2e07e',
+        licenceVersionId: '7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b',
+        primaryPurposeId: {
+          schema: 'water',
+          table: 'purposesPrimary',
+          lookup: 'legacyId',
+          value: 'A',
+          select: 'purposePrimaryId'
+        },
+        secondaryPurposeId: {
+          schema: 'water',
+          table: 'purposesSecondary',
+          lookup: 'legacyId',
+          value: 'AGR',
+          select: 'purposeSecondaryId'
+        },
+        purposeId: {
+          schema: 'public',
+          table: 'purposes',
+          lookup: 'legacyId',
+          value: '140',
+          select: 'id'
+        },
+        abstractionPeriodStartDay: 1,
+        abstractionPeriodStartMonth: 4,
+        abstractionPeriodEndDay: 31,
+        abstractionPeriodEndMonth: 3,
+        annualQuantity: 1554,
+        externalId: '6:1234'
+      }
+    ],
+    licenceVersionPurposePoints: [
+      {
+        licenceVersionPurposeId: 'f264184b-22a7-4e26-bd90-d5738eb2e07e',
+        pointId: points[0].id
       }
     ]
   }
