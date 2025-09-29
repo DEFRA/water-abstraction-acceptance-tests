@@ -1,32 +1,26 @@
 'use strict'
 
+import externalUserOnly from '../../../support/scenarios/external-user-only.js'
+
+const externalUserOnlyScenario = externalUserOnly()
+
 describe('Change user email address (external)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('change-email-user.json').then((fixture) => {
-      cy.load(fixture)
+    cy.load(externalUserOnlyScenario)
 
-      cy.wrap(fixture.users[0].username).as('userEmail')
-    })
+    cy.wrap(externalUserOnlyScenario.users[0].username).as('userEmail')
   })
 
   it('can allow authenticated users to change their email address including verification by them with a code', () => {
-    // Navigate to the signin page
-    cy.visit(Cypress.env('externalUrl'))
-    cy.get('a[href*="/signin"]').click()
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail,
+        external: true
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    // Click Account settings link
-    cy.get('#account-settings').click()
+    cy.visit(`${Cypress.env('externalUrl')}/account`)
 
     // Account settings
     // Check we see current email address then click Change your email address link
