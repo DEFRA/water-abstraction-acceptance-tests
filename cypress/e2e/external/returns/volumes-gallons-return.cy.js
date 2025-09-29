@@ -1,39 +1,32 @@
 'use strict'
 
+import externalReturnSubmission from '../../../support/scenarios/external-return-submission.js'
+
+const externalReturnSubmissionScenario = externalReturnSubmission()
+
 describe('Submit volumes in gallons return (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('external-user.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('users.json').its('loadedExternal').as('userEmail')
+    cy.load(externalReturnSubmissionScenario)
+    cy.wrap(externalReturnSubmissionScenario.users[0].username).as('userEmail')
   })
 
   it('login as an existing user and submit returns', () => {
-    cy.visit(Cypress.env('externalUrl'))
-
-    // tap the sign in button on the welcome page
-    cy.get('a[href*="/signin"]').click()
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail,
+        external: true
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
+    cy.visit(`${Cypress.env('externalUrl')}/licences`)
 
     // Select a licence to submit returns for
-    cy.contains('AT/CURR/MONTHLY/02').click()
+    cy.contains('AT/CURR/DAILY/01').click()
     cy.get('#tab_returns').click()
     cy.get('#returns').should('be.visible')
 
-    // Start the return journey - return reference 9999991
-    cy.get(':nth-child(2) > [scope="row"] > a').click()
+    // Start the return journey - return reference 9999990
+    cy.get('#returns > .govuk-table > .govuk-table__body > .govuk-table__row > [scope="row"] > a').click()
 
     // --> Have you extracted water in this period?
     // Click 'Yes' and continue
@@ -52,12 +45,12 @@ describe('Submit volumes in gallons return (external)', () => {
 
     // --> Your abstraction volumes
     // Enter valid volumes with some gaps and continue
-    cy.get('input[name="2020-01-01_2020-01-31"]').type('1')
-    cy.get('input[name="2020-02-01_2020-02-29"]').type('1')
-    cy.get('input[name="2020-03-01_2020-03-31"]').type('1')
     cy.get('input[name="2020-04-01_2020-04-30"]').type('1')
     cy.get('input[name="2020-05-01_2020-05-31"]').type('1')
+    cy.get('input[name="2020-06-01_2020-06-30"]').type('1')
+    cy.get('input[name="2020-07-01_2020-07-31"]').type('1')
     cy.get('input[name="2020-08-01_2020-08-31"]').type('1')
+    cy.get('input[name="2020-09-01_2020-09-30"]').type('1')
     cy.get('input[name="2020-10-01_2020-10-31"]').type('1')
     cy.get('input[name="2020-12-01_2020-12-31"]').type('1')
     cy.get('form>.govuk-button').click()
