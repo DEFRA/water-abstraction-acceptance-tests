@@ -1,24 +1,19 @@
 'use strict'
 
+import externalUserOnly from '../../../support/scenarios/external-user-only.js'
+
+const externalUserOnlyScenario = externalUserOnly()
+
 describe('Reset password journey (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('external-user.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('users.json').its('loadedExternal').as('userEmail')
+    cy.load(externalUserOnlyScenario)
+    cy.wrap(externalUserOnlyScenario.users[0].username).as('userEmail')
   })
 
   it('displays the change password page when the link in the email is clicked and automatically logs in when the password is changed', () => {
-    // Navigate to the signin page
-    cy.visit(Cypress.env('externalUrl'))
-    cy.get('a[href*="/signin"]').click()
-
     // Navigate to the reset your password page
-    cy.get('a[href*="/reset_password').click()
+    cy.visit(`${Cypress.env('externalUrl')}/reset_password`)
 
     // Test setting a valid email address
     cy.get('@userEmail').then((userEmail) => {
@@ -43,9 +38,7 @@ describe('Reset password journey (external)', () => {
         cy.get('button.govuk-button').click()
 
         cy.contains('View licences').should('have.attr', 'href', '/licences')
-        cy.contains('Manage returns').should('have.attr', 'href', '/returns')
-        cy.contains('Add licences or give access').should('have.attr', 'href', '/manage_licences')
-        cy.contains('Your licences').should('have.class', 'govuk-heading-l')
+        cy.contains('Add your licences to the service').should('have.class', 'govuk-heading-l')
       })
     })
   })
