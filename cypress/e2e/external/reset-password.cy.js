@@ -1,6 +1,6 @@
 'use strict'
 
-import externalUserOnly from '../../../support/scenarios/external-user-only.js'
+import externalUserOnly from '../../support/scenarios/external-user-only.js'
 
 const externalUserOnlyScenario = externalUserOnly()
 
