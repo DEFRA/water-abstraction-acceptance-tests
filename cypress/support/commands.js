@@ -249,10 +249,16 @@ function _dueDateObject (dueDate) {
 Cypress.Commands.add('programmaticLogin', (overrides = {}) => {
   const email = overrides.email || Cypress.env('USERNAME')
   const password = overrides.password || Cypress.env('defaultPassword')
+  const external = overrides.external || false
+
+  let baseUrl = ''
+  if (external) {
+    baseUrl = Cypress.env('externalUrl')
+  }
 
   return cy.request({
     method: 'POST',
-    url: '/signin',
+    url: `${baseUrl}/signin`,
     body: { email, password }
   })
 })
