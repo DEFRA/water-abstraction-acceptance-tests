@@ -1,9 +1,11 @@
 'use strict'
 
+import usersData from '../../../support/fixture-builder/users.js'
+
 describe('User registration (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('users.json').its('loadedExternal').as('userEmail')
+    cy.wrap(usersData().external.username).as('userEmail')
   })
 
   it('can register a new user', () => {
