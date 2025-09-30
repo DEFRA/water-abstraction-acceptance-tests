@@ -1,28 +1,23 @@
 'use strict'
 
+import oneLicenceOnly from '../../../../support/scenarios/one-licence-only.js'
+
+const oneLicenceOnlyScenario = oneLicenceOnly()
+
 describe('Billing & Data permissions (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.load(oneLicenceOnlyScenario)
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it("confirms the Billing & Data user can access bill runs and a licence's bills tab", () => {
-    cy.visit('/')
-
-    //  enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  assert the user signed in and we're on the search page
-    cy.contains('Search')
+    cy.visit('/')
 
     // assert they can see the Bill runs page
     cy.get('#nav > ul').children().should('contain', 'Bill runs')
