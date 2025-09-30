@@ -1,6 +1,6 @@
 'use strict'
 
-import scenarioData from '../../../support/scenarios/approve-charge-version.js'
+import scenarioData from '../../../support/scenarios/licence-with-presroc-chg-ver.js'
 
 const scenario = scenarioData()
 
