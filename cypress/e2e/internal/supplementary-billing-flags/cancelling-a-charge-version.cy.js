@@ -1,33 +1,27 @@
 'use strict'
 
+import cancellingChargeVersion from '../../../support/scenarios/cancelling-charge-version.js'
+
+const cancellingChargeVersionScenario = cancellingChargeVersion()
+
 describe('Cancelling a charge version in workflow (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('cancelling-a-charge-version.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(cancellingChargeVersionScenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('flags the licence for supplementary billing', () => {
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
+    })
     cy.visit('/')
 
-    //  Enter the user name and Password
-    cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
-    })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search the licence
+    /// Search for the licence and select it from the results
     cy.get('#query').type('AT/CURR/DAILY/01')
     cy.get('.search__button').click()
     cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
@@ -37,7 +31,6 @@ describe('Cancelling a charge version in workflow (internal)', () => {
 
     // Click the workflow tab
     cy.get('#nav-manage').click()
-    cy.get('#navbar-notifications').click()
     cy.get(':nth-child(9) > li > .govuk-link').click()
     cy.get('#tab_review').click()
 
