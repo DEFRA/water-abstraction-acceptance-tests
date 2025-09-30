@@ -1,29 +1,27 @@
 'use strict'
 
-describe('Login and log out (internal)', () => {
+import internalUserOnly from '../../../support/scenarios/internal-user-only.js'
+
+const internalUserOnlyScenario = internalUserOnly()
+
+describe('Change user permissions (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('environment-officer-user.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(internalUserOnlyScenario)
+
+    cy.wrap(internalUserOnlyScenario.users[0].username).as('userToBeUpdatedEmail')
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
-    cy.fixture('users.json').its('loadedEnvironmentOfficer').as('userToBeUpdatedEmail')
   })
 
-  it('can log in and out as an internal user', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
+  it('allows a billing & data user to change the permissions of another user', () => {
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
+    cy.visit('/')
 
     // search for the user by email
     cy.get('@userToBeUpdatedEmail').then((userToBeUpdatedEmail) => {
@@ -39,10 +37,10 @@ describe('Login and log out (internal)', () => {
     cy.get('.govuk-list .govuk-link').click()
 
     // Set permissions
-    // confirm we are on the permissions page then change the user's permissions from environment officer to National
+    // confirm we are on the permissions page then change the user's permissions from basic user to National
     // Permitting Service and submit
     cy.get('.govuk-heading-l').eq(1).should('have.text', 'Set permissions')
-    cy.get('#permission-3').should('be.checked')
+    cy.get('.govuk-radios > :nth-child(1) > #permission').should('be.checked')
     cy.get('#permission-4').check()
     cy.get('form > .govuk-button').click()
 
