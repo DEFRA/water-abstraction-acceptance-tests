@@ -1,38 +1,29 @@
 'use strict'
 
+import licenceInWorkflow from '../../../support/scenarios/licence-in-workflow.js'
+
+const licenceInWorkflowScenario = licenceInWorkflow()
+
 describe('Remove charge information journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.fixture('barebones.json').then((fixture) => {
-      fixture.licences[0].waterUndertaker = false
-      cy.load(fixture)
-    })
-
-    cy.fixture('charge-version-workflow.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.load(licenceInWorkflowScenario)
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('removes a charge information from the workflow', () => {
-    cy.visit('/')
-
-    // enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
 
-    // click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
+    // Navigate to the manage page
+    cy.visit('/system/manage')
 
-    // assert the user signed in and we're on the search page
-    cy.get('#main-content > form > fieldset > legend > h1 > label').should('contain.text', 'Search')
-
-    // navigate to the charge information flow
-    cy.get('#navbar-notifications').click()
+    // Click on the workflow link
     cy.get('a[href="/charge-information-workflow"]').click()
 
     // Charge information workflow
