@@ -1,6 +1,6 @@
 'use strict'
 
-import scenarioData from '../../../support/scenarios/recalculate-bills-link.js'
+import scenarioData from '../../../support/scenarios/licence-with-agreement.js'
 
 const scenario = scenarioData()
 

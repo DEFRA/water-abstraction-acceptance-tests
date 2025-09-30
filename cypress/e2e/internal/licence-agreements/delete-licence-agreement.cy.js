@@ -1,31 +1,25 @@
 'use strict'
 
+import scenarioData from '../../../support/scenarios/licence-with-agreement.js'
+
+const scenario = scenarioData()
+
 describe('Delete licence agreement journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('licence-agreement').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('deletes a licence agreement and check its flags the licence for supplementary billing', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
+    cy.visit('/')
 
     // Search for the licence and select it from the results
     cy.get('#query').type('AT/CURR/DAILY/01')
