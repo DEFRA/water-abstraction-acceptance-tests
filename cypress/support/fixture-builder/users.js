@@ -8,7 +8,7 @@ export default function () {
       badLogins: 0,
       enabled: true
     },
-    external1: {
+    externalSharing: {
       username: 'external.shared@example.com',
       password: 'P@55word',
       resetRequired: 0,

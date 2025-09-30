@@ -5,7 +5,7 @@ export default function() {
   return {
     users: [
       usersData().external,
-      usersData().external1
+      usersData().externalSharing
     ],
     ...licence()
   }
