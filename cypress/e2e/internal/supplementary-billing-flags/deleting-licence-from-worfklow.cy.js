@@ -29,18 +29,31 @@ describe('Deleting a licence from workflow (internal)', () => {
     // Confirm there are no flags already on the licence
     cy.get('.govuk-notification-banner__content').should('not.exist')
 
-    // Click the workflow tab
+    // Navigate to the manage page
     cy.get('#nav-manage').click()
 
-    // Check licences in workflow
-    cy.get(':nth-child(9) > li > .govuk-link').click()
-    cy.contains('Workflow')
-    cy.get('tbody > .govuk-table__row > :nth-child(1)').contains('AT/CURR/DAILY/01')
-    cy.get('tbody > .govuk-table__row > :nth-child(2)').contains('Big Farm Co Ltd')
-    cy.get('tbody > .govuk-table__row > :nth-child(3)').contains('1 January 2020')
+    // Click on the workflow link
+    cy.get('a[href="/charge-information-workflow"]').click()
+
+    // Workflow
+    // confirm the 3 tabs exist
+    cy.get('#tab_toSetUp').should('contain.text', 'To set up')
+    cy.get('#tab_review').should('contain.text', 'Review')
+    cy.get('#tab_changeRequest').should('contain.text', 'Change request')
+
+    // confirm we see our test licence in the 'To set up' workflow and the correct action links
+    cy.get('#toSetUp > div > table > tbody').within(() => {
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'AT/CURR/DAILY/01')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Big Farm Co Ltd')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 January 2020')
+
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Set up')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Remove')
+
+      cy.get('.govuk-table__row:nth-child(1) > td:nth-child(4) > a:nth-child(2)').click()
+    })
 
     // Remove licence from workflow
-    cy.get('tbody > .govuk-table__row > :nth-child(4)').contains('Remove').click()
     cy.get('.govuk-heading-xl').contains("You're about to remove this licence from the workflow")
     cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').contains('AT/CURR/DAILY/01')
     cy.get('form > .govuk-button').click()
