@@ -2,12 +2,7 @@
 
 describe('Reset password journey (internal)', () => {
   beforeEach(() => {
-    cy.tearDown()
-    cy.fixture('psc-user.json').then((fixture) => {
-      cy.load(fixture)
-    })
-
-    cy.fixture('users.json').its('loadedPsc').as('userEmail')
+    cy.fixture('users.json').its('basic').as('userEmail')
   })
 
   it('displays the change password page when the link in the email is clicked and automatically logs in when the password is changed', () => {
@@ -34,10 +29,9 @@ describe('Reset password journey (internal)', () => {
         cy.contains('Enter a new password').should('be.visible')
         cy.contains('Confirm your password').should('be.visible')
 
-        // Generate a new password and enter it
-        const newPassword = `${Cypress.env('defaultPassword')}1234`
-        cy.get('[id=password]').type(newPassword)
-        cy.get('[id=confirmPassword]').type(newPassword)
+        // Enter a password and confirm
+        cy.get('[id=password]').type(Cypress.env('defaultPassword'))
+        cy.get('[id=confirmPassword]').type(Cypress.env('defaultPassword'))
         cy.get('button.govuk-button').click()
 
         // Check we are signed in by confirming we are on the search page
