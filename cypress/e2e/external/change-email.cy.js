@@ -1,16 +1,16 @@
 'use strict'
 
-import externalUserOnly from '../../support/scenarios/external-user-only.js'
+import scenarioData from '../../support/scenarios/external-user-only.js'
 
-const externalUserOnlyScenario = externalUserOnly()
+const scenario = scenarioData()
 
 describe('Change user email address (external)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(externalUserOnlyScenario)
+    cy.load(scenario)
 
-    cy.wrap(externalUserOnlyScenario.users[0].username).as('userEmail')
+    cy.wrap(scenario.users[0].username).as('userEmail')
   })
 
   it('can allow authenticated users to change their email address including verification by them with a code', () => {

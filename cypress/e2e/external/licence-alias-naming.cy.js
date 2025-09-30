@@ -1,14 +1,14 @@
 'use strict'
 
-import sharingAccess from '../../support/scenarios/sharing-access.js'
+import scenarioData from '../../support/scenarios/sharing-access.js'
 
-const sharingAccessScenario = sharingAccess()
+const scenario = scenarioData()
 
 describe('View Licences as external user', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.load(sharingAccessScenario)
-    cy.wrap(sharingAccessScenario.users[0].username).as('userEmail')
+    cy.load(scenario)
+    cy.wrap(scenario.users[0].username).as('userEmail')
   })
 
   it('Create the alias name for the licences user is holding', () => {

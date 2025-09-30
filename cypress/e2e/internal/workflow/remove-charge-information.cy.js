@@ -1,14 +1,14 @@
 'use strict'
 
-import licenceInWorkflow from '../../../support/scenarios/licence-in-workflow.js'
+import scenarioData from '../../../support/scenarios/licence-in-workflow.js'
 
-const licenceInWorkflowScenario = licenceInWorkflow()
+const scenario = scenarioData()
 
 describe('Remove charge information journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(licenceInWorkflowScenario)
+    cy.load(scenario)
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })

@@ -1,14 +1,14 @@
 'use strict'
 
-import externalReturnStatuses from '../../../support/scenarios/external-return-statuses.js'
+import scenarioData from '../../../support/scenarios/external-return-statuses.js'
 
-const externalReturnStatusesScenario = externalReturnStatuses()
+const scenario = scenarioData()
 
 describe('Return statuses (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.load(externalReturnStatusesScenario)
-    cy.wrap(externalReturnStatusesScenario.users[0].username).as('userEmail')
+    cy.load(scenario)
+    cy.wrap(scenario.users[0].username).as('userEmail')
   })
 
   it('login as an existing user and view returns', () => {

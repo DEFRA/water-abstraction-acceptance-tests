@@ -1,14 +1,14 @@
 'use strict'
 
-import externalUserOnly from '../../support/scenarios/external-user-only.js'
+import scenarioData from '../../support/scenarios/external-user-only.js'
 
-const externalUserOnlyScenario = externalUserOnly()
+const scenario = scenarioData()
 
 describe('Reset password journey (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.load(externalUserOnlyScenario)
-    cy.wrap(externalUserOnlyScenario.users[0].username).as('userEmail')
+    cy.load(scenario)
+    cy.wrap(scenario.users[0].username).as('userEmail')
   })
 
   it('displays the change password page when the link in the email is clicked and automatically logs in when the password is changed', () => {

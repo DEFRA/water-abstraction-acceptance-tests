@@ -1,14 +1,14 @@
 'use strict'
 
-import internalReturnSubmission from '../../../support/scenarios/internal-return-submission.js'
+import scenarioData from '../../../support/scenarios/internal-return-submission.js'
 
-const internalReturnSubmissionScenario = internalReturnSubmission()
+const scenario = scenarioData()
 
 describe('Address lookup validation (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(internalReturnSubmissionScenario)
+    cy.load(scenario)
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })

@@ -1,14 +1,14 @@
 'use strict'
 
-import recalculateBillsLink from '../../../support/scenarios/recalculate-bills-link.js'
+import scenarioData from '../../../support/scenarios/recalculate-bills-link.js'
 
-const recalculateBillsLinkScenario = recalculateBillsLink()
+const scenario = scenarioData()
 
 describe('Recalculate Bills Link (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(recalculateBillsLinkScenario)
+    cy.load(scenario)
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })

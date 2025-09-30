@@ -1,14 +1,14 @@
 'use strict'
 
-import editingReturn from '../../../support/scenarios/editing-return.js'
+import scenarioData from '../../../support/scenarios/editing-return.js'
 
-const editingReturnScenario = editingReturn()
+const scenario = scenarioData()
 
 describe('Editing a return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(editingReturnScenario)
+    cy.load(scenario)
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })

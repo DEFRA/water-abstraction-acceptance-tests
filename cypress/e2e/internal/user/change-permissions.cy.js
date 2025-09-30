@@ -1,16 +1,16 @@
 'use strict'
 
-import internalUserOnly from '../../../support/scenarios/internal-user-only.js'
+import scenarioData from '../../../support/scenarios/internal-user-only.js'
 
-const internalUserOnlyScenario = internalUserOnly()
+const scenario = scenarioData()
 
 describe('Change user permissions (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(internalUserOnlyScenario)
+    cy.load(scenario)
 
-    cy.wrap(internalUserOnlyScenario.users[0].username).as('userToBeUpdatedEmail')
+    cy.wrap(scenario.users[0].username).as('userToBeUpdatedEmail')
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })

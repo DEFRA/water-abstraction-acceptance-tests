@@ -1,14 +1,14 @@
 'use strict'
 
-import approveChargeVersion from '../../../support/scenarios/approve-charge-version.js'
+import scenarioData from '../../../support/scenarios/approve-charge-version.js'
 
-const approveChargeVersionScenario = approveChargeVersion()
+const scenario = scenarioData()
 
 describe('Approving a charge version (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(approveChargeVersionScenario)
+    cy.load(scenario)
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })

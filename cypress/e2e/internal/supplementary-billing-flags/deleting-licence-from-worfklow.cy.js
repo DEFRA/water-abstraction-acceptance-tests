@@ -1,14 +1,14 @@
 'use strict'
 
-import deleteLicenceFromWorkflow from '../../../support/scenarios/delete-licence-from-workflow.js'
+import scenarioData from '../../../support/scenarios/delete-licence-from-workflow.js'
 
-const deleteLicenceFromWorkflowScenario = deleteLicenceFromWorkflow()
+const scenario = scenarioData()
 
 describe('Deleting a licence from workflow (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(deleteLicenceFromWorkflowScenario)
+    cy.load(scenario)
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })

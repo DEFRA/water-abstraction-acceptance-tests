@@ -1,14 +1,14 @@
 'use strict'
 
-import externalReturnSubmission from '../../../support/scenarios/external-return-submission.js'
+import scenarioData from '../../../support/scenarios/external-return-submission.js'
 
-const externalReturnSubmissionScenario = externalReturnSubmission()
+const scenario = scenarioData()
 
 describe('Submit metered readings return (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.load(externalReturnSubmissionScenario)
-    cy.wrap(externalReturnSubmissionScenario.users[0].username).as('userEmail')
+    cy.load(scenario)
+    cy.wrap(scenario.users[0].username).as('userEmail')
   })
 
   it('login as an existing user and submit returns', () => {

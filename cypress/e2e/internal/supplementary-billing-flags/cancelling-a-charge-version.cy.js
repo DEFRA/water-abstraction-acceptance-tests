@@ -1,14 +1,14 @@
 'use strict'
 
-import cancellingChargeVersion from '../../../support/scenarios/cancelling-charge-version.js'
+import scenarioData from '../../../support/scenarios/cancelling-charge-version.js'
 
-const cancellingChargeVersionScenario = cancellingChargeVersion()
+const scenario = scenarioData()
 
 describe('Cancelling a charge version in workflow (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(cancellingChargeVersionScenario)
+    cy.load(scenario)
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })

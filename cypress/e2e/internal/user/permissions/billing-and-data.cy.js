@@ -1,13 +1,13 @@
 'use strict'
 
-import oneLicenceOnly from '../../../../support/scenarios/one-licence-only.js'
+import scenarioData from '../../../../support/scenarios/one-licence-only.js'
 
-const oneLicenceOnlyScenario = oneLicenceOnly()
+const scenario = scenarioData()
 
 describe('Billing & Data permissions (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.load(oneLicenceOnlyScenario)
+    cy.load(scenario)
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 

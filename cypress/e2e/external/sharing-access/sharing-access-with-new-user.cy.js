@@ -1,14 +1,14 @@
 'use strict'
 
-import sharingAccess from '../../../support/scenarios/sharing-access.js'
+import scenarioData from '../../../support/scenarios/sharing-access.js'
 
-const sharingAccessScenario = sharingAccess()
+const scenario = scenarioData()
 
 describe('Sharing license access with a new user (external)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.load(sharingAccessScenario)
-    cy.wrap(sharingAccessScenario.users[0].username).as('firstUserEmail')
+    cy.load(scenario)
+    cy.wrap(scenario.users[0].username).as('firstUserEmail')
     cy.wrap('external.new@example.com').as('secondUserEmail')
   })
 
