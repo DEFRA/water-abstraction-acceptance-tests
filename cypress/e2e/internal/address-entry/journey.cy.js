@@ -7,13 +7,10 @@ const internalReturnSubmissionScenario = internalReturnSubmission()
 describe('Address lookup journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
+
     cy.load(internalReturnSubmissionScenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
-    cy.get('@userEmail').then((userEmail) => {
-      cy.programmaticLogin({
-        email: userEmail
-      })
-    })
   })
 
   it('allows addresses to be entered manually or via the lookup', () => {

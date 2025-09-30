@@ -7,7 +7,9 @@ const internalReturnSubmissionScenario = internalReturnSubmission()
 describe('Address lookup validation (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
+
     cy.load(internalReturnSubmissionScenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
