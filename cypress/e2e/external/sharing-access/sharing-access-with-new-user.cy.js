@@ -7,7 +7,9 @@ const scenario = scenarioData()
 describe('Sharing license access with a new user (external)', () => {
   beforeEach(() => {
     cy.tearDown()
+
     cy.load(scenario)
+
     cy.wrap(scenario.users[0].username).as('firstUserEmail')
     cy.wrap('external.new@example.com').as('secondUserEmail')
   })

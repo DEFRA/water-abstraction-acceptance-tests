@@ -7,7 +7,9 @@ const scenario = scenarioData()
 describe('Submit volumes in megalitres return (external)', () => {
   beforeEach(() => {
     cy.tearDown()
+
     cy.load(scenario)
+
     cy.wrap(scenario.users[0].username).as('userEmail')
   })
 

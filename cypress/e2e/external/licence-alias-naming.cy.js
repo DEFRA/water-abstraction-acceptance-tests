@@ -7,7 +7,9 @@ const scenario = scenarioData()
 describe('View Licences as external user', () => {
   beforeEach(() => {
     cy.tearDown()
+
     cy.load(scenario)
+
     cy.wrap(scenario.users[0].username).as('userEmail')
   })
 

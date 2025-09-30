@@ -7,7 +7,9 @@ const scenario = scenarioData()
 describe('Billing & Data permissions (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
+
     cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 

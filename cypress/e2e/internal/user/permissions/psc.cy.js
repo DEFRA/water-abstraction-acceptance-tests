@@ -7,7 +7,9 @@ const scenario = scenarioData()
 describe('PSC permissions (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
+
     cy.load(scenario)
+
     cy.fixture('users.json').its('psc').as('userEmail')
   })
 
