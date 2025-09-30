@@ -1,28 +1,25 @@
 'use strict'
 
+import scenarioData from '../../../support/scenarios/one-licence-only.js'
+
+const scenario = scenarioData()
+
 describe("View a licence's contacts (internal)", () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('super').as('userEmail')
   })
 
   it('search for a licence, select it and then view its contacts', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
+    cy.visit('/')
 
     // Search for the licence and select it from the results
     cy.get('#query').type('AT/CURR/DAILY/01')
