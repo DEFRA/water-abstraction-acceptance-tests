@@ -155,7 +155,7 @@ export default function licence () {
           historicalAreaCode: 'SAAR',
           regionalChargeArea: 'Southern'
         },
-        startDate: '2020-01-01',
+        startDate: '2018-01-01',
         waterUndertaker: true
       }
     ],
@@ -166,7 +166,7 @@ export default function licence () {
         issue: 1,
         increment: 0,
         status: 'current',
-        startDate: '2020-01-01',
+        startDate: '2018-01-01',
         externalId: '6:1234:1:0'
       }
     ],
