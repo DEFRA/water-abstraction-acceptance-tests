@@ -1,11 +1,10 @@
 'use strict'
 
-import usersData from '../../../support/fixture-builder/users.js'
-
 describe('User registration (external)', () => {
   beforeEach(() => {
-    cy.tearDown()
-    cy.wrap(usersData().external.username).as('userEmail')
+    const randomValue = Math.floor(Math.random() * 100000) + 1
+
+    cy.wrap(`external.${randomValue}@example.com`).as('userEmail')
   })
 
   it('can register a new user', () => {
