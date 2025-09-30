@@ -2,9 +2,7 @@
 
 describe('User registration validation (external)', () => {
   beforeEach(() => {
-    const randomValue = Math.floor(Math.random() * 100000) + 1
-
-    cy.wrap(`external.${randomValue}@example.com`).as('userEmail')
+    cy.wrap(`external.${Date.now()}@example.com`).as('userEmail')
   })
 
   it('validates the password in the create account page', () => {

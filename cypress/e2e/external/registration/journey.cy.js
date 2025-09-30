@@ -2,9 +2,7 @@
 
 describe('User registration (external)', () => {
   beforeEach(() => {
-    const randomValue = Math.floor(Math.random() * 100000) + 1
-
-    cy.wrap(`external.${randomValue}@example.com`).as('userEmail')
+    cy.wrap(`external.${Date.now()}@example.com`).as('userEmail')
   })
 
   it('can register a new user', () => {
