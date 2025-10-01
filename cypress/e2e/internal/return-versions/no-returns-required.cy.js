@@ -1,26 +1,26 @@
 'use strict'
 
-import oneReturnRequirement from '../../../support/scenarios/one-return-requirement.js'
+import scenarioData from '../../../support/scenarios/one-return-requirement.js'
 
-const dataModel = oneReturnRequirement()
+const scenario = scenarioData()
 
 describe('Submit no returns requirement (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    // Get the user email and login as the user
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
+  })
+
+  it('creates a no return requirement and approves the requirement', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
       })
     })
 
-    cy.load(dataModel)
-  })
-
-  it('creates a no return requirement and approves the requirement', () => {
-    cy.visit(`/system/licences/${dataModel.licences[0].id}/set-up`)
+    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
     // confirm we are on the licence set up tab
     cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
@@ -49,7 +49,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Returns are not required for this licence')
 
     // confirm we are seeing the details we selected
-    cy.get('[data-test="start-date"]').should('contain.text', '1 January 2020')
+    cy.get('[data-test="start-date"]').should('contain.text', '1 January 2018')
     cy.get('[data-test="reason"]').should('contain.text', 'Licence conditions do not require returns')
 
     // click the change link for the reason
@@ -134,7 +134,7 @@ describe('Submit no returns requirement (internal)', () => {
 
     cy.get('.govuk-heading-l').contains('Requirements for returns for Mr J J Testerson')
 
-    cy.get('[data-test="start-date"]').contains('1 January 2020')
+    cy.get('[data-test="start-date"]').contains('1 January 2018')
     cy.get('[data-test="reason"]').contains('Returns exception')
     cy.get('h3').contains('Returns are not required for this licence')
   })
