@@ -1,11 +1,15 @@
 'use strict'
 
+import scenarioData from '../../../../support/scenarios/monitoring-station-tagged.js'
+
+const scenario = scenarioData()
+
 describe('Attempt set up of abstraction alert with no thresholds (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('monitoring-stations.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('environmentOfficer').as('userEmail')
   })
 
@@ -15,11 +19,11 @@ describe('Attempt set up of abstraction alert with no thresholds (internal)', ()
         email: userEmail
       })
     })
-    cy.visit('/system/monitoring-stations/3cfc9486-c3da-4a2e-b1be-020ce805be46')
+    cy.visit(`/system/monitoring-stations/${scenario.monitoringStations[0].id}`)
 
     // Confirm we are on the monitoring station page
     cy.get('.govuk-caption-l').should('have.text', 'Test Catchment')
-    cy.get('.govuk-heading-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station')
     cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST1234567890')
     cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
     cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
@@ -28,7 +32,7 @@ describe('Attempt set up of abstraction alert with no thresholds (internal)', ()
     cy.get('.govuk-button').contains('Create a water abstraction alert').click()
 
     // Confirm we are on the Select the type of alert you need to send page
-    cy.get('.govuk-caption-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-caption-l').should('have.text', 'Test Station')
     cy.get('.govuk-fieldset__heading').contains('Select the type of alert you need to send')
 
     // Select the reduce alert type and continue

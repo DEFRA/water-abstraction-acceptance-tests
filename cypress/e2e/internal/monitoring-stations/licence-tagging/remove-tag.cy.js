@@ -1,11 +1,15 @@
 'use strict'
 
+import scenarioData from '../../../../support/scenarios/monitoring-station-tagged.js'
+
+const scenario = scenarioData()
+
 describe('Attempt to remove a tag from a monitoring station (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('monitoring-stations.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('environmentOfficer').as('userEmail')
   })
 
@@ -15,10 +19,11 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/system/monitoring-stations/3cfc9486-c3da-4a2e-b1be-020ce805be46')
+    cy.visit(`/system/monitoring-stations/${scenario.monitoringStations[0].id}`)
 
     // Confirm we are on the monitoring station page
-    cy.get('.govuk-heading-l').contains('Test Station Tagged')
+    cy.get('.govuk-caption-l').should('have.text', 'Test Catchment')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station')
     cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST1234567890')
     cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
     cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
@@ -27,7 +32,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
     cy.get('[data-test="action-0"] > .govuk-link').contains('View').click()
 
     // Confirm we are viewing the tag details
-    cy.get('.govuk-caption-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-caption-l').should('have.text', 'Test Station')
     cy.get('.govuk-heading-l').should('have.text', 'Details for AT/CURR/DAILY/01')
     cy.get('.govuk-summary-card__title').contains('Stop tag')
     cy.get('[data-test="threshold-0"]').should('have.text', '100m3/s')
@@ -45,7 +50,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
       'You will not be able to send a water abstraction alert for the licence at this restriction type and threshold.'
     )
     cy.get('[data-test="watercourse"]').should('have.text', 'Test Catchment')
-    cy.get('[data-test="station"]').should('have.text', 'Test Station Tagged')
+    cy.get('[data-test="station"]').should('have.text', 'Test Station')
     cy.get('[data-test="threshold"]').should('have.text', '100m3/s')
     cy.get('[data-test="type"]').should('have.text', 'Stop')
     cy.get('[data-test="linked-condition"]').should('have.text', 'Not linked to a condition')
@@ -55,7 +60,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
 
     // Confirm we are back on the monitoring station page and the tag has been removed
     cy.get('.govuk-notification-banner__heading').contains('Tag removed for AT/CURR/DAILY/01')
-    cy.get('.govuk-heading-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station')
     cy.get('p.govuk-body').should(
       'have.text', 'There are no licences tagged with restrictions for this monitoring station'
     )

@@ -1,11 +1,15 @@
 'use strict'
 
+import scenarioData from '../../../../support/scenarios/monitoring-station-tagged.js'
+
+const scenario = scenarioData()
+
 describe('Set up but then cancel an abstraction alert (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('monitoring-stations.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('environmentOfficer').as('userEmail')
   })
 
@@ -15,11 +19,11 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/system/monitoring-stations/3cfc9486-c3da-4a2e-b1be-020ce805be46')
+    cy.visit(`/system/monitoring-stations/${scenario.monitoringStations[0].id}`)
 
     // Confirm we are on the monitoring station page
     cy.get('.govuk-caption-l').should('have.text', 'Test Catchment')
-    cy.get('.govuk-heading-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station')
     cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST1234567890')
     cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
     cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
@@ -28,7 +32,7 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
     cy.get('.govuk-button').contains('Create a water abstraction alert').click()
 
     // Confirm we are on the Select the type of alert you need to send page
-    cy.get('.govuk-caption-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-caption-l').should('have.text', 'Test Station')
     cy.get('.govuk-fieldset__heading').contains('Select the type of alert you need to send')
 
     // Select the stop alert type and continue
@@ -36,7 +40,7 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
     cy.get('.govuk-button').contains('Continue').click()
 
     // Confirm we are on the Which thresholds do you need to send an alert for? page
-    cy.get('.govuk-caption-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-caption-l').should('have.text', 'Test Station')
     cy.get('.govuk-fieldset__heading').contains('Which thresholds do you need to send an alert for?')
 
     // Select the threshold and continue
@@ -44,7 +48,7 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
     cy.get('.govuk-button').contains('Continue').click()
 
     // Confirm data on Check the licence matches for the selected thresholds page is correct and continue
-    cy.get('.govuk-caption-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-caption-l').should('have.text', 'Test Station')
     cy.get('.govuk-heading-l').should('have.text', 'Check the licence matches for the selected thresholds')
     cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/CURR/DAILY/01')
     cy.get('[data-test="abstraction-period-0"]').should('have.text', '10 October to 11 November')
@@ -54,7 +58,7 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
     cy.get('.govuk-button').contains('Continue').click()
 
     // Confirm we are on the Select an email address to include in the alerts page
-    cy.get('.govuk-caption-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-caption-l').should('have.text', 'Test Station')
     cy.get('.govuk-fieldset__heading').contains('Select an email address to include in the alerts')
     cy.get('.govuk-radios').contains('environment.officer@wrls.gov.uk')
 
@@ -81,6 +85,6 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
 
     // Confirm we are back on the monitoring station page
     cy.get('.govuk-caption-l').should('have.text', 'Test Catchment')
-    cy.get('.govuk-heading-l').should('have.text', 'Test Station Tagged')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station')
   })
 })

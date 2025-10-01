@@ -1,11 +1,15 @@
 'use strict'
 
+import scenarioData from '../../../../support/scenarios/monitoring-station-untagged.js'
+
+const scenario = scenarioData()
+
 describe('Tag a licence but attempt to change the tag type during the journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('monitoring-stations.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('environmentOfficer').as('userEmail')
   })
 
@@ -15,11 +19,12 @@ describe('Tag a licence but attempt to change the tag type during the journey (i
         email: userEmail
       })
     })
-    cy.visit('/system/monitoring-stations/a43c810a-aa0a-48a1-8729-8d28188f21f8')
+    cy.visit(`/system/monitoring-stations/${scenario.monitoringStations[0].id}`)
 
     // Confirm we are on the monitoring station page
-    cy.get('.govuk-heading-l').should('have.text', 'Test Station 500')
-    cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST5820172718')
+    cy.get('.govuk-caption-l').should('have.text', 'Test Catchment')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station')
+    cy.get('[data-test="meta-data-grid-reference"]').should('have.text', 'ST1234567890')
     cy.get('[data-test="meta-data-wiski-id"]').should('be.empty')
     cy.get('[data-test="meta-data-station-reference"]').should('be.empty')
 
@@ -36,15 +41,15 @@ describe('Tag a licence but attempt to change the tag type during the journey (i
     cy.get('.govuk-button').contains('Continue').click()
 
     // Enter the licence number this threshold applies to
-    cy.get('#licence-ref').type('AT/CURR/WEEKLY/01')
+    cy.get('#licence-ref').type('AT/CURR/DAILY/01')
     cy.get('.govuk-button').contains('Continue').click()
 
     // The licence has no conditions recorded against it, confirm manual entry of abstraction period
-    cy.get('.govuk-heading-l').contains('There are no flow or level cessation conditions for licence AT/CURR/WEEKLY/01')
+    cy.get('.govuk-heading-l').contains('There are no flow or level cessation conditions for licence AT/CURR/DAILY/01')
     cy.get('.govuk-button').contains('Continue').click()
 
     // Enter the abstraction period for the licence
-    cy.get('.govuk-heading-l').contains('Enter an abstraction period for licence AT/CURR/WEEKLY/01')
+    cy.get('.govuk-heading-l').contains('Enter an abstraction period for licence AT/CURR/DAILY/01')
     cy.get('#abstractionPeriodStartDay').type('10')
     cy.get('#abstractionPeriodStartMonth').type('10')
     cy.get('#abstractionPeriodEndDay').type('11')
@@ -54,7 +59,7 @@ describe('Tag a licence but attempt to change the tag type during the journey (i
     // Check the restriction details
     cy.get(':nth-child(1) > .govuk-summary-list__value').contains('123mBOD')
     cy.get(':nth-child(2) > .govuk-summary-list__value').contains('Stop')
-    cy.get(':nth-child(3) > .govuk-summary-list__value').contains('AT/CURR/WEEKLY/01')
+    cy.get(':nth-child(3) > .govuk-summary-list__value').contains('AT/CURR/DAILY/01')
     cy.get(':nth-child(4) > .govuk-summary-list__value').contains('None')
     cy.get(':nth-child(5) > .govuk-summary-list__value').contains('10 October to 11 November')
 
@@ -71,9 +76,9 @@ describe('Tag a licence but attempt to change the tag type during the journey (i
     cy.get('.govuk-button').contains('Confirm').click()
 
     // Confirm we are back on the monitoring station page and the licence is tagged
-    cy.get('.govuk-notification-banner__heading').contains('Tag for licence AT/CURR/WEEKLY/01 added')
-    cy.get('.govuk-heading-l').should('have.text', 'Test Station 500')
-    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/CURR/WEEKLY/01')
+    cy.get('.govuk-notification-banner__heading').contains('Tag for licence AT/CURR/DAILY/01 added')
+    cy.get('.govuk-heading-l').should('have.text', 'Test Station')
+    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/CURR/DAILY/01')
     cy.get('[data-test="abstraction-period-0"]').should('have.text', '10 October to 11 November')
     cy.get('[data-test="restriction-0"]').should('have.text', 'Stop or reduce')
     cy.get('[data-test="threshold-0"]').should('have.text', '123mBOD')
