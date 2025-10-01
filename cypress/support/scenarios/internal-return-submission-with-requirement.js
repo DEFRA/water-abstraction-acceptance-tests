@@ -1,8 +1,12 @@
 import licenceData from '../fixture-builder/licence.js'
+import returnRequirements from '../fixture-builder/return-requirements.js'
+import returnVersion from '../fixture-builder/return-version.js'
 
 export default function() {
   return {
     ...licenceData(),
+    ...returnVersion(1),
+    ...returnRequirements(1),
     returnLogs: [
       {
         id: 'v1:1:AT/CURR/DAILY/01:9999990:2020-01-01:2020-03-31',

@@ -1,35 +1,32 @@
 'use strict'
 
+import scenarioData from '../../../support/scenarios/internal-return-submission-with-requirement.js'
+
+const scenario = scenarioData()
+
 describe('Paper returns journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('generates a paper form sent by Notify to the licensee', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
 
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Navigate to the paper returns flow
-    cy.get('#navbar-notifications').click()
+    // Navigate to the paper returns flow. We'll use it's address entry screens to test the address lookup and entry
+    // functionality
+    cy.visit('/system/manage')
     cy.get('a[href="/returns-notifications/forms"]').click()
 
     // Select a licence to generate paper returns for
-    cy.get('#licenceNumbers').type('AT/CURR/MONTHLY/02')
+    cy.get('#licenceNumbers').type('AT/CURR/DAILY/01')
     cy.get('button.govuk-button').click()
 
     // Select a return

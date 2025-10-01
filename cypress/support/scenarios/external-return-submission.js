@@ -16,7 +16,7 @@ export default function() {
           nald: {
             areaCode: 'AREA',
             formatId: 9999990,
-            regionCode: 1,
+            regionCode: 9,
             periodEndDay: '31',
             periodEndMonth: '12',
             periodStartDay: '1',

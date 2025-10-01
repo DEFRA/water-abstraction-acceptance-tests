@@ -18,7 +18,7 @@ function _returnLog(startDate, endDate, dueDate, returnReference) {
       nald: {
         areaCode: 'AREA',
         formatId: returnReference,
-        regionCode: 1,
+        regionCode: 9,
         periodEndDay: '31',
         periodEndMonth: '12',
         periodStartDay: '1',
