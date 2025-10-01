@@ -111,7 +111,7 @@ describe('PRESROC licence transfer (internal)', () => {
       // reason
       cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'Licence transferred and now chargeable')
       // start date
-      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', '1 January 2020')
+      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', '1 January 2018')
       // billing account
       cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'John Smith')
       cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'Jim\n    Bob')
