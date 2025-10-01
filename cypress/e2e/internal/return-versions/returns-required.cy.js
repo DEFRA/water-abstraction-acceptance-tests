@@ -1,26 +1,26 @@
 'use strict'
 
-import twoReturnRequirementsWithPoints from '../../../support/scenarios/two-return-requirements-with-points.js'
+import scenarioData from '../../../support/scenarios/two-return-requirements-with-points.js'
 
-const dataModel = twoReturnRequirementsWithPoints()
+const scenario = scenarioData()
 
 describe('Submit returns requirement (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    // Get the user email and login as the user
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
+  })
+
+  it('creates a return requirement and approves the requirement', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
       })
     })
 
-    cy.load(dataModel)
-  })
-
-  it('creates a return requirement and approves the requirement', () => {
-    cy.visit(`/system/licences/${dataModel.licences[0].id}/set-up`)
+    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
     // confirm we are on the licence set up tab
     cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
@@ -110,7 +110,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start date information we expect
-    cy.get('[data-test="start-date"]').contains('1 January 2020')
+    cy.get('[data-test="start-date"]').contains('1 January 2018')
 
     // choose the change option for the start date
     cy.get('[data-test="change-start-date"]').click()
