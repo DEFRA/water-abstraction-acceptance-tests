@@ -1,32 +1,31 @@
 'use strict'
 
-import twoReturnRequirementsThreeReturnLogs from '../../../support/scenarios/two-return-requirements-three-return-logs.js'
+import scenarioData from '../../../support/scenarios/two-return-requirements-three-return-logs.js'
 
-const dataModel = twoReturnRequirementsThreeReturnLogs()
+const scenario = scenarioData()
 
 describe('Submit historic correction using abstraction data for two abstraction points', () => {
   beforeEach(() => {
     cy.tearDown()
-
-    // Get the user email and login as the user
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
-    cy.get('@userEmail').then((userEmail) => {
-      cy.programmaticLogin({
-        email: userEmail
-      })
-    })
 
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31.
     cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
 
-      cy.load(dataModel)
+      cy.load(scenario)
     })
+
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates a return requirement using abstraction data and approves the requirement', () => {
-    cy.visit(`/system/licences/${dataModel.licences[0].id}/returns`)
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
+    })
+    cy.visit(`/system/licences/${scenario.licences[0].id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')
