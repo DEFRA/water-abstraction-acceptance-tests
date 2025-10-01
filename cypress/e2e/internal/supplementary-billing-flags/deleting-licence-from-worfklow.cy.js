@@ -45,7 +45,7 @@ describe('Deleting a licence from workflow (internal)', () => {
     cy.get('#toSetUp > div > table > tbody').within(() => {
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'AT/CURR/DAILY/01')
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Big Farm Co Ltd')
-      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 January 2020')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 January 2018')
 
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Set up')
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Remove')
