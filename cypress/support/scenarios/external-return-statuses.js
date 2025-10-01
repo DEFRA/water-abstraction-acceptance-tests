@@ -1,3 +1,4 @@
+import formatDateObjectToIso from '../helpers/formatDateObjectToIso.js'
 import licenceData from '../fixture-builder/licence.js'
 import usersData from '../fixture-builder/users.js'
 
@@ -96,7 +97,7 @@ function _returnLogs() {
   // COMPLETE - Set the period to last year for
   startDate.setFullYear(startDate.getFullYear() - 2)
   endDate.setFullYear(endDate.getFullYear() - 2)
-  dueDate = new Date(`${startDate.getFullYear()}-04-28`)
+  dueDate = new Date(`${endDate.getFullYear()}-04-28`)
 
   returnLog = _returnLog(startDate, endDate, dueDate, 9999991)
   returnLog.status = 'completed'
@@ -118,7 +119,7 @@ function _returnLogs() {
 
   // set the end date to be a month ago
   endDate = new Date(today)
-  endDate.setDate(today.getMonth() - 1)
+  endDate.setMonth(today.getMonth() - 1)
 
   returnLog = _returnLog(startDate, endDate, dueDate, 9999993)
   returnLogs.push(returnLog)
