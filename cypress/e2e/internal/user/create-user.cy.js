@@ -11,12 +11,7 @@ describe('Creating a user (internal)', () => {
         email: userEmail
       })
     })
-
-    // Navigate to the manage page
-    cy.visit('/system/manage')
-
-    // Click on the create user link
-    cy.get(':nth-child(11) > li > .govuk-link').click()
+    cy.visit('/account/create-user')
 
     // Enter a generated email address to avoid duplicates on subsequent runs of the test
     cy.wrap(`regression.tests.${Date.now()}@defra.gov.uk`).as('newEmail')

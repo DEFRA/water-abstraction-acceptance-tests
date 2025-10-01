@@ -19,19 +19,9 @@ describe("View a licence's contacts (internal)", () => {
         email: userEmail
       })
     })
-    cy.visit('/')
+    cy.visit(`/system/licences/${scenario.licences[0].id}/contact-details`)
 
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // Confirm we are on the licence page and select contact details tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.get('[data-test="#tab_contact"]').click()
-
-    // Confirm we are on the tab page and expected controls are present
+    // Confirm we are on the licence contact details page and expected controls are present
     cy.get('#contact-details > .govuk-heading-l').contains('Contact details')
     cy.get('.govuk-body > .govuk-link').contains('Go to customer contacts')
 

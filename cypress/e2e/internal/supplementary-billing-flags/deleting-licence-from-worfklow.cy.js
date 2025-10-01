@@ -19,12 +19,7 @@ describe('Deleting a licence from workflow (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
-
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
+    cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
 
     // Confirm there are no flags already on the licence
     cy.get('.govuk-notification-banner__content').should('not.exist')

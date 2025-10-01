@@ -20,10 +20,8 @@ describe('Paper returns journey (internal)', () => {
       })
     })
 
-    // Navigate to the paper returns flow. We'll use it's address entry screens to test the address lookup and entry
-    // functionality
-    cy.visit('/system/manage')
-    cy.get('a[href="/returns-notifications/forms"]').click()
+    // Navigate to the paper returns flow
+    cy.visit('/returns-notifications/forms')
 
     // Select a licence to generate paper returns for
     cy.get('#licenceNumbers').type('AT/CURR/DAILY/01')

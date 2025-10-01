@@ -19,16 +19,7 @@ describe('PSC permissions (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
-
-    // assert they cannot see the Bill runs page
-    cy.get('#nav > ul').children().should('not.contain', 'Bill runs')
-
-    // search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
+    cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
 
     // confirm we are on the licence page
     cy.contains('AT/CURR/DAILY/01')
@@ -42,5 +33,8 @@ describe('PSC permissions (internal)', () => {
 
     // confirm we cannot see the bills tab
     cy.get('.govuk-tabs__list').should('not.contain', 'Bills')
+
+    // assert they cannot see the Bill runs page
+    cy.get('#nav > ul').children().should('not.contain', 'Bill runs')
   })
 })

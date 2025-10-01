@@ -19,17 +19,10 @@ describe('End licence agreement journey (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
-
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-    cy.contains('Licence set up').click()
+    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
     // Charge information
-    // back on the Charge Information tab select to end the licence
+    // On the Charge Information tab select to end the licence
     cy.get('#set-up').should('be.visible')
     cy.get(':nth-child(12) > .govuk-table__body > .govuk-table__row > :nth-child(5)').contains('End').click()
 

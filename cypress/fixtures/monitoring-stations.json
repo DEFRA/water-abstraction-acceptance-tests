@@ -352,6 +352,7 @@
   ],
   "monitoringStations": [
     {
+      "id": "a43c810a-aa0a-48a1-8729-8d28188f21f8",
       "label": "Test Station 500",
       "gridReference": "ST5820172718"
     },

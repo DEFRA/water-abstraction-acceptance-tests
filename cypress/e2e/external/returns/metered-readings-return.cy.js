@@ -20,15 +20,7 @@ describe('Submit metered readings return (external)', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/licences`)
-
-    // Select a licence to submit returns for
-    cy.contains('AT/CURR/DAILY/01').click()
-    cy.get('#tab_returns').click()
-    cy.get('#returns').should('be.visible')
-
-    // Start the return journey - return reference 9999990
-    cy.get('#returns > .govuk-table > .govuk-table__body > .govuk-table__row > [scope="row"] > a').click()
+    cy.visit(`${Cypress.env('externalUrl')}/return?returnId=${scenario.returnLogs[0].id}`)
 
     // --> Have you extracted water in this period?
     // Check validation - enter nothing

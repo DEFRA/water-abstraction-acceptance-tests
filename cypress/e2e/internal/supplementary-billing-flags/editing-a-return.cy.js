@@ -19,27 +19,7 @@ describe('Editing a return (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
-
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // confirm we are on the licence page and select returns tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.get('[data-test="#tab_returns"]').click()
-
-    // confirm we are on the tab page
-    cy.get('#returns > .govuk-heading-l').contains('Returns')
-
-    // confirm we see the return we are going to edit
-    cy.get('#returns').within(() => {
-      cy.get('[data-test="return-reference-0"] > .govuk-link').should('be.visible').and('contain.text', '9999990')
-      cy.get('[data-test="return-status-0"] > .govuk-tag').should('be.visible').and('contain.text', 'complete')
-
-      cy.get('[data-test="return-reference-0"] > .govuk-link').contains('9999990').click()
-    })
+    cy.visit(`/system/return-logs?id=${scenario.returnLogs[0].id}`)
 
     // Edit return
     cy.get('.govuk-button').first().click()

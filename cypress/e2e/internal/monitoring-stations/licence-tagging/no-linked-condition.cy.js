@@ -15,13 +15,7 @@ describe('Tag a licence that is not linked to a condition (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
-
-    // Search for the monitoring station and select it from the results
-    cy.get('#query').type('Test Station 500')
-    cy.get('.search__button').click()
-    cy.contains('Monitoring stations')
-    cy.get('.govuk-table__row').contains('Test Station 500').click()
+    cy.visit('/system/monitoring-stations/a43c810a-aa0a-48a1-8729-8d28188f21f8')
 
     // Confirm we are on the monitoring station page
     cy.get('.govuk-heading-l').should('have.text', 'Test Station 500')

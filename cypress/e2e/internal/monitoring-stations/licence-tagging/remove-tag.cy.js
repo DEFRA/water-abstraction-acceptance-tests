@@ -15,13 +15,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
-
-    // Search for the monitoring station and select it from the results
-    cy.get('#query').type('Test Station Tagged')
-    cy.get('.search__button').click()
-    cy.contains('Monitoring stations')
-    cy.get('.govuk-table__row').contains('Test Station Tagged').click()
+    cy.visit('/system/monitoring-stations/3cfc9486-c3da-4a2e-b1be-020ce805be46')
 
     // Confirm we are on the monitoring station page
     cy.get('.govuk-heading-l').contains('Test Station Tagged')

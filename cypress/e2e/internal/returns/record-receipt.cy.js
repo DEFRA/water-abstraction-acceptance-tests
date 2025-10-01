@@ -19,22 +19,7 @@ describe('Record receipt for return (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
-
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // confirm we are on the licence page and select returns tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.get('[data-test="#tab_returns"]').click()
-
-    // confirm we are on the tab page
-    cy.get('#returns > .govuk-heading-l').contains('Returns')
-
-    // Select the return log to record a receipt
-    cy.get('[data-test="return-reference-0"] > .govuk-link').click()
+    cy.visit(`/system/return-logs?id=${scenario.returnLogs[0].id}`)
 
     // Abstraction return
     // submit return

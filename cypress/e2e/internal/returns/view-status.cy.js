@@ -19,18 +19,9 @@ describe('View returns and their status (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
+    cy.visit(`/system/licences/${scenario.licences[0].id}/returns`)
 
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // confirm we are on the licence page and select returns tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.get('[data-test="#tab_returns"]').click()
-
-    // confirm we are on the tab page
+    // confirm we are on the returns tab page
     cy.get('#returns > .govuk-heading-l').contains('Returns')
 
     // confirm we see the expected returns and their statuses

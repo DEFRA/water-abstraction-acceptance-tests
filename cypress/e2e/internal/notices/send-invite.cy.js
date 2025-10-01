@@ -24,8 +24,7 @@ describe('Send returns invite to customer (internal)', () => {
     })
 
     // Navigate to the returns invitations flow.
-    cy.visit('/system/manage')
-    cy.get('a[href="/system/notices/setup/standard?noticeType=invitations"]').click()
+    cy.visit('/system/notices/setup/standard?noticeType=invitations')
 
     // Select the returns periods for the standard
     // Select the first radio button and continue

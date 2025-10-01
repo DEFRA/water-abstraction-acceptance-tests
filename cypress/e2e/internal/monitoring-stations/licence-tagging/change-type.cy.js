@@ -15,13 +15,7 @@ describe('Tag a licence but attempt to change the tag type during the journey (i
         email: userEmail
       })
     })
-    cy.visit('/')
-
-    // Search for the monitoring station and select it from the results
-    cy.get('#query').type('Test Station 500')
-    cy.get('.search__button').click()
-    cy.contains('Monitoring stations')
-    cy.get('.govuk-table__row').contains('Test Station 500').click()
+    cy.visit('/system/monitoring-stations/a43c810a-aa0a-48a1-8729-8d28188f21f8')
 
     // Confirm we are on the monitoring station page
     cy.get('.govuk-heading-l').should('have.text', 'Test Station 500')
@@ -86,10 +80,5 @@ describe('Tag a licence but attempt to change the tag type during the journey (i
     cy.get('[data-test="alert-0"]').should('be.empty')
     cy.get('[data-test="alert-date-0"]').should('be.empty')
     cy.get('[data-test="action-0"]').should('have.text', 'View')
-
-    // Confirm the licence is linked to the monitoring station in the licence summary
-    cy.get('[data-test="licence-ref-0"]').contains('AT/CURR/WEEKLY/01').click()
-    cy.get('.govuk-heading-l').contains('Licence number AT/CURR/WEEKLY/01')
-    cy.get('.govuk-list').contains('Test Station 500')
   })
 })

@@ -19,19 +19,9 @@ describe('PRESROC licence transfer (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
+    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // Confirm we are on the licence page and select licence set up tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.contains('Licence set up').click()
-
-    // Confirm we are on the tab page and then click Set up a new charge
+    // Confirm we are on the licence set-up page and then click Set up a new charge
     cy.contains('Licence set up')
     cy.contains('Set up a new charge').click()
 
