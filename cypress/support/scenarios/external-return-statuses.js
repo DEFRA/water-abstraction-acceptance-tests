@@ -1,11 +1,11 @@
-import formatDateObjectToIso from '../helpers/formatDateObjectToIso.js'
+import formatDateToIso from '../helpers/formatDateToIso.js'
 import licenceData from '../fixture-builder/licence.js'
 import usersData from '../fixture-builder/users.js'
 
 function _returnLog(startDate, endDate, dueDate, returnReference) {
-  const startDateString = formatDateObjectToIso(startDate)
-  const endDateString = formatDateObjectToIso(endDate)
-  const dueDateString = dueDate ? formatDateObjectToIso(dueDate) : null
+  const startDateString = formatDateToIso(startDate)
+  const endDateString = formatDateToIso(endDate)
+  const dueDateString = dueDate ? formatDateToIso(dueDate) : null
 
   return {
     id: `v1:1:AT/CURR/DAILY/01:${returnReference}:${startDateString}:${endDateString}`,
