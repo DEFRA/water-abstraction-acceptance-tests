@@ -53,6 +53,18 @@ Cypress.Commands.add('billingPeriodCounts', (financialYearToBaseItOn) => {
   return cy.wrap({ presroc: presrocBillingPeriods, sroc: srocBillingPeriods })
 })
 
+Cypress.Commands.add('calculatedDates', () => {
+  cy.log('Fetch calculated dates from the service')
+
+  cy.request({
+    url: '/system/data/dates',
+    log: false,
+    method: 'get'
+  }).then((response) => {
+    return cy.wrap(response.body)
+  })
+})
+
 // We do not control when the tests are run so sometimes we need a date that is within the current financial year when
 // they are. For example, when testing billing scenarios we often only want to make charge information changes within
 // the current year to avoid additional calculations for previous years.
