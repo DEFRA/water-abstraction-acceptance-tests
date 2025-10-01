@@ -1,26 +1,26 @@
 'use strict'
 
-import oneReturnRequirementsTwoPoints from '../../../support/scenarios/one-return-requirement-two-points.js'
+import scenarioData from '../../../support/scenarios/one-return-requirement-two-points.js'
 
-const dataModel = oneReturnRequirementsTwoPoints()
+const scenario = scenarioData()
 
 describe('Submit returns requirement using copy existing (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    // Get the user email and login as the user
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
+  })
+
+  it('creates a return requirement by copying existing and approves the requirement', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
       })
     })
 
-    cy.load(dataModel)
-  })
-
-  it('creates a return requirement by copying existing and approves the requirement', () => {
-    cy.visit(`/system/licences/${dataModel.licences[0].id}/set-up`)
+    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
     // confirm we are on the licence set up tab
     cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
@@ -55,7 +55,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
 
     // confirm we see the start date and reason selected
-    cy.get('[data-test="start-date"]').contains('1 January 2020')
+    cy.get('[data-test="start-date"]').contains('1 January 2018')
     cy.get('[data-test="reason"]').contains('Minor change')
 
     // confirm we see the purpose and purpose description for the requirement copied from existing
