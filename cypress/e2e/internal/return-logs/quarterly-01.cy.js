@@ -1,36 +1,38 @@
 'use strict'
 
-import oneReturnRequirementQuarterlyReturns from '../../../support/scenarios/one-return-requirement-quarterly-returns.js'
+import scenarioData from '../../../support/scenarios/one-return-requirement-quarterly-returns.js'
 
-const dataModel = oneReturnRequirementQuarterlyReturns()
+const scenario = scenarioData()
 
 describe('Submit winter and all year quarterly historic correction using abstraction data', () => {
-  let year = new Date().getFullYear()
-  if (new Date().getMonth() < 4) {
-    year = year - 1
-  }
-
   beforeEach(() => {
     cy.tearDown()
 
-    // Get the user email and login as the user
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
+
+    let year = new Date().getFullYear()
+    if (new Date().getMonth() < 4) {
+      year = year - 1
+    }
+
+    cy.wrap(year).as('year')
+  })
+
+  it('creates a return requirement using abstraction data and approves the requirement', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
       })
     })
+    cy.visit(`/system/licences/${scenario.licences[0].id}/returns`)
 
-    cy.load(dataModel)
-  })
-
-  it('creates a return requirement using abstraction data and approves the requirement', () => {
-    cy.visit(`/system/licences/${dataModel.licences[0].id}/returns`)
-
-    // confirm we are on the licence returns tab and that there are previous reuturn logs
+    // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')
 
-    cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
+    cy.get('@year').then((year) => {
+      cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
       cy.get('[data-test="return-due-date-0"]').contains(data.text)
       cy.get('[data-test="return-status-0"] > .govuk-tag').contains(data.label)
     })
@@ -49,6 +51,7 @@ describe('Submit winter and all year quarterly historic correction using abstrac
       cy.get('[data-test="return-due-date-3"]').contains(data.text)
       cy.get('[data-test="return-status-3"] > .govuk-tag').contains('complete')
     })
+    })
 
     // click licence set up tab
     cy.contains('Licence set up').click()
@@ -63,7 +66,9 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     cy.get('#anotherStartDate').check()
     cy.get('#startDateDay').type('01')
     cy.get('#startDateMonth').type('04')
-    cy.get('#startDateYear').type(year)
+    cy.get('@year').then((year) => {
+      cy.get('#startDateYear').type(year)
+    })
     cy.contains('Continue').click()
 
     // confirm we are on the reason page
@@ -102,36 +107,38 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     // confirm we are on the licence set up tab
     cy.get('#returns > .govuk-heading-l').contains('Returns')
 
-    cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
-      cy.get('[data-test="return-due-date-0"]').contains(data.text)
-      cy.get('[data-test="return-status-0"] > .govuk-tag').contains('void')
+    cy.get('@year').then((year) => {
+      cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
+        cy.get('[data-test="return-due-date-0"]').contains(data.text)
+        cy.get('[data-test="return-status-0"] > .govuk-tag').contains('void')
 
-      cy.get('[data-test="return-due-date-1"]').should('have.value', '')
-      cy.get('[data-test="return-status-1"] > .govuk-tag').contains('not due yet')
-    })
+        cy.get('[data-test="return-due-date-1"]').should('have.value', '')
+        cy.get('[data-test="return-status-1"] > .govuk-tag').contains('not due yet')
+      })
 
-    cy.quarterlyReturnLogDueData(`${year + 1}-01-28`).then((data) => {
-      cy.get('[data-test="return-due-date-2"]').contains(data.text)
-      cy.get('[data-test="return-status-2"] > .govuk-tag').contains('void')
+      cy.quarterlyReturnLogDueData(`${year + 1}-01-28`).then((data) => {
+        cy.get('[data-test="return-due-date-2"]').contains(data.text)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('void')
 
-      cy.get('[data-test="return-due-date-3"]').should('have.value', '')
-      cy.get('[data-test="return-status-3"] > .govuk-tag').contains('not due yet')
-    })
+        cy.get('[data-test="return-due-date-3"]').should('have.value', '')
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('not due yet')
+      })
 
-    cy.quarterlyReturnLogDueData(`${year}-10-28`).then((data) => {
-      cy.get('[data-test="return-due-date-4"]').contains(data.text)
-      cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
+      cy.quarterlyReturnLogDueData(`${year}-10-28`).then((data) => {
+        cy.get('[data-test="return-due-date-4"]').contains(data.text)
+        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
 
-      cy.get('[data-test="return-due-date-5"]').should('have.value', '')
-      cy.get('[data-test="return-status-5"] > .govuk-tag').contains('not due yet')
-    })
+        cy.get('[data-test="return-due-date-5"]').should('have.value', '')
+        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('open')
+      })
 
-    cy.quarterlyReturnLogDueData(`${year}-07-28`).then((data) => {
-      cy.get('[data-test="return-due-date-6"]').contains(data.text)
-      cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
+      cy.quarterlyReturnLogDueData(`${year}-07-28`).then((data) => {
+        cy.get('[data-test="return-due-date-6"]').contains(data.text)
+        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
 
-      cy.get('[data-test="return-due-date-7"]').should('have.value', '')
-      cy.get('[data-test="return-status-7"] > .govuk-tag').contains('open')
+        cy.get('[data-test="return-due-date-7"]').should('have.value', '')
+        cy.get('[data-test="return-status-7"] > .govuk-tag').contains('open')
+      })
     })
   })
 })
