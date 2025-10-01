@@ -10,19 +10,12 @@ describe('Attempt set up of abstraction alert with no thresholds (internal)', ()
   })
 
   it('will not create a Reduce alert as there are no thresholds with the reduce restriction type', () => {
-    cy.visit('/')
-
-    // Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    // Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    // Assert the user signed in and we're on the search page
-    cy.contains('Search')
+    cy.visit('/')
 
     // Search for the monitoring station and select it from the results
     cy.get('#query').type('Test Station Tagged')

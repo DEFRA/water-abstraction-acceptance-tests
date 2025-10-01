@@ -10,19 +10,12 @@ describe('Tag a licence linked to a condition. The abstraction period is derived
   })
 
   it('tags a licence linked to a condition, the user selects the condition which pre-populates the abs period', () => {
-    cy.visit('/')
-
-    // Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    // Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    // Assert the user signed in and we're on the search page
-    cy.contains('Search')
+    cy.visit('/')
 
     // Search for the monitoring station and select it from the results
     cy.get('#query').type('Test Station 500')
