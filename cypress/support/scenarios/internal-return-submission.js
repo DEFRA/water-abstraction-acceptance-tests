@@ -1,6 +1,6 @@
 import licenceData from '../fixture-builder/licence.js'
 
-export default function() {
+export default function () {
   return {
     ...licenceData(),
     returnLogs: [

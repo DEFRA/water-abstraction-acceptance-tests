@@ -235,7 +235,6 @@ Cypress.Commands.add('tearDown', () => {
     .should('equal', 204)
 })
 
-
 function _dueDateObject (dueDate) {
   const text = dueDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
 

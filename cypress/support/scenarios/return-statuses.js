@@ -1,7 +1,7 @@
 import formatDateToIso from '../helpers/formatDateToIso.js'
 import licenceData from '../fixture-builder/licence.js'
 
-function _returnLog(startDate, endDate, dueDate, returnReference) {
+function _returnLog (startDate, endDate, dueDate, returnReference) {
   const startDateString = formatDateToIso(startDate)
   const endDateString = formatDateToIso(endDate)
   const dueDateString = dueDate ? formatDateToIso(dueDate) : null
@@ -70,7 +70,7 @@ function _returnLog(startDate, endDate, dueDate, returnReference) {
   }
 }
 
-function _returnLogs() {
+function _returnLogs () {
   const returnLogs = []
   const today = new Date()
 
@@ -136,7 +136,7 @@ function _returnLogs() {
   return returnLogs
 }
 
-export default function() {
+export default function () {
   return {
     ...licenceData(),
     returnLogs: _returnLogs()

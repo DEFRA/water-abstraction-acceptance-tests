@@ -1,7 +1,7 @@
 import formatDateToIso from '../helpers/formatDateToIso.js'
 import licenceData from '../fixture-builder/licence.js'
 
-export default function(returnPeriod) {
+export default function (returnPeriod) {
   const startDateString = formatDateToIso(returnPeriod.startDate)
   const endDateString = formatDateToIso(returnPeriod.endDate)
   const dueDateString = formatDateToIso(returnPeriod.dueDate)

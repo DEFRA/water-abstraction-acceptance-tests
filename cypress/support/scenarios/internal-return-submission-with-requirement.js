@@ -2,7 +2,7 @@ import licenceData from '../fixture-builder/licence.js'
 import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnVersion from '../fixture-builder/return-version.js'
 
-export default function() {
+export default function () {
   return {
     ...licenceData(),
     ...returnVersion(1),

@@ -1,4 +1,4 @@
-import pointsData from "./points.js"
+import pointsData from './points.js'
 
 export default function licence () {
   const points = pointsData().points
