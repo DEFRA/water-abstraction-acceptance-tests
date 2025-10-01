@@ -54,7 +54,7 @@ describe('SROC charge information validation (internal)', () => {
     // test date before licence start date
     cy.get('#customDate-day').type('1')
     cy.get('#customDate-month').type('6')
-    cy.get('#customDate-year').type('2019')
+    cy.get('#customDate-year').type('2017')
     cy.get('form > .govuk-button').contains('Continue').click()
     cy.get('.govuk-error-summary__list').should('contain.text', 'Date must be after the start date of the earliest known licence version')
     cy.get('.govuk-error-message').should('contain.text', 'Date must be after the start date of the earliest known licence version')
