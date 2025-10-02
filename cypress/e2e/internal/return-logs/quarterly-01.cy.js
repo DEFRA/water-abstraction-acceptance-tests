@@ -108,36 +108,36 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     cy.get('#returns > .govuk-heading-l').contains('Returns')
 
     cy.get('@year').then((year) => {
-      cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
-        cy.get('[data-test="return-due-date-0"]').contains(data.text)
-        cy.get('[data-test="return-status-0"] > .govuk-tag').contains('void')
+      cy.get('[data-test="return-due-date-0"]').should('have.value', '')
+      cy.get('[data-test="return-status-0"] > .govuk-tag').contains('not due yet')
 
-        cy.get('[data-test="return-due-date-1"]').should('have.value', '')
-        cy.get('[data-test="return-status-1"] > .govuk-tag').contains('not due yet')
+      cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
+        cy.get('[data-test="return-due-date-1"]').contains(data.text)
+        cy.get('[data-test="return-status-1"] > .govuk-tag').contains('void')
       })
+
+      cy.get('[data-test="return-due-date-2"]').should('have.value', '')
+      cy.get('[data-test="return-status-2"] > .govuk-tag').contains('not due yet')
 
       cy.quarterlyReturnLogDueData(`${year + 1}-01-28`).then((data) => {
-        cy.get('[data-test="return-due-date-2"]').contains(data.text)
-        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('void')
-
-        cy.get('[data-test="return-due-date-3"]').should('have.value', '')
-        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('not due yet')
+        cy.get('[data-test="return-due-date-3"]').contains(data.text)
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('void')
       })
+
+      cy.get('[data-test="return-due-date-4"]').should('have.value', '')
+      cy.get('[data-test="return-status-4"] > .govuk-tag').contains('open')
 
       cy.quarterlyReturnLogDueData(`${year}-10-28`).then((data) => {
-        cy.get('[data-test="return-due-date-4"]').contains(data.text)
-        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
-
-        cy.get('[data-test="return-due-date-5"]').should('have.value', '')
-        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('open')
+        cy.get('[data-test="return-due-date-5"]').contains(data.text)
+        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('void')
       })
 
-      cy.quarterlyReturnLogDueData(`${year}-07-28`).then((data) => {
-        cy.get('[data-test="return-due-date-6"]').contains(data.text)
-        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
+      cy.get('[data-test="return-due-date-6"]').should('have.value', '')
+      cy.get('[data-test="return-status-6"] > .govuk-tag').contains('open')
 
-        cy.get('[data-test="return-due-date-7"]').should('have.value', '')
-        cy.get('[data-test="return-status-7"] > .govuk-tag').contains('open')
+      cy.quarterlyReturnLogDueData(`${year}-07-28`).then((data) => {
+        cy.get('[data-test="return-due-date-7"]').contains(data.text)
+        cy.get('[data-test="return-status-7"] > .govuk-tag').contains('void')
       })
     })
   })
