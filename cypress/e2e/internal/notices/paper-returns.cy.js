@@ -24,7 +24,7 @@ describe('Paper returns journey (internal)', () => {
     cy.visit('/returns-notifications/forms')
 
     // Select a licence to generate paper returns for
-    cy.get('#licenceNumbers').type('AT/CURR/DAILY/01')
+    cy.get('#licenceNumbers').type('AT/TEST/01')
     cy.get('button.govuk-button').click()
 
     // Select a return

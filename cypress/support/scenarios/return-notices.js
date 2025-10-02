@@ -10,9 +10,9 @@ export default function (returnPeriod) {
     ...licenceData(),
     returnLogs: [
       {
-        id: `v1:1:AT/CURR/DAILY/01:9999990:${startDateString}:${endDateString}`,
+        id: `v1:1:AT/TEST/01:9999990:${startDateString}:${endDateString}`,
         returnReference: '9999990',
-        licenceRef: 'AT/CURR/DAILY/01',
+        licenceRef: 'AT/TEST/01',
         metadata: {
           nald: {
             areaCode: 'AREA',

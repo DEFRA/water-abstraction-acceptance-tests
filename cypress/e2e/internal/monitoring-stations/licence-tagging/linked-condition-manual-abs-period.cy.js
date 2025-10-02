@@ -42,16 +42,16 @@ describe('Tag a licence linked to a condition but manually enter the abstraction
     cy.get('.govuk-button').contains('Continue').click()
 
     // Enter the licence number this threshold applies to
-    cy.get('#licence-ref').type('AT/CURR/DAILY/01')
+    cy.get('#licence-ref').type('AT/TEST/01')
     cy.get('.govuk-button').contains('Continue').click()
 
     // The licence has a condition recorded against it. Select "The condition is not listed for this licence"
-    cy.get('.govuk-heading-l').contains('Select the full condition for licence AT/CURR/DAILY/01')
+    cy.get('.govuk-heading-l').contains('Select the full condition for licence AT/TEST/01')
     cy.get('[type="radio"]').check('no_condition')
     cy.get('.govuk-button').contains('Continue').click()
 
     // Enter the abstraction period for the licence
-    cy.get('.govuk-heading-l').contains('Enter an abstraction period for licence AT/CURR/DAILY/01')
+    cy.get('.govuk-heading-l').contains('Enter an abstraction period for licence AT/TEST/01')
     cy.get('#abstractionPeriodStartDay').type('10')
     cy.get('#abstractionPeriodStartMonth').type('10')
     cy.get('#abstractionPeriodEndDay').type('11')
@@ -61,16 +61,16 @@ describe('Tag a licence linked to a condition but manually enter the abstraction
     // Check the restriction details
     cy.get(':nth-child(1) > .govuk-summary-list__value').contains('200mBOD')
     cy.get(':nth-child(2) > .govuk-summary-list__value').contains('Reduce')
-    cy.get(':nth-child(3) > .govuk-summary-list__value').contains('AT/CURR/DAILY/01')
+    cy.get(':nth-child(3) > .govuk-summary-list__value').contains('AT/TEST/01')
     cy.get(':nth-child(4) > .govuk-summary-list__value').contains('None')
     cy.get(':nth-child(5) > .govuk-summary-list__value').contains('10 October to 11 November')
     cy.get(':nth-child(5) > .govuk-summary-list__actions > .govuk-link').contains('Change').should('be.visible')
     cy.get('.govuk-button').contains('Confirm').click()
 
     // Confirm we are back on the monitoring station page and the licence is tagged
-    cy.get('.govuk-notification-banner__heading').should('have.text', 'Tag for licence AT/CURR/DAILY/01 added')
+    cy.get('.govuk-notification-banner__heading').should('have.text', 'Tag for licence AT/TEST/01 added')
     cy.get('.govuk-heading-l').should('have.text', 'Test Station')
-    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/CURR/DAILY/01')
+    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/TEST/01')
     cy.get('[data-test="abstraction-period-0"]').should('have.text', '10 October to 11 November')
     cy.get('[data-test="restriction-0"]').should('have.text', 'Stop or reduce')
     cy.get('[data-test="threshold-0"]').should('have.text', '200mBOD')

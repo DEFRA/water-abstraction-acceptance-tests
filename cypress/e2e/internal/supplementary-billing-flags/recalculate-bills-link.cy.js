@@ -23,7 +23,7 @@ describe('Recalculate Bills Link (internal)', () => {
 
     // Click the recalculate bills link
     cy.get('#set-up > div > .govuk-button').click()
-    cy.get('.govuk-caption-l').contains('AT/CURR/DAILY/01').click()
+    cy.get('.govuk-caption-l').contains('AT/TEST/01').click()
     cy.get('[data-test="sroc-years-2024"]').click()
     cy.get('[data-test="pre-sroc-years"]').click()
     cy.get('.govuk-button').click()

@@ -16,7 +16,7 @@ export default function () {
       {
         id: 'fb1c7c5d-e723-4ab2-861e-5aae6d428019',
         licenceId: '8717da0e-28d4-4833-8e32-1da050b60055',
-        licenceRef: 'AT/CURR/DAILY/01',
+        licenceRef: 'AT/TEST/01',
         billingAccountId: '16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c',
         regionCode: 9,
         scheme: 'alcs',

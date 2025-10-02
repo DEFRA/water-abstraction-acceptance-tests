@@ -23,7 +23,7 @@ export default function () {
       {
         id: 'fdb1295d-4c6e-401f-89af-ef0dfc9696ac',
         licenceId: '8717da0e-28d4-4833-8e32-1da050b60055',
-        licenceRef: 'AT/CURR/DAILY/01',
+        licenceRef: 'AT/TEST/01',
         billingAccountId: '16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c',
         regionCode: 9,
         scheme: 'sroc',

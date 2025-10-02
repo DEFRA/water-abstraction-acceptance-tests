@@ -23,7 +23,7 @@ describe('Return statuses (external)', () => {
     cy.visit(`${Cypress.env('externalUrl')}/licences`)
 
     // Select a licence to view returns and their status
-    cy.contains('AT/CURR/DAILY/01').click()
+    cy.contains('AT/TEST/01').click()
     cy.get('#tab_returns').click()
     cy.get('#returns').should('be.visible')
     cy.get('.govuk-tag').should('not.contain.text', 'not yet due')

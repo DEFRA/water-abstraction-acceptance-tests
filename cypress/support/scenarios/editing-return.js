@@ -14,9 +14,9 @@ export default function () {
     ],
     returnLogs: [
       {
-        id: 'v1:1:AT/CURR/DAILY/01:9999990:2022-04-01:2023-03-31',
+        id: 'v1:1:AT/TEST/01:9999990:2022-04-01:2023-03-31',
         returnReference: '9999990',
-        licenceRef: 'AT/CURR/DAILY/01',
+        licenceRef: 'AT/TEST/01',
         metadata: {
           nald: {
             areaCode: 'AREA',

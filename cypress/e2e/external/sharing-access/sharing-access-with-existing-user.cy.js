@@ -45,6 +45,6 @@ describe('Sharing license access with another user (external)', () => {
     cy.get('.govuk-button.govuk-button--start').click()
 
     // Assert they can see the same licence
-    cy.get('.licence-result__column > a').contains('AT/CURR/DAILY/01').should('be.visible')
+    cy.get('.licence-result__column > a').contains('AT/TEST/01').should('be.visible')
   })
 })

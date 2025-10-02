@@ -7,9 +7,9 @@ function _returnLog (startDate, endDate, dueDate, returnReference) {
   const dueDateString = dueDate ? formatDateToIso(dueDate) : null
 
   return {
-    id: `v1:1:AT/CURR/DAILY/01:${returnReference}:${startDateString}:${endDateString}`,
+    id: `v1:1:AT/TEST/01:${returnReference}:${startDateString}:${endDateString}`,
     returnReference: returnReference.toString(),
-    licenceRef: 'AT/CURR/DAILY/01',
+    licenceRef: 'AT/TEST/01',
     metadata: {
       nald: {
         areaCode: 'AREA',

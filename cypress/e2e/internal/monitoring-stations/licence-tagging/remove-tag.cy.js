@@ -33,7 +33,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
 
     // Confirm we are viewing the tag details
     cy.get('.govuk-caption-l').should('have.text', 'Test Station')
-    cy.get('.govuk-heading-l').should('have.text', 'Details for AT/CURR/DAILY/01')
+    cy.get('.govuk-heading-l').should('have.text', 'Details for AT/TEST/01')
     cy.get('.govuk-summary-card__title').contains('Stop tag')
     cy.get('[data-test="threshold-0"]').should('have.text', '100m3/s')
     cy.get('[data-test="type-0"]').should('have.text', 'Stop')
@@ -43,7 +43,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
     cy.get('.govuk-summary-card__actions > .govuk-link').contains('Remove tag').click()
 
     // Confirm we are on the confirm tag removal page
-    cy.get('.govuk-caption-l').should('have.text', 'Licence AT/CURR/DAILY/01')
+    cy.get('.govuk-caption-l').should('have.text', 'Licence AT/TEST/01')
     cy.get('.govuk-heading-l').should('have.text', 'You’re about to remove the tag for this licence')
     cy.get('.govuk-heading-m').should('have.text', 'Hands off flow threshold')
     cy.get('.govuk-warning-text__text').contains(
@@ -59,7 +59,7 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
     cy.get('.govuk-button').contains('Confirm').click()
 
     // Confirm we are back on the monitoring station page and the tag has been removed
-    cy.get('.govuk-notification-banner__heading').contains('Tag removed for AT/CURR/DAILY/01')
+    cy.get('.govuk-notification-banner__heading').contains('Tag removed for AT/TEST/01')
     cy.get('.govuk-heading-l').should('have.text', 'Test Station')
     cy.get('p.govuk-body').should(
       'have.text', 'There are no licences tagged with restrictions for this monitoring station'

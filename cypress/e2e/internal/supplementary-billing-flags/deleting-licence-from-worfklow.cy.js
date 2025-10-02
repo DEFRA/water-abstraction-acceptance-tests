@@ -38,7 +38,7 @@ describe('Deleting a licence from workflow (internal)', () => {
 
     // confirm we see our test licence in the 'To set up' workflow and the correct action links
     cy.get('#toSetUp > div > table > tbody').within(() => {
-      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'AT/CURR/DAILY/01')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'AT/TEST/01')
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Big Farm Co Ltd')
       cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 January 2018')
 
@@ -50,7 +50,7 @@ describe('Deleting a licence from workflow (internal)', () => {
 
     // Remove licence from workflow
     cy.get('.govuk-heading-xl').contains("You're about to remove this licence from the workflow")
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').contains('AT/CURR/DAILY/01')
+    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').contains('AT/TEST/01')
     cy.get('form > .govuk-button').click()
 
     // Assert there are no licences in workflow now
@@ -58,9 +58,9 @@ describe('Deleting a licence from workflow (internal)', () => {
 
     // search for a licence
     cy.get('#navbar-view').click()
-    cy.get('#query').type('AT/CURR/DAILY/01')
+    cy.get('#query').type('AT/TEST/01')
     cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
+    cy.get('.govuk-table__row').contains('AT/TEST/01').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')

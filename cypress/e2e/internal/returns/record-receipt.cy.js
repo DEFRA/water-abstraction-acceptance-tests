@@ -37,12 +37,12 @@ describe('Record receipt for return (internal)', () => {
 
     // Return received
     cy.get('.govuk-panel').contains('Return 9999990 received').should('be.visible')
-    cy.get('.govuk-panel').contains('AT/CURR/DAILY/01').should('be.visible')
+    cy.get('.govuk-panel').contains('AT/TEST/01').should('be.visible')
     cy.get('.govuk-panel').contains('Its all about the description').should('be.visible')
     cy.get('.govuk-panel').contains('Spray Irrigation - Storage').should('be.visible')
 
     // View returns for the licence (this is a different view)
-    cy.get('div > a').contains('View returns for AT/CURR/DAILY/01').should('be.visible').click()
+    cy.get('div > a').contains('View returns for AT/TEST/01').should('be.visible').click()
 
     // confirm we see the received return
     cy.get('[data-test="return-status-0"] > .govuk-tag').should('be.visible').and('contain.text', 'received')

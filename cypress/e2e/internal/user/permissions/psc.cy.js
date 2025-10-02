@@ -22,7 +22,7 @@ describe('PSC permissions (internal)', () => {
     cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
 
     // confirm we are on the licence page
-    cy.contains('AT/CURR/DAILY/01')
+    cy.contains('AT/TEST/01')
 
     // confirm we can see the summary, contact details, returns, communications and licence set up tabs
     cy.get('.govuk-tabs__list-item--selected > .govuk-tabs__tab').should('contain.text', 'Summary')

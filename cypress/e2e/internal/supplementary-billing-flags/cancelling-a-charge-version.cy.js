@@ -31,7 +31,7 @@ describe('Cancelling a charge version in workflow (internal)', () => {
 
     // Check licences in workflow
     cy.contains('Workflow')
-    cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(1)').contains('AT/CURR/DAILY/01')
+    cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(1)').contains('AT/TEST/01')
     cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(2)').contains('Big Farm Co Ltd')
     cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(3)').contains('billing.data@wrls.gov.uk')
     cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(4)').contains('1 January 2020')
@@ -39,12 +39,12 @@ describe('Cancelling a charge version in workflow (internal)', () => {
     // Check we are cancelling the correct charge version
     cy.get('.govuk-table__row > :nth-child(5) > a').click()
     cy.contains('Check charge information')
-    cy.get('.govuk-caption-l').contains('Licence AT/CURR/DAILY/01')
+    cy.get('.govuk-caption-l').contains('Licence AT/TEST/01')
     cy.get('.govuk-grid-column-full > .govuk-heading-l').contains('Do you want to approve this charge information?')
 
     // Cancel charge version
     cy.get('.govuk-grid-column-full > form > .govuk-button').click()
-    cy.get('.govuk-caption-l').contains('Licence AT/CURR/DAILY/01')
+    cy.get('.govuk-caption-l').contains('Licence AT/TEST/01')
     cy.get('.govuk-heading-l').contains("You're about to cancel this charge information")
     cy.get('form > .govuk-button').click()
 
