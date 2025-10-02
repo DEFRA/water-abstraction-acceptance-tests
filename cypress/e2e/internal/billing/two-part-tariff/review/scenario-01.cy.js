@@ -5,41 +5,32 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.tearDown()
     // Load the base licence information into the DB
     cy.fixture('review-scenario-licence.json').then((fixture) => {
+      cy.wrap(fixture.licences[0].id).as('licenceId')
+
       cy.load(fixture)
     })
     // Load the charge and returns information into the DB
     cy.fixture('review-scenario-01.json').then((fixture) => {
       cy.load(fixture)
     })
-    // Grab the user email to use
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
       cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
     })
+
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates a SROC two-part tariff bill run and once built navigates through all the review pages, changing the billable returns volume on the charge element, checking the "preview the charge" button, marking the licence as "review", marking the progress on the licence and finally removing the licence from the bill run all together', () => {
-    cy.visit('/')
-
-    // Enter the user name and password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    // Click the Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    // Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search the licence
-    cy.get('#query').type('AT/TEST/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/TEST/01').click()
+    cy.get('@licenceId').then((licenceId) => {
+      cy.visit(`/system/licences/${licenceId}/summary`)
+    })
 
     // Confirm there are no flags already on the licence
     cy.get('.govuk-notification-banner__content').should('not.exist')
