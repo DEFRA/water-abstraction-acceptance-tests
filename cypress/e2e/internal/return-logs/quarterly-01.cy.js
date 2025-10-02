@@ -33,24 +33,24 @@ describe('Submit winter and all year quarterly historic correction using abstrac
 
     cy.get('@year').then((year) => {
       cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
-      cy.get('[data-test="return-due-date-0"]').contains(data.text)
-      cy.get('[data-test="return-status-0"] > .govuk-tag').contains(data.label)
-    })
+        cy.get('[data-test="return-due-date-0"]').contains(data.text)
+        cy.get('[data-test="return-status-0"] > .govuk-tag').contains(data.label)
+      })
 
-    cy.quarterlyReturnLogDueData(`${year + 1}-01-28`).then((data) => {
-      cy.get('[data-test="return-due-date-1"]').contains(data.text)
-      cy.get('[data-test="return-status-1"] > .govuk-tag').contains('complete')
-    })
+      cy.quarterlyReturnLogDueData(`${year + 1}-01-28`).then((data) => {
+        cy.get('[data-test="return-due-date-1"]').contains(data.text)
+        cy.get('[data-test="return-status-1"] > .govuk-tag').contains('complete')
+      })
 
-    cy.quarterlyReturnLogDueData(`${year}-10-28`).then((data) => {
-      cy.get('[data-test="return-due-date-2"]').contains(data.text)
-      cy.get('[data-test="return-status-2"] > .govuk-tag').contains('complete')
-    })
+      cy.quarterlyReturnLogDueData(`${year}-10-28`).then((data) => {
+        cy.get('[data-test="return-due-date-2"]').contains(data.text)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('complete')
+      })
 
-    cy.quarterlyReturnLogDueData(`${year}-07-28`).then((data) => {
-      cy.get('[data-test="return-due-date-3"]').contains(data.text)
-      cy.get('[data-test="return-status-3"] > .govuk-tag').contains('complete')
-    })
+      cy.quarterlyReturnLogDueData(`${year}-07-28`).then((data) => {
+        cy.get('[data-test="return-due-date-3"]').contains(data.text)
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('complete')
+      })
     })
 
     // click licence set up tab
