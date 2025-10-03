@@ -4,7 +4,7 @@ import oneReturnRequirementWithFourReturnLogs from '../../../support/scenarios/o
 
 const dataModel = oneReturnRequirementWithFourReturnLogs()
 
-describe('Submit winter and all year historic correction using abstraction data', () => {
+describe('Submit changing return cycle type on new return version', () => {
   beforeEach(() => {
     cy.tearDown()
 
