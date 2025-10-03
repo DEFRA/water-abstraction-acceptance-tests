@@ -1,10 +1,6 @@
 'use strict'
 
 describe('Login validation (external)', () => {
-  beforeEach(() => {
-    cy.fixture('users.json').its('external').as('userEmail')
-  })
-
   it('validates the input in the email and password fields on the login screen are valid', () => {
     // Navigate to the signin page
     cy.visit(Cypress.env('externalUrl'))

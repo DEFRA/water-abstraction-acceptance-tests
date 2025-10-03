@@ -1,40 +1,27 @@
 'use strict'
 
+import scenarioData from '../../../../support/scenarios/licence-with-presroc-chg-ver.js'
+
+const scenario = scenarioData()
+
 describe('PRESROC licence transfer (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('adds a new charge information which transfers the licence to a new billing account with new address and FAO contact then approves it and confirms licence is flagged for supplementary billing', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
+    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // Confirm we are on the licence page and select licence set up tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.contains('Licence set up').click()
-
-    // Confirm we are on the tab page and then click Set up a new charge
+    // Confirm we are on the licence set-up page and then click Set up a new charge
     cy.contains('Licence set up')
     cy.contains('Set up a new charge').click()
 
@@ -114,7 +101,7 @@ describe('PRESROC licence transfer (internal)', () => {
       // reason
       cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'Licence transferred and now chargeable')
       // start date
-      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', '1 January 2020')
+      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', '1 January 2018')
       // billing account
       cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'John Smith')
       cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'Jim\n    Bob')

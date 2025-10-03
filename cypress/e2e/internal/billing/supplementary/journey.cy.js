@@ -18,37 +18,29 @@ describe('Create and send supplementary bill runs (internal)', () => {
         fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.end.year - 1
         fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.end.year
 
+        cy.wrap(fixture.licences[1].id).as('licenceId')
+
         cy.load(fixture)
       })
     })
-
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
       cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
     })
+
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates both the PRESROC and SROC supplementary bill runs and once built sends them', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search the licence
-    cy.get('#query').type('AT/TEST/02')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/TEST/02').click()
+    cy.get('@licenceId').then((licenceId) => {
+      cy.visit(`/system/licences/${licenceId}/summary`)
+    })
 
     // Confirm the licence has the correct flags (we will check these have been removed after the bill runs have been sent)
     cy.get('.govuk-notification-banner__content')

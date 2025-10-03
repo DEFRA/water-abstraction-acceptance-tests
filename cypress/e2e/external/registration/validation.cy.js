@@ -2,28 +2,7 @@
 
 describe('User registration validation (external)', () => {
   beforeEach(() => {
-    cy.tearDown()
-    cy.fixture('users.json').its('loadedExternal').as('userEmail')
-  })
-
-  it('validates the input in the email and password fields on the login screen are valid', () => {
-    cy.visit(Cypress.env('externalUrl'))
-
-    // Tap the create account button on the welcome page
-    cy.get('a[href*="/start"]').click()
-
-    // Confirm we want to create an account
-    cy.contains('Create an account to manage your water abstraction licence online').should('have.class', 'govuk-heading-l')
-    cy.get('a[href*="/register"]').click()
-
-    // Test submitting nothing
-    cy.get('button.govuk-button').click()
-    cy.contains('Enter an email address in the right format').should('have.attr', 'href', '#email')
-
-    // Test submitting an invalid email address
-    cy.get('input#email').type('invalid....email')
-    cy.get('button.govuk-button').click()
-    cy.contains('Enter an email address in the right format').should('have.attr', 'href', '#email')
+    cy.wrap(`external.${Date.now()}@example.com`).as('userEmail')
   })
 
   it('validates the password in the create account page', () => {

@@ -1,38 +1,25 @@
 'use strict'
 
+import scenarioData from '../../../support/scenarios/one-licence-only.js'
+
+const scenario = scenarioData()
+
 describe('New licence agreement journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('setup a new agreement for a license and then view it', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // Confirm we are on the licence page and select the licence set up tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.contains('Licence set up').click()
+    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
     // Confirm we are on the tab page and then click Set up a new agreement
     cy.contains('Charge information')
@@ -53,7 +40,7 @@ describe('New licence agreement journey (internal)', () => {
     // date then continue
     cy.get('input#isCustomStartDate').check()
     cy.get('#startDate-day').type('01')
-    cy.get('#startDate-month').type('01')
+    cy.get('#startDate-month').type('04')
     cy.get('#startDate-year').type('2018')
     cy.get('form > .govuk-button').click()
 
@@ -69,7 +56,7 @@ describe('New licence agreement journey (internal)', () => {
 
     cy.get(':nth-child(12) > .govuk-table__body > .govuk-table__row').within(() => {
       // start date
-      cy.get(':nth-child(1)').should('contain.text', '1 January 2018')
+      cy.get(':nth-child(1)').should('contain.text', '1 April 2018')
       // end date
       cy.get(':nth-child(2)').should('contain.text', '')
       // agreement

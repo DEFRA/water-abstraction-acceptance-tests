@@ -1,8 +1,12 @@
+import pointsData from './points.js'
+
 export default function licence () {
+  const points = pointsData().points
+
   const basicLicence = {
     permitLicences: [
       {
-        licenceRef: 'AT/CURR/DAILY/01',
+        licenceRef: 'AT/TEST/01',
         startDate: '2020-01-01',
         metadata: {
           source: 'acceptance-test-setup'
@@ -40,12 +44,12 @@ export default function licence () {
           value: 'regime',
           select: 'entityId'
         },
-        licenceRef: 'AT/CURR/DAILY/01',
+        licenceRef: 'AT/TEST/01',
         naldId: {
           schema: 'public',
           table: 'permitLicences',
           lookup: 'licenceRef',
-          value: 'AT/CURR/DAILY/01',
+          value: 'AT/TEST/01',
           select: 'id'
         },
         metadata: {
@@ -121,7 +125,7 @@ export default function licence () {
     licenceDocuments: [
       {
         id: '1a274f3e-f891-43dd-8c25-8afac4e760ac',
-        licenceRef: 'AT/CURR/DAILY/01',
+        licenceRef: 'AT/TEST/01',
         startDate: '2018-01-01'
       }
     ],
@@ -141,16 +145,17 @@ export default function licence () {
         contactId: '6e05db31-39cd-4bb0-83a0-0d985037ad8f'
       }
     ],
+    points,
     licences: [
       {
         id: '8717da0e-28d4-4833-8e32-1da050b60055',
-        licenceRef: 'AT/CURR/DAILY/01',
+        licenceRef: 'AT/TEST/01',
         regionId: { schema: 'public', table: 'regions', lookup: 'naldRegionId', value: 9, select: 'id' },
         regions: {
           historicalAreaCode: 'SAAR',
           regionalChargeArea: 'Southern'
         },
-        startDate: '2020-01-01',
+        startDate: '2018-01-01',
         waterUndertaker: true
       }
     ],
@@ -161,8 +166,47 @@ export default function licence () {
         issue: 1,
         increment: 0,
         status: 'current',
-        startDate: '2020-01-01',
+        startDate: '2018-01-01',
         externalId: '6:1234:1:0'
+      }
+    ],
+    licenceVersionPurposes: [
+      {
+        id: 'f264184b-22a7-4e26-bd90-d5738eb2e07e',
+        licenceVersionId: '7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b',
+        primaryPurposeId: {
+          schema: 'water',
+          table: 'purposesPrimary',
+          lookup: 'legacyId',
+          value: 'A',
+          select: 'purposePrimaryId'
+        },
+        secondaryPurposeId: {
+          schema: 'water',
+          table: 'purposesSecondary',
+          lookup: 'legacyId',
+          value: 'AGR',
+          select: 'purposeSecondaryId'
+        },
+        purposeId: {
+          schema: 'public',
+          table: 'purposes',
+          lookup: 'legacyId',
+          value: '140',
+          select: 'id'
+        },
+        abstractionPeriodStartDay: 1,
+        abstractionPeriodStartMonth: 4,
+        abstractionPeriodEndDay: 31,
+        abstractionPeriodEndMonth: 3,
+        annualQuantity: 1554,
+        externalId: '6:1234'
+      }
+    ],
+    licenceVersionPurposePoints: [
+      {
+        licenceVersionPurposeId: 'f264184b-22a7-4e26-bd90-d5738eb2e07e',
+        pointId: points[0].id
       }
     ]
   }

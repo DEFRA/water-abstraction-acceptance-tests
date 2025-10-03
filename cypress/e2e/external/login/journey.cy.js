@@ -2,7 +2,6 @@
 
 describe('Login and log out (external)', () => {
   beforeEach(() => {
-    cy.tearDown()
     cy.fixture('users.json').its('external').as('userEmail')
   })
 

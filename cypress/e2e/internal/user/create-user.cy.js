@@ -2,30 +2,16 @@
 
 describe('Creating a user (internal)', () => {
   beforeEach(() => {
-    cy.tearDown()
     cy.fixture('users.json').its('super').as('userEmail')
   })
 
   it('can create an internal user', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in
-    cy.contains('Enter a licence number, customer name')
-
-    // Click manage in the menu
-    cy.get('#navbar-notifications').click()
-
-    // Clicks on the create user link
-    cy.get(':nth-child(11) > li > .govuk-link').click()
+    cy.visit('/account/create-user')
 
     // Enter a generated email address to avoid duplicates on subsequent runs of the test
     cy.wrap(`regression.tests.${Date.now()}@defra.gov.uk`).as('newEmail')

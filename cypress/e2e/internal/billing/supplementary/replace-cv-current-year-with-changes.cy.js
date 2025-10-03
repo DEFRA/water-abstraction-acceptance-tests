@@ -18,32 +18,29 @@ describe('Replace charge version in current financial year change the charge ref
         fixture.billRuns[0].fromFinancialYearEnding = currentFinancialYearInfo.end.year - 1
         fixture.billRuns[0].toFinancialYearEnding = currentFinancialYearInfo.end.year
 
+        cy.wrap(fixture.licences[1].id).as('licenceId')
+
         cy.load(fixture)
       })
     })
-
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
       cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
     })
+
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates both the PRESROC and SROC supplementary bill runs and once built sends the SROC bill run then adds a new charge version in the current FY with changes, creates a new SROC bill run and confirms details of bill run', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
+    cy.get('@licenceId').then((licenceId) => {
+      cy.visit(`/system/licences/${licenceId}/set-up`)
+    })
 
     // -------------------------------------------------------------------------
     cy.log('Replacing initial Charge Version')
@@ -51,18 +48,6 @@ describe('Replace charge version in current financial year change the charge ref
     // being replaced with the same billing account, which is essential for this test. As a work around the initial
     // charge version that was created in the test data is going to be replaced entirely before the initial bill run.
     // This will then enable the subsequent Charge Version to be created with the same billing account.
-
-    // click the Search menu link
-    cy.get('#navbar-view').click()
-
-    // Search
-    // search for a licence and select it
-    cy.get('#query').type('AT/TEST/02')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row > :nth-child(1) > a').click()
-
-    // click the licence set up tab
-    cy.contains('Licence set up').click()
 
     // set up a new replacement charge making no changes. This will correct the issue with the billing account
     cy.contains('Set up a new charge').click()
