@@ -2,7 +2,6 @@
 
 describe('Login and log out (internal)', () => {
   beforeEach(() => {
-    cy.tearDown()
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 

@@ -1,54 +1,56 @@
 'use strict'
 
+import scenarioData from '../../../support/scenarios/delete-licence-from-workflow.js'
+
+const scenario = scenarioData()
+
 describe('Deleting a licence from workflow (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('deleting-licence-from-workflow').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('flags the licence for supplementary billing', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search the licence
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
+    cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
 
     // Confirm there are no flags already on the licence
     cy.get('.govuk-notification-banner__content').should('not.exist')
 
-    // Click the workflow tab
+    // Navigate to the manage page
     cy.get('#nav-manage').click()
 
-    // Check licences in workflow
-    cy.get(':nth-child(9) > li > .govuk-link').click()
-    cy.contains('Workflow')
-    cy.get('tbody > .govuk-table__row > :nth-child(1)').contains('AT/CURR/DAILY/01')
-    cy.get('tbody > .govuk-table__row > :nth-child(2)').contains('Big Farm Co Ltd')
-    cy.get('tbody > .govuk-table__row > :nth-child(3)').contains('1 January 2020')
+    // Click on the workflow link
+    cy.get('a[href="/charge-information-workflow"]').click()
+
+    // Workflow
+    // confirm the 3 tabs exist
+    cy.get('#tab_toSetUp').should('contain.text', 'To set up')
+    cy.get('#tab_review').should('contain.text', 'Review')
+    cy.get('#tab_changeRequest').should('contain.text', 'Change request')
+
+    // confirm we see our test licence in the 'To set up' workflow and the correct action links
+    cy.get('#toSetUp > div > table > tbody').within(() => {
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'AT/TEST/01')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Big Farm Co Ltd')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', '1 January 2018')
+
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Set up')
+      cy.get('.govuk-table__row:nth-child(1)').should('contain.text', 'Remove')
+
+      cy.get('.govuk-table__row:nth-child(1) > td:nth-child(4) > a:nth-child(2)').click()
+    })
 
     // Remove licence from workflow
-    cy.get('tbody > .govuk-table__row > :nth-child(4)').contains('Remove').click()
     cy.get('.govuk-heading-xl').contains("You're about to remove this licence from the workflow")
-    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').contains('AT/CURR/DAILY/01')
+    cy.get('.govuk-table__body > .govuk-table__row > :nth-child(1)').contains('AT/TEST/01')
     cy.get('form > .govuk-button').click()
 
     // Assert there are no licences in workflow now
@@ -56,9 +58,9 @@ describe('Deleting a licence from workflow (internal)', () => {
 
     // search for a licence
     cy.get('#navbar-view').click()
-    cy.get('#query').type('AT/CURR/DAILY/01')
+    cy.get('#query').type('AT/TEST/01')
     cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
+    cy.get('.govuk-table__row').contains('AT/TEST/01').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')

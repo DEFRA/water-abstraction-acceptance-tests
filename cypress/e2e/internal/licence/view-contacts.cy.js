@@ -1,40 +1,27 @@
 'use strict'
 
+import scenarioData from '../../../support/scenarios/one-licence-only.js'
+
+const scenario = scenarioData()
+
 describe("View a licence's contacts (internal)", () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('super').as('userEmail')
   })
 
   it('search for a licence, select it and then view its contacts', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
+    cy.visit(`/system/licences/${scenario.licences[0].id}/contact-details`)
 
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // Confirm we are on the licence page and select contact details tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.get('[data-test="#tab_contact"]').click()
-
-    // Confirm we are on the tab page and expected controls are present
+    // Confirm we are on the licence contact details page and expected controls are present
     cy.get('#contact-details > .govuk-heading-l').contains('Contact details')
     cy.get('.govuk-body > .govuk-link').contains('Go to customer contacts')
 

@@ -13,33 +13,22 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.fixture('review-scenario-12.json').then((fixture) => {
       cy.load(fixture)
     })
-    // Grab the user email to use
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
       cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
     })
+
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns, the returns issues and the allocated quantities', () => {
-    cy.visit('/')
-
-    // Enter the user name and password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    // Click the Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    // Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.visit('/system/bill-runs')
 
     // Bill runs
     // Click the Create a bill run button

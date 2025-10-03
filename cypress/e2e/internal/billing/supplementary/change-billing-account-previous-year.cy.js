@@ -22,31 +22,21 @@ describe('Change billing account in previous financial year (internal)', () => {
       })
     })
 
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
-
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
       cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
     })
+
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates both the PRESROC and SROC supplementary bill runs and once built sends the SROC bill run then adds a new charge version with a new billing account and creates a new SROC bill run and confirms previous account is credited', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // click the Bill runs menu link
-    cy.get('#navbar-bill-runs').contains('Bill runs').click()
+    cy.visit('/system/bill-runs')
 
     // Bill runs
     // click the Create a bill run button

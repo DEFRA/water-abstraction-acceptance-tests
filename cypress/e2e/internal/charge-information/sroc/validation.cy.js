@@ -1,41 +1,28 @@
 'use strict'
 
+import scenarioData from '../../../../support/scenarios/licence-with-presroc-chg-ver.js'
+
+const scenario = scenarioData()
+
 describe('SROC charge information validation (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('adds a new charge information with a new billing account and a note, and sets up the charge reference including additional charges and adjustments', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
+    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search for the licence and select it from the results
-    cy.get('#query').type('AT/CURR/DAILY/01')
-    cy.get('.search__button').click()
-    cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/CURR/DAILY/01').click()
-
-    // Confirm we are on the licence page and select the licence set up tab
-    cy.contains('AT/CURR/DAILY/01')
-    cy.contains('Licence set up').click()
-
-    // Confirm we are on the tab page and then click Set up a new charge
-    cy.contains('Charge information')
+    // Confirm we are on the licence set-up page and then click Set up a new charge
+    cy.contains('Licence set up')
     cy.contains('Set up a new charge').click()
 
     // Select reason for new charge information
@@ -57,7 +44,7 @@ describe('SROC charge information validation (internal)', () => {
     // test date before licence start date
     cy.get('#customDate-day').type('1')
     cy.get('#customDate-month').type('6')
-    cy.get('#customDate-year').type('2019')
+    cy.get('#customDate-year').type('2017')
     cy.get('form > .govuk-button').contains('Continue').click()
     cy.get('.govuk-error-summary__list').should('contain.text', 'Date must be after the start date of the earliest known licence version')
     cy.get('.govuk-error-message').should('contain.text', 'Date must be after the start date of the earliest known licence version')

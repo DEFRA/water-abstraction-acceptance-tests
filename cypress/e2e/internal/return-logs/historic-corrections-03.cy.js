@@ -1,32 +1,31 @@
 'use strict'
 
-import twoReturnRequirementsThreeReturnLogs from '../../../support/scenarios/two-return-requirements-three-return-logs.js'
+import scenarioData from '../../../support/scenarios/two-return-requirements-three-return-logs.js'
 
-const dataModel = twoReturnRequirementsThreeReturnLogs()
+const scenario = scenarioData()
 
 describe('Submit historic correction using abstraction data for two abstraction points', () => {
   beforeEach(() => {
     cy.tearDown()
-
-    // Get the user email and login as the user
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
-    cy.get('@userEmail').then((userEmail) => {
-      cy.programmaticLogin({
-        email: userEmail
-      })
-    })
 
     // Work out current financial year info using the current date. So, what the end year will be. As we don't override
     // day and month we'll get back 20XX-03-31.
     cy.currentFinancialYear().then((currentFinancialYearInfo) => {
       cy.wrap(currentFinancialYearInfo).as('currentFinancialYearInfo')
 
-      cy.load(dataModel)
+      cy.load(scenario)
     })
+
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates a return requirement using abstraction data and approves the requirement', () => {
-    cy.visit(`/system/licences/${dataModel.licences[0].id}/returns`)
+    cy.get('@userEmail').then((userEmail) => {
+      cy.programmaticLogin({
+        email: userEmail
+      })
+    })
+    cy.visit(`/system/licences/${scenario.licences[0].id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('#returns > .govuk-heading-l').contains('Returns')
@@ -110,49 +109,49 @@ describe('Submit historic correction using abstraction data for two abstraction 
       const startYear = currentFinancialYearInfo.start.year
       const endYear = currentFinancialYearInfo.end.year
 
+      cy.get('[data-test="return-due-date-0"]').should('have.value', '')
+      cy.get('[data-test="return-status-0"] > .govuk-tag').contains('not due yet')
+
+      cy.get('[data-test="return-due-date-1"]').should('have.value', '')
+      cy.get('[data-test="return-status-1"] > .govuk-tag').contains('not due yet')
+
       cy.returnLogDueData(endYear, true).then((data) => {
-        cy.get('[data-test="return-due-date-0"]').contains(data.text)
-        cy.get('[data-test="return-status-0"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-due-date-2"]').contains(data.text)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('void')
 
-        cy.get('[data-test="return-due-date-1"]').contains(data.text)
-        cy.get('[data-test="return-status-1"] > .govuk-tag').contains('void')
-
-        cy.get('[data-test="return-due-date-2"]').should('have.value', '')
-        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('not due yet')
-
-        cy.get('[data-test="return-due-date-3"]').should('have.value', '')
-        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('not due yet')
+        cy.get('[data-test="return-due-date-3"]').contains(data.text)
+        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('void')
       })
+
+      cy.get('[data-test="return-due-date-4"]').should('have.value', '')
+      cy.get('[data-test="return-status-4"] > .govuk-tag').contains('open')
+
+      cy.get('[data-test="return-due-date-5"]').should('have.value', '')
+      cy.get('[data-test="return-status-5"] > .govuk-tag').contains('open')
 
       cy.returnLogDueData(startYear, true).then((data) => {
-        cy.get('[data-test="return-due-date-4"]').contains(data.text)
-        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-due-date-6"]').contains(data.text)
+        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('void')
 
-        cy.get('[data-test="return-due-date-5"]').contains(data.text)
-        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('void')
-
-        cy.get('[data-test="return-due-date-6"]').should('have.value', '')
-        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('open')
-
-        cy.get('[data-test="return-due-date-7"]').should('have.value', '')
-        cy.get('[data-test="return-status-7"] > .govuk-tag').contains('open')
+        cy.get('[data-test="return-due-date-7"]').contains(data.text)
+        cy.get('[data-test="return-status-7"] > .govuk-tag').contains('void')
       })
 
+      cy.get('[data-test="return-due-date-8"]').should('have.value', '')
+      cy.get('[data-test="return-status-8"] > .govuk-tag').contains('open')
+
+      cy.get('[data-test="return-due-date-9"]').should('have.value', '')
+      cy.get('[data-test="return-status-9"] > .govuk-tag').contains('open')
+
+      cy.get('[data-test="return-due-date-10"]').should('have.value', '')
+      cy.get('[data-test="return-status-10"] > .govuk-tag').contains('open')
+
       cy.returnLogDueData(startYear - 1, true).then((data) => {
-        cy.get('[data-test="return-due-date-8"]').should('have.value', '')
-        cy.get('[data-test="return-status-8"] > .govuk-tag').contains('open')
-
-        cy.get('[data-test="return-due-date-9"]').should('have.value', '')
-        cy.get('[data-test="return-status-9"] > .govuk-tag').contains('open')
-
-        cy.get('[data-test="return-due-date-10"]').contains(data.text)
-        cy.get('[data-test="return-status-10"] > .govuk-tag').contains('void')
-
         cy.get('[data-test="return-due-date-11"]').contains(data.text)
         cy.get('[data-test="return-status-11"] > .govuk-tag').contains('void')
 
-        cy.get('[data-test="return-due-date-12"]').should('have.value', '')
-        cy.get('[data-test="return-status-12"] > .govuk-tag').contains('open')
+        cy.get('[data-test="return-due-date-12"]').contains(data.text)
+        cy.get('[data-test="return-status-12"] > .govuk-tag').contains('void')
       })
     })
   })

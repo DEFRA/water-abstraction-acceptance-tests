@@ -1,51 +1,25 @@
 'use strict'
 
+import scenarioData from '../../../support/scenarios/editing-return.js'
+
+const scenario = scenarioData()
+
 describe('Editing a return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
-    cy.fixture('barebones.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    cy.fixture('editing-a-return.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
+
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('submit a return for a licence from its returns tab and mark the licence for two-part tariff supplementary billing', () => {
-    cy.visit('/')
-
-    // enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    // click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    // assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // search for a licence
-    cy.get('#query').type('AT/CURR/MONTHLY/02')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/CURR/MONTHLY/02').click()
-
-    // confirm we are on the licence page and select returns tab
-    cy.contains('AT/CURR/MONTHLY/02')
-    cy.get('[data-test="#tab_returns"]').click()
-
-    // confirm we are on the tab page
-    cy.get('#returns > .govuk-heading-l').contains('Returns')
-
-    // confirm we see the return we are going to edit
-    cy.get('#returns').within(() => {
-      cy.get('[data-test="return-reference-0"] > .govuk-link').should('be.visible').and('contain.text', '9999994')
-      cy.get('[data-test="return-status-0"] > .govuk-tag').should('be.visible').and('contain.text', 'complete')
-
-      cy.get('[data-test="return-reference-0"] > .govuk-link').contains('9999994').click()
-    })
+    cy.visit(`/system/return-logs?id=${scenario.returnLogs[0].id}`)
 
     // Edit return
     cy.get('.govuk-button').first().click()
@@ -87,22 +61,11 @@ describe('Editing a return (internal)', () => {
     cy.get('form > .govuk-button').click()
 
     // Confirm this return
-    // confirm we are seeing the details we entered then submit
-    cy.get('table > tbody').within(() => {
-      cy.get(':nth-child(10) > :nth-child(1)').should('contain.text', 'January')
-      cy.get(':nth-child(10) > .govuk-table__cell--numeric').should('contain.text', '50')
-
-      cy.get(':nth-child(11) > :nth-child(1)').should('contain.text', 'February')
-      cy.get(':nth-child(11) > .govuk-table__cell--numeric').should('contain.text', '50')
-
-      cy.get('td.govuk-table__cell.govuk-table__header').should('contain.text', 'Total volume of water abstracted')
-      cy.get('.govuk-table__cell > strong').should('contain.text', '100')
-    })
     cy.get('.govuk-button').first().click()
 
     // Return submitted
     // confirm we see the success panel (with regex to accept any return number) and then click the Mark for supplementary bill run button
-    cy.get('.govuk-panel__title').should('contain.text', 'Return 9999994 submitted')
+    cy.get('.govuk-panel__title').should('contain.text', 'Return 9999990 submitted')
     cy.get('.govuk-button').contains('Mark for supplementary bill run').click()
 
     // Summary

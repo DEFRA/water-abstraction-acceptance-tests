@@ -2,8 +2,7 @@
 
 describe('User registration (external)', () => {
   beforeEach(() => {
-    cy.tearDown()
-    cy.fixture('users.json').its('loadedExternal').as('userEmail')
+    cy.wrap(`external.${Date.now()}@example.com`).as('userEmail')
   })
 
   it('can register a new user', () => {

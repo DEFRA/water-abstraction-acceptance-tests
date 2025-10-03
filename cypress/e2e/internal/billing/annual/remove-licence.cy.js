@@ -11,35 +11,27 @@ describe('Remove bill from annual bill run (internal)', () => {
 
         cy.load(fixture)
       })
-    })
 
-    cy.fixture('users.json').its('billingAndData').as('userEmail')
+      cy.wrap(fixture.licences[3].id).as('licenceId')
+    })
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
       cy.wrap(formattedCurrentDate).as('formattedCurrentDate')
     })
+
+    cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
   it('creates an SROC annual bill run but before it is sent removes a single bill and confirms it is not included', () => {
-    cy.visit('/')
-
-    //  Enter the user name and Password
     cy.get('@userEmail').then((userEmail) => {
-      cy.get('input#email').type(userEmail)
+      cy.programmaticLogin({
+        email: userEmail
+      })
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-
-    //  Click Sign in Button
-    cy.get('.govuk-button.govuk-button--start').click()
-
-    //  Assert the user signed in and we're on the search page
-    cy.contains('Search')
-
-    // Search the licence
-    cy.get('#query').type('AT/TEST/04')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/TEST/04').click()
+    cy.get('@licenceId').then((licenceId) => {
+      cy.visit(`/system/licences/${licenceId}/summary`)
+    })
 
     // Confirm there are no flags already on the licence
     cy.get('.govuk-notification-banner__content').should('not.exist')
