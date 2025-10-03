@@ -120,30 +120,27 @@ describe('Submit summer and winter and all year historic correction using abstra
       cy.get('[data-test="return-due-date-1"]').should('have.value', '')
       cy.get('[data-test="return-status-1"] > .govuk-tag').contains('not due yet')
 
-      cy.get('[data-test="return-due-date-2"]').should('have.value', '')
-      cy.get('[data-test="return-status-2"] > .govuk-tag').contains('not due yet')
-
       cy.returnLogDueData(winter.end, true).then((data) => {
-        cy.get('[data-test="return-due-date-3"]').contains(data.text)
-        cy.get('[data-test="return-status-3"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-due-date-2"]').contains(data.text)
+        cy.get('[data-test="return-status-2"] > .govuk-tag').contains('void')
       })
 
-      cy.get('[data-test="return-due-date-4"]').should('have.value', '')
-      cy.get('[data-test="return-status-4"] > .govuk-tag').contains('open')
+      cy.get('[data-test="return-due-date-3"]').should('have.value', '')
+      cy.get('[data-test="return-status-3"] > .govuk-tag').contains('open')
 
       cy.returnLogDueData(summer.end, false).then((data) => {
-        cy.get('[data-test="return-due-date-5"]').contains(data.text)
-        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('void')
+        cy.get('[data-test="return-due-date-4"]').contains(data.text)
+        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
       })
 
       cy.returnLogDueData(winter.end - 1, true).then((data) => {
-        cy.get('[data-test="return-due-date-6"]').contains(data.text)
-        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('complete')
+        cy.get('[data-test="return-due-date-5"]').contains(data.text)
+        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('complete')
       })
 
       cy.returnLogDueData(summer.end - 1, false).then((data) => {
-        cy.get('[data-test="return-due-date-7"]').contains(data.text)
-        cy.get('[data-test="return-status-7"] > .govuk-tag').contains('complete')
+        cy.get('[data-test="return-due-date-6"]').contains(data.text)
+        cy.get('[data-test="return-status-6"] > .govuk-tag').contains('complete')
       })
     })
   })
