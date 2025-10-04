@@ -39,10 +39,9 @@ describe('Send returns reminder to customer (internal)', () => {
 
     // Return reminders sent
     cy.get('.govuk-panel__title').should('contain', 'Returns reminders sent')
-    cy.get('p > a').contains('View notifications report').should('be.visible').click()
+    cy.get('p > a').contains('View notice').should('be.visible').click()
 
     // Returns: reminder
-    // it can take some time to generate the report hence the extra timeout
-    cy.get('h1').contains('Notification report')
+    cy.get('h1').contains('Returns reminder')
   })
 })
