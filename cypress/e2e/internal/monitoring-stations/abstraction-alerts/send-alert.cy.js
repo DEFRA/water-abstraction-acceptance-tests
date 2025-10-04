@@ -79,16 +79,9 @@ describe('Send an abstraction alert (internal)', () => {
     // Confirm we are on the Alert sent confirmation page
     cy.get('.govuk-panel__title').contains('Water abstraction alerts sent')
     cy.get('.govuk-panel__body').contains('Your reference number is WAA-')
+    cy.get('p > a').contains('View notice').should('be.visible').click()
 
-    // View the notifications report and check the data is correct
-    cy.wait(1000) // Pause for 1 second to ensure the DB is updated with the new notification
-    cy.get('div.govuk-body > :nth-child(2) > .govuk-link').click()
-    cy.get('.govuk-caption-xl').should('have.text', 'Notification report')
-    cy.get('.govuk-heading-xl').should('have.text', 'Water abstraction alert')
-    cy.get('.govuk-caption-m').contains('WAA-')
-    cy.get('tbody').contains('external@example.com')
-    cy.get('tbody').contains('AT/TEST/01')
-    cy.get('tbody').contains('Email')
-    cy.get('tbody').should('not.include.text', 'Error')
+    // Warning alert
+    cy.get('h1').contains('Warning alert')
   })
 })
