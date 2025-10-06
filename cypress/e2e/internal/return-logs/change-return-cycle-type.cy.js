@@ -181,13 +181,13 @@ describe('Submit changing return cycle type on new return version', () => {
       cy.get('[data-test="return-due-date-3"]').should('have.value', '')
       cy.get('[data-test="return-status-3"] > .govuk-tag').contains('open')
 
-      cy.returnLogDueData(endYear - 2, true).then((data) => {
-        cy.get('[data-test="return-due-date-4"]').contains(data.text)
-        cy.get('[data-test="return-status-4"] > .govuk-tag').contains('void')
-      })
+      cy.get('[data-test="return-due-date-4"]').should('have.value', '')
+      cy.get('[data-test="return-status-4"] > .govuk-tag').contains('open')
 
-      cy.get('[data-test="return-due-date-5"]').should('have.value', '')
-      cy.get('[data-test="return-status-5"] > .govuk-tag').contains('open')
+      cy.returnLogDueData(endYear - 2, true).then((data) => {
+        cy.get('[data-test="return-due-date-5"]').contains(data.text)
+        cy.get('[data-test="return-status-5"] > .govuk-tag').contains('void')
+      })
 
       cy.returnLogDueData(endYear - 3, true).then((data) => {
         cy.get('[data-test="return-due-date-6"]').contains(data.text)
