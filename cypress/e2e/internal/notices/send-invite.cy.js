@@ -37,9 +37,9 @@ describe('Send returns invite to customer (internal)', () => {
 
     // Returns invitations sent
     cy.get('.govuk-panel__title').should('contain', 'Returns invitations sent')
-    cy.get('p > a').contains('View notifications report').should('be.visible').click()
+    cy.get('p > a').contains('View notice').should('be.visible').click()
 
     // Returns: invitation
-    cy.get('h1').contains('Notification report')
+    cy.get('h1').contains('Returns invitation')
   })
 })
