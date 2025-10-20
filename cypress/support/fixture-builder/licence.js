@@ -55,7 +55,34 @@ export default function licence () {
         metadata: {
           Name: 'cupcake factory',
           dataType: 'acceptance-test-setup',
-          IsCurrent: true
+          IsCurrent: true,
+          Salutation: '',
+          AddressLine1: 'Big Farm',
+          AddressLine2: 'Windy road',
+          AddressLine3: 'Buttercup meadow',
+          AddressLine4: 'Buttercup Village',
+          Town: 'Testington',
+          County: 'Testingshire',
+          Postcode: 'TT1 1TT',
+          Country: 'United Kingdom',
+          contacts: [
+            {
+              name: 'Environment Agency',
+              role: 'Licence holder',
+              town: 'Bristol',
+              type: 'Organisation',
+              county: null,
+              country: null,
+              forename: null,
+              initials: null,
+              postcode: 'BS1 5AH',
+              salutation: null,
+              addressLine1: 'Horizon House',
+              addressLine2: 'Dean Lane',
+              addressLine3: null,
+              addressLine4: null
+            }
+          ]
         },
         licence_name: 'the daily cupcake licence',
         companyEntityId: 'e86c312b-222d-404f-ae08-eb90a80bec18'
