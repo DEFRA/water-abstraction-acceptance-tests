@@ -42,7 +42,7 @@ describe('Submit a return (internal)', () => {
 
     // Which units were used?
     // choose Cubic metres and continue
-    cy.get('input#units').check()
+    cy.get('#cubicMetres').check()
     cy.get('form > .govuk-button').click()
 
     // Have meter details been provided?
@@ -53,7 +53,7 @@ describe('Submit a return (internal)', () => {
     // Is it a single volume?
     // choose Yes, enter 100 cubic metres and continue
     cy.get('label.govuk-radios__label').contains('Yes').click()
-    cy.get('input#single-volume-quantity').type('100')
+    cy.get('#singleVolumeQuantity').type('100')
     cy.get('form > .govuk-button').click()
 
     // What period was used for this volume?

@@ -26,38 +26,38 @@ describe('Editing a return (internal)', () => {
 
     // When was the return received?
     // choose Today and continue
-    cy.get('input#received-date-options').check()
+    cy.get('#today').check()
     cy.get('form > .govuk-button').click()
 
     // What do you want to do with this return?
     // choose Enter and submit and continue
-    cy.get('input#journey').check()
+    cy.get('#enterReturn').check()
     cy.get('form > .govuk-button').click()
 
     // How was this return reported?
     // choose Abstraction volumes and continue
-    cy.get('input#reported-2').check()
+    cy.get('#abstractionVolumes').check()
     cy.get('form > .govuk-button').click()
 
     // Which units were used?
     // choose Cubic metres and continue
-    cy.get('input#units').check()
+    cy.get('#cubicMetres').check()
     cy.get('form > .govuk-button').click()
 
     // Have meter details been provided?
     // choose No and continue
-    cy.get('input#meterProvided-2').check()
+    cy.get('#no').check()
     cy.get('form > .govuk-button').click()
 
     // Is it a single volume?
     // choose Yes, enter 100 cubic metres and continue
-    cy.get('input#singleVolume').check()
-    cy.get('input#single-volume-quantity').type('100')
+    cy.get('#yes').check()
+    cy.get('#singleVolumeQuantity').type('100')
     cy.get('form > .govuk-button').click()
 
     // What period was used for this volume?
     // choose Default abstraction period and continue
-    cy.get('input#periodDateUsedOptions').check()
+    cy.get('#default').check()
     cy.get('form > .govuk-button').click()
 
     // Confirm this return
