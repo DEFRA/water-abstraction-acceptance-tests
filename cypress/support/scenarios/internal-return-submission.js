@@ -6,6 +6,7 @@ export default function () {
     returnLogs: [
       {
         id: 'v1:1:AT/TEST/01:9999990:2020-01-01:2020-03-31',
+        returnId: '7f6ff22b-f7f6-4f37-a29e-244fad5a22eb',
         returnReference: '9999990',
         licenceRef: 'AT/TEST/01',
         metadata: {
