@@ -19,7 +19,7 @@ describe('Record receipt for return (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs?id=${scenario.returnLogs[0].id}`)
+    cy.visit(`/system/return-logs/${scenario.returnLogs[0].returnId}`)
 
     // Abstraction return
     // submit return
