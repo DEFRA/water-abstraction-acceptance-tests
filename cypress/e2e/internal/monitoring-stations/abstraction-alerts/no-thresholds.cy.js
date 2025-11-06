@@ -33,7 +33,7 @@ describe('Attempt set up of abstraction alert with no thresholds (internal)', ()
 
     // Confirm we are on the Select the type of alert you need to send page
     cy.get('.govuk-caption-l').should('have.text', 'Test Station')
-    cy.get('.govuk-fieldset__heading').contains('Select the type of alert you need to send')
+    cy.get('.govuk-heading-l').contains('Select the type of alert you need to send')
 
     // Select the reduce alert type and continue
     cy.get('[type="radio"]').check('reduce')
@@ -42,6 +42,6 @@ describe('Attempt set up of abstraction alert with no thresholds (internal)', ()
     // Confirm that a validation error has been generated
     cy.get('.govuk-error-summary').contains('There is a problem')
     cy.get('.govuk-error-summary').contains('There are no thresholds with the reduce restriction type, Select the type of alert you need to send')
-    cy.get('#alert-type-error').contains('There are no thresholds with the reduce restriction type, Select the type of alert you need to send')
+    cy.get('#alertType-error').contains('There are no thresholds with the reduce restriction type, Select the type of alert you need to send')
   })
 })
