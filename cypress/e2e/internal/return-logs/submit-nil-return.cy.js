@@ -4,7 +4,7 @@ import scenarioData from '../../../support/scenarios/internal-return-submission.
 
 const scenario = scenarioData()
 
-describe('Submit a single volume return (internal)', () => {
+describe('Submit a nil return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
