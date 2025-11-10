@@ -27,17 +27,17 @@ describe('Submit a single volume return (internal)', () => {
 
     // When was the return received?
     // select today
-    cy.get('label.govuk-radios__label').contains('Today').click()
+    cy.get('#today').click()
     cy.get('form > .govuk-button').click()
 
     // What do you want to do with this return?
     // choose Enter and submit and continue
-    cy.get('label.govuk-radios__label').contains('Enter and submit').click()
+    cy.get('#enterReturn').click()
     cy.get('form > .govuk-button').click()
 
     // How was this return reported?
     // choose Abstraction volumes and continue
-    cy.get('label.govuk-radios__label').contains('Abstraction Volumes').click()
+    cy.get('#abstractionVolumes').click()
     cy.get('form > .govuk-button').click()
 
     // Which units were used?
@@ -47,18 +47,18 @@ describe('Submit a single volume return (internal)', () => {
 
     // Have meter details been provided?
     // choose No and continue
-    cy.get('label.govuk-radios__label').contains('No').click()
+    cy.get('#no').click()
     cy.get('form > .govuk-button').click()
 
     // Is it a single volume?
     // choose Yes, enter 100 cubic metres and continue
-    cy.get('label.govuk-radios__label').contains('Yes').click()
+    cy.get('#yes').click()
     cy.get('#singleVolumeQuantity').type('100')
     cy.get('form > .govuk-button').click()
 
     // What period was used for this volume?
     // choose Default abstraction period and continue
-    cy.get('label.govuk-radios__label').contains('Default abstraction period').click()
+    cy.get('#default').click()
     cy.get('form > .govuk-button').click()
 
     // Volumes
