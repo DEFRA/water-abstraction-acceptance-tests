@@ -62,6 +62,9 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.get('button.govuk-button').click()
 
     // Select the address returned from the lookup (rate limited so pause briefly)
+    // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
+    // has rate monitoring protection. Because we're automating the calls, they happen to quickly so the facade rejects
+    // the second call. Hence we need to wait a second.
     cy.wait(1000)
     cy.get('#addresses').select('340116')
     cy.get('button.govuk-button').click()
@@ -72,6 +75,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     // Additional recipient is shown in the list
     cy.contains('Pomona Sprout')
     cy.contains('Letter - Single use')
+
     cy.contains('tr', 'Letter - Single use')
       .within(() => {
         cy.contains('a', 'Preview').click()
@@ -93,11 +97,14 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.get('@noticeReference').then((noticeReference) => {
       cy.contains('.govuk-caption-l', noticeReference)
     })
+
     cy.contains('Showing all 2 notifications')
+
     cy.get('[data-test^="notification-recipient"]').should('have.length', 2)
     cy.get('[data-test="notification-recipient0"]').within(() => {
       cy.contains('external@example.com')
     })
+
     cy.get('[data-test="notification-recipient1"]').within(() => {
       cy.contains('Pomona Sprout')
       cy.contains('ENVIRONMENT AGENCY')
