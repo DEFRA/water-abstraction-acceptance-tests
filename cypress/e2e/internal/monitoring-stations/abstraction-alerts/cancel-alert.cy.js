@@ -33,7 +33,7 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
 
     // Confirm we are on the Select the type of alert you need to send page
     cy.get('.govuk-caption-l').should('have.text', 'Test Station')
-    cy.get('.govuk-fieldset__heading').contains('Select the type of alert you need to send')
+    cy.get('.govuk-heading-l').contains('Select the type of alert you need to send')
 
     // Select the stop alert type and continue
     cy.get('[type="radio"]').check('stop')
@@ -41,10 +41,10 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
 
     // Confirm we are on the Which thresholds do you need to send an alert for? page
     cy.get('.govuk-caption-l').should('have.text', 'Test Station')
-    cy.get('.govuk-fieldset__heading').contains('Which thresholds do you need to send an alert for?')
+    cy.get('.govuk-heading-l').contains('Which thresholds do you need to send an alert for?')
 
     // Select the threshold and continue
-    cy.get('#alert-thresholds').check()
+    cy.get('#alertThresholds').check()
     cy.get('.govuk-button').contains('Continue').click()
 
     // Confirm data on Check the licence matches for the selected thresholds page is correct and continue
@@ -59,12 +59,12 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
 
     // Confirm we are on the Select an email address to include in the alerts page
     cy.get('.govuk-caption-l').should('have.text', 'Test Station')
-    cy.get('.govuk-fieldset__heading').contains('Select an email address to include in the alerts')
+    cy.get('.govuk-heading-l').contains('Select an email address to include in the alerts')
     cy.get('.govuk-radios').contains('environment.officer@wrls.gov.uk')
 
     // Select Use another email address, enter an email address and continue
     cy.get('[type="radio"]').check('other')
-    cy.get('#other-user').type('test.user@testing.com')
+    cy.get('#otherUser').type('test.user@testing.com')
     cy.get('.govuk-button').contains('Continue').click()
 
     // Confirm data on Check the recipients page is correct and cancel the alert
@@ -79,7 +79,7 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
 
     // Confirm cancellation of the alert
     cy.get('.govuk-caption-l').contains('Notice WAA-')
-    cy.get('.govuk-heading-xl').should('have.text', 'You are about to cancel this notice')
+    cy.get('.govuk-heading-l').should('have.text', 'You are about to cancel this notice')
     cy.get(':nth-child(2) > .govuk-summary-list__value').contains('Stop')
     cy.get('.govuk-button').contains('Confirm cancel').click()
 
