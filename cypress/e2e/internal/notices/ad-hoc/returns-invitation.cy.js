@@ -84,28 +84,28 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     // Additional recipient is shown in the list
     cy.get('@noticeRecipients').then(({ licenceNumber, singleUseLetter, primaryUserEmail }) => {
       cy.get('[data-test^="recipient-contact"]').should('have.length', 2)
-      cy.get('[data-test="recipient-contact0"]').within(() => {
+      cy.get('[data-test="recipient-contact-0"]').within(() => {
         cy.contains(singleUseLetter.contactName)
         cy.contains(singleUseLetter.address.line1)
         cy.contains(singleUseLetter.address.line2)
         cy.contains(singleUseLetter.address.line3)
         cy.contains(singleUseLetter.address.postcode)
       })
-      cy.get('[data-test="recipient-licence-numbers0"]').should('contain.text', licenceNumber)
-      cy.get('[data-test="recipient-method0"]').should('contain.text', singleUseLetter.method)
-      cy.get('[data-test="recipient-action0"]').within(() => {
+      cy.get('[data-test="recipient-licence-numbers-0"]').should('contain.text', licenceNumber)
+      cy.get('[data-test="recipient-method-0"]').should('contain.text', singleUseLetter.method)
+      cy.get('[data-test="recipient-action-0"]').within(() => {
         cy.contains('Preview')
       })
 
-      cy.get('[data-test="recipient-contact1"]').should('contain.text', primaryUserEmail.email)
-      cy.get('[data-test="recipient-licence-numbers1"]').should('contain.text', licenceNumber)
-      cy.get('[data-test="recipient-method1"]').should('contain.text', primaryUserEmail.method)
-      cy.get('[data-test="recipient-action1"]').within(() => {
+      cy.get('[data-test="recipient-contact-1"]').should('contain.text', primaryUserEmail.email)
+      cy.get('[data-test="recipient-licence-numbers-1"]').should('contain.text', licenceNumber)
+      cy.get('[data-test="recipient-method-1"]').should('contain.text', primaryUserEmail.method)
+      cy.get('[data-test="recipient-action-1"]').within(() => {
         cy.contains('Preview')
       })
     })
 
-    cy.get('[data-test="recipient-action0"]').contains('Preview').click()
+    cy.get('[data-test="recipient-action-0"]').contains('Preview').click()
 
     // Preview contains the contact name and address
     cy.contains('Returns invitation licence holder letter')
