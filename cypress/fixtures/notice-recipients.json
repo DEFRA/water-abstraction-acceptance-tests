@@ -1,0 +1,17 @@
+{
+  "licenceNumber": "AT/TEST/01",
+  "singleUseLetter": {
+    "contactName": "Pomona Sprout",
+    "address": {
+      "line1": "ENVIRONMENT AGENCY",
+      "line2": "HORIZON HOUSE DEANERY ROAD",
+      "line3": "BRISTOL",
+      "postcode": "BS1 5AH"
+    },
+    "method": "Letter - Single use"
+  },
+  "primaryUserEmail": {
+    "email": "external@example.com",
+    "method": "Email - Primary user"
+  }
+}
