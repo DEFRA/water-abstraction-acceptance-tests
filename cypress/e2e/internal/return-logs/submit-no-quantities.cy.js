@@ -13,7 +13,7 @@ describe('Submit a return with no quantities - validation errors (internal)', ()
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('submit a return for a licence from its returns tab and mark the licence for supplementary billing', () => {
+  it('attempt to submit a return for a licence from its returns tab without entering any quantities', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
