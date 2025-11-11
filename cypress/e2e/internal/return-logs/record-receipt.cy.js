@@ -23,17 +23,17 @@ describe('Record receipt for return (internal)', () => {
 
     // Abstraction return
     // submit return
-    cy.get('form > .govuk-button').first().click()
+    cy.get('.govuk-button').first().click()
 
     // When was the return received?
     // select today
     cy.get('label.govuk-radios__label').contains('Today').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // What do you want to do with this return?
     // select Record receipt
     cy.get('label.govuk-radios__label').contains('Record receipt').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // Return received
     cy.get('.govuk-panel').contains('Return 9999990 received').should('be.visible')

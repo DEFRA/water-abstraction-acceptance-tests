@@ -23,22 +23,22 @@ describe('Submit a nil return (internal)', () => {
 
     // Abstraction return
     // submit return
-    cy.get('form > .govuk-button').first().click()
+    cy.get('.govuk-button').first().click()
 
     // When was the return received?
     // select yesterday
     cy.get('#yesterday').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // What do you want to do with this return?
     // choose Enter a nil return and continue
     cy.get('#nilReturn').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // Reporting details
     // Confirm the return is nil and continue
     cy.get(':nth-child(2) > .govuk-summary-list__value').contains('Yes')
-    cy.get('div > .govuk-button').first().click()
+    cy.get('.govuk-button').first().click()
 
     // Return submitted
     // confirm we see the success panel and then click the Mark for supplementary bill run button

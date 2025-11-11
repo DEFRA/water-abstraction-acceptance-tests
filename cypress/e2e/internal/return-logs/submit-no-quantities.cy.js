@@ -23,41 +23,41 @@ describe('Submit a return with no quantities - validation errors (internal)', ()
 
     // Abstraction return
     // submit return
-    cy.get('form > .govuk-button').first().click()
+    cy.get('.govuk-button').first().click()
 
     // When was the return received?
     // select today
     cy.get('#today').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // What do you want to do with this return?
     // choose Enter and submit and continue
     cy.get('#enterReturn').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // How was this return reported?
     // choose Abstraction volumes and continue
     cy.get('#abstractionVolumes').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // Which units were used?
     // choose Cubic metres and continue
     cy.get('#cubicMetres').check()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // Have meter details been provided?
     // choose No and continue
     cy.get('#no').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // Is it a single volume?
     // choose No
     cy.get('#no').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // Check details and enter new volumes or readings
     // attempt to confirm the return without entering any quantities
-    cy.get('button.govuk-button').click()
+    cy.get('.govuk-button').first().click()
 
     // Validation error
     // it should not be possible to submit a return without entering at least one quantity, even if it is a zero
