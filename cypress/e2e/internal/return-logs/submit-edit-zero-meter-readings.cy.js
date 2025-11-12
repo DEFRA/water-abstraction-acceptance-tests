@@ -55,18 +55,18 @@ describe('Submit then edit a meter readings return with zero reading (internal)'
     cy.get('#no').click()
     cy.get('.govuk-button').click()
 
-    // Check details and enter new volumes or readings
+    // Summary of monthly readings
     // choose enter monthly readings
     cy.get('[data-test="action-0"]').click()
 
     // Water abstracted April 2020
-    // enter meter reading of 120 and continue
+    // enter meter reading of 0 and continue
     cy.get('.govuk-heading-l').contains('Water abstracted April 2020')
     cy.get('.govuk-label').contains('April 2020')
     cy.get('#April2020').type('0')
     cy.get('.govuk-button').click()
 
-    // Check details and enter new volumes or readings
+    // Summary of monthly readings
     // confirm the readings have been updated as expected and continue
     cy.get('.govuk-notification-banner__heading').contains('Readings have been updated')
     cy.get('[data-test="reading-0"]').contains('0')
@@ -75,7 +75,7 @@ describe('Submit then edit a meter readings return with zero reading (internal)'
     cy.get('.govuk-button').first().click()
 
     // Return submitted
-    // confirm we see the success panel and then click the Mark for supplementary bill run button
+    // confirm we see the success panel and then click View this return
     cy.get('.govuk-panel').should('contain.text', 'Return 9999990 submitted')
     cy.get('#viewThisReturn').click()
 

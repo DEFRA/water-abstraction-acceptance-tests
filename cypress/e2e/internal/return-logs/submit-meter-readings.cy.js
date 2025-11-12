@@ -55,7 +55,7 @@ describe('Submit a meter readings return (internal)', () => {
     cy.get('#no').click()
     cy.get('.govuk-button').click()
 
-    // Check details and enter new volumes or readings
+    // Summary of monthly readings
     // choose enter monthly readings
     cy.get('[data-test="action-0"]').click()
 
@@ -66,7 +66,7 @@ describe('Submit a meter readings return (internal)', () => {
     cy.get('#April2020').type('120')
     cy.get('.govuk-button').click()
 
-    // Check details and enter new volumes or readings
+    // Summary of monthly readings
     // confirm the readings have been updated as expected and continue
     cy.get('.govuk-notification-banner__heading').contains('Readings have been updated')
     cy.get('[data-test="reading-0"]').contains('120')
