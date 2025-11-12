@@ -13,7 +13,7 @@ describe('Submit a return with no meter readings - validation errors (internal)'
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('attempt to submit a return for a licence from its returns tab without entering any readings', () => {
+  it('attempt to submit a return without entering any readings', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
