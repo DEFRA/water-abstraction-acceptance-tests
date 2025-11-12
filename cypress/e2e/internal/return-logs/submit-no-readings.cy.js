@@ -67,7 +67,7 @@ describe('Submit a return with no meter readings - validation errors (internal)'
     cy.get('.govuk-button').first().click()
 
     // Validation error
-    // it should not be possible to submit a return without entering at least one quantity, even if it is a zero
+    // it should not be possible to submit a return without entering at least one reading, even if it is a zero
     cy.get('.govuk-error-summary').contains('At least one return line must contain a value.')
   })
 })

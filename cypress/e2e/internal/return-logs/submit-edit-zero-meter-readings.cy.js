@@ -56,7 +56,7 @@ describe('Submit then edit a meter readings return with zero reading (internal)'
     cy.get('.govuk-button').click()
 
     // Summary of monthly readings
-    // choose enter monthly readings
+    // choose enter monthly readings for April 2020
     cy.get('[data-test="action-0"]').click()
 
     // Water abstracted April 2020

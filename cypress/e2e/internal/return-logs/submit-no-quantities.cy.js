@@ -56,11 +56,11 @@ describe('Submit a return with no quantities - validation errors (internal)', ()
     cy.get('.govuk-button').click()
 
     // Check details and enter new volumes or readings
-    // attempt to confirm the return without entering any quantities
+    // attempt to confirm the return without entering any volumes
     cy.get('.govuk-button').first().click()
 
     // Validation error
-    // it should not be possible to submit a return without entering at least one quantity, even if it is a zero
+    // it should not be possible to submit a return without entering at least one volume, even if it is a zero
     cy.get('.govuk-error-summary').contains('At least one return line must contain a value.')
   })
 })

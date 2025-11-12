@@ -56,7 +56,7 @@ describe('Submit a meter readings return (internal)', () => {
     cy.get('.govuk-button').click()
 
     // Summary of monthly readings
-    // choose enter monthly readings
+    // choose enter monthly readings for April 2020
     cy.get('[data-test="action-0"]').click()
 
     // Water abstracted April 2020
@@ -77,7 +77,7 @@ describe('Submit a meter readings return (internal)', () => {
     cy.get('.govuk-button').first().click()
 
     // Return submitted
-    // confirm we see the success panel and then click the Mark for supplementary bill run button
+    // confirm we see the success panel and then click View this return
     cy.get('.govuk-panel').should('contain.text', 'Return 9999990 submitted')
     cy.get('#viewThisReturn').click()
 

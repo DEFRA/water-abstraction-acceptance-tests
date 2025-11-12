@@ -56,7 +56,7 @@ describe('Submit then edit an abstraction volumes return with zero quantities (i
     cy.get('.govuk-button').click()
 
     // Summary of monthly volumes
-    // choose enter monthly volumes
+    // choose enter monthly volumes for May 2020
     cy.get('[data-test="action-1"]').click()
 
     // Water abstracted May 2020
@@ -91,7 +91,7 @@ describe('Submit then edit an abstraction volumes return with zero quantities (i
     cy.get('[data-test="total-cubic-metres"]').contains('0')
     cy.get('[data-test="action-1"]').click()
 
-    // Water abstracted April 2020
+    // Water abstracted May 2020
     // confirm the zero volume is still present
     cy.get('.govuk-heading-l').contains('Water abstracted May 2020')
     cy.get('.govuk-label').contains('May 2020')
