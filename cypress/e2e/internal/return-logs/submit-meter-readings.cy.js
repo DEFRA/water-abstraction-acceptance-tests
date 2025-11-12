@@ -13,7 +13,7 @@ describe('Submit a meter readings return (internal)', () => {
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('submit a return for a licence from its returns tab and mark the licence for supplementary billing', () => {
+  it('submit a return for a licence from its returns tab and check the values', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
