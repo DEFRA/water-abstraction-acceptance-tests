@@ -31,7 +31,7 @@ describe('Recalculate Bills Link (internal)', () => {
     // You've marked this licence for the next supplementary bill run
     // confirm we see the success panel and then click the link to return to the licence
     cy.get('.govuk-panel').should('contain.text', "You've marked this licence for the next supplementary bill run")
-    cy.get(':nth-child(4) > .govuk-link').click()
+    cy.get('.govuk-body > .govuk-link').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')
