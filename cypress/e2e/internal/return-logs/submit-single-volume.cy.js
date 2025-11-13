@@ -4,7 +4,7 @@ import scenarioData from '../../../support/scenarios/internal-return-submission.
 
 const scenario = scenarioData()
 
-describe('Submit a return (internal)', () => {
+describe('Submit a single volume return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
@@ -13,7 +13,7 @@ describe('Submit a return (internal)', () => {
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('submit a return for a licence from its returns tab and mark the licence for supplementary billing', () => {
+  it('submit a return by entering a single abstraction volume and mark the licence for supplementary billing', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
@@ -23,48 +23,48 @@ describe('Submit a return (internal)', () => {
 
     // Abstraction return
     // submit return
-    cy.get('form > .govuk-button').first().click()
+    cy.get('.govuk-button').first().click()
 
     // When was the return received?
     // select today
-    cy.get('label.govuk-radios__label').contains('Today').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('#today').click()
+    cy.get('.govuk-button').click()
 
     // What do you want to do with this return?
     // choose Enter and submit and continue
-    cy.get('label.govuk-radios__label').contains('Enter and submit').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('#enterReturn').click()
+    cy.get('.govuk-button').click()
 
     // How was this return reported?
     // choose Abstraction volumes and continue
-    cy.get('label.govuk-radios__label').contains('Abstraction Volumes').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('#abstractionVolumes').click()
+    cy.get('.govuk-button').click()
 
     // Which units were used?
     // choose Cubic metres and continue
     cy.get('#cubicMetres').check()
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // Have meter details been provided?
     // choose No and continue
-    cy.get('label.govuk-radios__label').contains('No').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('#no').click()
+    cy.get('.govuk-button').click()
 
     // Is it a single volume?
     // choose Yes, enter 100 cubic metres and continue
-    cy.get('label.govuk-radios__label').contains('Yes').click()
+    cy.get('#yes').click()
     cy.get('#singleVolumeQuantity').type('100')
-    cy.get('form > .govuk-button').click()
+    cy.get('.govuk-button').click()
 
     // What period was used for this volume?
     // choose Default abstraction period and continue
-    cy.get('label.govuk-radios__label').contains('Default abstraction period').click()
-    cy.get('form > .govuk-button').click()
+    cy.get('#default').click()
+    cy.get('.govuk-button').click()
 
     // Volumes
     // we leave the defaulted values of 50CM, which are 100CM split by the number of months in the abstraction
     // period (2) and continue
-    cy.get('div > .govuk-button').first().click()
+    cy.get('.govuk-button').first().click()
 
     // Return submitted
     // confirm we see the success panel and then click the Mark for supplementary bill run button
