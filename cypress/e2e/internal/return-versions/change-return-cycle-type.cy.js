@@ -120,7 +120,7 @@ describe('Submit changing return cycle type on new return version', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the site description page
-    cy.get('.govuk-label').contains('Enter a site description for the requirements for returns')
+    cy.get('h1').should('have.text', 'Enter a site description for the requirements for returns')
 
     // enter a site description and continue
     cy.get('#siteDescription').type('This is a valid site description')
