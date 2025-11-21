@@ -25,9 +25,8 @@ describe('Delete licence agreement journey (internal)', () => {
     // Check there are no notification banners present initially
     cy.get('.govuk-notification-banner__content').should('not.exist')
 
-
     // Navigate to the Licence set up page
-    cy.contains('nav a', 'Licence set up').click();
+    cy.contains('nav a', 'Licence set up').click()
     cy.get('h1').should('contain.text', 'Licence set up')
 
     // Charge information
@@ -56,7 +55,7 @@ describe('Delete licence agreement journey (internal)', () => {
     cy.contains('No agreements for this licence.')
 
     // Navigate to back to the Licence summary page
-    cy.contains('nav a', 'Licence summary').click();
+    cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')

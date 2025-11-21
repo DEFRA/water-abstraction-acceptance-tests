@@ -29,7 +29,7 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     cy.visit(`/system/licences/${scenario.licences[0].id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
-     cy.get('h1').should('contain.text', 'Returns')
+    cy.get('h1').should('contain.text', 'Returns')
 
     cy.get('@year').then((year) => {
       cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
@@ -105,7 +105,7 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     cy.contains('Returns').click()
 
     // confirm we are on the licence set up tab
-     cy.get('h1').should('contain.text', 'Returns')
+    cy.get('h1').should('contain.text', 'Returns')
 
     cy.get('@year').then((year) => {
       cy.get('[data-test="return-due-date-0"]').should('have.value', '')

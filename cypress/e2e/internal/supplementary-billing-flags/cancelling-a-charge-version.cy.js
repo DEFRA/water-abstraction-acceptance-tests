@@ -49,7 +49,7 @@ describe('Cancelling a charge version in workflow (internal)', () => {
     cy.get('form > .govuk-button').click()
 
     // Navigate to back to the Licence summary page
-    cy.contains('nav a', 'Licence summary').click();
+    cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')

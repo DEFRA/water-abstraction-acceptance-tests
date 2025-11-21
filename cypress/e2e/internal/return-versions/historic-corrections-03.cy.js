@@ -28,7 +28,7 @@ describe('Submit historic correction using abstraction data for two abstraction 
     cy.visit(`/system/licences/${scenario.licences[0].id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
-     cy.get('h1').should('contain.text', 'Returns')
+    cy.get('h1').should('contain.text', 'Returns')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const startYear = currentFinancialYearInfo.start.year
       const endYear = currentFinancialYearInfo.end.year
@@ -104,7 +104,7 @@ describe('Submit historic correction using abstraction data for two abstraction 
     cy.contains('Returns').click()
 
     // confirm we are on the licence set up tab
-     cy.get('h1').should('contain.text', 'Returns')
+    cy.get('h1').should('contain.text', 'Returns')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const startYear = currentFinancialYearInfo.start.year
       const endYear = currentFinancialYearInfo.end.year

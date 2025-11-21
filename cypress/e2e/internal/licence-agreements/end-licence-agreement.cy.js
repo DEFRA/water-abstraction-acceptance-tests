@@ -26,12 +26,12 @@ describe('End licence agreement journey (internal)', () => {
     cy.get('.govuk-notification-banner__content').should('not.exist')
 
     // Navigate to the Licence set up page
-    cy.contains('nav a', 'Licence set up').click();
+    cy.contains('nav a', 'Licence set up').click()
     cy.get('h1').should('contain.text', 'Licence set up')
 
     // Charge information
     // On the Charge Information tab select to end the licence
-    cy.get('[data-test="end-agreement-0"]').click();
+    cy.get('[data-test="end-agreement-0"]').click()
 
     // Set agreement end date
     // first check the validation for invalid dates is working
@@ -78,7 +78,7 @@ describe('End licence agreement journey (internal)', () => {
     })
 
     // Navigate to back to the Licence summary page
-    cy.contains('nav a', 'Licence summary').click();
+    cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')
