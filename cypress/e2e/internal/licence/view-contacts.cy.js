@@ -22,7 +22,7 @@ describe("View a licence's contacts (internal)", () => {
     cy.visit(`/system/licences/${scenario.licences[0].id}/contact-details`)
 
     // Confirm we are on the licence contact details page and expected controls are present
-    cy.get('#contact-details > .govuk-heading-l').contains('Contact details')
+    cy.get('h1').should('contain.text', 'Contact details')
     cy.get('.govuk-body > .govuk-link').contains('Go to customer contacts')
 
     // Confirm we can see expected licence holder contact details

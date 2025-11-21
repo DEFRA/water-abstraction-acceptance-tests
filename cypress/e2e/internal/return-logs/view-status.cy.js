@@ -22,7 +22,7 @@ describe('View returns and their status (internal)', () => {
     cy.visit(`/system/licences/${scenario.licences[0].id}/returns`)
 
     // confirm we are on the returns tab page
-    cy.get('#returns > .govuk-heading-l').contains('Returns')
+     cy.get('h1').should('contain.text', 'Returns')
 
     // confirm we see the expected returns and their statuses
     cy.get('[data-test="return-reference-0"]').should('be.visible').and('contain.text', '9999990')

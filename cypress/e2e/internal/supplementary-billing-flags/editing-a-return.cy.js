@@ -68,7 +68,9 @@ describe('Editing a return (internal)', () => {
     cy.get('.govuk-panel__title').should('contain.text', 'Return 9999990 submitted')
     cy.get('.govuk-button').contains('Mark for supplementary bill run').click()
 
-    // Summary
+    // Navigate to back to the Licence summary page
+    cy.contains('nav a', 'Licence summary').click();
+
     // confirm the licence has been flagged for the next supplementary bill run for the old charge scheme
     cy.get('.govuk-notification-banner__content').should(
       'contain.text',

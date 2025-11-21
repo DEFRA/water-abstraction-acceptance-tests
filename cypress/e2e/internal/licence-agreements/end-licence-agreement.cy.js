@@ -19,12 +19,19 @@ describe('End licence agreement journey (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
+
+    cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
+
+    // Check there are no notification banners present initially
+    cy.get('.govuk-notification-banner__content').should('not.exist')
+
+    // Navigate to the Licence set up page
+    cy.contains('nav a', 'Licence set up').click();
+    cy.get('h1').should('contain.text', 'Licence set up')
 
     // Charge information
     // On the Charge Information tab select to end the licence
-    cy.get('#set-up').should('be.visible')
-    cy.get(':nth-child(12) > .govuk-table__body > .govuk-table__row > :nth-child(5)').contains('End').click()
+    cy.get('[data-test="end-agreement-0"]').click();
 
     // Set agreement end date
     // first check the validation for invalid dates is working
@@ -57,21 +64,21 @@ describe('End licence agreement journey (internal)', () => {
     // Charge information
     // confirm we are back on the licence set up tab and our licence agreement is present with an end date and only
     // the delete action available
-    cy.get('#set-up').should('be.visible')
+    cy.get('h1').should('contain.text', 'Licence set up')
 
-    cy.get(':nth-child(12) > .govuk-table__body > .govuk-table__row').within(() => {
-      // start date
-      cy.get(':nth-child(1)').should('contain.text', '1 January 2018')
-      // end date
-      cy.get(':nth-child(2)').should('contain.text', '31 March 2022')
-      // agreement
-      cy.get(':nth-child(3)').should('contain.text', 'Two-part tariff')
-      // date signed
-      cy.get(':nth-child(4)').should('contain.text', '')
-      // actions
-      cy.get(':nth-child(5) > a:nth-child(1)').should('contain.text', 'Delete')
-      cy.get(':nth-child(5) > a:nth-child(2)').should('not.exist')
+    cy.contains('tbody tr', 'Two-part tariff').within(() => {
+      cy.get('td').eq(0).should('contain.text', '1 January 2018')
+      cy.get('td').eq(1).should('contain.text', '31 March 2022')
+      cy.get('td').eq(2).should('contain.text', 'Two-part tariff')
+      cy.get('td').eq(3).should('contain.text', '')
+      cy.get('td').eq(4).within(() => {
+        cy.contains('Delete').should('exist')
+        cy.contains('End').should('not.exist')
+      })
     })
+
+    // Navigate to back to the Licence summary page
+    cy.contains('nav a', 'Licence summary').click();
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')

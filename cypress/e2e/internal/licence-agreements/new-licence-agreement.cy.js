@@ -19,7 +19,15 @@ describe('New licence agreement journey (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
+
+    cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
+
+    // Check there are no notification banners present initially
+    cy.get('.govuk-notification-banner__content').should('not.exist')
+
+    // Navigate to the Licence set up page
+    cy.contains('nav a', 'Licence set up').click();
+    cy.get('h1').should('contain.text', 'Licence set up')
 
     // Confirm we are on the tab page and then click Set up a new agreement
     cy.contains('Charge information')
@@ -52,21 +60,22 @@ describe('New licence agreement journey (internal)', () => {
 
     // Charge information
     // confirm we are back on the Charge Information tab and our licence agreement is present
-    cy.get('#set-up').should('be.visible')
+    cy.get('h1').should('contain.text', 'Licence set up')
 
-    cy.get(':nth-child(12) > .govuk-table__body > .govuk-table__row').within(() => {
-      // start date
-      cy.get(':nth-child(1)').should('contain.text', '1 April 2018')
-      // end date
-      cy.get(':nth-child(2)').should('contain.text', '')
-      // agreement
-      cy.get(':nth-child(3)').should('contain.text', 'Two-part tariff')
-      // date signed
-      cy.get(':nth-child(4)').should('contain.text', '')
-      // actions
-      cy.get(':nth-child(5) > a:nth-child(1)').should('contain.text', 'Delete')
-      cy.get(':nth-child(5) > a:nth-child(2)').should('contain.text', 'End')
+    cy.contains('tbody tr', '1 April 2018').within(() => {
+      cy.get('td').eq(0).should('contain.text', '1 April 2018')   // start date
+      cy.get('td').eq(1).should('contain.text', '')               // end date
+      cy.get('td').eq(2).should('contain.text', 'Two-part tariff')// agreement
+      cy.get('td').eq(3).should('contain.text', '')               // date signed
+
+      cy.get('td').eq(4).within(() => {                           // actions
+        cy.contains('Delete').should('exist')
+        cy.contains('End').should('exist')
+      })
     })
+
+    // Navigate to back to the Licence summary page
+    cy.contains('nav a', 'Licence summary').click();
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')
