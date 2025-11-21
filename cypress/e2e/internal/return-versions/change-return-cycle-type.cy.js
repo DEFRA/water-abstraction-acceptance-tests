@@ -30,7 +30,7 @@ describe('Submit changing return cycle type on new return version', () => {
     cy.visit(`/system/licences/${scenario.licences[0].id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
-    cy.get('#returns > .govuk-heading-l').contains('Returns')
+    cy.get('h1').should('contain.text', 'Returns')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const endYear = currentFinancialYearInfo.end.year
 
@@ -59,7 +59,7 @@ describe('Submit changing return cycle type on new return version', () => {
     cy.contains('Licence set up').click()
 
     // confirm we are on the licence set up tab
-    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
+    cy.get('h1').should('contain.text', 'Licence set up')
 
     // click set up new requirements
     cy.contains('Set up new requirements').click()
@@ -162,7 +162,7 @@ describe('Submit changing return cycle type on new return version', () => {
     cy.contains('Returns').click()
 
     // confirm we are on the licence set up tab
-    cy.get('#returns > .govuk-heading-l').contains('Returns')
+    cy.get('h1').should('contain.text', 'Returns')
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const endYear = currentFinancialYearInfo.end.year
       const today = new Date()

@@ -23,7 +23,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
     // confirm we are on the licence set up tab
-    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
+    cy.get('h1').should('contain.text', 'Licence set up')
 
     // click set up new requirements
     cy.contains('Set up new requirements').click()
@@ -365,7 +365,7 @@ describe('Submit returns requirement (internal)', () => {
     cy.contains('Return to licence set up').click()
 
     // confirm we are on the licence set up tab
-    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
+    cy.get('h1').should('contain.text', 'Licence set up')
 
     // Confirm we can display the return version details
     cy.get('[data-test="return-version-0').click()
