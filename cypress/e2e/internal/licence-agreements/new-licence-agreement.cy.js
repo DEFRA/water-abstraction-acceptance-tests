@@ -59,7 +59,7 @@ describe('New licence agreement journey (internal)', () => {
     cy.get('form > .govuk-button').click()
 
     // Charge information
-    // confirm we are back on the Charge Information tab and our licence agreement is present
+    // confirm we are back on the Charge Information page and our licence agreement is present
     cy.get('h1').should('contain.text', 'Licence set up')
 
     cy.contains('tbody tr', '1 April 2018').within(() => {

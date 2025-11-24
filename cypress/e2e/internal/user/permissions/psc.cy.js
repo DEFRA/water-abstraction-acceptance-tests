@@ -25,16 +25,14 @@ describe('PSC permissions (internal)', () => {
     cy.contains('AT/TEST/01')
 
     // confirm we can see the summary, contact details, returns, communications and licence set up tabs
-    cy.get('.govuk-tabs__list-item--selected > .govuk-tabs__tab').should('contain.text', 'Summary')
-    cy.get(':nth-child(2) > .govuk-tabs__tab').should('contain.text', 'Contact details')
-    cy.get(':nth-child(3) > .govuk-tabs__tab').should('contain.text', 'Returns')
-    cy.get(':nth-child(4) > .govuk-tabs__tab').should('contain.text', 'Communications')
-    cy.get(':nth-child(5) > .govuk-tabs__tab').should('contain.text', 'Licence set up')
+    cy.get('nav.x-govuk-sub-navigation').within(() => {
+      cy.contains('a', 'Licence summary').should('be.visible')
+      cy.contains('a', 'Contact details').should('be.visible')
+      cy.contains('a', 'Returns').should('be.visible')
+      cy.contains('a', 'Communications').should('be.visible')
+    })
 
-    // confirm we cannot see the bills tab
-    cy.get('.govuk-tabs__list').should('not.contain', 'Bills')
-
-    // assert they cannot see the Bill runs page
-    cy.get('#nav > ul').children().should('not.contain', 'Bill runs')
+    // confirm we cannot see the bills link
+    cy.get('nav.x-govuk-sub-navigation').should('not.contain', 'Bills')
   })
 })

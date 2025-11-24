@@ -50,8 +50,8 @@ describe('Delete licence agreement journey (internal)', () => {
     cy.contains('Delete agreement').click()
 
     // Charge information
-    // confirm we are back on the Charge Information tab and our licence agreement is no longer present
-    // cy.get('#set-up').should('be.visible')
+    // confirm we are back on the Charge Information page and our licence agreement is no longer present
+    cy.get('h1').should('contain.text', 'Licence set up')
     cy.contains('No agreements for this licence.')
 
     // Navigate to back to the Licence summary page
