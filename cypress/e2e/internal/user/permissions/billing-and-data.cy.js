@@ -24,7 +24,6 @@ describe('Billing & Data permissions (internal)', () => {
     // confirm we are on the licence page
     cy.contains('AT/TEST/01')
 
-
     // confirm we can see the summary, contact details, returns, communications, bill runs and licence set up links
     cy.get('nav.x-govuk-sub-navigation').within(() => {
       cy.contains('a', 'Licence summary').should('be.visible')
@@ -34,7 +33,6 @@ describe('Billing & Data permissions (internal)', () => {
       cy.contains('a', 'Bills').should('be.visible')
       cy.contains('a', 'Licence set up').should('be.visible')
     })
-
 
     // assert they can see the Bill runs page
     cy.get('#nav > ul').children().should('contain', 'Bill runs')
