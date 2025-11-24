@@ -134,6 +134,9 @@ describe('Approving a charge version (internal)', () => {
     // bill run
     cy.contains('Review').should('not.exist')
 
+    // Navigate to back to the Licence summary page
+    cy.contains('nav a', 'Licence summary').click()
+
     cy.get('.govuk-notification-banner__content')
       .should('contain.text', 'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run.')
   })

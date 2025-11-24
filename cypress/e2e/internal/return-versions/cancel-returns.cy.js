@@ -23,7 +23,7 @@ describe('Cancel a return requirement (internal)', () => {
     cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
     // confirm we are on the licence set up tab
-    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
+    cy.get('h1').should('contain.text', 'Licence set up')
 
     // click set up new requirements
     cy.contains('Set up new requirements').click()
@@ -151,6 +151,6 @@ describe('Cancel a return requirement (internal)', () => {
     cy.contains('Confirm cancel').click()
 
     // confirm we are on the licence set up tab
-    cy.get('#set-up > .govuk-heading-l').contains('Licence set up')
+    cy.get('h1').should('contain.text', 'Licence set up')
   })
 })

@@ -78,7 +78,7 @@ describe('Tag a licence that is not linked to a condition (internal)', () => {
 
     // Confirm the licence is linked to the monitoring station in the licence summary
     cy.get('[data-test="licence-ref-0"]').contains('AT/TEST/01').click()
-    cy.get('.govuk-heading-l').contains('Licence number AT/TEST/01')
+    cy.get('h1').should('contain.text', 'Licence summary AT/TEST/01')
     cy.get('.govuk-list').contains('Test Station')
   })
 })

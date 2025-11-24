@@ -22,7 +22,7 @@ describe('Recalculate Bills Link (internal)', () => {
     cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
 
     // Click the recalculate bills link
-    cy.get('#set-up > div > .govuk-button').click()
+    cy.contains('a.govuk-button', 'Recalculate bills').click()
     cy.get('.govuk-caption-l').contains('AT/TEST/01').click()
     cy.get('[data-test="sroc-years-2024"]').click()
     cy.get('[data-test="pre-sroc-years"]').click()
@@ -32,6 +32,9 @@ describe('Recalculate Bills Link (internal)', () => {
     // confirm we see the success panel and then click the link to return to the licence
     cy.get('.govuk-panel').should('contain.text', "You've marked this licence for the next supplementary bill run")
     cy.get('.govuk-body > .govuk-link').click()
+
+    // Navigate to back to the Licence summary page
+    cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')

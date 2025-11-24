@@ -19,11 +19,18 @@ describe('Delete licence agreement journey (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit(`/system/licences/${scenario.licences[0].id}/set-up`)
+
+    cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
+
+    // Check there are no notification banners present initially
+    cy.get('.govuk-notification-banner__content').should('not.exist')
+
+    // Navigate to the Licence set up page
+    cy.contains('nav a', 'Licence set up').click()
+    cy.get('h1').should('contain.text', 'Licence set up')
 
     // Charge information
-    // On the Charge Information tab select to delete the licence
-    cy.get('#set-up').should('be.visible')
+    // On the Licence set up page select to delete the licence
     cy.contains('Delete').click()
 
     // You're about to delete this agreement
@@ -43,9 +50,12 @@ describe('Delete licence agreement journey (internal)', () => {
     cy.contains('Delete agreement').click()
 
     // Charge information
-    // confirm we are back on the Charge Information tab and our licence agreement is no longer present
-    cy.get('#set-up').should('be.visible')
-    cy.should('contain.text', 'No agreements for this licence.')
+    // confirm we are back on the Charge Information page and our licence agreement is no longer present
+    cy.get('h1').should('contain.text', 'Licence set up')
+    cy.contains('No agreements for this licence.')
+
+    // Navigate to back to the Licence summary page
+    cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')

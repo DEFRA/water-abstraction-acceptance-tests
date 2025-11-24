@@ -71,6 +71,9 @@ describe('Submit a single volume return (internal)', () => {
     cy.get('.govuk-panel').should('contain.text', 'Return 9999990 submitted')
     cy.get('.govuk-button').contains('Mark for supplementary bill run').click()
 
+    // Navigate to the Licence summary page
+    cy.contains('nav a', 'Licence summary').click()
+
     // Summary
     // confirm the licence has been flagged for the next supplementary bill run for the old charge scheme
     cy.get('.govuk-notification-banner__content').should(

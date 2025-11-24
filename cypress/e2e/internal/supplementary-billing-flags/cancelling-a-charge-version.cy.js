@@ -26,7 +26,7 @@ describe('Cancelling a charge version in workflow (internal)', () => {
 
     // Click the workflow tab
     cy.get('#nav-manage').click()
-    cy.get(':nth-child(9) > li > .govuk-link').click()
+    cy.contains('a.govuk-link', 'Check licences in workflow').click()
     cy.get('#tab_review').click()
 
     // Check licences in workflow
@@ -47,6 +47,9 @@ describe('Cancelling a charge version in workflow (internal)', () => {
     cy.get('.govuk-caption-l').contains('Licence AT/TEST/01')
     cy.get('.govuk-heading-l').contains("You're about to cancel this charge information")
     cy.get('form > .govuk-button').click()
+
+    // Navigate to back to the Licence summary page
+    cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     cy.get('.govuk-notification-banner__content')
