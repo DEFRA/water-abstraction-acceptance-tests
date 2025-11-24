@@ -26,7 +26,7 @@ describe('Cancelling a charge version in workflow (internal)', () => {
 
     // Click the workflow tab
     cy.get('#nav-manage').click()
-    cy.get(':nth-child(9) > li > .govuk-link').click()
+    cy.contains('a.govuk-link', 'Check licences in workflow').click()
     cy.get('#tab_review').click()
 
     // Check licences in workflow
