@@ -50,7 +50,7 @@
   "licenceDocuments": [
     {
       "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "startDate": "2022-04-01"
     }
   ],
@@ -73,7 +73,7 @@
   "licences": [
     {
       "id": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
@@ -178,9 +178,9 @@
   ],
   "returnLogs": [
     {
-      "id": "v1:1:AT/TEST/01:10021668:2022-04-01:2023-03-31",
+      "id": "v1:1:AT/TE/ST/01/01:10021668:2022-04-01:2023-03-31",
       "returnReference": "10021668",
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "metadata": {
         "description": "A DRAIN SOMEWHERE",
         "purposes": [
@@ -218,7 +218,7 @@
   "returnSubmissions": [
     {
       "id": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
-      "returnLogId": "v1:1:AT/TEST/01:10021668:2022-04-01:2023-03-31",
+      "returnLogId": "v1:1:AT/TE/ST/01/01:10021668:2022-04-01:2023-03-31",
       "nilReturn": false,
       "current": true
     }

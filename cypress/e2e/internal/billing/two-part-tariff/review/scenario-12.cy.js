@@ -88,7 +88,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.contains('Clear filters').click()
 
     // Review licences ~ Test it has the correct licence
-    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/01')
+    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
     cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
     cy.get('[data-test="licence-issue-1"]').should('contain.text', 'Return split over charge references')
@@ -97,14 +97,14 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'review')
     cy.get('[data-test="licence-1"] > .govuk-link').click()
 
-    // Review Licence AT/TEST/01 ~ Check the licence details
-    cy.get('h1').should('contain.text', 'Licence AT/TEST/01')
+    // Review Licence AT/TE/ST/01/01 ~ Check the licence details
+    cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
     cy.get('div > .govuk-tag').should('contain.text', 'review')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
 
-    // Review Licence AT/TEST/01 ~ Check the first matched return details
+    // Review Licence AT/TE/ST/01/01 ~ Check the first matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2024 to 21 March 2025')
@@ -115,11 +115,11 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     // When a return is split over charge references we still expect it to allocate the return
     cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
 
-    // Review Licence AT/TEST/01 ~ Check there are no other returns
+    // Review Licence AT/TE/ST/01/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('not.exist')
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
-    // Review Licence AT/TEST/01 ~ Check charge Information details are correct for a licence with returns that are
+    // Review Licence AT/TE/ST/01/01 ~ Check charge Information details are correct for a licence with returns that are
     // split over charge references
     cy.get('[data-test="charge-version-0-details"]').should('contain.text', '2 charge references with 2 two-part tariff charge elements')
     // Charge reference 1 & 2

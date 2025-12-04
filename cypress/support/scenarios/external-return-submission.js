@@ -9,9 +9,9 @@ export default function () {
     ...licenceData(),
     returnLogs: [
       {
-        id: 'v1:1:AT/TEST/01:9999990:2020-01-01:2020-03-31',
+        id: 'v1:1:AT/TE/ST/01/01:9999990:2020-01-01:2020-03-31',
         returnReference: '9999990',
-        licenceRef: 'AT/TEST/01',
+        licenceRef: 'AT/TE/ST/01/01',
         metadata: {
           nald: {
             areaCode: 'AREA',

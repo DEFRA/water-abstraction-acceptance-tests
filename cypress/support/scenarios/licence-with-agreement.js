@@ -21,7 +21,7 @@ export default function () {
           value: 'S127',
           select: 'id'
         },
-        licenceRef: 'AT/TEST/01',
+        licenceRef: 'AT/TE/ST/01/01',
         startDate: '2018-01-01'
       }
     ]

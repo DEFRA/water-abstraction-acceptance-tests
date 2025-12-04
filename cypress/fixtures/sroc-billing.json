@@ -211,22 +211,22 @@
   "licenceDocuments": [
     {
       "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "startDate": "2022-04-01"
     },
     {
       "id": "d6d5efd1-ffcb-44f2-bf86-a1707b4b2933",
-      "licenceRef": "AT/TEST/02",
+      "licenceRef": "AT/TE/ST/01/02",
       "startDate": "2019-01-01"
     },
     {
       "id": "29356c41-e12d-4e24-8f25-b30199730cdd",
-      "licenceRef": "AT/TEST/03",
+      "licenceRef": "AT/TE/ST/01/03",
       "startDate": "2015-01-01"
     },
     {
       "id": "756a8e80-f717-4585-8656-054c132d84f5",
-      "licenceRef": "AT/TEST/04",
+      "licenceRef": "AT/TE/ST/01/04",
       "startDate": "2022-04-01"
     }
   ],
@@ -290,28 +290,28 @@
   ],
   "permitLicences": [
     {
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "startDate": "2022-04-01",
       "metadata": {
         "source": "acceptance-test-setup"
       }
     },
     {
-      "licenceRef": "AT/TEST/02",
+      "licenceRef": "AT/TE/ST/01/02",
       "startDate": "2019-01-01",
       "metadata": {
         "source": "acceptance-test-setup"
       }
     },
     {
-      "licenceRef": "AT/TEST/03",
+      "licenceRef": "AT/TE/ST/01/03",
       "startDate": "2015-01-01",
       "metadata": {
         "source": "acceptance-test-setup"
       }
     },
     {
-      "licenceRef": "AT/TEST/04",
+      "licenceRef": "AT/TE/ST/01/04",
       "startDate": "2022-04-01",
       "metadata": {
         "source": "acceptance-test-setup"
@@ -328,12 +328,12 @@
         "value": "regime",
         "select": "entityId"
       },
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "naldId": {
         "schema": "public",
         "table": "permitLicences",
         "lookup": "licenceRef",
-        "value": "AT/TEST/01",
+        "value": "AT/TE/ST/01/01",
         "select": "id"
       },
       "metadata": {
@@ -351,12 +351,12 @@
         "value": "regime",
         "select": "entityId"
       },
-      "licenceRef": "AT/TEST/02",
+      "licenceRef": "AT/TE/ST/01/02",
       "naldId": {
         "schema": "public",
         "table": "permitLicences",
         "lookup": "licenceRef",
-        "value": "AT/TEST/02",
+        "value": "AT/TE/ST/01/02",
         "select": "id"
       },
       "metadata": {
@@ -374,12 +374,12 @@
         "value": "regime",
         "select": "entityId"
       },
-      "licenceRef": "AT/TEST/03",
+      "licenceRef": "AT/TE/ST/01/03",
       "naldId": {
         "schema": "public",
         "table": "permitLicences",
         "lookup": "licenceRef",
-        "value": "AT/TEST/03",
+        "value": "AT/TE/ST/01/03",
         "select": "id"
       },
       "metadata": {
@@ -397,12 +397,12 @@
         "value": "regime",
         "select": "entityId"
       },
-      "licenceRef": "AT/TEST/04",
+      "licenceRef": "AT/TE/ST/01/04",
       "naldId": {
         "schema": "public",
         "table": "permitLicences",
         "lookup": "licenceRef",
-        "value": "AT/TEST/04",
+        "value": "AT/TE/ST/01/04",
         "select": "id"
       },
       "metadata": {
@@ -415,7 +415,7 @@
   "licences": [
     {
       "id": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
@@ -426,7 +426,7 @@
     },
     {
       "id": "482bf7ed-e2d9-426e-bfba-183784e6d459",
-      "licenceRef": "AT/TEST/02",
+      "licenceRef": "AT/TE/ST/01/02",
       "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
@@ -439,7 +439,7 @@
     },
     {
       "id": "d1599b0f-2343-41c8-bc49-6a25ba5fe4c2",
-      "licenceRef": "AT/TEST/03",
+      "licenceRef": "AT/TE/ST/01/03",
       "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
@@ -450,7 +450,7 @@
     },
     {
       "id": "85f74e84-e0de-45ac-b9d4-f21a1913eb95",
-      "licenceRef": "AT/TEST/04",
+      "licenceRef": "AT/TE/ST/01/04",
       "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",
@@ -510,7 +510,7 @@
     {
       "id": "336e1ed7-33db-4d72-9b54-db418b8606e5",
       "licenceId": "482bf7ed-e2d9-426e-bfba-183784e6d459",
-      "licenceRef": "AT/TEST/02",
+      "licenceRef": "AT/TE/ST/01/02",
       "billingAccountId": "03300909-111a-458e-aebe-db0af17d2de9",
       "regionCode": 9,
       "companyId": "89dd5558-3af4-4878-8d09-1ba0b5fbaa00",
@@ -524,7 +524,7 @@
     {
       "id": "a5fc2494-0f61-41ac-8cfe-183a90b6613a",
       "licenceId": "482bf7ed-e2d9-426e-bfba-183784e6d459",
-      "licenceRef": "AT/TEST/02",
+      "licenceRef": "AT/TE/ST/01/02",
       "billingAccountId": "03300909-111a-458e-aebe-db0af17d2de9",
       "regionCode": 9,
       "scheme": "sroc",
@@ -536,7 +536,7 @@
     {
       "id": "842f77f1-32a6-43b6-88ed-b2fb12f3ae33",
       "licenceId": "d1599b0f-2343-41c8-bc49-6a25ba5fe4c2",
-      "licenceRef": "AT/TEST/03",
+      "licenceRef": "AT/TE/ST/01/03",
       "billingAccountId": "3551d4fe-f2b0-4eb9-a2d2-932497ae5b1e",
       "regionCode": 9,
       "companyId": "951f5383-d87c-41eb-bf54-8b6269045ff2",
@@ -550,7 +550,7 @@
     {
       "id": "a1664324-ded4-4285-9c66-268d71045991",
       "licenceId": "d1599b0f-2343-41c8-bc49-6a25ba5fe4c2",
-      "licenceRef": "AT/TEST/03",
+      "licenceRef": "AT/TE/ST/01/03",
       "billingAccountId": "3551d4fe-f2b0-4eb9-a2d2-932497ae5b1e",
       "regionCode": 9,
       "scheme": "sroc",
@@ -562,7 +562,7 @@
     {
       "id": "569aa929-b8c8-4d26-a03a-1f27b979ee4c",
       "licenceId": "85f74e84-e0de-45ac-b9d4-f21a1913eb95",
-      "licenceRef": "AT/TEST/04",
+      "licenceRef": "AT/TE/ST/01/04",
       "billingAccountId": "17b094f5-5eb7-40fe-9911-5a014cfe213d",
       "regionCode": 9,
       "scheme": "sroc",

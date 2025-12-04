@@ -130,9 +130,9 @@ describe('Change billing account in previous financial year (internal)', () => {
 
     // Search
     // search for a licence and select it
-    cy.get('#query').type('AT/TEST/02')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row > :nth-child(1) > a').click()
+    cy.get('#query').type('AT/TE/ST/01/02')
+    cy.get('#search-button').click()
+    cy.get('.searchresult-row').contains('AT/TE/ST/01/02').click()
 
     // click the licence set up tab
     cy.contains('Licence set up').click()
@@ -251,16 +251,16 @@ describe('Change billing account in previous financial year (internal)', () => {
     // We also can assert exactly what the total will be because it can differ year to year depending on whether we have
     // a leap year or not.
     cy.get('[data-test="billing-contact-0"]').should('contain.text', 'Big Farm Co Ltd 02')
-    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/TEST/02')
+    cy.get('[data-test="licence-0"]').should('contain.text', 'AT/TE/ST/01/02')
 
     cy.get('[data-test="billing-contact-1"]').should('contain.text', 'Big Farm Co Ltd 02')
-    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/02')
+    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TE/ST/01/02')
 
     cy.get('[data-test="billing-contact-2"]').should('contain.text', 'Big Farm Co Ltd 01')
-    cy.get('[data-test="licence-2"]').should('contain.text', 'AT/TEST/02')
+    cy.get('[data-test="licence-2"]').should('contain.text', 'AT/TE/ST/01/02')
 
     cy.get('[data-test="billing-contact-3"]').should('contain.text', 'Big Farm Co Ltd 01')
-    cy.get('[data-test="licence-3"]').should('contain.text', 'AT/TEST/02')
+    cy.get('[data-test="licence-3"]').should('contain.text', 'AT/TE/ST/01/02')
     cy.get('.govuk-button').contains('Send bill run').click()
 
     // You're about to send this bill run

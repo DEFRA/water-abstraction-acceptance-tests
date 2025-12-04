@@ -50,7 +50,7 @@ describe('Send an abstraction alert (internal)', () => {
     // Confirm data on Check the licence matches for the selected thresholds page is correct and continue
     cy.get('.govuk-caption-l').should('have.text', 'Test Station')
     cy.get('.govuk-heading-l').should('have.text', 'Check the licence matches for the selected thresholds')
-    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/TEST/01')
+    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="abstraction-period-0"]').should('have.text', '10 October to 11 November')
     cy.get('[data-test="restriction-0"]').should('have.text', 'Stop')
     cy.get('[data-test="threshold-0"]').should('have.text', '100m3/s')
@@ -71,7 +71,7 @@ describe('Send an abstraction alert (internal)', () => {
     cy.get('.govuk-heading-l').contains('Check the recipients')
     cy.get('.govuk-table__caption').contains('Showing all 1 recipients')
     cy.get('.govuk-table__body').contains('external@example.com')
-    cy.get('.govuk-table__body').contains('AT/TEST/01')
+    cy.get('.govuk-table__body').contains('AT/TE/ST/01/01')
     cy.get('.govuk-table__body').contains('Email - primary user')
     cy.get('.govuk-table__body').contains('Preview')
     cy.get('.govuk-button').contains('Send').click()

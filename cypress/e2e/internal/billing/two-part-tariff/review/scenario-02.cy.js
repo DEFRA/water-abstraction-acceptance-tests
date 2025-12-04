@@ -73,7 +73,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="meta-data-year"]').should('contain.text', '2024 to 2025')
 
     // Review licences ~ Test it has the correct licence
-    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/01')
+    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
     cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
     cy.get('[data-test="licence-issue-1"]').should('contain.text', '')
@@ -81,14 +81,14 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'ready')
     cy.get('[data-test="licence-1"] > .govuk-link').click()
 
-    // Review Licence AT/TEST/01 ~ Check the licence details
-    cy.get('h1').should('contain.text', 'Licence AT/TEST/01')
+    // Review Licence AT/TE/ST/01/01 ~ Check the licence details
+    cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
     cy.get('div > .govuk-tag').should('contain.text', 'ready')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
 
-    // Review Licence AT/TEST/01 ~ Check the first matched return details
+    // Review Licence AT/TE/ST/01/01 ~ Check the first matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2024 to 21 March 2025')
@@ -97,11 +97,11 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
     cy.get('[data-test="matched-return-total-0"]').should('contain.text', '32 ML / 32 ML')
 
-    // Review Licence AT/TEST/01 ~ Check there are no other returns
+    // Review Licence AT/TE/ST/01/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('not.exist')
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
-    // Review Licence AT/TEST/01 ~ Check charge Information details
+    // Review Licence AT/TE/ST/01/01 ~ Check charge Information details
     cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.12')
     cy.get('[data-test="charge-version-0-charge-description-0"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
@@ -110,7 +110,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
 
-    // Review Licence AT/TEST/01 ~ Check there is only 1 charge version, charge reference and charge element
+    // Review Licence AT/TE/ST/01/01 ~ Check there is only 1 charge version, charge reference and charge element
     cy.get('#charge-version-1 > .govuk-heading-l').should('not.exist')
     cy.get('[data-test="charge-version-0-reference-1"]').should('not.exist')
     cy.get('[data-test="charge-version-0-charge-reference-0-element-count-1"]').should('not.exist')

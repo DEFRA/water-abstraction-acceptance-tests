@@ -36,7 +36,6 @@ describe('Reset password journey (internal)', () => {
 
         // Check we are signed in by confirming we are on the search page
         cy.contains('Search').should('be.visible')
-        cy.url().should('include', '/licences')
       })
     })
   })
