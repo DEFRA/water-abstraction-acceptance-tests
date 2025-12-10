@@ -6,9 +6,13 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.calculatedDates().then((body) => {
-      const scenario = scenarioData(body.firstReturnPeriod)
+      const period = body.firstReturnPeriod
 
-      cy.load(scenario)
+      cy.previousPeriod(period).then((previousPeriod) => {
+        const scenario = scenarioData(previousPeriod)
+
+        cy.load(scenario)
+      })
     })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
@@ -108,7 +112,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.get('[data-test="recipient-action-0"]').contains('Preview').click()
 
     // Preview contains the contact name and address
-    cy.contains('Returns invitation licence holder letter')
+    cy.contains('Returns invitation ad-hoc')
     cy.get('@noticeRecipients').then(({ singleUseLetter }) => {
       cy.contains(singleUseLetter.contactName)
     })
