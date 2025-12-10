@@ -76,8 +76,8 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
 
     // confirm we see the points for the requirement copied from existing
-    cy.get('[data-test="points-0"] > :nth-child(1)').contains('At National Grid Reference TQ 1234 5678 (Example point 1)')
-    cy.get('[data-test="points-0"] > :nth-child(2)').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TQ 1234 5678 (Example point 1)')
+    cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
 
     // choose the change link for the points and confirm we are on the points page
     cy.get('[data-test="change-points-0"]').click()
