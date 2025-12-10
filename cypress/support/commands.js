@@ -65,6 +65,32 @@ Cypress.Commands.add('calculatedDates', () => {
   })
 })
 
+Cypress.Commands.add('previousPeriod', (period) => {
+  cy.log('Push a return period back by one')
+
+  const previousPeriod = {
+    dueDate: period.dueDate ? new Date(period.dueDate) : null,
+    endDate: new Date(period.endDate),
+    name: period.name,
+    quarterly: period.quarterly,
+    startDate: new Date(period.startDate)
+  }
+
+  let monthsBack = 12
+  if (period.quarterly) {
+    monthsBack = 3
+  }
+
+  previousPeriod.endDate.setMonth(previousPeriod.endDate.getMonth() - monthsBack)
+  previousPeriod.startDate.setMonth(previousPeriod.startDate.getMonth() - monthsBack)
+
+  if (period.dueDate) {
+    previousPeriod.dueDate.setMonth(previousPeriod.dueDate.getMonth() - monthsBack)
+  }
+
+  return cy.wrap(previousPeriod)
+})
+
 // We do not control when the tests are run so sometimes we need a date that is within the current financial year when
 // they are. For example, when testing billing scenarios we often only want to make charge information changes within
 // the current year to avoid additional calculations for previous years.
