@@ -8,10 +8,10 @@
       "line3": "BRISTOL",
       "postcode": "BS1 5AH"
     },
-    "method": "Letter - Single use"
+    "method": "Letter - single use"
   },
   "primaryUserEmail": {
     "email": "external@example.com",
-    "method": "Email - Primary user"
+    "method": "Email - primary user"
   }
 }

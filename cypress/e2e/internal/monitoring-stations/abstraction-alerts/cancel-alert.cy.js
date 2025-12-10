@@ -73,7 +73,7 @@ describe('Set up but then cancel an abstraction alert (internal)', () => {
     cy.get('.govuk-table__caption').contains('Showing all 1 recipients')
     cy.get('.govuk-table__body').contains('external@example.com')
     cy.get('.govuk-table__body').contains('AT/TEST/01')
-    cy.get('.govuk-table__body').contains('Email - Primary user')
+    cy.get('.govuk-table__body').contains('Email - primary user')
     cy.get('.govuk-table__body').contains('Preview')
     cy.get('.govuk-button--secondary').contains('Cancel').click()
 
