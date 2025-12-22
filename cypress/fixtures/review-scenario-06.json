@@ -118,6 +118,7 @@
       "endDate": "2025-03-21",
       "receivedDate": "2025-03-01",
       "dueDate": "2025-04-28",
+      "returnId": "6a1b2456-e9af-4845-b5a9-a54497dff769",
       "status": "completed",
       "underQuery": true
     }
@@ -125,7 +126,8 @@
   "returnSubmissions": [
     {
       "id": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
-      "returnLogId": "v1:1:AT/TEST/01:10021668:2024-04-01:2025-03-31",
+      "returnLogId": "6a1b2456-e9af-4845-b5a9-a54497dff769",
+      "returnId": "v1:1:AT/TEST/01:10021668:2024-04-01:2025-03-31",
       "nilReturn": false,
       "current": true
     }
