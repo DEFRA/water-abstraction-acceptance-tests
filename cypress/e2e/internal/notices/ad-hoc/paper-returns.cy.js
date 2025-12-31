@@ -33,7 +33,7 @@ describe('Ad-hoc Paper returns journey (internal)', () => {
     cy.get('.govuk-button').contains('Create an ad-hoc notice').click()
 
     // Enter a licence number
-    cy.get('#licenceRef').type('AT/TEST/01')
+    cy.get('#licenceRef').type('AT/TE/ST/01/01')
     cy.get('button.govuk-button').click()
 
     // Select the notice type
@@ -45,7 +45,7 @@ describe('Ad-hoc Paper returns journey (internal)', () => {
     cy.contains('Continue').click()
 
     // Check the notice type
-    cy.get('[data-test="licence-number"]').should('contain.text', 'AT/TEST/01')
+    cy.get('[data-test="licence-number"]').should('contain.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="returns-notice-type"]').should('contain.text', 'Paper return')
     cy.contains('Confirm').click()
 

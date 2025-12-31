@@ -23,7 +23,7 @@ export default function basicLicenceTwoReturnRequirementsWithThreeReturnLogsEach
   let startYear = currentFinancialYearInfo.start.year
   let endYear = currentFinancialYearInfo.end.year
 
-  dataModel.returnLogs[0].id = `v1:9:AT/TEST/01:9999990:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[0].id = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[0].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[0].endDate = `${endYear}-03-31`
   dataModel.returnLogs[0].metadata.isSummer = false
@@ -31,7 +31,7 @@ export default function basicLicenceTwoReturnRequirementsWithThreeReturnLogsEach
   dataModel.returnLogs[0].status = 'due'
   dataModel.returnLogs[0].returnCycleId.value = `${startYear}-04-01`
 
-  dataModel.returnLogs[1].id = `v1:9:AT/TEST/01:9999991:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[1].id = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[1].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[1].endDate = `${endYear}-03-31`
   dataModel.returnLogs[1].metadata.isSummer = false
@@ -43,7 +43,7 @@ export default function basicLicenceTwoReturnRequirementsWithThreeReturnLogsEach
   startYear = startYear - 1
   endYear = endYear - 1
 
-  dataModel.returnLogs[2].id = `v1:9:AT/TEST/01:9999990:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[2].id = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[2].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[2].endDate = `${endYear}-03-31`
   dataModel.returnLogs[2].metadata.isSummer = false
@@ -51,7 +51,7 @@ export default function basicLicenceTwoReturnRequirementsWithThreeReturnLogsEach
   dataModel.returnLogs[2].status = 'completed'
   dataModel.returnLogs[2].returnCycleId.value = `${startYear}-04-01`
 
-  dataModel.returnLogs[3].id = `v1:9:AT/TEST/01:9999991:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[3].id = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[3].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[3].endDate = `${endYear}-03-31`
   dataModel.returnLogs[3].metadata.isSummer = false
@@ -63,7 +63,7 @@ export default function basicLicenceTwoReturnRequirementsWithThreeReturnLogsEach
   startYear = startYear - 1
   endYear = endYear - 1
 
-  dataModel.returnLogs[4].id = `v1:9:AT/TEST/01:9999990:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[4].id = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[4].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[4].endDate = `${endYear}-03-31`
   dataModel.returnLogs[4].metadata.isSummer = false
@@ -71,7 +71,7 @@ export default function basicLicenceTwoReturnRequirementsWithThreeReturnLogsEach
   dataModel.returnLogs[4].status = 'completed'
   dataModel.returnLogs[4].returnCycleId.value = `${startYear}-04-01`
 
-  dataModel.returnLogs[5].id = `v1:9:AT/TEST/01:9999991:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[5].id = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[5].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[5].endDate = `${endYear}-03-31`
   dataModel.returnLogs[5].metadata.isSummer = false

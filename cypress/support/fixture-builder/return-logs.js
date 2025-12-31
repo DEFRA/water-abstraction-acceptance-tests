@@ -1,9 +1,9 @@
 export default function returnLogs (howMany = 4) {
   const returnLogs = [
     {
-      id: 'v1:9:AT/TEST/01:9999990:2020-01-01:2020-03-31',
+      id: 'v1:9:AT/TE/ST/01/01:9999990:2020-01-01:2020-03-31',
       returnReference: '9999990',
-      licenceRef: 'AT/TEST/01',
+      licenceRef: 'AT/TE/ST/01/01',
       metadata: {
         nald: {
           areaCode: 'AREA',
@@ -63,9 +63,9 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: 'v1:9:AT/TEST/01:9999990:2020-04-01:2021-03-31',
+      id: 'v1:9:AT/TE/ST/01/01:9999990:2020-04-01:2021-03-31',
       returnReference: '9999990',
-      licenceRef: 'AT/TEST/01',
+      licenceRef: 'AT/TE/ST/01/01',
       metadata: {
         nald: {
           areaCode: 'AREA',
@@ -125,9 +125,9 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: 'v1:9:AT/TEST/01:9999990:2021-04-01:2022-03-31',
+      id: 'v1:9:AT/TE/ST/01/01:9999990:2021-04-01:2022-03-31',
       returnReference: '9999990',
-      licenceRef: 'AT/TEST/01',
+      licenceRef: 'AT/TE/ST/01/01',
       metadata: {
         nald: {
           areaCode: 'AREA',
@@ -187,9 +187,9 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: 'v1:9:AT/TEST/01:9999990:2022-04-01:2023-03-31',
+      id: 'v1:9:AT/TE/ST/01/01:9999990:2022-04-01:2023-03-31',
       returnReference: '9999990',
-      licenceRef: 'AT/TEST/01',
+      licenceRef: 'AT/TE/ST/01/01',
       metadata: {
         nald: {
           areaCode: 'AREA',
@@ -249,9 +249,9 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: 'v1:9:AT/TEST/01:9999990:2024-04-01:2025-03-31',
+      id: 'v1:9:AT/TE/ST/01/01:9999990:2024-04-01:2025-03-31',
       returnReference: '9999990',
-      licenceRef: 'AT/TEST/01',
+      licenceRef: 'AT/TE/ST/01/01',
       metadata: {
         nald: {
           areaCode: 'AREA',
@@ -311,9 +311,9 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: 'v1:9:AT/TEST/01:9999990:2025-04-01:2026-03-31',
+      id: 'v1:9:AT/TE/ST/01/01:9999990:2025-04-01:2026-03-31',
       returnReference: '9999990',
-      licenceRef: 'AT/TEST/01',
+      licenceRef: 'AT/TE/ST/01/01',
       metadata: {
         nald: {
           areaCode: 'AREA',

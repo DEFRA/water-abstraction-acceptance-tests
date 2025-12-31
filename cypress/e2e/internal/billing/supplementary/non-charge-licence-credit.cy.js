@@ -96,15 +96,15 @@ describe('Make licence non-chargeable then see credit in next bill run (internal
     // Search
     // search for the licence and select it from the results
     cy.get('#navbar-view').click()
-    cy.get('#query').type('AT/TEST/02')
-    cy.get('.search__button').click()
+    cy.get('#query').type('AT/TE/ST/01/02')
+    cy.get('#search-button').click()
     cy.contains('Licences')
-    cy.get('.govuk-table__row').contains('AT/TEST/02').click()
+    cy.get('.searchresult-row').contains('AT/TE/ST/01/02').click()
 
     // Charge information
     // confirm we are on the licence page and select licence set up tab. Then click to make the licence
     // non-chargeable
-    cy.contains('AT/TEST/02')
+    cy.contains('AT/TE/ST/01/02')
     cy.contains('Licence set up').click()
     cy.get('.govuk-button').contains('Make licence non-chargeable').click()
 

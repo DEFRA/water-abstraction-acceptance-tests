@@ -21,7 +21,7 @@ describe('Login and log out (internal)', () => {
     cy.contains('Enter a licence number, customer name')
 
     //  Click Sign out Button
-    cy.get('#signout').click()
+    cy.get('a').contains('Sign out').click()
 
     //  Assert we are signed out
     cy.contains("You're signed out").should('be.visible')

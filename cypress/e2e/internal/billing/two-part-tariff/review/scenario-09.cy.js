@@ -92,7 +92,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.contains('Clear filters').click()
 
     // Review licences ~ Test it has the correct licence
-    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TEST/01')
+    cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
     cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
     cy.get('[data-test="licence-issue-1"]').should('contain.text', 'No returns received')
@@ -101,15 +101,15 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', 'ready')
     cy.get('[data-test="licence-1"] > .govuk-link').click()
 
-    // Review Licence AT/TEST/01 ~ Check the licence details
-    cy.get('h1').should('contain.text', 'Licence AT/TEST/01')
+    // Review Licence AT/TE/ST/01/01 ~ Check the licence details
+    cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
     cy.get('div > .govuk-tag').should('contain.text', 'ready')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
     // On this licence there are two charge versions meaning we have two charge period links
     cy.get('[data-test="charge-period-0"]').should('contain.text', '1 April 2024 to 31 March 2025')
 
-    // Review Licence AT/TEST/01 ~ Check the first matched return details
+    // Review Licence AT/TE/ST/01/01 ~ Check the first matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2024 to 21 March 2025')
@@ -119,7 +119,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '/')
     cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'No returns received')
 
-    // Review Licence AT/TEST/01 ~ Check the second matched return details
+    // Review Licence AT/TE/ST/01/01 ~ Check the second matched return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('contain.text', '10021668')
     cy.get('[data-test="matched-return-action-1"] > div').should('contain.text', '1 October 2024 to 31 March 2025')
@@ -128,11 +128,11 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="matched-return-total-1"] > :nth-child(1)').should('contain.text', '/')
     cy.get('[data-test="matched-return-total-1"] > :nth-child(2)').should('contain.text', 'No returns received')
 
-    // Review Licence AT/TEST/01 ~ Check there are no other returns
+    // Review Licence AT/TE/ST/01/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-2"] > .govuk-link').should('not.exist')
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
-    // Review Licence AT/TEST/01 ~ Check charge information details are correct
+    // Review Licence AT/TE/ST/01/01 ~ Check charge information details are correct
     cy.get('#charge-version-0 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2024 to 31 March 2025')
     cy.get('[data-test="charge-version-0-details"]').should('contain.text', '2 charge references with 2 two-part tariff charge elements')
     cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.19')
@@ -161,7 +161,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'No returns received')
     cy.get('.govuk-back-link').click()
 
-    // Review Licence AT/TEST/01 ~ Check charge Information details are correct for charge version 2
+    // Review Licence AT/TE/ST/01/01 ~ Check charge Information details are correct for charge version 2
     cy.get('[data-test="charge-version-0-reference-1"]').should('contain.text', 'Charge reference 4.6.12')
     // For the second charge reference the charge element has a lower authorised volume than its charge reference. This
     // means we expect the return to only allocate to the charge element volume of 32ML

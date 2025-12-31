@@ -6,7 +6,7 @@ export default function licence () {
   const basicLicence = {
     permitLicences: [
       {
-        licenceRef: 'AT/TEST/01',
+        licenceRef: 'AT/TE/ST/01/01',
         startDate: '2020-01-01',
         metadata: {
           source: 'acceptance-test-setup'
@@ -44,12 +44,12 @@ export default function licence () {
           value: 'regime',
           select: 'entityId'
         },
-        licenceRef: 'AT/TEST/01',
+        licenceRef: 'AT/TE/ST/01/01',
         naldId: {
           schema: 'public',
           table: 'permitLicences',
           lookup: 'licenceRef',
-          value: 'AT/TEST/01',
+          value: 'AT/TE/ST/01/01',
           select: 'id'
         },
         metadata: {
@@ -152,7 +152,7 @@ export default function licence () {
     licenceDocuments: [
       {
         id: '1a274f3e-f891-43dd-8c25-8afac4e760ac',
-        licenceRef: 'AT/TEST/01',
+        licenceRef: 'AT/TE/ST/01/01',
         startDate: '2018-01-01'
       }
     ],
@@ -176,7 +176,7 @@ export default function licence () {
     licences: [
       {
         id: '8717da0e-28d4-4833-8e32-1da050b60055',
-        licenceRef: 'AT/TEST/01',
+        licenceRef: 'AT/TE/ST/01/01',
         regionId: { schema: 'public', table: 'regions', lookup: 'naldRegionId', value: 9, select: 'id' },
         regions: {
           historicalAreaCode: 'SAAR',

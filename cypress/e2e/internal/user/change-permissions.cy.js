@@ -27,14 +27,12 @@ describe('Change user permissions (internal)', () => {
     cy.get('@userToBeUpdatedEmail').then((userToBeUpdatedEmail) => {
       cy.get('#query').type(userToBeUpdatedEmail)
     })
-    cy.get('.search__button').click()
+    cy.get('#search-button').click()
 
     // confirm we see the expected result then select it
-    cy.get('.govuk-grid-column-full > .govuk-heading-m').should('have.text', 'Users')
     cy.get('@userToBeUpdatedEmail').then((userToBeUpdatedEmail) => {
-      cy.get('.govuk-list > li').should('contain.text', userToBeUpdatedEmail)
+      cy.get('.searchresult-row').contains(userToBeUpdatedEmail).click()
     })
-    cy.get('.govuk-list .govuk-link').click()
 
     // Set permissions
     // confirm we are on the permissions page then change the user's permissions from basic user to National

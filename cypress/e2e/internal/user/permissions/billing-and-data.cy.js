@@ -22,7 +22,7 @@ describe('Billing & Data permissions (internal)', () => {
     cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
 
     // confirm we are on the licence page
-    cy.contains('AT/TEST/01')
+    cy.contains('AT/TE/ST/01/01')
 
     // confirm we can see the summary, contact details, returns, communications, bill runs and licence set up links
     cy.get('nav.x-govuk-sub-navigation').within(() => {

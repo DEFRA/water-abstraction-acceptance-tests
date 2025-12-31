@@ -47,7 +47,7 @@ describe('Sharing license access with a new user (external)', () => {
         cy.get('form').submit()
 
         // Assert they can see the same licence
-        cy.get('.licence-result__column > a').contains('AT/TEST/01').should('be.visible')
+        cy.get('.licence-result__column > a').contains('AT/TE/ST/01/01').should('be.visible')
 
         // Sign out
         cy.get('#signout').click()

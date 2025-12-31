@@ -24,7 +24,7 @@ export default function basicLicenceOneReturnRequirementsWithFourReturnLogs () {
   const endYear = currentFinancialYearInfo.end.year
 
   for (let i = 0; i < dataModel.returnLogs.length; i++) {
-    dataModel.returnLogs[i].id = `v1:9:AT/TEST/01:9999990:${startYear - i}-04-01:${endYear - i}-03-31`
+    dataModel.returnLogs[i].id = `v1:9:AT/TE/ST/01/01:9999990:${startYear - i}-04-01:${endYear - i}-03-31`
     dataModel.returnLogs[i].dueDate = `${endYear - i}-04-28`
     dataModel.returnLogs[i].endDate = `${endYear - i}-03-31`
     dataModel.returnLogs[i].startDate = `${startYear - i}-04-01`

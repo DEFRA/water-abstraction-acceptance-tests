@@ -64,7 +64,7 @@
   "licenceDocuments": [
     {
       "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "startDate": "2022-04-01"
     }
   ],
@@ -86,7 +86,7 @@
   ],
   "permitLicences": [
     {
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "startDate": "2022-04-01",
       "metadata": {
         "source": "acceptance-test-setup"
@@ -103,12 +103,12 @@
         "value": "regime",
         "select": "entityId"
       },
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "naldId": {
         "schema": "public",
         "table": "permitLicences",
         "lookup": "licenceRef",
-        "value": "AT/TEST/01",
+        "value": "AT/TE/ST/01/01",
         "select": "id"
       },
       "metadata": {
@@ -121,7 +121,7 @@
   "licences": [
     {
       "id": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "regions": {
         "historicalAreaCode": "SAAR",

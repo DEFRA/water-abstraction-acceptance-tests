@@ -200,9 +200,9 @@ describe('Create and send supplementary bill runs (internal)', () => {
 
     // Search the licence that was included in the bill run
     cy.get('#nav-search').click()
-    cy.get('#query').type('AT/TEST/02')
-    cy.get('.search__button').click()
-    cy.get('.govuk-table__row').contains('AT/TEST/02').click()
+    cy.get('#query').type('AT/TE/ST/01/02')
+    cy.get('#search-button').click()
+    cy.get('.searchresult-row').contains('AT/TE/ST/01/02').click()
 
     // Confirm there are no flags already on the licence
     cy.get('.govuk-notification-banner__content').should('not.exist')

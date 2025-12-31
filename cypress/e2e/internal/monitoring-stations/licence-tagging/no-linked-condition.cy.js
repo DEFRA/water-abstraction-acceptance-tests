@@ -41,15 +41,15 @@ describe('Tag a licence that is not linked to a condition (internal)', () => {
     cy.get('.govuk-button').contains('Continue').click()
 
     // Enter the licence number this threshold applies to
-    cy.get('#licence-ref').type('AT/TEST/01')
+    cy.get('#licence-ref').type('AT/TE/ST/01/01')
     cy.get('.govuk-button').contains('Continue').click()
 
     // The licence has no conditions recorded against it, confirm manual entry of abstraction period
-    cy.get('.govuk-heading-l').contains('There are no flow or level cessation conditions for licence AT/TEST/01')
+    cy.get('.govuk-heading-l').contains('There are no flow or level cessation conditions for licence AT/TE/ST/01/01')
     cy.get('.govuk-button').contains('Continue').click()
 
     // Enter the abstraction period for the licence
-    cy.get('.govuk-heading-l').contains('Enter an abstraction period for licence AT/TEST/01')
+    cy.get('.govuk-heading-l').contains('Enter an abstraction period for licence AT/TE/ST/01/01')
     cy.get('#abstractionPeriodStartDay').type('10')
     cy.get('#abstractionPeriodStartMonth').type('10')
     cy.get('#abstractionPeriodEndDay').type('11')
@@ -59,16 +59,16 @@ describe('Tag a licence that is not linked to a condition (internal)', () => {
     // Check the restriction details
     cy.get(':nth-child(1) > .govuk-summary-list__value').contains('123mBOD')
     cy.get(':nth-child(2) > .govuk-summary-list__value').contains('Stop')
-    cy.get(':nth-child(3) > .govuk-summary-list__value').contains('AT/TEST/01')
+    cy.get(':nth-child(3) > .govuk-summary-list__value').contains('AT/TE/ST/01/01')
     cy.get(':nth-child(4) > .govuk-summary-list__value').contains('None')
     cy.get(':nth-child(5) > .govuk-summary-list__value').contains('10 October to 11 November')
     cy.get(':nth-child(5) > .govuk-summary-list__actions > .govuk-link').contains('Change').should('be.visible')
     cy.get('.govuk-button').contains('Confirm').click()
 
     // Confirm we are back on the monitoring station page and the licence is tagged
-    cy.get('.govuk-notification-banner__heading').should('have.text', 'Tag for licence AT/TEST/01 added')
+    cy.get('.govuk-notification-banner__heading').should('have.text', 'Tag for licence AT/TE/ST/01/01 added')
     cy.get('.govuk-heading-l').should('have.text', 'Test Station')
-    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/TEST/01')
+    cy.get('[data-test="licence-ref-0"]').should('have.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="abstraction-period-0"]').should('have.text', '10 October to 11 November')
     cy.get('[data-test="restriction-0"]').should('have.text', 'Stop')
     cy.get('[data-test="threshold-0"]').should('have.text', '123mBOD')
@@ -77,8 +77,8 @@ describe('Tag a licence that is not linked to a condition (internal)', () => {
     cy.get('[data-test="action-0"]').should('have.text', 'View')
 
     // Confirm the licence is linked to the monitoring station in the licence summary
-    cy.get('[data-test="licence-ref-0"]').contains('AT/TEST/01').click()
-    cy.get('h1').should('contain.text', 'Licence summary AT/TEST/01')
+    cy.get('[data-test="licence-ref-0"]').contains('AT/TE/ST/01/01').click()
+    cy.get('h1').should('contain.text', 'Licence summary AT/TE/ST/01/01')
     cy.get('.govuk-list').contains('Test Station')
   })
 })

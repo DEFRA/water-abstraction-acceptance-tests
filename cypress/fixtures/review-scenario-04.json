@@ -85,9 +85,9 @@
   ],
   "returnLogs": [
     {
-      "id": "v1:1:AT/TEST/01:10021668:2024-04-01:2025-03-31",
+      "id": "v1:1:AT/TE/ST/01/01:10021668:2024-04-01:2025-03-31",
       "returnReference": "10021668",
-      "licenceRef": "AT/TEST/01",
+      "licenceRef": "AT/TE/ST/01/01",
       "metadata": {
         "description": "A DRAIN SOMEWHERE",
         "purposes": [
@@ -127,7 +127,7 @@
     {
       "id": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
       "returnLogId": "6a1b2456-e9af-4845-b5a9-a54497dff769",
-      "returnId": "v1:1:AT/TEST/01:10021668:2024-04-01:2025-03-31",
+      "returnId": "v1:1:AT/TE/ST/01/01:10021668:2024-04-01:2025-03-31",
       "nilReturn": false,
       "current": true
     }
