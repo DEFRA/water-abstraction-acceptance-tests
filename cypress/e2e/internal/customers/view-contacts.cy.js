@@ -32,14 +32,15 @@ describe("View a licence's contacts (internal)", () => {
     cy.contains('Go to customer contacts').click()
 
     // Confirm expected tabs are present
-    cy.get('#main-content').contains('Licences')
-    cy.get('#main-content').contains('Billing accounts')
-    cy.get('#main-content').contains('Contacts')
+    cy.get('.x-govuk-sub-navigation').contains('Licences')
+    cy.get('.x-govuk-sub-navigation').contains('Billing accounts')
+    cy.get('.x-govuk-sub-navigation').contains('Contacts')
 
-    // Confirm contacts tab is selected
-    cy.get('#tab_contacts').invoke('attr', 'aria-selected').should('eq', 'true')
+    // Confirm the page title and caption
+    cy.get('.govuk-caption-l').should('contain.text', scenario.companies[0].name)
+    cy.get('h1').should('contain.text', 'Contacts')
 
     // Confirm contacts contains expected record
-    cy.get('.govuk-table__cell').contains('Mr John Testerson')
+    cy.get('.govuk-table__cell').contains('Mr J J Testerson')
   })
 })
