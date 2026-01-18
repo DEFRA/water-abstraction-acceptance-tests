@@ -12,12 +12,9 @@ describe('Submit winter and all year quarterly historic correction using abstrac
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
 
-    let year = new Date().getFullYear()
-    if (new Date().getMonth() < 4) {
-      year = year - 1
-    }
-
-    cy.wrap(year).as('year')
+    cy.quarterlyPeriods().then((periods) => {
+      cy.wrap(periods).as('periods')
+    })
   })
 
   it('creates a return requirement using abstraction data and approves the requirement', () => {
@@ -31,7 +28,9 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     // confirm we are on the licence returns tab and that there are previous return logs
     cy.get('h1').should('contain.text', 'Returns')
 
-    cy.get('@year').then((year) => {
+    cy.get('@periods').then((periods) => {
+      const year = periods.year
+
       cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
         cy.get('[data-test="return-due-date-0"]').contains(data.text)
         cy.get('[data-test="return-status-0"] > .govuk-tag').contains(data.label)
@@ -66,8 +65,8 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     cy.get('#anotherStartDate').check()
     cy.get('#startDateDay').type('01')
     cy.get('#startDateMonth').type('04')
-    cy.get('@year').then((year) => {
-      cy.get('#startDateYear').type(year)
+    cy.get('@periods').then((periods) => {
+      cy.get('#startDateYear').type(periods.year)
     })
     cy.contains('Continue').click()
 
@@ -107,9 +106,11 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     // confirm we are on the licence set up tab
     cy.get('h1').should('contain.text', 'Returns')
 
-    cy.get('@year').then((year) => {
+    cy.get('@periods').then((periods) => {
+      const year = periods.year
+
       cy.get('[data-test="return-due-date-0"]').should('have.value', '')
-      cy.get('[data-test="return-status-0"] > .govuk-tag').contains('not due yet')
+      cy.get('[data-test="return-status-0"] > .govuk-tag').contains(periods.q4.status)
 
       cy.quarterlyReturnLogDueData(`${year + 1}-04-28`).then((data) => {
         cy.get('[data-test="return-due-date-1"]').contains(data.text)
@@ -117,7 +118,7 @@ describe('Submit winter and all year quarterly historic correction using abstrac
       })
 
       cy.get('[data-test="return-due-date-2"]').should('have.value', '')
-      cy.get('[data-test="return-status-2"] > .govuk-tag').contains('not due yet')
+      cy.get('[data-test="return-status-2"] > .govuk-tag').contains(periods.q3.status)
 
       cy.quarterlyReturnLogDueData(`${year + 1}-01-28`).then((data) => {
         cy.get('[data-test="return-due-date-3"]').contains(data.text)
@@ -125,7 +126,7 @@ describe('Submit winter and all year quarterly historic correction using abstrac
       })
 
       cy.get('[data-test="return-due-date-4"]').should('have.value', '')
-      cy.get('[data-test="return-status-4"] > .govuk-tag').contains('open')
+      cy.get('[data-test="return-status-4"] > .govuk-tag').contains(periods.q2.status)
 
       cy.quarterlyReturnLogDueData(`${year}-10-28`).then((data) => {
         cy.get('[data-test="return-due-date-5"]').contains(data.text)
@@ -133,7 +134,7 @@ describe('Submit winter and all year quarterly historic correction using abstrac
       })
 
       cy.get('[data-test="return-due-date-6"]').should('have.value', '')
-      cy.get('[data-test="return-status-6"] > .govuk-tag').contains('open')
+      cy.get('[data-test="return-status-6"] > .govuk-tag').contains(periods.q1.status)
 
       cy.quarterlyReturnLogDueData(`${year}-07-28`).then((data) => {
         cy.get('[data-test="return-due-date-7"]').contains(data.text)
