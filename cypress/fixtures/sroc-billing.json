@@ -462,6 +462,7 @@
   ],
   "licenceVersions": [
     {
+      "id": "6c42b2be-88a7-464f-8b43-2428f4e8eecd",
       "licenceId": "f8702a6a-f61d-4b0a-9af3-9a53768ee516",
       "issue": 1,
       "increment": 0,
@@ -470,6 +471,7 @@
       "externalId": "6:1234:1:0"
     },
     {
+      "id": "2c224090-92b5-46a8-9980-b5b8f602e773",
       "licenceId": "482bf7ed-e2d9-426e-bfba-183784e6d459",
       "issue": 1,
       "increment": 0,
@@ -478,6 +480,7 @@
       "externalId": "6:1234:2:0"
     },
     {
+      "id": "9ae4d4c7-26b7-49c8-858f-ae2c12381e12",
       "licenceId": "d1599b0f-2343-41c8-bc49-6a25ba5fe4c2",
       "issue": 1,
       "increment": 0,
@@ -486,12 +489,59 @@
       "externalId": "6:1234:3:0"
     },
     {
+      "id": "b6712354-9e5c-4fbf-ad6e-ac6c86be77e9",
       "licenceId": "85f74e84-e0de-45ac-b9d4-f21a1913eb95",
       "issue": 1,
       "increment": 0,
       "status": "current",
       "startDate": "2022-04-01",
       "externalId": "6:1234:4:0"
+    }
+  ],
+  "licenceVersionHolders": [
+    {
+      "licenceVersionId": "6c42b2be-88a7-464f-8b43-2428f4e8eecd",
+      "holderType": "organisation",
+      "name": "Big Farm Co Ltd 01",
+      "addressLine1": "Big Farm",
+      "addressLine2": "Windy road",
+      "addressLine3": "Buttercup meadow",
+      "addressLine4": "Buttercup Village",
+      "town": "Testington",
+      "postcode": "TT1 1TT"
+    },
+    {
+      "licenceVersionId": "2c224090-92b5-46a8-9980-b5b8f602e773",
+      "holderType": "organisation",
+      "name": "Big Farm Co Ltd 02",
+      "addressLine1": "Big Farm",
+      "addressLine2": "Windy road",
+      "addressLine3": "Buttercup meadow",
+      "addressLine4": "Buttercup Village",
+      "town": "Testington",
+      "postcode": "TT1 1TT"
+    },
+    {
+      "licenceVersionId": "9ae4d4c7-26b7-49c8-858f-ae2c12381e12",
+      "holderType": "organisation",
+      "name": "Big Farm Co Ltd 03",
+      "addressLine1": "Big Farm",
+      "addressLine2": "Windy road",
+      "addressLine3": "Buttercup meadow",
+      "addressLine4": "Buttercup Village",
+      "town": "Testington",
+      "postcode": "TT1 1TT"
+    },
+    {
+      "licenceVersionId": "b6712354-9e5c-4fbf-ad6e-ac6c86be77e9",
+      "holderType": "organisation",
+      "name": "Big Farm Co Ltd 04",
+      "addressLine1": "Big Farm",
+      "addressLine2": "Windy road",
+      "addressLine3": "Buttercup meadow",
+      "addressLine4": "Buttercup Village",
+      "town": "Testington",
+      "postcode": "TT1 1TT"
     }
   ],
   "chargeVersions": [
