@@ -65,6 +65,44 @@ Cypress.Commands.add('calculatedDates', () => {
   })
 })
 
+// We do not control when the tests are run. This means for tests that depend on quarterly return periods we need to be
+// able to determine what the periods are and what their status is as of today.
+//
+// If no year is provided it will determine the current financial year.
+//
+// It then returns an object with the start and end dates for each quarterly period based on the year, along with their
+// status as of today. The status will be either 'not due yet' or 'open' (meaning the return period has ended and the
+// return can be submitted).
+Cypress.Commands.add('quarterlyPeriods', (year = null) => {
+  cy.log('Determine the quarterly period based on a given year and what status they will have as of today')
+
+  if (!year) {
+    year = new Date().getFullYear()
+    if (new Date().getMonth() < 4) {
+      year = year - 1
+    }
+  }
+
+  const periods = {
+    q1: { startDate: new Date(`${year}-04-01`), endDate: new Date(`${year}-06-30`) },
+    q2: { startDate: new Date(`${year}-07-01`), endDate: new Date(`${year}-09-30`) },
+    q3: { startDate: new Date(`${year}-10-01`), endDate: new Date(`${year}-12-31`) },
+    q4: { startDate: new Date(`${year + 1}-01-01`), endDate: new Date(`${year + 1}-03-31`) },
+    year
+  }
+
+  const today = new Date()
+
+  today.setHours(0, 0, 0, 0)
+
+  periods.q1.status = today > periods.q1.endDate ? 'open' : 'not due yet'
+  periods.q2.status = today > periods.q2.endDate ? 'open' : 'not due yet'
+  periods.q3.status = today > periods.q3.endDate ? 'open' : 'not due yet'
+  periods.q4.status = today > periods.q4.endDate ? 'open' : 'not due yet'
+
+  return cy.wrap(periods)
+})
+
 Cypress.Commands.add('previousPeriod', (period) => {
   cy.log('Push a return period back by one')
 
