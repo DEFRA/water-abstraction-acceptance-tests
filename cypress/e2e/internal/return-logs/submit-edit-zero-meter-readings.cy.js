@@ -19,7 +19,7 @@ describe('Submit then edit a meter readings return with zero reading (internal)'
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs/${scenario.returnLogs[0].returnId}`)
+    cy.visit(`/system/return-logs/${scenario.returnLogs[0].id}`)
 
     // Abstraction return
     // submit return
