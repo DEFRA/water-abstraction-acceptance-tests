@@ -20,7 +20,7 @@ describe('Submit volumes in gallons return (external)', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/return?returnId=${scenario.returnLogs[0].id}`)
+    cy.visit(`${Cypress.env('externalUrl')}/return?returnId=${scenario.returnLogs[0].returnId}`)
 
     // --> Have you extracted water in this period?
     // Click 'Yes' and continue
