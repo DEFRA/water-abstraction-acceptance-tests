@@ -19,7 +19,7 @@ describe('Editing a return (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs/${scenario.returnLogs[0].returnId}`)
+    cy.visit(`/system/return-logs/${scenario.returnLogs[0].id}`)
 
     // Edit return
     cy.get('.govuk-button').first().click()
