@@ -1,5 +1,4 @@
 import formatDateToIso from '../helpers/formatDateToIso.js'
-import GenerateUUID from '../helpers/generateUUID.js'
 import licenceData from '../fixture-builder/licence.js'
 
 function _returnLog (startDate, endDate, dueDate, returnReference) {
@@ -8,7 +7,6 @@ function _returnLog (startDate, endDate, dueDate, returnReference) {
   const dueDateString = dueDate ? formatDateToIso(dueDate) : null
 
   return {
-    id: GenerateUUID(),
     returnId: `v1:1:AT/TE/ST/01/01:${returnReference}:${startDateString}:${endDateString}`,
     returnReference: returnReference.toString(),
     licenceRef: 'AT/TE/ST/01/01',

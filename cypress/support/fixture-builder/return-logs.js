@@ -1,7 +1,6 @@
 export default function returnLogs (howMany = 4) {
   const returnLogs = [
     {
-      id: '3cc793fb-e9d5-48e8-877a-69d200878d44',
       returnId: 'v1:9:AT/TE/ST/01/01:9999990:2020-01-01:2020-03-31',
       returnReference: '9999990',
       licenceRef: 'AT/TE/ST/01/01',
@@ -64,7 +63,6 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: 'e419220a-f768-420c-99af-61455927d315',
       returnId: 'v1:9:AT/TE/ST/01/01:9999990:2020-04-01:2021-03-31',
       returnReference: '9999990',
       licenceRef: 'AT/TE/ST/01/01',
@@ -127,7 +125,6 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: '11fda46c-74bf-47a9-a8c0-db5a1098913e',
       returnId: 'v1:9:AT/TE/ST/01/01:9999990:2021-04-01:2022-03-31',
       returnReference: '9999990',
       licenceRef: 'AT/TE/ST/01/01',
@@ -190,7 +187,6 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: '6bad1f06-c1f6-41cc-91cb-3ad1156ba1fb',
       returnId: 'v1:9:AT/TE/ST/01/01:9999990:2022-04-01:2023-03-31',
       returnReference: '9999990',
       licenceRef: 'AT/TE/ST/01/01',
@@ -253,7 +249,6 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: 'f2b69c98-ba08-4d8c-882c-1cbb4e3772f4',
       returnId: 'v1:9:AT/TE/ST/01/01:9999990:2024-04-01:2025-03-31',
       returnReference: '9999990',
       licenceRef: 'AT/TE/ST/01/01',
@@ -316,7 +311,6 @@ export default function returnLogs (howMany = 4) {
       }
     },
     {
-      id: '94a484cc-a487-4211-9e0b-1411da334e18',
       returnId: 'v1:9:AT/TE/ST/01/01:9999990:2025-04-01:2026-03-31',
       returnReference: '9999990',
       licenceRef: 'AT/TE/ST/01/01',
