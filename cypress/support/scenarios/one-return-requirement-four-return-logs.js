@@ -1,4 +1,5 @@
 import currentFinancialYear from '../helpers/currentFinancialYear.js'
+import GenerateUUID from '../helpers/generateUUID.js'
 import licence from '../fixture-builder/licence.js'
 import points from '../fixture-builder/points.js'
 import purposes from '../fixture-builder/purposes.js'
@@ -24,7 +25,7 @@ export default function basicLicenceOneReturnRequirementsWithFourReturnLogs () {
   const endYear = currentFinancialYearInfo.end.year
 
   for (let i = 0; i < dataModel.returnLogs.length; i++) {
-    dataModel.returnLogs[i].id = crypto.randomUUID()
+    dataModel.returnLogs[i].id = GenerateUUID()
     dataModel.returnLogs[i].returnId = `v1:9:AT/TE/ST/01/01:9999990:${startYear - i}-04-01:${endYear - i}-03-31`
     dataModel.returnLogs[i].dueDate = `${endYear - i}-04-28`
     dataModel.returnLogs[i].endDate = `${endYear - i}-03-31`

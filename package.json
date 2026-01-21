@@ -35,7 +35,6 @@
     "globals": [
       "after",
       "afterEach",
-      "crypto",
       "cy",
       "Cypress",
       "before",
