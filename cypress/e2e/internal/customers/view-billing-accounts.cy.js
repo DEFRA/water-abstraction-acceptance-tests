@@ -20,7 +20,7 @@ describe("View a licence's contacts (internal)", () => {
       })
     })
 
-    cy.visit(`/system/customers/${scenario.companies[0].id}/billing-accounts`)
+    cy.visit(`/system/companies/${scenario.companies[0].id}/billing-accounts`)
 
     // Confirm expected tabs are present
     cy.get('.x-govuk-sub-navigation').contains('Licences')
