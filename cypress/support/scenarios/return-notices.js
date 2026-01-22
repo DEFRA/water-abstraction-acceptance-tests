@@ -62,6 +62,7 @@ export default function (returnPeriod) {
         endDate: endDateString,
         dueDate: dueDateString,
         status: 'due',
+        quarterly: true,
         underQuery: false,
         returnCycleId: {
           schema: 'returns',
