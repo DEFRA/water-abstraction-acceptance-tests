@@ -19,7 +19,7 @@ describe('Submit then edit an abstraction volumes return with zero quantities (i
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs/${scenario.returnLogs[0].returnId}`)
+    cy.visit(`/system/return-logs/${scenario.returnLogs[0].id}`)
 
     // Abstraction return
     // submit return

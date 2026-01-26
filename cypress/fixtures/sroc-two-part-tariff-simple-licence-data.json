@@ -178,7 +178,8 @@
   ],
   "returnLogs": [
     {
-      "id": "v1:1:AT/TE/ST/01/01:10021668:2022-04-01:2023-03-31",
+      "id": "53e91659-b6e0-4ae0-84fe-9cfe30489f55",
+      "returnId": "v1:1:AT/TE/ST/01/01:10021668:2022-04-01:2023-03-31",
       "returnReference": "10021668",
       "licenceRef": "AT/TE/ST/01/01",
       "metadata": {
@@ -218,7 +219,8 @@
   "returnSubmissions": [
     {
       "id": "fb740b60-71f6-4fc8-8cce-02ae55a188cd",
-      "returnLogId": "v1:1:AT/TE/ST/01/01:10021668:2022-04-01:2023-03-31",
+      "returnId": "v1:1:AT/TE/ST/01/01:10021668:2022-04-01:2023-03-31",
+      "returnLogId": "53e91659-b6e0-4ae0-84fe-9cfe30489f55",
       "nilReturn": false,
       "current": true
     }

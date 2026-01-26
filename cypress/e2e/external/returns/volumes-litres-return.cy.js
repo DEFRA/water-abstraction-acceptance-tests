@@ -20,7 +20,7 @@ describe('Submit volumes in litres return (external)', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/return?returnId=${scenario.returnLogs[0].id}`)
+    cy.visit(`${Cypress.env('externalUrl')}/return?returnId=${scenario.returnLogs[0].returnId}`)
 
     // --> Have you extracted water in this period?
     // Click 'Yes' and continue
@@ -39,18 +39,18 @@ describe('Submit volumes in litres return (external)', () => {
 
     // --> Your abstraction volumes
     // Check validation - enter negative numbers
-    cy.get('input[name="2020-04-01_2020-04-30"]').type('-1000')
-    cy.get('input[name="2020-05-01_2020-05-31"]').type('-1000')
-    cy.get('input[name="2020-06-01_2020-06-30"]').type('-1000')
-    cy.get('input[name="2020-07-01_2020-07-31"]').type('-1000')
-    cy.get('input[name="2020-08-01_2020-08-31"]').type('-1000')
-    cy.get('input[name="2020-09-01_2020-09-30"]').type('-1000')
-    cy.get('input[name="2020-10-01_2020-10-31"]').type('-1000')
-    cy.get('input[name="2020-11-01_2020-11-30"]').type('-1000')
-    cy.get('input[name="2020-12-01_2020-12-31"]').type('-1000')
-    cy.get('input[name="2021-01-01_2021-01-31"]').type('-1000')
-    cy.get('input[name="2021-02-01_2021-02-28"]').type('-1000')
-    cy.get('input[name="2021-03-01_2021-03-31"]').type('-1000')
+    cy.get('input[name="2020-04-01_2020-04-30"]').clear().type('-1000')
+    cy.get('input[name="2020-05-01_2020-05-31"]').clear().type('-1000')
+    cy.get('input[name="2020-06-01_2020-06-30"]').clear().type('-1000')
+    cy.get('input[name="2020-07-01_2020-07-31"]').clear().type('-1000')
+    cy.get('input[name="2020-08-01_2020-08-31"]').clear().type('-1000')
+    cy.get('input[name="2020-09-01_2020-09-30"]').clear().type('-1000')
+    cy.get('input[name="2020-10-01_2020-10-31"]').clear().type('-1000')
+    cy.get('input[name="2020-11-01_2020-11-30"]').clear().type('-1000')
+    cy.get('input[name="2020-12-01_2020-12-31"]').clear().type('-1000')
+    cy.get('input[name="2021-01-01_2021-01-31"]').clear().type('-1000')
+    cy.get('input[name="2021-02-01_2021-02-28"]').clear().type('-1000')
+    cy.get('input[name="2021-03-01_2021-03-31"]').clear().type('-1000')
     cy.get('form>.govuk-button').click()
     cy.get('#error-summary-title').should('contain.text', 'There is a problem')
     cy.get('.govuk-error-summary__list').children().should('have.length', '12')

@@ -9,7 +9,8 @@ export default function () {
     ...licenceData(),
     returnLogs: [
       {
-        id: 'v1:1:AT/TE/ST/01/01:9999990:2020-01-01:2020-03-31',
+        id: '75936be9-e281-455c-9462-d9cfc864a2f9',
+        returnId: 'v1:1:AT/TE/ST/01/01:9999990:2020-01-01:2020-03-31',
         returnReference: '9999990',
         licenceRef: 'AT/TE/ST/01/01',
         metadata: {

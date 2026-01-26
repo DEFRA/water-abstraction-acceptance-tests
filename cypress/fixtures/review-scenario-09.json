@@ -143,7 +143,7 @@
   ],
   "returnLogs": [
     {
-      "id": "v1:1:AT/TE/ST/01/01:10021668:2024-04-01:2025-03-31",
+      "id": "6a1b2456-e9af-4845-b5a9-a54497dff769",
       "returnReference": "10021668",
       "licenceRef": "AT/TE/ST/01/01",
       "metadata": {
@@ -176,12 +176,12 @@
       "endDate": "2025-03-21",
       "receivedDate": "2025-03-01",
       "dueDate": "2025-04-28",
-      "returnId": "6a1b2456-e9af-4845-b5a9-a54497dff769",
+      "returnId": "v1:1:AT/TE/ST/01/01:10021668:2024-04-01:2025-03-31",
       "status": "due",
       "underQuery": false
     },
     {
-      "id": "v2:1:AT/TE/ST/01/01:10021668:2024-10-01:2025-03-31",
+      "id": "8211606e-302f-4547-9fd0-f3970443ba6d",
       "returnReference": "10021668",
       "licenceRef": "AT/TE/ST/01/01",
       "metadata": {
@@ -214,7 +214,7 @@
       "endDate": "2025-03-31",
       "receivedDate": "2025-03-01",
       "dueDate": "2025-04-28",
-      "returnId": "8211606e-302f-4547-9fd0-f3970443ba6d",
+      "returnId": "v2:1:AT/TE/ST/01/01:10021668:2024-10-01:2025-03-31",
       "status": "due",
       "underQuery": false
     }
