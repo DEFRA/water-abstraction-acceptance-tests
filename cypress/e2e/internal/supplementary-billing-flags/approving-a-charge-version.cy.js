@@ -26,8 +26,8 @@ describe('Approving a charge version (internal)', () => {
     cy.contains('Set up a new charge').click()
 
     // Select reason for new charge information
-    // choose Strategic review of charges (SRoC) and continue
-    cy.get('input#reason-12').click()
+    // choose Change to charge scheme and continue
+    cy.get('input#reason-3').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Set charge start date

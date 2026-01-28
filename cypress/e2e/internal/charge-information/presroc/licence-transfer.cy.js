@@ -27,7 +27,7 @@ describe('PRESROC licence transfer (internal)', () => {
 
     // Select reason for new charge information
     // choose Licence transferred and now chargeable and continue
-    cy.get('input#reason-5').click()
+    cy.get('input#reason-7').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Set charge start date
