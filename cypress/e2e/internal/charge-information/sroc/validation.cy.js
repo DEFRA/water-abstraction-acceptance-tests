@@ -30,8 +30,8 @@ describe('SROC charge information validation (internal)', () => {
     cy.get('form > .govuk-button').contains('Continue').click()
     cy.get('.govuk-error-summary__list').should('contain.text', 'Select a reason for new charge information')
     cy.get('.govuk-error-message').should('contain.text', 'Select a reason for new charge information')
-    // choose Strategic review of charges (SRoC) and continue
-    cy.get('input#reason-12').click()
+    // choose Change to charge scheme and continue
+    cy.get('input#reason-3').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Set charge start date
@@ -105,7 +105,7 @@ describe('SROC charge information validation (internal)', () => {
     // check the charge details and element details are as expected and then select option to add a note
     cy.get('section:nth-child(1) > dl').within(() => {
       // reason
-      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'Strategic review of charges (SRoC)')
+      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'Change to charge scheme')
       // start date
       cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', '1 June 2022')
       // billing account
