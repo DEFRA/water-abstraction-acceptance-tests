@@ -21,17 +21,18 @@ describe('Change user permissions (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit('/')
+    cy.visit('/system/users')
 
     // search for the user by email
+    cy.get('.govuk-details__summary').click()
     cy.get('@userToBeUpdatedEmail').then((userToBeUpdatedEmail) => {
-      cy.get('#query').type(userToBeUpdatedEmail)
+      cy.get('#email').type(userToBeUpdatedEmail)
     })
-    cy.get('#search-button').click()
+    cy.get('.govuk-button-group > :nth-child(1)').click()
 
     // confirm we see the expected result then select it
     cy.get('@userToBeUpdatedEmail').then((userToBeUpdatedEmail) => {
-      cy.get('.searchresult-row').contains(userToBeUpdatedEmail).click()
+      cy.get('[data-test="user-email-0"]').contains(userToBeUpdatedEmail).click()
     })
 
     // Set permissions
