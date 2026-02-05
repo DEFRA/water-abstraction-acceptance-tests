@@ -38,21 +38,21 @@ export default function purposes (howMany = 1) {
         schema: 'water',
         table: 'purposesPrimary',
         lookup: 'legacyId',
-        value: 'P',
+        value: 'A',
         select: 'purposePrimaryId'
       },
       secondaryPurposeId: {
         schema: 'water',
         table: 'purposesSecondary',
         lookup: 'legacyId',
-        value: 'CHE',
+        value: 'AGR',
         select: 'purposeSecondaryId'
       },
       purposeId: {
         schema: 'public',
         table: 'purposes',
         lookup: 'legacyId',
-        value: '270',
+        value: '280',
         select: 'id'
       },
       abstractionPeriodStartDay: 1,
