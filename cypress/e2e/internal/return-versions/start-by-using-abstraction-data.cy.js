@@ -66,7 +66,7 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
 
     // Return requirement 2
     cy.get('#requirement-1 > div.govuk-summary-card__title-wrapper > h2').contains('Example point 2')
-    cy.get('[data-test="purposes-1"]').contains('Laundry Use')
+    cy.get('[data-test="purposes-1"]').contains('Make-Up Or Top Up Water')
     cy.get('[data-test="points-1"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
     cy.get('[data-test="abstraction-period-1"]').contains('From 1 April to 31 March')
     cy.get('[data-test="returns-cycle-1"]').contains('Winter and all year')
@@ -108,7 +108,7 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
 
     // Return requirement 2
     cy.get('#requirement-1 > div.govuk-summary-card__title-wrapper > h2').contains('Example point 2')
-    cy.get('[data-test="purposes-1"]').contains('Laundry Use')
+    cy.get('[data-test="purposes-1"]').contains('Make-Up Or Top Up Water')
     cy.get('[data-test="points-1"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
     cy.get('[data-test="abstraction-period-1"]').contains('1 April to 31 March')
     cy.get('[data-test="returns-cycle-1"]').contains('Winter and all year')

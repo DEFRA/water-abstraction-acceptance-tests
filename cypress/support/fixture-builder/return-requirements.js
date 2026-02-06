@@ -61,27 +61,27 @@ export default function returnRequirements (howMany = 1) {
     },
     {
       returnRequirementId: '35eb023b-0911-4876-9093-5f10406c4a2d',
-      externalId: '6:9999991:A:AGR:420',
-      alias: 'SPRAY IRRIGATION STORAGE',
+      externalId: '6:9999991:A:AGR:280',
+      alias: 'MAKE-UP OR TOP UP WATER',
       primaryPurposeId: {
         schema: 'water',
         table: 'purposesPrimary',
         lookup: 'legacyId',
-        value: 'P',
+        value: 'A',
         select: 'purposePrimaryId'
       },
       secondaryPurposeId: {
         schema: 'water',
         table: 'purposesSecondary',
         lookup: 'legacyId',
-        value: 'CHE',
+        value: 'AGR',
         select: 'purposeSecondaryId'
       },
       purposeId: {
         schema: 'public',
         table: 'purposes',
         lookup: 'legacyId',
-        value: '270',
+        value: '280',
         select: 'id'
       }
     }

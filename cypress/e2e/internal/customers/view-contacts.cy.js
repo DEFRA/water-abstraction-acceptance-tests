@@ -26,7 +26,7 @@ describe("View a licence's contacts (internal)", () => {
     cy.get('.govuk-body > .govuk-link').contains('Go to customer contacts')
 
     // Confirm we can see expected licence holder contact details
-    cy.get('.govuk-table__row').contains('John Testerson')
+    cy.get('.govuk-table__row').contains('Big Farm Co Ltd')
 
     // Click the 'Go to customer contacts' link
     cy.contains('Go to customer contacts').click()

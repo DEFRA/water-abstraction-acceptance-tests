@@ -1016,7 +1016,7 @@
       "id": "44ee8b2a-5557-490f-90cd-676d1b8038bf",
       "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" },
       "batchType": "annual",
-      "fromFinancialYearEnding": 2023,
+      "fromFinancialYearEnding": 2024,
       "toFinancialYearEnding": 2024,
       "scheme": "sroc",
       "status": "sent",

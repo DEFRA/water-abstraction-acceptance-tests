@@ -1,7 +1,7 @@
 import currentFinancialYear from '../helpers/currentFinancialYear.js'
 import licence from '../fixture-builder/licence.js'
+import licenceVersionPurposes from '../fixture-builder/licence-version-purposes.js'
 import points from '../fixture-builder/points.js'
-import purposes from '../fixture-builder/purposes.js'
 import returnLogs from '../fixture-builder/return-logs.js'
 import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnRequirementPoints from '../fixture-builder/return-requirement-points.js'
@@ -11,7 +11,7 @@ export default function basicLicenceOneReturnRequirementsWithFourReturnLogs () {
   const dataModel = {
     ...licence(),
     ...points(),
-    ...purposes(),
+    ...licenceVersionPurposes(),
     ...returnVersion(),
     ...returnRequirements(),
     ...returnRequirementPoints(),
