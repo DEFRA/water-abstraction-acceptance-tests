@@ -1,5 +1,5 @@
-import billingAccountData from "./billing-account.js"
-import licenceData from "./licence.js"
+import billingAccountData from './billing-account.js'
+import licenceData from './licence.js'
 
 export default function chargeVersions () {
   const billingAccount = billingAccountData()
@@ -24,16 +24,16 @@ function _presrocChargeVersion (billingAccount, licence) {
     status: 'current',
     source: 'nald',
     changeReasonId: {
-      schema : 'water',
-      table : 'changeReasons',
-      lookup : 'description',
-      value : 'Succession or transfer of licence',
-      select : 'changeReasonId'
+      schema: 'water',
+      table: 'changeReasons',
+      lookup: 'description',
+      value: 'Succession or transfer of licence',
+      select: 'changeReasonId'
     }
   }
 }
 
-function _srocChargeVersion(billingAccount, licence) {
+function _srocChargeVersion (billingAccount, licence) {
   return {
     id: '8e5626ee-5e4c-48f6-a668-471d35997e2c',
     licenceId: licence.id,
@@ -46,11 +46,11 @@ function _srocChargeVersion(billingAccount, licence) {
     status: 'current',
     source: 'wrls',
     changeReasonId: {
-      schema : 'water',
-      table : 'changeReasons',
-      lookup : 'description',
-      value : 'Strategic review of charges (SRoC)',
-      select : 'changeReasonId'
+      schema: 'water',
+      table: 'changeReasons',
+      lookup: 'description',
+      value: 'Strategic review of charges (SRoC)',
+      select: 'changeReasonId'
     }
   }
 }
