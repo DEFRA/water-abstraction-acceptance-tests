@@ -154,7 +154,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // confirm we are back on the check page and see the purpose changes
     cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
+    cy.get('[data-test="purposes-0"]').contains('Make-Up Or Top Up Water (This is another purpose description)')
 
     // confirm we see the points selected
     cy.get('[data-test="points-0"]').should('contain', 'At National Grid Reference TQ 1234 5678 (Example point 1)')
@@ -377,7 +377,7 @@ describe('Submit returns requirement (internal)', () => {
 
     // Return requirement 1
     cy.get('#requirement-0 > div.govuk-summary-card__title-wrapper > h2').contains('This is another valid site description')
-    cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
+    cy.get('[data-test="purposes-0"]').contains('Make-Up Or Top Up Water (This is another purpose description)')
     cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
     cy.get('[data-test="abstraction-period-0"]').contains('2 October to 5 December')
     cy.get('[data-test="returns-cycle-0"]').contains('Winter and all year')

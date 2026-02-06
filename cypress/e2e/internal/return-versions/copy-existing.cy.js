@@ -73,7 +73,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
 
     // confirm we see the purpose changes on the check page
     cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
-    cy.get('[data-test="purposes-0"]').contains('Laundry Use (This is another purpose description)')
+    cy.get('[data-test="purposes-0"]').contains('Make-Up Or Top Up Water (This is another purpose description)')
 
     // confirm we see the points for the requirement copied from existing
     cy.get('[data-test="points-0"]').contains('At National Grid Reference TQ 1234 5678 (Example point 1)')
