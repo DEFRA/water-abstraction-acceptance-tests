@@ -61,7 +61,10 @@ export default function twoPartTariffSupplementary () {
   returnLogs[1].id = '87eed93a-a94a-4cff-8ef9-469d9794aa1c'
   returnLogs[1].returnId = `v1:9:${licenceRef}:9999991:${returnStartDate}:${returnEndDate}`
   returnLogs[1].returnReference = '9999991'
-  returnLogs[1].dueDate = returnDueDate
+  // NOTE: We specifically want to process a return with no due date to confirm the bill run engine can handle dynamic
+  // due dates. Going forward, all due returns will have a null due date, but complete returns can also have a null due
+  // date if the return was submitted before the return invitation was sent.
+  returnLogs[1].dueDate = null
   returnLogs[1].endDate = returnEndDate
   returnLogs[1].metadata.description = 'Return for Make-Up Or Top Up Water'
   returnLogs[1].metadata.nald.periodStartDay = lvPurpose2.abstractionPeriodStartDay
