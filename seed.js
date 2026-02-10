@@ -31,8 +31,13 @@ const path = require('path')
 const prompts = require('@inquirer/prompts')
 
 const SCENARIOS_DIR = 'cypress/support/scenarios'
+const ENVS_DIR = 'environments'
 
 async function run () {
+  const env = await getEnvironment()
+
+  console.log(`\n Selected ${env.name} environment \n`)
+
   const scenarios = fs.readdirSync(SCENARIOS_DIR)
     .filter(file => file.endsWith('.js'))
     .map(file => file.replace('.js', ''))
@@ -55,10 +60,10 @@ async function run () {
     const body = await _body(selected)
 
     console.log('Running tear down')
-    await fetch('http://localhost:8008/system/data/tear-down', { method: 'POST' })
+    await fetch(`${env.config.baseUrl}/system/data/tear-down`, { method: 'POST' })
 
     console.log('Running data load')
-    await fetch('http://localhost:8008/system/data/load', {
+    await fetch(`${env.config.baseUrl}/system/data/load`, {
       method: 'POST',
       headers: {
         'User-Agent': 'undici-stream-example',
@@ -69,6 +74,40 @@ async function run () {
   } catch (error) {
     console.log(error)
     process.exit(1)
+  }
+}
+
+/**
+ * Loads available environment files and prompts the user to select one.
+ * @returns {Promise<{ name: string, baseUrl: string }>}
+ */
+async function getEnvironment () {
+  const envFiles = fs.readdirSync(ENVS_DIR)
+    .filter(file => file.endsWith('.json'))
+    .map(file => file.replace('.json', ''))
+
+  if (envFiles.length === 0) {
+    throw new Error(`No environment files found in /${ENVS_DIR}`)
+  }
+
+  // Sort: push 'local' to index 0, others follow alphabetically
+  const sortedEnvs = envFiles.sort((a, b) => {
+    if (a === 'local') return -1
+    if (b === 'local') return 1
+    return a.localeCompare(b)
+  })
+
+  const selected = await prompts.select({
+    message: 'Select environment:',
+    choices: sortedEnvs.map(e => ({ name: e, value: e }))
+  })
+
+  const configPath = path.join(process.cwd(), ENVS_DIR, `${selected}.json`)
+  const fileContent = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+
+  return {
+    name: selected,
+    ...fileContent
   }
 }
 
