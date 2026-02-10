@@ -5,7 +5,7 @@
   "homepage": "https://github.com/DEFRA/water-abstraction-team",
   "main": "index.js",
   "scripts": {
-    "seed": "node seed.mjs",
+    "seed": "node --no-warnings seed.js",
     "cy:open:local": "cypress open --e2e --env environment=local",
     "cy:open:dev": "cypress open --e2e --env environment=dev",
     "cy:open:tst": "cypress open --e2e --env environment=tst",
@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "@inquirer/prompts": "^8.2.0",
-    "execa": "^9.6.1",
     "standard": "^17.1.2"
   },
   "standard": {
