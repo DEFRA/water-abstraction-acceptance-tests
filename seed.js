@@ -77,7 +77,7 @@ async function run () {
 }
 
 /**
- * Loads available environment files and prompts the user to select one.
+ * Loads the 'local' environment variables.
  * @returns {Promise<{ name: string, baseUrl: string }>}
  */
 async function _environment () {
