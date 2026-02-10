@@ -34,36 +34,27 @@ const SCENARIOS_DIR = 'cypress/support/scenarios'
 const ENVS_DIR = 'environments'
 
 async function run () {
-  const env = await getEnvironment()
+  const env = await _environment()
+  console.log(`Running: against the ${env.name} environment`)
 
-  console.log(`\n Selected ${env.name} environment \n`)
-
-  const scenarios = fs.readdirSync(SCENARIOS_DIR)
-    .filter(file => file.endsWith('.js'))
-    .map(file => file.replace('.js', ''))
-
-  const selected = await prompts.search({
-    message: 'Type to search scenario:',
-    source: async (input) => {
-      if (!input) {
-        return scenarios.map(s => ({ name: s, value: s }))
-      }
-      return scenarios
-        .filter(s => s.toLowerCase().includes(input.toLowerCase()))
-        .map(s => ({ name: s, value: s }))
-    }
-  })
-
-  console.log(`Running scenario: ${selected}`)
+  const selected = await _selectScenario()
+  console.log(`Running: scenario ${selected}`)
 
   try {
+    console.log('Running: tear down')
+
+    const tearDownResponse = await fetch(`${env.config.baseUrl}/system/data/tear-down`, { method: 'POST' })
+
+    if (!tearDownResponse.ok) {
+      const errorData = await tearDownResponse.json().catch(() => null)
+      console.error('Server error:', tearDownResponse.status, errorData)
+      process.exit(1)
+    }
+
     const body = await _body(selected)
 
-    console.log('Running tear down')
-    await fetch(`${env.config.baseUrl}/system/data/tear-down`, { method: 'POST' })
-
-    console.log('Running data load')
-    await fetch(`${env.config.baseUrl}/system/data/load`, {
+    console.log('Running: data load')
+    const response = await fetch(`${env.config.baseUrl}/system/data/load`, {
       method: 'POST',
       headers: {
         'User-Agent': 'undici-stream-example',
@@ -71,6 +62,14 @@ async function run () {
       },
       body: JSON.stringify(body)
     })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null)
+      console.error('Server error:', response.status, errorData)
+      process.exit(1)
+    }
+
+    console.log('Finished successfully')
   } catch (error) {
     console.log(error)
     process.exit(1)
@@ -81,34 +80,32 @@ async function run () {
  * Loads available environment files and prompts the user to select one.
  * @returns {Promise<{ name: string, baseUrl: string }>}
  */
-async function getEnvironment () {
-  const envFiles = fs.readdirSync(ENVS_DIR)
-    .filter(file => file.endsWith('.json'))
-    .map(file => file.replace('.json', ''))
-
-  if (envFiles.length === 0) {
-    throw new Error(`No environment files found in /${ENVS_DIR}`)
-  }
-
-  // Sort: push 'local' to index 0, others follow alphabetically
-  const sortedEnvs = envFiles.sort((a, b) => {
-    if (a === 'local') return -1
-    if (b === 'local') return 1
-    return a.localeCompare(b)
-  })
-
-  const selected = await prompts.select({
-    message: 'Select environment:',
-    choices: sortedEnvs.map(e => ({ name: e, value: e }))
-  })
-
-  const configPath = path.join(process.cwd(), ENVS_DIR, `${selected}.json`)
+async function _environment () {
+  const configPath = path.join(process.cwd(), ENVS_DIR, 'local.json')
   const fileContent = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
 
   return {
-    name: selected,
+    name: 'local',
     ...fileContent
   }
+}
+
+async function _selectScenario () {
+  const scenarios = fs.readdirSync(SCENARIOS_DIR)
+    .filter(file => file.endsWith('.js'))
+    .map(file => file.replace('.js', ''))
+
+  return prompts.search({
+    message: 'Type to search scenario:',
+    source: async (input) => {
+      if (!input) {
+        return scenarios.map(s => ({ name: s, value: s }))
+      }
+      return scenarios
+        .filter(s => s.toLowerCase().includes(input.toLowerCase()))
+        .map(s => ({ name: s, value: s }))
+    }
+  })
 }
 
 async function _body (selected) {
