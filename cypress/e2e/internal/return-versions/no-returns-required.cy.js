@@ -132,10 +132,11 @@ describe('Submit no returns requirement (internal)', () => {
     // Confirm we can display the return version details
     cy.get('[data-test="return-version-0').click()
 
-    cy.get('.govuk-heading-l').contains('Requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Requirements for returns starting 1 January 2018')
 
-    cy.get('[data-test="start-date"]').contains('1 January 2018')
-    cy.get('[data-test="reason"]').contains('Returns exception')
+    cy.get('.govuk-tag').contains('approved')
+    cy.get('.govuk-body-l').contains('Returns exception created on')
+    cy.get('.govuk-body-l').contains('by billing.data@wrls.gov.uk')
     cy.get('h3').contains('Returns are not required for this licence')
   })
 })

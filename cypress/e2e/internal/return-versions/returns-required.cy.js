@@ -370,10 +370,11 @@ describe('Submit returns requirement (internal)', () => {
     // Confirm we can display the return version details
     cy.get('[data-test="return-version-0').click()
 
-    cy.get('.govuk-heading-l').contains('Requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Requirements for returns starting 2 August 2023')
 
-    cy.get('[data-test="start-date"]').contains('2 August 2023')
-    cy.get('[data-test="reason"]').contains('Minor change')
+    cy.get('.govuk-tag').contains('approved')
+    cy.get('.govuk-body-l').contains('Minor change created on')
+    cy.get('.govuk-body-l').contains('by billing.data@wrls.gov.uk')
 
     // Return requirement 1
     cy.get('#requirement-0 > div.govuk-summary-card__title-wrapper > h2').contains('This is another valid site description')
