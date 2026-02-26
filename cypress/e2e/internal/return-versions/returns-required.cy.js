@@ -372,6 +372,7 @@ describe('Submit returns requirement (internal)', () => {
 
     cy.get('.govuk-heading-l').contains('Requirements for returns starting 2 August 2023')
 
+    cy.get('.govuk-tag').contains('approved')
     cy.get('.govuk-body-l').contains('Minor change created on')
     cy.get('.govuk-body-l').contains('by billing.data@wrls.gov.uk')
 
