@@ -35,6 +35,11 @@ describe('Change user permissions (internal)', () => {
       cy.get('[data-test="user-email-0"]').contains(userToBeUpdatedEmail).click()
     })
 
+    // confirm we see the expected result then select edit
+    cy.get('.govuk-heading-l').should('have.text', 'User basic.user@example.com')
+    cy.get('[data-test="no-roles-msg"]').should('have.text', 'Basic access grants no additional roles.')
+    cy.get('.govuk-button').click()
+
     // Set permissions
     // confirm we are on the permissions page then change the user's permissions from basic user to National
     // Permitting Service and submit
