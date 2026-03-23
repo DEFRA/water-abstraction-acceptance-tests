@@ -78,7 +78,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('.govuk-details__summary').click()
     cy.get('[data-test="aggregate-factor"]').click()
     cy.contains('Apply filters').click()
-    cy.get('.govuk-table__caption').should('contain.text', 'Showing 0 of 1 licences')
+    cy.get('#main-content').should('contain.text', 'No licences found')
     cy.contains('Clear filters').click()
 
     cy.get('.govuk-details__summary').click()
