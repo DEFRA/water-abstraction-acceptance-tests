@@ -26,7 +26,7 @@ describe("View a licence's contacts (internal)", () => {
     cy.get('.govuk-body > .govuk-link').contains('Go to licence holder contacts')
 
     // Confirm we can see expected licence holder contact details
-    cy.get('.govuk-table__row').contains('Big Farm Co Ltd')
+    cy.get('.govuk-table__row').contains(scenario.companies[0].name)
 
     // Click the 'Go to customer contacts' link
     cy.contains('Go to licence holder contacts').click()
@@ -41,6 +41,6 @@ describe("View a licence's contacts (internal)", () => {
     cy.get('h1').should('contain.text', 'Contacts')
 
     // Confirm contacts contains expected record
-    cy.get('.govuk-table__cell').contains('Big Farm Co Ltd')
+    cy.get('.govuk-table__cell').contains(scenario.companies[0].name)
   })
 })
