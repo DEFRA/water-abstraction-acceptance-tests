@@ -85,24 +85,24 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
 
     // Review licences ~ Test you can filter by licence ref
     cy.get('.govuk-details__summary').click()
-    cy.get('#filter-licence-holder-number').type('AT/1')
+    cy.get('#licenceHolderNumber').type('AT/1')
     cy.contains('Apply filters').click()
-    cy.get('.govuk-table__caption').should('contain.text', 'Showing 0 of 1 licences')
+    cy.get('#main-content').should('contain.text', 'No licences found')
     cy.contains('Clear filters').click()
     cy.get('.govuk-details__summary').click()
-    cy.get('#filter-licence-holder-number').type('AT/TE/ST/01/01')
+    cy.get('#licenceHolderNumber').type('AT/TE/ST/01/01')
     cy.contains('Apply filters').click()
     cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
     cy.contains('Clear filters').click()
 
     // Review licences ~ Test you can filter by licence holder
     cy.get('.govuk-details__summary').click()
-    cy.get('#filter-licence-holder-number').type('Miss A Test')
+    cy.get('#licenceHolderNumber').type('Miss A Test')
     cy.contains('Apply filters').click()
-    cy.get('.govuk-table__caption').should('contain.text', 'Showing 0 of 1 licences')
+    cy.get('#main-content').should('contain.text', 'No licences found')
     cy.contains('Clear filters').click()
     cy.get('.govuk-details__summary').click()
-    cy.get('#filter-licence-holder-number').type('Mr J J Testerson')
+    cy.get('#licenceHolderNumber').type('Mr J J Testerson')
     cy.contains('Apply filters').click()
     cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
 
