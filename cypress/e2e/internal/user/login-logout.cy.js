@@ -18,7 +18,7 @@ describe('Login and log out (internal)', () => {
     cy.get('.govuk-button.govuk-button--start').click()
 
     //  Assert the user signed in
-    cy.contains('Enter a licence number, customer name')
+    cy.contains('Enter a licence number, licence holder name, returns ID')
 
     //  Click Sign out Button
     cy.get('a').contains('Sign out').click()
