@@ -200,6 +200,8 @@ export default function licence () {
     licenceVersionHolders: [
       {
         id: 'a9f5754e-e720-42f5-9132-98bb18632ee6',
+        companyId: 'e8abdbb4-aeea-47d4-91b2-97bf82bc2778',
+        derivedName: 'Big Farm Co Ltd',
         licenceVersionId: '7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b',
         holderType: 'organisation',
         name: 'Environment Agency',

@@ -23,13 +23,13 @@ describe("View a licence's contacts (internal)", () => {
 
     // Confirm we are on the licence contact details page and expected controls are present
     cy.get('h1').should('contain.text', 'Contact details')
-    cy.get('.govuk-body > .govuk-link').contains('Go to customer contacts')
+    cy.get('.govuk-body > .govuk-link').contains('Go to licence holder contacts')
 
     // Confirm we can see expected licence holder contact details
-    cy.get('.govuk-table__row').contains('Big Farm Co Ltd')
+    cy.get('.govuk-table__row').contains(scenario.companies[0].name)
 
     // Click the 'Go to customer contacts' link
-    cy.contains('Go to customer contacts').click()
+    cy.contains('Go to licence holder contacts').click()
 
     // Confirm expected tabs are present
     cy.get('.x-govuk-sub-navigation').contains('Licences')
@@ -41,6 +41,6 @@ describe("View a licence's contacts (internal)", () => {
     cy.get('h1').should('contain.text', 'Contacts')
 
     // Confirm contacts contains expected record
-    cy.get('.govuk-table__cell').contains('Mr J J Testerson')
+    cy.get('.govuk-table__cell').contains(scenario.companies[0].name)
   })
 })
