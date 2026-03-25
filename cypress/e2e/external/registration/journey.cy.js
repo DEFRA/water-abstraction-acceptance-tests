@@ -35,7 +35,7 @@ describe('User registration (external)', () => {
         cy.get('form').submit()
       })
 
-      // Log back in using the new account to confirm the registration was successful
+      // Log in using the new account to confirm the registration was successful
       cy.get('#email').type(email)
       cy.get('#password').type(Cypress.env('defaultPassword'))
       cy.get('button.govuk-button').click()
