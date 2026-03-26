@@ -46,6 +46,11 @@ describe('Sharing license access with a new user (external)', () => {
         cy.get('input#confirmPassword').type(Cypress.env('defaultPassword'))
         cy.get('form').submit()
 
+        // Second user logs in using the new account to confirm the registration was successful
+        cy.get('#email').type(email)
+        cy.get('#password').type(Cypress.env('defaultPassword'))
+        cy.get('button.govuk-button').click()
+
         // Assert they can see the same licence
         cy.get('.licence-result__column > a').contains('AT/TE/ST/01/01').should('be.visible')
 
