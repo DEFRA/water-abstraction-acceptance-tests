@@ -75,7 +75,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     // Review licences ~ Test it has the correct licence
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
-    cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
+    cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('[data-test="licence-issue-1"]').should('contain.text', '')
     cy.get('[data-test="licence-progress-1"]').should('contain.text', '')
     // Licence should be a ready status as the return should have full allocated to the two charge elements
@@ -84,7 +84,7 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
 
     // Review Licence AT/TE/ST/01/01 ~ Check the licence details
     cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
-    cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
+    cy.get('[data-test="licence-holder"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('div > .govuk-tag').should('contain.text', 'ready')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')

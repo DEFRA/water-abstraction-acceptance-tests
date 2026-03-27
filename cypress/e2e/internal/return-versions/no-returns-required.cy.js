@@ -43,7 +43,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see text about no returns required
     cy.contains('Returns are not required for this licence')
@@ -63,7 +63,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are back on check page and see the reason changes
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
     cy.get('[data-test="reason"]').contains('Returns exception')
 
     // confirm we see the option to add note
@@ -83,7 +83,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Confirm').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see pop up notification confirming changes have been made
     cy.get('.govuk-notification-banner').contains('Note added')
@@ -100,7 +100,7 @@ describe('Submit no returns requirement (internal)', () => {
     cy.contains('Confirm').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see pop up notification confirming changes have been made
     cy.get('.govuk-notification-banner').contains('Note updated')

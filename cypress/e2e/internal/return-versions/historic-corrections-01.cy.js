@@ -87,7 +87,7 @@ describe('Submit winter and all year historic correction using abstraction data'
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
 
     // choose the approve return requirement button
     cy.contains('Approve returns requirement').click()
