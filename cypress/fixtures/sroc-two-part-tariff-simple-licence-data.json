@@ -90,7 +90,9 @@
       "increment": 0,
       "status": "current",
       "startDate": "2022-04-01",
-      "externalId": "6:1234:1:0"
+      "externalId": "6:1234:1:0",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010"
     }
   ],
   "chargeVersions": [
