@@ -46,7 +46,7 @@ describe('Submit returns requirement (internal) using abstraction data', () => {
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see the start data and reason options selected previously
     cy.get('[data-test="start-date"]').contains('1 January 2018')

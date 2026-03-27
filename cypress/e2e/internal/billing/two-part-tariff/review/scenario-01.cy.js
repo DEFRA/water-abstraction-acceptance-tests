@@ -102,14 +102,14 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('#main-content').should('contain.text', 'No licences found')
     cy.contains('Clear filters').click()
     cy.get('.govuk-details__summary').click()
-    cy.get('#licenceHolderNumber').type('Mr J J Testerson')
+    cy.get('#licenceHolderNumber').type('Big Farm Co Ltd')
     cy.contains('Apply filters').click()
     cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
 
     // Review licences ~ Test it has the correct licence
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
-    cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
+    cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('[data-test="licence-issue-1"]').should('contain.text', '')
     cy.get('[data-test="licence-progress-1"]').should('contain.text', '')
     cy.get('[data-test="licence-status-1"] > .govuk-tag').should('contain.text', '\n  ready\n')
@@ -117,7 +117,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
 
     // Review Licence AT/TE/ST/01/01 ~ Check the licence details
     cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
-    cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
+    cy.get('[data-test="licence-holder"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('div > .govuk-tag').should('contain.text', 'ready')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
@@ -146,10 +146,10 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2024 to 2025')
     cy.get('#charge-version-0 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2024 to 31 March 2025')
     cy.get('[data-test="charge-version-0-details"]').should('contain.text', '1 charge reference with 1 two-part tariff charge element')
-    cy.get('.govuk-details__summary-text').should('contain.text', 'Big Farm Co Ltd 01 billing account details')
+    cy.get('.govuk-details__summary-text').should('contain.text', 'Big Farm Co Ltd billing account details')
     cy.get('.govuk-details__summary').click()
     cy.get('[data-test="billing-account"]').should('contain.text', 'S99999991A')
-    cy.get('[data-test="account-name"]').should('contain.text', 'Big Farm Co Ltd 01')
+    cy.get('[data-test="account-name"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.12')
     cy.get('[data-test="charge-version-0-charge-description-0"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')

@@ -109,67 +109,11 @@ export default function licence () {
         dataSource: 'nald'
       }
     ],
-    companyAddresses: [
-      {
-        companyId: 'e8abdbb4-aeea-47d4-91b2-97bf82bc2778',
-        addressId: '62549cdb-073f-4d5c-a2a1-c47b0b910010',
-        startDate: '2008-04-01',
-        licenceRoleId: {
-          schema: 'crm_v2',
-          table: 'roles',
-          lookup: 'name',
-          value: 'billing',
-          select: 'roleId'
-        }
-      }
-    ],
-    contacts: [
-      {
-        id: '6e05db31-39cd-4bb0-83a0-0d985037ad8f',
-        salutation: 'Mr',
-        firstName: 'John',
-        lastName: 'Testerson',
-        middleInitials: 'J',
-        contactType: 'person',
-        dataSource: 'nald'
-      }
-    ],
-    companyContacts: [
-      {
-        id: 'e01e7717-719f-47ed-8431-362f6b4de422',
-        contactId: '6e05db31-39cd-4bb0-83a0-0d985037ad8f',
-        companyId: 'e8abdbb4-aeea-47d4-91b2-97bf82bc2778',
-        licenceRoleId: {
-          schema: 'crm_v2',
-          table: 'roles',
-          lookup: 'name',
-          value: 'licenceHolder',
-          select: 'roleId'
-        },
-        startDate: '2018-01-01'
-      }
-    ],
     licenceDocuments: [
       {
         id: '1a274f3e-f891-43dd-8c25-8afac4e760ac',
         licenceRef: 'AT/TE/ST/01/01',
         startDate: '2018-01-01'
-      }
-    ],
-    licenceDocumentRoles: [
-      {
-        licenceDocumentId: '1a274f3e-f891-43dd-8c25-8afac4e760ac',
-        licenceRoleId: {
-          schema: 'public',
-          table: 'licenceRoles',
-          lookup: 'name',
-          value: 'licenceHolder',
-          select: 'id'
-        },
-        startDate: '2018-01-01',
-        companyId: 'e8abdbb4-aeea-47d4-91b2-97bf82bc2778',
-        addressId: '62549cdb-073f-4d5c-a2a1-c47b0b910010',
-        contactId: '6e05db31-39cd-4bb0-83a0-0d985037ad8f'
       }
     ],
     points,
@@ -194,21 +138,28 @@ export default function licence () {
         increment: 0,
         status: 'current',
         startDate: '2018-01-01',
-        externalId: '6:1234:1:0'
+        externalId: '6:1234:1:0',
+        companyId: 'e8abdbb4-aeea-47d4-91b2-97bf82bc2778',
+        addressId: '62549cdb-073f-4d5c-a2a1-c47b0b910010'
       }
     ],
     licenceVersionHolders: [
       {
         id: 'a9f5754e-e720-42f5-9132-98bb18632ee6',
         companyId: 'e8abdbb4-aeea-47d4-91b2-97bf82bc2778',
+        addressId: '62549cdb-073f-4d5c-a2a1-c47b0b910010',
         derivedName: 'Big Farm Co Ltd',
         licenceVersionId: '7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b',
         holderType: 'organisation',
-        name: 'Environment Agency',
-        addressLine1: 'Horizon House',
-        addressLine2: 'Dean Lane',
-        town: 'Bristol',
-        postcode: 'BS1 5AH'
+        name: 'Big Farm Co Ltd',
+        addressLine1: 'Big Farm',
+        addressLine2: 'Windy road',
+        addressLine3: 'Buttercup meadow',
+        addressLine4: 'Buttercup Village',
+        town: 'Testington',
+        county: 'Testingshire',
+        postcode: 'TT1 1TT',
+        country: 'UK'
       }
     ],
     licenceVersionPurposes: [

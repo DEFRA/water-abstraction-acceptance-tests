@@ -89,7 +89,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     // Review licences ~ Test it has the correct licence
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="licence-2"]').should('not.exist')
-    cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Mr J J Testerson')
+    cy.get('[data-test="licence-holder-1"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('[data-test="licence-issue-1"]').should('contain.text', 'Overlap of charge dates')
     cy.get('[data-test="licence-progress-1"]').should('contain.text', '')
     // Licence should be a review status due to the issue "overlap of charge dates"
@@ -98,7 +98,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // Review Licence AT/TE/ST/01/01 ~ Check the licence details
     cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
-    cy.get('[data-test="licence-holder"]').should('contain.text', 'Mr J J Testerson')
+    cy.get('[data-test="licence-holder"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('div > .govuk-tag').should('contain.text', 'review')
     cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')

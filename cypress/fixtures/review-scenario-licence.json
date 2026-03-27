@@ -16,34 +16,9 @@
   "companies": [
     {
       "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "name": "Big Farm Co Ltd 01",
+      "name": "Big Farm Co Ltd",
       "type": "organisation",
       "companyNumber": "1234501"
-    }
-  ],
-  "companyAddresses": [
-    {
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "startDate": "2022-04-01",
-      "licenceRoleId": {
-        "schema": "public",
-        "table": "licenceRoles",
-        "lookup": "name",
-        "value": "billing",
-        "select": "id"
-      }
-    }
-  ],
-  "contacts": [
-    {
-      "id": "6e05db31-39cd-4bb0-83a0-0d985037ad8f",
-      "salutation": "Mr",
-      "firstName": "John",
-      "lastName": "Testerson",
-      "middleInitials": "J",
-      "contactType": "person",
-      "dataSource": "nald"
     }
   ],
   "billingAccounts": [
@@ -66,22 +41,6 @@
       "id": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
       "licenceRef": "AT/TE/ST/01/01",
       "startDate": "2022-04-01"
-    }
-  ],
-  "licenceDocumentRoles": [
-    {
-      "licenceDocumentId": "1a274f3e-f891-43dd-8c25-8afac4e760ac",
-      "licenceRoleId": {
-        "schema": "public",
-        "table": "licenceRoles",
-        "lookup": "name",
-        "value": "licenceHolder",
-        "select": "id"
-      },
-      "startDate": "2022-04-01",
-      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
-      "contactId": "6e05db31-39cd-4bb0-83a0-0d985037ad8f"
     }
   ],
   "permitLicences": [
@@ -139,20 +98,24 @@
       "increment": 0,
       "status": "current",
       "startDate": "2022-04-01",
-      "externalId": "6:1234:1:0"
+      "externalId": "6:1234:1:0",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010"
     }
   ],
   "licenceVersionHolders": [
     {
       "licenceVersionId": "6c42b2be-88a7-464f-8b43-2428f4e8eecd",
       "holderType": "organisation",
-      "name": "Big Farm Co Ltd 01",
+      "name": "Big Farm Co Ltd",
       "addressLine1": "Big Farm",
       "addressLine2": "Windy road",
       "addressLine3": "Buttercup meadow",
       "addressLine4": "Buttercup Village",
       "town": "Testington",
-      "postcode": "TT1 1TT"
+      "postcode": "TT1 1TT",
+      "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "addressId": "62549cdb-073f-4d5c-a2a1-c47b0b910010"
     }
   ]
 }

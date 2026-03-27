@@ -85,7 +85,7 @@ describe('Submit winter and all year quarterly historic correction using abstrac
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
 
     // click on the change link for addiontal submission options
     cy.get('[data-test="change-additional-submission-options"]').click()

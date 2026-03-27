@@ -52,7 +52,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see the start date and reason selected
     cy.get('[data-test="start-date"]').contains('1 January 2018')
@@ -72,7 +72,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we see the purpose changes on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
     cy.get('[data-test="purposes-0"]').contains('Make-Up Or Top Up Water (This is another purpose description)')
 
     // confirm we see the points for the requirement copied from existing
@@ -88,7 +88,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we see the points changes on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
     cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
 
     // choose add another requirement
@@ -155,7 +155,7 @@ describe('Submit returns requirement using copy existing (internal)', () => {
     cy.contains('Continue').click()
 
     // confirm we are back on the check page
-    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Mr J J Testerson')
+    cy.get('.govuk-heading-l').contains('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see the new requirement added message
     cy.get('.govuk-notification-banner__heading').contains('New requirement added')
