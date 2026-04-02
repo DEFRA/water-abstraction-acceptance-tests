@@ -4,7 +4,7 @@ import scenarioData from '../../../support/scenarios/two-return-requirements-two
 
 const scenario = scenarioData()
 
-describe('Submit summer and winter and all year historic correction using abstraction data', () => {
+describe('Submit summer and winter and all year historic correction using previous return requirements', () => {
   beforeEach(() => {
     cy.tearDown()
 
@@ -19,7 +19,7 @@ describe('Submit summer and winter and all year historic correction using abstra
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('creates a return requirement using abstraction data and approves the requirement', () => {
+  it('creates a return requirement using previous return requirements and approves the requirement', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
