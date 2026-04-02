@@ -112,7 +112,7 @@ describe('Submit summer and winter and all year historic correction using abstra
 
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const today = new Date()
-      const novemberToMarch = (today.getMonth() > 9 || today.getMonth() < 4)
+      const novemberToMarch = (today.getMonth() > 9 || today.getMonth() < 3)
 
       const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
       const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1 }

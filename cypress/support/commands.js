@@ -78,7 +78,7 @@ Cypress.Commands.add('quarterlyPeriods', (year = null) => {
 
   if (!year) {
     year = new Date().getFullYear()
-    if (new Date().getMonth() < 4) {
+    if (new Date().getMonth() < 3) {
       year = year - 1
     }
   }

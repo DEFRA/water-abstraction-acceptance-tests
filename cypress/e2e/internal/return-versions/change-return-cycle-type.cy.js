@@ -166,7 +166,7 @@ describe('Submit changing return cycle type on new return version', () => {
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const endYear = currentFinancialYearInfo.end.year
       const today = new Date()
-      const novemberToMarch = (today.getMonth() > 9 || today.getMonth() < 4)
+      const novemberToMarch = (today.getMonth() > 9 || today.getMonth() < 3)
 
       if (novemberToMarch) {
         cy.get('[data-test="return-due-date-0"]').should('have.value', '')
