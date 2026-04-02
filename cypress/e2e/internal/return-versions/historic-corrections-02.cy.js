@@ -151,7 +151,7 @@ describe('Submit summer and winter and all year historic correction using previo
         })
       } else {
         cy.get('[data-test="return-due-date-0"]').should('have.value', '')
-        cy.get('[data-test="return-status-0"] > .govuk-tag').contains('open')
+        cy.get('[data-test="return-status-0"] > .govuk-tag').contains('not due yet')
 
         cy.get('[data-test="return-due-date-1"]').should('have.value', '')
         cy.get('[data-test="return-status-1"] > .govuk-tag').contains('not due yet')
