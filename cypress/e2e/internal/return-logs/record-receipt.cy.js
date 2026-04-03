@@ -1,14 +1,17 @@
 'use strict'
 
-import scenarioData from '../../../support/scenarios/internal-return-submission.js'
-
-const scenario = scenarioData()
+import scenarioData from '../../../support/scenarios/licence-with-due-return-log.js'
 
 describe('Record receipt for return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
+    cy.calculatedDates().then((body) => {
+      const scenario = scenarioData(body.firstReturnPeriod)
 
-    cy.load(scenario)
+      cy.load(scenario)
+
+      cy.wrap(scenario.returnLogs[0].id).as('returnId')
+    })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
@@ -19,7 +22,9 @@ describe('Record receipt for return (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs/${scenario.returnLogs[0].id}`)
+    cy.get('@returnId').then((returnId) => {
+      cy.visit(`/system/return-logs/${returnId}`)
+    })
 
     // Abstraction return
     // submit return
@@ -38,7 +43,7 @@ describe('Record receipt for return (internal)', () => {
     // Return received
     cy.get('.govuk-panel').contains('Return 9999990 received').should('be.visible')
     cy.get('.govuk-panel').contains('AT/TE/ST/01/01').should('be.visible')
-    cy.get('.govuk-panel').contains('Its all about the description').should('be.visible')
+    cy.get('.govuk-panel').contains('TANKS ON JUPITER').should('be.visible')
     cy.get('.govuk-panel').contains('Spray Irrigation - Storage').should('be.visible')
 
     // View returns for the licence (this is a different view)

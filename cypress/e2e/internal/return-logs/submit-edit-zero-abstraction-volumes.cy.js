@@ -1,14 +1,18 @@
 'use strict'
 
-import scenarioData from '../../../support/scenarios/internal-return-submission.js'
-
-const scenario = scenarioData()
+import scenarioData from '../../../support/scenarios/licence-with-due-return-log.js'
 
 describe('Submit then edit an abstraction volumes return with zero quantities (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(scenario)
+    cy.calculatedDates().then((body) => {
+      const scenario = scenarioData(body.firstReturnPeriod)
+
+      cy.load(scenario)
+
+      cy.wrap(scenario.returnLogs[0].id).as('returnId')
+    })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
@@ -19,7 +23,9 @@ describe('Submit then edit an abstraction volumes return with zero quantities (i
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs/${scenario.returnLogs[0].id}`)
+    cy.get('@returnId').then((returnId) => {
+      cy.visit(`/system/return-logs/${returnId}`)
+    })
 
     // Abstraction return
     // submit return
@@ -56,14 +62,13 @@ describe('Submit then edit an abstraction volumes return with zero quantities (i
     cy.get('.govuk-button').click()
 
     // Summary of monthly volumes
-    // choose enter monthly volumes for May 2020
+    // choose enter monthly volumes
     cy.get('[data-test="action-1"]').click()
 
-    // Water abstracted May 2020
+    // Water abstracted
     // enter meter reading of 0 and continue
-    cy.get('.govuk-heading-l').contains('Water abstracted May 2020')
-    cy.get('.govuk-label').contains('May 2020')
-    cy.get('#May2020').type('0')
+    cy.get('.govuk-heading-l').contains('Water abstracted')
+    cy.get('.govuk-input').type('0')
     cy.get('.govuk-button').click()
 
     // Summary of monthly volumes
@@ -91,10 +96,9 @@ describe('Submit then edit an abstraction volumes return with zero quantities (i
     cy.get('[data-test="total-cubic-metres"]').contains('0')
     cy.get('[data-test="action-1"]').click()
 
-    // Water abstracted May 2020
+    // Water abstracted
     // confirm the zero volume is still present
-    cy.get('.govuk-heading-l').contains('Water abstracted May 2020')
-    cy.get('.govuk-label').contains('May 2020')
-    cy.get('#May2020').should('have.value', '0')
+    cy.get('.govuk-heading-l').contains('Water abstracted')
+    cy.get('.govuk-input').should('have.value', '0')
   })
 })

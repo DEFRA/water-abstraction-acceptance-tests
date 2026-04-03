@@ -1,14 +1,18 @@
 'use strict'
 
-import scenarioData from '../../../support/scenarios/internal-return-submission.js'
-
-const scenario = scenarioData()
+import scenarioData from '../../../support/scenarios/licence-with-due-return-log.js'
 
 describe('Submit a single volume return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(scenario)
+    cy.calculatedDates().then((body) => {
+      const scenario = scenarioData(body.firstReturnPeriod)
+
+      cy.load(scenario)
+
+      cy.wrap(scenario.returnLogs[0].id).as('returnId')
+    })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
@@ -19,7 +23,9 @@ describe('Submit a single volume return (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs/${scenario.returnLogs[0].id}`)
+    cy.get('@returnId').then((returnId) => {
+      cy.visit(`/system/return-logs/${returnId}`)
+    })
 
     // Abstraction return
     // submit return
@@ -75,10 +81,10 @@ describe('Submit a single volume return (internal)', () => {
     cy.contains('nav a', 'Licence summary').click()
 
     // Summary
-    // confirm the licence has been flagged for the next supplementary bill run for the old charge scheme
+    // confirm the licence has been flagged for the next supplementary bill run
     cy.get('.govuk-notification-banner__content').should(
       'contain.text',
-      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+      'This licence has been marked for the next supplementary bill run.'
     )
   })
 })
