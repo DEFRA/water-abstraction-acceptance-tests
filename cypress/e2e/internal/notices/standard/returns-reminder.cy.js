@@ -1,6 +1,6 @@
 'use strict'
 
-import scenarioData from '../../../../support/scenarios/return-notices.js'
+import scenarioData from '../../../../support/scenarios/licence-with-due-return-log.js'
 
 describe('Standard returns reminder journey (internal)', () => {
   beforeEach(() => {
