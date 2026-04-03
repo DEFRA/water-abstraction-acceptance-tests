@@ -22,6 +22,7 @@ export default function (returnPeriod) {
 
   dataModel.returnLogs[0].dueDate = dueDateString
   dataModel.returnLogs[0].endDate = endDateString
+  dataModel.returnLogs[0].id = '7f6ff22b-f7f6-4f37-a29e-244fad5a22eb',
   dataModel.returnLogs[0].metadata.description = dataModel.returnRequirements[0].siteDescription
   dataModel.returnLogs[0].metadata.isSummer = dataModel.returnRequirements[0].summer
   dataModel.returnLogs[0].returnCycleId.value = `${startDate.getFullYear()}-04-01`

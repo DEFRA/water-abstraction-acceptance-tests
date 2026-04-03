@@ -46,7 +46,7 @@ export default function returnLogs (howMany = 4) {
         ],
         isCurrent: true,
         description: 'Its all about the description',
-        isTwoPartTariff: true
+        isTwoPartTariff: false
       },
       returnsFrequency: 'month',
       startDate: '2020-01-01',
