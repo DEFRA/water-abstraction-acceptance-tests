@@ -52,6 +52,7 @@ export default function twoPartTariffSupplementary () {
   returnLogs[0].metadata.purposes[0].alias = 'SPRAY IRRIGATION STORAGE'
   returnLogs[0].metadata.purposes[0].tertiary.code = '140'
   returnLogs[0].metadata.purposes[0].tertiary.description = 'Spray Irrigation - Storage'
+  returnLogs[0].metadata.isTwoPartTariff = true
   returnLogs[0].startDate = returnStartDate
   returnLogs[0].status = 'due'
   returnLogs[0].returnCycleId.value = returnStartDate
