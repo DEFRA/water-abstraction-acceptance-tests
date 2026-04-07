@@ -1,14 +1,18 @@
 'use strict'
 
-import scenarioData from '../../../support/scenarios/internal-return-submission.js'
-
-const scenario = scenarioData()
+import scenarioData from '../../../support/scenarios/licence-with-due-return-log.js'
 
 describe('Submit a meter readings return (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(scenario)
+    cy.calculatedDates().then((body) => {
+      const scenario = scenarioData(body.firstReturnPeriod)
+
+      cy.load(scenario)
+
+      cy.wrap(scenario.returnLogs[0].id).as('returnId')
+    })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
@@ -19,7 +23,9 @@ describe('Submit a meter readings return (internal)', () => {
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs/${scenario.returnLogs[0].id}`)
+    cy.get('@returnId').then((returnId) => {
+      cy.visit(`/system/return-logs/${returnId}`)
+    })
 
     // Abstraction return
     // submit return
@@ -56,14 +62,13 @@ describe('Submit a meter readings return (internal)', () => {
     cy.get('.govuk-button').click()
 
     // Summary of monthly readings
-    // choose enter monthly readings for April 2020
+    // choose enter monthly readings for
     cy.get('[data-test="action-0"]').click()
 
-    // Water abstracted April 2020
+    // Water abstracted
     // enter meter reading of 120 and continue
-    cy.get('.govuk-heading-l').contains('Water abstracted April 2020')
-    cy.get('.govuk-label').contains('April 2020')
-    cy.get('#April2020').type('120')
+    cy.get('.govuk-heading-l').contains('Water abstracted')
+    cy.get('.govuk-input').type('120')
     cy.get('.govuk-button').click()
 
     // Summary of monthly readings

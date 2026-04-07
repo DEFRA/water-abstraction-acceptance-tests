@@ -1,14 +1,18 @@
 'use strict'
 
-import scenarioData from '../../../support/scenarios/internal-return-submission.js'
-
-const scenario = scenarioData()
+import scenarioData from '../../../support/scenarios/licence-with-due-return-log.js'
 
 describe('Submit a return with no meter readings - validation errors (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
-    cy.load(scenario)
+    cy.calculatedDates().then((body) => {
+      const scenario = scenarioData(body.firstReturnPeriod)
+
+      cy.load(scenario)
+
+      cy.wrap(scenario.returnLogs[0].id).as('returnId')
+    })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
@@ -19,7 +23,9 @@ describe('Submit a return with no meter readings - validation errors (internal)'
         email: userEmail
       })
     })
-    cy.visit(`/system/return-logs/${scenario.returnLogs[0].id}`)
+    cy.get('@returnId').then((returnId) => {
+      cy.visit(`/system/return-logs/${returnId}`)
+    })
 
     // Abstraction return
     // submit return

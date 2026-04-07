@@ -23,62 +23,70 @@ export default function basicLicenceTwoReturnRequirementsWithThreeReturnLogsEach
   let startYear = currentFinancialYearInfo.start.year
   let endYear = currentFinancialYearInfo.end.year
 
-  dataModel.returnLogs[0].returnId = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[0].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[0].endDate = `${endYear}-03-31`
+  dataModel.returnLogs[0].metadata.description = dataModel.returnRequirements[0].siteDescription
   dataModel.returnLogs[0].metadata.isSummer = false
+  dataModel.returnLogs[0].returnCycleId.value = `${startYear}-04-01`
+  dataModel.returnLogs[0].returnId = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[0].returnReference = dataModel.returnRequirements[0].legacyId
   dataModel.returnLogs[0].startDate = `${startYear}-04-01`
   dataModel.returnLogs[0].status = 'due'
-  dataModel.returnLogs[0].returnCycleId.value = `${startYear}-04-01`
 
-  dataModel.returnLogs[1].returnId = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[1].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[1].endDate = `${endYear}-03-31`
+  dataModel.returnLogs[1].metadata.description = dataModel.returnRequirements[1].siteDescription
   dataModel.returnLogs[1].metadata.isSummer = false
+  dataModel.returnLogs[1].returnCycleId.value = `${startYear}-04-01`
+  dataModel.returnLogs[1].returnId = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[1].returnReference = dataModel.returnRequirements[1].legacyId
   dataModel.returnLogs[1].startDate = `${startYear}-04-01`
   dataModel.returnLogs[1].status = 'due'
-  dataModel.returnLogs[1].returnCycleId.value = `${startYear}-04-01`
-  dataModel.returnLogs[1].returnReference = '9999991'
 
   startYear = startYear - 1
   endYear = endYear - 1
 
-  dataModel.returnLogs[2].returnId = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[2].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[2].endDate = `${endYear}-03-31`
+  dataModel.returnLogs[2].metadata.description = dataModel.returnRequirements[0].siteDescription
   dataModel.returnLogs[2].metadata.isSummer = false
+  dataModel.returnLogs[2].returnId = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[2].returnCycleId.value = `${startYear}-04-01`
+  dataModel.returnLogs[2].returnReference = dataModel.returnRequirements[0].legacyId
   dataModel.returnLogs[2].startDate = `${startYear}-04-01`
   dataModel.returnLogs[2].status = 'completed'
-  dataModel.returnLogs[2].returnCycleId.value = `${startYear}-04-01`
 
-  dataModel.returnLogs[3].returnId = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[3].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[3].endDate = `${endYear}-03-31`
+  dataModel.returnLogs[3].metadata.description = dataModel.returnRequirements[1].siteDescription
   dataModel.returnLogs[3].metadata.isSummer = false
+  dataModel.returnLogs[3].returnCycleId.value = `${startYear}-04-01`
+  dataModel.returnLogs[3].returnId = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[3].returnReference = dataModel.returnRequirements[1].legacyId
   dataModel.returnLogs[3].startDate = `${startYear}-04-01`
   dataModel.returnLogs[3].status = 'completed'
-  dataModel.returnLogs[3].returnCycleId.value = `${startYear}-04-01`
-  dataModel.returnLogs[3].returnReference = '9999991'
 
   startYear = startYear - 1
   endYear = endYear - 1
 
-  dataModel.returnLogs[4].returnId = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[4].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[4].endDate = `${endYear}-03-31`
+  dataModel.returnLogs[4].metadata.description = dataModel.returnRequirements[0].siteDescription
   dataModel.returnLogs[4].metadata.isSummer = false
+  dataModel.returnLogs[4].returnCycleId.value = `${startYear}-04-01`
+  dataModel.returnLogs[4].returnId = `v1:9:AT/TE/ST/01/01:9999990:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[4].returnReference = dataModel.returnRequirements[0].legacyId
   dataModel.returnLogs[4].startDate = `${startYear}-04-01`
   dataModel.returnLogs[4].status = 'completed'
-  dataModel.returnLogs[4].returnCycleId.value = `${startYear}-04-01`
 
-  dataModel.returnLogs[5].returnId = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
   dataModel.returnLogs[5].dueDate = `${endYear}-04-28`
   dataModel.returnLogs[5].endDate = `${endYear}-03-31`
   dataModel.returnLogs[5].metadata.isSummer = false
+  dataModel.returnLogs[5].returnCycleId.value = `${startYear}-04-01`
+  dataModel.returnLogs[5].returnId = `v1:9:AT/TE/ST/01/01:9999991:${startYear}-04-01:${endYear}-03-31`
+  dataModel.returnLogs[5].returnReference = dataModel.returnRequirements[1].legacyId
   dataModel.returnLogs[5].startDate = `${startYear}-04-01`
   dataModel.returnLogs[5].status = 'completed'
-  dataModel.returnLogs[5].returnCycleId.value = `${startYear}-04-01`
-  dataModel.returnLogs[5].returnReference = '9999991'
 
   return dataModel
 }

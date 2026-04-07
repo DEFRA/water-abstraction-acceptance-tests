@@ -11,7 +11,7 @@ export default function returnRequirements (howMany = 1) {
       abstractionPeriodStartMonth: 1,
       abstractionPeriodEndDay: 31,
       abstractionPeriodEndMonth: 12,
-      siteDescription: 'WELL POINTS AT MARS',
+      siteDescription: 'TANKS ON JUPITER',
       legacyId: 9999990,
       externalId: '9:9999990'
     },

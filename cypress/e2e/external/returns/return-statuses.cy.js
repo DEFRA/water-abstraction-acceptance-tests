@@ -26,10 +26,18 @@ describe('Return statuses (external)', () => {
     cy.contains('AT/TE/ST/01/01').click()
     cy.get('#tab_returns').click()
     cy.get('#returns').should('be.visible')
-    cy.get('.govuk-tag').should('not.contain.text', 'not yet due')
-    cy.get(':nth-child(1) > :nth-child(4) > .govuk-tag').should('be.visible').and('contain.text', 'overdue')
-    cy.get(':nth-child(2) > :nth-child(4) > .govuk-tag').should('be.visible').and('contain.text', 'due')
-    cy.get(':nth-child(3) > :nth-child(4) > .govuk-tag').should('be.visible').and('contain.text', 'open')
-    cy.get(':nth-child(4) > :nth-child(4) > .govuk-tag').should('be.visible').and('contain.text', 'complete')
+
+    cy.get('#returns > .govuk-table > .govuk-table__body').within(() => {
+      cy.get('.govuk-tag').should('not.contain.text', 'not yet due')
+      cy.get('.govuk-tag').should('not.contain.text', 'void')
+
+      cy.contains('9999991').parent('td').parent('tr').find('td:nth-child(4) .govuk-tag').should('contain.text', 'complete')
+
+      cy.contains('9999993').parent('td').parent('tr').find('td:nth-child(4) .govuk-tag').should('contain.text', 'open')
+
+      cy.contains('9999994').parent('td').parent('tr').find('td:nth-child(4) .govuk-tag').should('contain.text', 'due')
+
+      cy.contains('9999995').parent('td').parent('tr').find('td:nth-child(4) .govuk-tag').should('contain.text', 'overdue')
+    })
   })
 })

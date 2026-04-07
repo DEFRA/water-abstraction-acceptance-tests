@@ -4,7 +4,7 @@ import scenarioData from '../../../support/scenarios/two-return-requirements-two
 
 const scenario = scenarioData()
 
-describe('Submit summer and winter and all year historic correction using abstraction data', () => {
+describe('Submit summer and winter and all year historic correction using previous return requirements', () => {
   beforeEach(() => {
     cy.tearDown()
 
@@ -19,7 +19,7 @@ describe('Submit summer and winter and all year historic correction using abstra
     cy.fixture('users.json').its('billingAndData').as('userEmail')
   })
 
-  it('creates a return requirement using abstraction data and approves the requirement', () => {
+  it('creates a return requirement using previous return requirements and approves the requirement', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail
@@ -112,7 +112,7 @@ describe('Submit summer and winter and all year historic correction using abstra
 
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const today = new Date()
-      const novemberToMarch = (today.getMonth() > 9 || today.getMonth() < 4)
+      const novemberToMarch = (today.getMonth() > 9 || today.getMonth() < 3)
 
       const winter = { start: currentFinancialYearInfo.start.year, end: currentFinancialYearInfo.end.year }
       const summer = { start: currentFinancialYearInfo.start.year - 1, end: currentFinancialYearInfo.end.year - 1 }
@@ -151,7 +151,7 @@ describe('Submit summer and winter and all year historic correction using abstra
         })
       } else {
         cy.get('[data-test="return-due-date-0"]').should('have.value', '')
-        cy.get('[data-test="return-status-0"] > .govuk-tag').contains('open')
+        cy.get('[data-test="return-status-0"] > .govuk-tag').contains('not due yet')
 
         cy.get('[data-test="return-due-date-1"]').should('have.value', '')
         cy.get('[data-test="return-status-1"] > .govuk-tag').contains('not due yet')

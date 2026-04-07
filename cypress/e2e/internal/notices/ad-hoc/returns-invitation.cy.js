@@ -1,6 +1,6 @@
 'use strict'
 
-import scenarioData from '../../../../support/scenarios/return-notices.js'
+import scenarioData from '../../../../support/scenarios/licence-with-due-return-log.js'
 
 describe('Ad-hoc returns invitation journey (internal)', () => {
   beforeEach(() => {
@@ -16,7 +16,6 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
-    cy.fixture('notice-recipients.json').as('noticeRecipients')
   })
 
   it('invites a customer to submit returns', () => {
@@ -33,19 +32,15 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.get('.govuk-button').contains('Create an ad-hoc notice').click()
 
     // Enter a licence number
-    cy.get('@noticeRecipients').then(({ licenceNumber }) => {
-      cy.get('#licenceRef').type(licenceNumber)
-    })
-    cy.get('button.govuk-button').click()
+    cy.get('#licenceRef').type('AT/TE/ST/01/01')
+    cy.contains('Continue').click()
 
     // Select the notice type
     cy.get('#noticeType').check()
     cy.contains('Continue').click()
 
     // Check the notice type
-    cy.get('@noticeRecipients').then(({ licenceNumber }) => {
-      cy.get('[data-test="licence-number"]').should('contain.text', licenceNumber)
-    })
+    cy.get('[data-test="licence-number"]').should('contain.text', 'AT/TE/ST/01/01')
     cy.get('[data-test="returns-notice-type"]').should('contain.text', 'Returns invitation')
     cy.contains('Confirm').click()
 
@@ -63,16 +58,12 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
 
     // Select 'post' and add the contacts name
     cy.get('#contactType-2').check()
-    cy.get('@noticeRecipients').then(({ singleUseLetter }) => {
-      cy.get('#contactName').type(singleUseLetter.contactName)
-    })
-    cy.get('button.govuk-button').click()
+    cy.get('#contactName').type('Lookup recipient')
+    cy.contains('Continue').click()
 
     // Enter the postcode
-    cy.get('@noticeRecipients').then(({ singleUseLetter }) => {
-      cy.get('#postcode').type(singleUseLetter.address.postcode)
-    })
-    cy.get('button.govuk-button').click()
+    cy.get('#postcode').type('BS1 5AH')
+    cy.contains('Find addresses').click()
 
     // Select the address returned from the lookup (rate limited so pause briefly)
     // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
@@ -80,42 +71,38 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     // the second call. Hence we need to wait a second.
     cy.wait(1000)
     cy.get('#addresses').select('340116')
-    cy.get('button.govuk-button').click()
+    cy.contains('Continue').click()
 
     // Recipients count
     cy.contains('Showing all 2 recipients')
 
     // Additional recipient is shown in the list
-    cy.get('@noticeRecipients').then(({ licenceNumber, singleUseLetter, primaryUserEmail }) => {
-      cy.get('[data-test^="recipient-contact"]').should('have.length', 2)
-      cy.get('[data-test="recipient-contact-0"]').within(() => {
-        cy.contains(singleUseLetter.contactName)
-        cy.contains(singleUseLetter.address.line1)
-        cy.contains(singleUseLetter.address.line2)
-        cy.contains(singleUseLetter.address.line3)
-        cy.contains(singleUseLetter.address.postcode)
-      })
-      cy.get('[data-test="recipient-licence-numbers-0"]').should('contain.text', licenceNumber)
-      cy.get('[data-test="recipient-method-0"]').should('contain.text', singleUseLetter.method)
-      cy.get('[data-test="recipient-action-0"]').within(() => {
-        cy.contains('Preview')
-      })
+    cy.get('[data-test^="recipient-contact"]').should('have.length', 2)
+    cy.get('[data-test="recipient-contact-0"]').within(() => {
+      cy.contains('Lookup recipient')
+      cy.contains('ENVIRONMENT AGENCY')
+      cy.contains('HORIZON HOUSE DEANERY ROAD')
+      cy.contains('BRISTOL')
+      cy.contains('BS1 5AH')
+    })
+    cy.get('[data-test="recipient-licence-numbers-0"]').should('contain.text', 'AT/TE/ST/01/01')
+    cy.get('[data-test="recipient-method-0"]').should('contain.text', 'Letter - single use')
+    cy.get('[data-test="recipient-action-0"]').within(() => {
+      cy.contains('Preview')
+    })
 
-      cy.get('[data-test="recipient-contact-1"]').should('contain.text', primaryUserEmail.email)
-      cy.get('[data-test="recipient-licence-numbers-1"]').should('contain.text', licenceNumber)
-      cy.get('[data-test="recipient-method-1"]').should('contain.text', primaryUserEmail.method)
-      cy.get('[data-test="recipient-action-1"]').within(() => {
-        cy.contains('Preview')
-      })
+    cy.get('[data-test="recipient-contact-1"]').should('contain.text', 'external@example.com')
+    cy.get('[data-test="recipient-licence-numbers-1"]').should('contain.text', 'AT/TE/ST/01/01')
+    cy.get('[data-test="recipient-method-1"]').should('contain.text', 'Email - primary user')
+    cy.get('[data-test="recipient-action-1"]').within(() => {
+      cy.contains('Preview')
     })
 
     cy.get('[data-test="recipient-action-0"]').contains('Preview').click()
 
     // Preview contains the contact name and address
     cy.contains('Returns invitation ad-hoc')
-    cy.get('@noticeRecipients').then(({ singleUseLetter }) => {
-      cy.contains(singleUseLetter.contactName)
-    })
+    cy.contains('Lookup recipient')
     cy.get('.govuk-back-link').click()
 
     // Check the recipients
@@ -133,18 +120,16 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.contains('Showing all 2 notifications')
 
     cy.get('[data-test^="notification-recipient"]').should('have.length', 2)
-    cy.get('@noticeRecipients').then(({ singleUseLetter, primaryUserEmail }) => {
-      cy.get('[data-test="notification-recipient0"]').within(() => {
-        cy.contains(primaryUserEmail.email)
-      })
+    cy.get('[data-test="notification-recipient0"]').within(() => {
+      cy.contains('external@example.com')
+    })
 
-      cy.get('[data-test="notification-recipient1"]').within(() => {
-        cy.contains(singleUseLetter.contactName)
-        cy.contains(singleUseLetter.address.line1)
-        cy.contains(singleUseLetter.address.line2)
-        cy.contains(singleUseLetter.address.line3)
-        cy.contains(singleUseLetter.address.postcode)
-      })
+    cy.get('[data-test="notification-recipient1"]').within(() => {
+      cy.contains('Lookup recipient')
+      cy.contains('ENVIRONMENT AGENCY')
+      cy.contains('HORIZON HOUSE DEANERY ROAD')
+      cy.contains('BRISTOL')
+      cy.contains('BS1 5AH')
     })
   })
 })
