@@ -6,7 +6,7 @@ describe('Standard returns invitation journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.calculatedDates().then((body) => {
-      const scenario = scenarioData(body.firstReturnPeriod)
+      const scenario = scenarioData(body.firstReturnPeriod, false)
 
       cy.load(scenario)
     })
