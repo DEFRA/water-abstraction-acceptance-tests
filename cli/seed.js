@@ -81,10 +81,18 @@ async function _environment () {
   }
 }
 
+function _scenarios () {
+  return fs.readdirSync(SCENARIOS_DIR)
+    .filter((file) => {
+      return file.endsWith('.js')
+    })
+    .map((file) => {
+      return file.replace('.js', '')
+    })
+}
+
 async function _selectScenario () {
-  const scenarios = fs.readdirSync(SCENARIOS_DIR)
-    .filter(file => file.endsWith('.js'))
-    .map(file => file.replace('.js', ''))
+  const scenarios = _scenarios()
 
   const { importPrompts } = await import('./esm-imports.js')
   const prompts = await importPrompts()
