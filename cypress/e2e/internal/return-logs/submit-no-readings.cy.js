@@ -24,7 +24,7 @@ describe('Submit a return with no meter readings - validation errors (internal)'
       })
     })
     cy.get('@returnId').then((returnId) => {
-      cy.visit(`/system/return-logs/${returnId}`)
+      cy.visit(`/system/return-logs/${returnId}/details`)
     })
 
     // Abstraction return

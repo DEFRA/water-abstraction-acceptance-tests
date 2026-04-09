@@ -24,7 +24,7 @@ describe('Submit then edit a meter readings return with zero reading (internal)'
       })
     })
     cy.get('@returnId').then((returnId) => {
-      cy.visit(`/system/return-logs/${returnId}`)
+      cy.visit(`/system/return-logs/${returnId}/details`)
     })
 
     // Abstraction return
