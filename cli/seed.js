@@ -40,7 +40,7 @@ async function run () {
   console.log(`Running: scenario ${selected}`)
 
   try {
-    await _tearDown()
+    await _tearDown(env.config.baseUrl)
 
     const body = await _body(selected)
 
@@ -129,10 +129,10 @@ async function _body (selected) {
   return await getBody()
 }
 
-async function _tearDown () {
+async function _tearDown (baseUrl) {
   console.log('Running: tear down')
 
-  const tearDownResponse = await fetch(`${env.config.baseUrl}/system/data/tear-down`, { method: 'POST' })
+  const tearDownResponse = await fetch(`${baseUrl}/system/data/tear-down`, { method: 'POST' })
 
   if (!tearDownResponse.ok) {
     const errorData = await tearDownResponse.json().catch(() => null)
