@@ -128,7 +128,7 @@ async function _body (selected) {
   return await getBody()
 }
 
-async function _importPrompts() {
+async function _importPrompts () {
   // As of v12, the got dependency no longer supports CJS modules. This causes us a problem as we are locked into
   // using these for the time being. Some workarounds are provided here:
   // https://github.com/sindresorhus/got/issues/1789 We have gone the route of using await import('got'). We cannot do
