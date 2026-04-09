@@ -7,7 +7,7 @@ describe('Standard returns reminder journey (internal)', () => {
     cy.tearDown()
 
     cy.calculatedDates().then((body) => {
-      const scenario = scenarioData(body.firstReturnPeriod)
+      const scenario = scenarioData(body.firstReturnPeriod, true)
 
       cy.load(scenario)
     })
