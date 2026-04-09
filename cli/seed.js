@@ -94,7 +94,8 @@ async function _selectScenario () {
     .filter(file => file.endsWith('.js'))
     .map(file => file.replace('.js', ''))
 
-  const prompts = await _importPrompts()
+  const { importPrompts } = await import('./esm-imports.js')
+  const prompts = await importPrompts()
 
   return prompts.search({
     message: 'Type to search scenario:',
@@ -126,17 +127,6 @@ async function _body (selected) {
 
   // 4. Call the function here to get the actual data object
   return await getBody()
-}
-
-async function _importPrompts () {
-  // As of v12, the got dependency no longer supports CJS modules. This causes us a problem as we are locked into
-  // using these for the time being. Some workarounds are provided here:
-  // https://github.com/sindresorhus/got/issues/1789 We have gone the route of using await import('got'). We cannot do
-  // this at the top level as Node doesn't support top level in CJS so we do it here instead.
-  // const { got } = await import('got')
-  const prompts = await import('@inquirer/prompts')
-
-  return prompts
 }
 
 run().catch((err) => {
