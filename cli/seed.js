@@ -40,15 +40,7 @@ async function run () {
   console.log(`Running: scenario ${selected}`)
 
   try {
-    console.log('Running: tear down')
-
-    const tearDownResponse = await fetch(`${env.config.baseUrl}/system/data/tear-down`, { method: 'POST' })
-
-    if (!tearDownResponse.ok) {
-      const errorData = await tearDownResponse.json().catch(() => null)
-      console.error('Server error:', tearDownResponse.status, errorData)
-      process.exit(1)
-    }
+    await _tearDown()
 
     const body = await _body(selected)
 
@@ -127,6 +119,18 @@ async function _body (selected) {
 
   // 4. Call the function here to get the actual data object
   return await getBody()
+}
+
+async function _tearDown () {
+  console.log('Running: tear down')
+
+  const tearDownResponse = await fetch(`${env.config.baseUrl}/system/data/tear-down`, { method: 'POST' })
+
+  if (!tearDownResponse.ok) {
+    const errorData = await tearDownResponse.json().catch(() => null)
+    console.error('Server error:', tearDownResponse.status, errorData)
+    process.exit(1)
+  }
 }
 
 run().catch((err) => {
