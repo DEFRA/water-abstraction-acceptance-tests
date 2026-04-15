@@ -15,6 +15,7 @@
  * @module SeedCLI
  */
 
+import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import { search } from '@inquirer/prompts'
@@ -28,15 +29,14 @@ async function run () {
   const scenarios = _scenarios()
 
   const selectedScenario = await _selectScenario(scenarios)
-  console.log(`Running: scenario ${selectedScenario}`)
 
   await _tearDown()
 
   const body = await _body(selectedScenario)
 
-  await _load(body)
+  await _load(selectedScenario, body)
 
-  console.log('Finished successfully')
+  console.log(chalk.green('Finished!'))
 }
 
 async function _body (selectedScenario) {
@@ -58,8 +58,8 @@ async function _body (selectedScenario) {
   return await getBody()
 }
 
-async function _load (body) {
-  console.log('Running: data load')
+async function _load (selectedScenario, body) {
+  console.log(chalk.blue(`Loading scenario ${chalk.bold(selectedScenario)}...`))
 
   await post('/system/data/load', body)
 }
@@ -91,7 +91,7 @@ async function _selectScenario (scenarios) {
 }
 
 async function _tearDown () {
-  console.log('Running: tear down')
+  console.log(chalk.blue('Tearing down previous scenario data...'))
 
   await post('/system/data/tear-down')
 }
@@ -106,9 +106,9 @@ try {
   await run()
 } catch (err) {
   if (['AbortPromptError', 'ExitPromptError'].includes(err.name)) {
-    console.log('\nCancelled.')
+    console.log(chalk.yellow('\nCancelled'))
   } else {
-    console.error(err)
+    console.error(chalk.red(err))
     process.exit(1) // Standard practice to exit with failure code
   }
 }
