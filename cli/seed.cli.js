@@ -19,23 +19,22 @@ import fs from 'fs'
 import path from 'path'
 import { search } from '@inquirer/prompts'
 
+import { post } from './system.request.js'
+
 const SCENARIOS_DIR = 'cypress/support/scenarios'
-const ENVS_DIR = 'environments'
 
 async function run () {
-  const env = await _environment()
-  console.log(`Running: against the ${env.name} environment`)
-
   const scenarios = _scenarios()
 
   const selectedScenario = await _selectScenario(scenarios)
   console.log(`Running: scenario ${selectedScenario}`)
 
-  await _tearDown(env.config.baseUrl)
+  await _tearDown()
 
   const body = await _body(selectedScenario)
 
-  await _load(env.config.baseUrl, body)
+  await _load(body)
+
   console.log('Finished successfully')
 }
 
@@ -58,37 +57,10 @@ async function _body (selectedScenario) {
   return await getBody()
 }
 
-/**
- * Loads the 'local' environment variables.
- * @returns {Promise<{ name: string, baseUrl: string }>}
- */
-async function _environment () {
-  const configPath = path.join(process.cwd(), ENVS_DIR, 'local.json')
-  const fileContent = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
-
-  return {
-    name: 'local',
-    ...fileContent
-  }
-}
-
-async function _load (baseUrl, body) {
+async function _load (body) {
   console.log('Running: data load')
-  const response = await fetch(`${baseUrl}/system/data/load`, {
-    method: 'POST',
-    headers: {
-      'User-Agent': 'undici-stream-example',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  })
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => null)
-    console.error('Server error:', response.status, errorData)
-
-    throw error('Data load failed')
-  }
+  await post('/system/data/load', body)
 }
 
 function _scenarios () {
@@ -115,16 +87,10 @@ async function _selectScenario (scenarios) {
   })
 }
 
-async function _tearDown (baseUrl) {
+async function _tearDown () {
   console.log('Running: tear down')
 
-  const tearDownResponse = await fetch(`${baseUrl}/system/data/tear-down`, { method: 'POST' })
-
-  if (!tearDownResponse.ok) {
-    const errorData = await tearDownResponse.json().catch(() => null)
-    console.error('Server error:', tearDownResponse.status, errorData)
-    process.exit(1)
-  }
+  await post('/system/data/tear-down')
 }
 
 try {
