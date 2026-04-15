@@ -1,13 +1,12 @@
-'use strict'
+import { defineConfig } from 'cypress'
+import { readFileSync } from 'fs'
+import cypressMochawesomeReporter from 'cypress-mochawesome-reporter/plugin.js'
 
-const { defineConfig } = require('cypress')
-const { readFileSync } = require('fs')
-
-module.exports = defineConfig({
+export default defineConfig({
   e2e: {
     setupNodeEvents (on, config) {
       // implement node event listeners here
-      require('cypress-mochawesome-reporter/plugin')(on)
+      cypressMochawesomeReporter(on)
 
       // Read in environment specific config
       const text = readFileSync(`./environments/${config.env.environment}.json`)
