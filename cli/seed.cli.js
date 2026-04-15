@@ -26,6 +26,8 @@ const SCENARIOS_DIR = 'cypress/support/scenarios'
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 
 async function run () {
+  console.log(chalk.blue.bold('Use this tool to load test scenarios for manual exploratory testing\n'))
+
   const scenarios = _scenarios()
 
   const selectedScenario = await _selectScenario(scenarios)
@@ -76,7 +78,7 @@ function _scenarios () {
 
 async function _selectScenario (scenarios) {
   return search({
-    message: 'Type to search scenario:',
+    message: 'Type to search scenarios:',
     source: async (input) => {
       if (!input) {
         return scenarios.map(s => ({ name: s, value: s }))
