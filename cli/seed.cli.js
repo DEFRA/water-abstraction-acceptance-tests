@@ -10,24 +10,7 @@
  * npm run seed
  * ```
  *
- * > Defined in `package.json` as `"seed": "node --no-warnings seed.js"`
- *
- * ## Module architecture
- *
- * The script has an `.mjs` extension so Node knows it is an ESM module, which means we can avoid workarounds when
- * importing our ESM-only dependencies, for example, {@link https://github.com/SBoudrias/Inquirer.js|prompts}.
- *
- * However, the scenarios being loaded, though written as ES6 Modules (ESM) are not declared so because they do not have
- * `.mjs` extension and we have not set `"type": "module"` in our `package.json`.
- *
- * This means we have to use some special handling to load these ESM scenario files from our ESM CLI script:
- *
- * - We use dynamic `import()`— which is asynchronous and allowed in CJS.
- * - We explicitly use the `file://` protocol for absolute path resolution.
- * - We access the `.default` property to extract the exported scenario function.
- *
- * It also means when we run the script Node.js emits a `[MODULE_TYPELESS_PACKAGE_JSON]` warning when it finishes. We
- * use the `--no-warnings` flag in the npm script to suppress this and keep the CLI output clean.
+ * > Defined in `package.json` as `"seed": "node cli/seed.cli.js"`
  *
  * @module SeedCLI
  */
