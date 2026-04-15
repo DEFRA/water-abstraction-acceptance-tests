@@ -26,9 +26,7 @@ export async function post (path, body = null) {
   const response = await fetch(url, requestOptions)
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => null)
-
-    throw new Error(`Fetch error: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`)
+    await _error(path, response)
   }
 
   return response
@@ -49,7 +47,21 @@ async function _environment () {
   }
 }
 
-function _requestOptions(body) {
+async function _error (path, response) {
+  let message = `Request to ${path} failed with ${response.status} ${response.statusText}`
+
+  const errorData = await response.json().catch(() => {
+    return null
+  })
+
+  if (errorData) {
+    message += `\n${JSON.stringify(errorData)}`
+  }
+
+  throw new Error(message)
+}
+
+function _requestOptions (body) {
   const requestOptions = {
     method: 'POST'
   }
