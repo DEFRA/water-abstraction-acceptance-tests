@@ -6,7 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "seed": "node cli/seed.cli.js",
+    "cli:seed": "node cli/seed.cli.js",
     "cy:open:local": "cypress open --e2e --env environment=local",
     "cy:open:dev": "cypress open --e2e --env environment=dev",
     "cy:open:tst": "cypress open --e2e --env environment=tst",
