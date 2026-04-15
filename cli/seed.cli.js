@@ -22,6 +22,7 @@ import { search } from '@inquirer/prompts'
 import { post } from './system.request.js'
 
 const SCENARIOS_DIR = 'cypress/support/scenarios'
+const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 
 async function run () {
   const scenarios = _scenarios()
@@ -84,7 +85,9 @@ async function _selectScenario (scenarios) {
         .filter(s => s.toLowerCase().includes(input.toLowerCase()))
         .map(s => ({ name: s, value: s }))
     }
-  })
+  },
+  { signal: ESCAPE_KEY_ABORT_CONTROLLER.signal }
+  )
 }
 
 async function _tearDown () {
@@ -93,10 +96,16 @@ async function _tearDown () {
   await post('/system/data/tear-down')
 }
 
+process.stdin.on('keypress', (str, key) => {
+  if (key.name === 'escape') {
+    ESCAPE_KEY_ABORT_CONTROLLER.abort()
+  }
+})
+
 try {
   await run()
 } catch (err) {
-  if (err.name === 'ExitPromptError') {
+  if (['AbortPromptError', 'ExitPromptError'].includes(err.name)) {
     console.log('\nCancelled.')
   } else {
     console.error(err)
