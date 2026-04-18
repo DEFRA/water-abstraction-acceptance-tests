@@ -15,18 +15,18 @@
  * @module SeedCLI
  */
 
-import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import { search } from '@inquirer/prompts'
 
+import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
 import { post } from './system.request.js'
 
 const SCENARIOS_DIR = 'cypress/support/scenarios'
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 
 async function run () {
-  console.log(chalk.blue.bold('Use this tool to load test scenarios for manual exploratory testing\n'))
+  logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
 
   const scenarios = _scenarios()
 
@@ -38,7 +38,7 @@ async function run () {
 
   await _load(selectedScenario, body)
 
-  console.log(chalk.green('Finished!'))
+  logSuccess('Finished!')
 }
 
 async function _body (selectedScenario) {
@@ -61,7 +61,7 @@ async function _body (selectedScenario) {
 }
 
 async function _load (selectedScenario, body) {
-  console.log(chalk.blue(`Loading scenario ${chalk.bold(selectedScenario)}...`))
+  logInfo(`Loading scenario ${styleBold(selectedScenario)}...`)
 
   await post('/system/data/load', body)
 }
@@ -93,7 +93,7 @@ async function _selectScenario (scenarios) {
 }
 
 async function _tearDown () {
-  console.log(chalk.blue('Tearing down previous scenario data...'))
+  logInfo('Tearing down previous scenario data...')
 
   await post('/system/data/tear-down')
 }
@@ -108,9 +108,9 @@ try {
   await run()
 } catch (err) {
   if (['AbortPromptError', 'ExitPromptError'].includes(err.name)) {
-    console.log(chalk.yellow('\nCancelled'))
+    logWarning('\nCancelled', true)
   } else {
-    console.error(chalk.red(err))
+    logError(err.message)
     process.exit(1) // Standard practice to exit with failure code
   }
 }
