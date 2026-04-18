@@ -108,7 +108,7 @@ try {
   await run()
 } catch (err) {
   if (['AbortPromptError', 'ExitPromptError'].includes(err.name)) {
-    logWarning('\nCancelled', true)
+    logWarning('\nCancelled')
   } else {
     logError(err.message)
     process.exit(1) // Standard practice to exit with failure code
