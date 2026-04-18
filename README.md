@@ -12,7 +12,7 @@ They are maintained by the [Water Abstraction Team](https://github.com/DEFRA/wat
 
 ## Pre-requisites
 
-You just need [Node.js](https://nodejs.org/en/) installed, ideally an LTS version and no less than v16.
+You just need [Node.js](https://nodejs.org/en/) installed, ideally an LTS version and no less than v22.
 
 You'll also need [Chrome](https://www.google.com/intl/en_uk/chrome/). It's what we use when working on the tests, and is one of 2 browsers available to our internal users.
 
