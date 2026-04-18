@@ -22,8 +22,8 @@ import { search } from '@inquirer/prompts'
 import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
 import { post } from './system.request.js'
 
-const SCENARIOS_DIR = 'cypress/support/scenarios'
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
+const SCENARIOS_DIR = 'cypress/support/scenarios'
 
 async function run () {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
