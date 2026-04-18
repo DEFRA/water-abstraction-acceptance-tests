@@ -8,6 +8,9 @@
  * dependencies where possible, especially in light of recent supply chain attacks. We can recreate what we would do
  * with chalk via this little module, that uses ANSI escape codes.
  *
+ * > See {@link https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797|ANSI escape codes} for more details on
+ * > how this works.
+ *
  * @module LogLib
  */
 
