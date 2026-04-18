@@ -67,7 +67,7 @@ To open the test runner use `npm run cy:open:[env]` replacing `[env]` with your 
 npm run cy:open:tst
 ```
 
-### CLI
+### Headless
 
 > Runs Cypress tests to completion. By default, it will run all tests headless in the Electron browser.
 
