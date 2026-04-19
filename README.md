@@ -79,11 +79,45 @@ To open the CLI use `npm run cy:run:[env]` replacing `[env]` with your chosen en
 npm run cy:run:tst
 ```
 
+## Test data
+
+When building [water-abstraction-system](https://github.com/DEFRA/water-abstraction-system) we found there there were numerous times we needed certain data to exist in the DB for our integration tests. To support this we built a series of test helpers that can quickly add test data to a DB, populated with what is needed for the service to 'work', or overridden with what is needed for a test.
+
+The same applies to our acceptance tests. You can't generate a bill run, if you haven't licences with charging information to base the bill run on!
+
+We created a an API endpoint in **water-abstraction-system** that allows us to 'seed' data for our acceptance tests, making use of the test helpers. We also created a 'tear down' endpoint that will delete any test data, so the service can be 'refreshed' between tests.
+
+Cypress supports the idea of [fixtures](https://docs.cypress.io/api/commands/fixture). At the start of this project we used this to hold the test data we wanted to seed. But we soon hit some issues.
+
+- Duplication - There was _a lot_ of duplication in the fixtures. To be fair, you're encouraged to not keep your tests 'dry' when it comes to acceptance testing. But we were storing multiple files of hundreds of lines, of which only a small number might be different between fixtures
+- Dynamic data - The most common need we have for dynamic data is dates. A lot of the business logic is date-dependent. Depending on what the current date is can alter the behaviour of the service. You also need test data that will match to the current date. JSON files don't support dynamic content.
+
+So, now when creating tests we use our own concept named 'scenarios'. These are standard JavaScript modules that return POJO's which we can pass to our API to load. But as JavaScript modules we can use code to dynamically generate data and collate the objects to be loaded.
+
+Most of our acceptance tests will start with two steps
+
+- Tearing down any existing test data
+- Generating then loading the test data via a 'scenario' for the test being run
+
 ## Reporting
 
 When Cypress is [run](https://docs.cypress.io/guides/guides/command-line#cypress-run), for example `npm run cy:run:tst`, a HTML report of the results is automatically generated.
 
 <img src="docs/report.png" width="800" alt="Screenshot of html report" />
+
+## CLI
+
+> Only one CLI function currently exists, but we'll add more in the future!
+
+We provide a CLI for other functionality that can be accessed using `npm run cli:[function]`.
+
+### seed
+
+We realised our scenarios can be really useful when working on new features and for manual and exploratory testing. This was to the extent that some team members would comment out the 'assert' part of a test in order to just load the scenario.
+
+To better support this we created the **seed cli**. It will list the scenarios we have by file name, and when selected, will first run tear down, then load the scenario's test data
+
+> It does not support our standard Cypress test files. If you need to load these, feel free to take the chance to convert them!
 
 ## VSCode tasks
 
