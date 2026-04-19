@@ -7,10 +7,10 @@
  * To run this script use
  *
  * ```bash
- * npm run seed
+ * npm run cli:seed
  * ```
  *
- * > Defined in `package.json` as `"seed": "node cli/seed.cli.js"`
+ * > Defined in `package.json` as `"cli:seed": "node cli/seed.cli.js"`
  *
  * @module SeedCLI
  */
