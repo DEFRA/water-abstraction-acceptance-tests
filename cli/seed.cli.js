@@ -4,7 +4,7 @@
  * This script provides an interactive CLI to seed the local database with specific test scenarios. It automates the
  * "Tear Down" and "Data Load" cycles.
  *
- * To run this script without Node.js emitting ESM interop warnings use
+ * To run this script use
  *
  * ```bash
  * npm run seed
