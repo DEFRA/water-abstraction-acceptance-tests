@@ -38,7 +38,7 @@ export function logWarning (message) {
   _log(YELLOW, message)
 }
 
-export function styleBold(message) {
+export function styleBold (message) {
   return `${BOLD}${message}${RESET_BOLD}`
 }
 
