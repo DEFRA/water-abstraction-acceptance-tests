@@ -128,6 +128,7 @@ You access the tasks using the [Command palette](https://code.visualstudio.com/d
 - **📺 Open (Tests)**
 - **📻 Run (Tests)**
 - **📋 Report (Tests)**
+- **🌱 Seed (Tests)**
 
 Feel free to check them out! 😁
 
