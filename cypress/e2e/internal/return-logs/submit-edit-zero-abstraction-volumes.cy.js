@@ -24,7 +24,7 @@ describe('Submit then edit an abstraction volumes return with zero quantities (i
       })
     })
     cy.get('@returnId').then((returnId) => {
-      cy.visit(`/system/return-logs/${returnId}`)
+      cy.visit(`/system/return-logs/${returnId}/details`)
     })
 
     // Abstraction return

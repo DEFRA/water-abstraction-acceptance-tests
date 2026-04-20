@@ -9,7 +9,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
       const period = body.firstReturnPeriod
 
       cy.previousPeriod(period).then((previousPeriod) => {
-        const scenario = scenarioData(previousPeriod)
+        const scenario = scenarioData(previousPeriod, false)
 
         cy.load(scenario)
       })

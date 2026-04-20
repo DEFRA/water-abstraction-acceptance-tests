@@ -4,7 +4,7 @@ import returnLogs from '../fixture-builder/return-logs.js'
 import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnVersion from '../fixture-builder/return-version.js'
 
-export default function (returnPeriod) {
+export default function (returnPeriod, applyDueDate = true) {
   const dueDate = new Date(returnPeriod.dueDate)
   const endDate = new Date(returnPeriod.endDate)
   const startDate = new Date(returnPeriod.startDate)
@@ -20,7 +20,11 @@ export default function (returnPeriod) {
     ...returnLogs(1)
   }
 
-  dataModel.returnLogs[0].dueDate = dueDateString
+  if (applyDueDate) {
+    dataModel.returnLogs[0].dueDate = dueDateString
+  } else {
+    dataModel.returnLogs[0].dueDate = null
+  }
   dataModel.returnLogs[0].endDate = endDateString
   dataModel.returnLogs[0].id = '7f6ff22b-f7f6-4f37-a29e-244fad5a22eb'
   dataModel.returnLogs[0].metadata.description = dataModel.returnRequirements[0].siteDescription
@@ -31,6 +35,7 @@ export default function (returnPeriod) {
   dataModel.returnLogs[0].returnRequirementId = dataModel.returnRequirements[0].id
   dataModel.returnLogs[0].startDate = startDateString
   dataModel.returnLogs[0].status = 'due'
+  dataModel.returnLogs[0].quarterly = returnPeriod.quarterly
 
   return dataModel
 }
