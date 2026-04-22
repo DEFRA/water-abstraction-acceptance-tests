@@ -30,7 +30,7 @@ async function run () {
 
   const scenarios = _scenarios()
 
-  let selectedScenario = undefined
+  let selectedScenario
 
   // Persistent loop until user aborts
   while (true) {
