@@ -8,7 +8,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.calculatedDates().then((body) => {
       const scenario = scenarioData(body)
 
-        cy.load(scenario)
+      cy.load(scenario)
     })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
