@@ -1,18 +1,14 @@
 'use strict'
 
-import scenarioData from '../../../../support/scenarios/licence-with-return-log.js'
+import scenarioData from '../../../../support/scenarios/licence-with-previous-return-log.js'
 
 describe('Ad-hoc returns invitation journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.calculatedDates().then((body) => {
-      const period = body.firstReturnPeriod
-
-      cy.previousPeriod(period).then((previousPeriod) => {
-        const scenario = scenarioData(previousPeriod)
+      const scenario = scenarioData(body)
 
         cy.load(scenario)
-      })
     })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')

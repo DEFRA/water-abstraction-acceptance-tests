@@ -1,19 +1,15 @@
 'use strict'
 
-import scenarioData from '../../../../support/scenarios/licence-with-return-log.js'
+import scenarioData from '../../../../support/scenarios/licence-with-previous-return-log.js'
 
 describe('Ad-hoc Paper returns journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
     cy.calculatedDates().then((body) => {
-      const period = body.firstReturnPeriod
+      const scenario = scenarioData(body)
 
-      cy.previousPeriod(period).then((previousPeriod) => {
-        const scenario = scenarioData(previousPeriod)
-
-        cy.load(scenario)
-      })
+      cy.load(scenario)
     })
 
     cy.fixture('users.json').its('billingAndData').as('userEmail')
