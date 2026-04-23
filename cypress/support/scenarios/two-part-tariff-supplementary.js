@@ -10,7 +10,7 @@ import licenceData from '../fixture-builder/licence.js'
 import licenceVersionPurposesData from '../fixture-builder/licence-version-purposes.js'
 import returnLogsData from '../fixture-builder/return-logs.js'
 
-export default function twoPartTariffSupplementary () {
+export default function () {
   const licenceRecords = _licenceRecords()
   const licenceRef = licenceRecords.licences[0].licenceRef
 
