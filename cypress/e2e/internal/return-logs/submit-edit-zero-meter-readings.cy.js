@@ -7,7 +7,7 @@ describe('Submit then edit a meter readings return with zero reading (internal)'
     cy.tearDown()
 
     cy.calculatedDates().then((body) => {
-      const scenario = scenarioData(body.firstReturnPeriod)
+      const scenario = scenarioData(body)
 
       cy.load(scenario)
 

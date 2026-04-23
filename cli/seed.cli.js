@@ -20,13 +20,15 @@ import path from 'path'
 import { search } from '@inquirer/prompts'
 
 import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
-import { post } from './system.request.js'
+import { get, post } from './system.request.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 const SCENARIOS_DIR = 'cypress/support/scenarios'
 
 async function run () {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
+
+  const currentServiceData = await _currentServiceData()
 
   const scenarios = _scenarios()
 
@@ -39,7 +41,7 @@ async function run () {
 
       await _tearDown()
 
-      const body = await _body(selectedScenario)
+      const body = await _body(selectedScenario, currentServiceData)
 
       await _load(selectedScenario, body)
 
@@ -59,10 +61,27 @@ async function run () {
 }
 
 /**
+ * Fetch 'current' data for the service
+ *
+ * This is information like the current financial year, summer and winter
+ * cycles, and billing periods.
+ *
+ * Some scenarios need this information to dynamically generate the data they
+ * will seed.
+ *
+ * @private
+ */
+async function _currentServiceData () {
+  const response = await get('/system/data/dates')
+
+  return response.json()
+}
+
+/**
  * Extract data from the scenario file
  * @private
  */
-async function _body (selectedScenario) {
+async function _body (selectedScenario, currentServiceData) {
   // 1. Get the absolute path
   const scenarioPath = path.resolve(SCENARIOS_DIR, `${selectedScenario}.js`)
 
@@ -78,7 +97,7 @@ async function _body (selectedScenario) {
   }
 
   // 4. Call the function here to get the actual data object
-  return await getBody()
+  return await getBody(currentServiceData)
 }
 
 /**

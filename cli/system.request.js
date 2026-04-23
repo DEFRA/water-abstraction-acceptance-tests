@@ -17,11 +17,26 @@ import path from 'path'
 
 const ENVS_DIR = 'environments'
 
+export async function get (path) {
+  const env = await _environment()
+
+  const url = new URL(path, env.config.baseUrl)
+  const requestOptions = _requestOptions('GET')
+
+  const response = await fetch(url, requestOptions)
+
+  if (!response.ok) {
+    await _error(path, response)
+  }
+
+  return response
+}
+
 export async function post (path, body = null) {
   const env = await _environment()
 
   const url = new URL(path, env.config.baseUrl)
-  const requestOptions = _requestOptions(body)
+  const requestOptions = _requestOptions('POST', body)
 
   const response = await fetch(url, requestOptions)
 
@@ -61,9 +76,9 @@ async function _error (path, response) {
   throw new Error(message)
 }
 
-function _requestOptions (body) {
+function _requestOptions (method, body) {
   const requestOptions = {
-    method: 'POST'
+    method
   }
 
   if (body) {
