@@ -1,6 +1,6 @@
 'use strict'
 
-import scenarioData from '../../../../support/scenarios/licence-with-due-return-log.js'
+import scenarioData from '../../../../support/scenarios/licence-with-return-log.js'
 
 describe('Ad-hoc returns invitation journey (internal)', () => {
   beforeEach(() => {
@@ -9,7 +9,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
       const period = body.firstReturnPeriod
 
       cy.previousPeriod(period).then((previousPeriod) => {
-        const scenario = scenarioData(previousPeriod, false)
+        const scenario = scenarioData(previousPeriod)
 
         cy.load(scenario)
       })

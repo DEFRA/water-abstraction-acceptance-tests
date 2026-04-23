@@ -1,12 +1,12 @@
 'use strict'
 
-import scenarioData from '../../../../support/scenarios/licence-with-due-return-log.js'
+import scenarioData from '../../../../support/scenarios/licence-with-return-log.js'
 
 describe('Standard returns invitation journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.calculatedDates().then((body) => {
-      const scenario = scenarioData(body.firstReturnPeriod, false)
+      const scenario = scenarioData(body.firstReturnPeriod)
 
       cy.load(scenario)
     })
