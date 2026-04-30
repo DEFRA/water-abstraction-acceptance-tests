@@ -12,7 +12,7 @@
  *
  * @returns {number} -1 if dateA is before dateB, 1 if dateA is after dateB, 0 if they are the same date
  */
-export function compareDates(dateA, dateB) {
+export function compareDates (dateA, dateB) {
   // Math.sign() clamps the result of the subtraction to a minimum of -1 and a maximum of 1
   return Math.sign(dateA - dateB)
 }
