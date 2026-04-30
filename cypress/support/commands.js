@@ -25,7 +25,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import 'querystring'
-import currentFinancialYear from './helpers/currentFinancialYear'
+
+import { currentFinancialYear } from './helpers/date.helpers.js'
 
 // Both the PRE-SROC and SROC schemes support calculating bill runs up to 5 years back. So, when you make a change
 // to a licence's charge versions the supplementary billing engine is expected to calculate the charges for each

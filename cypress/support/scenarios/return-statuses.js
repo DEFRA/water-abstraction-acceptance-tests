@@ -1,5 +1,5 @@
-import formatDateToIso from '../helpers/formatDateToIso.js'
 import licenceData from '../fixture-builder/licence.js'
+import { formatDateToIso } from '../helpers/date.helpers.js'
 
 function _returnLog (startDate, endDate, dueDate, returnReference) {
   const startDateString = formatDateToIso(startDate)

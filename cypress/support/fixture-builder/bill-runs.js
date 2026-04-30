@@ -1,4 +1,4 @@
-import currentFinancialYear from '../helpers/currentFinancialYear.js'
+import { currentFinancialYear } from '../helpers/date.helpers.js'
 
 export default function billRuns () {
   const currentFinancialYearInfo = currentFinancialYear()

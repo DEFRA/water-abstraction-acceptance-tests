@@ -1,9 +1,8 @@
-import formatDateToIso from '../helpers/formatDateToIso.js'
 import licenceData from '../fixture-builder/licence.js'
-import previousPeriod from '../helpers/previous-period.js'
 import returnLogs from '../fixture-builder/return-logs.js'
 import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnVersion from '../fixture-builder/return-version.js'
+import { formatDateToIso, previousPeriod } from '../helpers/date.helpers.js'
 
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData

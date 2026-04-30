@@ -1,15 +1,24 @@
-import formatDateToIso from '../helpers/formatDateToIso.js'
 import licenceData from '../fixture-builder/licence.js'
 import returnLogs from '../fixture-builder/return-logs.js'
 import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnVersion from '../fixture-builder/return-version.js'
+import { compareDates, formatDateToIso, previousPeriod, today } from '../helpers/date.helpers.js'
 
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData
 
-  const dueDate = new Date(firstReturnPeriod.dueDate)
-  const endDate = new Date(firstReturnPeriod.endDate)
-  const startDate = new Date(firstReturnPeriod.startDate)
+  let returnPeriod = firstReturnPeriod
+
+  // If the first return period ends in the future, we won't be able to interact with it. This scenario was written
+  // for a number of our return log tests, that check we can add various types of return submissions.
+  // To ensure we can interact with the return log, we bump the period back by one, so it ends in the past.
+  if (!compareDates(firstReturnPeriod.endDate, today())) {
+    returnPeriod = previousPeriod(firstReturnPeriod)
+  }
+
+  const dueDate = new Date(returnPeriod.dueDate)
+  const endDate = new Date(returnPeriod.endDate)
+  const startDate = new Date(returnPeriod.startDate)
 
   const dueDateString = formatDateToIso(dueDate)
   const endDateString = formatDateToIso(endDate)
@@ -33,7 +42,7 @@ export default function (currentServiceData) {
   dataModel.returnLogs[0].returnRequirementId = dataModel.returnRequirements[0].id
   dataModel.returnLogs[0].startDate = startDateString
   dataModel.returnLogs[0].status = 'due'
-  dataModel.returnLogs[0].quarterly = firstReturnPeriod.quarterly
+  dataModel.returnLogs[0].quarterly = returnPeriod.quarterly
 
   return dataModel
 }
