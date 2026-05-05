@@ -21,7 +21,9 @@ describe('Sharing license access with a new user (external)', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/manage_licences`)
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(`${externalUrl}/manage_licences`)
+    })
 
     cy.get('.govuk-list').contains('Give or remove access to your licence information').click()
     cy.get('.govuk-button').contains('Give access').click()
@@ -38,18 +40,24 @@ describe('Sharing license access with a new user (external)', () => {
     // Second user registers using link in email received
     cy.get('@secondUserEmail').then((email) => {
       cy.lastNotification(email).then((body) => {
-        cy.extractNotificationLink(body, 'link', Cypress.env('externalUrl')).then((link) => {
-          cy.visit(link)
+        cy.env(['externalUrl']).then(({ externalUrl }) => {
+          cy.extractNotificationLink(body, 'link', externalUrl).then((link) => {
+            cy.visit(link)
+          })
         })
 
-        cy.get('input#password').type(Cypress.env('defaultPassword'))
-        cy.get('input#confirmPassword').type(Cypress.env('defaultPassword'))
-        cy.get('form').submit()
+        cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+          cy.get('input#password').type(defaultPassword)
+          cy.get('input#confirmPassword').type(defaultPassword)
+          cy.get('form').submit()
+        })
 
         // Second user logs in using the new account to confirm the registration was successful
         cy.get('#email').type(email)
-        cy.get('#password').type(Cypress.env('defaultPassword'))
-        cy.get('button.govuk-button').click()
+        cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+          cy.get('#password').type(defaultPassword)
+          cy.get('button.govuk-button').click()
+        })
 
         // Assert they can see the same licence
         cy.get('.licence-result__column > a').contains('AT/TE/ST/01/01').should('be.visible')

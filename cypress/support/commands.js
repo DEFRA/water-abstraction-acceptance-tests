@@ -223,41 +223,47 @@ Cypress.Commands.add('returnLogDueData', (yearToBaseItOn, winter) => {
 Cypress.Commands.add('setUp', (testKey) => {
   cy.log(`Setting up ${testKey} test data`)
 
-  cy.request({
-    url: `/acceptance-tests/set-up-from-yaml/${testKey}`,
-    log: false,
-    method: 'POST',
-    headers: {
-      authorization: `Bearer ${Cypress.env('jwtToken')}`
-    },
-    timeout: 60000
+  return cy.env(['jwtToken']).then(({ jwtToken }) => {
+    return cy.request({
+      url: `/acceptance-tests/set-up-from-yaml/${testKey}`,
+      log: false,
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${jwtToken}`
+      },
+      timeout: 60000
+    })
+      .its('status', { log: false })
+      .should('equal', 204)
   })
-    .its('status', { log: false })
-    .should('equal', 204)
 })
 
 Cypress.Commands.add('simulateNotifyCallback', (notificationId) => {
   cy.log('Simulating a Notify callback request')
 
-  cy.request({
-    url: `${Cypress.env('externalUrl')}/notify/callback`,
-    log: false,
-    method: 'POST',
-    headers: {
-      authorization: `Bearer ${Cypress.env('notifyCallbackToken')}`
-    },
-    body: {
-      id: notificationId,
-      reference: notificationId,
-      status: 'delivered',
-      notification_type: 'email',
-      to: 'irrelevant',
-      created_at: new Date().toISOString(),
-      completed_at: new Date().toISOString(),
-      sent_at: new Date().toISOString()
-    }
-  }).then((response) => {
-    return cy.wrap(response)
+  return cy.env(['externalUrl']).then(({ externalUrl }) => {
+    return cy.env(['notifyCallbackToken']).then(({ notifyCallbackToken }) => {
+      return cy.request({
+        url: `${externalUrl}/notify/callback`,
+        log: false,
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${notifyCallbackToken}`
+        },
+        body: {
+          id: notificationId,
+          reference: notificationId,
+          status: 'delivered',
+          notification_type: 'email',
+          to: 'irrelevant',
+          created_at: new Date().toISOString(),
+          completed_at: new Date().toISOString(),
+          sent_at: new Date().toISOString()
+        }
+      }).then((response) => {
+        return cy.wrap(response)
+      })
+    })
   })
 })
 
@@ -298,18 +304,23 @@ function _dueDateObject (dueDate) {
 }
 
 Cypress.Commands.add('programmaticLogin', (overrides = {}) => {
-  const email = overrides.email || Cypress.env('USERNAME')
-  const password = overrides.password || Cypress.env('defaultPassword')
+  const email = overrides.email
+  const password = overrides.password
   const external = overrides.external || false
 
-  let baseUrl = ''
-  if (external) {
-    baseUrl = Cypress.env('externalUrl')
-  }
+  const emailCommand = email ? cy.wrap({ USERNAME: email }) : cy.env(['USERNAME'])
+  const passwordCommand = password ? cy.wrap({ defaultPassword: password }) : cy.env(['defaultPassword'])
+  const baseUrlCommand = external ? cy.env(['externalUrl']) : cy.wrap({ externalUrl: '' })
 
-  return cy.request({
-    method: 'POST',
-    url: `${baseUrl}/signin`,
-    body: { email, password }
+  return emailCommand.then(({ USERNAME }) => {
+    return passwordCommand.then(({ defaultPassword }) => {
+      return baseUrlCommand.then(({ externalUrl }) => {
+        return cy.request({
+          method: 'POST',
+          url: `${externalUrl}/signin`,
+          body: { email: USERNAME, password: defaultPassword }
+        })
+      })
+    })
   })
 })

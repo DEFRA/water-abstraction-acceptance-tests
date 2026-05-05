@@ -20,7 +20,9 @@ describe('Change user email address (external)', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/account`)
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(`${externalUrl}/account`)
+    })
 
     // Account settings
     // Check we see current email address then click Change your email address link
@@ -31,8 +33,10 @@ describe('Change user email address (external)', () => {
 
     // For security, confirm your password first
     // Enter password and continue
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-    cy.get('button.govuk-button').contains('Continue').click()
+    cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+      cy.get('input#password').type(defaultPassword)
+      cy.get('button.govuk-button').contains('Continue').click()
+    })
 
     // Change your email address
     cy.get('#email').type('new.me@example.com')

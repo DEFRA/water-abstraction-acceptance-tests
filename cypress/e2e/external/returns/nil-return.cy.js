@@ -20,7 +20,9 @@ describe('Submit nil return (external)', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/return?returnId=${scenario.returnLogs[0].returnId}`)
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(`${externalUrl}/return?returnId=${scenario.returnLogs[0].returnId}`)
+    })
 
     // --> Have you extracted water in this period?
     // Click 'No' and continue
