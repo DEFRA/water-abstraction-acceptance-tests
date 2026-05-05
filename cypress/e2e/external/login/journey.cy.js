@@ -6,7 +6,9 @@ describe('Login and log out (external)', () => {
   })
 
   it('can log in and out as an external user', () => {
-    cy.visit(Cypress.env('externalUrl'))
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(externalUrl)
+    })
 
     // tap the sign in button on the welcome page
     cy.get('a[href*="/signin"]').click()
@@ -15,7 +17,9 @@ describe('Login and log out (external)', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.get('input#email').type(userEmail)
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
+    cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+      cy.get('input#password').type(defaultPassword)
+    })
 
     //  Click Sign in Button
     cy.get('.govuk-button.govuk-button--start').click()

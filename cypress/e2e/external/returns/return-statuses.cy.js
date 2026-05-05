@@ -20,7 +20,9 @@ describe('Return statuses (external)', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/licences`)
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(`${externalUrl}/licences`)
+    })
 
     // Select a licence to view returns and their status
     cy.contains('AT/TE/ST/01/01').click()

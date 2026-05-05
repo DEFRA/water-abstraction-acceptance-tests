@@ -6,7 +6,9 @@ describe('User registration (external)', () => {
   })
 
   it('can register a new user', () => {
-    cy.visit(Cypress.env('externalUrl'))
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(externalUrl)
+    })
 
     // Tap the create account button on the welcome page
     cy.get('a[href*="/start"]').click()
@@ -26,19 +28,25 @@ describe('User registration (external)', () => {
 
     cy.get('@userEmail').then((email) => {
       cy.lastNotification(email).then((body) => {
-        cy.extractNotificationLink(body, 'link', Cypress.env('externalUrl')).then((link) => {
-          cy.visit(link)
+        cy.env(['externalUrl']).then(({ externalUrl }) => {
+          cy.extractNotificationLink(body, 'link', externalUrl).then((link) => {
+            cy.visit(link)
+          })
         })
 
-        cy.get('input#password').type(Cypress.env('defaultPassword'))
-        cy.get('input#confirmPassword').type(Cypress.env('defaultPassword'))
-        cy.get('form').submit()
+        cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+          cy.get('input#password').type(defaultPassword)
+          cy.get('input#confirmPassword').type(defaultPassword)
+          cy.get('form').submit()
+        })
       })
 
       // Log in using the new account to confirm the registration was successful
       cy.get('#email').type(email)
-      cy.get('#password').type(Cypress.env('defaultPassword'))
-      cy.get('button.govuk-button').click()
+      cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+        cy.get('#password').type(defaultPassword)
+        cy.get('button.govuk-button').click()
+      })
     })
 
     //  Assert the user signed in

@@ -12,7 +12,9 @@ describe('Login and log out (internal)', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.get('input#email').type(userEmail)
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
+    cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+      cy.get('input#password').type(defaultPassword)
+    })
 
     //  Click Sign in Button
     cy.get('.govuk-button.govuk-button--start').click()

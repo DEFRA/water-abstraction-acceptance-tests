@@ -6,7 +6,9 @@ describe('User registration validation (external)', () => {
   })
 
   it('validates the password in the create account page', () => {
-    cy.visit(Cypress.env('externalUrl'))
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(externalUrl)
+    })
 
     // Tap the create account button on the welcome page
     cy.get('a[href*="/start"]').click()
@@ -26,8 +28,10 @@ describe('User registration validation (external)', () => {
 
     cy.get('@userEmail').then((email) => {
       cy.lastNotification(email).then((body) => {
-        cy.extractNotificationLink(body, 'link', Cypress.env('externalUrl')).then((link) => {
-          cy.visit(link)
+        cy.env(['externalUrl']).then(({ externalUrl }) => {
+          cy.extractNotificationLink(body, 'link', externalUrl).then((link) => {
+            cy.visit(link)
+          })
         })
 
         // Test submitting no passwords
