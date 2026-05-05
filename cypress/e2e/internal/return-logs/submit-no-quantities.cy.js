@@ -7,7 +7,7 @@ describe('Submit a return with no quantities - validation errors (internal)', ()
     cy.tearDown()
 
     cy.calculatedDates().then((body) => {
-      const scenario = scenarioData(body.firstReturnPeriod)
+      const scenario = scenarioData(body)
 
       cy.load(scenario)
 

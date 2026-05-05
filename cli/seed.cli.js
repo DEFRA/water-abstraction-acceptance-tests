@@ -20,7 +20,7 @@ import path from 'path'
 import { search } from '@inquirer/prompts'
 
 import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
-import { post } from './system.request.js'
+import { get, post } from './system.request.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 const SCENARIOS_DIR = 'cypress/support/scenarios'
@@ -28,20 +28,60 @@ const SCENARIOS_DIR = 'cypress/support/scenarios'
 async function run () {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
 
+  const currentServiceData = await _currentServiceData()
+
   const scenarios = _scenarios()
 
-  const selectedScenario = await _prompt(scenarios)
+  let selectedScenario
 
-  await _tearDown()
+  // Persistent loop until user aborts
+  while (true) {
+    try {
+      selectedScenario = await _prompt(scenarios, selectedScenario)
 
-  const body = await _body(selectedScenario)
+      await _tearDown()
 
-  await _load(selectedScenario, body)
+      const body = await _body(selectedScenario, currentServiceData)
 
-  logSuccess('Finished!')
+      await _load(selectedScenario, body)
+
+      logSuccess(`${styleBold('Finished!')} (press Escape to exit)\n`)
+    } catch (err) {
+      // Handle exit signals from Inquirer
+      if (['AbortPromptError', 'ExitPromptError'].includes(err.name)) {
+        logWarning('\nGoodbye!')
+        break
+      } else {
+        // Log the error but stay in the loop so the user can try again
+        logError(`\nError: ${err.message}`)
+        logInfo('Returning to menu... (press Escape to exit)\n')
+      }
+    }
+  }
 }
 
-async function _body (selectedScenario) {
+/**
+ * Fetch 'current' data for the service
+ *
+ * This is information like the current financial year, summer and winter
+ * cycles, and billing periods.
+ *
+ * Some scenarios need this information to dynamically generate the data they
+ * will seed.
+ *
+ * @private
+ */
+async function _currentServiceData () {
+  const response = await get('/system/data/dates')
+
+  return response.json()
+}
+
+/**
+ * Extract data from the scenario file
+ * @private
+ */
+async function _body (selectedScenario, currentServiceData) {
   // 1. Get the absolute path
   const scenarioPath = path.resolve(SCENARIOS_DIR, `${selectedScenario}.js`)
 
@@ -57,9 +97,13 @@ async function _body (selectedScenario) {
   }
 
   // 4. Call the function here to get the actual data object
-  return await getBody()
+  return await getBody(currentServiceData)
 }
 
+/**
+ * Send scenario data to the water-abstraction-system for loading
+ * @private
+ */
 async function _load (selectedScenario, body) {
   logInfo(`Loading scenario ${styleBold(selectedScenario)}...`)
 
@@ -91,10 +135,11 @@ async function _load (selectedScenario, body) {
  *
  * @private
  */
-async function _prompt (scenarios) {
+async function _prompt (scenarios, defaultValue) {
   return search(
     {
       message: 'Type to search scenarios:',
+      default: defaultValue, // Highlights the last used scenario
       source: async (input) => {
         let filteredScenarios = scenarios
 
@@ -114,6 +159,10 @@ async function _prompt (scenarios) {
   )
 }
 
+/**
+ * Get list of available scenario files
+ * @private
+ */
 function _scenarios () {
   return fs.readdirSync(SCENARIOS_DIR)
     .filter((file) => {
@@ -124,25 +173,24 @@ function _scenarios () {
     })
 }
 
+/**
+ * Clear existing data
+ * @private
+ */
 async function _tearDown () {
   logInfo('Tearing down previous scenario data...')
 
   await post('/system/data/tear-down')
 }
 
+/**
+ * Global keypress listener for the Escape key signal
+ */
 process.stdin.on('keypress', (str, key) => {
   if (key.name === 'escape') {
     ESCAPE_KEY_ABORT_CONTROLLER.abort()
   }
 })
 
-try {
-  await run()
-} catch (err) {
-  if (['AbortPromptError', 'ExitPromptError'].includes(err.name)) {
-    logWarning('\nCancelled')
-  } else {
-    logError(err.message)
-    process.exit(1) // Standard practice to exit with failure code
-  }
-}
+// Entry point
+await run()

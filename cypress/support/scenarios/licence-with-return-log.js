@@ -2,25 +2,14 @@ import licenceData from '../fixture-builder/licence.js'
 import returnLogs from '../fixture-builder/return-logs.js'
 import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnVersion from '../fixture-builder/return-version.js'
-import { compareDates, formatDateToIso, previousPeriod, today } from '../helpers/date.helpers.js'
+import { formatDateToIso } from '../helpers/date.helpers.js'
 
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData
 
-  let returnPeriod = firstReturnPeriod
+  const endDate = new Date(firstReturnPeriod.endDate)
+  const startDate = new Date(firstReturnPeriod.startDate)
 
-  // If the first return period ends in the future, we won't be able to interact with it. This scenario was written
-  // for a number of our return log tests, that check we can add various types of return submissions.
-  // To ensure we can interact with the return log, we bump the period back by one, so it ends in the past.
-  if (!compareDates(firstReturnPeriod.endDate, today())) {
-    returnPeriod = previousPeriod(firstReturnPeriod)
-  }
-
-  const dueDate = new Date(returnPeriod.dueDate)
-  const endDate = new Date(returnPeriod.endDate)
-  const startDate = new Date(returnPeriod.startDate)
-
-  const dueDateString = formatDateToIso(dueDate)
   const endDateString = formatDateToIso(endDate)
   const startDateString = formatDateToIso(startDate)
 
@@ -31,7 +20,7 @@ export default function (currentServiceData) {
     ...returnLogs(1)
   }
 
-  dataModel.returnLogs[0].dueDate = dueDateString
+  dataModel.returnLogs[0].dueDate = null
   dataModel.returnLogs[0].endDate = endDateString
   dataModel.returnLogs[0].id = '7f6ff22b-f7f6-4f37-a29e-244fad5a22eb'
   dataModel.returnLogs[0].metadata.description = dataModel.returnRequirements[0].siteDescription
@@ -42,7 +31,7 @@ export default function (currentServiceData) {
   dataModel.returnLogs[0].returnRequirementId = dataModel.returnRequirements[0].id
   dataModel.returnLogs[0].startDate = startDateString
   dataModel.returnLogs[0].status = 'due'
-  dataModel.returnLogs[0].quarterly = returnPeriod.quarterly
+  dataModel.returnLogs[0].quarterly = firstReturnPeriod.quarterly
 
   return dataModel
 }

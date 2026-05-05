@@ -7,7 +7,7 @@ describe('Submit then edit an abstraction volumes return with zero quantities (i
     cy.tearDown()
 
     cy.calculatedDates().then((body) => {
-      const scenario = scenarioData(body.firstReturnPeriod)
+      const scenario = scenarioData(body)
 
       cy.load(scenario)
 

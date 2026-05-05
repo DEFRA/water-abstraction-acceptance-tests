@@ -7,7 +7,7 @@ describe('Submit a meter readings return (internal)', () => {
     cy.tearDown()
 
     cy.calculatedDates().then((body) => {
-      const scenario = scenarioData(body.firstReturnPeriod)
+      const scenario = scenarioData(body)
 
       cy.load(scenario)
 

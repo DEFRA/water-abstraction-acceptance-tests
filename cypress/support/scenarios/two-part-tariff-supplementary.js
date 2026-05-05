@@ -4,13 +4,13 @@ import billingAccountAddressData from '../fixture-builder/billing-account-addres
 import chargeElementsData from '../fixture-builder/charge-elements.js'
 import chargeReferencesData from '../fixture-builder/charge-references.js'
 import chargeVersionsData from '../fixture-builder/charge-versions.js'
-import currentFinancialYear from '../helpers/currentFinancialYear.js'
 import licenceAgreementData from '../fixture-builder/licence-agreement.js'
 import licenceData from '../fixture-builder/licence.js'
 import licenceVersionPurposesData from '../fixture-builder/licence-version-purposes.js'
 import returnLogsData from '../fixture-builder/return-logs.js'
+import { currentFinancialYear } from '../helpers/date.helpers.js'
 
-export default function twoPartTariffSupplementary () {
+export default function () {
   const licenceRecords = _licenceRecords()
   const licenceRef = licenceRecords.licences[0].licenceRef
 

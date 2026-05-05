@@ -25,7 +25,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import 'querystring'
-import currentFinancialYear from './helpers/currentFinancialYear'
+
+import { currentFinancialYear } from './helpers/date.helpers.js'
 
 // Both the PRE-SROC and SROC schemes support calculating bill runs up to 5 years back. So, when you make a change
 // to a licence's charge versions the supplementary billing engine is expected to calculate the charges for each
@@ -101,32 +102,6 @@ Cypress.Commands.add('quarterlyPeriods', (year = null) => {
   periods.q4.status = today > periods.q4.endDate ? 'open' : 'not due yet'
 
   return cy.wrap(periods)
-})
-
-Cypress.Commands.add('previousPeriod', (period) => {
-  cy.log('Push a return period back by one')
-
-  const previousPeriod = {
-    dueDate: period.dueDate ? new Date(period.dueDate) : null,
-    endDate: new Date(period.endDate),
-    name: period.name,
-    quarterly: period.quarterly,
-    startDate: new Date(period.startDate)
-  }
-
-  let monthsBack = 12
-  if (period.quarterly) {
-    monthsBack = 3
-  }
-
-  previousPeriod.endDate.setMonth(previousPeriod.endDate.getMonth() - monthsBack)
-  previousPeriod.startDate.setMonth(previousPeriod.startDate.getMonth() - monthsBack)
-
-  if (period.dueDate) {
-    previousPeriod.dueDate.setMonth(previousPeriod.dueDate.getMonth() - monthsBack)
-  }
-
-  return cy.wrap(previousPeriod)
 })
 
 // We do not control when the tests are run so sometimes we need a date that is within the current financial year when
