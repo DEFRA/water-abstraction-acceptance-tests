@@ -36,7 +36,10 @@ describe('Change user permissions (internal)', () => {
     })
 
     // confirm we see the expected result then select edit
-    cy.get('.govuk-heading-l').should('have.text', 'User basic.user@example.com')
+    cy.get('@userToBeUpdatedEmail').then((userToBeUpdatedEmail) => {
+      cy.get('.govuk-caption-l').should('have.text', userToBeUpdatedEmail)
+    })
+    cy.get('.govuk-heading-l').should('have.text', 'User details')
     cy.get('[data-test="no-roles-msg"]').should('have.text', 'Basic access grants no additional roles.')
     cy.get('.govuk-button').click()
 
@@ -49,8 +52,12 @@ describe('Change user permissions (internal)', () => {
     cy.get('form > .govuk-button').click()
 
     // Account permissions are updated
-    // confirm we see the confirmation page and what permissions have now been applied
-    cy.get('.govuk-heading-l').should('contain.text', 'Account permissions are updated')
-    cy.get('p.govuk-body').eq(1).should('contain', 'National Permitting Service permissions')
+    // confirm we are back on the user details page with the updated permissions
+    cy.get('@userToBeUpdatedEmail').then((userToBeUpdatedEmail) => {
+      cy.get('.govuk-caption-l').should('have.text', userToBeUpdatedEmail)
+    })
+    cy.get('.govuk-heading-l').should('have.text', 'User details')
+    cy.get('[data-test="meta-data-permissions"]').should('have.text', 'National Permitting Service')
+    cy.get('[data-test="no-roles-msg"]').should('not.exist')
   })
 })
