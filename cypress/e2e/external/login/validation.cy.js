@@ -3,7 +3,9 @@
 describe('Login validation (external)', () => {
   it('validates the input in the email and password fields on the login screen are valid', () => {
     // Navigate to the signin page
-    cy.visit(Cypress.env('externalUrl'))
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(externalUrl)
+    })
     cy.get('a[href*="/signin"]').click()
 
     // Test submitting nothing
