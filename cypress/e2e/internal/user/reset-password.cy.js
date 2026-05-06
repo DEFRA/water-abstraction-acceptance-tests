@@ -30,14 +30,18 @@ describe('Reset password journey (internal)', () => {
         cy.contains('Confirm your password').should('be.visible')
 
         // Enter a password and confirm
-        cy.get('[id=password]').type(Cypress.env('defaultPassword'))
-        cy.get('[id=confirmPassword]').type(Cypress.env('defaultPassword'))
-        cy.get('button.govuk-button').click()
+        cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+          cy.get('[id=password]').type(defaultPassword)
+          cy.get('[id=confirmPassword]').type(defaultPassword)
+          cy.get('button.govuk-button').click()
+        })
 
         // Log in using the updated credentials to confirm the password has been updated
         cy.get('#email').type(userEmail)
-        cy.get('#password').type(Cypress.env('defaultPassword'))
-        cy.get('button.govuk-button').click()
+        cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+          cy.get('#password').type(defaultPassword)
+          cy.get('button.govuk-button').click()
+        })
 
         // Check we are signed in by confirming we are on the search page
         cy.contains('Search').should('be.visible')

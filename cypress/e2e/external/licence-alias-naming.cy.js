@@ -20,7 +20,9 @@ describe('View Licences as external user', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/licences/${scenario.licenceDocumentHeaders[0].id}`)
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(`${externalUrl}/licences/${scenario.licenceDocumentHeaders[0].id}`)
+    })
 
     cy.get('.govuk-summary-list__value > a').contains('Rename this licence').click()
     cy.get('#name').clear()

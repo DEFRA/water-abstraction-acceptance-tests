@@ -22,7 +22,9 @@ describe('Sharing license access with another user (external)', () => {
         external: true
       })
     })
-    cy.visit(`${Cypress.env('externalUrl')}/manage_licences`)
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(`${externalUrl}/manage_licences`)
+    })
 
     cy.get('.govuk-list').contains('Give or remove access to your licence information').click()
     cy.get('.govuk-button').contains('Give access').click()
@@ -36,13 +38,17 @@ describe('Sharing license access with another user (external)', () => {
     cy.get('#signout').click()
 
     // Second user logs in
-    cy.visit(Cypress.env('externalUrl'))
+    cy.env(['externalUrl']).then(({ externalUrl }) => {
+      cy.visit(externalUrl)
+    })
     cy.get('a[href*="/signin"]').click()
     cy.get('@secondUserEmail').then((email) => {
       cy.get('input#email').type(email)
     })
-    cy.get('input#password').type(Cypress.env('defaultPassword'))
-    cy.get('.govuk-button.govuk-button--start').click()
+    cy.env(['defaultPassword']).then(({ defaultPassword }) => {
+      cy.get('input#password').type(defaultPassword)
+      cy.get('.govuk-button.govuk-button--start').click()
+    })
 
     // Assert they can see the same licence
     cy.get('.licence-result__column > a').contains('AT/TE/ST/01/01').should('be.visible')
