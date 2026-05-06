@@ -40,10 +40,26 @@ describe('Standard returns reminder journey (internal)', () => {
     cy.get('[data-test="returns-notice-type"]').should('contain.text', 'Returns reminder')
     cy.contains('Confirm').click()
 
+    // Capture the notice reference so we can verify it later
+    cy.contains('.govuk-caption-l', 'Notice').invoke('text').then((text) => {
+      cy.wrap(text.trim()).as('noticeReference')
+    })
+
     // Check the recipients
     cy.contains('Send').click()
 
     // Notice confirmation
     cy.get('.govuk-panel__title', { timeout: 15000 }).contains('Returns reminders sent')
+    cy.get('.govuk-link').contains('View notice').click()
+
+    // Notice page contains our seeded recipient
+    cy.get('@noticeReference').then((noticeReference) => {
+      cy.contains('.govuk-caption-l', noticeReference)
+    })
+
+    cy.get('#main-content > details > summary > span').click()
+    cy.get('[data-test="filter-licence"]').type('AT/TE/ST/01/01')
+    cy.contains('Apply filters').click()
+    cy.get('[data-test="notification-licences-0"]').should('contain.text', 'AT/TE/ST/01/01')
   })
 })
