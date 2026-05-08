@@ -1,6 +1,6 @@
 'use strict'
 
-import scenarioData from '../../../support/scenarios/editing-return.js'
+import scenarioData from '../../../support/scenarios/licence-with-bill-run-and-return-log.js'
 
 const scenario = scenarioData()
 
