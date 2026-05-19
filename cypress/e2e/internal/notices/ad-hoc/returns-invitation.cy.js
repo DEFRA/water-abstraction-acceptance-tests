@@ -74,27 +74,28 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
 
     // Additional recipient is shown in the list
     cy.get('[data-test^="recipient-contact"]').should('have.length', 2)
-    cy.get('[data-test="recipient-contact-0"]').within(() => {
+
+    cy.get('[data-test="recipient-contact-0"]').should('contain.text', 'external@example.com')
+    cy.get('[data-test="recipient-licence-numbers-0"]').should('contain.text', 'AT/TE/ST/01/01')
+    cy.get('[data-test="recipient-method-0"]').should('contain.text', 'Email - primary user')
+    cy.get('[data-test="recipient-action-0"]').within(() => {
+      cy.contains('Preview')
+    })
+
+    cy.get('[data-test="recipient-contact-1"]').within(() => {
       cy.contains('Lookup recipient')
       cy.contains('ENVIRONMENT AGENCY')
       cy.contains('HORIZON HOUSE DEANERY ROAD')
       cy.contains('BRISTOL')
       cy.contains('BS1 5AH')
     })
-    cy.get('[data-test="recipient-licence-numbers-0"]').should('contain.text', 'AT/TE/ST/01/01')
-    cy.get('[data-test="recipient-method-0"]').should('contain.text', 'Letter - single use')
-    cy.get('[data-test="recipient-action-0"]').within(() => {
-      cy.contains('Preview')
-    })
-
-    cy.get('[data-test="recipient-contact-1"]').should('contain.text', 'external@example.com')
     cy.get('[data-test="recipient-licence-numbers-1"]').should('contain.text', 'AT/TE/ST/01/01')
-    cy.get('[data-test="recipient-method-1"]').should('contain.text', 'Email - primary user')
+    cy.get('[data-test="recipient-method-1"]').should('contain.text', 'Letter - single use')
     cy.get('[data-test="recipient-action-1"]').within(() => {
       cy.contains('Preview')
     })
 
-    cy.get('[data-test="recipient-action-0"]').contains('Preview').click()
+    cy.get('[data-test="recipient-action-1"]').contains('Preview').click()
 
     // Preview contains the contact name and address
     cy.contains('Returns invitation ad-hoc')
