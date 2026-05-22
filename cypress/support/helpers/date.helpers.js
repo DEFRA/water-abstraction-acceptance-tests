@@ -97,7 +97,7 @@ export function formatDateToIso (date) {
  *
  * @returns {string | null} The date formatted as a 'DD MMMM YYYY' string
  */
-export function formatLongDate(date) {
+export function formatLongDate (date) {
   if (!date) {
     return null
   }
