@@ -280,6 +280,19 @@ Cypress.Commands.add('tearDown', () => {
     .should('equal', 204)
 })
 
+Cypress.Commands.add('triggerJob', (job) => {
+  cy.log(`Triggering ${job} job`)
+
+  cy.request({
+    url: `/system/jobs/${job}`,
+    log: false,
+    method: 'POST',
+    timeout: 60000
+  })
+    .its('status', { log: false })
+    .should('equal', 204)
+})
+
 function _dueDateObject (dueDate) {
   const text = dueDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
 

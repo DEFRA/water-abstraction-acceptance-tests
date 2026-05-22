@@ -36,9 +36,8 @@ export default function (currentServiceData) {
   dataModel.addresses = [
     {
       id: '62549cdb-073f-4d5c-a2a1-c47b0b910010',
-      address1: 'Horizon House',
-      address2: 'Deanery Road',
-      address3: 'Bristol',
+      address1: 'HORIZON HOUSE',
+      address2: 'DEANERY ROAD',
       postcode: 'BS1 5AH',
       country: 'UK',
       dataSource: 'nald'
