@@ -2,7 +2,7 @@ import licenceData from '../fixture-builder/licence.js'
 
 export default function () {
   const dataModel = {
-    ...licenceData(),
+    ...licenceData()
   }
 
   // The expired date needs to be more than 90 days in the future for the licence to be eligible for a renewal invitation.
