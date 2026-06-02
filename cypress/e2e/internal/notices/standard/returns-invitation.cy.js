@@ -36,7 +36,7 @@ describe('Standard returns invitation journey (internal)', () => {
     cy.contains('Continue').click()
 
     // Check the notice type
-    cy.get('[data-test="returns-notice-type"]').should('contain.text', 'Returns invitation')
+    cy.get('[data-test="notice-type"]').should('contain.text', 'Returns invitation')
     cy.contains('Confirm').click()
 
     // Capture the notice reference so we can verify it later
