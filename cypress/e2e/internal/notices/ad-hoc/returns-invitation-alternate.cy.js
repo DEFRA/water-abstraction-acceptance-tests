@@ -32,17 +32,17 @@ describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     // Start the standard notice journey
     cy.get('.govuk-button').contains('Create an ad-hoc notice').click()
 
+    // Select the notice type
+    cy.contains('label', 'Returns invitation').click()
+    cy.contains('Continue').click()
+
     // Enter a licence number
     cy.get('#licenceRef').type('AT/TE/ST/01/01')
     cy.contains('Continue').click()
 
-    // Select the notice type
-    cy.get('#noticeType').check()
-    cy.contains('Continue').click()
-
     // Check the notice type
     cy.get('[data-test="licence-number"]').should('contain.text', 'AT/TE/ST/01/01')
-    cy.get('[data-test="returns-notice-type"]').should('contain.text', 'Returns invitation')
+    cy.get('[data-test="notice-type"]').should('contain.text', 'Returns invitation')
     cy.contains('Confirm').click()
 
     // Capture the notice reference so we can verify it later

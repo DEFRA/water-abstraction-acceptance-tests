@@ -1,8 +1,8 @@
 'use strict'
 
-import scenarioData from '../../../../support/scenarios/licence-with-previous-return-log.js'
+import scenarioData from '../../../../support/scenarios/licence-with-due-return-log.js'
 
-describe('Ad-hoc returns invitation journey (internal)', () => {
+describe('Ad-hoc returns reminder journey (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
     cy.calculatedDates().then((body) => {
@@ -28,7 +28,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.get('.govuk-button').contains('Create an ad-hoc notice').click()
 
     // Select the notice type
-    cy.contains('label', 'Returns invitation').click()
+    cy.contains('label', 'Returns reminder').click()
     cy.contains('Continue').click()
 
     // Enter a licence number
@@ -37,7 +37,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
 
     // Check the notice type
     cy.get('[data-test="licence-number"]').should('contain.text', 'AT/TE/ST/01/01')
-    cy.get('[data-test="notice-type"]').should('contain.text', 'Returns invitation')
+    cy.get('[data-test="notice-type"]').should('contain.text', 'Returns reminder')
     cy.contains('Confirm').click()
 
     // Capture the notice reference so we can verify it later
@@ -98,7 +98,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.get('[data-test="recipient-action-1"]').contains('Preview').click()
 
     // Preview contains the contact name and address
-    cy.contains('Returns invitation ad-hoc')
+    cy.contains('Returns reminder ad-hoc')
     cy.contains('Lookup recipient')
     cy.get('.govuk-back-link').click()
 
@@ -106,7 +106,7 @@ describe('Ad-hoc returns invitation journey (internal)', () => {
     cy.contains('Send').click()
 
     // Notice confirmation
-    cy.get('.govuk-panel__title', { timeout: 15000 }).contains('Returns invitations sent')
+    cy.get('.govuk-panel__title', { timeout: 15000 }).contains('Returns reminders sent')
     cy.get('.govuk-link').contains('View notice').click()
 
     // Notice page contains the recipients
