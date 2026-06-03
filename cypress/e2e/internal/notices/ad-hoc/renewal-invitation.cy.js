@@ -11,7 +11,7 @@ describe('Ad-hoc renewal invitation journey (internal)', () => {
       cy.load(scenario)
     })
 
-    cy.fixture('users.json').its('admin').as('userEmail')
+    cy.fixture('users.json').its('psc').as('userEmail')
   })
 
   it('invites a customer to submit a renewal invitation', () => {
