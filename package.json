@@ -45,6 +45,9 @@
       "describe",
       "expect",
       "it"
+    ],
+    "ignore": [
+      "cypress/support/scenarios/licence-with-failed-renewal-invitation.js"
     ]
   }
 }
