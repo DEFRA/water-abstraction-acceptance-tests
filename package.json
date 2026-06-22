@@ -49,5 +49,9 @@
     "ignore": [
       "cypress/support/scenarios/licence-with-failed-renewal-invitation.js"
     ]
+  },
+  "allowScripts": {
+    "cypress@15.17.0": true,
+    "fsevents@2.3.2": true
   }
 }
