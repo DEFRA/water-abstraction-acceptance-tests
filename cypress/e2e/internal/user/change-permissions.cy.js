@@ -43,21 +43,27 @@ describe('Change user permissions (internal)', () => {
     cy.get('[data-test="no-roles-msg"]').should('have.text', 'Basic access grants no additional roles.')
     cy.get('.govuk-button').click()
 
-    // Set permissions
-    // confirm we are on the permissions page then change the user's permissions from basic user to National
-    // Permitting Service and submit
-    cy.get('.govuk-heading-l').eq(1).should('have.text', 'Set permissions')
-    cy.get('.govuk-radios > :nth-child(1) > #permission').should('be.checked')
-    cy.get('#permission-4').check()
-    cy.get('form > .govuk-button').click()
+    // Check page
+    // Click the permissions change link
+    cy.get(':nth-child(2) > .govuk-summary-list__actions > .govuk-link').click()
 
-    // Account permissions are updated
-    // confirm we are back on the user details page with the updated permissions
+    // Select permissions for the user
+    // Change from Basic to Environment officer
+    cy.get(':nth-child(3) > [name="permission"]').click()
+    cy.get('.govuk-button').contains('Continue').click()
+
+    // Check page
+    // Confirm notification shown and new permission shown, then submit
+    cy.get('.govuk-notification-banner__heading').contains('Permissions updated')
+    cy.get(':nth-child(2) > .govuk-summary-list__value').contains('Environment Officer')
+    cy.get('.govuk-button').contains('Confirm').click()
+
+    // Users page
+    // Confirm notification shown and permissions updated
     cy.get('@userToBeUpdatedEmail').then((userToBeUpdatedEmail) => {
-      cy.get('.govuk-caption-l').should('have.text', userToBeUpdatedEmail)
+      cy.get('.govuk-notification-banner__heading').contains(`${userToBeUpdatedEmail} has been updated.`)
     })
-    cy.get('.govuk-heading-l').should('have.text', 'User details')
-    cy.get('[data-test="meta-data-permissions"]').should('have.text', 'National Permitting Service')
-    cy.get('[data-test="no-roles-msg"]').should('not.exist')
+    cy.get('.govuk-button-group > :nth-child(1)').click()
+    cy.get('[data-test="user-permissions-0"]').contains('Environment Officer')
   })
 })
