@@ -25,7 +25,7 @@ export default function () {
       enabled: true
     },
     internalBasicUser: {
-      username: 'basic.user@example.com',
+      username: 'regression.tests@wrls.gov.uk',
       password: 'P@55word',
       resetRequired: 0,
       application: 'water_admin',
