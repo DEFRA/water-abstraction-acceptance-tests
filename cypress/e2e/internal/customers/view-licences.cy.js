@@ -33,6 +33,6 @@ describe("View a licence's contacts (internal)", () => {
 
     // Confirm contacts contains expected record
     cy.get('.govuk-table__cell').contains(scenario.licences[0].licenceRef)
-    cy.get('.govuk-table__cell').contains(scenario.licenceVersionHolders[0].derivedName)
+    cy.get('.govuk-table__cell').contains(scenario.companies[0].name)
   })
 })
