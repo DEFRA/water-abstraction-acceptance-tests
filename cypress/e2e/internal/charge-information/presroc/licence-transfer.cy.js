@@ -38,31 +38,20 @@ describe('PRESROC licence transfer (internal)', () => {
     // Who should the bills go to?
     // choose Another billing contact then enter a name to search for and continue
     cy.get('input#account-2').click()
-    cy.get('input#accountSearch').type('Automation-Test-Comp')
+    cy.get('input#accountSearch').type('Test Farm Co Ltd')
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the account type
-    // choose Individual and then enter a name and continue
+    // choose Individual and then enter a name and continue. We choose an individual because Company requires a
+    // valid company's house number
     cy.get('input#accountType-3').click()
-    cy.get('input#personName').type('John Smith')
+    cy.get('input#personName').type('Test Farm Co Ltd')
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select an existing address for Big Farm Co Ltd
-    // choose Set up a new address and continue
-    cy.get('input#selectedAddress-3').click()
-    cy.get('form > .govuk-button').contains('Continue').click()
-
-    // Enter the UK postcode
-    // enter the postcode and click Find address
-    cy.get('input#postcode').type('BS1 5AH')
-    cy.get('form > .govuk-button').contains('Find address').click()
-
-    // Select the address
-    // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
-    // has rate monitoring protection. Because we're automating the calls, they happen too quickly so the facade rejects
-    // the second call. Hence we need to wait a second.
-    cy.wait(2000)
-    cy.get('.govuk-select').select('340116')
+    // choose existing address Big Farm and continue (we already have journeys that use the address lookup so no need to
+    // repeat here)
+    cy.get('input#selectedAddress').click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Do you need to add an FAO?
@@ -71,22 +60,17 @@ describe('PRESROC licence transfer (internal)', () => {
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Set up a contact
-    // choose Add a new person and continue
-    cy.get('input#selectedContact').click()
-    cy.get('form > .govuk-button').contains('Continue').click()
-
-    // Add a new contact
-    // enter the contact's details (only the mandatory fields) and continue
-    cy.get('input#firstName').type('Jim')
-    cy.get('input#lastName').type('Bob')
+    // choose Add a new department and continue
+    cy.get('input#selectedContact-2').click()
+    cy.get('input#department').type('Test Farm Manager')
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Check billing account details
     // check the details are as expected and confirm
     cy.get('section > dl').within(() => {
-      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'John Smith')
-      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', 'BS1 5AH')
-      cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'Jim\n    Bob')
+      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'Test Farm Co Ltd')
+      cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', 'Big Farm')
+      cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'Test Farm Manager')
     })
     cy.get('form > .govuk-button').contains('Confirm').click()
 
@@ -103,9 +87,9 @@ describe('PRESROC licence transfer (internal)', () => {
       // start date
       cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', '1 January 2018')
       // billing account
-      cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'John Smith')
-      cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'Jim\n    Bob')
-      cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'BS1 5AH')
+      cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'Test Farm Co Ltd')
+      cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'Big Farm')
+      cy.get('div:nth-child(3) > dd.govuk-summary-list__value').should('contain.text', 'Test Farm Manager')
       // licence holder
       cy.get('div:nth-child(4) > dd.govuk-summary-list__value').should('contain.text', 'Big Farm Co Ltd')
     })

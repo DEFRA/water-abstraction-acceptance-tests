@@ -172,25 +172,6 @@ export default function licence () {
         addressId: '62549cdb-073f-4d5c-a2a1-c47b0b910010'
       }
     ],
-    licenceVersionHolders: [
-      {
-        id: 'a9f5754e-e720-42f5-9132-98bb18632ee6',
-        companyId: 'e8abdbb4-aeea-47d4-91b2-97bf82bc2778',
-        addressId: '62549cdb-073f-4d5c-a2a1-c47b0b910010',
-        derivedName: 'Big Farm Co Ltd',
-        licenceVersionId: '7ac6be4b-b7a0-4e35-9cd4-bd1c783af32b',
-        holderType: 'organisation',
-        name: 'Big Farm Co Ltd',
-        addressLine1: 'Big Farm',
-        addressLine2: 'Windy road',
-        addressLine3: 'Buttercup meadow',
-        addressLine4: 'Buttercup Village',
-        town: 'Testington',
-        county: 'Testingshire',
-        postcode: 'TT1 1TT',
-        country: 'UK'
-      }
-    ],
     licenceVersionPurposes: [
       {
         id: 'f264184b-22a7-4e26-bd90-d5738eb2e07e',

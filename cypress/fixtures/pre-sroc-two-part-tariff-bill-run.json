@@ -56,14 +56,6 @@
       "companyEntityId": "e86c312b-222d-404f-ae08-eb90a80bec18"
     }
   ],
-  "companies": [
-    {
-      "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
-      "name": "Big Farm Co Ltd",
-      "type": "organisation",
-      "companyNumber": "12345"
-    }
-  ],
   "addresses": [
     {
       "id": "62549cdb-073f-4d5c-a2a1-c47b0b910010",
@@ -78,6 +70,16 @@
       "dataSource": "nald"
     }
   ],
+  "companies": [
+    {
+      "id": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
+      "name": "Big Farm Co Ltd",
+      "type": "organisation",
+      "companyNumber": "12345",
+      "externalId": "9:999991",
+      "regionId": { "schema": "public", "table": "regions", "lookup": "naldRegionId", "value": 9, "select": "id" }
+    }
+  ],
   "companyAddresses": [
     {
       "companyId": "e8abdbb4-aeea-47d4-91b2-97bf82bc2778",
@@ -87,7 +89,7 @@
         "schema": "crm_v2",
         "table": "roles",
         "lookup": "name",
-        "value": "billing",
+        "value": "licenceHolder",
         "select": "roleId"
       }
     }
