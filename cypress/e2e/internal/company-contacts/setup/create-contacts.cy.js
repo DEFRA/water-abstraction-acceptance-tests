@@ -1,6 +1,6 @@
 'use strict'
 
-import scenarioData from '../../../../support/scenarios/one-licence-only.js'
+import scenarioData from '../../../../support/scenarios/company-contact.js'
 
 const scenario = scenarioData()
 
