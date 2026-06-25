@@ -1,6 +1,7 @@
 'use strict'
 
 import scenarioData from '../../../support/scenarios/one-licence-only.js'
+import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 
 const scenario = scenarioData()
 
@@ -20,19 +21,20 @@ describe("View a licence's contacts (internal)", () => {
       })
     })
 
-    cy.visit(`/system/companies/${scenario.companies[0].id}/licences`)
+    cy.visit(`/system/companies/${scenario.companies[0].id}/history`)
 
     // Confirm expected tabs are present
     cy.get('.x-govuk-sub-navigation').contains('Licences')
+    cy.get('.x-govuk-sub-navigation').contains('History')
     cy.get('.x-govuk-sub-navigation').contains('Billing accounts')
     cy.get('.x-govuk-sub-navigation').contains('Contacts')
 
     // Confirm the page title and caption
     cy.get('.govuk-caption-l').should('contain.text', scenario.companies[0].name)
-    cy.get('h1').should('contain.text', 'Licences')
+    cy.get('h1').should('contain.text', 'History')
 
     // Confirm contacts contains expected record
     cy.get('.govuk-table__cell').contains(scenario.licences[0].licenceRef)
-    cy.get('.govuk-table__cell').contains(scenario.companies[0].name)
+    cy.get('.govuk-table__cell').contains(formatLongDate(scenario.licences[0].startDate))
   })
 })
