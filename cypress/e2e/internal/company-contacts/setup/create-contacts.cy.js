@@ -4,7 +4,7 @@ import scenarioData from '../../../../support/scenarios/company-contact.js'
 
 const scenario = scenarioData()
 
-describe("View a licence's contacts (internal)", () => {
+describe("Create licence holder contacts (internal)", () => {
   beforeEach(() => {
     cy.tearDown()
 
@@ -13,7 +13,7 @@ describe("View a licence's contacts (internal)", () => {
     cy.fixture('users.json').its('super').as('userEmail')
   })
 
-  it('can create a contact for all licences, some licences, and no licences', () => {
+  it('can create an abstraction alert contact for all licences and some licences, and an additional contact', () => {
     cy.get('@userEmail').then((userEmail) => {
       cy.programmaticLogin({
         email: userEmail

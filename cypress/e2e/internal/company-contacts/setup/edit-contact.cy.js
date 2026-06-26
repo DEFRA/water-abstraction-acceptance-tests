@@ -5,7 +5,7 @@ import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 
 const scenario = scenarioData()
 
-describe("View a licence's contacts (internal)", () => {
+describe("Edit licence holder contacts (internal)", () => {
   beforeEach(() => {
     cy.tearDown()
 

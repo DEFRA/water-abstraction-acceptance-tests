@@ -4,7 +4,7 @@ import scenarioData from '../../../../support/scenarios/company-contact.js'
 
 const scenario = scenarioData()
 
-describe("View a licence's contacts (internal)", () => {
+describe("Remove licence holder contacts (internal)", () => {
   beforeEach(() => {
     cy.tearDown()
 
