@@ -4,7 +4,7 @@ import scenarioData from '../../../../support/scenarios/company-contact.js'
 
 const scenario = scenarioData()
 
-describe("Restore a licence holder contact (internal)", () => {
+describe('Restore a licence holder contact (internal)', () => {
   beforeEach(() => {
     cy.tearDown()
 
