@@ -130,6 +130,5 @@ describe("View a licence's contacts (internal)", () => {
 
     cy.get('[data-test="contact-name-4"]').should('contain.text', 'Test Contact Some Licences')
     cy.get('[data-test="contact-type-4"]').should('contain.text', 'Abstraction alerts')
-
   })
 })
