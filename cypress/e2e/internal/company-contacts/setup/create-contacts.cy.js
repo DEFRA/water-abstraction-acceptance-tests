@@ -119,13 +119,16 @@ describe("View a licence's contacts (internal)", () => {
     cy.get('[data-test="contact-name-0"]').should('contain.text', scenario.companies[0].name)
     cy.get('[data-test="contact-type-0"]').should('contain.text', 'Licence holder')
 
-    cy.get('[data-test="contact-name-1"]').should('contain.text', 'Test Contact All Licences')
-    cy.get('[data-test="contact-type-1"]').should('contain.text', 'Abstraction alerts')
+    cy.get('[data-test="contact-name-1"]').should('contain.text', 'Test Contact')
+    cy.get('[data-test="contact-type-1"]').should('contain.text', 'Additional contact')
 
-    cy.get('[data-test="contact-name-2"]').should('contain.text', 'Test Contact Some Licences')
+    cy.get('[data-test="contact-name-2"]').should('contain.text', 'Test Contact All Licences')
     cy.get('[data-test="contact-type-2"]').should('contain.text', 'Abstraction alerts')
 
-    cy.get('[data-test="contact-name-3"]').should('contain.text', 'Test Contact No Licences')
-    cy.get('[data-test="contact-type-3"]').should('contain.text', 'Additional contact')
+    cy.get('[data-test="contact-name-3"]').should('contain.text', 'Test Contact Some Licences')
+    cy.get('[data-test="contact-type-3"]').should('contain.text', 'Abstraction alerts')
+
+    cy.get('[data-test="contact-name-4"]').should('contain.text', 'Test Contact No Licences')
+    cy.get('[data-test="contact-type-4"]').should('contain.text', 'Additional contact')
   })
 })
