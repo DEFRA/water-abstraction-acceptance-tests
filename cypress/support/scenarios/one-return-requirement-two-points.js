@@ -5,6 +5,9 @@ import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnRequirementPoints from '../fixture-builder/return-requirement-points.js'
 import returnVersion from '../fixture-builder/return-version.js'
 
+export const title = 'One return requirement with two points'
+export const description = 'Licence with one return requirement linked to two abstraction points, with no return logs'
+
 export default function () {
   const dataModel = {
     ...licence(),

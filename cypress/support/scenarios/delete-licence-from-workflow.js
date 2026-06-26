@@ -1,5 +1,8 @@
 import licenceData from '../fixture-builder/licence.js'
 
+export const title = 'Deleting a licence from workflow'
+export const description = "Licence with two workflow entries ('to_setup' and 'review') and sent bill runs for workflow deletion testing"
+
 export default function () {
   return {
     ...licenceData(),

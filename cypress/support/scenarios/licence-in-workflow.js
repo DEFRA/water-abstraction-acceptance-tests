@@ -1,5 +1,8 @@
 import licenceData from '../fixture-builder/licence.js'
 
+export const title = 'Licence in workflow'
+export const description = "Licence with a charge version workflow in 'to_setup' status"
+
 export default function () {
   return {
     ...licenceData(),

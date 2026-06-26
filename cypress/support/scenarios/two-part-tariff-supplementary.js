@@ -10,6 +10,9 @@ import licenceVersionPurposesData from '../fixture-builder/licence-version-purpo
 import returnLogsData from '../fixture-builder/return-logs.js'
 import { currentFinancialYear } from '../helpers/date.helpers.js'
 
+export const title = 'Two-part tariff supplementary'
+export const description = 'Full two-part tariff supplementary setup: billing account, SROC charge version, S127 agreement, and two due return logs'
+
 export default function () {
   const licenceRecords = _licenceRecords()
   const licenceRef = licenceRecords.licences[0].licenceRef

@@ -1,5 +1,8 @@
 import licenceData from '../fixture-builder/licence.js'
 
+export const title = 'Cancelling a charge version'
+export const description = "Licence in workflow 'review' with a draft charge version, plus sent annual and two-part tariff bill runs"
+
 export default function () {
   return {
     ...licenceData(),

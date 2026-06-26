@@ -1,5 +1,8 @@
 import licenceData from '../fixture-builder/licence.js'
 
+export const title = 'Editing a return'
+export const description = 'Licence with a completed two-part tariff return log ready for editing'
+
 export default function () {
   return {
     ...licenceData(),

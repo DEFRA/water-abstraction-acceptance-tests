@@ -6,6 +6,9 @@ import usersData from '../fixture-builder/users.js'
 import users from '../../fixtures/users.json' with { type: "json" }
 import { compareDates, formatDateToIso, previousPeriod, relativeToToday, today } from '../helpers/date.helpers.js'
 
+export const title = 'Failed renewal invitation'
+export const description = "Licence registered to a 'bad' external user with pending renewal and return invitations for notification failure testing"
+
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData
 

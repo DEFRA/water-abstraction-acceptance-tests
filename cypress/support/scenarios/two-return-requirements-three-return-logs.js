@@ -7,6 +7,9 @@ import returnRequirementPoints from '../fixture-builder/return-requirement-point
 import returnVersion from '../fixture-builder/return-version.js'
 import { currentFinancialYear } from '../helpers/date.helpers.js'
 
+export const title = 'Two return requirements, three return logs each'
+export const description = 'Two return requirements each with three annual return logs: one due (current year) and two completed (previous years)'
+
 export default function () {
   const dataModel = {
     ...licence(),

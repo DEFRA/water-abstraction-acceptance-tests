@@ -1,6 +1,9 @@
 import licenceData from '../fixture-builder/licence.js'
 import monitoringStationData from '../fixture-builder/monitoring-stations.js'
 
+export const title = 'Monitoring station tagged to licence'
+export const description = 'Licence with a LEV licence condition linked to a monitoring station via a stop flow restriction'
+
 export default function () {
   return {
     ...licenceData(),
