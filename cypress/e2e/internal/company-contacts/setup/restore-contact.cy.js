@@ -63,22 +63,36 @@ describe("View a licence's contacts (internal)", () => {
       .should('include.text', 'A deleted contact with this name and email already exists.')
       .and('include.text', 'Change the name or email, or restore the existing contact.')
 
-    cy.get('input[name="abstractionAlerts"][value="no"]').check()
-    cy.contains('Continue').click()
+    cy.contains('.govuk-summary-list__key', 'Name')
+      .next('.govuk-summary-list__value')
+      .should('include.text', contact.department)
+
+    cy.contains('Restore').click()
+
+    // Confirm the contact was restored
+    cy.get('h1.govuk-heading-l').should('have.text', 'You are about to restore this contact')
 
     cy.contains('.govuk-summary-list__key', 'Name')
       .next('.govuk-summary-list__value')
       .should('include.text', contact.department)
 
-    cy.contains('Confirm').click()
+    cy.contains('.govuk-summary-list__key', 'Email address')
+      .next('.govuk-summary-list__value')
+      .should('include.text', contact.email)
+
+    cy.contains('.govuk-summary-list__key', 'Water abstraction alerts')
+      .next('.govuk-summary-list__value')
+      .should('include.text', 'Yes')
+
+    cy.get('.govuk-button').contains('Confirm restore').click()
 
     // Confirm the notification banner shows the contact was restored
     cy.get('.govuk-notification-banner').within(() => {
       cy.get('.govuk-notification-banner__title').should('contain.text', 'Contact')
-      cy.get('.govuk-notification-banner__heading').should('contain.text', contact.department)
+      cy.get('.govuk-notification-banner__heading').should('contain.text', `${contact.department} was restored`)
     })
 
     cy.get('[data-test="contact-name-1"]').should('contain.text', contact.department)
-    cy.get('[data-test="contact-type-1"]').should('contain.text', 'Additional contact')
+    cy.get('[data-test="contact-type-1"]').should('contain.text', 'Abstraction alerts')
   })
 })
