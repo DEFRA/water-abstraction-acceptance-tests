@@ -1,5 +1,8 @@
 import licenceData from '../fixture-builder/licence.js'
 
+export const title = 'Licence with a pre-SRoC charge version'
+export const description = 'Licence with an ALCS (pre-SRoC) charge version and a sent two-part tariff bill run'
+
 export default function () {
   return {
     ...licenceData(),

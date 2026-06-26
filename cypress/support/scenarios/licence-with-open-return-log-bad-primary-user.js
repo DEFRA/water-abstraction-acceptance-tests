@@ -5,6 +5,9 @@ import returnVersion from '../fixture-builder/return-version.js'
 import usersData from '../fixture-builder/users.js'
 import { compareDates, formatDateToIso, previousPeriod, today } from '../helpers/date.helpers.js'
 
+export const title = 'Open return log with bad primary user'
+export const description = "Licence registered to a 'bad' external user with a due return log for testing submissions with unverified contacts"
+
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData
 

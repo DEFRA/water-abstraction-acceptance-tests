@@ -5,6 +5,9 @@ import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnRequirementPoints from '../fixture-builder/return-requirement-points.js'
 import returnVersion from '../fixture-builder/return-version.js'
 
+export const title = 'Two return requirements with points'
+export const description = 'Two return requirements and two abstraction points with no return logs'
+
 export default function () {
   return {
     ...licence(),

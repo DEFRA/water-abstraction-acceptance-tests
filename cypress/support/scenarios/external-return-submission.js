@@ -1,6 +1,9 @@
 import licenceData from '../fixture-builder/licence.js'
 import usersData from '../fixture-builder/users.js'
 
+export const title = 'External return submission'
+export const description = 'Licence with a due return log and registered external user for testing return submission'
+
 export default function () {
   return {
     users: [

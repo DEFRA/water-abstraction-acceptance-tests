@@ -1,6 +1,9 @@
 import licenceData from '../fixture-builder/licence.js'
 import usersData from '../fixture-builder/users.js'
 
+export const title = 'User registered to licence'
+export const description = 'Licence with a registered external user linked as the primary licence entity holder'
+
 export default function () {
   const dataModel = {
     ...licenceData()

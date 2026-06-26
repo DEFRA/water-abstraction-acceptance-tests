@@ -30,7 +30,7 @@ async function run () {
 
   const currentServiceData = await _currentServiceData()
 
-  const scenarios = _scenarios()
+  const scenarios = await _scenarios()
 
   let selectedScenario
 
@@ -83,7 +83,7 @@ async function _currentServiceData () {
  */
 async function _body (selectedScenario, currentServiceData) {
   // 1. Get the absolute path
-  const scenarioPath = path.resolve(SCENARIOS_DIR, `${selectedScenario}.js`)
+  const scenarioPath = path.resolve(SCENARIOS_DIR, `${selectedScenario.filename}.js`)
 
   // 2. Use dynamic import() to load the ESM scenario file.
   // This allows the scenario to 'import' other ESM files (like licence.js)
@@ -93,7 +93,7 @@ async function _body (selectedScenario, currentServiceData) {
   const getBody = scenarioModule.default || scenarioModule
 
   if (typeof getBody !== 'function') {
-    throw new Error(`The file "${selectedScenario}.js" must have an "export default" function.`)
+    throw new Error(`The file "${selectedScenario.filename}.js" must have an "export default" function.`)
   }
 
   // 4. Call the function here to get the actual data object
@@ -105,7 +105,7 @@ async function _body (selectedScenario, currentServiceData) {
  * @private
  */
 async function _load (selectedScenario, body) {
-  logInfo(`Loading scenario ${styleBold(selectedScenario)}...`)
+  logInfo(`Loading scenario ${styleBold(selectedScenario.title)}...`)
 
   await post('/system/data/load', body)
 }
@@ -144,15 +144,19 @@ async function _prompt (scenarios, defaultValue) {
         let filteredScenarios = scenarios
 
         if (input) {
+          const query = input.toLowerCase()
+
           filteredScenarios = scenarios.filter((scenario) => {
-            return scenario.toLowerCase().includes(input.toLowerCase())
+            return scenario.title.toLowerCase().includes(query) ||
+              scenario.filename.toLowerCase().includes(query)
           })
         }
 
-        return filteredScenarios
-          .map((scenario) => {
-            return { name: scenario, value: scenario }
-          })
+        return filteredScenarios.map((scenario) => ({
+          name: scenario.title,
+          value: scenario,
+          description: scenario.description
+        }))
       }
     },
     { signal: ESCAPE_KEY_ABORT_CONTROLLER.signal }
@@ -160,17 +164,28 @@ async function _prompt (scenarios, defaultValue) {
 }
 
 /**
- * Get list of available scenario files
+ * Get list of available scenario files with their title and description
  * @private
  */
-function _scenarios () {
-  return fs.readdirSync(SCENARIOS_DIR)
-    .filter((file) => {
-      return file.endsWith('.js')
+async function _scenarios () {
+  const filenames = fs.readdirSync(SCENARIOS_DIR)
+    .filter((file) => file.endsWith('.js'))
+    .map((file) => file.replace('.js', ''))
+
+  const scenarios = []
+
+  for (const filename of filenames) {
+    const scenarioPath = path.resolve(SCENARIOS_DIR, `${filename}.js`)
+    const mod = await import(`file://${scenarioPath}`)
+
+    scenarios.push({
+      filename,
+      title: mod.title ?? filename,
+      description: mod.description ?? ''
     })
-    .map((file) => {
-      return file.replace('.js', '')
-    })
+  }
+
+  return scenarios
 }
 
 /**

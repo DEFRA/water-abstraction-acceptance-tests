@@ -1,6 +1,9 @@
 import licenceData from '../fixture-builder/licence.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
 
+export const title = 'All return statuses'
+export const description = 'Licence with return logs covering every status: due, overdue, not yet due, completed, open, and void'
+
 function _returnLog (startDate, endDate, dueDate, returnReference) {
   const startDateString = formatDateToIso(startDate)
   const endDateString = formatDateToIso(endDate)

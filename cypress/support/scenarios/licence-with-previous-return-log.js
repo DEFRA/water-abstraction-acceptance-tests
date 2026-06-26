@@ -4,6 +4,9 @@ import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnVersion from '../fixture-builder/return-version.js'
 import { formatDateToIso, previousPeriod } from '../helpers/date.helpers.js'
 
+export const title = 'Licence with a previous period return log'
+export const description = 'Licence with a due return log set to the previous return period with no due date'
+
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData
 
