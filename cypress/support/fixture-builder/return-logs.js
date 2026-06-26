@@ -52,6 +52,7 @@ export default function returnLogs (howMany = 4) {
       startDate: '2020-01-01',
       endDate: '2020-03-31',
       dueDate: '2020-04-28',
+      source: 'WRLS',
       status: 'due',
       underQuery: false,
       returnCycleId: {
@@ -114,6 +115,7 @@ export default function returnLogs (howMany = 4) {
       startDate: '2020-04-01',
       endDate: '2021-03-31',
       dueDate: '2021-04-28',
+      source: 'WRLS',
       status: 'completed',
       underQuery: false,
       returnCycleId: {
@@ -176,6 +178,7 @@ export default function returnLogs (howMany = 4) {
       startDate: '2021-04-01',
       endDate: '2022-03-31',
       dueDate: '2022-04-28',
+      source: 'WRLS',
       status: 'completed',
       underQuery: false,
       returnCycleId: {
@@ -238,6 +241,7 @@ export default function returnLogs (howMany = 4) {
       startDate: '2022-04-01',
       endDate: '2023-03-31',
       dueDate: '2023-04-28',
+      source: 'WRLS',
       status: 'completed',
       underQuery: false,
       returnCycleId: {
@@ -300,6 +304,7 @@ export default function returnLogs (howMany = 4) {
       startDate: '2024-04-01',
       endDate: '2025-03-31',
       dueDate: '2025-04-28',
+      source: 'WRLS',
       status: 'completed',
       underQuery: false,
       returnCycleId: {
@@ -362,6 +367,7 @@ export default function returnLogs (howMany = 4) {
       startDate: '2025-04-01',
       endDate: '2026-03-31',
       dueDate: '2026-04-28',
+      source: 'WRLS',
       status: 'completed',
       underQuery: false,
       returnCycleId: {
