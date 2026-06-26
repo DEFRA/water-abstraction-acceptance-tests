@@ -24,6 +24,7 @@ describe("View a licence's contacts (internal)", () => {
 
     // Confirm expected tabs are present
     cy.get('.x-govuk-sub-navigation').contains('Licences')
+    cy.get('.x-govuk-sub-navigation').contains('History')
     cy.get('.x-govuk-sub-navigation').contains('Billing accounts')
     cy.get('.x-govuk-sub-navigation').contains('Contacts')
 
