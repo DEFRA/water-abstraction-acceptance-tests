@@ -49,3 +49,10 @@ cypress/reports/*.json
 /environments/*
 !/environments/ci.json
 !/environments/example.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
