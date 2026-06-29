@@ -8,19 +8,21 @@ const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 
 export { expect } from '@playwright/test'
 
 export const test = base.extend({
-  users: async ({}, use) => {
+  users: async (_fixtures, use) => {
     await use(users)
   },
 
   load: async ({ page }, use) => {
-    await use((data) => page.request.post('/system/data/load', { data }))
+    await use((data) => {
+      return page.request.post('/system/data/load', { data })
+    })
   },
 
   login: async ({ page }, use) => {
-    await use((email) =>
-      page.request.post('/signin', {
+    await use((email) => {
+      return page.request.post('/signin', {
         data: { email, password: envConfig.values.defaultPassword }
       })
-    )
+    })
   }
 })
