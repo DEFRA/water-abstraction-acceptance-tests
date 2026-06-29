@@ -1,4 +1,4 @@
-export default function returnRequirements (howMany = 1) {
+export default function returnRequirements(howMany = 1) {
   const returnRequirements = [
     {
       id: 'c33b9e4d-4d0f-4686-b1ac-6449ab014fd5',

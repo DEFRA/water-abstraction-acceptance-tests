@@ -5,7 +5,8 @@ import returnVersion from '../fixture-builder/return-version.js'
 import { compareDates, formatDateToIso, previousPeriod, today } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with a due return log'
-export const description = 'Licence with a due return log on a submittable past return period, with return requirements and version'
+export const description =
+  'Licence with a due return log on a submittable past return period, with return requirements and version'
 
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData

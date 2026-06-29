@@ -1,4 +1,4 @@
-export default function returnLogs (howMany = 4) {
+export default function returnLogs(howMany = 4) {
   const returnLogs = [
     {
       returnId: 'v1:9:AT/TE/ST/01/01:9999990:2020-01-01:2020-03-31',

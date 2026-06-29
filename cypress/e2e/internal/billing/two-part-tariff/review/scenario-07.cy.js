@@ -100,7 +100,10 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('div > .govuk-tag').should('contain.text', 'review')
-    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
+    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should(
+      'contain.text',
+      'Test Region two-part tariff'
+    )
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
 
     // Review Licence AT/TE/ST/01/01 ~ Check the first matched return details
@@ -114,7 +117,10 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     // therefore also mark the return as having the issue 'Over abstracted'
     cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '/')
     cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'Over abstraction')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(3)').should('contain.text', 'Returns received but not processed')
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(3)').should(
+      'contain.text',
+      'Returns received but not processed'
+    )
 
     // Review Licence AT/TE/ST/01/01 ~ Check there are no other returns
     cy.get('[data-test="matched-return-action-1"] > .govuk-link').should('not.exist')
@@ -126,8 +132,14 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', '')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '0 ML / 32 ML')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should(
+      'contain.text',
+      '0 ML / 32 ML'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should(
+      'contain.text',
+      '32 ML (10021668)'
+    )
 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
@@ -137,7 +149,10 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'received')
     cy.get('[data-test="matched-return-total-0"] > :nth-child(1)').should('contain.text', '/')
     cy.get('[data-test="matched-return-total-0"] > :nth-child(2)').should('contain.text', 'Over abstraction')
-    cy.get('[data-test="matched-return-total-0"] > :nth-child(3)').should('contain.text', 'Returns received but not processed')
+    cy.get('[data-test="matched-return-total-0"] > :nth-child(3)').should(
+      'contain.text',
+      'Returns received but not processed'
+    )
     cy.get('.govuk-back-link').click()
   })
 })

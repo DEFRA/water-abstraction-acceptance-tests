@@ -18,7 +18,7 @@
     "cy:run:ci": "npm run cy:reports:delete && cypress run --e2e --env environment=ci",
     "cy:reports:delete": "rm -rf cypress/reports",
     "cy:verify": "cypress verify",
-    "lint": "standard"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -32,23 +32,12 @@
   },
   "devDependencies": {
     "@inquirer/prompts": "^8.2.0",
-    "standard": "^17.1.2"
-  },
-  "standard": {
-    "globals": [
-      "after",
-      "afterEach",
-      "cy",
-      "Cypress",
-      "before",
-      "beforeEach",
-      "describe",
-      "expect",
-      "it"
-    ],
-    "ignore": [
-      "cypress/support/scenarios/licence-with-failed-renewal-invitation.js"
-    ]
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^14.0.0",
+    "neostandard": "^0.12.0",
+    "prettier": "3.3.3"
   },
   "allowScripts": {
     "cypress@15.17.0": true,

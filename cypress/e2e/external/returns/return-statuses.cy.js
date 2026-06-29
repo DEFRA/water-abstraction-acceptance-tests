@@ -33,13 +33,21 @@ describe('Return statuses (external)', () => {
       cy.get('.govuk-tag').should('not.contain.text', 'not yet due')
       cy.get('.govuk-tag').should('not.contain.text', 'void')
 
-      cy.contains('9999991').parent('td').parent('tr').find('td:nth-child(4) .govuk-tag').should('contain.text', 'complete')
+      cy.contains('9999991')
+        .parent('td')
+        .parent('tr')
+        .find('td:nth-child(4) .govuk-tag')
+        .should('contain.text', 'complete')
 
       cy.contains('9999993').parent('td').parent('tr').find('td:nth-child(4) .govuk-tag').should('contain.text', 'open')
 
       cy.contains('9999994').parent('td').parent('tr').find('td:nth-child(4) .govuk-tag').should('contain.text', 'due')
 
-      cy.contains('9999995').parent('td').parent('tr').find('td:nth-child(4) .govuk-tag').should('contain.text', 'overdue')
+      cy.contains('9999995')
+        .parent('td')
+        .parent('tr')
+        .find('td:nth-child(4) .govuk-tag')
+        .should('contain.text', 'overdue')
     })
   })
 })

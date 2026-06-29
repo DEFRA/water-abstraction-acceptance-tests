@@ -1,6 +1,6 @@
 import chargeReferencesData from './charge-references.js'
 
-export default function chargeElements (howMany = 1) {
+export default function chargeElements(howMany = 1) {
   const { sroc: srocChargeReference } = chargeReferencesData()
 
   const chargeElement1 = {

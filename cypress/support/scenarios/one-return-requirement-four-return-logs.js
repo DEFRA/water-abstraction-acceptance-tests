@@ -8,7 +8,8 @@ import returnVersion from '../fixture-builder/return-version.js'
 import { currentFinancialYear } from '../helpers/date.helpers.js'
 
 export const title = 'One return requirement, four return logs'
-export const description = 'Licence with one return requirement and four annual return logs across consecutive financial years'
+export const description =
+  'Licence with one return requirement and four annual return logs across consecutive financial years'
 
 export default function () {
   const dataModel = {

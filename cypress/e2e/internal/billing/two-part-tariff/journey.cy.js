@@ -67,8 +67,10 @@ describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
     // Review data issues
     // check the rest of the details before completing the review
     cy.get('#main-content > div.govuk-grid-row > div > p > strong').should('contain.text', 'Review')
-    cy.get('#main-content > section > div > p')
-      .should('contain.text', 'You need to review 1 licence with returns data issues before you can continue')
+    cy.get('#main-content > section > div > p').should(
+      'contain.text',
+      'You need to review 1 licence with returns data issues before you can continue'
+    )
     cy.get('#dataIssues > table > tbody > tr:nth-child(1)').within(() => {
       // licence
       cy.get('td:nth-child(1)').should('contain.text', 'L1')
@@ -96,8 +98,10 @@ describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
 
     // Review data issues
     // confirm we see all issues resolved and then click to continue
-    cy.get('#main-content > section > p')
-      .should('contain.text', 'You have resolved all returns data issues. Continue to generate bills.')
+    cy.get('#main-content > section > p').should(
+      'contain.text',
+      'You have resolved all returns data issues. Continue to generate bills.'
+    )
     cy.get('a.govuk-button').contains('Continue').click()
 
     // You're about to generate the two-part tariff bills
@@ -154,7 +158,9 @@ describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
     // Bill runs
     // back on the bill runs page confirm our PRESROC bill run is present and listed as SENT
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate).and('contain.text', 'Old charge scheme')
+      cy.get('[data-test="date-created-0"]')
+        .should('contain.text', formattedCurrentDate)
+        .and('contain.text', 'Old charge scheme')
     })
     cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
     cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Two-part tariff winter and all year')

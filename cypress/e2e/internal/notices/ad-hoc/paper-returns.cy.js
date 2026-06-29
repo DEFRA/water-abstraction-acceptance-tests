@@ -46,9 +46,11 @@ describe('Ad-hoc Paper returns journey (internal)', () => {
     cy.contains('Confirm').click()
 
     // Capture the notice reference so we can verify it later
-    cy.contains('.govuk-caption-l', 'Notice').invoke('text').then((text) => {
-      cy.wrap(text.trim()).as('noticeReference')
-    })
+    cy.contains('.govuk-caption-l', 'Notice')
+      .invoke('text')
+      .then((text) => {
+        cy.wrap(text.trim()).as('noticeReference')
+      })
 
     // Recipients count
     cy.contains('Showing all 1 recipients')

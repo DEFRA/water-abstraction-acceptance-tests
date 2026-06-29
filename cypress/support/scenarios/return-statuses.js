@@ -2,9 +2,10 @@ import licenceData from '../fixture-builder/licence.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
 
 export const title = 'All return statuses'
-export const description = 'Licence with return logs covering every status: due, overdue, not yet due, completed, open, and void'
+export const description =
+  'Licence with return logs covering every status: due, overdue, not yet due, completed, open, and void'
 
-function _returnLog (startDate, endDate, dueDate, returnReference) {
+function _returnLog(startDate, endDate, dueDate, returnReference) {
   const startDateString = formatDateToIso(startDate)
   const endDateString = formatDateToIso(endDate)
   const dueDateString = dueDate ? formatDateToIso(dueDate) : null
@@ -73,14 +74,14 @@ function _returnLog (startDate, endDate, dueDate, returnReference) {
   }
 }
 
-function _returnLogs () {
+function _returnLogs() {
   const returnLogs = []
   const today = new Date()
 
   today.setHours(0, 0, 0, 0)
 
   // Does the current date fall in April to December, or January to March.
-  const beforeNewYear = (today.getMonth() + 1) > 3
+  const beforeNewYear = today.getMonth() + 1 > 3
 
   let startDate
   if (beforeNewYear) {
@@ -117,7 +118,7 @@ function _returnLogs () {
 
   // DUE - If the current month is April, we're going to leave the return log in last year. Else we'll bring it into
   // the current year
-  if ((today.getMonth() + 1) !== 4) {
+  if (today.getMonth() + 1 !== 4) {
     startDate.setFullYear(startDate.getFullYear() + 1)
   }
   // set the due date to be a few days in the future

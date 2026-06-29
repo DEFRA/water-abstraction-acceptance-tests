@@ -11,7 +11,8 @@ import returnLogsData from '../fixture-builder/return-logs.js'
 import { currentFinancialYear } from '../helpers/date.helpers.js'
 
 export const title = 'Two-part tariff supplementary'
-export const description = 'Full two-part tariff supplementary setup: billing account, SROC charge version, S127 agreement, and two due return logs'
+export const description =
+  'Full two-part tariff supplementary setup: billing account, SROC charge version, S127 agreement, and two due return logs'
 
 export default function () {
   const licenceRecords = _licenceRecords()
@@ -99,7 +100,7 @@ export default function () {
   }
 }
 
-function _billRunRecords (financialYearEndYear, licenceId) {
+function _billRunRecords(financialYearEndYear, licenceId) {
   const billRun = billRunsData().sroc.annual.twoPartTariff
 
   billRun.fromFinancialYearEnding = financialYearEndYear
@@ -120,7 +121,7 @@ function _billRunRecords (financialYearEndYear, licenceId) {
   }
 }
 
-function _chargeInformation () {
+function _chargeInformation() {
   const billingAccount = billingAccountData()
   const billingAccountAddress = billingAccountAddressData()
   const chargeVersion = chargeVersionsData().sroc
@@ -146,7 +147,7 @@ function _chargeInformation () {
   }
 }
 
-function _licenceRecords () {
+function _licenceRecords() {
   const licenceRecords = licenceData()
 
   // These are needed when you require a primary user for then licence. We don't so we delete them to reduce the load

@@ -341,7 +341,9 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-heading-l').contains('You are about to remove these requirements for returns')
 
     // confirm we see the correct requirement to be removed
-    cy.get('p').contains('Summer daily requirements for returns, This is a valid site description for the second requirement.')
+    cy.get('p').contains(
+      'Summer daily requirements for returns, This is a valid site description for the second requirement.'
+    )
 
     // choose the remove button
     cy.contains('Remove').click()
@@ -377,7 +379,9 @@ describe('Submit returns requirement (internal)', () => {
     cy.get('.govuk-body-l').contains('by billing.data@wrls.gov.uk')
 
     // Return requirement 1
-    cy.get('#requirement-0 > div.govuk-summary-card__title-wrapper > h2').contains('This is another valid site description')
+    cy.get('#requirement-0 > div.govuk-summary-card__title-wrapper > h2').contains(
+      'This is another valid site description'
+    )
     cy.get('[data-test="purposes-0"]').contains('Make-Up Or Top Up Water (This is another purpose description)')
     cy.get('[data-test="points-0"]').contains('At National Grid Reference TT 9876 5432 (Example point 2)')
     cy.get('[data-test="abstraction-period-0"]').contains('2 October to 5 December')

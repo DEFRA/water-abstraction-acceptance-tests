@@ -58,7 +58,9 @@ describe('Delete licence agreement journey (internal)', () => {
     cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next supplementary bill run for the old charge scheme.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+    )
   })
 })

@@ -22,26 +22,26 @@ const RESET_ALL = '\x1b[0m'
 const RESET_BOLD = '\x1b[22m'
 const YELLOW = '\x1b[33m'
 
-export function logInfo (message) {
+export function logInfo(message) {
   _log(BLUE, message)
 }
 
-export function logError (message) {
+export function logError(message) {
   _log(RED, message)
 }
 
-export function logSuccess (message) {
+export function logSuccess(message) {
   _log(GREEN, message)
 }
 
-export function logWarning (message) {
+export function logWarning(message) {
   _log(YELLOW, message)
 }
 
-export function styleBold (message) {
+export function styleBold(message) {
   return `${BOLD}${message}${RESET_BOLD}`
 }
 
-function _log (color, message) {
+function _log(color, message) {
   console.log(`${color}${message}${RESET_ALL}`)
 }

@@ -46,14 +46,23 @@ describe('SROC charge information validation (internal)', () => {
     cy.get('#customDate-month').type('6')
     cy.get('#customDate-year').type('2017')
     cy.get('form > .govuk-button').contains('Continue').click()
-    cy.get('.govuk-error-summary__list').should('contain.text', 'Date must be after the start date of the earliest known licence version')
-    cy.get('.govuk-error-message').should('contain.text', 'Date must be after the start date of the earliest known licence version')
+    cy.get('.govuk-error-summary__list').should(
+      'contain.text',
+      'Date must be after the start date of the earliest known licence version'
+    )
+    cy.get('.govuk-error-message').should(
+      'contain.text',
+      'Date must be after the start date of the earliest known licence version'
+    )
     // test not a real date
     cy.get('#customDate-day').clear().type('aa')
     cy.get('#customDate-month').clear().type('6')
     cy.get('#customDate-year').clear().type('2022')
     cy.get('form > .govuk-button').contains('Continue').click()
-    cy.get('.govuk-error-summary__list').should('contain.text', 'Enter a real date for the charge information start date')
+    cy.get('.govuk-error-summary__list').should(
+      'contain.text',
+      'Enter a real date for the charge information start date'
+    )
     cy.get('.govuk-error-message').should('contain.text', 'Enter a real date for the charge information start date')
     // enter 2022-06-01 and continue
     cy.get('#customDate-day').clear().type('1')
@@ -77,8 +86,14 @@ describe('SROC charge information validation (internal)', () => {
     // Do you need to add an FAO?
     // test submitting nothing
     cy.get('form > .govuk-button').contains('Continue').click()
-    cy.get('.govuk-error-summary__list').should('contain.text', 'Select yes if you need to add a person or department as an FAO')
-    cy.get('.govuk-error-message').should('contain.text', 'Select yes if you need to add a person or department as an FAO')
+    cy.get('.govuk-error-summary__list').should(
+      'contain.text',
+      'Select yes if you need to add a person or department as an FAO'
+    )
+    cy.get('.govuk-error-message').should(
+      'contain.text',
+      'Select yes if you need to add a person or department as an FAO'
+    )
     // choose No and continue
     cy.get('input#faoRequired-2').click()
     cy.get('form > .govuk-button').contains('Continue').click()
@@ -95,8 +110,14 @@ describe('SROC charge information validation (internal)', () => {
     // Use abstraction data to set up the element?
     // test submitting nothing
     cy.get('form > .govuk-button').contains('Continue').click()
-    cy.get('.govuk-error-summary__list').should('contain.text', 'Select whether to use abstraction data to set up the element')
-    cy.get('.govuk-error-message').should('contain.text', 'Select whether to use abstraction data to set up the element')
+    cy.get('.govuk-error-summary__list').should(
+      'contain.text',
+      'Select whether to use abstraction data to set up the element'
+    )
+    cy.get('.govuk-error-message').should(
+      'contain.text',
+      'Select whether to use abstraction data to set up the element'
+    )
     // choose Use charge information valid from 1 June 2022 and continue
     cy.get('input#useAbstractionData-4').click()
     cy.get('form > .govuk-button').contains('Continue').click()
@@ -154,11 +175,17 @@ describe('SROC charge information validation (internal)', () => {
     cy.wrap(['“', '”', '?', '^', '£', '≥', '≤', '—']).each((character) => {
       cy.get('#description').clear().type(character)
       cy.get('form > .govuk-button').contains('Continue').click()
-      cy.get('.govuk-error-summary__list').should('contain.text', 'You can not use “ ” ? ^ £ ≥ ≤ — (long dash) in the charge reference description')
-      cy.get('.govuk-error-message').should('contain.text', 'You can not use “ ” ? ^ £ ≥ ≤ — (long dash) in the charge reference description')
+      cy.get('.govuk-error-summary__list').should(
+        'contain.text',
+        'You can not use “ ” ? ^ £ ≥ ≤ — (long dash) in the charge reference description'
+      )
+      cy.get('.govuk-error-message').should(
+        'contain.text',
+        'You can not use “ ” ? ^ £ ≥ ≤ — (long dash) in the charge reference description'
+      )
     })
     // enter a description made up of valid special characters and continue
-    cy.get('#description').clear().type('-\'.,()&* are supported characters')
+    cy.get('#description').clear().type("-'.,()&* are supported characters")
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the source
@@ -233,7 +260,10 @@ describe('SROC charge information validation (internal)', () => {
     // Is abstraction from a supported source?
     // test submitting nothing
     cy.get('form > .govuk-button').contains('Continue').click()
-    cy.get('.govuk-error-summary__list').should('contain.text', "Select 'yes' if abstraction is from a supported source.")
+    cy.get('.govuk-error-summary__list').should(
+      'contain.text',
+      "Select 'yes' if abstraction is from a supported source."
+    )
     cy.get('.govuk-error-message').should('contain.text', "Select 'yes' if abstraction is from a supported source.")
     // choose Yes and continue
     cy.get('input#isSupportedSource').click()
@@ -251,8 +281,14 @@ describe('SROC charge information validation (internal)', () => {
     // Is abstraction for the supply of public water?
     // test submitting nothing
     cy.get('form > .govuk-button').contains('Continue').click()
-    cy.get('.govuk-error-summary__list').should('contain.text', "Select 'yes' if abstraction is for the supply of public water.")
-    cy.get('.govuk-error-message').should('contain.text', "Select 'yes' if abstraction is for the supply of public water.")
+    cy.get('.govuk-error-summary__list').should(
+      'contain.text',
+      "Select 'yes' if abstraction is for the supply of public water."
+    )
+    cy.get('.govuk-error-message').should(
+      'contain.text',
+      "Select 'yes' if abstraction is for the supply of public water."
+    )
     // choose Yes and continue
     cy.get('input#isSupplyPublicWater').click()
     cy.get('form > .govuk-button').contains('Continue').click()
@@ -275,8 +311,14 @@ describe('SROC charge information validation (internal)', () => {
     cy.get('input#adjustments-2').check()
     // test not submitting a factor
     cy.get('form > .govuk-button').contains('Continue').click()
-    cy.get('.govuk-error-summary__list').should('contain.text', "The 'Charge adjustment' factor must not have more than 15 decimal places.")
-    cy.get('.govuk-error-message').should('contain.text', "The 'Charge adjustment' factor must not have more than 15 decimal places.")
+    cy.get('.govuk-error-summary__list').should(
+      'contain.text',
+      "The 'Charge adjustment' factor must not have more than 15 decimal places."
+    )
+    cy.get('.govuk-error-message').should(
+      'contain.text',
+      "The 'Charge adjustment' factor must not have more than 15 decimal places."
+    )
     // choose Charge adjustment, enter a Factor and continue
     cy.get('#chargeFactor').type('25')
     cy.get('form > .govuk-button').contains('Continue').click()

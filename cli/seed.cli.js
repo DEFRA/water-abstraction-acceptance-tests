@@ -25,7 +25,7 @@ import { get, post } from './system.request.js'
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 const SCENARIOS_DIR = 'cypress/support/scenarios'
 
-async function run () {
+async function run() {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
 
   const currentServiceData = await _currentServiceData()
@@ -71,7 +71,7 @@ async function run () {
  *
  * @private
  */
-async function _currentServiceData () {
+async function _currentServiceData() {
   const response = await get('/system/data/dates')
 
   return response.json()
@@ -81,7 +81,7 @@ async function _currentServiceData () {
  * Extract data from the scenario file
  * @private
  */
-async function _body (selectedScenario, currentServiceData) {
+async function _body(selectedScenario, currentServiceData) {
   // 1. Get the absolute path
   const scenarioPath = path.resolve(SCENARIOS_DIR, `${selectedScenario.filename}.js`)
 
@@ -104,7 +104,7 @@ async function _body (selectedScenario, currentServiceData) {
  * Send scenario data to the water-abstraction-system for loading
  * @private
  */
-async function _load (selectedScenario, body) {
+async function _load(selectedScenario, body) {
   logInfo(`Loading scenario ${styleBold(selectedScenario.title)}...`)
 
   await post('/system/data/load', body)
@@ -135,7 +135,7 @@ async function _load (selectedScenario, body) {
  *
  * @private
  */
-async function _prompt (scenarios, defaultValue) {
+async function _prompt(scenarios, defaultValue) {
   return search(
     {
       message: 'Type to search scenarios:',
@@ -147,16 +147,17 @@ async function _prompt (scenarios, defaultValue) {
           const query = input.toLowerCase()
 
           filteredScenarios = scenarios.filter((scenario) => {
-            return scenario.title.toLowerCase().includes(query) ||
-              scenario.filename.toLowerCase().includes(query)
+            return scenario.title.toLowerCase().includes(query) || scenario.filename.toLowerCase().includes(query)
           })
         }
 
-        return filteredScenarios.map((scenario) => ({
-          name: scenario.title,
-          value: scenario,
-          description: scenario.description
-        }))
+        return filteredScenarios.map((scenario) => {
+          return {
+            name: scenario.title,
+            value: scenario,
+            description: scenario.description
+          }
+        })
       }
     },
     { signal: ESCAPE_KEY_ABORT_CONTROLLER.signal }
@@ -167,10 +168,15 @@ async function _prompt (scenarios, defaultValue) {
  * Get list of available scenario files with their title and description
  * @private
  */
-async function _scenarios () {
-  const filenames = fs.readdirSync(SCENARIOS_DIR)
-    .filter((file) => file.endsWith('.js'))
-    .map((file) => file.replace('.js', ''))
+async function _scenarios() {
+  const filenames = fs
+    .readdirSync(SCENARIOS_DIR)
+    .filter((file) => {
+      return file.endsWith('.js')
+    })
+    .map((file) => {
+      return file.replace('.js', '')
+    })
 
   const scenarios = []
 
@@ -192,7 +198,7 @@ async function _scenarios () {
  * Clear existing data
  * @private
  */
-async function _tearDown () {
+async function _tearDown() {
   logInfo('Tearing down previous scenario data...')
 
   await post('/system/data/tear-down')

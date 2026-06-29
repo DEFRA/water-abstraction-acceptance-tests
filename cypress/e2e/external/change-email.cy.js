@@ -44,11 +44,16 @@ describe('Change user email address (external)', () => {
     cy.get('button.govuk-button').contains('Continue').click()
 
     // Verify your email address
-    cy.get('#main-content > div:nth-child(2) > div:nth-child(2) > p > span').should('contain.text', 'new.me@example.com')
-    cy.get('[data-test="security-code"]').invoke('text').then((code) => {
-      cy.get('#verificationCode').type(code)
-      cy.get('button.govuk-button').contains('Continue').click()
-    })
+    cy.get('#main-content > div:nth-child(2) > div:nth-child(2) > p > span').should(
+      'contain.text',
+      'new.me@example.com'
+    )
+    cy.get('[data-test="security-code"]')
+      .invoke('text')
+      .then((code) => {
+        cy.get('#verificationCode').type(code)
+        cy.get('button.govuk-button').contains('Continue').click()
+      })
 
     // Your email address is changed
     cy.get('h1.govuk-heading-l').should('contain.text', 'Your email address is changed')

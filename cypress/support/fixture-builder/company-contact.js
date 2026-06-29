@@ -1,4 +1,4 @@
-export default function companyContact () {
+export default function companyContact() {
   return {
     contacts: [
       {

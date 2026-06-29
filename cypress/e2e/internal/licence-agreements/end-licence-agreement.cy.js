@@ -39,7 +39,11 @@ describe('End licence agreement journey (internal)', () => {
     cy.get('#endDate-month').type('01')
     cy.get('#endDate-year').type('2021')
     cy.get('form > .govuk-button').click()
-    cy.get('.govuk-error-summary').contains('You must enter an end date that matches some existing charge information or is 31 March.You cannot use a date that is before the agreement start date.').should('be.visible')
+    cy.get('.govuk-error-summary')
+      .contains(
+        'You must enter an end date that matches some existing charge information or is 31 March.You cannot use a date that is before the agreement start date.'
+      )
+      .should('be.visible')
 
     // then repeat using a valid date
     cy.get('#endDate-day').clear().type('31')
@@ -71,17 +75,21 @@ describe('End licence agreement journey (internal)', () => {
       cy.get('td').eq(1).should('contain.text', '31 March 2022')
       cy.get('td').eq(2).should('contain.text', 'Two-part tariff')
       cy.get('td').eq(3).should('contain.text', '')
-      cy.get('td').eq(4).within(() => {
-        cy.contains('Delete').should('exist')
-        cy.contains('End').should('not.exist')
-      })
+      cy.get('td')
+        .eq(4)
+        .within(() => {
+          cy.contains('Delete').should('exist')
+          cy.contains('End').should('not.exist')
+        })
     })
 
     // Navigate to back to the Licence summary page
     cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next supplementary bill run for the old charge scheme.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+    )
   })
 })

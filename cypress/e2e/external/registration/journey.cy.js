@@ -14,7 +14,10 @@ describe('User registration (external)', () => {
     cy.get('a[href*="/start"]').click()
 
     // Confirm we want to create an account
-    cy.contains('Create an account to manage your water abstraction licence online').should('have.class', 'govuk-heading-l')
+    cy.contains('Create an account to manage your water abstraction licence online').should(
+      'have.class',
+      'govuk-heading-l'
+    )
     cy.get('a[href*="/register"]').click()
 
     //  Enter the email address submit

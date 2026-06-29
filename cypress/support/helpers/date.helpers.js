@@ -12,7 +12,7 @@
  *
  * @returns {number} -1 if dateA is before dateB, 1 if dateA is after dateB, 0 if they are the same date
  */
-export function compareDates (dateA, dateB) {
+export function compareDates(dateA, dateB) {
   // Math.sign() clamps the result of the subtraction to a minimum of -1 and a maximum of 1
   return Math.sign(dateA - dateB)
 }
@@ -49,7 +49,7 @@ export function compareDates (dateA, dateB) {
  * @returns {object} An object containing the start and end dates of the current financial year, along with their
  * respective day, month, and year components
  */
-export function currentFinancialYear (day = 31, month = 3, yearAdjuster = 0) {
+export function currentFinancialYear(day = 31, month = 3, yearAdjuster = 0) {
   // IMPORTANT! getMonth returns an integer (0-11). So, January is represented as 0 and December as 11. This is why
   // MARCH is 2 rather than 3
   const MARCH = 2
@@ -84,7 +84,7 @@ export function currentFinancialYear (day = 31, month = 3, yearAdjuster = 0) {
  *
  * @returns {string} The date formatted as YYYY-MM-DD
  */
-export function formatDateToIso (date) {
+export function formatDateToIso(date) {
   const dateValue = new Date(date)
 
   return dateValue.toISOString().split('T')[0]
@@ -97,7 +97,7 @@ export function formatDateToIso (date) {
  *
  * @returns {string | null} The date formatted as a 'DD MMMM YYYY' string
  */
-export function formatLongDate (date) {
+export function formatLongDate(date) {
   if (!date) {
     return null
   }
@@ -117,7 +117,7 @@ export function formatLongDate (date) {
  *
  * @return {object} The previous return period to the one provided
  */
-export function previousPeriod (period) {
+export function previousPeriod(period) {
   const previousPeriod = {
     dueDate: period.dueDate ? new Date(period.dueDate) : null,
     endDate: new Date(period.endDate),
@@ -151,7 +151,7 @@ export function previousPeriod (period) {
  *
  * @returns {Date} a date relative to today
  */
-export function relativeToToday (numberOfDays) {
+export function relativeToToday(numberOfDays) {
   const relative = today()
 
   // We lean into Math to make this work. Adding two positive numbers, results in a positive value, for example,
@@ -177,7 +177,7 @@ export function relativeToToday (numberOfDays) {
  *
  * @returns {Date}
  */
-export function today () {
+export function today() {
   const todaysDate = new Date()
 
   todaysDate.setHours(0, 0, 0, 0)
@@ -190,7 +190,7 @@ export function today () {
  *
  * @returns {Date} tomorrow's date
  */
-export function tomorrow () {
+export function tomorrow() {
   const tomorrow = today()
 
   tomorrow.setDate(tomorrow.getDate() + 1)
@@ -203,7 +203,7 @@ export function tomorrow () {
  *
  * @returns {Date} yesterday's date
  */
-export function yesterday () {
+export function yesterday() {
   const yesterday = today()
 
   yesterday.setDate(yesterday.getDate() - 1)

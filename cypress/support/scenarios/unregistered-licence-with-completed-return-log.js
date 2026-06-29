@@ -5,7 +5,8 @@ import returnVersion from '../fixture-builder/return-version.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
 
 export const title = 'Unregistered licence with a completed return log (current period)'
-export const description = 'Unregistered licence with a completed return log for the first current return period with no due date set'
+export const description =
+  'Unregistered licence with a completed return log for the first current return period with no due date set'
 
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData

@@ -1,6 +1,6 @@
 import { currentFinancialYear } from '../helpers/date.helpers.js'
 
-export default function billRuns () {
+export default function billRuns() {
   const currentFinancialYearInfo = currentFinancialYear()
 
   return {
@@ -13,7 +13,7 @@ export default function billRuns () {
   }
 }
 
-function _srocStandardAnnual (currentFinancialYearInfo) {
+function _srocStandardAnnual(currentFinancialYearInfo) {
   const financialYearEnd = currentFinancialYearInfo.end.year
 
   return {
@@ -37,7 +37,7 @@ function _srocStandardAnnual (currentFinancialYearInfo) {
   }
 }
 
-function _srocTwoPartTariffAnnual (currentFinancialYearInfo) {
+function _srocTwoPartTariffAnnual(currentFinancialYearInfo) {
   const financialYearEnd = currentFinancialYearInfo.end.year - 1
 
   return {

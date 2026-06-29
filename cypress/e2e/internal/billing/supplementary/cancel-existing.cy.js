@@ -57,7 +57,9 @@ describe('Cancel existing supplementary bill runs (internal)', () => {
     // if not found reload the page and try again. We then select it using the link on the date created
     cy.reloadUntilTextFound('[data-test="bill-run-status-0"] > .govuk-tag', 'ready')
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate).and('contain.text', 'Old charge scheme')
+      cy.get('[data-test="date-created-0"]')
+        .should('contain.text', formattedCurrentDate)
+        .and('contain.text', 'Old charge scheme')
     })
     cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
     cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Supplementary')

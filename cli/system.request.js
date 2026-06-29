@@ -17,7 +17,7 @@ import path from 'path'
 
 const ENVS_DIR = 'environments'
 
-export async function get (path) {
+export async function get(path) {
   const env = await _environment()
 
   const url = new URL(path, env.config.baseUrl)
@@ -32,7 +32,7 @@ export async function get (path) {
   return response
 }
 
-export async function post (path, body = null) {
+export async function post(path, body = null) {
   const env = await _environment()
 
   const url = new URL(path, env.config.baseUrl)
@@ -52,7 +52,7 @@ export async function post (path, body = null) {
  *
  * @private
  */
-async function _environment () {
+async function _environment() {
   const configPath = path.join(process.cwd(), ENVS_DIR, 'local.json')
   const fileContent = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
 
@@ -62,7 +62,7 @@ async function _environment () {
   }
 }
 
-async function _error (path, response) {
+async function _error(path, response) {
   let message = `Request to ${path} failed with ${response.status} ${response.statusText}`
 
   const errorData = await response.json().catch(() => {
@@ -76,7 +76,7 @@ async function _error (path, response) {
   throw new Error(message)
 }
 
-function _requestOptions (method, body) {
+function _requestOptions(method, body) {
   const requestOptions = {
     method
   }
