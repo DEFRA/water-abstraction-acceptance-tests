@@ -19,10 +19,10 @@
     "cy:reports:delete": "rm -rf cypress/reports",
     "cy:verify": "cypress verify",
     "pw:open:local": "playwright test --ui",
+    "pw:run:local": "playwright test",
     "lint": "eslint ."
   },
   "repository": {
-    "type": "git",
     "url": "https://github.com/DEFRA/water-abstraction-acceptance-tests"
   },
   "author": "Department for Environment, Food & Rural Affairs",

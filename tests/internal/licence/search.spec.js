@@ -11,6 +11,10 @@ test.describe('Search for a licence (internal)', () => {
     await login(users.super)
   })
 
+  test.afterEach(async ({ tearDown }) => {
+    await tearDown(scenario.licences[0].licenceRef)
+  })
+
   test('can find a licence using various search values', async ({ page }) => {
     const { licenceRef } = scenario.licences[0]
 

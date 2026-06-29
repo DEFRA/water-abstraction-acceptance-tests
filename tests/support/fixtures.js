@@ -8,13 +8,19 @@ const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 
 export { expect } from '@playwright/test'
 
 export const test = base.extend({
-  users: async (_fixtures, use) => {
+  users: async ({}, use) => {
     await use(users)
   },
 
   load: async ({ page }, use) => {
     await use((data) => {
       return page.request.post('/system/data/load', { data })
+    })
+  },
+
+  tearDown: async ({ page }, use) => {
+    await use((licenceRef, companyName, userEmail) => {
+      return page.request.post('/system/data/tear-down', { data: { licenceRef, companyName, userEmail } })
     })
   },
 

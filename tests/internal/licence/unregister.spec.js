@@ -2,7 +2,7 @@ import { test, expect } from '../../support/fixtures.js'
 import { prepareScenario } from '../../migration/prepare-scenario.js'
 import scenarioData from '../../../cypress/support/scenarios/user-registered-to-licence.js'
 
-const USER_EMAIL = 'unregister-user@example.com'
+const USER_EMAIL = 'unregister-user@wrlstest.gov.uk'
 
 test.describe('Unregister a licence (internal)', () => {
   let scenario
@@ -11,6 +11,10 @@ test.describe('Unregister a licence (internal)', () => {
     scenario = prepareScenario(scenarioData(), { userEmail: USER_EMAIL })
     await load(scenario)
     await login(users.billingAndData)
+  })
+
+  test.afterEach(async ({ tearDown }) => {
+    await tearDown(scenario.licences[0].licenceRef, scenario.companies[0].name, USER_EMAIL)
   })
 
   test('can unregister a licence from its primary user', async ({ page }) => {

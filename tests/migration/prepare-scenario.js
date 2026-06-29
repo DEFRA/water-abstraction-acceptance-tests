@@ -13,8 +13,10 @@ import { randomUUID } from 'crypto'
 // removing the need for this function entirely. At that point the overrides pattern can also be
 // dropped in favour of scenarios that already contain the values the test needs to assert against.
 //
-// Until then, the @example.com domain must be used for any userEmail override so the tearDown
-// endpoint recognises it as acceptance test data and cleans it up between runs.
+// Until then, any userEmail override must be passed explicitly to the tearDown fixture so the
+// endpoint can delete it by exact match. Avoid domains like @example.com that match the broad
+// cleanup patterns in IdmSchemaService, which run on every tear-down and would delete the user
+// mid-test if another test runs concurrently.
 export function prepareScenario(scenario, { userEmail } = {}) {
   const naldId = _rand(10000, 99999)
   const pointId = _rand(9000000, 9999999)
@@ -24,6 +26,8 @@ export function prepareScenario(scenario, { userEmail } = {}) {
   json = _replaceUuids(json)
   json = _replaceExternalIds(json, naldId, pointId)
   json = _replaceLicenceRef(json, _generateLicenceRef())
+  json = _replaceCompanyName(json, _generateCompanyName())
+  json = _replaceMetadataDataType(json)
   if (userEmail) {
     json = _replaceUserEmail(json, userEmail)
   }
@@ -53,6 +57,18 @@ function _replaceExternalIds(json, naldId, pointId) {
 
 function _replaceLicenceRef(json, licenceRef) {
   return json.replace(/AT\/TE\/ST\/\d+\/\d+/g, licenceRef)
+}
+
+function _generateCompanyName() {
+  return `AT Test Company ${_rand(100, 999)} Ltd`
+}
+
+function _replaceCompanyName(json, companyName) {
+  return json.replace(/Big Farm Co Ltd/g, companyName)
+}
+
+function _replaceMetadataDataType(json) {
+  return json.replace(/"dataType":"acceptance-test-setup"/g, '"dataType":"playwright-acceptance-test"')
 }
 
 function _replaceUserEmail(json, userEmail) {
