@@ -74,11 +74,9 @@ describe('Change billing account in previous financial year (internal)', () => {
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', '1 Supplementary bill')
+        cy.get('[data-test="bills-count"]').should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
+        cy.get('[data-test="bills-count"]').should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Send bill run').click()

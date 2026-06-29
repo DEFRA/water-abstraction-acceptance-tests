@@ -145,11 +145,9 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', '1 Supplementary bill')
+        cy.get('[data-test="bills-count"]').should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
+        cy.get('[data-test="bills-count"]').should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Send bill run').click()
@@ -195,7 +193,9 @@ describe('Replace charge version in current financial year change the charge ref
     cy.get('[data-test="bill-run-status-1"] > .govuk-tag').should('contain.text', 'sent')
 
     // -------------------------------------------------------------------------
-    cy.log('Setting up a new charge changing the charge volume and adding adjustments and additional charges then creating a supplementary bill run')
+    cy.log(
+      'Setting up a new charge changing the charge volume and adding adjustments and additional charges then creating a supplementary bill run'
+    )
 
     // click the Search menu link
     cy.get('#nav-search').click()

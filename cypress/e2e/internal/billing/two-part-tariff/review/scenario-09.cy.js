@@ -105,7 +105,10 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('div > .govuk-tag').should('contain.text', 'ready')
-    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
+    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should(
+      'contain.text',
+      'Test Region two-part tariff'
+    )
     // On this licence there are two charge versions meaning we have two charge period links
     cy.get('[data-test="charge-period-0"]').should('contain.text', '1 April 2024 to 31 March 2025')
 
@@ -133,20 +136,44 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
     // Review Licence AT/TE/ST/01/01 ~ Check charge information details are correct
-    cy.get('#charge-version-0 > .govuk-heading-l').should('contain.text', 'Charge periods 1 April 2024 to 31 March 2025')
-    cy.get('[data-test="charge-version-0-details"]').should('contain.text', '2 charge references with 2 two-part tariff charge elements')
+    cy.get('#charge-version-0 > .govuk-heading-l').should(
+      'contain.text',
+      'Charge periods 1 April 2024 to 31 March 2025'
+    )
+    cy.get('[data-test="charge-version-0-details"]').should(
+      'contain.text',
+      '2 charge references with 2 two-part tariff charge elements'
+    )
     cy.get('[data-test="charge-version-0-reference-0"]').should('contain.text', 'Charge reference 4.6.19')
     // The first charge reference has a lower authorised volume than its charge element. This means we expect the return
     // to only allocate to the charge reference volume of 22ML
     cy.get('[data-test="charge-version-0-total-billable-returns-0"]').should('contain.text', '22 ML / 22 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-0"]').should('contain.text', 'View details')
-    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', 'SROC Charge Purpose 02')
-    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', '1 April 2024 to 31 March 2025')
-    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should('contain.text', 'Mineral Washing')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', 'No returns received')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '22 ML / 42 ML')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', 'overdue (10021668)')
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should(
+      'contain.text',
+      'SROC Charge Purpose 02'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should(
+      'contain.text',
+      '1 April 2024 to 31 March 2025'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-0-element-description-0"]').should(
+      'contain.text',
+      'Mineral Washing'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should(
+      'contain.text',
+      'No returns received'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should(
+      'contain.text',
+      '22 ML / 42 ML'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should(
+      'contain.text',
+      'overdue (10021668)'
+    )
 
     // View match details ~ For charge reference 1's element
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
@@ -168,12 +195,30 @@ describe('Testing a two-part tariff bill run with a licence that is current and 
     cy.get('[data-test="charge-version-0-total-billable-returns-1"]').should('contain.text', '32 ML / 52 ML')
     // Without an aggregate of charge factor we shouldn't see the link "Change details" only "View details"
     cy.get('[data-test="charge-version-0-charge-reference-link-1"]').should('contain.text', 'View details')
-    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should('contain.text', 'SROC Charge Purpose 01')
-    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should('contain.text', '1 April 2024 to 31 March 2025')
-    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should('contain.text', 'General Farming & Domestic')
-    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-issues-0"]').should('contain.text', 'No returns received')
-    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-return-volumes-0"]').should('contain.text', 'overdue (10021668)')
+    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should(
+      'contain.text',
+      'SROC Charge Purpose 01'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should(
+      'contain.text',
+      '1 April 2024 to 31 March 2025'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-1-element-description-0"]').should(
+      'contain.text',
+      'General Farming & Domestic'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-issues-0"]').should(
+      'contain.text',
+      'No returns received'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-billable-returns-0"]').should(
+      'contain.text',
+      '32 ML / 32 ML'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-return-volumes-0"]').should(
+      'contain.text',
+      'overdue (10021668)'
+    )
 
     // View match details ~ For charge reference 2's element
     cy.get('[data-test="charge-version-0-charge-reference-1-charge-element-match-details-0"]').click()

@@ -33,7 +33,9 @@ describe('Cancelling a charge version in workflow (internal)', () => {
     cy.contains('Workflow')
     cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(1)').contains('AT/TE/ST/01/01')
     cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(2)').contains('Big Farm Co Ltd')
-    cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(3)').contains('billing.data@wrls.gov.uk')
+    cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(3)').contains(
+      'billing.data@wrls.gov.uk'
+    )
     cy.get('#review > div > .govuk-table > tbody > .govuk-table__row > :nth-child(4)').contains('1 January 2020')
 
     // Check we are cancelling the correct charge version
@@ -52,7 +54,9 @@ describe('Cancelling a charge version in workflow (internal)', () => {
     cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run.'
+    )
   })
 })

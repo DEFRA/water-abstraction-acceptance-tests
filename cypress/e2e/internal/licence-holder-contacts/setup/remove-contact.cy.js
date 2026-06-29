@@ -41,7 +41,7 @@ describe('Remove licence holder contacts (internal)', () => {
     cy.get('.govuk-button').contains('Remove').click()
 
     // Confirm the removal
-    cy.get('h1').should('contain.text', 'You\'re about to remove this contact')
+    cy.get('h1').should('contain.text', "You're about to remove this contact")
 
     cy.contains('.govuk-summary-list__row', 'Name').within(() => {
       cy.get('.govuk-summary-list__value').should('include.text', contact.department)
@@ -60,7 +60,10 @@ describe('Remove licence holder contacts (internal)', () => {
     // Confirm the notification banner shows the correct success message
     cy.get('.govuk-notification-banner').within(() => {
       cy.get('.govuk-notification-banner__title').should('contain.text', 'Contact removed')
-      cy.get('.govuk-notification-banner__heading').should('contain.text', `${contact.department} was removed from this company`)
+      cy.get('.govuk-notification-banner__heading').should(
+        'contain.text',
+        `${contact.department} was removed from this company`
+      )
     })
 
     // Confirm the contacts table no longer contains the removed contact

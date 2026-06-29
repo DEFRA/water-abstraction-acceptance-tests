@@ -98,7 +98,10 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('div > .govuk-tag').should('contain.text', 'ready')
-    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
+    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should(
+      'contain.text',
+      'Test Region two-part tariff'
+    )
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
 
     // Review Licence AT/TE/ST/01/01 ~ Check the first matched return details include the returns received late issue
@@ -117,8 +120,14 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // Review Licence AT/TE/ST/01/01 ~ Check charge Information details are correct for a licence with a late returns issue
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', '')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should(
+      'contain.text',
+      '32 ML / 32 ML'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should(
+      'contain.text',
+      '32 ML (10021668)'
+    )
 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()

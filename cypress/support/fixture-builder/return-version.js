@@ -1,4 +1,4 @@
-export default function returnVersion (howMany = 1) {
+export default function returnVersion(howMany = 1) {
   const returnVersions = [
     {
       id: 'bcd4e8c7-16ed-419c-915d-d8f184e45ed5',

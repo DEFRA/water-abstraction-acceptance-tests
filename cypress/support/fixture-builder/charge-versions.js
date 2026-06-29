@@ -1,7 +1,7 @@
 import billingAccountData from './billing-account.js'
 import licenceData from './licence.js'
 
-export default function chargeVersions () {
+export default function chargeVersions() {
   const billingAccount = billingAccountData()
   const licence = licenceData().licences[0]
 
@@ -11,7 +11,7 @@ export default function chargeVersions () {
   }
 }
 
-function _presrocChargeVersion (billingAccount, licence) {
+function _presrocChargeVersion(billingAccount, licence) {
   return {
     id: '8e5626ee-5e4c-48f6-a668-471d35997e2c',
     licenceId: licence.id,
@@ -33,7 +33,7 @@ function _presrocChargeVersion (billingAccount, licence) {
   }
 }
 
-function _srocChargeVersion (billingAccount, licence) {
+function _srocChargeVersion(billingAccount, licence) {
   return {
     id: '8e5626ee-5e4c-48f6-a668-471d35997e2c',
     licenceId: licence.id,

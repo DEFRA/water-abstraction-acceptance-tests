@@ -54,7 +54,9 @@ describe('Deleting a licence from workflow (internal)', () => {
     cy.get('form > .govuk-button').click()
 
     // Assert there are no licences in workflow now
-    cy.get('#toSetUp > :nth-child(1) > .govuk-caption-m').contains('There are no licences that require charge information setup.')
+    cy.get('#toSetUp > :nth-child(1) > .govuk-caption-m').contains(
+      'There are no licences that require charge information setup.'
+    )
 
     // search for a licence
     cy.get('#navbar-view').click()
@@ -66,7 +68,9 @@ describe('Deleting a licence from workflow (internal)', () => {
     cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run.'
+    )
   })
 })

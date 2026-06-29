@@ -5,7 +5,7 @@ import cypressMochawesomeReporter from 'cypress-mochawesome-reporter/plugin.js'
 export default defineConfig({
   allowCypressEnv: false,
   e2e: {
-    setupNodeEvents (on, config) {
+    setupNodeEvents(on, config) {
       // implement node event listeners here
       cypressMochawesomeReporter(on)
 

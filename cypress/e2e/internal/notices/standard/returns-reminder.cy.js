@@ -41,9 +41,11 @@ describe('Standard returns reminder journey (internal)', () => {
     cy.contains('Confirm').click()
 
     // Capture the notice reference so we can verify it later
-    cy.contains('.govuk-caption-l', 'Notice').invoke('text').then((text) => {
-      cy.wrap(text.trim()).as('noticeReference')
-    })
+    cy.contains('.govuk-caption-l', 'Notice')
+      .invoke('text')
+      .then((text) => {
+        cy.wrap(text.trim()).as('noticeReference')
+      })
 
     // Check the recipients
     cy.contains('Send').click()

@@ -1,4 +1,4 @@
-export default function points (howMany = 1) {
+export default function points(howMany = 1) {
   const points = [
     {
       id: '1cb602f8-6a01-4435-96b0-541e03f460da',

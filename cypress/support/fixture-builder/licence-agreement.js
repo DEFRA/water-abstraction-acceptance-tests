@@ -1,6 +1,6 @@
 import licenceData from './licence.js'
 
-export default function licenceAgreement () {
+export default function licenceAgreement() {
   const licence = licenceData().licences[0]
 
   return {

@@ -53,7 +53,10 @@ describe('Create licence holder contacts (internal)', () => {
 
     cy.get('.govuk-notification-banner').within(() => {
       cy.get('.govuk-notification-banner__title').should('contain.text', 'Contact added')
-      cy.get('.govuk-notification-banner__heading').should('contain.text', 'Test Contact All Licences was added to this company')
+      cy.get('.govuk-notification-banner__heading').should(
+        'contain.text',
+        'Test Contact All Licences was added to this company'
+      )
     })
 
     // Set up a contact with abstraction alerts for some licences
@@ -85,7 +88,10 @@ describe('Create licence holder contacts (internal)', () => {
 
     cy.get('.govuk-notification-banner').within(() => {
       cy.get('.govuk-notification-banner__title').should('contain.text', 'Contact added')
-      cy.get('.govuk-notification-banner__heading').should('contain.text', 'Test Contact Some Licences was added to this company')
+      cy.get('.govuk-notification-banner__heading').should(
+        'contain.text',
+        'Test Contact Some Licences was added to this company'
+      )
     })
 
     // Set up a contact with no abstraction alerts (an additional contact)
@@ -112,7 +118,10 @@ describe('Create licence holder contacts (internal)', () => {
 
     cy.get('.govuk-notification-banner').within(() => {
       cy.get('.govuk-notification-banner__title').should('contain.text', 'Contact added')
-      cy.get('.govuk-notification-banner__heading').should('contain.text', 'Test Contact No Licences was added to this company')
+      cy.get('.govuk-notification-banner__heading').should(
+        'contain.text',
+        'Test Contact No Licences was added to this company'
+      )
     })
 
     // Confirm the contacts table contains all four expected records

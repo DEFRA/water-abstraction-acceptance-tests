@@ -224,15 +224,16 @@ Cypress.Commands.add('setUp', (testKey) => {
   cy.log(`Setting up ${testKey} test data`)
 
   return cy.env(['jwtToken']).then(({ jwtToken }) => {
-    return cy.request({
-      url: `/acceptance-tests/set-up-from-yaml/${testKey}`,
-      log: false,
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${jwtToken}`
-      },
-      timeout: 60000
-    })
+    return cy
+      .request({
+        url: `/acceptance-tests/set-up-from-yaml/${testKey}`,
+        log: false,
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${jwtToken}`
+        },
+        timeout: 60000
+      })
       .its('status', { log: false })
       .should('equal', 204)
   })
@@ -243,26 +244,28 @@ Cypress.Commands.add('simulateNotifyCallback', (notificationId) => {
 
   return cy.env(['externalUrl']).then(({ externalUrl }) => {
     return cy.env(['notifyCallbackToken']).then(({ notifyCallbackToken }) => {
-      return cy.request({
-        url: `${externalUrl}/notify/callback`,
-        log: false,
-        method: 'POST',
-        headers: {
-          authorization: `Bearer ${notifyCallbackToken}`
-        },
-        body: {
-          id: notificationId,
-          reference: notificationId,
-          status: 'delivered',
-          notification_type: 'email',
-          to: 'irrelevant',
-          created_at: new Date().toISOString(),
-          completed_at: new Date().toISOString(),
-          sent_at: new Date().toISOString()
-        }
-      }).then((response) => {
-        return cy.wrap(response)
-      })
+      return cy
+        .request({
+          url: `${externalUrl}/notify/callback`,
+          log: false,
+          method: 'POST',
+          headers: {
+            authorization: `Bearer ${notifyCallbackToken}`
+          },
+          body: {
+            id: notificationId,
+            reference: notificationId,
+            status: 'delivered',
+            notification_type: 'email',
+            to: 'irrelevant',
+            created_at: new Date().toISOString(),
+            completed_at: new Date().toISOString(),
+            sent_at: new Date().toISOString()
+          }
+        })
+        .then((response) => {
+          return cy.wrap(response)
+        })
     })
   })
 })
@@ -293,7 +296,7 @@ Cypress.Commands.add('triggerJob', (job) => {
     .should('equal', 204)
 })
 
-function _dueDateObject (dueDate) {
+function _dueDateObject(dueDate) {
   const text = dueDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
 
   const today = new Date()

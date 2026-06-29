@@ -110,7 +110,9 @@ describe('Remove bill from annual bill run (internal)', () => {
     cy.get('.searchresult-row').contains('AT/TE/ST/01/04').click()
 
     // Confirm the licence has been flagged for two-part tariff supplementary billing
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next supplementary bill run.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next supplementary bill run.'
+    )
   })
 })

@@ -1,7 +1,8 @@
 import licenceData from '../fixture-builder/licence.js'
 
 export const title = 'Licence with a section 127 agreement'
-export const description = 'Licence with an S127 two-part tariff financial agreement and a sent two-part tariff bill run'
+export const description =
+  'Licence with an S127 two-part tariff financial agreement and a sent two-part tariff bill run'
 
 export default function () {
   return {

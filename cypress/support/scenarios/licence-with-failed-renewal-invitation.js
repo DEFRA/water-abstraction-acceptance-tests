@@ -3,11 +3,12 @@ import returnLogs from '../fixture-builder/return-logs.js'
 import returnRequirements from '../fixture-builder/return-requirements.js'
 import returnVersion from '../fixture-builder/return-version.js'
 import usersData from '../fixture-builder/users.js'
-import users from '../../fixtures/users.json' with { type: "json" }
+import users from '../../fixtures/users.json' with { type: 'json' }
 import { compareDates, formatDateToIso, previousPeriod, relativeToToday, today } from '../helpers/date.helpers.js'
 
 export const title = 'Failed renewal invitation'
-export const description = "Licence registered to a 'bad' external user with pending renewal and return invitations for notification failure testing"
+export const description =
+  "Licence registered to a 'bad' external user with pending renewal and return invitations for notification failure testing"
 
 export default function (currentServiceData) {
   const { firstReturnPeriod } = currentServiceData
@@ -30,8 +31,8 @@ export default function (currentServiceData) {
   const dataModel = {
     ...licenceData(),
     ...returnVersion(),
-        ...returnRequirements(),
-        ...returnLogs(1)
+    ...returnRequirements(),
+    ...returnLogs(1)
   }
 
   // We'll only set the due date on the OPEN return log if the alternate notification is successful. The Notify service
@@ -83,14 +84,14 @@ export default function (currentServiceData) {
   return dataModel
 }
 
-function _notifications (notices, returnLogId) {
+function _notifications(notices, returnLogId) {
   return [
     {
       id: 'a818564b-32e1-402d-9db4-94dd66ef1d64',
       recipient: usersData().externalBad.username,
       messageType: 'email',
       messageRef: 'renewal invitation',
-      personalisation: { expiryDate: '10 September 2026', licenceRef: 'AT/TE/ST/01/01', renewalDate: '12 June 2026'},
+      personalisation: { expiryDate: '10 September 2026', licenceRef: 'AT/TE/ST/01/01', renewalDate: '12 June 2026' },
       status: 'pending',
       licences: ['AT/TE/ST/01/01'],
       notifyId: '040622a0-9e75-40c9-9305-77860eecea11',
@@ -136,7 +137,7 @@ function _notifications (notices, returnLogId) {
   ]
 }
 
-function _notices () {
+function _notices() {
   return [
     {
       id: '20751b8e-1861-4e84-8290-a11ec854e023',
@@ -146,11 +147,15 @@ function _notices () {
       issuer: users.psc,
       licences: ['AT/TE/ST/01/01'],
       metadata: {
-        name: 'Renewals: invitation', error: 0, expiryDate: '2026-09-10', recipients: 1, renewalDate: '2026-06-12'
+        name: 'Renewals: invitation',
+        error: 0,
+        expiryDate: '2026-09-10',
+        recipients: 1,
+        renewalDate: '2026-06-12'
       },
       status: 'completed',
       overallStatus: 'pending',
-      statusCounts: { sent: 0, error: 0, pending: 1, returned: 0, cancelled: 0},
+      statusCounts: { sent: 0, error: 0, pending: 1, returned: 0, cancelled: 0 },
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -165,13 +170,13 @@ function _notices () {
         name: 'Returns: invitation',
         error: 0,
         expiryDate: '2026-09-10',
-        options: { excludeLicences : [] },
+        options: { excludeLicences: [] },
         recipients: 1,
-        returnCycle: {dueDate: '2026-04-28', endDate: '2026-03-31', isSummer: false, startDate: '2025-04-01' }
+        returnCycle: { dueDate: '2026-04-28', endDate: '2026-03-31', isSummer: false, startDate: '2025-04-01' }
       },
       status: 'completed',
       overallStatus: 'pending',
-      statusCounts: { sent: 0, error: 0, pending: 1, returned: 0, cancelled: 0},
+      statusCounts: { sent: 0, error: 0, pending: 1, returned: 0, cancelled: 0 },
       createdAt: new Date(),
       updatedAt: new Date()
     }

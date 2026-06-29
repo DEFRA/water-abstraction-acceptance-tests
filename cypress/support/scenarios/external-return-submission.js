@@ -6,9 +6,7 @@ export const description = 'Licence with a due return log and registered externa
 
 export default function () {
   return {
-    users: [
-      usersData().external
-    ],
+    users: [usersData().external],
     ...licenceData(),
     returnLogs: [
       {

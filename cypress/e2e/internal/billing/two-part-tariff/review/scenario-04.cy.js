@@ -100,7 +100,10 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('h1').should('contain.text', 'Licence AT/TE/ST/01/01')
     cy.get('[data-test="licence-holder"]').should('contain.text', 'Big Farm Co Ltd')
     cy.get('div > .govuk-tag').should('contain.text', 'review')
-    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should('contain.text', 'Test Region two-part tariff')
+    cy.get(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l').should(
+      'contain.text',
+      'Test Region two-part tariff'
+    )
     cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
 
     // Review Licence AT/TE/ST/01/01 ~ Check the matched return details
@@ -119,10 +122,19 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
     // Review Licence AT/TE/ST/01/01 ~ Check charge Information details are correct for a licence with an aggregate
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', 'Aggregate')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should(
+      'contain.text',
+      'Aggregate'
+    )
     // Even with an  aggregate issue flagged we still expect the return to allocate fully to the charge element
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should('contain.text', '32 ML / 32 ML')
-    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should('contain.text', '32 ML (10021668)')
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should(
+      'contain.text',
+      '32 ML / 32 ML'
+    )
+    cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]').should(
+      'contain.text',
+      '32 ML (10021668)'
+    )
 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
@@ -142,7 +154,10 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // Charge reference details
     cy.get('[data-test="charge-reference"]').should('contain.text', 'Charge reference 4.6.12')
-    cy.get('[data-test="charge-reference-description"]').should('contain.text', 'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model')
+    cy.get('[data-test="charge-reference-description"]').should(
+      'contain.text',
+      'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model'
+    )
     cy.get('[data-test="financial-year"]').should('contain.text', 'Financial Year 2024 to 2025')
     cy.get('[data-test="charge-period"]').should('contain.text', 'Charge period 1 April 2024 to 31 March 2025')
     cy.get('[data-test="total-billable-returns"]').should('contain.text', '32 ML')
@@ -159,9 +174,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('#amended-aggregate').should('have.value', '0.5')
     cy.get('#amended-charge-adjustment').should('have.value', '1')
     // By changing the aggregate factor to 1 this removes it
-    cy.get('#amended-aggregate')
-      .clear()
-      .type('1')
+    cy.get('#amended-aggregate').clear().type('1')
     cy.contains('Confirm').click()
 
     // Charge reference details page ~ Checking the amended aggregate
@@ -179,9 +192,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="adjustment-1"]').should('contain.text', 'Two part tariff agreement')
     cy.get('#amended-aggregate').should('have.value', '1')
     cy.get('#amended-charge-adjustment').should('have.value', '1')
-    cy.get('#amended-charge-adjustment')
-      .clear()
-      .type('0.5')
+    cy.get('#amended-charge-adjustment').clear().type('0.5')
     cy.contains('Confirm').click()
 
     // Charge reference details page ~ Checking the amended charge factor

@@ -1,7 +1,7 @@
 import billingAccountData from './billing-account.js'
 import licenceData from './licence.js'
 
-export default function billingAccountAddress () {
+export default function billingAccountAddress() {
   const billingAccount = billingAccountData()
 
   return {

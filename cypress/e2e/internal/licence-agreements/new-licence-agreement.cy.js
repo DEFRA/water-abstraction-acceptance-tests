@@ -65,20 +65,25 @@ describe('New licence agreement journey (internal)', () => {
     cy.contains('tbody tr', '1 April 2018').within(() => {
       cy.get('td').eq(0).should('contain.text', '1 April 2018') // start date
       cy.get('td').eq(1).should('contain.text', '') // end date
-      cy.get('td').eq(2).should('contain.text', 'Two-part tariff')// agreement
+      cy.get('td').eq(2).should('contain.text', 'Two-part tariff') // agreement
       cy.get('td').eq(3).should('contain.text', '') // date signed
 
-      cy.get('td').eq(4).within(() => { // actions
-        cy.contains('Delete').should('exist')
-        cy.contains('End').should('exist')
-      })
+      cy.get('td')
+        .eq(4)
+        .within(() => {
+          // actions
+          cy.contains('Delete').should('exist')
+          cy.contains('End').should('exist')
+        })
     })
 
     // Navigate to back to the Licence summary page
     cy.contains('nav a', 'Licence summary').click()
 
     // Check the new licence agreement has flagged the licence for supplementary billing
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next supplementary bill run for the old charge scheme.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+    )
   })
 })

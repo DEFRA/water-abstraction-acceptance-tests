@@ -43,8 +43,10 @@ describe('Create and send supplementary bill runs (internal)', () => {
     })
 
     // Confirm the licence has the correct flags (we will check these have been removed after the bill runs have been sent)
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next supplementary bill runs for the current and old charge schemes.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next supplementary bill runs for the current and old charge schemes.'
+    )
 
     // click the Bill runs menu link
     cy.get('#nav-bill-runs').contains('Bill runs').click()
@@ -88,11 +90,9 @@ describe('Create and send supplementary bill runs (internal)', () => {
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.presroc
       if (billingPeriodCount === 1) {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', '1 Supplementary bill')
+        cy.get('[data-test="bills-count"]').should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
+        cy.get('[data-test="bills-count"]').should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Send bill run').click()
@@ -127,7 +127,9 @@ describe('Create and send supplementary bill runs (internal)', () => {
     // Bill runs
     // back on the bill runs page confirm our PRESROC bill run is present and listed as SENT
     cy.get('@formattedCurrentDate').then((formattedCurrentDate) => {
-      cy.get('[data-test="date-created-0"]').should('contain.text', formattedCurrentDate).and('contain.text', 'Old charge scheme')
+      cy.get('[data-test="date-created-0"]')
+        .should('contain.text', formattedCurrentDate)
+        .and('contain.text', 'Old charge scheme')
     })
     cy.get('[data-test="region-0"]').should('contain.text', 'Test Region')
     cy.get('[data-test="bill-run-type-0"]').should('contain.text', 'Supplementary')
@@ -149,11 +151,9 @@ describe('Create and send supplementary bill runs (internal)', () => {
     cy.get('@currentFinancialYearInfo').then((currentFinancialYearInfo) => {
       const billingPeriodCount = currentFinancialYearInfo.billingPeriodCounts.sroc
       if (billingPeriodCount === 1) {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', '1 Supplementary bill')
+        cy.get('[data-test="bills-count"]').should('contain.text', '1 Supplementary bill')
       } else {
-        cy.get('[data-test="bills-count"]')
-          .should('contain.text', `${billingPeriodCount} Supplementary bills`)
+        cy.get('[data-test="bills-count"]').should('contain.text', `${billingPeriodCount} Supplementary bills`)
       }
     })
     cy.get('.govuk-button').contains('Send bill run').click()

@@ -36,12 +36,15 @@ describe('Restore a licence holder contact (internal)', () => {
 
     cy.get('.govuk-button').contains('Remove').click()
 
-    cy.get('h1').should('contain.text', 'You\'re about to remove this contact')
+    cy.get('h1').should('contain.text', "You're about to remove this contact")
     cy.get('.govuk-button').contains('Remove this contact').click()
 
     cy.get('.govuk-notification-banner').within(() => {
       cy.get('.govuk-notification-banner__title').should('contain.text', 'Contact removed')
-      cy.get('.govuk-notification-banner__heading').should('contain.text', `${contact.department} was removed from this company`)
+      cy.get('.govuk-notification-banner__heading').should(
+        'contain.text',
+        `${contact.department} was removed from this company`
+      )
     })
 
     cy.get('.govuk-table__cell').contains(contact.department).should('not.exist')

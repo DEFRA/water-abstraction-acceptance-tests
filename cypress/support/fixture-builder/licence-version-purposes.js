@@ -1,4 +1,4 @@
-export default function purposes (howMany = 1) {
+export default function purposes(howMany = 1) {
   const licenceVersionPurposes = [
     {
       id: 'f264184b-22a7-4e26-bd90-d5738eb2e07e',

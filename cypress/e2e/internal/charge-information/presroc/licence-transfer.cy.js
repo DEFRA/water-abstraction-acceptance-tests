@@ -83,7 +83,10 @@ describe('PRESROC licence transfer (internal)', () => {
     // check the charge details and element details are as expected and then confirm
     cy.get('section:nth-child(1) > dl').within(() => {
       // reason
-      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should('contain.text', 'Licence transferred and now chargeable')
+      cy.get('div:nth-child(1) > dd.govuk-summary-list__value').should(
+        'contain.text',
+        'Licence transferred and now chargeable'
+      )
       // start date
       cy.get('div:nth-child(2) > dd.govuk-summary-list__value').should('contain.text', '1 January 2018')
       // billing account
@@ -135,7 +138,9 @@ describe('PRESROC licence transfer (internal)', () => {
     // Navigate to the Licence summary page
     cy.contains('nav a', 'Licence summary').click()
 
-    cy.get('.govuk-notification-banner__content')
-      .should('contain.text', 'This licence has been marked for the next supplementary bill run for the old charge scheme.')
+    cy.get('.govuk-notification-banner__content').should(
+      'contain.text',
+      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+    )
   })
 })

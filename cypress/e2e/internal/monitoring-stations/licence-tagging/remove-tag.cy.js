@@ -62,7 +62,8 @@ describe('Attempt to remove a tag from a monitoring station (internal)', () => {
     cy.get('.govuk-notification-banner__heading').contains('Tag removed for AT/TE/ST/01/01')
     cy.get('.govuk-heading-l').should('have.text', 'Test Station')
     cy.get('p.govuk-body').should(
-      'have.text', 'There are no licences tagged with restrictions for this monitoring station'
+      'have.text',
+      'There are no licences tagged with restrictions for this monitoring station'
     )
   })
 })

@@ -1,6 +1,6 @@
 import chargeVersionsData from './charge-versions.js'
 
-export default function chargeReferences () {
+export default function chargeReferences() {
   const { presroc: presrocChargeVersion, sroc: srocChargeVersion } = chargeVersionsData()
 
   return {
@@ -9,7 +9,7 @@ export default function chargeReferences () {
   }
 }
 
-function _presrocChargeReference (chargeVersion) {
+function _presrocChargeReference(chargeVersion) {
   return {
     id: '69ea7fd9-961b-4d5d-be8b-ecd0e9cc8482',
     chargeVersionId: chargeVersion.id,
@@ -57,7 +57,7 @@ function _presrocChargeReference (chargeVersion) {
   }
 }
 
-function _srocChargeReference (chargeVersion) {
+function _srocChargeReference(chargeVersion) {
   return {
     id: 'fa3c73d0-0459-41f0-b6cf-0e0758775ca4',
     chargeVersionId: chargeVersion.id,

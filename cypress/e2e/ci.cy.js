@@ -7,9 +7,10 @@ describe('CI', () => {
     cy.wrap({ color: 'green', size: 30 }).as('cucumber')
 
     cy.get('@cucumber').then((cucumber) => {
-      cy.wrap(
-        [{ color: 'green', size: cucumber.size / 2 }, { color: 'green', size: cucumber.size / 2 }]
-      ).as('choppedCucumbers')
+      cy.wrap([
+        { color: 'green', size: cucumber.size / 2 },
+        { color: 'green', size: cucumber.size / 2 }
+      ]).as('choppedCucumbers')
     })
 
     cy.get('@choppedCucumbers').then((choppedCucumbers) => {

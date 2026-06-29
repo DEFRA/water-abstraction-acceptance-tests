@@ -41,7 +41,11 @@ describe('Attempt set up of abstraction alert with no thresholds (internal)', ()
 
     // Confirm that a validation error has been generated
     cy.get('.govuk-error-summary').contains('There is a problem')
-    cy.get('.govuk-error-summary').contains('There are no thresholds with the reduce restriction type, Select the type of alert you need to send')
-    cy.get('#alertType-error').contains('There are no thresholds with the reduce restriction type, Select the type of alert you need to send')
+    cy.get('.govuk-error-summary').contains(
+      'There are no thresholds with the reduce restriction type, Select the type of alert you need to send'
+    )
+    cy.get('#alertType-error').contains(
+      'There are no thresholds with the reduce restriction type, Select the type of alert you need to send'
+    )
   })
 })
