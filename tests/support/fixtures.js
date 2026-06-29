@@ -14,6 +14,9 @@ export const test = base.extend({
 
   load: async ({ page }, use) => {
     await use((data) => {
+
+      data.playwright = true
+
       return page.request.post('/system/data/load', { data })
     })
   },
