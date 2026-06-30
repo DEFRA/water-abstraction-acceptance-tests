@@ -1,4 +1,4 @@
-import scenarioData from '../../scenarios/core-licence.js'
+import scenarioData from '../../support/scenarios/core-licence.js'
 import { test, expect } from '../../support/fixtures.js'
 
 const scenario = scenarioData()

@@ -56,3 +56,4 @@ cypress/reports/*.json
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+.scenario-data.json

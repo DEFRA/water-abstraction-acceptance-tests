@@ -8,8 +8,8 @@ const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 
 export default defineConfig({
   forbidOnly: !!process.env.CI,
   fullyParallel: false,
-  globalSetup: './tests/global-setup.js',
-  globalTeardown: './tests/global-teardown.js',
+  globalSetup: './tests/support/global-setup.js',
+  globalTeardown: './tests/support/global-teardown.js',
   projects: [
     {
       name: 'chromium',
