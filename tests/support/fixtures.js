@@ -9,6 +9,7 @@ const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 
 export { expect } from '@playwright/test'
 
 export const test = base.extend({
+  // eslint-disable-next-line no-empty-pattern
   users: async ({}, use) => {
     await use(users)
   },
