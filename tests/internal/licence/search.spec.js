@@ -1,5 +1,5 @@
-import { test, expect } from '../../support/fixtures.js'
 import scenarioData from '../../scenarios/core-licence.js'
+import { test, expect } from '../../support/fixtures.js'
 
 const scenario = scenarioData()
 

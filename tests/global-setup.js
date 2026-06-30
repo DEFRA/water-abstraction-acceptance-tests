@@ -1,5 +1,6 @@
 import { request } from '@playwright/test'
 import { readFileSync } from 'fs'
+
 import coreLicenceScenario from './scenarios/core-licence.js'
 
 const environment = process.env.TEST_ENV ?? 'local'

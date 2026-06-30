@@ -1,21 +1,21 @@
 import { randomUUID } from 'crypto'
 
-const companyName = 'Big Farm Co Ltd'
 const licenceRef = 'AT/TE/ST/01/01'
+const companyName = 'Big Farm Co Ltd'
 const userEmail = 'external@example.com'
 
 export default function () {
-  const addressId = randomUUID()
-  const companyEntityId = randomUUID()
-  const companyId = randomUUID()
   const individualEntityId = randomUUID()
-  const licenceDocumentHeaderId = randomUUID()
-  const licenceDocumentId = randomUUID()
+  const companyEntityId = randomUUID()
   const licenceEntityRoleId = randomUUID()
+  const licenceDocumentHeaderId = randomUUID()
+  const companyId = randomUUID()
+  const addressId = randomUUID()
+  const licenceDocumentId = randomUUID()
+  const pointId = randomUUID()
   const licenceId = randomUUID()
   const licenceVersionId = randomUUID()
   const licenceVersionPurposeId = randomUUID()
-  const pointId = randomUUID()
 
   return {
     permitLicences: [

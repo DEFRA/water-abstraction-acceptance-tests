@@ -1,5 +1,6 @@
 import { test as base } from '@playwright/test'
 import { readFileSync } from 'fs'
+
 import users from '../data/users.js'
 
 const environment = process.env.TEST_ENV ?? 'local'
