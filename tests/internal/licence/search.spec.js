@@ -1,18 +1,11 @@
 import { test, expect } from '../../support/fixtures.js'
-import { prepareScenario } from '../../migration/prepare-scenario.js'
-import scenarioData from '../../../cypress/support/scenarios/one-licence-only.js'
+import scenarioData from '../../scenarios/core-licence.js'
+
+const scenario = scenarioData()
 
 test.describe('Search for a licence (internal)', () => {
-  let scenario
-
-  test.beforeEach(async ({ load, login, users }) => {
-    scenario = prepareScenario(scenarioData())
-    await load(scenario)
+  test.beforeEach(async ({ login, users }) => {
     await login(users.super)
-  })
-
-  test.afterEach(async ({ tearDown }) => {
-    await tearDown(scenario.licences[0].licenceRef)
   })
 
   test('can find a licence using various search values', async ({ page }) => {
