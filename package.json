@@ -20,6 +20,7 @@
     "cy:verify": "cypress verify",
     "pw:open:local": "playwright test --ui",
     "pw:run:local": "playwright test",
+    "test:local": "playwright test && npm run cy:run:local",
     "lint": "eslint ."
   },
   "repository": {
