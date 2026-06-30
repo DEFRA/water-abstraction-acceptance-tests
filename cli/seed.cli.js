@@ -23,7 +23,7 @@ import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.
 import { get, post } from './system.request.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
-const SCENARIOS_DIR = 'cypress/support/scenarios'
+const SCENARIOS_DIRS = ['cypress/support/scenarios', 'tests/scenarios']
 
 async function run() {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
@@ -83,7 +83,7 @@ async function _currentServiceData() {
  */
 async function _body(selectedScenario, currentServiceData) {
   // 1. Get the absolute path
-  const scenarioPath = path.resolve(SCENARIOS_DIR, `${selectedScenario.filename}.js`)
+  const scenarioPath = selectedScenario.path
 
   // 2. Use dynamic import() to load the ESM scenario file.
   // This allows the scenario to 'import' other ESM files (like licence.js)
@@ -169,26 +169,33 @@ async function _prompt(scenarios, defaultValue) {
  * @private
  */
 async function _scenarios() {
-  const filenames = fs
-    .readdirSync(SCENARIOS_DIR)
-    .filter((file) => {
-      return file.endsWith('.js')
-    })
-    .map((file) => {
-      return file.replace('.js', '')
-    })
-
   const scenarios = []
 
-  for (const filename of filenames) {
-    const scenarioPath = path.resolve(SCENARIOS_DIR, `${filename}.js`)
-    const mod = await import(`file://${scenarioPath}`)
+  for (const dir of SCENARIOS_DIRS) {
+    if (!fs.existsSync(dir)) {
+      continue
+    }
 
-    scenarios.push({
-      filename,
-      title: mod.title ?? filename,
-      description: mod.description ?? ''
-    })
+    const filenames = fs
+      .readdirSync(dir)
+      .filter((file) => {
+        return file.endsWith('.js')
+      })
+      .map((file) => {
+        return file.replace('.js', '')
+      })
+
+    for (const filename of filenames) {
+      const scenarioPath = path.resolve(dir, `${filename}.js`)
+      const mod = await import(`file://${scenarioPath}`)
+
+      scenarios.push({
+        filename,
+        path: scenarioPath,
+        title: mod.title ?? filename,
+        description: mod.description ?? ''
+      })
+    }
   }
 
   return scenarios

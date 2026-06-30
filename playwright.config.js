@@ -16,12 +16,12 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] }
     }
   ],
-  reporter: 'html',
+  reporter: [['html'], ['list']],
   retries: process.env.CI ? 2 : 0,
   testDir: './tests',
   use: {
     baseURL: envConfig.config.baseUrl,
     trace: 'on-first-retry'
   },
-  workers: 1
+  workers: 3
 })

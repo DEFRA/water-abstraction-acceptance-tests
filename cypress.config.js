@@ -10,7 +10,7 @@ export default defineConfig({
       cypressMochawesomeReporter(on)
 
       // Read in environment specific config
-      const text = readFileSync(`./environments/${config.env.environment}.json`)
+      const text = readFileSync(`./environments/${config.env.environment || 'local'}.json`)
       const environmentConfig = JSON.parse(text)
 
       // Apply any top level config
