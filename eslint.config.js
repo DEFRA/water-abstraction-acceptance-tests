@@ -4,7 +4,7 @@ import neostandard from 'neostandard'
 
 export default [
   {
-    ignores: ['cypress/reports/**/*']
+    ignores: ['cypress/reports/**/*', 'test-results/**/*', 'playwright-report/**/*']
   },
   ...neostandard({ noStyle: true }),
   {
