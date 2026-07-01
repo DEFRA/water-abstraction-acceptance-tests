@@ -1,4 +1,4 @@
-export const users = {
+export default {
   external: 'external@example.co.uk',
   admin: 'admin-internal@wrls.gov.uk',
   basic: 'basic.access@wrls.gov.uk',
