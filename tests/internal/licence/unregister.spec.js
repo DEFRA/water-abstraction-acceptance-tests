@@ -1,18 +1,21 @@
-import scenarioData from '../../support/scenarios/core-licence.js'
+import scenarioData from '../../support/scenarios/licence.js'
 import { test, expect } from '../../support/fixtures.js'
 
 const scenario = scenarioData()
+const { licenceRef } = scenario.licences[0]
+const { name: companyName } = scenario.companies[0]
+const { username: userEmail } = scenario.users[0]
 
 test.describe('Unregister a licence (internal)', () => {
+  test.beforeAll(async ({ setup }) => {
+    await setup(scenario)
+  })
+
   test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+    await login(users.super)
   })
 
   test('can unregister a licence from its primary user', async ({ page }) => {
-    const { licenceRef } = scenario.licences[0]
-    const { name: companyName } = scenario.companies[0]
-    const { username: userEmail } = scenario.users[0]
-
     await page.goto('/')
 
     // Search for the user and then select them

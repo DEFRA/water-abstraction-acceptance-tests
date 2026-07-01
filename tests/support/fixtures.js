@@ -9,9 +9,10 @@ const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 
 export { expect } from '@playwright/test'
 
 export const test = base.extend({
-  // eslint-disable-next-line no-empty-pattern
-  users: async ({}, use) => {
-    await use(users)
+  load: async ({ request }, use) => {
+    await use((data) => {
+      return request.post('/system/data/load', { data })
+    })
   },
 
   login: async ({ page }, use) => {
@@ -21,5 +22,23 @@ export const test = base.extend({
       await page.fill('input#password', envConfig.values.defaultPassword)
       await page.click('.govuk-button.govuk-button--start')
     })
+  },
+
+  tearDown: async ({ request }, use) => {
+    await use(() => {
+      return request.post('/system/data/tear-down')
+    })
+  },
+
+  setup: async ({ tearDown, load }, use) => {
+    await use(async (scenario) => {
+      await tearDown()
+      await load(scenario)
+    })
+  },
+
+  // eslint-disable-next-line no-empty-pattern
+  users: async ({}, use) => {
+    await use(users)
   }
 })

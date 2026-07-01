@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig, devices } from '@playwright/test'
 import { readFileSync } from 'fs'
 
@@ -8,8 +7,6 @@ const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 
 export default defineConfig({
   forbidOnly: !!process.env.CI,
   fullyParallel: false,
-  globalSetup: './tests/support/global-setup.js',
-  globalTeardown: './tests/support/global-teardown.js',
   projects: [
     {
       name: 'chromium',
@@ -23,5 +20,7 @@ export default defineConfig({
     baseURL: envConfig.config.baseUrl,
     trace: 'on-first-retry'
   },
-  workers: 3
+  // Must be 1: each spec's beforeAll calls /system/data/tear-down, which wipes all test data in the
+  // DB. Running specs in parallel would cause workers to tear down each other's data mid-test.
+  workers: 1
 })

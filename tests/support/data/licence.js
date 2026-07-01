@@ -1,6 +1,10 @@
 import { randomUUID } from 'crypto'
 
-export default function (licenceRef = 'AT/TE/ST/01/01', companyName= 'Big Farm Co Ltd', userEmail = 'external@example.com') {
+export default function (
+  licenceRef = 'AT/TE/ST/01/01',
+  companyName = 'Big Farm Co Ltd',
+  userEmail = 'external@example.com'
+) {
   const individualEntityId = randomUUID()
   const companyEntityId = randomUUID()
   const licenceEntityRoleId = randomUUID()
