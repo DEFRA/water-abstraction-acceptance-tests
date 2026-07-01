@@ -23,7 +23,7 @@ import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.
 import { get, post } from './system.request.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
-const SCENARIOS_DIRS = ['cypress/support/scenarios', 'tests/scenarios']
+const SCENARIOS_DIRS = ['cypress/support/scenarios', 'tests/support/scenarios']
 
 async function run() {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
