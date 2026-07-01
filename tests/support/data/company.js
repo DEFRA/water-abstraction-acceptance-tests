@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto'
 
-export default function (name) {
+export default function (name = 'Big Farm Co Ltd') {
   const addressId = randomUUID()
   const companyId = randomUUID()
 

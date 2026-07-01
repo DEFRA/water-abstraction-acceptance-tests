@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto'
 
-export default function (licenceRef, companiesData, primaryUserData = null) {
+export default function (licenceRef, companyData, primaryUserData = null) {
   const licenceDocumentHeaderId = randomUUID()
   const licenceDocumentId = randomUUID()
   const pointId = randomUUID()
@@ -8,8 +8,10 @@ export default function (licenceRef, companiesData, primaryUserData = null) {
   const licenceVersionId = randomUUID()
   const licenceVersionPurposeId = randomUUID()
 
-  const company = companiesData.companies[0]
-  const address = companiesData.addresses[0]
+  const {
+    companies: [company],
+    addresses: [address]
+  } = companyData
 
   // When there is a primary user, we need to link them to the 'licenceDocumentHeaders'; this is the only way we can
   // link a registered licence to a licence holder.
