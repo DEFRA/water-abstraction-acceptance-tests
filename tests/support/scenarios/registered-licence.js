@@ -1,6 +1,6 @@
 import licence from '../data/licence.js'
 import company from '../data/company.js'
-import * as users from '../data/users.js'
+import primaryUser from '../data/primary-user.js'
 
 export const title = 'Licence (registered)'
 export const description = 'A licence, with a company and licence holder, with a primary user'
@@ -8,13 +8,13 @@ export const description = 'A licence, with a company and licence holder, with a
 export default function () {
   const licenceRef = 'AT/TE/ST/01/01'
 
-  const companies = company('Big Farm Co Ltd')
+  const companiesData = company('Big Farm Co Ltd')
 
-  const primaryUser = users.primaryUser('external@example.com', companies)
+  const primaryUserData = primaryUser('external@example.com', companiesData)
 
   return {
-    ...companies,
-    ...primaryUser,
-    ...licence(licenceRef, companies, primaryUser)
+    ...companiesData,
+    ...primaryUserData,
+    ...licence(licenceRef, companiesData, primaryUserData)
   }
 }
