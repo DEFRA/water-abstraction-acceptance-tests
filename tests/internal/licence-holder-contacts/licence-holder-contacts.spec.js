@@ -7,17 +7,27 @@ const scenario = scenarioData()
 const {
   companies: [company],
   licences: [licence],
-  contacts: [contact]
+  contacts: [contact, editContact, removeContact, restoreContact]
 } = scenario
 
-function summaryValue(page, label) {
-  return page.locator('.govuk-summary-list__row', { hasText: label }).locator('.govuk-summary-list__value')
-}
-
 test.describe('Licence holder contacts (internal)', () => {
-  test.beforeEach(async ({ setup, login, users }) => {
+  test.beforeAll(async ({ setup }) => {
     await setup(scenario)
+  })
+
+  test.beforeEach(async ({ login, users }) => {
     await login(users.super)
+  })
+
+  test('shows the licence holder in the contacts list', async ({ page }) => {
+    await page.goto(`/system/companies/${company.id}/contacts`)
+
+    // Confirm the page title and caption
+    await expect(page.locator('.govuk-caption-l')).toContainText(company.name)
+    await expect(page.locator('h1')).toContainText('Contacts')
+
+    // Confirm the licence holder is listed as a contact
+    await expect(_contactRow(page, company.name)).toContainText('Licence holder')
   })
 
   test('can create an additional contact with no abstraction alerts', async ({ page }) => {
@@ -39,8 +49,8 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('input[name="abstractionAlerts"][value="no"]').check()
     await page.locator('.govuk-button', { hasText: 'Continue' }).click()
 
-    await expect(summaryValue(page, 'Name')).toContainText('Test Contact No Licences')
-    await expect(summaryValue(page, 'Water abstraction alerts')).toContainText('No')
+    await expect(_summaryValue(page, 'Name')).toContainText('Test Contact No Licences')
+    await expect(_summaryValue(page, 'Water abstraction alerts')).toContainText('No')
 
     await page.locator('.govuk-button', { hasText: 'Confirm' }).click()
 
@@ -51,14 +61,9 @@ test.describe('Licence holder contacts (internal)', () => {
     )
 
     // Confirm the contacts table contains the expected records
-    await expect(page.locator('[data-test="contact-name-0"]')).toContainText(company.name)
-    await expect(page.locator('[data-test="contact-type-0"]')).toContainText('Licence holder')
-
-    await expect(page.locator('[data-test="contact-name-1"]')).toContainText(contact.department)
-    await expect(page.locator('[data-test="contact-type-1"]')).toContainText('Additional contact')
-
-    await expect(page.locator('[data-test="contact-name-2"]')).toContainText('Test Contact No Licences')
-    await expect(page.locator('[data-test="contact-type-2"]')).toContainText('Additional contact')
+    await expect(_contactRow(page, company.name)).toContainText('Licence holder')
+    await expect(_contactRow(page, contact.department)).toContainText('Additional contact')
+    await expect(_contactRow(page, 'Test Contact No Licences')).toContainText('Additional contact')
   })
 
   test('can create a contact with abstraction alerts for all licences', async ({ page }) => {
@@ -80,8 +85,8 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('input[name="abstractionAlerts"][value="yes"]').check()
     await page.locator('.govuk-button', { hasText: 'Continue' }).click()
 
-    await expect(summaryValue(page, 'Name')).toContainText('Test Contact All Licences')
-    await expect(summaryValue(page, 'Water abstraction alerts')).toContainText('Yes, for all licences')
+    await expect(_summaryValue(page, 'Name')).toContainText('Test Contact All Licences')
+    await expect(_summaryValue(page, 'Water abstraction alerts')).toContainText('Yes, for all licences')
 
     await page.locator('.govuk-button', { hasText: 'Confirm' }).click()
 
@@ -92,14 +97,9 @@ test.describe('Licence holder contacts (internal)', () => {
     )
 
     // Confirm the contacts table contains the expected records
-    await expect(page.locator('[data-test="contact-name-0"]')).toContainText(company.name)
-    await expect(page.locator('[data-test="contact-type-0"]')).toContainText('Licence holder')
-
-    await expect(page.locator('[data-test="contact-name-1"]')).toContainText(contact.department)
-    await expect(page.locator('[data-test="contact-type-1"]')).toContainText('Additional contact')
-
-    await expect(page.locator('[data-test="contact-name-2"]')).toContainText('Test Contact All Licences')
-    await expect(page.locator('[data-test="contact-type-2"]')).toContainText('Abstraction alerts')
+    await expect(_contactRow(page, company.name)).toContainText('Licence holder')
+    await expect(_contactRow(page, contact.department)).toContainText('Additional contact')
+    await expect(_contactRow(page, 'Test Contact All Licences')).toContainText('Abstraction alerts')
   })
 
   test('can create a contact with abstraction alerts for some licences', async ({ page }) => {
@@ -125,9 +125,9 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('input[type="checkbox"]').first().check()
     await page.locator('.govuk-button', { hasText: 'Continue' }).click()
 
-    await expect(summaryValue(page, 'Name')).toContainText('Test Contact Some Licences')
+    await expect(_summaryValue(page, 'Name')).toContainText('Test Contact Some Licences')
 
-    const someLicencesAlertsValue = summaryValue(page, 'Water abstraction alerts')
+    const someLicencesAlertsValue = _summaryValue(page, 'Water abstraction alerts')
     await expect(someLicencesAlertsValue).toContainText('Yes, for some licences')
     await expect(someLicencesAlertsValue).toContainText(licence.licenceRef)
 
@@ -140,38 +140,32 @@ test.describe('Licence holder contacts (internal)', () => {
     )
 
     // Confirm the contacts table contains the expected records
-    await expect(page.locator('[data-test="contact-name-0"]')).toContainText(company.name)
-    await expect(page.locator('[data-test="contact-type-0"]')).toContainText('Licence holder')
-
-    await expect(page.locator('[data-test="contact-name-1"]')).toContainText(contact.department)
-    await expect(page.locator('[data-test="contact-type-1"]')).toContainText('Additional contact')
-
-    await expect(page.locator('[data-test="contact-name-2"]')).toContainText('Test Contact Some Licences')
-    await expect(page.locator('[data-test="contact-type-2"]')).toContainText('Abstraction alerts')
+    await expect(_contactRow(page, company.name)).toContainText('Licence holder')
+    await expect(_contactRow(page, contact.department)).toContainText('Additional contact')
+    await expect(_contactRow(page, 'Test Contact Some Licences')).toContainText('Abstraction alerts')
   })
 
   test('can edit a contact to change its abstraction alerts', async ({ page }) => {
+    const name = editContact.department
+    const email = editContact.email
+
     await page.goto(`/system/companies/${company.id}/contacts`)
 
-    // Confirm the seeded contact exists
-    await expect(page.locator('[data-test="contact-name-1"]')).toContainText(contact.department)
-    await expect(page.locator('[data-test="contact-type-1"]')).toContainText('Additional contact')
-
     // View the contact details
-    await page.locator('.govuk-table__row', { hasText: contact.department }).locator('a').click()
+    await _contactRow(page, name).locator('a').click()
 
-    await expect(page.locator('h1.govuk-heading-l')).toHaveText(`Contact details for ${contact.department}`)
+    await expect(page.locator('h1.govuk-heading-l')).toHaveText(`Contact details for ${name}`)
 
-    await expect(summaryValue(page, 'Name')).toContainText(contact.department)
-    await expect(summaryValue(page, 'Email address')).toContainText(contact.email)
-    await expect(summaryValue(page, 'Water abstraction alerts')).toContainText('No')
+    await expect(_summaryValue(page, 'Name')).toContainText(name)
+    await expect(_summaryValue(page, 'Email address')).toContainText(email)
+    await expect(_summaryValue(page, 'Water abstraction alerts')).toContainText('No')
 
     // Edit the contact
     await page.locator('.govuk-button', { hasText: 'Edit contact' }).click()
 
-    await expect(summaryValue(page, 'Name')).toContainText(contact.department)
-    await expect(summaryValue(page, 'Email address')).toContainText(contact.email)
-    await expect(summaryValue(page, 'Water abstraction alerts')).toContainText('No')
+    await expect(_summaryValue(page, 'Name')).toContainText(name)
+    await expect(_summaryValue(page, 'Email address')).toContainText(email)
+    await expect(_summaryValue(page, 'Water abstraction alerts')).toContainText('No')
 
     // Change the abstraction alerts to yes, for some licences
     await page
@@ -187,7 +181,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('.govuk-button', { hasText: 'Continue' }).click()
 
     // Check the change has been applied on the check contact page
-    const pendingAlertsValue = summaryValue(page, 'Water abstraction alerts')
+    const pendingAlertsValue = _summaryValue(page, 'Water abstraction alerts')
     await expect(pendingAlertsValue).toContainText('Yes, for some licences')
     await expect(pendingAlertsValue).toContainText(licence.licenceRef)
 
@@ -196,38 +190,37 @@ test.describe('Licence holder contacts (internal)', () => {
 
     // Check the contact details page reflects the change
     await expect(page.locator('.govuk-caption-l')).toContainText(company.name)
-    await expect(page.locator('h1.govuk-heading-l')).toHaveText(`Contact details for ${contact.department}`)
+    await expect(page.locator('h1.govuk-heading-l')).toHaveText(`Contact details for ${name}`)
 
-    await expect(summaryValue(page, 'Name')).toContainText(contact.department)
-    await expect(summaryValue(page, 'Email address')).toContainText(contact.email)
+    await expect(_summaryValue(page, 'Name')).toContainText(name)
+    await expect(_summaryValue(page, 'Email address')).toContainText(email)
 
-    const updatedAlertsValue = summaryValue(page, 'Water abstraction alerts')
+    const updatedAlertsValue = _summaryValue(page, 'Water abstraction alerts')
     await expect(updatedAlertsValue).toContainText('Yes, for some licences')
     await expect(updatedAlertsValue).toContainText(licence.licenceRef)
 
-    await expect(summaryValue(page, 'Last updated')).toContainText(formatLongDate(new Date()))
+    await expect(_summaryValue(page, 'Last updated')).toContainText(formatLongDate(new Date()))
 
     // Confirm the main contacts page reflects the change
     await page.goto(`/system/companies/${company.id}/contacts`)
 
-    await expect(page.locator('[data-test="contact-name-1"]')).toContainText(contact.department)
-    await expect(page.locator('[data-test="contact-type-1"]')).toContainText('Abstraction alerts')
+    await expect(_contactRow(page, name)).toContainText('Abstraction alerts')
   })
 
   test('can remove a contact', async ({ page }) => {
+    const name = removeContact.department
+    const email = removeContact.email
+
     await page.goto(`/system/companies/${company.id}/contacts`)
 
     // Confirm the contacts exists
-    await expect(page.locator('[data-test="contact-name-0"]')).toContainText(company.name)
-    await expect(page.locator('[data-test="contact-type-0"]')).toContainText('Licence holder')
-
-    await expect(page.locator('[data-test="contact-name-1"]')).toContainText(contact.department)
-    await expect(page.locator('[data-test="contact-type-1"]')).toContainText('Additional contact')
+    await expect(_contactRow(page, company.name)).toContainText('Licence holder')
+    await expect(_contactRow(page, name)).toContainText('Additional contact')
 
     // View the contact details
-    await page.locator('.govuk-table__row', { hasText: contact.department }).locator('a').click()
+    await _contactRow(page, name).locator('a').click()
 
-    await expect(page.locator('h1.govuk-heading-l')).toHaveText(`Contact details for ${contact.department}`)
+    await expect(page.locator('h1.govuk-heading-l')).toHaveText(`Contact details for ${name}`)
 
     // Remove the contact
     await page.locator('.govuk-button', { hasText: 'Remove' }).click()
@@ -235,9 +228,9 @@ test.describe('Licence holder contacts (internal)', () => {
     // Confirm the removal
     await expect(page.locator('h1')).toContainText("You're about to remove this contact")
 
-    await expect(summaryValue(page, 'Name')).toContainText(contact.department)
-    await expect(summaryValue(page, 'Email address')).toContainText('test.contact@example.com')
-    await expect(summaryValue(page, 'Water abstraction alerts')).toContainText('No')
+    await expect(_summaryValue(page, 'Name')).toContainText(name)
+    await expect(_summaryValue(page, 'Email address')).toContainText(email)
+    await expect(_summaryValue(page, 'Water abstraction alerts')).toContainText('No')
 
     await page.locator('.govuk-button', { hasText: 'Remove this contact' }).click()
 
@@ -245,27 +238,28 @@ test.describe('Licence holder contacts (internal)', () => {
     const banner = page.locator('.govuk-notification-banner')
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact removed')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
-      `${contact.department} was removed from this company`
+      `${name} was removed from this company`
     )
 
     // Confirm the contacts table no longer contains the removed contact
-    await expect(page.locator('.govuk-table__cell', { hasText: contact.department })).toHaveCount(0)
+    await expect(_contactRow(page, name)).toHaveCount(0)
 
-    await expect(page.locator('[data-test="contact-name-0"]')).toContainText(company.name)
-    await expect(page.locator('[data-test="contact-type-0"]')).toContainText('Licence holder')
+    await expect(_contactRow(page, company.name)).toContainText('Licence holder')
   })
 
   test('warns when re-creating a contact that was previously removed', async ({ page }) => {
+    const name = restoreContact.department
+    const email = restoreContact.email
+
     await page.goto(`/system/companies/${company.id}/contacts`)
 
     // Confirm the seeded contact exists
-    await expect(page.locator('[data-test="contact-name-1"]')).toContainText(contact.department)
-    await expect(page.locator('[data-test="contact-type-1"]')).toContainText('Additional contact')
+    await expect(_contactRow(page, name)).toContainText('Additional contact')
 
     // Remove the contact
-    await page.locator('.govuk-table__row', { hasText: contact.department }).locator('a').click()
+    await _contactRow(page, name).locator('a').click()
 
-    await expect(page.locator('h1.govuk-heading-l')).toHaveText(`Contact details for ${contact.department}`)
+    await expect(page.locator('h1.govuk-heading-l')).toHaveText(`Contact details for ${name}`)
 
     await page.locator('.govuk-button', { hasText: 'Remove' }).click()
 
@@ -275,18 +269,18 @@ test.describe('Licence holder contacts (internal)', () => {
     const banner = page.locator('.govuk-notification-banner')
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact removed')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
-      `${contact.department} was removed from this company`
+      `${name} was removed from this company`
     )
 
-    await expect(page.locator('.govuk-table__cell', { hasText: contact.department })).toHaveCount(0)
+    await expect(_contactRow(page, name)).toHaveCount(0)
 
     // Set up a new contact using the same name and email as the removed contact
     await page.locator('.govuk-button', { hasText: 'Set up a new contact' }).click()
 
-    await page.locator('#name').fill(contact.department)
+    await page.locator('#name').fill(name)
     await page.locator('button.govuk-button').click()
 
-    await page.locator('#email').fill(contact.email)
+    await page.locator('#email').fill(email)
     await page.locator('button.govuk-button').click()
 
     await page.locator('input[name="abstractionAlerts"][value="yes"]').check()
@@ -297,26 +291,37 @@ test.describe('Licence holder contacts (internal)', () => {
     await expect(warningText).toContainText('A deleted contact with this name and email already exists.')
     await expect(warningText).toContainText('Change the name or email, or restore the existing contact.')
 
-    await expect(summaryValue(page, 'Name')).toContainText(contact.department)
+    await expect(_summaryValue(page, 'Name')).toContainText(name)
 
     await page.locator('.govuk-button', { hasText: 'Restore' }).click()
 
     // Confirm the contact was restored
     await expect(page.locator('h1.govuk-heading-l')).toHaveText('You are about to restore this contact')
 
-    await expect(summaryValue(page, 'Name')).toContainText(contact.department)
-    await expect(summaryValue(page, 'Email address')).toContainText(contact.email)
-    await expect(summaryValue(page, 'Water abstraction alerts')).toContainText('Yes')
+    await expect(_summaryValue(page, 'Name')).toContainText(name)
+    await expect(_summaryValue(page, 'Email address')).toContainText(email)
+    await expect(_summaryValue(page, 'Water abstraction alerts')).toContainText('Yes')
 
     await page.locator('.govuk-button', { hasText: 'Confirm restore' }).click()
 
     // Confirm the notification banner shows the contact was restored
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact')
-    await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
-      `${contact.department} was restored`
-    )
+    await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(`${name} was restored`)
 
-    await expect(page.locator('[data-test="contact-name-1"]')).toContainText(contact.department)
-    await expect(page.locator('[data-test="contact-type-1"]')).toContainText('Abstraction alerts')
+    await expect(_contactRow(page, name)).toContainText('Abstraction alerts')
   })
 })
+
+/**
+ * Locates the value cell of a govuk-summary-list row identified by its label
+ */
+function _summaryValue(page, label) {
+  return page.locator('.govuk-summary-list__row', { hasText: label }).locator('.govuk-summary-list__value')
+}
+
+/**
+ * Locates the contacts table row whose name cell exactly matches the given text
+ */
+function _contactRow(page, name) {
+  return page.locator('.govuk-table__row').filter({ has: page.getByText(name, { exact: true }) })
+}

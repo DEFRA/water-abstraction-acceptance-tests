@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto'
 
-export default function (companyData) {
+export default function (companyData, { department = 'Test contact', email = 'test.contact@example.com' } = {}) {
   const contactId = randomUUID()
   const companyContactId = randomUUID()
 
@@ -15,8 +15,8 @@ export default function (companyData) {
     contacts: [
       {
         id: contactId,
-        department: 'Test contact',
-        email: 'test.contact@example.com',
+        department,
+        email,
         contactType: 'department'
       }
     ],
