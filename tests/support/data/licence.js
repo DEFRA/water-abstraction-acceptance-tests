@@ -1,12 +1,12 @@
-import { randomUUID } from 'crypto'
+import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (licenceRef, companyData, primaryUserData = null) {
-  const licenceDocumentHeaderId = randomUUID()
-  const licenceDocumentId = randomUUID()
-  const pointId = randomUUID()
-  const licenceId = randomUUID()
-  const licenceVersionId = randomUUID()
-  const licenceVersionPurposeId = randomUUID()
+  const licenceDocumentHeaderId = generateUUID()
+  const licenceDocumentId = generateUUID()
+  const pointId = generateUUID()
+  const licenceId = generateUUID()
+  const licenceVersionId = generateUUID()
+  const licenceVersionPurposeId = generateUUID()
 
   const {
     companies: [company],
