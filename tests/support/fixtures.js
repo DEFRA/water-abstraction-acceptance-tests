@@ -30,6 +30,14 @@ export const test = base.extend({
     })
   },
 
+  lastNotification: async ({ request }, use) => {
+    await use(async (email) => {
+      const response = await request.get(`/notifications/last?email=${email}`)
+
+      return response.json()
+    })
+  },
+
   setup: async ({ tearDown, load }, use) => {
     await use(async (scenario) => {
       await tearDown()
@@ -40,5 +48,10 @@ export const test = base.extend({
   // eslint-disable-next-line no-empty-pattern
   users: async ({}, use) => {
     await use(users)
+  },
+
+  // eslint-disable-next-line no-empty-pattern
+  defaultPassword: async ({}, use) => {
+    await use(envConfig.values.defaultPassword)
   }
 })
