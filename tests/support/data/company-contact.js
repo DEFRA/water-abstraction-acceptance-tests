@@ -1,8 +1,8 @@
-import { randomUUID } from 'crypto'
+import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (companyData, { department = 'Test contact', email = 'test.contact@example.com' } = {}) {
-  const contactId = randomUUID()
-  const companyContactId = randomUUID()
+  const contactId = generateUUID()
+  const companyContactId = generateUUID()
 
   const {
     companies: [company]

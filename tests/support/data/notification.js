@@ -1,8 +1,8 @@
-import { randomUUID } from 'crypto'
+import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (licenceRef, companyContactData) {
-  const eventId = randomUUID()
-  const notificationId = randomUUID()
+  const eventId = generateUUID()
+  const notificationId = generateUUID()
 
   const {
     contacts: [contact]

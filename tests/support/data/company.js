@@ -1,8 +1,8 @@
-import { randomUUID } from 'crypto'
+import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (name = 'Big Farm Co Ltd') {
-  const addressId = randomUUID()
-  const companyId = randomUUID()
+  const addressId = generateUUID()
+  const companyId = generateUUID()
 
   return {
     companies: [
