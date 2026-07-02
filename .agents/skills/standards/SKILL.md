@@ -33,6 +33,12 @@ This document defines the standards an agent must apply when reviewing or writin
 - Private functions must be ordered alphabetically by name
 - In spec files and data files, destructure entities out of scenario/data-file results with array patterns rather than indexing directly, e.g. prefer `const { companies: [company], licences: [licence] } = scenario` over `const company = scenario.companies[0]`, and prefer `const { companies: [company], addresses: [address] } = companyData` over `const company = companyData.companies[0]`
 
+## Locators (Playwright)
+
+- Prefer role- and label-based locators (`getByRole`, `getByLabel`, `getByText`) over positional or structural CSS selectors like `:nth-child(n)`
+- When porting a Cypress test, do not carry over Cypress's positional/class-chain selectors (e.g. `:nth-child(2) > .govuk-summary-list__actions > .govuk-link`) verbatim — rewrite them as Playwright locators that target what the element means (its role, label, or `data-test` attribute), not where it sits in the DOM
+- When several elements could match, disambiguate by scoping the `name`/`hasText` option or via a shared helper (e.g. a `_summaryRow(page, label)` that filters a `.govuk-summary-list__row` by its label) rather than reaching for `:nth-child`
+
 ## Naming conventions
 
 - **Directories and JavaScript files**: `kebab-case` (e.g. `core-licence.js`)
