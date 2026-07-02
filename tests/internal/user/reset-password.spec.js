@@ -26,9 +26,9 @@ test.describe('Reset password journey (internal)', () => {
     await page.goto(link)
 
     // Check we are on the right page
-    await expect(page.getByText('Change your password')).toBeVisible()
-    await expect(page.getByText('Enter a new password')).toBeVisible()
-    await expect(page.getByText('Confirm your password')).toBeVisible()
+    await expect(page.locator('.govuk-heading-l')).toContainText('Change your password')
+    await expect(page.getByLabel('Enter a new password')).toBeVisible()
+    await expect(page.getByLabel('Confirm your password')).toBeVisible()
 
     // Enter a password and confirm
     await page.locator('#password').fill(defaultPassword)

@@ -10,5 +10,7 @@
 export function extractNotificationLink(body, linkType, baseUrl) {
   const link = body.data[0].personalisation[linkType]
 
+  // The matched host never includes a trailing slash, so baseUrl must not have one either otherwise we'd end up
+  // with a double slash before the path
   return link.replace(/^https?:\/\/[^/]+/, baseUrl)
 }

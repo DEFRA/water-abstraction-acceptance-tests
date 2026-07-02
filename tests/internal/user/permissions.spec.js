@@ -21,7 +21,7 @@ test.describe('User permissions (internal)', () => {
     await page.goto(`/system/licences/${licence.id}/summary`)
 
     // Confirm we are on the licence page
-    await expect(page.locator('body')).toContainText(licence.licenceRef)
+    await expect(page.locator('h1')).toContainText(licence.licenceRef)
 
     // Confirm we can see the summary, contact details, returns, communications, bill runs and licence set up links
     await expect(page.locator('.x-govuk-sub-navigation__link')).toContainText([
@@ -42,7 +42,7 @@ test.describe('User permissions (internal)', () => {
     await page.goto(`/system/licences/${licence.id}/summary`)
 
     // Confirm we are on the licence page
-    await expect(page.locator('body')).toContainText(licence.licenceRef)
+    await expect(page.locator('h1')).toContainText(licence.licenceRef)
 
     // Confirm we can see the summary, contact details, returns, communications and licence set up tabs
     await expect(page.locator('.x-govuk-sub-navigation__link')).toContainText([
