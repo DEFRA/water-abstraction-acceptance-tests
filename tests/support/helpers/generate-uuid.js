@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
 
 /**
  * Generate a Universally Unique Identifier (UUID)
