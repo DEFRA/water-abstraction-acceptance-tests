@@ -1,5 +1,6 @@
 import scenarioData from '../../support/scenarios/licence.js'
 import { test, expect } from '../../support/fixtures.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 
 const scenario = scenarioData()
 
@@ -67,11 +68,7 @@ test.describe('Licence holder (internal)', () => {
   })
 
   test('can view the history page', async ({ page }) => {
-    const formattedStartDate = new Date(licence.startDate).toLocaleDateString('en-GB', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
+    const formattedStartDate = formatLongDate(licence.startDate)
 
     await page.goto(`/system/companies/${company.id}/history`)
 

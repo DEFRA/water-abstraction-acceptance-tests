@@ -4,9 +4,6 @@ export default function (companyData, { department = 'Test contact', email = 'te
   const contactId = randomUUID()
   const companyContactId = randomUUID()
 
-  // This is a fixed id for the additional contact role, this is seeded by the database
-  const additionalContactId = 'c2020884-fb8b-46f1-b5a7-1d99195fc6dd'
-
   const {
     companies: [company]
   } = companyData
@@ -24,7 +21,13 @@ export default function (companyData, { department = 'Test contact', email = 'te
       {
         id: companyContactId,
         contactId,
-        licenceRoleId: additionalContactId,
+        licenceRoleId: {
+          schema: 'public',
+          table: 'licenceRoles',
+          lookup: 'name',
+          value: 'additionalContact',
+          select: 'id'
+        },
         companyId: company.id,
         abstractionAlerts: false
       }

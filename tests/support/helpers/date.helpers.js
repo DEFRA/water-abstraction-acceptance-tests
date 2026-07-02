@@ -1,7 +1,7 @@
 /**
  * Formats a date into a human readable day, month and year string, for example, '12 September 2021'
  *
- * @param {Date | string } date - The date to be formatted
+ * @param {Date | string} date - The date to be formatted
  *
  * @returns {string | null} The date formatted as a 'DD MMMM YYYY' string
  */

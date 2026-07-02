@@ -1,6 +1,6 @@
 import company from '../data/company.js'
-import licence from '../data/licence.js'
 import companyContact from '../data/company-contact.js'
+import licence from '../data/licence.js'
 import notification from '../data/notification.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
