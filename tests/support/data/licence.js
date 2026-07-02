@@ -1,21 +1,21 @@
 import { randomUUID } from 'crypto'
 
-export default function (
-  licenceRef = 'AT/TE/ST/01/01',
-  companyName = 'Big Farm Co Ltd',
-  userEmail = 'external@example.com'
-) {
-  const individualEntityId = randomUUID()
-  const companyEntityId = randomUUID()
-  const licenceEntityRoleId = randomUUID()
+export default function (licenceRef, companyData, primaryUserData = null) {
   const licenceDocumentHeaderId = randomUUID()
-  const companyId = randomUUID()
-  const addressId = randomUUID()
   const licenceDocumentId = randomUUID()
   const pointId = randomUUID()
   const licenceId = randomUUID()
   const licenceVersionId = randomUUID()
   const licenceVersionPurposeId = randomUUID()
+
+  const {
+    companies: [company],
+    addresses: [address]
+  } = companyData
+
+  // When there is a primary user, we need to link them to the 'licenceDocumentHeaders'; this is the only way we can
+  // link a registered licence to a licence holder.
+  const companyEntityId = primaryUserData ? primaryUserData.licenceEntityRoles[0].companyEntityId : null
 
   return {
     permitLicences: [
@@ -25,27 +25,6 @@ export default function (
         metadata: {
           source: 'acceptance-test-setup'
         }
-      }
-    ],
-    licenceEntities: [
-      {
-        id: individualEntityId,
-        name: userEmail,
-        type: 'individual'
-      },
-      {
-        id: companyEntityId,
-        name: companyName,
-        type: 'company'
-      }
-    ],
-    licenceEntityRoles: [
-      {
-        id: licenceEntityRoleId,
-        licenceEntityId: individualEntityId,
-        companyEntityId,
-        role: 'primary_user',
-        createdBy: 'acceptance-test-setup'
       }
     ],
     licenceDocumentHeaders: [
@@ -102,41 +81,6 @@ export default function (
         companyEntityId
       }
     ],
-    companies: [
-      {
-        id: companyId,
-        name: companyName,
-        type: 'organisation'
-      }
-    ],
-    addresses: [
-      {
-        id: addressId,
-        address1: 'Big Farm',
-        address2: 'Windy road',
-        address3: 'Buttercup meadow',
-        address4: 'Buttercup Village',
-        address5: 'Testington',
-        address6: 'Testingshire',
-        postcode: 'TT1 1TT',
-        country: 'UK',
-        dataSource: 'nald'
-      }
-    ],
-    companyAddresses: [
-      {
-        companyId,
-        addressId,
-        startDate: '2008-04-01',
-        licenceRoleId: {
-          schema: 'crm_v2',
-          table: 'roles',
-          lookup: 'name',
-          value: 'billing',
-          select: 'roleId'
-        }
-      }
-    ],
     licenceDocuments: [
       {
         id: licenceDocumentId,
@@ -155,8 +99,8 @@ export default function (
           select: 'id'
         },
         startDate: '2018-01-01',
-        companyId,
-        addressId
+        companyId: company.id,
+        addressId: address.id
       }
     ],
     points: [
@@ -196,8 +140,8 @@ export default function (
         status: 'current',
         startDate: '2018-01-01',
         externalId: '6:1234:1:0',
-        companyId,
-        addressId
+        companyId: company.id,
+        addressId: address.id
       }
     ],
     licenceVersionPurposes: [
@@ -237,17 +181,6 @@ export default function (
       {
         licenceVersionPurposeId,
         pointId
-      }
-    ],
-    users: [
-      {
-        username: userEmail,
-        password: 'P@55word',
-        resetRequired: 0,
-        application: 'water_vml',
-        badLogins: 0,
-        enabled: true,
-        licenceEntityId: individualEntityId
       }
     ]
   }

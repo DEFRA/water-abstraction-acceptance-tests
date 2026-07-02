@@ -2,8 +2,11 @@ import scenarioData from '../../support/scenarios/licence.js'
 import { test, expect } from '../../support/fixtures.js'
 
 const scenario = scenarioData()
-const company = scenario.companies[0]
-const licence = scenario.licences[0]
+
+const {
+  companies: [company],
+  licences: [licence]
+} = scenario
 
 test.describe('Licence holder (internal)', () => {
   test.beforeAll(async ({ setup }) => {

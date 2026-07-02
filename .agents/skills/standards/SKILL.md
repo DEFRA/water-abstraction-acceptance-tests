@@ -31,11 +31,15 @@ This document defines the standards an agent must apply when reviewing or writin
 - No error handling for scenarios that cannot happen
 - No abstractions for a single use case
 - Private functions must be ordered alphabetically by name
+- In spec files and data files, destructure entities out of scenario/data-file results with array patterns rather than indexing directly, e.g. prefer `const { companies: [company], licences: [licence] } = scenario` over `const company = scenario.companies[0]`, and prefer `const { companies: [company], addresses: [address] } = companyData` over `const company = companyData.companies[0]`
 
 ## Naming conventions
 
 - **Directories and JavaScript files**: `kebab-case` (e.g. `core-licence.js`)
 - **Test files**: `kebab-case` with a `.spec.js` suffix (e.g. `view-licence.spec.js`)
+- **Data file imports**: name the import after the file itself, not after what it returns, e.g. `import company from '../data/company.js'`, not `import companiesData from '../data/company.js'`
+- **Data file call results**: when invoking a `../data/*` import to build its data, append `Data` to the resulting variable name, e.g. `const companyData = company('Big Farm Co Ltd')`, not `const companies = company('Big Farm Co Ltd')`
+- **Threading data file results through other functions**: this `Data`-suffixed name must be kept consistent wherever that value is passed on, including as a parameter name in another data file, e.g. `export default function (licenceRef, companyData, primaryUserData = null) { ... }`, not `export default function (licenceRef, companiesData, primaryUserData = null) { ... }`
 
 ## Alanisms
 
