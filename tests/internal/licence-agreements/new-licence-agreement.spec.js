@@ -32,7 +32,10 @@ test.describe('New licence agreement journey (internal)', () => {
 
     // Select agreement
     // select Two-part tariff then continue
-    await page.locator('#financialAgreementCode').check()
+    // NOTE: the "Two-part tariff" radio has no accessible name in the rendered markup (its <label> shares an id
+    // with two other elements, breaking the label association), so it can't be targeted by role/name. Target it by
+    // its value instead, which is the S127 financial agreement code used to seed this scenario.
+    await page.locator('input[value="S127"]').check()
     await page.locator('form > .govuk-button').click()
 
     // Do you know the date the agreement was signed?
@@ -60,6 +63,7 @@ test.describe('New licence agreement journey (internal)', () => {
     await expect(page.locator('h1')).toContainText('Licence set up')
 
     const row = page.locator('tbody tr', { hasText: '1 April 2018' })
+
     await expect(row.locator('td').nth(0)).toContainText('1 April 2018') // start date
     await expect(row.locator('td').nth(1)).toContainText('') // end date
     await expect(row.locator('td').nth(2)).toContainText('Two-part tariff') // agreement

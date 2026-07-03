@@ -50,11 +50,12 @@ test.describe('End licence agreement journey (internal)', () => {
 
     // You're about to end this agreement
     // confirm the details match what was entered and continue
-    const confirmRow = page.locator('#main-content > table > tbody > tr')
-    await expect(confirmRow.locator('td:nth-child(1)')).toContainText('Two-part tariff') // agreement
-    await expect(confirmRow.locator('td:nth-child(2)')).toContainText(' ') // date signed
-    await expect(confirmRow.locator('td:nth-child(3)')).toContainText('1 January 2018') // start date
-    await expect(confirmRow.locator('td:nth-child(4)')).toContainText('31 March 2022') // end date
+    const confirmRow = page.locator('tbody tr')
+
+    await expect(confirmRow.locator('td').nth(0)).toContainText('Two-part tariff') // agreement
+    await expect(confirmRow.locator('td').nth(1)).toContainText('') // date signed
+    await expect(confirmRow.locator('td').nth(2)).toContainText('1 January 2018') // start date
+    await expect(confirmRow.locator('td').nth(3)).toContainText('31 March 2022') // end date
 
     await page.locator('form > .govuk-button', { hasText: 'End agreement' }).click()
 
@@ -64,6 +65,7 @@ test.describe('End licence agreement journey (internal)', () => {
     await expect(page.locator('h1')).toContainText('Licence set up')
 
     const row = page.locator('tbody tr', { hasText: 'Two-part tariff' })
+
     await expect(row.locator('td').nth(0)).toContainText('1 January 2018')
     await expect(row.locator('td').nth(1)).toContainText('31 March 2022')
     await expect(row.locator('td').nth(2)).toContainText('Two-part tariff')

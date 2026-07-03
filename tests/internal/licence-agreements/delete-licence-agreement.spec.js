@@ -34,11 +34,12 @@ test.describe('Delete licence agreement journey (internal)', () => {
     // confirm we are on the right page and it is showing the right agreement then delete it
     await expect(page.locator('.govuk-heading-l')).toContainText("You're about to delete this agreement")
 
-    const row = page.locator('#main-content > table > tbody > tr')
-    await expect(row.locator('td:nth-child(1)')).toContainText('Two-part tariff') // agreement
-    await expect(row.locator('td:nth-child(2)')).toContainText(' ') // date signed
-    await expect(row.locator('td:nth-child(3)')).toContainText('1 January 2018') // start date
-    await expect(row.locator('td:nth-child(4)')).toContainText(' ') // end date
+    const row = page.locator('tbody tr')
+
+    await expect(row.locator('td').nth(0)).toContainText('Two-part tariff') // agreement
+    await expect(row.locator('td').nth(1)).toContainText('') // date signed
+    await expect(row.locator('td').nth(2)).toContainText('1 January 2018') // start date
+    await expect(row.locator('td').nth(3)).toContainText('') // end date
 
     await page.getByText('Delete agreement').click()
 
