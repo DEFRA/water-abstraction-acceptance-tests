@@ -4,7 +4,9 @@
 [![shai-hulud-detect](https://github.com/DEFRA/water-abstraction-acceptance-tests/actions/workflows/shai-hulud-detect.yml/badge.svg)](https://github.com/DEFRA/water-abstraction-acceptance-tests/actions/workflows/shai-hulud-detect.yml)
 [![Licence](https://img.shields.io/badge/Licence-OGLv3-blue.svg)](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3)
 
-> This project originated with the migration of existing tests from the [water-abstraction-ui](https://github.com/DEFRA/water-abstraction-ui). It used Cypress v8 and did not have test isolation so all had to be restructured. The quality of these tests is not great but it's our aim to review and improve all tests as soon as we can.
+> This project originated with the migration of existing tests from the [water-abstraction-ui](https://github.com/DEFRA/water-abstraction-ui). It used Cypress v8 and did not have test isolation so all had to be restructured. The quality of these tests is not great but it's been our aim to review and improve all tests over time.
+>
+> We're now migrating all the tests to [Playwright](https://playwright.dev/), and using this opportunity to carry out that review. This README refers to CYpress only for now, but will be updated to reflect Playwright once the migration is complete.
 
 These acceptance tests support the [Manage your water abstraction or impoundment licence service](https://manage-water-abstraction-impoundment-licence.service.gov.uk/) and it's internal counterpart.
 
