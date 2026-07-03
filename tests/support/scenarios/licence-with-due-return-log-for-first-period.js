@@ -1,5 +1,6 @@
 import company from '../data/company.js'
 import licence from '../data/licence.js'
+import point from '../data/point.js'
 import returnLog from '../data/return-log.js'
 import returnRequirement from '../data/return-requirement.js'
 import returnVersion from '../data/return-version.js'
@@ -15,9 +16,10 @@ export default function (calculatedDates) {
 
   const companyData = company()
   const licenceData = licence(licenceRef, companyData)
+  const pointData = point()
   const returnVersionData = returnVersion(licenceData)
-  const returnRequirementData = returnRequirement(returnVersionData)
-  const returnLogData = returnLog(licenceData, returnRequirementData, {
+  const returnRequirementData = returnRequirement(returnVersionData, pointData)
+  const returnLogData = returnLog(licenceData, returnRequirementData, pointData, {
     startDate: firstReturnPeriod.startDate,
     endDate: firstReturnPeriod.endDate,
     dueDate: firstReturnPeriod.dueDate,
@@ -27,6 +29,7 @@ export default function (calculatedDates) {
   return {
     ...companyData,
     ...licenceData,
+    ...pointData,
     ...returnVersionData,
     ...returnRequirementData,
     ...returnLogData

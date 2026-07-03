@@ -1,9 +1,13 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (returnVersionData) {
+export default function (returnVersionData, pointData) {
   const {
     returnVersions: [returnVersion]
   } = returnVersionData
+
+  const {
+    points: [point]
+  } = pointData
 
   const returnRequirementId = generateUUID()
 
@@ -23,6 +27,12 @@ export default function (returnVersionData) {
         siteDescription: 'TANKS ON JUPITER',
         legacyId: 9999990,
         externalId: '9:9999990'
+      }
+    ],
+    returnRequirementPoints: [
+      {
+        returnRequirementId,
+        pointId: point.id
       }
     ],
     returnRequirementPurposes: [
