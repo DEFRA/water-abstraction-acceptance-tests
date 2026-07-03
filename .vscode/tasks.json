@@ -2,8 +2,8 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "📺 Open (Tests)",
-      "detail": "Open Cypress test UI to manually run the tests",
+      "label": "▶️ Open cypress (Tests)",
+      "detail": "Open Cypress test UI to manually run its tests",
       "type": "shell",
       "command": "npm run cy:open:${input:environments}; echo 'All done! 🎉'",
       "group": "test",
@@ -17,10 +17,55 @@
       }
     },
     {
-      "label": "📻 Run (Tests)",
+      "label": "📺 Open playwright (Tests)",
+      "detail": "Open Playwright test UI to manually run its tests",
+      "type": "shell",
+      "command": "npm run pw:open:local; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "⏩️ Run all (Tests)",
+      "detail": "Run Cypress then Playwright tests headless using the runner",
+      "type": "shell",
+      "command": "npm run test:local; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "➡️ Run cypress (Tests)",
       "detail": "Run Cypress tests headless using the runner",
       "type": "shell",
       "command": "npm run cy:run:${input:environments}; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "📻 Run playwright (Tests)",
+      "detail": "Run Playwright tests headless using the runner",
+      "type": "shell",
+      "command": "npm run pw:run:local; echo 'All done! 🎉'",
       "group": "test",
       "presentation": {
         "echo": true,
@@ -62,7 +107,7 @@
       }
     },
     {
-      "label": "👍 Verify (Tests)",
+      "label": "👍 Verify cypress (Tests)",
       "detail": "Verify that Cypress is installed correctly",
       "type": "shell",
       "command": "npm run cy:verify",
@@ -95,7 +140,7 @@
   "inputs": [
     {
       "id": "environments",
-      "description": "Cypress environments",
+      "description": "Environments",
       "type": "pickString",
       "options": [
         "local",
