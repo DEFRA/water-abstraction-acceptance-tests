@@ -58,6 +58,12 @@ export const test = base.extend({
     })
   },
 
+  triggerJob: async ({ request }, use) => {
+    await use((job) => {
+      return request.post(`/system/jobs/${job}`, { timeout: 60000 })
+    })
+  },
+
   // eslint-disable-next-line no-empty-pattern
   users: async ({}, use) => {
     await use(users)
