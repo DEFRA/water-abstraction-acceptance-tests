@@ -21,7 +21,8 @@
     "pw:open:local": "playwright test --ui",
     "pw:run:local": "playwright test",
     "test:local": "npm run pw:run:local && npm run cy:run:local",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "npx playwright install"
   },
   "repository": {
     "url": "https://github.com/DEFRA/water-abstraction-acceptance-tests"
@@ -45,6 +46,7 @@
   },
   "allowScripts": {
     "cypress@15.17.0": true,
-    "fsevents@2.3.2": true
+    "fsevents@2.3.2": true,
+    "unrs-resolver@1.12.2": true
   }
 }
