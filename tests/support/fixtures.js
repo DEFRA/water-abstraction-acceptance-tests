@@ -9,6 +9,14 @@ const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 
 export { expect } from '@playwright/test'
 
 export const test = base.extend({
+  calculatedDates: async ({ request }, use) => {
+    await use(async () => {
+      const response = await request.get('/system/data/dates')
+
+      return response.json()
+    })
+  },
+
   // eslint-disable-next-line no-empty-pattern
   defaultPassword: async ({}, use) => {
     await use(envConfig.values.defaultPassword)
