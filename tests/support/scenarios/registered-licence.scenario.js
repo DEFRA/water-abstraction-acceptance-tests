@@ -2,7 +2,7 @@ import primaryUserData from '../data/primary-user.data.js'
 import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Licence (registered)'
+export const title = 'Registered licence'
 export const description = 'A licence that has been registered (primary user), licence holder and a company'
 
 export default function (licenceRef = 'AT/TE/ST/01/01', email = 'external@example.com') {
