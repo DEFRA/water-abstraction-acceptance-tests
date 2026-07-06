@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/licence-with-previous-return-log.scenario.js'
+import scenarioData from '../../../support/scenarios/registered-licence-with-previous-return-log.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc returns invitation journey (internal)', () => {

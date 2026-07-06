@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/licence-with-due-return-log.scenario.js'
+import scenarioData from '../../../support/scenarios/registered-licence-with-due-return-log.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc returns reminder journey (internal)', () => {

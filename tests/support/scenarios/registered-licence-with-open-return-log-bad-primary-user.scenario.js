@@ -1,9 +1,6 @@
 import registeredLicenceScenario from './registered-licence.scenario.js'
-import returnLogData from '../data/return-log.data.js'
-import returnRequirementData from '../data/return-requirement.data.js'
-import returnVersionData from '../data/return-version.data.js'
 import { compareDates, previousPeriod, today } from '../helpers/date.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
+import licenceWithReturnLogScenario from './return-log.scenario.js'
 
 export const title = 'Open return log with bad primary user'
 export const description =
@@ -38,14 +35,13 @@ export default function (calculatedDates) {
   address.address6 = null
   address.postcode = 'BS1 5AH'
 
-  const returnVersion = returnVersionData(registeredLicence)
-  const returnRequirement = returnRequirementData(returnVersion, registeredLicence)
-  const returnLog = returnLogData(registeredLicence, returnRequirement, {
-    startDate: returnPeriod.startDate,
-    endDate: returnPeriod.endDate,
-    dueDate: null,
-    quarterly: returnPeriod.quarterly
-  })
-
-  return mergeByKey(registeredLicence, returnVersion, returnRequirement, returnLog)
+  return licenceWithReturnLogScenario(
+    {
+      startDate: returnPeriod.startDate,
+      endDate: returnPeriod.endDate,
+      dueDate: null,
+      quarterly: returnPeriod.quarterly
+    },
+    registeredLicence
+  )
 }

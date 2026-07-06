@@ -1,9 +1,6 @@
+import licenceWithReturnLogScenario from './return-log.scenario.js'
 import registeredLicenceScenario from './registered-licence.scenario.js'
-import returnLogData from '../data/return-log.data.js'
-import returnRequirementData from '../data/return-requirement.data.js'
-import returnVersionData from '../data/return-version.data.js'
 import { compareDates, previousPeriod, today } from '../helpers/date.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a due return log'
 export const description =
@@ -23,14 +20,13 @@ export default function (calculatedDates) {
 
   const registeredLicence = registeredLicenceScenario()
 
-  const returnVersion = returnVersionData(registeredLicence)
-  const returnRequirement = returnRequirementData(returnVersion, registeredLicence)
-  const returnLog = returnLogData(registeredLicence, returnRequirement, {
-    startDate: returnPeriod.startDate,
-    endDate: returnPeriod.endDate,
-    dueDate: returnPeriod.dueDate,
-    quarterly: returnPeriod.quarterly
-  })
-
-  return mergeByKey(registeredLicence, returnVersion, returnRequirement, returnLog)
+  return licenceWithReturnLogScenario(
+    {
+      startDate: returnPeriod.startDate,
+      endDate: returnPeriod.endDate,
+      dueDate: returnPeriod.dueDate,
+      quarterly: returnPeriod.quarterly
+    },
+    registeredLicence
+  )
 }

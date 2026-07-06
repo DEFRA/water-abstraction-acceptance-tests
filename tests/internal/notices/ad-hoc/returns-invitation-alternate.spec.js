@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/licence-with-open-return-log-bad-primary-user.scenario.js'
+import scenarioData from '../../../support/scenarios/registered-licence-with-open-return-log-bad-primary-user.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 import { formatLongDate, relativeToToday } from '../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
