@@ -1,13 +1,11 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (returnVersionData, pointData) {
+export default function (returnVersionData, unregisteredLicence) {
   const {
     returnVersions: [returnVersion]
   } = returnVersionData
 
-  const {
-    points: [point]
-  } = pointData
+  const { points } = unregisteredLicence
 
   const returnRequirementId = generateUUID()
 
@@ -29,12 +27,12 @@ export default function (returnVersionData, pointData) {
         externalId: '9:9999990'
       }
     ],
-    returnRequirementPoints: [
-      {
+    returnRequirementPoints: points.map((point) => {
+      return {
         returnRequirementId,
         pointId: point.id
       }
-    ],
+    }),
     returnRequirementPurposes: [
       {
         returnRequirementId,
@@ -58,7 +56,7 @@ export default function (returnVersionData, pointData) {
           schema: 'public',
           table: 'purposes',
           lookup: 'legacyId',
-          value: '140',
+          value: '420',
           select: 'id'
         }
       }

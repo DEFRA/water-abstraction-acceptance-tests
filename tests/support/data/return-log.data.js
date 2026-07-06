@@ -4,11 +4,12 @@ import { generateUUID } from '../helpers/generate-uuid.js'
 export default function (licenceData, returnRequirementData, period) {
   const {
     licences: [licence],
-    points: [point]
+    points
   } = licenceData
 
   const {
-    returnRequirements: [returnRequirement]
+    returnRequirements: [returnRequirement],
+    returnRequirementPurposes
   } = returnRequirementData
 
   const returnLogId = generateUUID()
@@ -37,36 +38,20 @@ export default function (licenceData, returnRequirementData, period) {
             periodStartDay: '1',
             periodStartMonth: '1'
           },
-          points: [
-            {
+          points: points.map((point) => {
+            return {
               name: point.description,
               ngr1: point.ngr1,
               ngr2: null,
               ngr3: null,
               ngr4: null
             }
-          ],
+          }),
           isFinal: false,
           version: 1,
           isSummer: returnRequirement.summer,
           isUpload: false,
-          purposes: [
-            {
-              alias: 'SPRAY IRRIGATION STORAGE',
-              primary: {
-                code: 'A',
-                description: 'Agriculture'
-              },
-              secondary: {
-                code: 'AGR',
-                description: 'General Agriculture'
-              },
-              tertiary: {
-                code: '420',
-                description: 'Spray Irrigation - Storage'
-              }
-            }
-          ],
+          purposes: _purposes(returnRequirementPurposes),
           isCurrent: true,
           description: returnRequirement.siteDescription,
           isTwoPartTariff: false
@@ -90,4 +75,32 @@ export default function (licenceData, returnRequirementData, period) {
       }
     ]
   }
+}
+
+/**
+ * The return requirements data setup up the return requirements purpose.
+ *
+ * These are actually look-up values for the load function to handlem, but the purpose 'code' is hard coded in the
+ * return requirement data. So we can use this here to help align wth our goal of making the data as real as possible.
+ *
+ * @private
+ */
+function _purposes(returnRequirementPurposes) {
+  return returnRequirementPurposes.map((returnRequirementPurpose) => {
+    return {
+      alias: returnRequirementPurpose.alias,
+      primary: {
+        code: returnRequirementPurpose.primaryPurposeId.value,
+        description: 'Agriculture'
+      },
+      secondary: {
+        code: returnRequirementPurpose.secondaryPurposeId.value,
+        description: 'General Agriculture'
+      },
+      tertiary: {
+        code: returnRequirementPurpose.purposeId.value,
+        description: 'Spray Irrigation - Storage'
+      }
+    }
+  })
 }
