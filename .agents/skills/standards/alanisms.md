@@ -31,7 +31,7 @@ return {
 
 This applies everywhere: return values, inline objects, exported objects, test assertions.
 
-**Exception — scenario data files (`tests/scenarios/*.js`):** The API that seeds test data processes entities in insertion order, so the keys in the returned object and the `const` declarations above it must follow dependency order (parent entities before children that reference them), not alphabetical order. Do not sort these.
+**Exception — data and scenario files (`tests/support/data/*.data.js`, `tests/support/scenarios/*.scenario.js`):** The API that seeds test data processes entities in insertion order, so the keys in the returned object and the `const` declarations above it must follow dependency order (parent entities before children that reference them), not alphabetical order. Do not sort these.
 
 ## 2 — `import` statements must be in alphabetical order by variable name
 
@@ -66,14 +66,14 @@ Group 1 is external packages (from `node_modules`). Group 2 is internal dependen
 ```js
 // Bad — external packages and internal dependencies mixed
 import { readFileSync } from 'fs'
-import coreLicenceScenario from './scenarios/core-licence.js'
+import coreLicenceScenario from './scenarios/core-licence.scenario.js'
 import { request } from '@playwright/test'
 
 // Good — two groups, each in alpha order
 import { request } from '@playwright/test'
 import { readFileSync } from 'fs'
 
-import coreLicenceScenario from './scenarios/core-licence.js'
+import coreLicenceScenario from './scenarios/core-licence.scenario.js'
 ```
 
 ## 4 — Blank line after variable declarations before the first statement

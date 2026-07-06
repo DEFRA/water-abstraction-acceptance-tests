@@ -1,5 +1,5 @@
-import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import licenceAgreementData from '../data/licence-agreement.data.js'
+import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with an agreement'

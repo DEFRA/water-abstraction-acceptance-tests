@@ -1,8 +1,8 @@
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a return log (current period)'
 export const description = 'Licence with a due return log for the first current return period with no due date set'
