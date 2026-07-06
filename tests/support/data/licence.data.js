@@ -76,8 +76,7 @@ export default function (licenceRef, companyData, pointData) {
             }
           ]
         },
-        licence_name: 'the daily cupcake licence',
-        companyEntityId: null
+        licence_name: 'the daily cupcake licence'
       }
     ],
     licenceDocuments: [
