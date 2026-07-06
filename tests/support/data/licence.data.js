@@ -1,6 +1,6 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (licenceRef, companyData, pointData, primaryUserData = null) {
+export default function (licenceRef, companyData, pointData) {
   const licenceDocumentHeaderId = generateUUID()
   const licenceDocumentId = generateUUID()
   const licenceId = generateUUID()
@@ -15,10 +15,6 @@ export default function (licenceRef, companyData, pointData, primaryUserData = n
   const {
     points: [point]
   } = pointData
-
-  // When there is a primary user, we need to link them to the 'licenceDocumentHeaders'; this is the only way we can
-  // link a registered licence to a licence holder.
-  const companyEntityId = primaryUserData ? primaryUserData.licenceEntityRoles[0].companyEntityId : null
 
   return {
     permitLicences: [
@@ -81,7 +77,7 @@ export default function (licenceRef, companyData, pointData, primaryUserData = n
           ]
         },
         licence_name: 'the daily cupcake licence',
-        companyEntityId
+        companyEntityId: null
       }
     ],
     licenceDocuments: [

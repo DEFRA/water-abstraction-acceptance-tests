@@ -1,11 +1,9 @@
-import company from '../data/company.js'
-import licence from '../data/licence.js'
-import point from '../data/point.js'
-import primaryUser from '../data/primary-user.js'
-import returnLog from '../data/return-log.js'
-import returnRequirement from '../data/return-requirement.js'
-import returnVersion from '../data/return-version.js'
+import registeredLicenceScenario from './registered-licence.scenario.js'
+import returnLogData from '../data/return-log.data.js'
+import returnRequirementData from '../data/return-requirement.data.js'
+import returnVersionData from '../data/return-version.data.js'
 import { compareDates, previousPeriod, today } from '../helpers/date.helpers.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a due return log'
 export const description =
@@ -23,28 +21,16 @@ export default function (calculatedDates) {
     returnPeriod = previousPeriod(firstReturnPeriod)
   }
 
-  const licenceRef = 'AT/TE/ST/01/01'
+  const registeredLicence = registeredLicenceScenario()
 
-  const companyData = company()
-  const primaryUserData = primaryUser('external@example.com', companyData)
-  const licenceData = licence(licenceRef, companyData, primaryUserData)
-  const pointData = point()
-  const returnVersionData = returnVersion(licenceData)
-  const returnRequirementData = returnRequirement(returnVersionData, pointData)
-  const returnLogData = returnLog(licenceData, returnRequirementData, pointData, {
+  const returnVersion = returnVersionData(registeredLicence)
+  const returnRequirement = returnRequirementData(returnVersion, registeredLicence)
+  const returnLog = returnLogData(registeredLicence, returnRequirement, {
     startDate: returnPeriod.startDate,
     endDate: returnPeriod.endDate,
     dueDate: returnPeriod.dueDate,
     quarterly: returnPeriod.quarterly
   })
 
-  return {
-    ...companyData,
-    ...primaryUserData,
-    ...licenceData,
-    ...pointData,
-    ...returnVersionData,
-    ...returnRequirementData,
-    ...returnLogData
-  }
+  return mergeByKey(registeredLicence, returnVersion, returnRequirement, returnLog)
 }
