@@ -41,3 +41,4 @@ Our agents are defined in `.agents`. They are model-agnostic and intended to wor
 - Use the reviewer agent: "Use `.agents/code-reviewer.agent.md` to review my current changes"
 - Run an Alan review: "Read `.agents/personas/alan.md` and review as Alan"
 - Apply alanisms guidance: "Read `.agents/skills/standards/alanisms.md` before editing"
+- Run and debug specs: "Read `.agents/skills/playwright-cli/SKILL.md` before running or fixing Playwright tests"

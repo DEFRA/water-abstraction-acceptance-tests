@@ -41,11 +41,13 @@ This document defines the standards an agent must apply when reviewing or writin
 
 ## Naming conventions
 
-- **Directories and JavaScript files**: `kebab-case` (e.g. `core-licence.js`)
+- **Directories and JavaScript files**: `kebab-case` (e.g. `core-licence.data.js`)
 - **Test files**: `kebab-case` with a `.spec.js` suffix (e.g. `view-licence.spec.js`)
-- **Data file imports**: name the import after the file itself, not after what it returns, e.g. `import company from '../data/company.js'`, not `import companiesData from '../data/company.js'`
-- **Data file call results**: when invoking a `../data/*` import to build its data, append `Data` to the resulting variable name, e.g. `const companyData = company('Big Farm Co Ltd')`, not `const companies = company('Big Farm Co Ltd')`
-- **Threading data file results through other functions**: this `Data`-suffixed name must be kept consistent wherever that value is passed on, including as a parameter name in another data file, e.g. `export default function (licenceRef, companyData, primaryUserData = null) { ... }`, not `export default function (licenceRef, companiesData, primaryUserData = null) { ... }`
+- **Data files**: `kebab-case` with a `.data.js` suffix (e.g. `company.data.js`)
+- **Scenario files**: `kebab-case` with a `.scenario.js` suffix (e.g. `licence.scenario.js`)
+- **Data/scenario file imports**: name the import after the file itself, including its `Data`/`Scenario` suffix, e.g. `import companyData from '../data/company.data.js'` and `import licenceScenario from './licence.scenario.js'`, not `import company from '../data/company.data.js'`
+- **Data/scenario file call results**: when invoking a `../data/*` or scenario import to build its data, use a plain descriptive name for the result rather than repeating the `Data`/`Scenario` suffix, e.g. `const company = companyData()` and `const licence = licenceScenario()`, not `const companyData = companyData()` (which also collides with the import binding)
+- **Data file parameters**: parameter names inside `../data/*.data.js` files must stay consistent with each other across the whole data folder for the same concept, always `Data`-suffixed regardless of what the caller named its local result, e.g. every data file that accepts a company's data calls the parameter `companyData` — `export default function (licenceRef, companyData, primaryUserData = null) { ... }`, not `export default function (licenceRef, company, primaryUser = null) { ... }`
 
 ## Alanisms
 
