@@ -5,9 +5,9 @@ import returnVersionData from '../data/return-version.data.js'
 import { compareDates, previousPeriod, today } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Licence with a due return log'
+export const title = 'Registered licence with a due return log'
 export const description =
-  'Licence with a due return log on a submittable past return period, with return requirements and version'
+  'Registered licence with a due return log on a submittable past return period, with return requirements and version'
 
 export default function (calculatedDates) {
   const { firstReturnPeriod } = calculatedDates

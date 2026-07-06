@@ -1,8 +1,8 @@
 import registeredLicenceWithDueReturnLogScenario from './registered-licence-with-due-return-log.scenario.js'
 
-export const title = 'Open return log with bad primary user'
+export const title = 'Registered licence with an open return log and bad primary user'
 export const description =
-  "Licence registered to a 'bad' external user with a due return log for testing submissions with unverified contacts"
+  "Registered licence linked to a 'bad' external user, with an open return log for testing submissions with unverified contacts"
 
 export default function (calculatedDates) {
   const registeredLicenceWithDueReturnLog = registeredLicenceWithDueReturnLogScenario(calculatedDates)

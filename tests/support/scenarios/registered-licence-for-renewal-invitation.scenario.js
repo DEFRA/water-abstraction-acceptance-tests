@@ -1,8 +1,9 @@
 import registeredLicenceScenario from './registered-licence.scenario.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
 
-export const title = 'Licence for renewal invitation'
-export const description = 'Licence expiring more than 90 days ahead, making it eligible for a renewal invitation'
+export const title = 'Registered licence for renewal invitation'
+export const description =
+  'Registered licence expiring more than 90 days ahead, making it eligible for a renewal invitation'
 
 export default function () {
   const registeredLicence = registeredLicenceScenario()
