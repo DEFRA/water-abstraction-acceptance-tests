@@ -1,11 +1,11 @@
 import { formatDateToIso } from '../helpers/date.helpers.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (baseLicence, returnRequirementData, period) {
+export default function (licenceData, returnRequirementData, period) {
   const {
     licences: [licence],
     points: [point]
-  } = baseLicence
+  } = licenceData
 
   const {
     returnRequirements: [returnRequirement]

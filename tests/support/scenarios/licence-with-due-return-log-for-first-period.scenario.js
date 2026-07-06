@@ -1,4 +1,4 @@
-import licenceWithReturnLogsScenario from './licence-with-return-log.js'
+import licenceWithReturnLogsScenario from './licence-with-return-log.scenario.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with a due return log (first return period)'
@@ -8,9 +8,9 @@ export const description =
 export default function (calculatedDates) {
   const { firstReturnPeriod } = calculatedDates
 
-  const licenceWithReturnLogsData = licenceWithReturnLogsScenario(calculatedDates)
+  const licenceWithReturnLogs = licenceWithReturnLogsScenario(calculatedDates)
 
-  licenceWithReturnLogsData.returnLogs[0].dueDate = formatDateToIso(new Date(firstReturnPeriod.dueDate))
+  licenceWithReturnLogs.returnLogs[0].dueDate = formatDateToIso(new Date(firstReturnPeriod.dueDate))
 
-  return licenceWithReturnLogsData
+  return licenceWithReturnLogs
 }
