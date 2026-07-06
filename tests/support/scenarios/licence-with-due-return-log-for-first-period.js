@@ -1,9 +1,5 @@
-import company from '../data/company.js'
-import licence from '../data/licence.js'
-import point from '../data/point.js'
-import returnLog from '../data/return-log.js'
-import returnRequirement from '../data/return-requirement.js'
-import returnVersion from '../data/return-version.js'
+import licenceWithReturnLogsScenario from './licence-with-return-log.js'
+import { formatDateToIso } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with a due return log (first return period)'
 export const description =
@@ -12,26 +8,9 @@ export const description =
 export default function (calculatedDates) {
   const { firstReturnPeriod } = calculatedDates
 
-  const licenceRef = 'AT/TE/ST/01/01'
+  const licenceWithReturnLogsData = licenceWithReturnLogsScenario(calculatedDates)
 
-  const companyData = company()
-  const licenceData = licence(licenceRef, companyData)
-  const pointData = point()
-  const returnVersionData = returnVersion(licenceData)
-  const returnRequirementData = returnRequirement(returnVersionData, pointData)
-  const returnLogData = returnLog(licenceData, returnRequirementData, pointData, {
-    startDate: firstReturnPeriod.startDate,
-    endDate: firstReturnPeriod.endDate,
-    dueDate: firstReturnPeriod.dueDate,
-    quarterly: firstReturnPeriod.quarterly
-  })
+  licenceWithReturnLogsData.returnLogs[0].dueDate = formatDateToIso(new Date(firstReturnPeriod.dueDate))
 
-  return {
-    ...companyData,
-    ...licenceData,
-    ...pointData,
-    ...returnVersionData,
-    ...returnRequirementData,
-    ...returnLogData
-  }
+  return licenceWithReturnLogsData
 }

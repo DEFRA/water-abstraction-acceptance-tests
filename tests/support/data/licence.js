@@ -1,9 +1,8 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (licenceRef, companyData, primaryUserData = null) {
+export default function (licenceRef, companyData, pointData, primaryUserData = null) {
   const licenceDocumentHeaderId = generateUUID()
   const licenceDocumentId = generateUUID()
-  const pointId = generateUUID()
   const licenceId = generateUUID()
   const licenceVersionId = generateUUID()
   const licenceVersionPurposeId = generateUUID()
@@ -12,6 +11,10 @@ export default function (licenceRef, companyData, primaryUserData = null) {
     companies: [company],
     addresses: [address]
   } = companyData
+
+  const {
+    points: [point]
+  } = pointData
 
   // When there is a primary user, we need to link them to the 'licenceDocumentHeaders'; this is the only way we can
   // link a registered licence to a licence holder.
@@ -103,21 +106,6 @@ export default function (licenceRef, companyData, primaryUserData = null) {
         addressId: address.id
       }
     ],
-    points: [
-      {
-        id: pointId,
-        description: 'Example point 1',
-        ngr1: 'TQ 1234 5678',
-        externalId: '9:9000090',
-        sourceId: {
-          schema: 'public',
-          table: 'sources',
-          lookup: 'legacyId',
-          value: 'S',
-          select: 'id'
-        }
-      }
-    ],
     licences: [
       {
         id: licenceId,
@@ -180,7 +168,7 @@ export default function (licenceRef, companyData, primaryUserData = null) {
     licenceVersionPurposePoints: [
       {
         licenceVersionPurposeId,
-        pointId
+        pointId: point.id
       }
     ]
   }
