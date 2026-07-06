@@ -80,7 +80,7 @@ export default function (licenceData, returnRequirementData, period) {
 /**
  * The return requirements data setup up the return requirements purpose.
  *
- * These are actually look-up values for the load function to handlem, but the purpose 'code' is hard coded in the
+ * These are actually look-up values for the load function to handle, but the purpose 'code' is hard-coded in the
  * return requirement data. So we can use this here to help align wth our goal of making the data as real as possible.
  *
  * @private
