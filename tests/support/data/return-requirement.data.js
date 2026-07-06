@@ -1,11 +1,11 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (returnVersionData, unregisteredLicence) {
+export default function (returnVersionData, licence) {
   const {
     returnVersions: [returnVersion]
   } = returnVersionData
 
-  const { points } = unregisteredLicence
+  const { points } = licence
 
   const returnRequirementId = generateUUID()
 
