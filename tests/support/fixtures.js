@@ -1,7 +1,7 @@
 import { test as base } from '@playwright/test'
 import { readFileSync } from 'fs'
 
-import users from './data/users.js'
+import usersData from './data/users.data.js'
 
 const environment = process.env.TEST_ENV ?? 'local'
 const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 'utf8'))
@@ -60,6 +60,6 @@ export const test = base.extend({
 
   // eslint-disable-next-line no-empty-pattern
   users: async ({}, use) => {
-    await use(users)
+    await use(usersData)
   }
 })

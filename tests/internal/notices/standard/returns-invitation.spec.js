@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/licence-with-return-log.js'
+import scenarioData from '../../../support/scenarios/licence-with-return-log.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Standard returns invitation journey (internal)', () => {

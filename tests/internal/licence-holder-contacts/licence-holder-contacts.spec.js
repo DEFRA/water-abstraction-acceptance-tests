@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/company-contact.js'
+import scenarioData from '../../support/scenarios/company-contact.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 
