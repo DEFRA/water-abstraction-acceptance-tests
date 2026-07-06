@@ -1,4 +1,4 @@
-import licenceScenario from './licence.scenario.js'
+import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import licenceAgreementData from '../data/licence-agreement.data.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
@@ -6,7 +6,7 @@ export const title = 'Licence with an agreement'
 export const description = 'A licence, licence holder, company and a section 127 two-part tariff agreement'
 
 export default function () {
-  const licence = licenceScenario()
+  const unregisteredLicence = unregisteredLicenceScenario()
 
-  return mergeByKey(licence, licenceAgreementData(licence))
+  return mergeByKey(unregisteredLicence, licenceAgreementData(unregisteredLicence))
 }
