@@ -8,7 +8,7 @@ import { regionCode } from '../static.lib.js'
 
 export const title = 'Two return requirements with points'
 export const description =
-  'A licence with two points and two licence version purposes, and an existing return version and requirement'
+  ' TWO A licence with two points and two licence version purposes, and an existing return version and requirement'
 
 export default function (licenceRef = 'AT/TE/ST/01/01') {
   const licence = unregisteredLicenceScenario(licenceRef)
