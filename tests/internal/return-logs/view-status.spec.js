@@ -5,10 +5,11 @@ test.describe('View returns and their status (internal)', () => {
   let licence
   let returnLogs
 
-  test.beforeAll(async ({ tearDown, load }) => {
+  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
     await tearDown()
 
-    const scenario = scenarioData()
+    const dates = await calculatedDates()
+    const scenario = scenarioData(dates)
 
     const {
       licences: [licenceScenario],
@@ -39,32 +40,32 @@ test.describe('View returns and their status (internal)', () => {
 
     // confirm we see the expected returns and their statuses
     await expect(page.locator('[data-test="return-reference-0"]')).toContainText(
-      `${returnLog(9999990).returnReference}`
+      `${returnLog(9999995).returnReference}`
     )
     await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('not due yet')
 
     await expect(page.locator('[data-test="return-reference-1"]')).toContainText(
-      `${returnLog(9999995).returnReference}`
+      `${returnLog(9999994).returnReference}`
     )
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('overdue')
+    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('void')
 
     await expect(page.locator('[data-test="return-reference-2"]')).toContainText(
-      `${returnLog(9999994).returnReference}`
+      `${returnLog(9999993).returnReference}`
     )
     await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('due')
 
     await expect(page.locator('[data-test="return-reference-3"]')).toContainText(
-      `${returnLog(9999993).returnReference}`
-    )
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('open')
-
-    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(
       `${returnLog(9999992).returnReference}`
     )
-    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('void')
+    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('overdue')
+
+    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(
+      `${returnLog(9999991).returnReference}`
+    )
+    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('open')
 
     await expect(page.locator('[data-test="return-reference-5"]')).toContainText(
-      `${returnLog(9999991).returnReference}`
+      `${returnLog(9999990).returnReference}`
     )
     await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText('complete')
   })

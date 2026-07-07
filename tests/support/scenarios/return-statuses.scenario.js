@@ -2,35 +2,47 @@ import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
-import { relativeToToday, today } from '../helpers/date.helpers.js'
+import { relativeToToday } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'All return statuses'
 export const description =
   'Licence with return logs covering every status: due, overdue, not yet due, completed, open, and void'
 
-export default function () {
+export default function (calculatedDates) {
+  const currentPeriod = _currentPeriod(calculatedDates)
+  const previousPeriod = _previousPeriod(currentPeriod)
+
   const licence = unregisteredLicenceScenario()
   const returnVersion = returnVersionData(licence)
 
   return mergeByKey(
     licence,
     returnVersion,
-    _notDueYetReturnLog(licence, returnVersion),
-    _completedReturnLog(licence, returnVersion),
-    _openReturnLog(licence, returnVersion),
-    _voidReturnLog(licence, returnVersion),
-    _dueReturnLog(licence, returnVersion),
-    _overdueReturnLog(licence, returnVersion)
+    _notDueYetReturnLog(licence, returnVersion, currentPeriod),
+    _voidReturnLog(licence, returnVersion, currentPeriod),
+    _dueReturnLog(licence, returnVersion, previousPeriod),
+    _overdueReturnLog(licence, returnVersion, previousPeriod),
+    _openReturnLog(licence, returnVersion, previousPeriod),
+    _completedReturnLog(licence, returnVersion, previousPeriod)
   )
 }
 
-function _completedReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _previousPeriod()
-  const dueDate = new Date(`${endDate.getFullYear()}-04-28`)
+/**
+ * Generate a 'COMPLETE' return log
+ *
+ * The end date is in the past, and the status is 'completed'. Though it won't change the status in the UI, we set the
+ * 'due date' to be 29 days after the end date, to mimic the returns invitations having been sent the day after, which
+ * automatically applies the 'due date' when the service confirms the notification has been successful.
+ *
+ * @private
+ */
+function _completedReturnLog(licence, returnVersion, previousPeriod) {
+  const { startDate, endDate } = previousPeriod
+  const dueDate = new Date(`${endDate.getFullYear()}-04-29`)
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999991,
+    legacyId: 9999990,
     startDate,
     endDate,
     dueDate,
@@ -39,27 +51,30 @@ function _completedReturnLog(licence, returnVersion) {
   })
 }
 
-// The cycle that covers today
-function _currentPeriod() {
-  const now = today()
-  const previousPeriod = _previousPeriod()
+/**
+ * Helper method to transpose the current financial year period dates from strings into Dates
+ *
+ * @private
+ */
+function _currentPeriod(calculatedDates) {
+  const { currentFinancialYear } = calculatedDates
 
-  const startDate = new Date(previousPeriod.startDate)
-  if (now.getMonth() + 1 !== 4) {
-    startDate.setFullYear(startDate.getFullYear() + 1)
-  }
-  const endDate = new Date(now)
-  endDate.setMonth(now.getMonth() - 1)
-
-  return { startDate, endDate }
+  return { startDate: new Date(currentFinancialYear.startDate), endDate: new Date(currentFinancialYear.endDate) }
 }
 
-// Due date a few days in the future
-function _dueReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _currentPeriod()
+/**
+ * Generate a 'DUE' return log
+ *
+ * The end date is in the past, and the status is 'due'. Setting the 'due date' 5 days in the future makes the UI
+ * display it as `DUE`.
+ *
+ * @private
+ */
+function _dueReturnLog(licence, returnVersion, previousPeriod) {
+  const { startDate, endDate } = previousPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999994,
+    legacyId: 9999993,
     startDate,
     endDate,
     dueDate: relativeToToday(5),
@@ -68,41 +83,18 @@ function _dueReturnLog(licence, returnVersion) {
   })
 }
 
-// A cycle that hasn't started yet
-function _futurePeriod() {
-  const now = today()
-
-  // Does the current date fall in April to December, or January to March
-  const beforeNewYear = now.getMonth() + 1 > 3
-
-  const startDate = beforeNewYear ? new Date(`${now.getFullYear() + 1}-04-01`) : new Date(`${now.getFullYear()}-04-01`)
-  const endDate = new Date(`${startDate.getFullYear() + 1}-03-31`)
-
-  return { startDate, endDate }
-}
-
-// The whole period is in the future so it cannot yet be submitted
-function _notDueYetReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _futurePeriod()
-  const { startDate: cycleStartDate } = _currentPeriod()
+/**
+ * Generate a 'NOT DUE YET' return log
+ *
+ * If a return log's end date is in the future, the UI will display the status as 'NOT DUE YET'.
+ *
+ * @private
+ */
+function _notDueYetReturnLog(licence, returnVersion, currentPeriod) {
+  const { startDate, endDate } = currentPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999990,
-    startDate,
-    endDate,
-    dueDate: null,
-    status: 'due',
-    quarterly: false,
-    cycleYear: cycleStartDate.getFullYear()
-  })
-}
-
-// Past its end date with no due date set
-function _openReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _previousPeriod()
-
-  return _returnLog(licence, returnVersion, {
-    legacyId: 9999993,
+    legacyId: 9999995,
     startDate,
     endDate,
     dueDate: null,
@@ -111,12 +103,40 @@ function _openReturnLog(licence, returnVersion) {
   })
 }
 
-// Same period as DUE, but the due date is in the past
-function _overdueReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _currentPeriod()
+/**
+ * Generate an 'OPEN' return log
+ *
+ * The end date is in the past, and the status is 'due'. Not setting the 'due date' will make the UI display it as
+ * `OPEN`.
+ *
+ * @private
+ */
+function _openReturnLog(licence, returnVersion, previousPeriod) {
+  const { startDate, endDate } = previousPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999995,
+    legacyId: 9999991,
+    startDate,
+    endDate,
+    dueDate: null,
+    status: 'due',
+    quarterly: false
+  })
+}
+
+/**
+ * Generate a 'OVERDUE' return log
+ *
+ * The end date is in the past, and the status is 'due'. Setting the 'due date' to yesterday, i.e. in the past makes the
+ * UI display it as `OVERDUE`.
+ *
+ * @private
+ */
+function _overdueReturnLog(licence, returnVersion, previousPeriod) {
+  const { startDate, endDate } = previousPeriod
+
+  return _returnLog(licence, returnVersion, {
+    legacyId: 9999992,
     startDate,
     endDate,
     dueDate: relativeToToday(-1),
@@ -125,14 +145,20 @@ function _overdueReturnLog(licence, returnVersion) {
   })
 }
 
-// A cycle 2 years before the future one, which will have long since ended
-function _previousPeriod() {
-  const futurePeriod = _futurePeriod()
+/**
+ * Helper method to clone the current period and set the dates back by one year
+ *
+ * If we don't clone the current period's dates, we'll be setting the current periods dates back by one year, and
+ * simply returning references to its dates.
+ *
+ * @private
+ */
+function _previousPeriod(currentPeriod) {
+  const startDate = new Date(currentPeriod.startDate)
+  const endDate = new Date(currentPeriod.endDate)
 
-  const startDate = new Date(futurePeriod.startDate)
-  startDate.setFullYear(startDate.getFullYear() - 2)
-  const endDate = new Date(futurePeriod.endDate)
-  endDate.setFullYear(endDate.getFullYear() - 2)
+  startDate.setFullYear(startDate.getFullYear() - 1)
+  endDate.setFullYear(endDate.getFullYear() - 1)
 
   return { startDate, endDate }
 }
@@ -148,23 +174,25 @@ function _returnLog(licence, returnVersion, period) {
   const returnLog = returnLogData(licence, returnRequirement, period)
 
   returnLog.returnLogs[0].status = period.status
-
-  // The return cycle lookup only has rows for cycles that have already started, so a return log with a start
-  // date in the future has to be pointed at an existing (real) cycle instead - it's an FK requirement only; the
-  // status shown to the user is derived from the return log's own start, end and due dates, not this lookup
-  if (period.cycleYear) {
-    returnLog.returnLogs[0].returnCycleId.value = `${period.cycleYear}-04-01`
-  }
+  returnLog.returnLogs[0].returnCycleId.value = period.startDate
 
   return mergeByKey(returnRequirement, returnLog)
 }
 
-// Same period as OPEN, but voided
-function _voidReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _previousPeriod()
+/**
+ * Generate a 'VOID' return log
+ *
+ * Regardless of the dates on the return log, setting the status to 'void' will make the UI display it as `VOID`.
+ *
+ * But we generate a return log that realistically could be voided, with the end date in the past and no due date.
+ *
+ * @private
+ */
+function _voidReturnLog(licence, returnVersion, currentPeriod) {
+  const { startDate, endDate } = currentPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999992,
+    legacyId: 9999994,
     startDate,
     endDate,
     dueDate: null,
