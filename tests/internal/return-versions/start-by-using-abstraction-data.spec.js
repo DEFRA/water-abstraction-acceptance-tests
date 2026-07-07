@@ -30,16 +30,14 @@ test.describe('Submit returns requirement (internal) using abstraction data', ()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the reason page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select the reason for the requirements for returns')
+    await expect(page.locator('h1')).toContainText('Select the reason for the requirements for returns')
 
     // choose reason (new licence) and click continue
     await page.locator('#newLicence').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the set up page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'How do you want to set up the requirements for returns?'
-    )
+    await expect(page.locator('h1')).toContainText('How do you want to set up the requirements for returns?')
 
     // choose the start by using abstraction data checkbox and continue
     await page.locator('#useAbstractionData').check()

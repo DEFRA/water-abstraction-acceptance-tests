@@ -30,23 +30,21 @@ test.describe('Submit returns requirement (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the reason page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select the reason for the requirements for returns')
+    await expect(page.locator('h1')).toContainText('Select the reason for the requirements for returns')
 
     // choose returns exception and click continue
     await page.locator('#changeToSpecialAgreement').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the set up page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'How do you want to set up the requirements for returns?'
-    )
+    await expect(page.locator('h1')).toContainText('How do you want to set up the requirements for returns?')
 
     // click set up manually and continue
     await page.locator('#setUpManually').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the purpose page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select the purpose for the requirements for returns')
+    await expect(page.locator('h1')).toContainText('Select the purpose for the requirements for returns')
 
     // choose a purpose and add a purpose description for the requirement and continue
     await page.locator('[data-test="purpose-0"]').check()
@@ -54,16 +52,14 @@ test.describe('Submit returns requirement (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the points page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select the points for the requirements for returns')
+    await expect(page.locator('h1')).toContainText('Select the points for the requirements for returns')
 
     // choose a points for the requirement and continue
     await page.locator('#points').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the abstraction period page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'Enter the abstraction period for the requirements for returns'
-    )
+    await expect(page.locator('h1')).toContainText('Enter the abstraction period for the requirements for returns')
 
     // enter start and end dates for the abstraction period and click continue
     await page.locator('#abstractionPeriodStartDay').fill('01')
@@ -73,9 +69,7 @@ test.describe('Submit returns requirement (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the returns cycle page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'Select the returns cycle for the requirements for returns'
-    )
+    await expect(page.locator('h1')).toContainText('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
     await page.locator('#summer').check()
@@ -89,23 +83,21 @@ test.describe('Submit returns requirement (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the readings collected page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select how often readings or volumes are collected')
+    await expect(page.locator('h1')).toContainText('Select how often readings or volumes are collected')
 
     // choose a collected time frame and continue
     await page.locator('#frequencyCollectedDay').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the readings reported page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select how often readings or volumes are reported')
+    await expect(page.locator('h1')).toContainText('Select how often readings or volumes are reported')
 
     // choose a reporting time frame and continue
     await page.locator('#frequencyReportedDay').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the agreements and exceptions page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'Select agreements and exceptions for the requirements for returns'
-    )
+    await expect(page.locator('h1')).toContainText('Select agreements and exceptions for the requirements for returns')
 
     // choose an agreement and exception and continue
     await page.locator('#gravityFill').check()
@@ -287,23 +279,21 @@ test.describe('Submit returns requirement (internal)', () => {
     await page.getByText('Add another requirement').click()
 
     // confirm we are on the purpose page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select the purpose for the requirements for returns')
+    await expect(page.locator('h1')).toContainText('Select the purpose for the requirements for returns')
 
     // choose a purpose for the requirement and continue
     await page.locator('[data-test="purpose-0"]').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the points page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select the points for the requirements for returns')
+    await expect(page.locator('h1')).toContainText('Select the points for the requirements for returns')
 
     // choose a points for the requirement and continue
     await page.locator('#points').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the abstraction period page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'Enter the abstraction period for the requirements for returns'
-    )
+    await expect(page.locator('h1')).toContainText('Enter the abstraction period for the requirements for returns')
 
     // enter start and end dates for the abstraction period and click continue
     await page.locator('#abstractionPeriodStartDay').fill('07')
@@ -313,9 +303,7 @@ test.describe('Submit returns requirement (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the returns cycle page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'Select the returns cycle for the requirements for returns'
-    )
+    await expect(page.locator('h1')).toContainText('Select the returns cycle for the requirements for returns')
 
     // choose a returns cycle and continue
     await page.locator('#summer').check()
@@ -329,23 +317,21 @@ test.describe('Submit returns requirement (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the readings collected page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select how often readings or volumes are collected')
+    await expect(page.locator('h1')).toContainText('Select how often readings or volumes are collected')
 
     // choose a collected time frame and continue
     await page.locator('#frequencyCollectedMonth').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the readings reported page
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select how often readings or volumes are reported')
+    await expect(page.locator('h1')).toContainText('Select how often readings or volumes are reported')
 
     // choose a reporting time frame and continue
     await page.locator('#frequencyReportedDay').check()
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the agreements and exceptions page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'Select agreements and exceptions for the requirements for returns'
-    )
+    await expect(page.locator('h1')).toContainText('Select agreements and exceptions for the requirements for returns')
 
     // choose a agreement and exception and continue
     await page.locator('#gravityFill').check()
@@ -363,9 +349,7 @@ test.describe('Submit returns requirement (internal)', () => {
     await page.locator('[data-test="remove-1"]').click()
 
     // confirm we are on the remove page
-    await expect(page.locator('.govuk-heading-l')).toContainText(
-      'You are about to remove these requirements for returns'
-    )
+    await expect(page.locator('h1')).toContainText('You are about to remove these requirements for returns')
 
     // confirm we see the correct requirement to be removed
     await expect(
