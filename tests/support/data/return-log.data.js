@@ -25,18 +25,18 @@ export default function (licenceData, returnRequirementData, period) {
     returnLogs: [
       {
         id: returnLogId,
-        returnId: `v1:8:${licence.licenceRef}:${returnRequirement.legacyId}:${startDateString}:${endDateString}`,
-        returnReference: returnRequirement.legacyId,
+        returnId: `v1:9:${licence.licenceRef}:${returnRequirement.reference}:${startDateString}:${endDateString}`,
+        returnReference: returnRequirement.reference,
         licenceRef: licence.licenceRef,
         metadata: {
           nald: {
             areaCode: 'AREA',
-            formatId: returnRequirement.legacyId,
+            formatId: returnRequirement.reference,
             regionCode: 9,
-            periodEndDay: '31',
-            periodEndMonth: '12',
-            periodStartDay: '1',
-            periodStartMonth: '1'
+            periodEndDay: returnRequirement.abstractionPeriodEndDay,
+            periodEndMonth: returnRequirement.abstractionPeriodEndMonth,
+            periodStartDay: returnRequirement.abstractionPeriodStartDay,
+            periodStartMonth: returnRequirement.abstractionPeriodStartMonth
           },
           points: points.map((point) => {
             return {

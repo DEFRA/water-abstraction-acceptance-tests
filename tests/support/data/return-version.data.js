@@ -1,4 +1,5 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { regionCode } from '../static.lib.js'
 
 export default function (licenceData) {
   const {
@@ -15,7 +16,7 @@ export default function (licenceData) {
         startDate: licence.startDate,
         endDate: null,
         status: 'current',
-        externalId: '6:9999990',
+        externalId: `${regionCode}:9999990`,
         licenceId: licence.id
       }
     ]

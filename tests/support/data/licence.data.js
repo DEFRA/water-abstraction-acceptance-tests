@@ -1,4 +1,5 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { regionCode } from '../static.lib.js'
 
 export default function (licenceRef, companyData) {
   const licenceDocumentHeaderId = generateUUID()
@@ -117,7 +118,7 @@ export default function (licenceRef, companyData) {
         increment: 0,
         status: 'current',
         startDate: '2018-01-01',
-        externalId: '6:1234:1:0',
+        externalId: `${regionCode}:1234:1:0`,
         companyId: company.id,
         addressId: address.id
       }
