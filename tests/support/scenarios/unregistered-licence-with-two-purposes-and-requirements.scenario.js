@@ -6,9 +6,9 @@ import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regionCode } from '../static.lib.js'
 
-export const title = 'Two return requirements with points'
+export const title = 'Unregistered licence with two purposes and a return requirement'
 export const description =
-  ' TWO A licence with two points and two licence version purposes, and an existing return version and requirement'
+  'A licence with two points and two licence version purposes, and an existing return version and requirement'
 
 export default function (licenceRef = 'AT/TE/ST/01/01') {
   const licence = unregisteredLicenceScenario(licenceRef)

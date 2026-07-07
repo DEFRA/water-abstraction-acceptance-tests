@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/unregistered-licence-with-two-purposes.js'
+import scenarioData from '../../support/scenarios/unregistered-licence-with-two-purposes.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 const scenario = scenarioData()
