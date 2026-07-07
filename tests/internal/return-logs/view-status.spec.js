@@ -2,12 +2,21 @@ import scenarioData from '../../support/scenarios/return-statuses.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('View returns and their status (internal)', () => {
-  let scenario
+  let licence
+  let returnLogs
 
   test.beforeAll(async ({ tearDown, load }) => {
     await tearDown()
 
-    scenario = scenarioData()
+    const scenario = scenarioData()
+
+    const {
+      licences: [licenceScenario],
+      returnLogs: returnLogsScenario
+    } = scenario
+
+    licence = licenceScenario
+    returnLogs = returnLogsScenario
 
     await load(scenario)
   })
@@ -18,12 +27,12 @@ test.describe('View returns and their status (internal)', () => {
 
   test('lists the returns for a licence and their status', async ({ page }) => {
     const returnLog = (returnReference) => {
-      return scenario.returnLogs.find((log) => {
+      return returnLogs.find((log) => {
         return log.returnReference === returnReference
       })
     }
 
-    await page.goto(`/system/licences/${scenario.licences[0].id}/returns`)
+    await page.goto(`/system/licences/${licence.id}/returns`)
 
     // confirm we are on the returns tab page
     await expect(page.locator('h1')).toContainText('Returns')
