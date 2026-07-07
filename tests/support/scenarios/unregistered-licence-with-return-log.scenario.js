@@ -4,8 +4,9 @@ import returnVersionData from '../data/return-version.data.js'
 import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Licence with a return log (current period)'
-export const description = 'Licence with a due return log for the first current return period with no due date set'
+export const title = 'Unregistered licence with a return log (current period)'
+export const description =
+  'Unregistered licence with a due return log for the first current return period with no due date set'
 
 export default function (calculatedDates) {
   const { firstReturnPeriod } = calculatedDates
