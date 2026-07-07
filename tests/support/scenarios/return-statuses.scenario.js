@@ -25,6 +25,62 @@ export default function () {
   )
 }
 
+function _completedReturnLog(licence, returnVersion) {
+  const { startDate, endDate } = _previousPeriod()
+  const dueDate = new Date(`${endDate.getFullYear()}-04-28`)
+
+  return _returnLog(licence, returnVersion, {
+    legacyId: 9999991,
+    startDate,
+    endDate,
+    dueDate,
+    status: 'completed',
+    quarterly: false
+  })
+}
+
+// The cycle that covers today
+function _currentPeriod() {
+  const now = today()
+  const previousPeriod = _previousPeriod()
+
+  const startDate = new Date(previousPeriod.startDate)
+  if (now.getMonth() + 1 !== 4) {
+    startDate.setFullYear(startDate.getFullYear() + 1)
+  }
+  const endDate = new Date(now)
+  endDate.setMonth(now.getMonth() - 1)
+
+  return { startDate, endDate }
+}
+
+// Due date a few days in the future
+function _dueReturnLog(licence, returnVersion) {
+  const { startDate, endDate } = _currentPeriod()
+
+  return _returnLog(licence, returnVersion, {
+    legacyId: 9999994,
+    startDate,
+    endDate,
+    dueDate: relativeToToday(5),
+    status: 'due',
+    quarterly: false
+  })
+}
+
+// A cycle that hasn't started yet
+function _futurePeriod() {
+  const now = today()
+
+  // Does the current date fall in April to December, or January to March
+  const beforeNewYear = now.getMonth() + 1 > 3
+
+  const startDate = beforeNewYear ? new Date(`${now.getFullYear() + 1}-04-01`) : new Date(`${now.getFullYear()}-04-01`)
+  const endDate = new Date(`${startDate.getFullYear() + 1}-03-31`)
+
+  return { startDate, endDate }
+}
+
 // The whole period is in the future so it cannot yet be submitted
 function _notDueYetReturnLog(licence, returnVersion) {
   const { startDate, endDate } = _futurePeriod()
@@ -38,20 +94,6 @@ function _notDueYetReturnLog(licence, returnVersion) {
     status: 'due',
     quarterly: false,
     cycleYear: cycleStartDate.getFullYear()
-  })
-}
-
-function _completedReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _previousPeriod()
-  const dueDate = new Date(`${endDate.getFullYear()}-04-28`)
-
-  return _returnLog(licence, returnVersion, {
-    legacyId: 9999991,
-    startDate,
-    endDate,
-    dueDate,
-    status: 'completed',
-    quarterly: false
   })
 }
 
@@ -69,34 +111,6 @@ function _openReturnLog(licence, returnVersion) {
   })
 }
 
-// Same period as OPEN, but voided
-function _voidReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _previousPeriod()
-
-  return _returnLog(licence, returnVersion, {
-    legacyId: 9999992,
-    startDate,
-    endDate,
-    dueDate: null,
-    status: 'void',
-    quarterly: false
-  })
-}
-
-// Due date a few days in the future
-function _dueReturnLog(licence, returnVersion) {
-  const { startDate, endDate } = _currentPeriod()
-
-  return _returnLog(licence, returnVersion, {
-    legacyId: 9999994,
-    startDate,
-    endDate,
-    dueDate: relativeToToday(5),
-    status: 'due',
-    quarterly: false
-  })
-}
-
 // Same period as DUE, but the due date is in the past
 function _overdueReturnLog(licence, returnVersion) {
   const { startDate, endDate } = _currentPeriod()
@@ -109,6 +123,18 @@ function _overdueReturnLog(licence, returnVersion) {
     status: 'due',
     quarterly: false
   })
+}
+
+// A cycle 2 years before the future one, which will have long since ended
+function _previousPeriod() {
+  const futurePeriod = _futurePeriod()
+
+  const startDate = new Date(futurePeriod.startDate)
+  startDate.setFullYear(startDate.getFullYear() - 2)
+  const endDate = new Date(futurePeriod.endDate)
+  endDate.setFullYear(endDate.getFullYear() - 2)
+
+  return { startDate, endDate }
 }
 
 /**
@@ -133,42 +159,16 @@ function _returnLog(licence, returnVersion, period) {
   return mergeByKey(returnRequirement, returnLog)
 }
 
-// A cycle that hasn't started yet
-function _futurePeriod() {
-  const now = today()
+// Same period as OPEN, but voided
+function _voidReturnLog(licence, returnVersion) {
+  const { startDate, endDate } = _previousPeriod()
 
-  // Does the current date fall in April to December, or January to March
-  const beforeNewYear = now.getMonth() + 1 > 3
-
-  const startDate = beforeNewYear ? new Date(`${now.getFullYear() + 1}-04-01`) : new Date(`${now.getFullYear()}-04-01`)
-  const endDate = new Date(`${startDate.getFullYear() + 1}-03-31`)
-
-  return { startDate, endDate }
-}
-
-// A cycle 2 years before the future one, which will have long since ended
-function _previousPeriod() {
-  const futurePeriod = _futurePeriod()
-
-  const startDate = new Date(futurePeriod.startDate)
-  startDate.setFullYear(startDate.getFullYear() - 2)
-  const endDate = new Date(futurePeriod.endDate)
-  endDate.setFullYear(endDate.getFullYear() - 2)
-
-  return { startDate, endDate }
-}
-
-// The cycle that covers today
-function _currentPeriod() {
-  const now = today()
-  const previousPeriod = _previousPeriod()
-
-  const startDate = new Date(previousPeriod.startDate)
-  if (now.getMonth() + 1 !== 4) {
-    startDate.setFullYear(startDate.getFullYear() + 1)
-  }
-  const endDate = new Date(now)
-  endDate.setMonth(now.getMonth() - 1)
-
-  return { startDate, endDate }
+  return _returnLog(licence, returnVersion, {
+    legacyId: 9999992,
+    startDate,
+    endDate,
+    dueDate: null,
+    status: 'void',
+    quarterly: false
+  })
 }
