@@ -1,6 +1,6 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (returnVersionData, licence) {
+export default function (returnVersionData, licence, legacyId = 9999990) {
   const {
     returnVersions: [returnVersion]
   } = returnVersionData
@@ -23,8 +23,8 @@ export default function (returnVersionData, licence) {
         abstractionPeriodEndDay: 31,
         abstractionPeriodEndMonth: 12,
         siteDescription: 'TANKS ON JUPITER',
-        legacyId: 9999990,
-        externalId: '9:9999990'
+        legacyId,
+        externalId: `9:${legacyId}`
       }
     ],
     returnRequirementPoints: points.map((point) => {
@@ -36,7 +36,7 @@ export default function (returnVersionData, licence) {
     returnRequirementPurposes: [
       {
         returnRequirementId,
-        externalId: '6:9999990:A:AGR:420',
+        externalId: `6:${legacyId}:A:AGR:420`,
         alias: 'SPRAY IRRIGATION STORAGE',
         primaryPurposeId: {
           schema: 'water',
