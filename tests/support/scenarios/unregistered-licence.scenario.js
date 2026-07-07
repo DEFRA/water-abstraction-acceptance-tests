@@ -1,6 +1,8 @@
 import companyData from '../data/company.data.js'
 import licenceData from '../data/licence.data.js'
+import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
 import pointData from '../data/point.data.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Unregistered licence'
 export const description = 'A licence, licence holder and a company'
@@ -8,11 +10,8 @@ export const description = 'A licence, licence holder and a company'
 export default function (licenceRef = 'AT/TE/ST/01/01') {
   const company = companyData()
   const point = pointData()
-  const licence = licenceData(licenceRef, company, point)
+  const licence = licenceData(licenceRef, company)
+  const licenceVersionPurpose = licenceVersionPurposeData(licence, point)
 
-  return {
-    ...company,
-    ...point,
-    ...licence
-  }
+  return mergeByKey(company, point, licence, licenceVersionPurpose)
 }
