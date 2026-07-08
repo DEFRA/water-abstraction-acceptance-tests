@@ -59,6 +59,34 @@ export function determineReturnCycleStartDate(returnLogStartDate, summer) {
   return new Date(`${cycleYear}-${cycleMonth}-01`)
 }
 
+/*
+ * Determines the display status of a return log based on its due date, relative to today
+ *
+ * A return log is considered 'due' for the 28 days leading up to its due date. Before that window it is 'not due
+ * yet', and after the due date has passed it is 'overdue'.
+ *
+ * @param {Date | string} dueDate - The due date to compare against today
+ *
+ * @returns {string} 'overdue', 'due', or 'not due yet'
+ */
+export function dueDateStatusLabel(dueDate) {
+  const dueDateValue = new Date(dueDate)
+  const now = today()
+
+  const notDueUntil = new Date(dueDateValue)
+  notDueUntil.setDate(notDueUntil.getDate() - 27)
+
+  if (now.getTime() > dueDateValue.getTime()) {
+    return 'overdue'
+  }
+
+  if (now.getTime() < notDueUntil.getTime()) {
+    return 'not due yet'
+  }
+
+  return 'due'
+}
+
 /**
  * Formats a date to ISO 8601 date format (YYYY-MM-DD)
  *
@@ -95,32 +123,43 @@ export function formatLongDate(date) {
  * If the given period is quarterly, the dates will be moved back by 3 months. If it's not quarterly, the dates will be
  * moved back by 12 months.
  *
+ * The new start date is calculated by subtracting months from the given start date, which is safe because a
+ * period's start date is always the 1st of the month. The new end date is then derived as the day before the given
+ * period's start date (periods are contiguous), rather than by subtracting months from the given end date directly -
+ * doing that would risk overflowing into the next month when the end date's day-of-month (28, 29, 30 or 31) doesn't
+ * exist in the target month, for example subtracting 3 months from 31 December lands on 1 October, not 30 September.
+ * The due date is then derived as 28 days after the new end date, matching the convention used across return periods.
+ *
  * @param {object} period - The return period to calculate the previous period for
  *
  * @return {object} The previous return period to the one provided
  */
 export function previousPeriod(period) {
-  const previousPeriod = {
-    dueDate: period.dueDate ? new Date(period.dueDate) : null,
-    endDate: new Date(period.endDate),
-    name: period.name,
-    quarterly: period.quarterly,
-    startDate: new Date(period.startDate)
-  }
+  const startDate = new Date(period.startDate)
 
   let monthsBack = 12
   if (period.quarterly) {
     monthsBack = 3
   }
 
-  previousPeriod.endDate.setMonth(previousPeriod.endDate.getMonth() - monthsBack)
-  previousPeriod.startDate.setMonth(previousPeriod.startDate.getMonth() - monthsBack)
+  const endDate = new Date(startDate)
+  endDate.setUTCDate(endDate.getUTCDate() - 1)
 
+  startDate.setUTCMonth(startDate.getUTCMonth() - monthsBack)
+
+  let dueDate = null
   if (period.dueDate) {
-    previousPeriod.dueDate.setMonth(previousPeriod.dueDate.getMonth() - monthsBack)
+    dueDate = new Date(endDate)
+    dueDate.setUTCDate(dueDate.getUTCDate() + 28)
   }
 
-  return previousPeriod
+  return {
+    dueDate,
+    endDate,
+    name: period.name,
+    quarterly: period.quarterly,
+    startDate
+  }
 }
 
 /**
