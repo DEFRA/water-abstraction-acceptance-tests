@@ -1,5 +1,4 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
-import { regionCode } from '../static.lib.js'
 
 export default function (returnVersionData, licence, reference = 9999990) {
   const {
@@ -37,7 +36,6 @@ export default function (returnVersionData, licence, reference = 9999990) {
     returnRequirementPurposes: [
       {
         returnRequirementId,
-        externalId: `${regionCode}:${reference}:A:AGR:420`,
         alias: 'SPRAY IRRIGATION STORAGE',
         primaryPurposeId: {
           schema: 'water',

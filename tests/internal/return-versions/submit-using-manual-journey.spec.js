@@ -7,7 +7,7 @@ const {
   licences: [licence]
 } = scenario
 
-test.describe('Submit returns requirement (internal)', () => {
+test.describe('Submit return version manually (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     await setup(scenario)
   })
@@ -16,7 +16,7 @@ test.describe('Submit returns requirement (internal)', () => {
     await login(users.billingAndData)
   })
 
-  test('creates a return requirement and approves the requirement', async ({ page }) => {
+  test('creates and confirms a return version using the manual journey', async ({ page }) => {
     await page.goto(`/system/licences/${licence.id}/set-up`)
 
     // confirm we are on the licence set up tab

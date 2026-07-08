@@ -8,7 +8,7 @@ const {
   returnRequirements: [returnRequirement]
 } = scenario
 
-test.describe('Cancel a return requirement (internal)', () => {
+test.describe('Cancel a return version using copy from existing (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     await setup(scenario)
   })
@@ -17,7 +17,7 @@ test.describe('Cancel a return requirement (internal)', () => {
     await login(users.billingAndData)
   })
 
-  test('cancels a return requirement after completing the journey', async ({ page }) => {
+  test('creates but then cancels a return version using copy from existing journey (internal)', async ({ page }) => {
     await page.goto(`/system/licences/${licence.id}/set-up`)
 
     // confirm we are on the licence set up tab
