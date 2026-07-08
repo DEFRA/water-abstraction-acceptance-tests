@@ -25,6 +25,7 @@ export default function (calculatedDates) {
     dueDate: currentWinterReturnCycle.dueDate,
     quarterly: true
   }
+
   const period1 = previousPeriod(period0)
   const period2 = previousPeriod(period1)
   const period3 = previousPeriod(period2)
