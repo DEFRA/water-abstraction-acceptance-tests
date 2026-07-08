@@ -42,7 +42,7 @@ function _completedReturnLog(licence, returnVersion, previousPeriod) {
   const dueDate = new Date(`${endDate.getFullYear()}-04-29`)
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999990,
+    reference: 9999990,
     startDate,
     endDate,
     dueDate,
@@ -74,7 +74,7 @@ function _dueReturnLog(licence, returnVersion, previousPeriod) {
   const { startDate, endDate } = previousPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999993,
+    reference: 9999993,
     startDate,
     endDate,
     dueDate: relativeToToday(5),
@@ -94,7 +94,7 @@ function _notDueYetReturnLog(licence, returnVersion, currentPeriod) {
   const { startDate, endDate } = currentPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999995,
+    reference: 9999995,
     startDate,
     endDate,
     dueDate: null,
@@ -115,7 +115,7 @@ function _openReturnLog(licence, returnVersion, previousPeriod) {
   const { startDate, endDate } = previousPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999991,
+    reference: 9999991,
     startDate,
     endDate,
     dueDate: null,
@@ -136,7 +136,7 @@ function _overdueReturnLog(licence, returnVersion, previousPeriod) {
   const { startDate, endDate } = previousPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999992,
+    reference: 9999992,
     startDate,
     endDate,
     dueDate: relativeToToday(-1),
@@ -170,7 +170,7 @@ function _previousPeriod(currentPeriod) {
  * @private
  */
 function _returnLog(licence, returnVersion, period) {
-  const returnRequirement = returnRequirementData(returnVersion, licence, period.legacyId)
+  const returnRequirement = returnRequirementData(returnVersion, licence, period.reference)
   const returnLog = returnLogData(licence, returnRequirement, period)
 
   returnLog.returnLogs[0].status = period.status
@@ -192,7 +192,7 @@ function _voidReturnLog(licence, returnVersion, currentPeriod) {
   const { startDate, endDate } = currentPeriod
 
   return _returnLog(licence, returnVersion, {
-    legacyId: 9999994,
+    reference: 9999994,
     startDate,
     endDate,
     dueDate: null,

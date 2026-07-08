@@ -1,20 +1,16 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { regionCode } from '../static.lib.js'
 
-export default function (licenceRef, companyData, pointData) {
+export default function (licenceRef, companyData) {
   const licenceDocumentHeaderId = generateUUID()
   const licenceDocumentId = generateUUID()
   const licenceId = generateUUID()
   const licenceVersionId = generateUUID()
-  const licenceVersionPurposeId = generateUUID()
 
   const {
     companies: [company],
     addresses: [address]
   } = companyData
-
-  const {
-    points: [point]
-  } = pointData
 
   return {
     permitLicences: [
@@ -122,48 +118,9 @@ export default function (licenceRef, companyData, pointData) {
         increment: 0,
         status: 'current',
         startDate: '2018-01-01',
-        externalId: '6:1234:1:0',
+        externalId: `${regionCode}:1234:1:0`,
         companyId: company.id,
         addressId: address.id
-      }
-    ],
-    licenceVersionPurposes: [
-      {
-        id: licenceVersionPurposeId,
-        licenceVersionId,
-        primaryPurposeId: {
-          schema: 'water',
-          table: 'purposesPrimary',
-          lookup: 'legacyId',
-          value: 'A',
-          select: 'purposePrimaryId'
-        },
-        secondaryPurposeId: {
-          schema: 'water',
-          table: 'purposesSecondary',
-          lookup: 'legacyId',
-          value: 'AGR',
-          select: 'purposeSecondaryId'
-        },
-        purposeId: {
-          schema: 'public',
-          table: 'purposes',
-          lookup: 'legacyId',
-          value: '140',
-          select: 'id'
-        },
-        abstractionPeriodStartDay: 1,
-        abstractionPeriodStartMonth: 4,
-        abstractionPeriodEndDay: 31,
-        abstractionPeriodEndMonth: 3,
-        annualQuantity: 1554,
-        externalId: '6:1234'
-      }
-    ],
-    licenceVersionPurposePoints: [
-      {
-        licenceVersionPurposeId,
-        pointId: point.id
       }
     ]
   }
