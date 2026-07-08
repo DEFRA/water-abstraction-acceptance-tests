@@ -6,7 +6,7 @@ let licence
 let returnLogs
 let startYear
 
-test.describe('Submit winter and all year quarterly historic correction using abstraction data (internal)', () => {
+test.describe('Submit quarterly historic correction using abstraction data (internal)', () => {
   test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
     await tearDown()
 
