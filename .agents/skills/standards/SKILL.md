@@ -33,6 +33,81 @@ This document defines the standards an agent must apply when reviewing or writin
 - Private functions must be ordered alphabetically by name
 - In spec files and data files, destructure entities out of scenario/data-file results with array patterns rather than indexing directly, e.g. prefer `const { companies: [company], licences: [licence] } = scenario` over `const company = scenario.companies[0]`, and prefer `const { companies: [company], addresses: [address] } = companyData` over `const company = companyData.companies[0]`
 
+## Spec file structure (Playwright)
+
+- Every spec file must have a single `test.describe` block containing everything: entity variables declared with `let`, then `test.beforeAll`, then `test.beforeEach`, then the `test`s. Nothing scenario-related lives at module scope above the `describe`.
+- `test.beforeAll` builds the scenario, destructures the entities the tests need (using temporary `scenario`-prefixed names to avoid shadowing), assigns them to the outer `let` variables, then loads the scenario. Use the `setup` fixture when the scenario needs no calculated dates; use `tearDown` + `calculatedDates` + `load` individually when it does.
+
+```js
+// Bad — scenario built and destructured at module scope, outside the describe
+const scenario = scenarioData()
+
+const {
+  licences: [licence]
+} = scenario
+
+test.describe('Delete licence agreement journey (internal)', () => {
+  test.beforeAll(async ({ setup }) => {
+    await setup(scenario)
+  })
+
+  test.beforeEach(async ({ login, users }) => {
+    await login(users.billingAndData)
+  })
+
+  test('deletes a licence agreement', async ({ page }) => { ... })
+})
+
+// Good — entities declared with let inside the describe, scenario built inside beforeAll
+test.describe('Delete licence agreement journey (internal)', () => {
+  let licence
+
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence]
+    } = scenario
+
+    licence = scenarioLicence
+
+    await setup(scenario)
+  })
+
+  test.beforeEach(async ({ login, users }) => {
+    await login(users.billingAndData)
+  })
+
+  test('deletes a licence agreement', async ({ page }) => { ... })
+})
+
+// Good — scenario needs calculated dates, so tearDown/calculatedDates/load are used directly instead of setup
+test.describe('Submit a return with no meter readings (internal)', () => {
+  let returnLog
+
+  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
+    await tearDown()
+
+    const dates = await calculatedDates()
+    const scenario = scenarioData(dates)
+
+    const {
+      returnLogs: [scenarioReturnLog]
+    } = scenario
+
+    returnLog = scenarioReturnLog
+
+    await load(scenario)
+  })
+
+  test.beforeEach(async ({ login, users }) => {
+    await login(users.billingAndData)
+  })
+
+  test('attempt to submit a return without entering any readings', async ({ page }) => { ... })
+})
+```
+
 ## Locators (Playwright)
 
 - Prefer role- and label-based locators (`getByRole`, `getByLabel`, `getByText`) over positional or structural CSS selectors like `:nth-child(n)`
