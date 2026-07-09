@@ -36,7 +36,7 @@ This document defines the standards an agent must apply when reviewing or writin
 ## Spec file structure (Playwright)
 
 - Every spec file must have a single `test.describe` block containing everything: entity variables declared with `let`, then `test.beforeAll`, then `test.beforeEach`, then the `test`s. Nothing scenario-related lives at module scope above the `describe`.
-- `test.beforeAll` builds the scenario, destructures the entities the tests need (using temporary `scenario`-prefixed names to avoid shadowing), assigns them to the outer `let` variables, then loads the scenario. Use the `setup` fixture when the scenario needs no calculated dates; use `tearDown` + `calculatedDates` + `load` individually when it does.
+- `test.beforeAll` builds the scenario, destructures the entities the tests need (using temporary `scenario`-prefixed names to avoid shadowing), assigns them to the outer `let` variables, then loads the scenario via the `setup` fixture. When the scenario needs calculated dates, call `calculatedDates` first to get the dates and pass them into the scenario builder, but still load the result with `setup` rather than calling `tearDown` + `load` individually.
 
 ```js
 // Bad — scenario built and destructured at module scope, outside the describe
@@ -81,13 +81,11 @@ test.describe('Delete licence agreement journey (internal)', () => {
   test('deletes a licence agreement', async ({ page }) => { ... })
 })
 
-// Good — scenario needs calculated dates, so tearDown/calculatedDates/load are used directly instead of setup
+// Good — scenario needs calculated dates, so calculatedDates is called before building it, but setup still loads it
 test.describe('Submit a return with no meter readings (internal)', () => {
   let returnLog
 
-  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
-    await tearDown()
-
+  test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
@@ -97,7 +95,7 @@ test.describe('Submit a return with no meter readings (internal)', () => {
 
     returnLog = scenarioReturnLog
 
-    await load(scenario)
+    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {
