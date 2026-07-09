@@ -7,6 +7,10 @@ const {
   licences: [licence]
 } = scenario
 
+/**
+ * Walks the same charge information wizard as add-charge-reference.spec.js, but focuses on field-level
+ * validation - empty submissions, invalid characters and out-of-range values - rather than the happy path.
+ */
 test.describe('SROC charge information validation (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     await setup(scenario)

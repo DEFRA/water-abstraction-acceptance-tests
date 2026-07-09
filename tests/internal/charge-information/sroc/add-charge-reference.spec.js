@@ -7,6 +7,15 @@ const {
   licences: [licence]
 } = scenario
 
+/**
+ * Full happy-path journey through the charge information wizard: adds a note, creates a second charge element
+ * manually, combines both elements into one charge reference, and answers yes to additional charges (supported
+ * source, public water supply) with a charge adjustment factor.
+ *
+ * This combination of choices only flags the licence for the next standard supplementary bill run. Contrast with
+ * approving-a-charge-version.spec.js, which uses a different combination of choices to also flag the two-part
+ * tariff supplementary run.
+ */
 test.describe('SROC charge information journey (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     await setup(scenario)

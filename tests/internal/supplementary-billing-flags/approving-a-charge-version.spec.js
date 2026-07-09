@@ -7,6 +7,14 @@ const {
   licences: [licence]
 } = scenario
 
+/**
+ * Uses a different combination of choices to add-charge-reference.spec.js (no note, a single element from
+ * abstraction data, no additional charges, a different adjustment type) that flags the licence for both the
+ * two-part tariff supplementary bill run and the standard supplementary bill run, not just the standard one.
+ *
+ * Lives in supplementary-billing-flags rather than charge-information because it tests the flagging outcome, not
+ * the wizard journey itself.
+ */
 test.describe('Approving a charge version (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     await setup(scenario)
