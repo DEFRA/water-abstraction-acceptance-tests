@@ -8,6 +8,8 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
   beforeEach(() => {
     cy.tearDown()
 
+    // NOTE: We set the nilReturn flag to true on the return submission and don't include any submission lines as a nil
+    // return wouldn't have any
     cy.load(scenario)
 
     // Get the current date as a string, for example 12 July 2023

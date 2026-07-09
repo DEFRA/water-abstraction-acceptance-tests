@@ -8,6 +8,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
   beforeEach(() => {
     cy.tearDown()
 
+    // NOTE: We set the received date to be after the 'dueDate' so its a late return
     cy.load(scenario)
 
     // Get the current date as a string, for example 12 July 2023
