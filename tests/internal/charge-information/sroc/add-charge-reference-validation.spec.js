@@ -1,5 +1,6 @@
 import scenarioData from '../../../support/scenarios/unregistered-licence-with-presroc-charge-version.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
+import { summaryListValue } from '../../../support/helpers/summary-list.helpers.js'
 
 const scenario = scenarioData()
 
@@ -104,13 +105,9 @@ test.describe('SROC charge information validation (internal)', () => {
     // Check billing account details
     // check the details are as expected and confirm
     const billingAccountDetails = page.locator('section > dl')
-    await expect(billingAccountDetails.locator('div:nth-child(1) > dd.govuk-summary-list__value')).toContainText(
-      'Big Farm Co Ltd'
-    )
-    await expect(billingAccountDetails.locator('div:nth-child(2) > dd.govuk-summary-list__value')).toContainText(
-      'TT1 1TT'
-    )
-    await expect(billingAccountDetails.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText('No')
+    await expect(summaryListValue(billingAccountDetails, 'Billing contact name')).toContainText('Big Farm Co Ltd')
+    await expect(summaryListValue(billingAccountDetails, 'Billing address')).toContainText('TT1 1TT')
+    await expect(summaryListValue(billingAccountDetails, 'FAO')).toContainText('No')
     await page.locator('form > .govuk-button').click()
 
     // Use abstraction data to set up the element?
@@ -129,27 +126,17 @@ test.describe('SROC charge information validation (internal)', () => {
     // Check charge information
     // check the charge details and element details are as expected and then select option to add a note
     const chargeDetails = page.locator('section:nth-child(1) > dl')
-    await expect(chargeDetails.locator('div:nth-child(1) > dd.govuk-summary-list__value')).toContainText(
-      'Change to charge scheme'
-    )
-    await expect(chargeDetails.locator('div:nth-child(2) > dd.govuk-summary-list__value')).toContainText('1 June 2022')
-    await expect(chargeDetails.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText('Big Farm')
-    await expect(chargeDetails.locator('div:nth-child(4) > dd.govuk-summary-list__value')).toContainText(
-      'Big Farm Co Ltd'
-    )
+    await expect(summaryListValue(chargeDetails, 'Reason')).toContainText('Change to charge scheme')
+    await expect(summaryListValue(chargeDetails, 'Start date')).toContainText('1 June 2022')
+    await expect(summaryListValue(chargeDetails, 'Billing account')).toContainText('Big Farm')
+    await expect(summaryListValue(chargeDetails, 'Licence holder')).toContainText('Big Farm Co Ltd')
     await expect(page.locator('form > section > h2')).toContainText('Element')
     const elementDetails = page.locator('form > section > dl')
-    await expect(elementDetails.locator('div:nth-child(2) > dd.govuk-summary-list__value')).toContainText(
-      'Test Charge Element!'
-    )
-    await expect(elementDetails.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
-      '1 April to 31 March'
-    )
-    await expect(elementDetails.locator('div:nth-child(4) > dd.govuk-summary-list__value')).toContainText(
-      '15.54ML authorised'
-    )
-    await expect(elementDetails.locator('div:nth-child(5) > dd.govuk-summary-list__value')).toContainText('No')
-    await expect(elementDetails.locator('div:nth-child(6) > dd.govuk-summary-list__value')).toContainText('Medium')
+    await expect(summaryListValue(elementDetails, 'Description')).toContainText('Test Charge Element!')
+    await expect(summaryListValue(elementDetails, 'Abstraction period')).toContainText('1 April to 31 March')
+    await expect(summaryListValue(elementDetails, 'Annual quantities')).toContainText('15.54ML authorised')
+    await expect(summaryListValue(elementDetails, 'Time limit')).toContainText('No')
+    await expect(summaryListValue(elementDetails, 'Loss')).toContainText('Medium')
     await page.locator('section:nth-child(2) > p > a').click()
 
     // Add a note
@@ -337,46 +324,25 @@ test.describe('SROC charge information validation (internal)', () => {
     await expect(chargeReferenceForm.locator('h2:nth-child(4)')).toContainText('Charge reference details')
 
     const chargeReferenceDetails = chargeReferenceForm.locator('dl:nth-child(5)')
-    await expect(chargeReferenceDetails.locator('div:nth-child(1) > dd.govuk-summary-list__value')).toContainText(
-      'Test Charge Element!'
-    )
-    await expect(chargeReferenceDetails.locator('div:nth-child(2) > dd.govuk-summary-list__value')).toContainText(
-      'are supported characters'
-    )
-    await expect(chargeReferenceDetails.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
-      'Non-tidal'
-    )
-    await expect(chargeReferenceDetails.locator('div:nth-child(4) > dd.govuk-summary-list__value')).toContainText('Low')
-    await expect(chargeReferenceDetails.locator('div:nth-child(5) > dd.govuk-summary-list__value')).toContainText(
-      '0.5ML'
-    )
-    await expect(chargeReferenceDetails.locator('div:nth-child(6) > dd.govuk-summary-list__value')).toContainText(
-      'Restricted availablity'
-    )
-    await expect(chargeReferenceDetails.locator('div:nth-child(7) > dd.govuk-summary-list__value')).toContainText(
-      'Tier 1'
-    )
-    await expect(chargeReferenceDetails.locator('div:nth-child(8) > dd.govuk-summary-list__value')).toContainText('Yes')
-    await expect(chargeReferenceDetails.locator('div:nth-child(9) > dd.govuk-summary-list__value')).toContainText('Yes')
-    await expect(chargeReferenceDetails.locator('div:nth-child(10) > dd.govuk-summary-list__value')).toContainText(
-      'Southern'
-    )
+    await expect(summaryListValue(chargeReferenceDetails, 'Applies to')).toContainText('Test Charge Element!')
+    await expect(summaryListValue(chargeReferenceDetails, 'Description')).toContainText('are supported characters')
+    await expect(summaryListValue(chargeReferenceDetails, 'Source')).toContainText('Non-tidal')
+    await expect(summaryListValue(chargeReferenceDetails, 'Loss')).toContainText('Low')
+    await expect(summaryListValue(chargeReferenceDetails, 'Volume')).toContainText('0.5ML')
+    await expect(summaryListValue(chargeReferenceDetails, 'Water availability')).toContainText('Restricted availablity')
+    await expect(summaryListValue(chargeReferenceDetails, 'Water model')).toContainText('Tier 1')
+    await expect(summaryListValue(chargeReferenceDetails, 'Additional charges apply')).toContainText('Yes')
+    await expect(summaryListValue(chargeReferenceDetails, 'Adjustments apply')).toContainText('Yes')
+    await expect(summaryListValue(chargeReferenceDetails, 'EIC Region')).toContainText('Southern')
 
     await expect(chargeReferenceForm.locator('h2:nth-child(7)')).toContainText('Additional charges')
     const additionalChargesDetails = chargeReferenceForm.locator('dl:nth-child(8)')
-    await expect(additionalChargesDetails.locator('div:nth-child(1) > dd.govuk-summary-list__value')).toContainText(
-      'Yes'
-    )
-    await expect(additionalChargesDetails.locator('div:nth-child(2) > dd.govuk-summary-list__value')).toContainText(
-      'Rhee Groundwater'
-    )
-    await expect(additionalChargesDetails.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
-      'Yes'
-    )
+    await expect(summaryListValue(additionalChargesDetails, 'Supported source')).toContainText('Yes')
+    await expect(summaryListValue(additionalChargesDetails, 'Supported source name')).toContainText('Rhee Groundwater')
+    await expect(summaryListValue(additionalChargesDetails, 'Supply public water')).toContainText('Yes')
 
     const adjustmentsDetails = chargeReferenceForm.locator('dl:nth-child(10)')
-    await expect(adjustmentsDetails.locator('div:nth-child(1) > dt')).toContainText('Adjustments')
-    await expect(adjustmentsDetails.locator('div:nth-child(2) > dd.govuk-summary-list__value')).toContainText('25')
+    await expect(summaryListValue(adjustmentsDetails, 'Adjustment factor')).toContainText('25')
 
     await page.locator('form > .govuk-button').filter({ hasText: 'Confirm' }).click()
 
