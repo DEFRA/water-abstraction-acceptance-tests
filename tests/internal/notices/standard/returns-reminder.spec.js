@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/licence-with-due-return-log-for-first-period.scenario.js'
+import scenarioData from '../../../support/scenarios/unregistered-licence-with-due-return-log-for-first-period.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Standard returns reminder journey (internal)', () => {
