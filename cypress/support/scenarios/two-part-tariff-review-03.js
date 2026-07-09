@@ -1,8 +1,8 @@
 import reviewLicenceData from '../fixture-builder/review-licence.js'
 
-export const title = 'Two-part tariff review 02'
+export const title = 'Two-part tariff review 03'
 export const description =
-  'Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference but it has two charge element only one of which is 2pt. It also has two return, one 2pt and one not'
+  'Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one return however this was received late'
 
 export default function () {
   return {
