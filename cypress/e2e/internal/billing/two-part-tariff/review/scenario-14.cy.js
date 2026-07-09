@@ -1,16 +1,14 @@
 'use strict'
 
+import scenarioData from '../../../../../support/scenarios/two-part-tariff-review-14.js'
+
+const scenario = scenarioData()
+
 describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has one applicable charge version with 1 charge reference and 2 charge elements. It has one return that matches to both elements and has submission lines that will straddle both charge elements when allocated', () => {
   beforeEach(() => {
     cy.tearDown()
-    // Load the base licence information into the DB
-    cy.fixture('review-scenario-licence.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    // Load the charge and returns information into the DB
-    cy.fixture('review-scenario-14.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    cy.load(scenario)
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
