@@ -1,14 +1,18 @@
 import scenarioData from '../../support/scenarios/internal-user.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  users: [userToUpdate]
-} = scenario
-
 test.describe('Change user permissions (internal)', () => {
+  let userToUpdate
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      users: [scenarioUserToUpdate]
+    } = scenario
+
+    userToUpdate = scenarioUserToUpdate
+
     await setup(scenario)
   })
 

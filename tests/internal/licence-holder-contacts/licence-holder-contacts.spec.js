@@ -2,16 +2,30 @@ import scenarioData from '../../support/scenarios/company-contact.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 
-const scenario = scenarioData()
-
-const {
-  companies: [company],
-  licences: [licence],
-  contacts: [contact, editContact, removeContact, restoreContact]
-} = scenario
-
 test.describe('Licence holder contacts (internal)', () => {
+  let company
+  let licence
+  let contact
+  let editContact
+  let removeContact
+  let restoreContact
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      companies: [scenarioCompany],
+      licences: [scenarioLicence],
+      contacts: [scenarioContact, scenarioEditContact, scenarioRemoveContact, scenarioRestoreContact]
+    } = scenario
+
+    company = scenarioCompany
+    licence = scenarioLicence
+    contact = scenarioContact
+    editContact = scenarioEditContact
+    removeContact = scenarioRemoveContact
+    restoreContact = scenarioRestoreContact
+
     await setup(scenario)
   })
 
