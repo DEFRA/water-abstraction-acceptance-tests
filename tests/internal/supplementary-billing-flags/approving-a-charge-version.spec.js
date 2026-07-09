@@ -140,7 +140,7 @@ test.describe('Approving a charge version (internal)', () => {
     // Charge information
     // confirm our new charge information is APPROVED and that the licence has been flagged for the next supplementary
     // bill run
-    await expect(page.locator('[data-test="review-charge-version-0"]')).toHaveCount(0)
+    await expect(page.getByText('Review')).toHaveCount(0)
 
     // Navigate to back to the Licence summary page
     await page.locator('nav a').filter({ hasText: 'Licence summary' }).click()
