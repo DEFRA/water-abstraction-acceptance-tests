@@ -11,7 +11,7 @@ export default function () {
       {
         id: '8e5626ee-5e4c-48f6-a668-471d35997e2c',
         licenceId: 'f8702a6a-f61d-4b0a-9af3-9a53768ee516',
-        licenceRef: 'AT/TES/01',
+        licenceRef: 'AT/TE/ST/01/01',
         billingAccountId: '16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c',
         regionCode: 9,
         scheme: 'sroc',
