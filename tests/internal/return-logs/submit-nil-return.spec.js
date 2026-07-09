@@ -1,4 +1,5 @@
 import scenarioData from '../../support/scenarios/unregistered-licence-with-due-return-log.scenario.js'
+import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Submit a nil return (internal)', () => {
@@ -42,7 +43,7 @@ test.describe('Submit a nil return (internal)', () => {
 
     // Reporting details
     // Confirm the return is nil and continue
-    await expect(_summaryRow(page, 'Nil return').locator('.govuk-summary-list__value')).toContainText('Yes')
+    await expect(summaryRow(page, 'Nil return').locator('.govuk-summary-list__value')).toContainText('Yes')
     await page.locator('.govuk-button').first().click()
 
     // Return submitted
@@ -60,10 +61,3 @@ test.describe('Submit a nil return (internal)', () => {
     )
   })
 })
-
-/**
- * Locates the govuk-summary-list row whose label matches the given text
- */
-function _summaryRow(page, label) {
-  return page.locator('.govuk-summary-list__row', { hasText: label })
-}

@@ -1,4 +1,5 @@
 import scenarioData from '../../support/scenarios/internal-user.scenario.js'
+import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Change user permissions (internal)', () => {
@@ -39,7 +40,7 @@ test.describe('Change user permissions (internal)', () => {
     await page.locator('.govuk-button').click()
 
     // Click the permissions change link
-    await _summaryRow(page, 'Permission').getByRole('link', { name: 'Change' }).click()
+    await summaryRow(page, 'Permission').getByRole('link', { name: 'Change' }).click()
 
     // Select permissions for the user
     // Change from Basic to Environment officer
@@ -48,7 +49,7 @@ test.describe('Change user permissions (internal)', () => {
 
     // Confirm notification shown and new permission shown, then submit
     await expect(page.locator('.govuk-notification-banner__heading')).toContainText('Permissions updated')
-    await expect(_summaryRow(page, 'Permission').locator('.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Permission').locator('.govuk-summary-list__value')).toContainText(
       'Environment Officer'
     )
     await page.locator('.govuk-button', { hasText: 'Confirm' }).click()
@@ -61,10 +62,3 @@ test.describe('Change user permissions (internal)', () => {
     await expect(page.locator('[data-test="user-permissions-0"]')).toContainText('Environment Officer')
   })
 })
-
-/**
- * Locates the govuk-summary-list row whose label matches the given text
- */
-function _summaryRow(page, label) {
-  return page.locator('.govuk-summary-list__row', { hasText: label })
-}
