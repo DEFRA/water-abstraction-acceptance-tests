@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/unregistered-licence-with-due-return-log.scenario.js'
+import scenarioData from '../../support/scenarios/unregistered-licence-with-open-winter-return-log.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
