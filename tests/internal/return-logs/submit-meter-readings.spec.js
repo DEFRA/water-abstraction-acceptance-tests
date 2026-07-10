@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/unregistered-licence-with-due-return-log.scenario.js'
+import scenarioData from '../../support/scenarios/unregistered-licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Submit a meter readings return (internal)', () => {

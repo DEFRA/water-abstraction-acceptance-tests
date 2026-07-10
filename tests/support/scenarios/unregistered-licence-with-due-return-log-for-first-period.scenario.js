@@ -1,16 +1,14 @@
-import unregisteredLicenceWithReturnLogsScenario from './unregistered-licence-with-return-log.scenario.js'
-import { formatDateToIso } from '../helpers/date.helpers.js'
+import unregisteredLicenceWithOpenReturnLogForFirstPeriod from './unregistered-licence-with-open-return-log-for-first-period.scenario.js'
 
-export const title = 'Unregistered licence with a due return log (first return period)'
-export const description =
-  'Unregistered licence with a due return log set to the first current return period, with return requirements and version'
+export const title = 'Unregistered licence with due return log (first period)'
+export const description = 'Unregistered licence with a due return log for the first return period'
 
 export default function (calculatedDates) {
   const { firstReturnPeriod } = calculatedDates
 
-  const unregisteredLicenceWithReturnLogs = unregisteredLicenceWithReturnLogsScenario(calculatedDates)
+  const unregisteredLicence = unregisteredLicenceWithOpenReturnLogForFirstPeriod(calculatedDates)
 
-  unregisteredLicenceWithReturnLogs.returnLogs[0].dueDate = formatDateToIso(new Date(firstReturnPeriod.dueDate))
+  unregisteredLicence.returnLogs[0].dueDate = firstReturnPeriod.dueDate
 
-  return unregisteredLicenceWithReturnLogs
+  return unregisteredLicence
 }

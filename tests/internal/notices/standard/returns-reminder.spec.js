@@ -13,7 +13,7 @@ test.describe('Standard returns reminder journey (internal)', () => {
     await login(users.billingAndData)
   })
 
-  test('reminds a customer to submit returns', async ({ page }) => {
+  test('creates a standard returns reminder notice', async ({ page }) => {
     // Navigate to the Notices page
     await page.goto('/system/notices')
 

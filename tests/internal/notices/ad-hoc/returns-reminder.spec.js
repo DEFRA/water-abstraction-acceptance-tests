@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/registered-licence-with-due-return-log.scenario.js'
+import scenarioData from '../../../support/scenarios/registered-licence-with-due-return-log-for-first-period.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc returns reminder journey (internal)', () => {
@@ -13,7 +13,7 @@ test.describe('Ad-hoc returns reminder journey (internal)', () => {
     await login(users.billingAndData)
   })
 
-  test('invites a customer to submit returns', async ({ page }) => {
+  test('create an ad-hoc returns reminder notice that includes a single-use recipient', async ({ page }) => {
     // Navigate to the Notices page
     await page.goto('/system/notices')
 
