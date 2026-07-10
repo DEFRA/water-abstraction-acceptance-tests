@@ -1,15 +1,21 @@
 import scenarioData from '../../support/scenarios/unregistered-licence-with-two-purposes-and-requirements.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  licences: [licence],
-  returnRequirements: [returnRequirement]
-} = scenario
-
 test.describe('Cancel a return version using copy from existing (internal)', () => {
+  let licence
+  let returnRequirement
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence],
+      returnRequirements: [scenarioReturnRequirement]
+    } = scenario
+
+    licence = scenarioLicence
+    returnRequirement = scenarioReturnRequirement
+
     await setup(scenario)
   })
 

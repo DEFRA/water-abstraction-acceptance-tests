@@ -4,13 +4,11 @@ import { test, expect } from '../../../support/fixtures.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
-  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
-    await tearDown()
-
+  test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    await load(scenario)
+    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

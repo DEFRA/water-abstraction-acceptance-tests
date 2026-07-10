@@ -5,9 +5,7 @@ test.describe('View returns and their status (internal)', () => {
   let licence
   let returnLogs
 
-  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
-    await tearDown()
-
+  test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
@@ -19,7 +17,7 @@ test.describe('View returns and their status (internal)', () => {
     licence = licenceScenario
     returnLogs = returnLogsScenario
 
-    await load(scenario)
+    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {
