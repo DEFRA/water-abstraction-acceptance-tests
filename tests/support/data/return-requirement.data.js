@@ -5,7 +5,10 @@ export default function (returnVersionData, licence, reference = 9999990) {
     returnVersions: [returnVersion]
   } = returnVersionData
 
-  const { points } = licence
+  const {
+    licenceVersionPurposes: [licenceVersionPurpose],
+    points
+  } = licence
 
   const returnRequirementId = generateUUID()
 
@@ -36,26 +39,26 @@ export default function (returnVersionData, licence, reference = 9999990) {
     returnRequirementPurposes: [
       {
         returnRequirementId,
-        alias: 'SPRAY IRRIGATION STORAGE',
+        alias: `TEST RET REQ PURPOSE ${licenceVersionPurpose.purposeId.value}`,
         primaryPurposeId: {
           schema: 'water',
           table: 'purposesPrimary',
           lookup: 'legacyId',
-          value: 'A',
+          value: licenceVersionPurpose.primaryPurposeId.value,
           select: 'purposePrimaryId'
         },
         secondaryPurposeId: {
           schema: 'water',
           table: 'purposesSecondary',
           lookup: 'legacyId',
-          value: 'AGR',
+          value: licenceVersionPurpose.secondaryPurposeId.value,
           select: 'purposeSecondaryId'
         },
         purposeId: {
           schema: 'public',
           table: 'purposes',
           lookup: 'legacyId',
-          value: '420',
+          value: licenceVersionPurpose.purposeId.value,
           select: 'id'
         }
       }
