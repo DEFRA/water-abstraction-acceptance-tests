@@ -15,6 +15,10 @@ export default function (calculatedDates) {
   const licence = unregisteredLicenceScenario()
   const returnVersion = returnVersionData(licence)
 
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the first return log we're seeding.
+  returnVersion.returnVersions[0].startDate = previousPeriod.startDate
+
   return mergeByKey(
     licence,
     returnVersion,
