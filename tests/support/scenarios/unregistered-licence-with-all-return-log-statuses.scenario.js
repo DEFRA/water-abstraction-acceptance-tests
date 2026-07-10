@@ -5,9 +5,8 @@ import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import { relativeToToday } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'All return statuses'
-export const description =
-  'Licence with return logs covering every status: due, overdue, not yet due, completed, open, and void'
+export const title = 'All return log statuses'
+export const description = 'Unregistered licence with returns logs covering all possible statuses'
 
 export default function (calculatedDates) {
   const currentPeriod = _currentPeriod(calculatedDates)
@@ -52,14 +51,17 @@ function _completedReturnLog(licence, returnVersion, previousPeriod) {
 }
 
 /**
- * Helper method to transpose the current financial year period dates from strings into Dates
+ * Helper method to transpose the current winter return cycle period dates from strings into Dates
  *
  * @private
  */
 function _currentPeriod(calculatedDates) {
-  const { currentFinancialYear } = calculatedDates
+  const { currentWinterReturnCycle } = calculatedDates
 
-  return { startDate: new Date(currentFinancialYear.startDate), endDate: new Date(currentFinancialYear.endDate) }
+  return {
+    startDate: new Date(currentWinterReturnCycle.startDate),
+    endDate: new Date(currentWinterReturnCycle.endDate)
+  }
 }
 
 /**
