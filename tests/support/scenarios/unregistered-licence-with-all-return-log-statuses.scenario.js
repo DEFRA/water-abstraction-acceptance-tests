@@ -51,14 +51,17 @@ function _completedReturnLog(licence, returnVersion, previousPeriod) {
 }
 
 /**
- * Helper method to transpose the current financial year period dates from strings into Dates
+ * Helper method to transpose the current winter return cycle period dates from strings into Dates
  *
  * @private
  */
 function _currentPeriod(calculatedDates) {
-  const { currentFinancialYear } = calculatedDates
+  const { currentWinterReturnCycle } = calculatedDates
 
-  return { startDate: new Date(currentFinancialYear.startDate), endDate: new Date(currentFinancialYear.endDate) }
+  return {
+    startDate: new Date(currentWinterReturnCycle.startDate),
+    endDate: new Date(currentWinterReturnCycle.endDate)
+  }
 }
 
 /**
