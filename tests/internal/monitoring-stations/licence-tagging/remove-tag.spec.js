@@ -1,15 +1,21 @@
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  licences: [licence],
-  monitoringStations: [monitoringStation]
-} = scenario
-
 test.describe('Attempt to remove a tag from a monitoring station (internal)', () => {
+  let licence
+  let monitoringStation
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence],
+      monitoringStations: [scenarioMonitoringStation]
+    } = scenario
+
+    licence = scenarioLicence
+    monitoringStation = scenarioMonitoringStation
+
     await setup(scenario)
   })
 

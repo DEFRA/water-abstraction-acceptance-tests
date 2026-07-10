@@ -1,16 +1,25 @@
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  licences: [licence],
-  licenceVersionPurposeConditions: [licenceVersionPurposeCondition],
-  monitoringStations: [monitoringStation]
-} = scenario
-
 test.describe('Tag a licence linked to a condition. The abstraction period is derived from the condition (internal)', () => {
+  let licence
+  let licenceVersionPurposeCondition
+  let monitoringStation
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence],
+      licenceVersionPurposeConditions: [scenarioLicenceVersionPurposeCondition],
+      monitoringStations: [scenarioMonitoringStation]
+    } = scenario
+
+    licence = scenarioLicence
+    licenceVersionPurposeCondition = scenarioLicenceVersionPurposeCondition
+    monitoringStation = scenarioMonitoringStation
+
     await setup(scenario)
   })
 
@@ -55,18 +64,19 @@ test.describe('Tag a licence linked to a condition. The abstraction period is de
     await page.getByRole('button', { name: 'Continue' }).click()
 
     // Check the restriction details
-    await expect(_summaryRowValue(page, 0)).toContainText('200mBOD')
-    await expect(_summaryRowValue(page, 1)).toContainText('Reduce')
-    await expect(_summaryRowValue(page, 2)).toContainText(licence.licenceRef)
-    await expect(_summaryRowValue(page, 3)).toContainText(
+    await expect(summaryRow(page, 'Threshold').locator('.govuk-summary-list__value')).toContainText('200mBOD')
+    await expect(summaryRow(page, 'Type').locator('.govuk-summary-list__value')).toContainText('Reduce')
+    await expect(summaryRow(page, 'Licence number').locator('.govuk-summary-list__value')).toContainText(
+      licence.licenceRef
+    )
+    await expect(summaryRow(page, 'Licence condition').locator('.govuk-summary-list__value')).toContainText(
       `Level cessation condition 1: ${licenceVersionPurposeCondition.notes}`
     )
-    await expect(_summaryRowValue(page, 4)).toContainText('1 April to 31 March')
+    await expect(summaryRow(page, 'Abstraction period').locator('.govuk-summary-list__value')).toContainText(
+      '1 April to 31 March'
+    )
 
-    const changeLink = page
-      .locator('.govuk-summary-list__row')
-      .nth(4)
-      .locator('.govuk-summary-list__actions .govuk-link')
+    const changeLink = summaryRow(page, 'Abstraction period').locator('.govuk-summary-list__actions .govuk-link')
 
     await expect(changeLink).toHaveText('')
     await expect(changeLink).toHaveAttribute('href', '')
@@ -86,13 +96,3 @@ test.describe('Tag a licence linked to a condition. The abstraction period is de
     await expect(page.locator('[data-test="action-0"]')).toHaveText('View')
   })
 })
-
-/**
- * Locates the govuk-summary-list value cell at the given row position
- *
- * The rows on this page aren't labelled with accessible text in the rendered markup, so they can't be targeted by
- * role/label — this ports the position-based Cypress selectors directly.
- */
-function _summaryRowValue(page, position) {
-  return page.locator('.govuk-summary-list__row').nth(position).locator('.govuk-summary-list__value')
-}

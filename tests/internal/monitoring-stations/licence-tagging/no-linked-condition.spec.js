@@ -1,15 +1,22 @@
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-untagged.scenario.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  licences: [licence],
-  monitoringStations: [monitoringStation]
-} = scenario
-
 test.describe('Tag a licence that is not linked to a condition (internal)', () => {
+  let licence
+  let monitoringStation
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence],
+      monitoringStations: [scenarioMonitoringStation]
+    } = scenario
+
+    licence = scenarioLicence
+    monitoringStation = scenarioMonitoringStation
+
     await setup(scenario)
   })
 
@@ -62,12 +69,16 @@ test.describe('Tag a licence that is not linked to a condition (internal)', () =
     await page.getByRole('button', { name: 'Continue' }).click()
 
     // Check the restriction details
-    await expect(_summaryRowValue(page, 0)).toContainText('123mBOD')
-    await expect(_summaryRowValue(page, 1)).toContainText('Stop')
-    await expect(_summaryRowValue(page, 2)).toContainText(licence.licenceRef)
-    await expect(_summaryRowValue(page, 3)).toContainText('None')
-    await expect(_summaryRowValue(page, 4)).toContainText('10 October to 11 November')
-    await expect(page.locator('.govuk-summary-list__row').nth(4).getByRole('link', { name: 'Change' })).toBeVisible()
+    await expect(summaryRow(page, 'Threshold').locator('.govuk-summary-list__value')).toContainText('123mBOD')
+    await expect(summaryRow(page, 'Type').locator('.govuk-summary-list__value')).toContainText('Stop')
+    await expect(summaryRow(page, 'Licence number').locator('.govuk-summary-list__value')).toContainText(
+      licence.licenceRef
+    )
+    await expect(summaryRow(page, 'Licence condition').locator('.govuk-summary-list__value')).toContainText('None')
+    await expect(summaryRow(page, 'Abstraction period').locator('.govuk-summary-list__value')).toContainText(
+      '10 October to 11 November'
+    )
+    await expect(summaryRow(page, 'Abstraction period').getByRole('link', { name: 'Change' })).toBeVisible()
     await page.getByRole('button', { name: 'Confirm' }).click()
 
     // Confirm we are back on the monitoring station page and the licence is tagged
@@ -89,13 +100,3 @@ test.describe('Tag a licence that is not linked to a condition (internal)', () =
     await expect(page.locator('.govuk-list').filter({ hasText: monitoringStation.label })).toBeVisible()
   })
 })
-
-/**
- * Locates the govuk-summary-list value cell at the given row position
- *
- * The rows on this page aren't labelled with accessible text in the rendered markup, so they can't be targeted by
- * role/label — this ports the position-based Cypress selectors directly.
- */
-function _summaryRowValue(page, position) {
-  return page.locator('.govuk-summary-list__row').nth(position).locator('.govuk-summary-list__value')
-}

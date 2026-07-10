@@ -1,15 +1,22 @@
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  licences: [licence],
-  monitoringStations: [monitoringStation]
-} = scenario
-
 test.describe('Set up but then cancel an abstraction alert (internal)', () => {
+  let licence
+  let monitoringStation
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence],
+      monitoringStations: [scenarioMonitoringStation]
+    } = scenario
+
+    licence = scenarioLicence
+    monitoringStation = scenarioMonitoringStation
+
     await setup(scenario)
   })
 
@@ -82,9 +89,7 @@ test.describe('Set up but then cancel an abstraction alert (internal)', () => {
     // Confirm cancellation of the alert
     await expect(page.locator('.govuk-caption-l')).toContainText('Notice WAA-')
     await expect(page.locator('.govuk-heading-l')).toHaveText('You are about to cancel this notice')
-    await expect(page.locator('.govuk-summary-list__row').nth(1).locator('.govuk-summary-list__value')).toContainText(
-      'Stop'
-    )
+    await expect(summaryRow(page, 'Alert type').locator('.govuk-summary-list__value')).toContainText('Stop')
     await page.getByRole('button', { name: 'Confirm cancel' }).click()
 
     // Confirm we are back on the monitoring station page

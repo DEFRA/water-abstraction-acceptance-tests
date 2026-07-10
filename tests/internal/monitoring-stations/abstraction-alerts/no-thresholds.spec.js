@@ -1,14 +1,18 @@
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  monitoringStations: [monitoringStation]
-} = scenario
-
 test.describe('Attempt set up of abstraction alert with no thresholds (internal)', () => {
+  let monitoringStation
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      monitoringStations: [scenarioMonitoringStation]
+    } = scenario
+
+    monitoringStation = scenarioMonitoringStation
+
     await setup(scenario)
   })
 

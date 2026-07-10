@@ -1,8 +1,8 @@
-export default function (licenceData) {
+export default function (licenceAndMonitoringStationData) {
   const {
     licences: [licence],
     monitoringStations: [monitoringStation]
-  } = licenceData
+  } = licenceAndMonitoringStationData
 
   return {
     licenceMonitoringStations: [
