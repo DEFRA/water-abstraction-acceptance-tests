@@ -1,21 +1,19 @@
 'use strict'
 
+import scenarioData from '../../../../../support/scenarios/two-part-tariff-review-09.js'
+
+const scenario = scenarioData()
+
 describe('Testing a two-part tariff bill run with a licence that is current and not in workflow, it has one applicable charge version with two charge references, each with one charge element. Both elements have a matching return that has a status of "due"', () => {
   beforeEach(() => {
     cy.tearDown()
-    // Load the base licence information into the DB
-    cy.fixture('review-scenario-licence.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    // Load the charge and returns information into the DB
-    // NOTE: We set the status to "due" to flag the issue "No
-    // returns received". We include 2 charge references to test how the engine allocates volumes when a return has a
-    // status of "due." We expect the engine to allocate the full amount from either the charge reference or the charge
-    // element, whichever is lower. The two datasets switch the lower volume between the charge reference and the charge
-    // element. This ensures we can verify that the engine allocates only up to the lower of the two volumes.
-    cy.fixture('review-scenario-09.json').then((fixture) => {
-      cy.load(fixture)
-    })
+
+    // NOTE: We set the status to "due" to flag the issue "No returns received". We include 2 charge references to test
+    // how the engine allocates volumes when a return has a status of "due." We expect the engine to allocate the full
+    // amount from either the charge reference or the charge element, whichever is lower. The two datasets switch the
+    // lower volume between the charge reference and the charge element. This ensures we can verify that the engine
+    // allocates only up to the lower of the two volumes.
+    cy.load(scenario)
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {

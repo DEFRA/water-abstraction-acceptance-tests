@@ -1,18 +1,16 @@
 'use strict'
 
+import scenarioData from '../../../../../support/scenarios/two-part-tariff-review-11.js'
+
+const scenario = scenarioData()
+
 describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and two charge elements. The matching return for charge element one is over-abstracted and the matching return for charge element 2 is over-abstracted and abstracted outside the charge period', () => {
   beforeEach(() => {
     cy.tearDown()
-    // Load the base licence information into the DB
-    cy.fixture('review-scenario-licence.json').then((fixture) => {
-      cy.load(fixture)
-    })
-    // Load the charge and returns information into the DB
+
     // NOTE: We update the charge reference volume to allow both elements to fully allocate and the return submission
     // line quantity to make it an over abstracted volume
-    cy.fixture('review-scenario-11.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.load(scenario)
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
