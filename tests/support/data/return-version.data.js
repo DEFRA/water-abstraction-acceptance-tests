@@ -17,7 +17,9 @@ export default function (licenceData) {
         endDate: null,
         status: 'current',
         externalId: `${regionCode}:9999990`,
-        licenceId: licence.id
+        licenceId: licence.id,
+        multipleUpload: licence.waterUndertaker,
+        quarterlyReturns: licence.waterUndertaker
       }
     ]
   }
