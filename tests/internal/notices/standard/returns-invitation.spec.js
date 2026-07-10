@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/unregistered-licence-with-return-log.scenario.js'
+import scenarioData from '../../../support/scenarios/unregistered-licence-with-open-return-log-for-first-period.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Standard returns invitation journey (internal)', () => {
@@ -13,7 +13,7 @@ test.describe('Standard returns invitation journey (internal)', () => {
     await login(users.billingAndData)
   })
 
-  test('invites a customer to submit returns', async ({ page }) => {
+  test('creates a standard returns invitation notice', async ({ page }) => {
     // Navigate to the Notices page
     await page.goto('/system/notices')
 

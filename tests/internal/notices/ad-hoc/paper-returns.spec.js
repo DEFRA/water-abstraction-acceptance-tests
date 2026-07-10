@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/registered-licence-with-previous-return-log.scenario.js'
+import scenarioData from '../../../support/scenarios/unregistered-licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc Paper returns journey (internal)', () => {
@@ -13,7 +13,9 @@ test.describe('Ad-hoc Paper returns journey (internal)', () => {
     await login(users.billingAndData)
   })
 
-  test('generates a paper return sent by Notify to the licensee', async ({ page }) => {
+  test('create an ad-hoc paper return notice that includes a single-use recipient with a manual address', async ({
+    page
+  }) => {
     // Navigate to the Notices page
     await page.goto('/system/notices')
 
