@@ -2,12 +2,10 @@ import scenarioData from '../../../support/scenarios/registered-licence-for-rene
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc renewal invitation journey (internal)', () => {
-  test.beforeAll(async ({ tearDown, load }) => {
-    await tearDown()
-
+  test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    await load(scenario)
+    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

@@ -2,15 +2,21 @@ import scenarioData from '../../support/scenarios/unregistered-licence.scenario.
 import { test, expect } from '../../support/fixtures.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 
-const scenario = scenarioData()
-
-const {
-  companies: [company],
-  licences: [licence]
-} = scenario
-
 test.describe('Licence holder (internal)', () => {
+  let company
+  let licence
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      companies: [scenarioCompany],
+      licences: [scenarioLicence]
+    } = scenario
+
+    company = scenarioCompany
+    licence = scenarioLicence
+
     await setup(scenario)
   })
 

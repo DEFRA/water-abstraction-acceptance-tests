@@ -1,14 +1,18 @@
 import scenarioData from '../../support/scenarios/unregistered-licence-with-two-purposes.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  licences: [licence]
-} = scenario
-
 test.describe('Submit return version using abstraction data (internal)', () => {
+  let licence
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence]
+    } = scenario
+
+    licence = scenarioLicence
+
     await setup(scenario)
   })
 
@@ -60,8 +64,8 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     await expect(page.locator('[data-test="abstraction-period-0"]')).toContainText('From 1 April to 31 March')
     await expect(page.locator('[data-test="returns-cycle-0"]')).toContainText('Winter and all year')
     await expect(page.locator('[data-test="site-description-0"]')).toContainText('Example point 1')
-    await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Daily')
-    await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Daily')
+    await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Monthly')
+    await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('None')
 
     // Return requirement 2
@@ -73,8 +77,8 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     await expect(page.locator('[data-test="abstraction-period-1"]')).toContainText('From 1 April to 31 March')
     await expect(page.locator('[data-test="returns-cycle-1"]')).toContainText('Winter and all year')
     await expect(page.locator('[data-test="site-description-1"]')).toContainText('Example point 2')
-    await expect(page.locator('[data-test="frequency-collected-1"]')).toContainText('Daily')
-    await expect(page.locator('[data-test="frequency-reported-1"]')).toContainText('Daily')
+    await expect(page.locator('[data-test="frequency-collected-1"]')).toContainText('Monthly')
+    await expect(page.locator('[data-test="frequency-reported-1"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="agreements-exceptions-1"]')).toContainText('None')
 
     // choose the approve return requirement button
@@ -107,8 +111,8 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     await expect(page.locator('[data-test="abstraction-period-0"]')).toContainText('1 April to 31 March')
     await expect(page.locator('[data-test="returns-cycle-0"]')).toContainText('Winter and all year')
     await expect(page.locator('[data-test="site-description-0"]')).toContainText('Example point 1')
-    await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Daily')
-    await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Daily')
+    await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Monthly')
+    await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('None')
 
     // Return requirement 2
@@ -120,8 +124,8 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     await expect(page.locator('[data-test="abstraction-period-1"]')).toContainText('1 April to 31 March')
     await expect(page.locator('[data-test="returns-cycle-1"]')).toContainText('Winter and all year')
     await expect(page.locator('[data-test="site-description-1"]')).toContainText('Example point 2')
-    await expect(page.locator('[data-test="frequency-collected-1"]')).toContainText('Daily')
-    await expect(page.locator('[data-test="frequency-reported-1"]')).toContainText('Daily')
+    await expect(page.locator('[data-test="frequency-collected-1"]')).toContainText('Monthly')
+    await expect(page.locator('[data-test="frequency-reported-1"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="agreements-exceptions-1"]')).toContainText('None')
   })
 })

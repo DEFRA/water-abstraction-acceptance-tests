@@ -1,15 +1,24 @@
 import scenarioData from '../../support/scenarios/unregistered-licence-with-two-purposes-and-requirements.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  licences: [licence],
-  returnRequirements: [returnRequirement]
-} = scenario
-
 test.describe('Cancel a return version using copy from existing (internal)', () => {
+  let licence
+  let returnRequirement
+  let returnRequirementPurpose
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence],
+      returnRequirements: [scenarioReturnRequirement],
+      returnRequirementPurposes: [scenarioReturnRequirementPurpose]
+    } = scenario
+
+    licence = scenarioLicence
+    returnRequirement = scenarioReturnRequirement
+    returnRequirementPurpose = scenarioReturnRequirementPurpose
+
     await setup(scenario)
   })
 
@@ -61,9 +70,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
     await expect(page.locator('[data-test="reason"]')).toContainText('Change to special agreement')
 
     // confirm we see the purposes copied from the existing requirement
-    await expect(page.locator('[data-test="purposes-0"]')).toContainText(
-      'Spray Irrigation - Storage (SPRAY IRRIGATION STORAGE)'
-    )
+    await expect(page.locator('[data-test="purposes-0"]')).toContainText(returnRequirementPurpose.alias)
 
     // confirm we see the points copied from the existing requirement
     await expect(page.locator('[data-test="points-0"]')).toContainText(

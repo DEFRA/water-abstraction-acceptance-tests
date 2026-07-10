@@ -4,9 +4,7 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe('Submit a return with no quantities - validation errors (internal)', () => {
   let returnLog
 
-  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
-    await tearDown()
-
+  test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
@@ -16,7 +14,7 @@ test.describe('Submit a return with no quantities - validation errors (internal)
 
     returnLog = scenarioReturnLog
 
-    await load(scenario)
+    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

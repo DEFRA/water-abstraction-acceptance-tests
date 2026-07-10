@@ -1,14 +1,21 @@
 import scenarioData from '../../support/scenarios/unregistered-licence-with-two-purposes-and-requirements.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  licences: [licence]
-} = scenario
-
 test.describe('Update the purpose and points of a copied return requirement and add another manually (internal)', () => {
+  let licence
+  let returnRequirementPurpose
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      licences: [scenarioLicence],
+      returnRequirementPurposes: [scenarioReturnRequirementPurpose]
+    } = scenario
+
+    licence = scenarioLicence
+    returnRequirementPurpose = scenarioReturnRequirementPurpose
+
     await setup(scenario)
   })
 
@@ -58,9 +65,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
     await expect(page.locator('[data-test="reason"]')).toContainText('Minor change')
 
     // confirm we see the purpose and purpose description for the requirement copied from existing
-    await expect(page.locator('[data-test="purposes-0"]')).toContainText(
-      'Spray Irrigation - Storage (SPRAY IRRIGATION STORAGE)'
-    )
+    await expect(page.locator('[data-test="purposes-0"]')).toContainText(returnRequirementPurpose.alias)
 
     // choose the change link for the purpose and confirm we are on the purpose page
     await page.locator('[data-test="change-purposes-0"]').click()

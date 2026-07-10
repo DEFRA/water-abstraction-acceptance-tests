@@ -1,17 +1,32 @@
 import scenarioData from '../../support/scenarios/company-contact.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-
-const scenario = scenarioData()
-
-const {
-  companies: [company],
-  licences: [licence],
-  contacts: [contact, editContact, removeContact, restoreContact]
-} = scenario
+import { summaryRow } from '../../support/helpers/govuk.helpers.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Licence holder contacts (internal)', () => {
+  let company
+  let licence
+  let contact
+  let editContact
+  let removeContact
+  let restoreContact
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      companies: [scenarioCompany],
+      licences: [scenarioLicence],
+      contacts: [scenarioContact, scenarioEditContact, scenarioRemoveContact, scenarioRestoreContact]
+    } = scenario
+
+    company = scenarioCompany
+    licence = scenarioLicence
+    contact = scenarioContact
+    editContact = scenarioEditContact
+    removeContact = scenarioRemoveContact
+    restoreContact = scenarioRestoreContact
+
     await setup(scenario)
   })
 
@@ -316,7 +331,7 @@ test.describe('Licence holder contacts (internal)', () => {
  * Locates the value cell of a govuk-summary-list row identified by its label
  */
 function _summaryValue(page, label) {
-  return page.locator('.govuk-summary-list__row', { hasText: label }).locator('.govuk-summary-list__value')
+  return summaryRow(page, label).locator('.govuk-summary-list__value')
 }
 
 /**

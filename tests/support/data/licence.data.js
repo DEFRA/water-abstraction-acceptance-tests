@@ -107,7 +107,7 @@ export default function (licenceRef, companyData) {
           regionalChargeArea: 'Southern'
         },
         startDate: '2018-01-01',
-        waterUndertaker: true
+        waterUndertaker: false
       }
     ],
     licenceVersions: [

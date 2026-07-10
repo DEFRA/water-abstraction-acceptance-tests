@@ -1,16 +1,24 @@
 import scenarioData from '../../support/scenarios/registered-licence.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
-const scenario = scenarioData()
-
-const {
-  companies: [company],
-  licences: [licence],
-  users: [user]
-} = scenario
-
 test.describe('Unregister a licence (internal)', () => {
+  let company
+  let licence
+  let user
+
   test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    const {
+      companies: [scenarioCompany],
+      licences: [scenarioLicence],
+      users: [scenarioUser]
+    } = scenario
+
+    company = scenarioCompany
+    licence = scenarioLicence
+    user = scenarioUser
+
     await setup(scenario)
   })
 

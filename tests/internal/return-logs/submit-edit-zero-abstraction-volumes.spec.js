@@ -4,9 +4,7 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe('Submit then edit an abstraction volumes return with zero quantities (internal)', () => {
   let returnLog
 
-  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
-    await tearDown()
-
+  test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
@@ -16,7 +14,7 @@ test.describe('Submit then edit an abstraction volumes return with zero quantiti
 
     returnLog = scenarioReturnLog
 
-    await load(scenario)
+    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

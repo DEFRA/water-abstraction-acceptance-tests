@@ -2,13 +2,11 @@ import scenarioData from '../../../support/scenarios/registered-licence-with-pre
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc Paper returns journey (internal)', () => {
-  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
-    await tearDown()
-
+  test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    await load(scenario)
+    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {
