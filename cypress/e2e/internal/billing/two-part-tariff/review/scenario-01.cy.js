@@ -1,18 +1,14 @@
 'use strict'
 
+import scenarioData from '../../../../../support/scenarios/two-part-tariff-review-01.js'
+
+const scenario = scenarioData()
+
 describe('Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match', () => {
   beforeEach(() => {
     cy.tearDown()
-    // Load the base licence information into the DB
-    cy.fixture('review-scenario-licence.json').then((fixture) => {
-      cy.wrap(fixture.licences[0].id).as('licenceId')
 
-      cy.load(fixture)
-    })
-    // Load the charge and returns information into the DB
-    cy.fixture('review-scenario-01.json').then((fixture) => {
-      cy.load(fixture)
-    })
+    cy.load(scenario)
 
     // Get the current date as a string, for example 12 July 2023
     cy.dayMonthYearFormattedDate().then((formattedCurrentDate) => {
@@ -28,9 +24,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
         email: userEmail
       })
     })
-    cy.get('@licenceId').then((licenceId) => {
-      cy.visit(`/system/licences/${licenceId}/summary`)
-    })
+    cy.visit(`/system/licences/${scenario.licences[0].id}/summary`)
 
     // Confirm there are no flags already on the licence
     cy.get('.govuk-notification-banner__content').should('not.exist')
