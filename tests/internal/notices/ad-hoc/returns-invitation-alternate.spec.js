@@ -4,9 +4,17 @@ import { test, expect } from '../../../support/fixtures.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
+  let returnLog
+
   test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
+
+    const {
+      returnLogs: [scenarioReturnLog]
+    } = scenario
+
+    returnLog = scenarioReturnLog
 
     await setup(scenario)
   })
@@ -22,6 +30,7 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     test.setTimeout(180000)
 
     const expectedDueDate = formatLongDate(relativeToToday(29))
+    const updatedReturnLogDates = `${formatLongDate(returnLog.startDate)} to ${formatLongDate(returnLog.endDate)}`
 
     // Navigate to the Notices page
     await page.goto('/system/notices')
@@ -101,8 +110,12 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     await page.locator('#search-button').click()
     await page.locator('.searchresult-link', { hasText: 'AT/TE/ST/01/01' }).click()
     await page.locator(':nth-child(4) > .x-govuk-sub-navigation__link').click()
-    await expect(page.locator('[data-test="return-reference-0"] > .govuk-link')).toContainText('9999990')
 
-    await expect(page.locator('[data-test="return-due-date-0"]')).toContainText(expectedDueDate)
+    // Depending on whether the first period is quarterly or annual, and if quarterly, which quarter it is, the return
+    // log that was included in the notice and had a due date applied will be in a different position in the list. So we
+    // search for it by its start and end dates.
+    const row = page.getByRole('row').filter({ hasText: updatedReturnLogDates })
+
+    await expect(row.getByRole('cell').nth(2)).toContainText(expectedDueDate)
   })
 })
