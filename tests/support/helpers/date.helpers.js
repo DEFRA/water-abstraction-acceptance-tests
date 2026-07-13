@@ -18,6 +18,48 @@ export function compareDates(dateA, dateB) {
 }
 
 /**
+ * Returns the start date of the return cycle for a given return log start date.
+ *
+ * Summer cycle is November to October. But if the start date is between January and October, the cycle year is the
+ * previous year. For example, a return log with a start date of 2024-03-01 would have a return cycle start date of
+ * 2023-11-01. A return log with a start date of 2024-11-01 would have a return cycle start date of 2024-11-01.
+ *
+ * Winter cycle is April to March. But if the start date is between January and March, the cycle year is the previous
+ * year. For example, a return log with a start date of 2024-02-01 would have a return cycle start date of 2023-04-01. A
+ * return log with a start date of 2024-04-01 would have a return cycle start date of 2024-04-01.
+ *
+ * @param {string|Date} returnLogStartDate - The start date of the return log
+ * @param {boolean} summer - Whether the return cycle is a summer cycle
+ *
+ * @returns {Date} The start date of the return cycle
+ */
+export function determineReturnCycleStartDate(returnLogStartDate, summer) {
+  // Just in case the date is passed directly from calculate dates response
+  const startDate = new Date(returnLogStartDate)
+  const startDateMonth = startDate.getUTCMonth()
+  const startDateYear = startDate.getUTCFullYear()
+
+  let cycleYear = startDateYear
+  let cycleMonth
+
+  if (summer) {
+    cycleMonth = '11'
+
+    if (startDateMonth < 11) {
+      cycleYear = startDateYear - 1
+    }
+  } else {
+    cycleMonth = '04'
+
+    if (startDateMonth < 3) {
+      cycleYear = startDateYear - 1
+    }
+  }
+
+  return new Date(`${cycleYear}-${cycleMonth}-01`)
+}
+
+/**
  * Formats a date to ISO 8601 date format (YYYY-MM-DD)
  *
  * @param {Date} date - The date to format

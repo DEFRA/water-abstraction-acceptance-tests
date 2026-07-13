@@ -1,4 +1,4 @@
-import { formatDateToIso } from '../helpers/date.helpers.js'
+import { determineReturnCycleStartDate, formatDateToIso } from '../helpers/date.helpers.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (licenceData, returnRequirementData, period) {
@@ -20,6 +20,8 @@ export default function (licenceData, returnRequirementData, period) {
   const startDateString = formatDateToIso(startDate)
   const endDateString = formatDateToIso(endDate)
   const dueDateString = period.dueDate ? formatDateToIso(new Date(period.dueDate)) : null
+
+  const returnCycleStartDate = determineReturnCycleStartDate(startDate, returnRequirement.summer)
 
   return {
     returnLogs: [
@@ -67,7 +69,7 @@ export default function (licenceData, returnRequirementData, period) {
           schema: 'returns',
           table: 'returnCycles',
           lookup: 'startDate',
-          value: `${startDate.getFullYear()}-04-01`,
+          value: formatDateToIso(returnCycleStartDate),
           select: 'returnCycleId'
         },
         returnRequirementId: returnRequirement.id,
