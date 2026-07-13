@@ -9,5 +9,7 @@ export const description =
 export default function () {
   const unregisteredLicence = unregisteredLicenceScenario()
 
-  return mergeByKey(unregisteredLicence, licenceAgreementData(unregisteredLicence))
+  const licenceAgreement = licenceAgreementData(unregisteredLicence)
+
+  return mergeByKey(unregisteredLicence, licenceAgreement)
 }
