@@ -1,4 +1,4 @@
-import { test, expect } from '../support/fixtures.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Login and log out (external)', () => {
   test('can log in and out as an external user', async ({ page, externalUrl, defaultPassword, users }) => {

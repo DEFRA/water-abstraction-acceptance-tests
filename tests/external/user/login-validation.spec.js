@@ -1,4 +1,4 @@
-import { test, expect } from '../support/fixtures.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Login validation (external)', () => {
   test('validates the input in the email and password fields on the login screen are valid', async ({
