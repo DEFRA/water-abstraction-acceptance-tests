@@ -180,7 +180,6 @@ function _returnLog(licence, returnVersion, period) {
   const returnLog = returnLogData(licence, returnRequirement, period)
 
   returnLog.returnLogs[0].status = period.status
-  returnLog.returnLogs[0].returnCycleId.value = period.startDate
 
   return mergeByKey(returnRequirement, returnLog)
 }

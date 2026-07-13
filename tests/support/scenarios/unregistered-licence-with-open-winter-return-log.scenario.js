@@ -12,12 +12,19 @@ export const description =
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
 
-  const period = previousPeriod({
+  const previousPeriodDetails = previousPeriod({
     startDate: currentWinterReturnCycle.startDate,
     endDate: currentWinterReturnCycle.endDate,
     dueDate: null,
     quarterly: false
   })
+
+  const currentPeriodDetails = {
+    startDate: new Date(currentWinterReturnCycle.startDate),
+    endDate: new Date(currentWinterReturnCycle.endDate),
+    dueDate: null,
+    quarterly: false
+  }
 
   const licence = unregisteredLicenceScenario()
 
@@ -25,11 +32,12 @@ export default function (calculatedDates) {
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnVersion.returnVersions[0].startDate = period.startDate
+  returnVersion.returnVersions[0].startDate = previousPeriodDetails.startDate
 
   const returnRequirement = returnRequirementData(returnVersion, licence)
 
-  const returnLog = returnLogData(licence, returnRequirement, period)
+  const previousReturnLog = returnLogData(licence, returnRequirement, previousPeriodDetails)
+  const currentReturnLog = returnLogData(licence, returnRequirement, currentPeriodDetails)
 
-  return mergeByKey(licence, returnVersion, returnRequirement, returnLog)
+  return mergeByKey(licence, returnVersion, returnRequirement, previousReturnLog, currentReturnLog)
 }

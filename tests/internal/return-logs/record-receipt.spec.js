@@ -48,6 +48,6 @@ test.describe('Record receipt for return (internal)', () => {
     await page.locator('#viewReturns', { hasText: `View returns for ${returnLog.licenceRef}` }).click()
 
     // confirm we see the received return
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('received')
+    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('received')
   })
 })
