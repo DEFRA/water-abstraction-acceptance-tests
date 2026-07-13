@@ -1,6 +1,6 @@
-import scenarioData from '../support/scenarios/registered-licence.scenario.js'
-import { extractNotificationLink } from '../support/helpers/notification.helpers.js'
-import { test, expect } from '../support/fixtures.js'
+import scenarioData from '../../support/scenarios/registered-licence.scenario.js'
+import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Sharing licence access with a new user (external)', () => {
   let firstUser

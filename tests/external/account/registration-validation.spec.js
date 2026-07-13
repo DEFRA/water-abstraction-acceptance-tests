@@ -1,5 +1,5 @@
-import { extractNotificationLink } from '../support/helpers/notification.helpers.js'
-import { test, expect } from '../support/fixtures.js'
+import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('User registration validation (external)', () => {
   test('validates the password in the create account page', async ({ page, externalUrl, lastNotification }) => {

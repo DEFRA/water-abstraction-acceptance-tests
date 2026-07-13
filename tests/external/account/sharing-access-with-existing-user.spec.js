@@ -1,5 +1,5 @@
-import scenarioData from '../support/scenarios/external-sharing-access.scenario.js'
-import { test, expect } from '../support/fixtures.js'
+import scenarioData from '../../support/scenarios/external-sharing-access.scenario.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Sharing licence access with another user (external)', () => {
   let firstUser

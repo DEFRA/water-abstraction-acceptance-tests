@@ -1,5 +1,5 @@
-import scenarioData from '../support/scenarios/external-user.scenario.js'
-import { test, expect } from '../support/fixtures.js'
+import scenarioData from '../../support/scenarios/external-user.scenario.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Change user email address (external)', () => {
   let user
