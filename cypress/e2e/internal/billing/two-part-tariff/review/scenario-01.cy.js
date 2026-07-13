@@ -1,6 +1,12 @@
 'use strict'
 
 import scenarioData from '../../../../../support/scenarios/two-part-tariff-review-01.js'
+import { currentFinancialYear } from '../../../../../support/helpers/date.helpers.js'
+
+const previousFinancialYearInfo = currentFinancialYear(31, 3, -1)
+
+const startYear = previousFinancialYearInfo.start.year
+const endYear = previousFinancialYearInfo.end.year
 
 const scenario = scenarioData()
 
@@ -48,7 +54,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
 
     // Select the financial year
     // choose the 2024 to 2025 option (it is what the scenario seed data is setup for) and continue
-    cy.get('input[value="2025"]').click()
+    cy.get(`input[value="${endYear}"]`).click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Check the bill run
@@ -75,7 +81,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
     cy.get('[data-test="meta-data-type"]').should('contain.text', 'Two-part tariff')
     cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
-    cy.get('[data-test="meta-data-year"]').should('contain.text', '2024 to 2025')
+    cy.get('[data-test="meta-data-year"]').should('contain.text', `${startYear} to ${endYear}`)
 
     // Review licences ~ Test you can filter by licence ref
     cy.get('.govuk-details__summary').click()
@@ -117,7 +123,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
       'contain.text',
       'Test Region two-part tariff'
     )
-    cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
+    cy.get('.govuk-list > li > .govuk-link').should('contain.text', `1 April ${startYear} to 31 March ${endYear}`)
 
     // Review Licence AT/TE/ST/01/01 ~ Check the Licence links
     cy.get('[data-test="summary-link"]').should('exist')
@@ -129,7 +135,10 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     // Review Licence AT/TE/ST/01/01 ~ Check the return details
     cy.get('.govuk-table__caption').should('contain.text', 'Matched returns')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
-    cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2024 to 21 March 2025')
+    cy.get('[data-test="matched-return-action-0"] > div').should(
+      'contain.text',
+      `1 April ${startYear} to 21 March ${endYear}`
+    )
     cy.get('[data-test="matched-return-action-0"] > :nth-child(3)').should('contain.text', '1 March to 31 October')
     cy.get('[data-test="matched-return-summary-0"] > div').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
@@ -140,10 +149,10 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="unmatched-return-action-0"] > .govuk-link').should('not.exist')
 
     // Review Licence AT/TE/ST/01/01 ~ Check charge Information details
-    cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2024 to 2025')
+    cy.get('[data-test="financial-year"]').should('contain.text', `Financial year ${startYear} to ${endYear}`)
     cy.get('#charge-version-0 > .govuk-heading-l').should(
       'contain.text',
-      'Charge periods 1 April 2024 to 31 March 2025'
+      `Charge periods 1 April ${startYear} to 31 March ${endYear}`
     )
     cy.get('[data-test="charge-version-0-details"]').should(
       'contain.text',
@@ -171,7 +180,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     )
     cy.get('[data-test="charge-version-0-charge-reference-0-element-dates-0"]').should(
       'contain.text',
-      '1 April 2024 to 31 March 2025'
+      `1 April ${startYear} to 31 March ${endYear}`
     )
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]').should('contain.text', '')
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]').should(
@@ -195,8 +204,11 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
       'contain.text',
       'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model'
     )
-    cy.get('[data-test="financial-year"]').should('contain.text', 'Financial Year 2024 to 2025')
-    cy.get('[data-test="charge-period"]').should('contain.text', 'Charge period 1 April 2024 to 31 March 2025')
+    cy.get('[data-test="financial-year"]').should('contain.text', `Financial Year ${startYear} to ${endYear}`)
+    cy.get('[data-test="charge-period"]').should(
+      'contain.text',
+      `Charge period 1 April ${startYear} to 31 March ${endYear}`
+    )
     cy.get('[data-test="total-billable-returns"]').should('contain.text', '32 ML')
     cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="additional-charges"]').should('contain.text', 'Public Water Supply')
@@ -210,15 +222,21 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     // View match details
     cy.get('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
     cy.get('.govuk-heading-l').should('contain.text', 'SROC Charge Purpose 01')
-    cy.get('[data-test="charge-period-0"]').should('contain.text', '1 April 2024 to 31 March 2025')
+    cy.get('[data-test="charge-period-0"]').should('contain.text', `1 April ${startYear} to 31 March ${endYear}`)
     cy.get('.govuk-grid-column-full > .govuk-tag').should('contain.text', 'ready')
-    cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2024 to 2025')
-    cy.get('[data-test="charge-period"]').should('contain.text', 'Charge period 1 April 2024 to 31 March 2025')
+    cy.get('[data-test="financial-year"]').should('contain.text', `Financial year ${startYear} to ${endYear}`)
+    cy.get('[data-test="charge-period"]').should(
+      'contain.text',
+      `Charge period 1 April ${startYear} to 31 March ${endYear}`
+    )
     cy.get('[data-test="billable-returns"]').should('contain.text', '32 ML')
     cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
     cy.get('[data-test="issues-0"]').should('not.exist')
     cy.get('[data-test="matched-return-action-0"] > .govuk-link').should('contain.text', '10021668')
-    cy.get('[data-test="matched-return-action-0"] > div').should('contain.text', '1 April 2024 to 21 March 2025')
+    cy.get('[data-test="matched-return-action-0"] > div').should(
+      'contain.text',
+      `1 April ${startYear} to 21 March ${endYear}`
+    )
     cy.get('[data-test="matched-return-summary-0"]').should('contain.text', 'General Farming & Domestic')
     cy.get('[data-test="matched-return-summary-0"]').should('contain.text', 'A DRAIN SOMEWHERE')
     cy.get('[data-test="matched-return-status-0"] > .govuk-tag').should('contain.text', 'completed')
@@ -227,10 +245,13 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     // View match details ~ Edit the billable returns
     cy.get('.govuk-button').click()
     cy.get('.govuk-caption-l').should('contain.text', 'SROC Charge Purpose 01')
-    cy.get('[data-test="charge-period-0"]').should('contain.text', '1 April 2024 to 31 March 2025')
+    cy.get('[data-test="charge-period-0"]').should('contain.text', `1 April ${startYear} to 31 March ${endYear}`)
     cy.get('h1').should('contain.text', 'Set the billable returns quantity for this bill run')
-    cy.get('[data-test="financial-year"]').should('contain.text', 'Financial year 2024 to 2025')
-    cy.get('[data-test="charge-period"]').should('contain.text', 'Charge period 1 April 2024 to 31 March 2025')
+    cy.get('[data-test="financial-year"]').should('contain.text', `Financial year ${startYear} to ${endYear}`)
+    cy.get('[data-test="charge-period"]').should(
+      'contain.text',
+      `Charge period 1 April ${startYear} to 31 March ${endYear}`
+    )
     cy.get('[data-test="authorised-quantity"]').should('contain.text', 'Authorised 32ML')
     cy.get('#custom-quantity-selector').click()
     cy.get('#custom-quantity').type('20.123')
@@ -277,7 +298,7 @@ describe('Testing a two-part tariff bill run with a simple scenario, licence is 
     cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
     cy.get('[data-test="meta-data-type"]').should('contain.text', 'Two-part tariff')
     cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
-    cy.get('[data-test="meta-data-year"]').should('contain.text', '2024 to 2025')
+    cy.get('[data-test="meta-data-year"]').should('contain.text', `${startYear} to ${endYear}`)
     cy.get('.govuk-button').click()
 
     // Bill runs ~ Check the bill run is now empty as the licence has been removed
