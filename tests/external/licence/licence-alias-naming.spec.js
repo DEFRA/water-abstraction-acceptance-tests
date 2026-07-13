@@ -1,5 +1,5 @@
-import scenarioData from '../support/scenarios/registered-licence.scenario.js'
-import { test, expect } from '../support/fixtures.js'
+import scenarioData from '../../support/scenarios/registered-licence.scenario.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Licence alias naming (external)', () => {
   let licenceDocumentHeader
