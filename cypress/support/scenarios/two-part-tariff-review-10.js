@@ -1,4 +1,4 @@
-import reviewLicenceData from '../fixture-builder/review-licence.js'
+import reviewLicenceData from '../fixture-builder/two-part-tariff-review-licence.js'
 
 export const title = 'Two-part tariff review 10'
 export const description =
