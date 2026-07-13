@@ -1,3 +1,4 @@
+import chargeVersionData from '../fixture-builder/two-part-tariff-review-charge-version.js'
 import reviewLicenceData from '../fixture-builder/two-part-tariff-review-licence.js'
 
 export const title = 'Two-part tariff review 10'
@@ -7,27 +8,7 @@ export const description =
 export default function () {
   return {
     ...reviewLicenceData(),
-    chargeVersions: [
-      {
-        id: '8e5626ee-5e4c-48f6-a668-471d35997e2c',
-        licenceId: 'f8702a6a-f61d-4b0a-9af3-9a53768ee516',
-        licenceRef: 'AT/TE/ST/01/01',
-        billingAccountId: '16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c',
-        regionCode: 9,
-        scheme: 'sroc',
-        versionNumber: 100,
-        startDate: '2022-04-01',
-        status: 'current',
-        source: 'wrls',
-        changeReasonId: {
-          schema: 'water',
-          table: 'changeReasons',
-          lookup: 'description',
-          value: 'Strategic review of charges (SRoC)',
-          select: 'changeReasonId'
-        }
-      }
-    ],
+    chargeVersions: [chargeVersionData()],
     chargeReferences: [
       {
         id: 'fa3c73d0-0459-41f0-b6cf-0e0758775ca4',
