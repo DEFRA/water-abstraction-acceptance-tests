@@ -59,34 +59,6 @@ export function determineReturnCycleStartDate(returnLogStartDate, summer) {
   return new Date(`${cycleYear}-${cycleMonth}-01`)
 }
 
-/*
- * Determines the display status of a return log based on its due date, relative to today
- *
- * A return log is considered 'due' for the 28 days leading up to its due date. Before that window it is 'not due
- * yet', and after the due date has passed it is 'overdue'.
- *
- * @param {Date | string} dueDate - The due date to compare against today
- *
- * @returns {string} 'overdue', 'due', or 'not due yet'
- */
-export function dueDateStatusLabel(dueDate) {
-  const dueDateValue = new Date(dueDate)
-  const now = today()
-
-  const notDueUntil = new Date(dueDateValue)
-  notDueUntil.setDate(notDueUntil.getDate() - 27)
-
-  if (now.getTime() > dueDateValue.getTime()) {
-    return 'overdue'
-  }
-
-  if (now.getTime() < notDueUntil.getTime()) {
-    return 'not due yet'
-  }
-
-  return 'due'
-}
-
 /**
  * Formats a date to ISO 8601 date format (YYYY-MM-DD)
  *
@@ -221,6 +193,57 @@ export function returnLogDateDetails(returnLog) {
     dateString: `${startDateString} to ${endDateString}`
   }
 }
+
+/**
+ * Determines the display status of a return log based on its end and due date, relative to today
+ *
+ * If a return log's end date is equal to or greater than 'today', it is considered 'not due yet' regardless of its due
+ * date.
+ *
+ * If the end date is in the past, the status is determined by the due date:
+ *
+ * - If the due date is null, the status is 'open'
+ * - If the due date is more than 28 days in the future, the status is 'open'
+ * - If the due date is 28 days or less in the future, the status is 'due'
+ * - If the due date is in the past, the status is 'overdue'
+ *
+ * @param {Date | string} endDate - The end date of the return log
+ * @param {Date | string} [dueDate=null] - The due date to compare against today. If not set defaults to null
+ *
+ * @returns {string} 'overdue', 'due', or 'not due yet'
+ */
+export function returnLogStatusLabel(endDate, dueDate = null) {
+  const todayValue = today()
+  const endDateValue = new Date(endDate)
+  const dueDateValue = dueDate ? new Date(dueDate) : null
+
+  const afterEndDate = compareDates(endDateValue, todayValue) === 1
+
+  if (afterEndDate) {
+    return 'not due yet'
+  }
+
+  if (!dueDateValue) {
+    return 'open'
+  }
+
+  const pastDueDate = compareDates(dueDateValue, todayValue) === -1
+
+  if (pastDueDate) {
+    return 'overdue'
+  }
+
+  const notDueUntil = new Date(dueDateValue)
+
+  notDueUntil.setDate(notDueUntil.getDate() - 27)
+
+  const beforeDuePeriod = compareDates(dueDateValue, notDueUntil) === -1
+
+  if (beforeDuePeriod) {
+    return 'open'
+  }
+
+  return 'due'
 }
 
 /**
