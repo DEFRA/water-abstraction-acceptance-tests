@@ -95,32 +95,43 @@ export function formatLongDate(date) {
  * If the given period is quarterly, the dates will be moved back by 3 months. If it's not quarterly, the dates will be
  * moved back by 12 months.
  *
+ * The new start date is calculated by subtracting months from the given start date, which is safe because a
+ * period's start date is always the 1st of the month. The new end date is then derived as the day before the given
+ * period's start date (periods are contiguous), rather than by subtracting months from the given end date directly -
+ * doing that would risk overflowing into the next month when the end date's day-of-month (28, 29, 30 or 31) doesn't
+ * exist in the target month, for example subtracting 3 months from 31 December lands on 1 October, not 30 September.
+ * The due date is then derived as 28 days after the new end date, matching the convention used across return periods.
+ *
  * @param {object} period - The return period to calculate the previous period for
  *
  * @return {object} The previous return period to the one provided
  */
 export function previousPeriod(period) {
-  const previousPeriod = {
-    dueDate: period.dueDate ? new Date(period.dueDate) : null,
-    endDate: new Date(period.endDate),
-    name: period.name,
-    quarterly: period.quarterly,
-    startDate: new Date(period.startDate)
-  }
+  const startDate = new Date(period.startDate)
 
   let monthsBack = 12
   if (period.quarterly) {
     monthsBack = 3
   }
 
-  previousPeriod.endDate.setMonth(previousPeriod.endDate.getMonth() - monthsBack)
-  previousPeriod.startDate.setMonth(previousPeriod.startDate.getMonth() - monthsBack)
+  const endDate = new Date(startDate)
+  endDate.setUTCDate(endDate.getUTCDate() - 1)
 
+  startDate.setUTCMonth(startDate.getUTCMonth() - monthsBack)
+
+  let dueDate = null
   if (period.dueDate) {
-    previousPeriod.dueDate.setMonth(previousPeriod.dueDate.getMonth() - monthsBack)
+    dueDate = new Date(endDate)
+    dueDate.setUTCDate(dueDate.getUTCDate() + 28)
   }
 
-  return previousPeriod
+  return {
+    dueDate,
+    endDate,
+    name: period.name,
+    quarterly: period.quarterly,
+    startDate
+  }
 }
 
 /**
@@ -139,6 +150,109 @@ export function relativeToToday(numberOfDays) {
   relative.setDate(relative.getDate() + numberOfDays)
 
   return relative
+}
+
+/**
+ * Transforms a return log's start, end and due dates into a human-readable strings
+ *
+ * For example, given the following return log:
+ *
+ * ```javascript
+ * {
+ *   startDate: new Date('2025-04-01'),
+ *   endDate: new Date('2026-03-31'),
+ *   dueDate: new Date('2026-04-28')
+ * }
+ * ```
+ *
+ * It will return
+ *
+ * ```javascript
+ * {
+ *   startDate: new Date('2025-04-01'),
+ *   endDate: new Date('2026-03-31'),
+ *   dueDate: new Date('2026-04-28'),
+ *   startDateString: '1 April 2025',
+ *   endDateString: '31 March 2026',
+ *   dueDateString: '28 April 2026',
+ *   dateString: '1 April 2025 to 31 March 2026',
+ *   status: 'not due yet'
+ * }
+ * ```
+ *
+ * @param {object} returnLog - An object representing a return log with a `startDate`, `endDate` and optional `dueDate`
+ * property
+ *
+ * @returns the return log's start, end and due dates formatted as human-readable strings, the original start, end and
+ * due dates, plus the status for the return log.
+ */
+export function returnLogDateDetails(returnLog) {
+  const startDateString = formatLongDate(returnLog.startDate)
+  const endDateString = formatLongDate(returnLog.endDate)
+  const dueDateString = returnLog.dueDate ? formatLongDate(returnLog.dueDate) : null
+  const status = returnLogStatusLabel(returnLog.endDate, returnLog.dueDate)
+
+  return {
+    startDate: returnLog.startDate,
+    endDate: returnLog.endDate,
+    startDateString,
+    endDateString,
+    dueDateString,
+    dateString: `${startDateString} to ${endDateString}`,
+    status
+  }
+}
+
+/**
+ * Determines the display status of a return log based on its end and due date, relative to today
+ *
+ * If a return log's end date is equal to or greater than 'today', it is considered 'not due yet' regardless of its due
+ * date.
+ *
+ * If the end date is in the past, the status is determined by the due date:
+ *
+ * - If the due date is null, the status is 'open'
+ * - If the due date is more than 28 days in the future, the status is 'open'
+ * - If the due date is 28 days or less in the future, the status is 'due'
+ * - If the due date is in the past, the status is 'overdue'
+ *
+ * @param {Date | string} endDate - The end date of the return log
+ * @param {Date | string} [dueDate=null] - The due date to compare against today. If not set defaults to null
+ *
+ * @returns {string} 'overdue', 'due', or 'not due yet'
+ */
+export function returnLogStatusLabel(endDate, dueDate = null) {
+  const todayValue = today()
+  const endDateValue = new Date(endDate)
+  const dueDateValue = dueDate ? new Date(dueDate) : null
+
+  const afterEndDate = compareDates(endDateValue, todayValue) === 1
+
+  if (afterEndDate) {
+    return 'not due yet'
+  }
+
+  if (!dueDateValue) {
+    return 'open'
+  }
+
+  const pastDueDate = compareDates(dueDateValue, todayValue) === -1
+
+  if (pastDueDate) {
+    return 'overdue'
+  }
+
+  const notDueUntil = new Date(dueDateValue)
+
+  notDueUntil.setDate(notDueUntil.getDate() - 27)
+
+  const beforeDuePeriod = compareDates(dueDateValue, notDueUntil) === -1
+
+  if (beforeDuePeriod) {
+    return 'open'
+  }
+
+  return 'due'
 }
 
 /**
