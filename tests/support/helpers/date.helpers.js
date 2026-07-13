@@ -153,7 +153,7 @@ export function relativeToToday(numberOfDays) {
 }
 
 /**
- * Transforms a return log's start and end dates into a human-readable strings
+ * Transforms a return log's start, end and due dates into a human-readable strings
  *
  * For example, given the following return log:
  *
@@ -161,6 +161,7 @@ export function relativeToToday(numberOfDays) {
  * {
  *   startDate: new Date('2025-04-01'),
  *   endDate: new Date('2026-03-31'),
+ *   dueDate: new Date('2026-04-28')
  * }
  * ```
  *
@@ -170,27 +171,35 @@ export function relativeToToday(numberOfDays) {
  * {
  *   startDate: new Date('2025-04-01'),
  *   endDate: new Date('2026-03-31'),
+ *   dueDate: new Date('2026-04-28'),
  *   startDateString: '1 April 2025',
  *   endDateString: '31 March 2026',
- *   dateString: '1 April 2025 to 31 March 2026'
+ *   dueDateString: '28 April 2026',
+ *   dateString: '1 April 2025 to 31 March 2026',
+ *   status: 'not due yet'
  * }
  * ```
  *
- * @param {object} returnLog - An object representing a return log with a `startDate` and `endDate` property
+ * @param {object} returnLog - An object representing a return log with a `startDate`, `endDate` and optional `dueDate`
+ * property
  *
- * @returns the return log's start and end dates formatted as a human-readable strings, plus the original start and
- * end dates
+ * @returns the return log's start, end and due dates formatted as human-readable strings, the original start, end and
+ * due dates, plus the status for the return log.
  */
 export function returnLogDateDetails(returnLog) {
   const startDateString = formatLongDate(returnLog.startDate)
   const endDateString = formatLongDate(returnLog.endDate)
+  const dueDateString = returnLog.dueDate ? formatLongDate(returnLog.dueDate) : null
+  const status = returnLogStatusLabel(returnLog.endDate, returnLog.dueDate)
 
   return {
     startDate: returnLog.startDate,
     endDate: returnLog.endDate,
     startDateString,
     endDateString,
-    dateString: `${startDateString} to ${endDateString}`
+    dueDateString,
+    dateString: `${startDateString} to ${endDateString}`,
+    status
   }
 }
 

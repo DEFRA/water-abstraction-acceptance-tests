@@ -143,13 +143,17 @@ test.describe('Submit historic correction changing return cycle type on new retu
       expectedReturnLogs.newSummer.dateString
     )
     await expect(page.locator('[data-test="return-due-date-1"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('not due yet')
+    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.newSummer.status
+    )
 
     await expect(page.locator('[data-test="return-reference-2"]')).toContainText(
       expectedReturnLogs.splitSummer.dateString
     )
     await expect(page.locator('[data-test="return-due-date-2"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('open')
+    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.splitSummer.status
+    )
 
     await expect(page.locator('[data-test="return-reference-3"]')).toContainText(
       expectedReturnLogs.existingPrevious.dateString
@@ -161,6 +165,8 @@ test.describe('Submit historic correction changing return cycle type on new retu
       expectedReturnLogs.splitWinter.dateString
     )
     await expect(page.locator('[data-test="return-due-date-4"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('open')
+    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.splitWinter.status
+    )
   })
 })
