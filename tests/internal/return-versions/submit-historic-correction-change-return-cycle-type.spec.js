@@ -1,12 +1,12 @@
 import scenarioData from '../../support/scenarios/unregistered-licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
-import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 
 test.describe('Submit historic correction changing return cycle type on new return version (internal)', () => {
   let licence
   let returnLogs
   let startYear
-  let newReturnLogs
+  let expectedReturnLogs
 
   test.beforeAll(async ({ calculatedDates, setup }) => {
     const dates = await calculatedDates()
@@ -21,19 +21,27 @@ test.describe('Submit historic correction changing return cycle type on new retu
     returnLogs = scenarioReturnLogs
     startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
 
-    newReturnLogs = {
-      summer: {
+    expectedReturnLogs = {
+      newSummer: returnLogDateDetails({
         startDate: new Date(`${startYear - 1}-11-01`),
         endDate: new Date(`${startYear}-10-31`)
-      },
-      splitSummer: {
+      }),
+      splitSummer: returnLogDateDetails({
         startDate: new Date(`${startYear - 1}-09-01`),
         endDate: new Date(`${startYear - 1}-10-31`)
-      },
-      splitWinter: {
+      }),
+      splitWinter: returnLogDateDetails({
         startDate: new Date(`${startYear - 1}-04-01`),
         endDate: new Date(`${startYear - 1}-08-31`)
-      }
+      }),
+      existingCurrent: returnLogDateDetails({
+        startDate: returnLogs[1].startDate,
+        endDate: returnLogs[1].endDate
+      }),
+      existingPrevious: returnLogDateDetails({
+        startDate: returnLogs[0].startDate,
+        endDate: returnLogs[0].endDate
+      })
     }
 
     await setup(scenario)
@@ -125,29 +133,33 @@ test.describe('Submit historic correction changing return cycle type on new retu
     await expect(page.locator('h1')).toContainText('Returns')
 
     // Confirm the return logs have been updated and created as expected
-    let returnLogDates = `${formatLongDate(returnLogs[1].startDate)} to ${formatLongDate(returnLogs[1].endDate)}`
-
-    await expect(page.locator('[data-test="return-reference-0"]')).toContainText(returnLogDates)
+    await expect(page.locator('[data-test="return-reference-0"]')).toContainText(
+      expectedReturnLogs.existingCurrent.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-0"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('void')
 
-    returnLogDates = `${formatLongDate(newReturnLogs.summer.startDate)} to ${formatLongDate(newReturnLogs.summer.endDate)}`
-    await expect(page.locator('[data-test="return-reference-1"]')).toContainText(returnLogDates)
+    await expect(page.locator('[data-test="return-reference-1"]')).toContainText(
+      expectedReturnLogs.newSummer.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-1"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('not due yet')
 
-    returnLogDates = `${formatLongDate(newReturnLogs.splitSummer.startDate)} to ${formatLongDate(newReturnLogs.splitSummer.endDate)}`
-    await expect(page.locator('[data-test="return-reference-2"]')).toContainText(returnLogDates)
+    await expect(page.locator('[data-test="return-reference-2"]')).toContainText(
+      expectedReturnLogs.splitSummer.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-2"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('open')
 
-    returnLogDates = `${formatLongDate(returnLogs[0].startDate)} to ${formatLongDate(returnLogs[0].endDate)}`
-    await expect(page.locator('[data-test="return-reference-3"]')).toContainText(returnLogDates)
+    await expect(page.locator('[data-test="return-reference-3"]')).toContainText(
+      expectedReturnLogs.existingPrevious.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-3"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void')
 
-    returnLogDates = `${formatLongDate(newReturnLogs.splitWinter.startDate)} to ${formatLongDate(newReturnLogs.splitWinter.endDate)}`
-    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(returnLogDates)
+    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(
+      expectedReturnLogs.splitWinter.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-4"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('open')
   })

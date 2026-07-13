@@ -181,6 +181,49 @@ export function relativeToToday(numberOfDays) {
 }
 
 /**
+ * Transforms a return log's start and end dates into a human-readable strings
+ *
+ * For example, given the following return log:
+ *
+ * ```javascript
+ * {
+ *   startDate: new Date('2025-04-01'),
+ *   endDate: new Date('2026-03-31'),
+ * }
+ * ```
+ *
+ * It will return
+ *
+ * ```javascript
+ * {
+ *   startDate: new Date('2025-04-01'),
+ *   endDate: new Date('2026-03-31'),
+ *   startDateString: '1 April 2025',
+ *   endDateString: '31 March 2026',
+ *   dateString: '1 April 2025 to 31 March 2026'
+ * }
+ * ```
+ *
+ * @param {object} returnLog - An object representing a return log with a `startDate` and `endDate` property
+ *
+ * @returns the return log's start and end dates formatted as a human-readable strings, plus the original start and
+ * end dates
+ */
+export function returnLogDateDetails(returnLog) {
+  const startDateString = formatLongDate(returnLog.startDate)
+  const endDateString = formatLongDate(returnLog.endDate)
+
+  return {
+    startDate: returnLog.startDate,
+    endDate: returnLog.endDate,
+    startDateString,
+    endDateString,
+    dateString: `${startDateString} to ${endDateString}`
+  }
+}
+}
+
+/**
  * Returns today's date with the time set to midnight, for example '2023-01-13T00:00:00.000Z'.
  *
  * A number of dates in our data are held as date-only, and we have to make decisions based on comparing them to
