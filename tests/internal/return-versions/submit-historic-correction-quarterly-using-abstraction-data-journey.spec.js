@@ -1,15 +1,14 @@
-import scenarioData from '../../support/scenarios/unregistered-licence-with-four-quarterly-return-logs.scenario.js'
+import scenarioData from '../../support/scenarios/water-company-licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
-import { dueDateStatusLabel, formatLongDate, today } from '../../support/helpers/date.helpers.js'
+import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 
-let licence
-let returnLogs
-let startYear
+test.describe('Submit historic correction changing to quarterly on new return version (internal)', () => {
+  let licence
+  let returnLogs
+  let startYear
+  let expectedReturnLogs
 
-test.describe('Submit quarterly historic correction using abstraction data (internal)', () => {
-  test.beforeAll(async ({ tearDown, calculatedDates, load }) => {
-    await tearDown()
-
+  test.beforeAll(async ({ calculatedDates, setup }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
@@ -22,32 +21,60 @@ test.describe('Submit quarterly historic correction using abstraction data (inte
     returnLogs = scenarioReturnLogs
     startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
 
-    await load(scenario)
+    expectedReturnLogs = {
+      currentFourthPeriod: returnLogDateDetails({
+        startDate: new Date(`${startYear + 1}-01-01`),
+        endDate: new Date(`${startYear + 1}-03-31`)
+      }),
+      currentThirdPeriod: returnLogDateDetails({
+        startDate: new Date(`${startYear}-10-01`),
+        endDate: new Date(`${startYear}-12-31`)
+      }),
+      currentSecondPeriod: returnLogDateDetails({
+        startDate: new Date(`${startYear}-07-01`),
+        endDate: new Date(`${startYear}-09-30`)
+      }),
+      currentFirstPeriod: returnLogDateDetails({
+        startDate: new Date(`${startYear}-04-01`),
+        endDate: new Date(`${startYear}-06-30`)
+      }),
+      fourthPeriod: returnLogDateDetails({
+        startDate: new Date(`${startYear}-01-01`),
+        endDate: new Date(`${startYear}-03-31`)
+      }),
+      thirdPeriod: returnLogDateDetails({
+        startDate: new Date(`${startYear - 1}-10-01`),
+        endDate: new Date(`${startYear - 1}-12-31`)
+      }),
+      splitSecondPeriod: returnLogDateDetails({
+        startDate: new Date(`${startYear - 1}-09-01`),
+        endDate: new Date(`${startYear - 1}-09-30`)
+      }),
+      splitWinter: returnLogDateDetails({
+        startDate: new Date(`${startYear - 1}-04-01`),
+        endDate: new Date(`${startYear - 1}-08-31`)
+      }),
+      existingCurrent: returnLogDateDetails(returnLogs[1]),
+      existingPrevious: returnLogDateDetails(returnLogs[0])
+    }
+
+    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {
     await login(users.billingAndData)
   })
 
-  test('creates a return requirement using abstraction data and approves the requirement', async ({ page }) => {
+  test('adds a new quarterly return version to a licence part way through the previous winter cycle resulting in both split-logs and new quarterly return logs', async ({
+    page
+  }) => {
     await page.goto(`/system/licences/${licence.id}/returns`)
 
     // confirm we are on the licence returns tab and that there are previous return logs
     await expect(page.locator('h1')).toContainText('Returns')
 
-    await expect(page.locator('[data-test="return-due-date-0"]')).toContainText(formatLongDate(returnLogs[0].dueDate))
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(
-      dueDateStatusLabel(returnLogs[0].dueDate)
-    )
-
-    await expect(page.locator('[data-test="return-due-date-1"]')).toContainText(formatLongDate(returnLogs[1].dueDate))
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('complete')
-
-    await expect(page.locator('[data-test="return-due-date-2"]')).toContainText(formatLongDate(returnLogs[2].dueDate))
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('complete')
-
-    await expect(page.locator('[data-test="return-due-date-3"]')).toContainText(formatLongDate(returnLogs[3].dueDate))
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('complete')
+    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('not due yet')
+    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('open')
 
     // click licence set up tab
     await page.getByText('Licence set up').click()
@@ -58,11 +85,12 @@ test.describe('Submit quarterly historic correction using abstraction data (inte
     // click set up new requirements
     await page.getByText('Set up new requirements').click()
 
-    // set the start date to be at the start of the all year return cycle
+    // set the start date to be 1 year in the past, and mid-way through the existing return log's
+    // period so that it splits rather than aligning with the period's start
     await page.getByRole('radio', { name: 'Another date' }).check()
     await page.locator('#startDateDay').fill('01')
-    await page.locator('#startDateMonth').fill('04')
-    await page.locator('#startDateYear').fill(`${startYear}`)
+    await page.locator('#startDateMonth').fill('09')
+    await page.locator('#startDateYear').fill(`${startYear - 1}`)
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the reason page
@@ -101,35 +129,81 @@ test.describe('Submit quarterly historic correction using abstraction data (inte
     // confirm we are on the licence set up tab
     await expect(page.locator('h1')).toContainText('Returns')
 
-    // The new quarterly return version starts at the same date as the existing one, so every existing return log is
-    // superseded (voided), while the new version's own quarters show as 'open' or 'not due yet' depending on whether
-    // their end date has passed today.
-    const placeholderStatus = (index) => {
-      return today() > new Date(returnLogs[index].endDate) ? 'open' : 'not due yet'
-    }
-
+    // Confirm the return logs have been updated and created as expected
+    await expect(page.locator('[data-test="return-reference-0"]')).toContainText(
+      expectedReturnLogs.currentFourthPeriod.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-0"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(placeholderStatus(0))
+    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.currentFourthPeriod.status
+    )
 
-    await expect(page.locator('[data-test="return-due-date-1"]')).toContainText(formatLongDate(returnLogs[0].dueDate))
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('void')
+    await expect(page.locator('[data-test="return-reference-1"]')).toContainText(
+      expectedReturnLogs.currentThirdPeriod.dateString
+    )
+    await expect(page.locator('[data-test="return-due-date-1"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.currentThirdPeriod.status
+    )
 
+    await expect(page.locator('[data-test="return-reference-2"]')).toContainText(
+      expectedReturnLogs.currentSecondPeriod.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-2"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(placeholderStatus(1))
+    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.currentSecondPeriod.status
+    )
 
-    await expect(page.locator('[data-test="return-due-date-3"]')).toContainText(formatLongDate(returnLogs[1].dueDate))
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void')
+    await expect(page.locator('[data-test="return-reference-3"]')).toContainText(
+      expectedReturnLogs.currentFirstPeriod.dateString
+    )
+    await expect(page.locator('[data-test="return-due-date-3"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.currentFirstPeriod.status
+    )
 
+    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(
+      expectedReturnLogs.existingCurrent.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-4"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText(placeholderStatus(2))
+    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('void')
 
-    await expect(page.locator('[data-test="return-due-date-5"]')).toContainText(formatLongDate(returnLogs[2].dueDate))
-    await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText('void')
+    await expect(page.locator('[data-test="return-reference-5"]')).toContainText(
+      expectedReturnLogs.fourthPeriod.dateString
+    )
+    await expect(page.locator('[data-test="return-due-date-5"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.fourthPeriod.status
+    )
 
+    await expect(page.locator('[data-test="return-reference-6"]')).toContainText(
+      expectedReturnLogs.thirdPeriod.dateString
+    )
     await expect(page.locator('[data-test="return-due-date-6"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-6"] > .govuk-tag')).toContainText(placeholderStatus(3))
+    await expect(page.locator('[data-test="return-status-6"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.thirdPeriod.status
+    )
 
-    await expect(page.locator('[data-test="return-due-date-7"]')).toContainText(formatLongDate(returnLogs[3].dueDate))
-    await expect(page.locator('[data-test="return-status-7"] > .govuk-tag')).toContainText('void')
+    await expect(page.locator('[data-test="return-reference-7"]')).toContainText(
+      expectedReturnLogs.splitSecondPeriod.dateString
+    )
+    await expect(page.locator('[data-test="return-due-date-7"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-7"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.splitSecondPeriod.status
+    )
+
+    await expect(page.locator('[data-test="return-reference-8"]')).toContainText(
+      expectedReturnLogs.existingPrevious.dateString
+    )
+    await expect(page.locator('[data-test="return-due-date-8"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-8"] > .govuk-tag')).toContainText('void')
+
+    await expect(page.locator('[data-test="return-reference-9"]')).toContainText(
+      expectedReturnLogs.splitWinter.dateString
+    )
+    await expect(page.locator('[data-test="return-due-date-9"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-9"] > .govuk-tag')).toContainText(
+      expectedReturnLogs.splitWinter.status
+    )
   })
 })
