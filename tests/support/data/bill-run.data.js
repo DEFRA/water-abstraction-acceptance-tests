@@ -5,7 +5,7 @@ export default function () {
     billRuns: [
       {
         regionId: { schema: 'public', table: 'regions', lookup: 'naldRegionId', value: regionCode, select: 'id' },
-        batchType: 'two_part_tariff',
+        batchType: 'annual',
         fromFinancialYearEnding: '2024',
         toFinancialYearEnding: '2024',
         status: 'sent'

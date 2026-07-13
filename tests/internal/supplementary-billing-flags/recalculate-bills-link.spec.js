@@ -45,7 +45,7 @@ test.describe('Recalculate bills link (internal)', () => {
 
     // Check the new licence agreement has flagged the licence for supplementary billing
     await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-      'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run for the old charge scheme.'
+      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
     )
   })
 })
