@@ -22,6 +22,11 @@ export const test = base.extend({
     await use(envConfig.values.defaultPassword)
   },
 
+  // eslint-disable-next-line no-empty-pattern
+  externalUrl: async ({}, use) => {
+    await use(envConfig.values.externalUrl)
+  },
+
   lastNotification: async ({ request }, use) => {
     await use(async (email) => {
       const response = await request.get(`/notifications/last?email=${email}`)
@@ -39,6 +44,15 @@ export const test = base.extend({
   login: async ({ page, defaultPassword }, use) => {
     await use(async (email) => {
       await page.goto('/signin')
+      await page.fill('input#email', email)
+      await page.fill('input#password', defaultPassword)
+      await page.click('.govuk-button.govuk-button--start')
+    })
+  },
+
+  loginExternal: async ({ page, defaultPassword, externalUrl }, use) => {
+    await use(async (email) => {
+      await page.goto(`${externalUrl}/signin`)
       await page.fill('input#email', email)
       await page.fill('input#password', defaultPassword)
       await page.click('.govuk-button.govuk-button--start')
