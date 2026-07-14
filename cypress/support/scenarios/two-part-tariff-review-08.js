@@ -5,7 +5,7 @@ export const title = 'Two-part tariff review 08'
 export const description =
   'Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one nil return'
 
-export default function () {
+export default function (endYear, startYear) {
   return {
     ...reviewLicenceData(),
     chargeVersions: [chargeVersionData()],
@@ -103,11 +103,11 @@ export default function () {
             periodEndMonth: '10'
           }
         },
-        startDate: '2024-04-01',
-        endDate: '2025-03-21',
-        receivedDate: '2025-03-01',
-        dueDate: '2025-04-28',
-        returnId: 'v1:1:AT/TE/ST/01/01:10021668:2024-04-01:2025-03-31',
+        startDate: `${startYear}-04-01`,
+        endDate: `${endYear}-03-21`,
+        receivedDate: `${endYear}-03-01`,
+        dueDate: `${endYear}-04-28`,
+        returnId: `v1:1:AT/TE/ST/01/01:10021668:${startYear}-04-01:${endYear}-03-31`,
         status: 'completed',
         underQuery: false
       }
@@ -116,7 +116,7 @@ export default function () {
       {
         id: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
         returnLogId: '6a1b2456-e9af-4845-b5a9-a54497dff769',
-        returnId: 'v1:1:AT/TE/ST/01/01:10021668:2024-04-01:2025-03-31',
+        returnId: `v1:1:AT/TE/ST/01/01:10021668:${startYear}-04-01:${endYear}-03-31`,
         nilReturn: true,
         current: true
       }
