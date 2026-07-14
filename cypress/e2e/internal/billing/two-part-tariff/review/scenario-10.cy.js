@@ -1,8 +1,14 @@
 'use strict'
 
 import scenarioData from '../../../../../support/scenarios/two-part-tariff-review-10.js'
+import { currentFinancialYear } from '../../../../../support/helpers/date.helpers.js'
 
-const scenario = scenarioData()
+const previousFinancialYearInfo = currentFinancialYear(31, 3, -1)
+
+const endYear = previousFinancialYearInfo.end.year
+const startYear = previousFinancialYearInfo.start.year
+
+const scenario = scenarioData(endYear, startYear)
 
 describe('Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has no matching returns', () => {
   beforeEach(() => {
@@ -43,8 +49,8 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the financial year
-    // choose the 2024 to 2025 option (it is what the scenario seed data is setup for) and continue
-    cy.get('input[value="2025"]').click()
+    // choose the most recent option (it is what the scenario seed data is setup for) and continue
+    cy.get(`input[value="${endYear}"]`).click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Check the bill run
@@ -70,7 +76,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('[data-test="meta-data-region"]').should('contain.text', 'Test Region')
     cy.get('[data-test="meta-data-type"]').should('contain.text', 'Two-part tariff')
     cy.get('[data-test="meta-data-scheme"]').should('contain.text', 'Current')
-    cy.get('[data-test="meta-data-year"]').should('contain.text', '2024 to 2025')
+    cy.get('[data-test="meta-data-year"]').should('contain.text', `${startYear} to ${endYear}`)
 
     // Review licences ~ Test you can filter by licence issue
     cy.get('.govuk-details__summary').click()
@@ -103,7 +109,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
       'contain.text',
       'Test Region two-part tariff'
     )
-    cy.get('.govuk-list > li > .govuk-link').should('contain.text', '1 April 2024 to 31 March 2025')
+    cy.get('.govuk-list > li > .govuk-link').should('contain.text', `1 April ${startYear} to 31 March ${endYear}`)
 
     // Review Licence AT/TE/ST/01/01 ~ Check there are no returns
     cy.get('h2.govuk-heading-m').should('contain.text', 'No two-part tariff returns')
