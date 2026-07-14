@@ -47,7 +47,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     cy.get('form > .govuk-button').contains('Continue').click()
 
     // Select the financial year
-    // choose the 2024 to 2025 option (it is what the scenario seed data is setup for) and continue
+    // choose the most recent option (it is what the scenario seed data is setup for) and continue
     cy.get(`input[value="${endYear}"]`).click()
     cy.get('form > .govuk-button').contains('Continue').click()
 
