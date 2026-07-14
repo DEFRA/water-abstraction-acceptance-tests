@@ -5,10 +5,10 @@ import { currentFinancialYear } from '../../../../../support/helpers/date.helper
 
 const previousFinancialYearInfo = currentFinancialYear(31, 3, -1)
 
-const startYear = previousFinancialYearInfo.start.year
 const endYear = previousFinancialYearInfo.end.year
+const startYear = previousFinancialYearInfo.start.year
 
-const scenario = scenarioData()
+const scenario = scenarioData(endYear, startYear)
 
 describe('Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match', () => {
   beforeEach(() => {
