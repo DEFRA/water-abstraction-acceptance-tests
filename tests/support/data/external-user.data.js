@@ -1,0 +1,14 @@
+export default function () {
+  return {
+    users: [
+      {
+        username: 'external@example.com',
+        password: 'P@55word',
+        resetRequired: 0,
+        application: 'water_vml',
+        badLogins: 0,
+        enabled: true
+      }
+    ]
+  }
+}
