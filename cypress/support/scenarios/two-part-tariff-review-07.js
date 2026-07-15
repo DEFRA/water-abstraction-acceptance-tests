@@ -1,33 +1,14 @@
-import reviewLicenceData from '../fixture-builder/review-licence.js'
+import chargeVersionData from '../fixture-builder/two-part-tariff-review-charge-version.js'
+import reviewLicenceData from '../fixture-builder/two-part-tariff-review-licence.js'
 
 export const title = 'Two-part tariff review 07'
 export const description =
   'Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. It has one return with a status of "received"'
 
-export default function () {
+export default function (endYear, startYear) {
   return {
     ...reviewLicenceData(),
-    chargeVersions: [
-      {
-        id: '8e5626ee-5e4c-48f6-a668-471d35997e2c',
-        licenceId: 'f8702a6a-f61d-4b0a-9af3-9a53768ee516',
-        licenceRef: 'AT/TE/ST/01/01',
-        billingAccountId: '16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c',
-        regionCode: 9,
-        scheme: 'sroc',
-        versionNumber: 100,
-        startDate: '2022-04-01',
-        status: 'current',
-        source: 'wrls',
-        changeReasonId: {
-          schema: 'water',
-          table: 'changeReasons',
-          lookup: 'description',
-          value: 'Strategic review of charges (SRoC)',
-          select: 'changeReasonId'
-        }
-      }
-    ],
+    chargeVersions: [chargeVersionData()],
     chargeReferences: [
       {
         id: 'fa3c73d0-0459-41f0-b6cf-0e0758775ca4',
@@ -122,11 +103,11 @@ export default function () {
             periodEndMonth: '10'
           }
         },
-        startDate: '2024-04-01',
-        endDate: '2025-03-21',
-        receivedDate: '2025-03-01',
-        dueDate: '2025-04-28',
-        returnId: 'v1:1:AT/TE/ST/01/01:10021668:2024-04-01:2025-03-31',
+        startDate: `${startYear}-04-01`,
+        endDate: `${endYear}-03-21`,
+        receivedDate: `${endYear}-03-01`,
+        dueDate: `${endYear}-04-28`,
+        returnId: `v1:1:AT/TE/ST/01/01:10021668:${startYear}-04-01:${endYear}-03-31`,
         status: 'received',
         underQuery: false
       }
@@ -135,7 +116,7 @@ export default function () {
       {
         id: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
         returnLogId: '6a1b2456-e9af-4845-b5a9-a54497dff769',
-        returnId: 'v1:1:AT/TE/ST/01/01:10021668:2024-04-01:2025-03-31',
+        returnId: `v1:1:AT/TE/ST/01/01:10021668:${startYear}-04-01:${endYear}-03-31`,
         nilReturn: false,
         current: true
       }
@@ -144,57 +125,57 @@ export default function () {
       {
         id: '89966f6f-bc62-40bf-97a5-3c7bfeeb2a3b',
         returnSubmissionId: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
-        startDate: '2024-04-01',
-        endDate: '2024-04-30',
+        startDate: `${startYear}-04-01`,
+        endDate: `${startYear}-04-30`,
         quantity: '4000'
       },
       {
         id: '7e503eb2-323e-4b17-9d0c-2c8ad1ebe575',
         returnSubmissionId: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
-        startDate: '2024-05-01',
-        endDate: '2024-05-31',
+        startDate: `${startYear}-05-01`,
+        endDate: `${startYear}-05-31`,
         quantity: '4000'
       },
       {
         id: '0438b460-52d6-40b5-9dfd-963a63ada23d',
         returnSubmissionId: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
-        startDate: '2024-06-01',
-        endDate: '2024-06-30',
+        startDate: `${startYear}-06-01`,
+        endDate: `${startYear}-06-30`,
         quantity: '4000'
       },
       {
         id: 'e6a493df-241a-47de-ae62-b976d2ff9941',
         returnSubmissionId: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
-        startDate: '2024-07-01',
-        endDate: '2024-07-31',
+        startDate: `${startYear}-07-01`,
+        endDate: `${startYear}-07-31`,
         quantity: '4000'
       },
       {
         id: 'fb9d239e-0428-4ca4-a7fd-49ae9ac1d6c7',
         returnSubmissionId: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
-        startDate: '2024-08-01',
-        endDate: '2024-08-31',
+        startDate: `${startYear}-08-01`,
+        endDate: `${startYear}-08-31`,
         quantity: '4000'
       },
       {
         id: '85216196-0191-4fa3-9d3d-c1dba7d167ab',
         returnSubmissionId: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
-        startDate: '2024-09-01',
-        endDate: '2024-09-30',
+        startDate: `${startYear}-09-01`,
+        endDate: `${startYear}-09-30`,
         quantity: '4000'
       },
       {
         id: '802c7690-0006-4267-af3e-7dcf29dda03c',
         returnSubmissionId: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
-        startDate: '2024-10-01',
-        endDate: '2024-10-31',
+        startDate: `${startYear}-10-01`,
+        endDate: `${startYear}-10-31`,
         quantity: '4000'
       },
       {
         id: '30854030-2b23-4a3a-b4e4-1a30d3d6d260',
         returnSubmissionId: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
-        startDate: '2025-03-01',
-        endDate: '2025-03-31',
+        startDate: `${endYear}-03-01`,
+        endDate: `${endYear}-03-31`,
         quantity: '4000'
       }
     ]
