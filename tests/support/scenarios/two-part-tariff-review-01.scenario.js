@@ -1,5 +1,4 @@
-import reviewChargeVersionData from '../data/two-part-tariff-review-charge-version.data.js'
-import reviewLicenceData from '../data/two-part-tariff-review-licence.data.js'
+import unregisteredLicenceWithChargeVersionScenario from './unregistered-licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Two-part tariff review 01'
@@ -7,16 +6,17 @@ export const description =
   'Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match'
 
 export default function (endYear, startYear) {
-  const licence = reviewLicenceData()
+  const licence = unregisteredLicenceWithChargeVersionScenario()
 
-  const chargeVersion = reviewChargeVersionData()
+  const {
+    chargeVersions: [chargeVersion]
+  } = licence
 
   const chargeAndReturnData = {
-    chargeVersions: [chargeVersion],
     chargeReferences: [
       {
         id: 'fa3c73d0-0459-41f0-b6cf-0e0758775ca4',
-        chargeVersionId: '8e5626ee-5e4c-48f6-a668-471d35997e2c',
+        chargeVersionId: chargeVersion.id,
         description: 'SROC Charge Reference 01',
         source: 'tidal',
         loss: 'medium',
