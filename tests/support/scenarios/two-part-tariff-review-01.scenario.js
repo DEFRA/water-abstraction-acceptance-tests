@@ -1,4 +1,5 @@
 import chargeReferenceData from '../data/charge-reference.data.js'
+import returnVersionData from '../data/return-version.data.js'
 import unregisteredLicenceWithChargeVersionScenario from './unregistered-licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
@@ -8,7 +9,9 @@ export const description =
 
 export default function (endYear, startYear) {
   const unregisteredLicenceWithChargeVersion = unregisteredLicenceWithChargeVersionScenario()
+
   const chargeReference = chargeReferenceData(unregisteredLicenceWithChargeVersion)
+  const returnVersion = returnVersionData(unregisteredLicenceWithChargeVersion)
 
   const chargeAndReturnData = {
     returnLogs: [
@@ -120,5 +123,5 @@ export default function (endYear, startYear) {
     ]
   }
 
-  return mergeByKey(unregisteredLicenceWithChargeVersion, chargeReference, chargeAndReturnData)
+  return mergeByKey(unregisteredLicenceWithChargeVersion, chargeReference, returnVersion, chargeAndReturnData)
 }
