@@ -1,3 +1,4 @@
+import chargeReferenceData from '../data/charge-reference.data.js'
 import unregisteredLicenceWithChargeVersionScenario from './unregistered-licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
@@ -6,76 +7,10 @@ export const description =
   'Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match'
 
 export default function (endYear, startYear) {
-  const licence = unregisteredLicenceWithChargeVersionScenario()
-
-  const {
-    chargeVersions: [chargeVersion]
-  } = licence
+  const unregisteredLicenceWithChargeVersion = unregisteredLicenceWithChargeVersionScenario()
+  const chargeReference = chargeReferenceData(unregisteredLicenceWithChargeVersion)
 
   const chargeAndReturnData = {
-    chargeReferences: [
-      {
-        id: 'fa3c73d0-0459-41f0-b6cf-0e0758775ca4',
-        chargeVersionId: chargeVersion.id,
-        description: 'SROC Charge Reference 01',
-        source: 'tidal',
-        loss: 'medium',
-        factorsOverridden: false,
-        chargeCategoryId: {
-          schema: 'public',
-          table: 'chargeCategories',
-          lookup: 'reference',
-          value: '4.6.12',
-          select: 'id'
-        },
-        adjustments: {
-          aggregate: null,
-          s126: null,
-          s127: true,
-          s130: false,
-          charge: null,
-          winter: false
-        },
-        waterModel: 'no model',
-        volume: 32,
-        eiucRegion: 'Southern',
-        section127Agreement: true
-      }
-    ],
-    chargeElements: [
-      {
-        id: '0be51375-17b9-40f6-81f5-bd769ba10508',
-        chargeReferenceId: 'fa3c73d0-0459-41f0-b6cf-0e0758775ca4',
-        abstractionPeriodStartDay: 1,
-        abstractionPeriodStartMonth: 4,
-        abstractionPeriodEndDay: 31,
-        abstractionPeriodEndMonth: 3,
-        authorisedAnnualQuantity: 32,
-        section127Agreement: true,
-        description: 'SROC Charge Purpose 01',
-        purposeId: {
-          schema: 'public',
-          table: 'purposes',
-          lookup: 'legacyId',
-          value: '140',
-          select: 'id'
-        },
-        purposePrimaryId: {
-          schema: 'water',
-          table: 'purposesPrimary',
-          lookup: 'legacyId',
-          value: 'A',
-          select: 'purposePrimaryId'
-        },
-        purposeSecondaryId: {
-          schema: 'water',
-          table: 'purposesSecondary',
-          lookup: 'legacyId',
-          value: 'AGR',
-          select: 'purposeSecondaryId'
-        }
-      }
-    ],
     returnLogs: [
       {
         id: '6a1b2456-e9af-4845-b5a9-a54497dff769',
@@ -185,5 +120,5 @@ export default function (endYear, startYear) {
     ]
   }
 
-  return mergeByKey(licence, chargeAndReturnData)
+  return mergeByKey(unregisteredLicenceWithChargeVersion, chargeReference, chargeAndReturnData)
 }
