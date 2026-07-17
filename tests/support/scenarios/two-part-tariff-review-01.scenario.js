@@ -1,59 +1,39 @@
 import chargeReferenceData from '../data/charge-reference.data.js'
+import returnLogData from '../data/return-log.data.js'
+import returnRequirementData from '../data/return-requirement.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import unregisteredLicenceWithChargeVersionScenario from './unregistered-licence-with-charge-version.scenario.js'
+import { previousPeriod } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Two-part tariff review 01'
 export const description =
   'Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match'
 
-export default function (endYear, startYear) {
+export default function (calculatedDates, endYear, startYear) {
+  const { currentWinterReturnCycle } = calculatedDates
+
+  const previousPeriodDetails = previousPeriod({
+    startDate: currentWinterReturnCycle.startDate,
+    endDate: currentWinterReturnCycle.endDate,
+    dueDate: null,
+    quarterly: false
+  })
+
   const unregisteredLicenceWithChargeVersion = unregisteredLicenceWithChargeVersionScenario()
 
   const chargeReference = chargeReferenceData(unregisteredLicenceWithChargeVersion)
   const returnVersion = returnVersionData(unregisteredLicenceWithChargeVersion)
 
+  const returnReference = 10021668
+  const returnRequirement = returnRequirementData(returnVersion, unregisteredLicenceWithChargeVersion, returnReference)
+  returnRequirement.returnRequirements[0].collectionFrequency = 'month'
+  returnRequirement.returnRequirements[0].reportingFrequency = 'month'
+
+  const returnLog = returnLogData(unregisteredLicenceWithChargeVersion, returnRequirement, previousPeriodDetails)
+  returnLog.returnLogs[0].metadata.isTwoPartTariff = true
+
   const chargeAndReturnData = {
-    returnLogs: [
-      {
-        id: '6a1b2456-e9af-4845-b5a9-a54497dff769',
-        returnReference: '10021668',
-        licenceRef: 'AT/TE/ST/01/01',
-        metadata: {
-          description: 'A DRAIN SOMEWHERE',
-          purposes: [
-            {
-              primary: {
-                code: 'A',
-                description: 'Agriculture'
-              },
-              tertiary: {
-                code: '140',
-                description: 'General Farming & Domestic'
-              },
-              secondary: {
-                code: 'AGR',
-                description: 'General Agriculture'
-              }
-            }
-          ],
-          isTwoPartTariff: true,
-          nald: {
-            periodStartDay: '1',
-            periodStartMonth: '3',
-            periodEndDay: '31',
-            periodEndMonth: '10'
-          }
-        },
-        startDate: `${startYear}-04-01`,
-        endDate: `${endYear}-03-21`,
-        receivedDate: `${endYear}-03-01`,
-        dueDate: `${endYear}-04-28`,
-        returnId: `v1:1:AT/TE/ST/01/01:10021668:${startYear}-04-01:${endYear}-03-31`,
-        status: 'completed',
-        underQuery: false
-      }
-    ],
     returnSubmissions: [
       {
         id: 'fb740b60-71f6-4fc8-8cce-02ae55a188cd',
@@ -123,5 +103,12 @@ export default function (endYear, startYear) {
     ]
   }
 
-  return mergeByKey(unregisteredLicenceWithChargeVersion, chargeReference, returnVersion, chargeAndReturnData)
+  return mergeByKey(
+    unregisteredLicenceWithChargeVersion,
+    chargeReference,
+    returnVersion,
+    returnRequirement,
+    returnLog,
+    chargeAndReturnData
+  )
 }
