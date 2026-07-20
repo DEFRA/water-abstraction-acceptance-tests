@@ -8,7 +8,7 @@ export default function (period, returnLogData) {
   const returnSubmissionId = generateUUID()
 
   const startYear = period.startDate.getFullYear()
-  const endYear = period.endYear.getFullYear()
+  const endYear = period.endDate.getFullYear()
 
   return {
     returnSubmissions: [
