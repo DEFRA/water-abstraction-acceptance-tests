@@ -45,8 +45,8 @@
     "prettier": "3.3.3"
   },
   "allowScripts": {
-    "cypress@15.18.0": true,
     "fsevents@2.3.2": true,
-    "unrs-resolver@1.12.2": true
+    "unrs-resolver@1.12.2": true,
+    "cypress@15.18.1": true
   }
 }
