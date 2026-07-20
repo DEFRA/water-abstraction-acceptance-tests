@@ -138,15 +138,15 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
 
     // Review Licence AT/TE/ST/01/01 ~ Check the return details
     await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
-    await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('10021668')
+    await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999990')
     await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
-      `1 April ${startYear} to 21 March ${endYear}`
+      `1 April ${startYear} to 31 March ${endYear}`
     )
     await expect(page.locator('[data-test="matched-return-action-0"] > :nth-child(3)')).toContainText(
-      '1 March to 31 October'
+      '1 January to 31 December'
     )
     await expect(page.locator('[data-test="matched-return-summary-0"] > div')).toContainText(
-      'General Farming & Domestic'
+      'Spray Irrigation - Storage'
     )
     await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
     await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('32 ML / 32 ML')
@@ -195,7 +195,7 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     ).toContainText('32 ML / 32 ML')
     await expect(
       page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
-    ).toContainText('32 ML (10021668)')
+    ).toContainText('32 ML (9999990)')
 
     // Review Licence AT/TE/ST/01/01 ~ Check there is only 1 charge version, charge reference and charge element
     await expect(page.locator('#charge-version-1 > .govuk-heading-l')).toHaveCount(0)
@@ -240,12 +240,12 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await expect(page.locator('[data-test="billable-returns"]')).toContainText('32 ML')
     await expect(page.locator('[data-test="authorised-volume"]')).toContainText('32 ML')
     await expect(page.locator('[data-test="issues-0"]')).toHaveCount(0)
-    await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('10021668')
+    await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999990')
     await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
-      `1 April ${startYear} to 21 March ${endYear}`
+      `1 April ${startYear} to 31 March ${endYear}`
     )
-    await expect(page.locator('[data-test="matched-return-summary-0"]')).toContainText('General Farming & Domestic')
-    await expect(page.locator('[data-test="matched-return-summary-0"]')).toContainText('A DRAIN SOMEWHERE')
+    await expect(page.locator('[data-test="matched-return-summary-0"]')).toContainText('Spray Irrigation - Storage')
+    await expect(page.locator('[data-test="matched-return-summary-0"]')).toContainText('TANKS ON JUPITER')
     await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
     await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('32 ML / 32 ML')
 

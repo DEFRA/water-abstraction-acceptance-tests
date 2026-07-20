@@ -26,13 +26,13 @@ export default function (calculatedDates) {
   const chargeReference = chargeReferenceData(unregisteredLicenceWithChargeVersion)
   const returnVersion = returnVersionData(unregisteredLicenceWithChargeVersion)
 
-  const returnReference = 10021668
-  const returnRequirement = returnRequirementData(returnVersion, unregisteredLicenceWithChargeVersion, returnReference)
+  const returnRequirement = returnRequirementData(returnVersion, unregisteredLicenceWithChargeVersion)
   returnRequirement.returnRequirements[0].collectionFrequency = 'month'
   returnRequirement.returnRequirements[0].reportingFrequency = 'month'
 
   const returnLog = returnLogData(unregisteredLicenceWithChargeVersion, returnRequirement, previousPeriodDetails)
   returnLog.returnLogs[0].metadata.isTwoPartTariff = true
+  returnLog.returnLogs[0].status = 'completed'
 
   const returnSubmission = returnSubmissionData(previousPeriodDetails, returnLog)
 
