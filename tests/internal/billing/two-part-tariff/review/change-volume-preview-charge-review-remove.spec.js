@@ -20,7 +20,7 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-    const scenario = scenarioData(dates, endYear, startYear)
+    const scenario = scenarioData(dates)
 
     const {
       licences: [scenarioLicence]
