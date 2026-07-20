@@ -7,7 +7,7 @@ export const description = 'A single external user with a gov.uk address and no 
 export default function () {
   const externalUser = externalUserData()
 
-  externalUser.users[0].username = 'both.sides@wrls.gov.uk'
+  externalUser.users[0].username = `regression.tests.${Date.now()}@defra.gov.uk`
   externalUser.users[0].lastLogin = yesterday()
 
   return {
