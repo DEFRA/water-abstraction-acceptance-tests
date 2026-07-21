@@ -42,13 +42,13 @@ export default function (billingAccountData, licenceData) {
         chargeVersionId,
         description: 'SROC Charge Reference 01',
         source: 'tidal',
-        loss: 'medium',
+        loss: 'high',
         factorsOverridden: false,
         chargeCategoryId: {
           schema: 'public',
           table: 'chargeCategories',
           lookup: 'reference',
-          value: '4.6.12',
+          value: '4.3.1',
           select: 'id'
         },
         adjustments: {
@@ -57,7 +57,7 @@ export default function (billingAccountData, licenceData) {
           s127: true,
           s130: false,
           charge: null,
-          winter: false
+          winter: true
         },
         waterModel: 'no model',
         volume: 32,
@@ -74,13 +74,14 @@ export default function (billingAccountData, licenceData) {
         abstractionPeriodEndDay: 31,
         abstractionPeriodEndMonth: 3,
         authorisedAnnualQuantity: 32,
+        loss: 'high',
         section127Agreement: true,
         description: 'SROC Charge Purpose 01',
         purposeId: {
           schema: 'public',
           table: 'purposes',
           lookup: 'legacyId',
-          value: '140',
+          value: '400',
           select: 'id'
         },
         purposePrimaryId: {
