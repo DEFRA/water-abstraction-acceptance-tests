@@ -177,6 +177,10 @@ function _previousPeriod(currentPeriod) {
  */
 function _returnLog(licence, returnVersion, period) {
   const returnRequirement = returnRequirementData(returnVersion, licence, period.reference)
+
+  returnRequirement.returnRequirements[0].legacyId = period.reference
+  returnRequirement.returnRequirements[0].reference = period.reference
+
   const returnLog = returnLogData(licence, returnRequirement, period)
 
   returnLog.returnLogs[0].status = period.status

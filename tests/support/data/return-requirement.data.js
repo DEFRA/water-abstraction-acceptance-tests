@@ -1,6 +1,6 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (returnVersionData, licence, reference = 9999990) {
+export default function (returnVersionData, licence) {
   const {
     returnVersions: [returnVersion]
   } = returnVersionData
@@ -26,8 +26,8 @@ export default function (returnVersionData, licence, reference = 9999990) {
         abstractionPeriodEndDay: 31,
         abstractionPeriodEndMonth: 12,
         siteDescription: 'TANKS ON JUPITER',
-        legacyId: reference,
-        reference
+        legacyId: 9999990,
+        reference: 9999990
       }
     ],
     returnRequirementPoints: points.map((point) => {
