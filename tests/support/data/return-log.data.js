@@ -56,7 +56,7 @@ export default function (licenceData, returnRequirementData, period) {
           purposes: _purposes(returnRequirementPurposes),
           isCurrent: true,
           description: returnRequirement.siteDescription,
-          isTwoPartTariff: false
+          isTwoPartTariff: returnRequirement.twoPartTariff
         },
         returnsFrequency: 'month',
         startDate: startDateString,
