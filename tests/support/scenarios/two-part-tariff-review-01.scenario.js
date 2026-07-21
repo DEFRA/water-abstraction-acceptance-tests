@@ -22,6 +22,10 @@ export default function (calculatedDates) {
 
   const unregisteredLicenceWithChargeVersion = unregisteredLicenceWithChargeVersionScenario()
 
+  // The charge element uses purpose 400, so align the licence version purpose (which drives the return requirement and
+  // return log purpose) to 400. This ensures the return matches the charge element during two-part tariff matching.
+  unregisteredLicenceWithChargeVersion.licenceVersionPurposes[0].purposeId.value = '400'
+
   const returnVersion = returnVersionData(unregisteredLicenceWithChargeVersion)
 
   const returnRequirement = returnRequirementData(returnVersion, unregisteredLicenceWithChargeVersion)

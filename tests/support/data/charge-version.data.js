@@ -57,7 +57,7 @@ export default function (billingAccountData, licenceData) {
           s127: true,
           s130: false,
           charge: null,
-          winter: true
+          winter: false
         },
         waterModel: 'no model',
         volume: 32,

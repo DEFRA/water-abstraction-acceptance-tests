@@ -169,9 +169,9 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await page.locator('.govuk-details__summary').click()
     await expect(page.locator('[data-test="billing-account"]')).toContainText('S99999991A')
     await expect(page.locator('[data-test="account-name"]')).toContainText('Big Farm Co Ltd')
-    await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.6.12')
+    await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.3.1')
     await expect(page.locator('[data-test="charge-version-0-charge-description-0"]')).toContainText(
-      'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model'
+      'High loss, tidal, up to and including 75 ML/yr'
     )
     await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText('32 ML / 32 ML')
     await expect(page.locator('[data-test="charge-version-0-charge-reference-link-0"]')).toContainText('View details')
@@ -182,7 +182,7 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
       'SROC Charge Purpose 01'
     )
     await expect(page.locator('[data-test="charge-version-0-charge-reference-0-element-description-0"]')).toContainText(
-      'General Farming & Domestic'
+      'Spray Irrigation - Direct'
     )
     await expect(page.locator('[data-test="charge-version-0-charge-reference-0-element-dates-0"]')).toContainText(
       `1 April ${startYear} to 31 March ${endYear}`
@@ -204,9 +204,9 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await page.locator('[data-test="charge-version-0-charge-reference-link-0"]').click()
 
     // Charge reference details
-    await expect(page.locator('[data-test="charge-reference"]')).toContainText('Charge reference 4.6.12')
+    await expect(page.locator('[data-test="charge-reference"]')).toContainText('Charge reference 4.3.1')
     await expect(page.locator('[data-test="charge-reference-description"]')).toContainText(
-      'High loss, non-tidal, restricted water, greater than 15 up to and including 50 ML/yr, Tier 2 model'
+      'High loss, tidal, up to and including 75 ML/yr'
     )
     await expect(page.locator('[data-test="financial-year"]')).toContainText(
       `Financial Year ${startYear} to ${endYear}`
