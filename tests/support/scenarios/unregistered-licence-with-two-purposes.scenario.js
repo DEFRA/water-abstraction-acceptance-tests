@@ -2,7 +2,7 @@ import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
 import pointData from '../data/point.data.js'
 import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { regionCode } from '../static.lib.js'
+import { regionCode } from '../default-values.js'
 
 export const title = 'Unregistered licence with two purposes'
 export const description =

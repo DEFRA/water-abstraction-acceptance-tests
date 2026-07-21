@@ -1,4 +1,4 @@
-import { externalUserEmail, password } from '../static.lib.js'
+import { externalUserEmail, password } from '../default-values.js'
 
 export default function () {
   return {

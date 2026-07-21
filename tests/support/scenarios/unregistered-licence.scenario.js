@@ -2,7 +2,7 @@ import companyData from '../data/company.data.js'
 import licenceData from '../data/licence.data.js'
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
 import pointData from '../data/point.data.js'
-import { licenceRef } from '../static.lib.js'
+import { licenceRef } from '../default-values.js'
 
 export const title = 'Unregistered licence'
 export const description = 'A licence, licence holder and a company'

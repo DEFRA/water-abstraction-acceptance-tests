@@ -1,7 +1,7 @@
 import primaryUserData from '../data/primary-user.data.js'
 import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { externalUserEmail } from '../static.lib.js'
+import { externalUserEmail } from '../default-values.js'
 
 export const title = 'Registered licence'
 export const description = 'A licence that has been registered (primary user), licence holder and a company'

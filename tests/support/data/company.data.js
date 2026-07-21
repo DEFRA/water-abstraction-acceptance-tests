@@ -1,5 +1,5 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
-import { companyName } from '../static.lib.js'
+import { companyName } from '../default-values.js'
 
 export default function () {
   const addressId = generateUUID()
