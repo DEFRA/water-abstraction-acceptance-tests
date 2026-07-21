@@ -1,4 +1,3 @@
-import chargeReferenceData from '../data/charge-reference.data.js'
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnSubmissionData from '../data/return-submission.data.js'
@@ -23,7 +22,6 @@ export default function (calculatedDates) {
 
   const unregisteredLicenceWithChargeVersion = unregisteredLicenceWithChargeVersionScenario()
 
-  const chargeReference = chargeReferenceData(unregisteredLicenceWithChargeVersion)
   const returnVersion = returnVersionData(unregisteredLicenceWithChargeVersion)
 
   const returnRequirement = returnRequirementData(returnVersion, unregisteredLicenceWithChargeVersion)
@@ -36,12 +34,5 @@ export default function (calculatedDates) {
 
   const returnSubmission = returnSubmissionData(previousPeriodDetails, returnLog)
 
-  return mergeByKey(
-    unregisteredLicenceWithChargeVersion,
-    chargeReference,
-    returnVersion,
-    returnRequirement,
-    returnLog,
-    returnSubmission
-  )
+  return mergeByKey(unregisteredLicenceWithChargeVersion, returnVersion, returnRequirement, returnLog, returnSubmission)
 }
