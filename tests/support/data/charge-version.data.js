@@ -1,5 +1,4 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
-import { regionCode } from '../static.lib.js'
 
 export default function (billingAccountData, licenceData) {
   const chargeElementId = generateUUID()
