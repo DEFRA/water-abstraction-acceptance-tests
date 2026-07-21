@@ -143,7 +143,7 @@ test.describe('Submit return version manually (internal)', () => {
 
     // confirm we see the purposes selected
     await expect(page.locator('[data-test="purposes-0"]')).toContainText(
-      'General Farming & Domestic (This is a purpose description)'
+      'Make-Up Or Top Up Water (This is a purpose description)'
     )
 
     // choose the change option for purposes
@@ -158,7 +158,7 @@ test.describe('Submit return version manually (internal)', () => {
     // confirm we are back on the check page and see the purpose changes
     await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
     await expect(page.locator('[data-test="purposes-0"]')).toContainText(
-      'Make-Up Or Top Up Water (This is another purpose description)'
+      'Spray Irrigation - Direct (This is another purpose description)'
     )
 
     // confirm we see the points selected
@@ -400,7 +400,7 @@ test.describe('Submit return version manually (internal)', () => {
       'This is another valid site description'
     )
     await expect(page.locator('[data-test="purposes-0"]')).toContainText(
-      'Make-Up Or Top Up Water (This is another purpose description)'
+      'Spray Irrigation - Direct (This is another purpose description)'
     )
     await expect(page.locator('[data-test="points-0"]')).toContainText(
       'At National Grid Reference TT 9876 5432 (Example point 2)'

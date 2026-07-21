@@ -80,7 +80,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
     // confirm we see the purpose changes on the check page
     await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
     await expect(page.locator('[data-test="purposes-0"]')).toContainText(
-      'Make-Up Or Top Up Water (This is another purpose description)'
+      'Spray Irrigation - Direct (This is another purpose description)'
     )
 
     // confirm we see the points for the requirement copied from existing
@@ -175,7 +175,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
     await expect(page.locator('.govuk-notification-banner')).toContainText('New requirement added')
 
     // confirm we see the new added requirement and details selected
-    await expect(page.locator('[data-test="purposes-1"]')).toContainText('General Farming & Domestic')
+    await expect(page.locator('[data-test="purposes-1"]')).toContainText('Make-Up Or Top Up Water')
     await expect(page.locator('[data-test="points-1"]')).toContainText(
       'At National Grid Reference TQ 1234 5678 (Example point 1)'
     )

@@ -101,7 +101,7 @@ function _purposes(returnRequirementPurposes) {
       },
       tertiary: {
         code: returnRequirementPurpose.purposeId.value,
-        description: 'Spray Irrigation - Storage'
+        description: 'Spray Irrigation - Direct'
       }
     }
   })

@@ -34,7 +34,7 @@ export default function (licenceData, pointData) {
           schema: 'public',
           table: 'purposes',
           lookup: 'legacyId',
-          value: '140',
+          value: '400',
           select: 'id'
         },
         abstractionPeriodStartDay: 1,
