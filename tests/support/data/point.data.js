@@ -1,15 +1,16 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { regionCode } from '../static.lib.js'
 
-export default function (description = 'The Name of this', ngr1 = 'TG 123 456') {
+export default function () {
   const pointId = generateUUID()
 
   return {
     points: [
       {
         id: pointId,
-        description,
-        ngr1,
-        externalId: '9:9000091',
+        description: 'Example point 1',
+        ngr1: 'TQ 1234 5678',
+        externalId: `${regionCode}:9000091`,
         sourceId: {
           schema: 'public',
           table: 'sources',

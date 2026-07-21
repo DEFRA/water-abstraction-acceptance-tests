@@ -1,9 +1,11 @@
+import { externalUserEmail, password } from '../static.lib.js'
+
 export default function () {
   return {
     users: [
       {
-        username: 'external@example.com',
-        password: 'P@55word',
+        username: externalUserEmail,
+        password,
         resetRequired: 0,
         application: 'water_vml',
         badLogins: 0,

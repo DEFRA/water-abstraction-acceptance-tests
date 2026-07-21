@@ -1,6 +1,6 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (companyData, { department = 'Test contact', email = 'test.contact@example.com' } = {}) {
+export default function (companyData) {
   const contactId = generateUUID()
   const companyContactId = generateUUID()
 
@@ -12,8 +12,8 @@ export default function (companyData, { department = 'Test contact', email = 'te
     contacts: [
       {
         id: contactId,
-        department,
-        email,
+        department: 'Test Contact',
+        email: 'test.contact@example.com',
         contactType: 'department'
       }
     ],

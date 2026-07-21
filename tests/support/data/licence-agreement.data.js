@@ -1,4 +1,4 @@
-export default function (licenceData, { financialAgreementCode = 'S127', startDate } = {}) {
+export default function (licenceData) {
   const {
     licences: [licence]
   } = licenceData
@@ -10,11 +10,11 @@ export default function (licenceData, { financialAgreementCode = 'S127', startDa
           schema: 'public',
           table: 'financialAgreements',
           lookup: 'code',
-          value: financialAgreementCode,
+          value: 'S127',
           select: 'id'
         },
         licenceRef: licence.licenceRef,
-        startDate: startDate ?? licence.startDate
+        startDate: licence.startDate
       }
     ]
   }

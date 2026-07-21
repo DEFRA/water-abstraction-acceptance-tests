@@ -1,9 +1,11 @@
-export default function (username = 'regression.tests@wrls.gov.uk') {
+import { internalUserEmail, password } from '../static.lib.js'
+
+export default function () {
   return {
     users: [
       {
-        username,
-        password: 'P@55word',
+        username: internalUserEmail,
+        password,
         resetRequired: 0,
         application: 'water_admin',
         badLogins: 0,

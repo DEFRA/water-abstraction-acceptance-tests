@@ -8,20 +8,19 @@ export const title = 'Unregistered licence with two purposes'
 export const description =
   'A licence with two points and two licence version purposes, and no existing return requirements'
 
-export default function (licenceRef = 'AT/TE/ST/01/01') {
-  const licence = unregisteredLicenceScenario(licenceRef)
-
-  const [point] = licence.points
-
-  point.description = 'Example point 1'
-  point.ngr1 = 'TQ 1234 5678'
-  point.externalId = `${regionCode}:9000090`
+export default function () {
+  const licence = unregisteredLicenceScenario()
 
   const secondPoint = pointData('Example point 2', 'TT 9876 5432')
-  const secondPurpose = licenceVersionPurposeData(licence, secondPoint, {
-    purposeLegacyId: '280',
-    externalId: `${regionCode}:1235`
-  })
+
+  secondPoint.points[0].description = 'Example point 2'
+  secondPoint.points[0].ngr1 = 'TT 9876 5432'
+  secondPoint.points[0].externalId = `${regionCode}:9000092`
+
+  const secondPurpose = licenceVersionPurposeData(licence, secondPoint)
+
+  secondPurpose.licenceVersionPurposes[0].purposeId.value = '280'
+  secondPurpose.licenceVersionPurposes[0].externalId = `${regionCode}:9000092`
 
   // Simpler to push straight onto licence.points than pull in mergeByKey just for this one array
   licence.points.push(...secondPoint.points)

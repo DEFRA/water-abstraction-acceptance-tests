@@ -11,18 +11,20 @@ export default function () {
 
   const companyContact = companyContactData(unregisteredLicence)
 
-  const editCompanyContact = companyContactData(unregisteredLicence, {
-    department: 'Test Contact Edit Alerts',
-    email: 'test.contact.edit@example.com'
-  })
-  const removeCompanyContact = companyContactData(unregisteredLicence, {
-    department: 'Test Contact Remove',
-    email: 'test.contact.remove@example.com'
-  })
-  const restoreCompanyContact = companyContactData(unregisteredLicence, {
-    department: 'Test Contact Restore',
-    email: 'test.contact.restore@example.com'
-  })
+  const editCompanyContact = companyContactData(unregisteredLicence)
+
+  editCompanyContact.contacts[0].department = 'Test Contact Edit Alerts'
+  editCompanyContact.contacts[0].email = 'test.contact.edit@example.com'
+
+  const removeCompanyContact = companyContactData(unregisteredLicence)
+
+  removeCompanyContact.contacts[0].department = 'Test Contact Remove'
+  removeCompanyContact.contacts[0].email = 'test.contact.remove@example.com'
+
+  const restoreCompanyContact = companyContactData(unregisteredLicence)
+
+  restoreCompanyContact.contacts[0].department = 'Test Contact Restore'
+  restoreCompanyContact.contacts[0].email = 'test.contact.restore@example.com'
 
   return mergeByKey(
     unregisteredLicence,
