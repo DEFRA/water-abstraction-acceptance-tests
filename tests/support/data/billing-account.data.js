@@ -1,6 +1,7 @@
+import { accountNumber } from '../default-values.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (licenceData, accountNumber = 'S99999991A') {
+export default function (licenceData) {
   const billingAccountAddressId = generateUUID()
   const billingAccountId = generateUUID()
 
