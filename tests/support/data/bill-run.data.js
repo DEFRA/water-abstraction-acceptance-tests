@@ -1,4 +1,4 @@
-import { regionCode } from '../static.lib.js'
+import { regionCode } from '../default-values.js'
 
 export default function () {
   return {

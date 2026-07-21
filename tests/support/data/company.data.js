@@ -1,6 +1,7 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { companyName } from '../default-values.js'
 
-export default function (name = 'Big Farm Co Ltd') {
+export default function () {
   const addressId = generateUUID()
   const companyId = generateUUID()
 
@@ -8,7 +9,7 @@ export default function (name = 'Big Farm Co Ltd') {
     companies: [
       {
         id: companyId,
-        name,
+        name: companyName,
         type: 'organisation'
       }
     ],

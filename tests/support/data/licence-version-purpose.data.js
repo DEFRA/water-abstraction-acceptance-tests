@@ -1,6 +1,6 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (licenceData, pointData, { purposeLegacyId = '140', externalId = '6:1234' } = {}) {
+export default function (licenceData, pointData) {
   const {
     licenceVersions: [licenceVersion]
   } = licenceData
@@ -34,7 +34,7 @@ export default function (licenceData, pointData, { purposeLegacyId = '140', exte
           schema: 'public',
           table: 'purposes',
           lookup: 'legacyId',
-          value: purposeLegacyId,
+          value: '140',
           select: 'id'
         },
         abstractionPeriodStartDay: 1,
@@ -42,7 +42,7 @@ export default function (licenceData, pointData, { purposeLegacyId = '140', exte
         abstractionPeriodEndDay: 31,
         abstractionPeriodEndMonth: 3,
         annualQuantity: 1554,
-        externalId
+        externalId: '9:1234'
       }
     ],
     licenceVersionPurposePoints: [

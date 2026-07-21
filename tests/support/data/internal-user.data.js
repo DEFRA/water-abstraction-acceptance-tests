@@ -1,13 +1,17 @@
-export default function (username = 'regression.tests@wrls.gov.uk') {
+import { yesterday } from '../helpers/date.helpers.js'
+import { internalUserEmail, password } from '../default-values.js'
+
+export default function () {
   return {
     users: [
       {
-        username,
-        password: 'P@55word',
+        username: internalUserEmail,
+        password,
         resetRequired: 0,
         application: 'water_admin',
         badLogins: 0,
-        enabled: true
+        enabled: true,
+        lastLogin: yesterday()
       }
     ]
   }

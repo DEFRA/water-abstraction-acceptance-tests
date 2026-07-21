@@ -7,8 +7,8 @@ export const title = 'Unregistered licence with two purposes and a return requir
 export const description =
   'A licence with two points and two licence version purposes, and an existing return requirement and version'
 
-export default function (licenceRef = 'AT/TE/ST/01/01') {
-  const licence = unregisteredLicenceWithTwoPurposesScenario(licenceRef)
+export default function () {
+  const licence = unregisteredLicenceWithTwoPurposesScenario()
 
   const returnVersion = returnVersionData(licence)
   const returnRequirement = returnRequirementData(returnVersion, licence)
