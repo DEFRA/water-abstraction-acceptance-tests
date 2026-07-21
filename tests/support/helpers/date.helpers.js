@@ -275,3 +275,29 @@ export function today() {
 
   return todaysDate
 }
+
+/**
+ * Returns a date object representing tomorrow's date
+ *
+ * @returns {Date} tomorrow's date
+ */
+export function tomorrow() {
+  const tomorrow = today()
+
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
+  return tomorrow
+}
+
+/**
+ * Returns a date object representing yesterday's date
+ *
+ * @returns {Date} yesterday's date
+ */
+export function yesterday() {
+  const yesterday = today()
+
+  yesterday.setDate(yesterday.getDate() - 1)
+
+  return yesterday
+}
