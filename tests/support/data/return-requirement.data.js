@@ -16,8 +16,8 @@ export default function (returnVersionData, licence) {
     returnRequirements: [
       {
         id: returnRequirementId,
-        collectionFrequency: 'day',
-        reportingFrequency: 'day',
+        collectionFrequency: 'month',
+        reportingFrequency: 'month',
         returnVersionId: returnVersion.id,
         summer: false,
         upload: false,

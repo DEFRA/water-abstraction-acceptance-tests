@@ -87,10 +87,10 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
     await expect(page.locator('[data-test="site-description-0"]')).toContainText(returnRequirement.siteDescription)
 
     // confirm we see the collection frequency copied from the existing requirement
-    await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Daily')
+    await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Monthly')
 
     // confirm we see the reporting frequency copied from the existing requirement
-    await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Daily')
+    await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
 
     // confirm we see the agreements and exceptions copied from the existing requirement
     await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('None')
@@ -103,7 +103,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
 
     // confirm we see the requirements we are going to cancel
     await expect(
-      page.getByText(`Winter and all year daily requirements for returns, ${returnRequirement.siteDescription}.`)
+      page.getByText(`Winter and all year monthly requirements for returns, ${returnRequirement.siteDescription}.`)
     ).toBeVisible()
 
     // click the confirm cancel button
