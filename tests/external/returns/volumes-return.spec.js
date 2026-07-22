@@ -65,7 +65,11 @@ test.describe('Submit a volumes return (external)', () => {
     // Confirm and submit the details
     await expect(page.getByRole('heading', { name: 'Confirm your return' })).toBeVisible()
     // Check the calculated total
-    await expect(page.locator(':nth-child(3) > strong')).toContainText('0.036')
+    // The total row has two figures, the raw units entered and the converted cubic metres total, in that order, so
+    // the last 'strong' in the row is the converted total.
+    const totalRow = page.getByRole('row', { name: 'Total volume of water abstracted' })
+
+    await expect(totalRow.locator('strong').last()).toContainText('0.036')
     await page.getByRole('button', { name: 'Submit' }).click()
 
     // Confirm Return submitted

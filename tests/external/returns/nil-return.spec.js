@@ -29,12 +29,12 @@ test.describe('Submit a nil return (external)', () => {
 
     // --> Have you extracted water in this period?
     // Click 'No' and continue
-    await page.locator('input[value="true"]').check()
-    await page.locator('form > .govuk-button').click()
+    await page.getByRole('radio', { name: 'No' }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Confirm and submit the details
-    await expect(page.locator('h2.govuk-heading-l')).toContainText('Nil return')
-    await page.locator('form > .govuk-button').click()
+    await expect(page.getByRole('heading', { name: 'Nil return' })).toBeVisible()
+    await page.getByRole('button', { name: 'Submit' }).click()
 
     // Confirm Return submitted
     await expect(page.locator('.panel__title')).toContainText('Return submitted')

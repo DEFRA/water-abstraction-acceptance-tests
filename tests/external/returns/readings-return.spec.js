@@ -70,7 +70,9 @@ test.describe('Submit a readings return (external)', () => {
     // Confirm and submit the details
     await expect(page.getByRole('heading', { name: 'Confirm your return' })).toBeVisible()
     // Check the calculated total
-    await expect(page.locator(':nth-child(3) > strong')).toContainText('200')
+    const totalRow = page.getByRole('row', { name: 'Total volume of water abstracted' })
+
+    await expect(totalRow.locator('strong')).toContainText('200')
     await page.getByRole('button', { name: 'Submit' }).click()
 
     // Confirm Return submitted
