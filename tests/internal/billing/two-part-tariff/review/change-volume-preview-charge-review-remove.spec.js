@@ -146,10 +146,10 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
       '1 January to 31 December'
     )
     await expect(page.locator('[data-test="matched-return-summary-0"] > div')).toContainText(
-      'Spray Irrigation - Storage'
+      'Spray Irrigation - Direct'
     )
     await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
-    await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('32 ML / 32 ML')
+    await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('1.554 ML / 1.554 ML')
 
     // Review Licence AT/TE/ST/01/01 ~ Check there are no other returns
     await expect(page.locator('[data-test="matched-return-action-1"] > .govuk-link')).toHaveCount(0)
@@ -169,17 +169,19 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await page.locator('.govuk-details__summary').click()
     await expect(page.locator('[data-test="billing-account"]')).toContainText('S99999991A')
     await expect(page.locator('[data-test="account-name"]')).toContainText('Big Farm Co Ltd')
-    await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.3.1')
+    await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.6.1')
     await expect(page.locator('[data-test="charge-version-0-charge-description-0"]')).toContainText(
-      'High loss, tidal, up to and including 75 ML/yr'
+      'High loss, non-tidal, up to and including 15 ML/yr'
     )
-    await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText('32 ML / 32 ML')
+    await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText(
+      '1.554 ML / 1.554 ML'
+    )
     await expect(page.locator('[data-test="charge-version-0-charge-reference-link-0"]')).toContainText('View details')
     await expect(page.locator('[data-test="charge-version-0-charge-reference-0-element-count-0"]')).toContainText(
       'Element 1 of 1'
     )
     await expect(page.locator('[data-test="charge-version-0-charge-reference-0-element-description-0"]')).toContainText(
-      'SROC Charge Purpose 01'
+      'Spray Irrigation - Direct'
     )
     await expect(page.locator('[data-test="charge-version-0-charge-reference-0-element-description-0"]')).toContainText(
       'Spray Irrigation - Direct'
@@ -192,10 +194,10 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     ).toContainText('')
     await expect(
       page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
-    ).toContainText('32 ML / 32 ML')
+    ).toContainText('1.554 ML / 1.554 ML')
     await expect(
       page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
-    ).toContainText('32 ML (9999990)')
+    ).toContainText('1.554 ML (9999990)')
 
     // Review Licence AT/TE/ST/01/01 ~ Check there is only 1 charge version, charge reference and charge element
     await expect(page.locator('#charge-version-1 > .govuk-heading-l')).toHaveCount(0)
@@ -204,9 +206,9 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await page.locator('[data-test="charge-version-0-charge-reference-link-0"]').click()
 
     // Charge reference details
-    await expect(page.locator('[data-test="charge-reference"]')).toContainText('Charge reference 4.3.1')
+    await expect(page.locator('[data-test="charge-reference"]')).toContainText('Charge reference 4.6.1')
     await expect(page.locator('[data-test="charge-reference-description"]')).toContainText(
-      'High loss, tidal, up to and including 75 ML/yr'
+      'High loss, non-tidal, up to and including 15 ML/yr'
     )
     await expect(page.locator('[data-test="financial-year"]')).toContainText(
       `Financial Year ${startYear} to ${endYear}`
@@ -214,9 +216,8 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await expect(page.locator('[data-test="charge-period"]')).toContainText(
       `Charge period 1 April ${startYear} to 31 March ${endYear}`
     )
-    await expect(page.locator('[data-test="total-billable-returns"]')).toContainText('32 ML')
-    await expect(page.locator('[data-test="authorised-volume"]')).toContainText('32 ML')
-    await expect(page.locator('[data-test="additional-charges"]')).toContainText('Public Water Supply')
+    await expect(page.locator('[data-test="total-billable-returns"]')).toContainText('1.554 ML')
+    await expect(page.locator('[data-test="authorised-volume"]')).toContainText('1.554 ML')
     await expect(page.locator('[data-test="adjustment-0"]')).toContainText('Two part tariff agreement')
 
     // Charge reference details ~ Preview the charge
@@ -226,7 +227,7 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
 
     // View match details
     await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
-    await expect(page.locator('.govuk-heading-l')).toContainText('SROC Charge Purpose 01')
+    await expect(page.locator('.govuk-heading-l')).toContainText('Spray Irrigation - Direct')
     await expect(page.locator('[data-test="charge-period-0"]')).toContainText(
       `1 April ${startYear} to 31 March ${endYear}`
     )
@@ -237,21 +238,23 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await expect(page.locator('[data-test="charge-period"]')).toContainText(
       `Charge period 1 April ${startYear} to 31 March ${endYear}`
     )
-    await expect(page.locator('[data-test="billable-returns"]')).toContainText('32 ML')
-    await expect(page.locator('[data-test="authorised-volume"]')).toContainText('32 ML')
+    await expect(page.locator('[data-test="billable-returns"]')).toContainText('1.554 ML')
+    await expect(page.locator('[data-test="authorised-volume"]')).toContainText('1.554 ML')
     await expect(page.locator('[data-test="issues-0"]')).toHaveCount(0)
     await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999990')
     await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
       `1 April ${startYear} to 31 March ${endYear}`
     )
-    await expect(page.locator('[data-test="matched-return-summary-0"]')).toContainText('Spray Irrigation - Storage')
+    await expect(page.locator('[data-test="matched-return-summary-0"]')).toContainText('Spray Irrigation - Direct')
     await expect(page.locator('[data-test="matched-return-summary-0"]')).toContainText('TANKS ON JUPITER')
     await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
-    await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('32 ML / 32 ML')
+    await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText(
+      '1.554 ML / 1.554 ML'
+    )
 
     // View match details ~ Edit the billable returns
     await page.locator('.govuk-button').click()
-    await expect(page.locator('.govuk-caption-l')).toContainText('SROC Charge Purpose 01')
+    await expect(page.locator('.govuk-caption-l')).toContainText('Spray Irrigation - Direct')
     await expect(page.locator('[data-test="charge-period-0"]')).toContainText(
       `1 April ${startYear} to 31 March ${endYear}`
     )
@@ -262,9 +265,9 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await expect(page.locator('[data-test="charge-period"]')).toContainText(
       `Charge period 1 April ${startYear} to 31 March ${endYear}`
     )
-    await expect(page.locator('[data-test="authorised-quantity"]')).toContainText('Authorised 32ML')
+    await expect(page.locator('[data-test="authorised-quantity"]')).toContainText('Authorised 1.554ML')
     await page.locator('#custom-quantity-selector').check()
-    await page.locator('#custom-quantity').fill('20.123')
+    await page.locator('#custom-quantity').fill('1')
     await page.locator('.govuk-button').click()
 
     // View match details ~ Check billable returns has updated
@@ -272,13 +275,13 @@ test.describe('Two-part tariff review scenario 01 (internal)', () => {
     await expect(page.locator('.govuk-notification-banner__heading')).toContainText(
       'The billable returns for this licence have been updated'
     )
-    await expect(page.locator('[data-test="billable-returns"]')).toContainText('20.123 ML')
+    await expect(page.locator('[data-test="billable-returns"]')).toContainText('1 ML')
     await page.locator('.govuk-back-link').click()
 
     // Review Licence AT/TE/ST/01/01 ~ Check billable returns has updated on licence review page
     await expect(
       page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
-    ).toContainText('20.123 ML / 32 ML')
+    ).toContainText('1 ML / 1.554 ML')
 
     // Review Licence AT/TE/ST/01/01 ~ Put licence into review
     await page.getByText('Put licence into review').click()
