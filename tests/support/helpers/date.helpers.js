@@ -90,6 +90,38 @@ export function formatLongDate(date) {
 }
 
 /**
+ * Splits a date range into calendar month periods, each with a field name matching the external return submission
+ * form's convention for naming its monthly volume/reading inputs, for example `2025-04-01_2025-04-30`
+ *
+ * @param {Date | string} startDate - The start of the date range
+ * @param {Date | string} endDate - The end of the date range
+ *
+ * @returns {object[]} An array of `{ startDate, endDate, fieldName }` objects, one per calendar month in the range
+ */
+export function monthlyReturnPeriods(startDate, endDate) {
+  const periods = []
+
+  const rangeEnd = new Date(endDate)
+
+  let cursor = new Date(startDate)
+
+  while (cursor <= rangeEnd) {
+    const monthStartDate = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth(), 1))
+    const monthEndDate = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 0))
+
+    periods.push({
+      startDate: monthStartDate,
+      endDate: monthEndDate,
+      fieldName: `${formatDateToIso(monthStartDate)}_${formatDateToIso(monthEndDate)}`
+    })
+
+    cursor = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1))
+  }
+
+  return periods
+}
+
+/**
  * Given a return period, returns a new period with the same properties but start and end dates moved back 1 period
  *
  * If the given period is quarterly, the dates will be moved back by 3 months. If it's not quarterly, the dates will be
