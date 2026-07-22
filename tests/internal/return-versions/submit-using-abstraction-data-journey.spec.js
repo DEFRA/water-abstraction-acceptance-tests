@@ -57,7 +57,7 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     // confirm we see return requirements generated from abstraction data
     // Return requirement 1
     await expect(page.locator('#requirement-0').getByRole('heading', { level: 2 })).toContainText('Example point 1')
-    await expect(page.locator('[data-test="purposes-0"]')).toContainText('General Farming & Domestic')
+    await expect(page.locator('[data-test="purposes-0"]')).toContainText('Spray Irrigation - Direct')
     await expect(page.locator('[data-test="points-0"]')).toContainText(
       'At National Grid Reference TQ 1234 5678 (Example point 1)'
     )
@@ -66,7 +66,7 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     await expect(page.locator('[data-test="site-description-0"]')).toContainText('Example point 1')
     await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
-    await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('None')
+    await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('Two-part tariff')
 
     // Return requirement 2
     await expect(page.locator('#requirement-1').getByRole('heading', { level: 2 })).toContainText('Example point 2')
@@ -104,7 +104,7 @@ test.describe('Submit return version using abstraction data (internal)', () => {
 
     // Return requirement 1
     await expect(page.locator('#requirement-0').getByRole('heading', { level: 2 })).toContainText('Example point 1')
-    await expect(page.locator('[data-test="purposes-0"]')).toContainText('General Farming & Domestic')
+    await expect(page.locator('[data-test="purposes-0"]')).toContainText('Spray Irrigation - Direct')
     await expect(page.locator('[data-test="points-0"]')).toContainText(
       'At National Grid Reference TQ 1234 5678 (Example point 1)'
     )
@@ -113,7 +113,7 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     await expect(page.locator('[data-test="site-description-0"]')).toContainText('Example point 1')
     await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
-    await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('None')
+    await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('Two-part tariff')
 
     // Return requirement 2
     await expect(page.locator('#requirement-1').getByRole('heading', { level: 2 })).toContainText('Example point 2')

@@ -16,8 +16,8 @@ export default function (returnVersionData, licence) {
     returnRequirements: [
       {
         id: returnRequirementId,
-        collectionFrequency: 'day',
-        reportingFrequency: 'day',
+        collectionFrequency: 'month',
+        reportingFrequency: 'month',
         returnVersionId: returnVersion.id,
         summer: false,
         upload: false,
@@ -27,7 +27,8 @@ export default function (returnVersionData, licence) {
         abstractionPeriodEndMonth: 12,
         siteDescription: 'TANKS ON JUPITER',
         legacyId: 9999990,
-        reference: 9999990
+        reference: 9999990,
+        twoPartTariff: false
       }
     ],
     returnRequirementPoints: points.map((point) => {
