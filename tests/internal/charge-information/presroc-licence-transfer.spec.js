@@ -32,47 +32,47 @@ test.describe('PRESROC licence transfer (internal)', () => {
     // Select reason for new charge information
     // choose Licence transferred and now chargeable and continue
     await page.locator('input#reason-7').click()
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Set charge start date
     // choose Licence version start date and continue
     await page.locator('input#startDate-2').click()
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Select an existing billing account for Big Farm Co Ltd
     // choose Set up a new billing account and continue
     await page.getByRole('radio', { name: 'Set up a new billing account' }).click()
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Who should the bills go to?
     // choose Another billing contact then enter a name to search for and continue
     await page.locator('input#account-2').click()
     await page.locator('input#accountSearch').fill('Test Farm Co Ltd')
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Select the account type
     // choose Individual and then enter a name and continue. We choose an individual because Company requires a
     // valid company's house number
     await page.locator('input#accountType-3').click()
     await page.locator('input#personName').fill('Test Farm Co Ltd')
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Select an existing address for Big Farm Co Ltd
     // choose existing address Big Farm and continue (we already have journeys that use the address lookup so no need to
     // repeat here)
     await page.locator('input#selectedAddress').click()
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Do you need to add an FAO?
     // choose Yes and continue
     await page.locator('input#faoRequired').click()
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Set up a contact
     // choose Add a new department and continue
     await page.locator('input#selectedContact-2').click()
     await page.locator('input#department').fill('Test Farm Manager')
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Check billing account details
     // check the details are as expected and confirm
@@ -87,12 +87,12 @@ test.describe('PRESROC licence transfer (internal)', () => {
     await expect(billingAccountSummary.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
       'Test Farm Manager'
     )
-    await page.locator('form > .govuk-button', { hasText: 'Confirm' }).click()
+    await page.getByRole('button', { name: 'Confirm' }).click()
 
     // Use abstraction data to set up the element?
     // choose Yes and continue
     await page.locator('input#useAbstractionData-4').click()
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Check charge information
     // check the charge details and element details are as expected and then confirm
@@ -144,7 +144,7 @@ test.describe('PRESROC licence transfer (internal)', () => {
     // environmental improvement unit charge
     await expect(elementSummary.locator('div:nth-child(9) > dd.govuk-summary-list__value')).toContainText('Other')
 
-    await page.locator('form > .govuk-button', { hasText: 'Confirm' }).click()
+    await page.getByRole('button', { name: 'Confirm' }).click()
 
     // Charge information complete
     // confirm the charge information is submitted and then click to view it
@@ -159,7 +159,7 @@ test.describe('PRESROC licence transfer (internal)', () => {
     // approve the new charge version
     await expect(page.locator('strong.govuk-tag--orange')).toContainText('Review')
     await page.locator('input#reviewOutcome').click()
-    await page.locator('form > .govuk-button', { hasText: 'Continue' }).click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     // Charge information
     // confirm our new charge information is APPROVED and that the licence has been flagged for the next supplementary

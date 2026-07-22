@@ -1,8 +1,8 @@
 import billingAccountData from '../data/billing-account.data.js'
 import billRunData from '../data/bill-run.data.js'
+import licenceScenario from './licence.scenario.js'
 import presrocChargeReferenceData from '../data/presroc-charge-reference.data.js'
 import presrocChargeVersionData from '../data/presroc-charge-version.data.js'
-import licenceScenario from './licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a pre-SRoC charge version'
