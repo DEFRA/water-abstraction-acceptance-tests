@@ -1,4 +1,5 @@
 import scenarioData from '../../support/scenarios/licence-with-presroc-charge-version.scenario.js'
+import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('PRESROC licence transfer (internal)', () => {
@@ -76,17 +77,11 @@ test.describe('PRESROC licence transfer (internal)', () => {
 
     // Check billing account details
     // check the details are as expected and confirm
-    const billingAccountSummary = page.locator('section > dl')
-
-    await expect(billingAccountSummary.locator('div:nth-child(1) > dd.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Billing contact name').locator('.govuk-summary-list__value')).toContainText(
       'Test Farm Co Ltd'
     )
-    await expect(billingAccountSummary.locator('div:nth-child(2) > dd.govuk-summary-list__value')).toContainText(
-      'Big Farm'
-    )
-    await expect(billingAccountSummary.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
-      'Test Farm Manager'
-    )
+    await expect(summaryRow(page, 'Billing address').locator('.govuk-summary-list__value')).toContainText('Big Farm')
+    await expect(summaryRow(page, 'FAO').locator('.govuk-summary-list__value')).toContainText('Test Farm Manager')
     await page.getByRole('button', { name: 'Confirm' }).click()
 
     // Use abstraction data to set up the element?
@@ -96,53 +91,50 @@ test.describe('PRESROC licence transfer (internal)', () => {
 
     // Check charge information
     // check the charge details and element details are as expected and then confirm
-    const chargeInformationSummary = page.locator('section:nth-child(1) > dl')
 
     // reason
-    await expect(chargeInformationSummary.locator('div:nth-child(1) > dd.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Reason').locator('.govuk-summary-list__value')).toContainText(
       'Licence transferred and now chargeable'
     )
     // start date
-    await expect(chargeInformationSummary.locator('div:nth-child(2) > dd.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Start date').locator('.govuk-summary-list__value')).toContainText(
       '1 January 2018'
     )
     // billing account
-    await expect(chargeInformationSummary.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Billing account').locator('.govuk-summary-list__value')).toContainText(
       'Test Farm Co Ltd'
     )
-    await expect(chargeInformationSummary.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
-      'Big Farm'
-    )
-    await expect(chargeInformationSummary.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Billing account').locator('.govuk-summary-list__value')).toContainText('Big Farm')
+    await expect(summaryRow(page, 'Billing account').locator('.govuk-summary-list__value')).toContainText(
       'Test Farm Manager'
     )
     // licence holder
-    await expect(chargeInformationSummary.locator('div:nth-child(4) > dd.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Licence holder').locator('.govuk-summary-list__value')).toContainText(
       'Big Farm Co Ltd'
     )
 
     await expect(page.locator('form > section > h2')).toContainText('Element')
 
-    const elementSummary = page.locator('form > section > dl')
-
     // abstraction period
-    await expect(elementSummary.locator('div:nth-child(3) > dd.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Abstraction period').locator('.govuk-summary-list__value')).toContainText(
       '1 April to 31 March'
     )
     // annual quantities
-    await expect(elementSummary.locator('div:nth-child(4) > dd.govuk-summary-list__value')).toContainText(
+    await expect(summaryRow(page, 'Annual quantities').locator('.govuk-summary-list__value')).toContainText(
       '15.54ML authorised'
     )
     // time limit
-    await expect(elementSummary.locator('div:nth-child(5) > dd.govuk-summary-list__value')).toContainText('No')
+    await expect(summaryRow(page, 'Time limit').locator('.govuk-summary-list__value')).toContainText('No')
     // source
-    await expect(elementSummary.locator('div:nth-child(6) > dd.govuk-summary-list__value')).toContainText('Unsupported')
+    await expect(summaryRow(page, 'Source').locator('.govuk-summary-list__value')).toContainText('Unsupported')
     // season
-    await expect(elementSummary.locator('div:nth-child(7) > dd.govuk-summary-list__value')).toContainText('All Year')
+    await expect(summaryRow(page, 'Season').locator('.govuk-summary-list__value')).toContainText('All Year')
     // loss
-    await expect(elementSummary.locator('div:nth-child(8) > dd.govuk-summary-list__value')).toContainText('Medium')
+    await expect(summaryRow(page, 'Loss').locator('.govuk-summary-list__value')).toContainText('Medium')
     // environmental improvement unit charge
-    await expect(elementSummary.locator('div:nth-child(9) > dd.govuk-summary-list__value')).toContainText('Other')
+    await expect(
+      summaryRow(page, 'Environmental Improvement Unit Charge').locator('.govuk-summary-list__value')
+    ).toContainText('Other')
 
     await page.getByRole('button', { name: 'Confirm' }).click()
 
