@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/unregistered-licence-with-two-purposes-and-requirements.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-two-purposes-and-requirements.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Update the purpose and points of a copied return requirement and add another manually (internal)', () => {

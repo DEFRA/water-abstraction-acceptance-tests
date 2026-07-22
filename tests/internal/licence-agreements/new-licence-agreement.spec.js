@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/unregistered-licence.scenario.js'
+import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('New licence agreement journey (internal)', () => {

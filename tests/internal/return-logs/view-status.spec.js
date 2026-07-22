@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/unregistered-licence-with-all-return-log-statuses.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-all-return-log-statuses.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('View returns and their status (internal)', () => {

@@ -1,4 +1,4 @@
-import scenarioData from '../../../../support/scenarios/two-part-tariff-review-01.scenario.js'
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-completed-return-log.scenario.js'
 import { test, expect } from '../../../../support/fixtures.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'

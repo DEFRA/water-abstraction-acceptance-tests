@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/unregistered-licence-with-two-purposes.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-two-purposes.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Submit return version manually (internal)', () => {

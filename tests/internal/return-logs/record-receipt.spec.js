@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/unregistered-licence-with-open-winter-return-log.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Record receipt for return (internal)', () => {
