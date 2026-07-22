@@ -1,15 +1,15 @@
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
 import pointData from '../data/point.data.js'
-import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
+import licenceScenario from './licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regionCode } from '../default-values.js'
 
-export const title = 'Unregistered licence with two purposes'
+export const title = 'Licence with two purposes'
 export const description =
   'A licence with two points and two licence version purposes, and no existing return requirements'
 
 export default function () {
-  const licence = unregisteredLicenceScenario()
+  const licence = licenceScenario()
 
   const secondPoint = pointData('Example point 2', 'TT 9876 5432')
 

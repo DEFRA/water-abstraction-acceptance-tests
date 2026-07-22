@@ -1,13 +1,12 @@
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
+import licenceScenario from './licence.scenario.js'
 import { compareDates } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Unregistered licence with open return log (first period)'
-export const description =
-  'Unregistered licence with an open return log for the first return period with no due date set'
+export const title = 'Licence with open return log (first period)'
+export const description = 'Licence with an open return log for the first return period with no due date set'
 
 export default function (calculatedDates) {
   const { firstReturnPeriod } = calculatedDates
@@ -19,25 +18,25 @@ export default function (calculatedDates) {
     quarterly: firstReturnPeriod.quarterly
   }
 
-  const unregisteredLicence = unregisteredLicenceScenario()
+  const licence = licenceScenario()
 
   // We want the return logs for the licence to match with the first quarter shown in the journey. This is dynamically
   // calculated based on the current date, so could be a quarterly period, or the winter or summer cycle.
   // Only licences flagged as water undertakers are eligible for quarterly returns, so we ensure the licence aligns.
-  unregisteredLicence.licences[0].waterUndertaker = firstPeriod.quarterly
+  licence.licences[0].waterUndertaker = firstPeriod.quarterly
 
-  const returnVersion = returnVersionData(unregisteredLicence)
+  const returnVersion = returnVersionData(licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
   returnVersion.returnVersions[0].startDate = firstPeriod.startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, unregisteredLicence)
+  const returnRequirement = returnRequirementData(returnVersion, licence)
 
   const periods = _periods(firstPeriod, calculatedDates)
-  const returnLogs = _returnLogs(unregisteredLicence, returnRequirement, periods)
+  const returnLogs = _returnLogs(licence, returnRequirement, periods)
 
-  const result = mergeByKey(unregisteredLicence, returnVersion, returnRequirement, returnLogs)
+  const result = mergeByKey(licence, returnVersion, returnRequirement, returnLogs)
 
   return result
 }
