@@ -97,9 +97,7 @@ test.describe('PRESROC licence transfer (internal)', () => {
       'Licence transferred and now chargeable'
     )
     // start date
-    await expect(summaryRow(page, 'Start date').locator('.govuk-summary-list__value')).toContainText(
-      '1 January 2018'
-    )
+    await expect(summaryRow(page, 'Start date').locator('.govuk-summary-list__value')).toContainText('1 January 2018')
     // billing account
     await expect(summaryRow(page, 'Billing account').locator('.govuk-summary-list__value')).toContainText(
       'Test Farm Co Ltd'
