@@ -73,6 +73,34 @@ export default function (period, returnLogData) {
       {
         id: generateUUID(),
         returnSubmissionId,
+        startDate: `${startYear}-11-01`,
+        endDate: `${startYear}-11-30`,
+        quantity: null
+      },
+      {
+        id: generateUUID(),
+        returnSubmissionId,
+        startDate: `${startYear}-12-01`,
+        endDate: `${startYear}-12-31`,
+        quantity: null
+      },
+      {
+        id: generateUUID(),
+        returnSubmissionId,
+        startDate: `${endYear}-01-01`,
+        endDate: `${endYear}-01-31`,
+        quantity: null
+      },
+      {
+        id: generateUUID(),
+        returnSubmissionId,
+        startDate: `${endYear}-02-01`,
+        endDate: `${endYear}-02-28`,
+        quantity: null
+      },
+      {
+        id: generateUUID(),
+        returnSubmissionId,
         startDate: `${endYear}-03-01`,
         endDate: `${endYear}-03-31`,
         quantity: '4000'
