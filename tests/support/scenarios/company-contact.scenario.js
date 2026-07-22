@@ -1,13 +1,13 @@
 import companyContactData from '../data/company-contact.data.js'
 import notificationData from '../data/notification.data.js'
-import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
+import licenceScenario from './licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Company contact'
 export const description = 'A licence, licence holder, company, a contact and notification data'
 
 export default function () {
-  const unregisteredLicence = unregisteredLicenceScenario()
+  const unregisteredLicence = licenceScenario()
 
   const companyContact = companyContactData(unregisteredLicence)
 

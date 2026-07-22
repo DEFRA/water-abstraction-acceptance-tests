@@ -1,18 +1,18 @@
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import unregisteredLicenceScenario from './unregistered-licence.scenario.js'
+import licenceScenario from './licence.scenario.js'
 import { relativeToToday } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'All return log statuses'
-export const description = 'Unregistered licence with returns logs covering all possible statuses'
+export const description = 'Licence with return logs covering all possible statuses'
 
 export default function (calculatedDates) {
   const currentPeriod = _currentPeriod(calculatedDates)
   const previousPeriod = _previousPeriod(currentPeriod)
 
-  const licence = unregisteredLicenceScenario()
+  const licence = licenceScenario()
   const returnVersion = returnVersionData(licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is

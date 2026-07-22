@@ -1,5 +1,5 @@
 import primaryUserData from '../data/primary-user.data.js'
-import unregisteredLicenceWithOpenWinterReturnLog from './/unregistered-licence-with-open-winter-return-log.scenario.js'
+import licenceWithOpenWinterReturnLog from './licence-with-open-winter-return-log.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Registered licence with an open return log (winter cycle)'
@@ -8,14 +8,14 @@ export const description =
 
 export default function (calculatedDates) {
   // We load in the unregistered open scenario because it has 99% of the data we need
-  const unregisteredLicence = unregisteredLicenceWithOpenWinterReturnLog(calculatedDates)
+  const licence = licenceWithOpenWinterReturnLog(calculatedDates)
 
   // We then add the primary user, which is what makes the licence 'registered'
-  const primaryUser = primaryUserData('external@example.com', unregisteredLicence)
+  const primaryUser = primaryUserData('external@example.com', licence)
 
   // Linking a primary user's company entity to the licence's 'licenceDocumentHeaders' is the only way we can link a
   // registered licence to a licence holder.
-  unregisteredLicence.licenceDocumentHeaders[0].companyEntityId = primaryUser.licenceEntityRoles[0].companyEntityId
+  licence.licenceDocumentHeaders[0].companyEntityId = primaryUser.licenceEntityRoles[0].companyEntityId
 
-  return mergeByKey(unregisteredLicence, primaryUser)
+  return mergeByKey(licence, primaryUser)
 }
