@@ -1,39 +1,17 @@
-import licenceData from '../fixture-builder/licence.js'
+import { generateUUID } from '../helpers/generate-uuid.js'
 
-export const title = 'Licence with a pre-SRoC charge version'
-export const description = 'Licence with an ALCS (pre-SRoC) charge version and a sent two-part tariff bill run'
+export default function (chargeVersionData) {
+  const chargeReferenceId = generateUUID()
 
-export default function () {
+  const {
+    chargeVersions: [chargeVersion]
+  } = chargeVersionData
+
   return {
-    ...licenceData(),
-    billRuns: [
-      {
-        regionId: { schema: 'public', table: 'regions', lookup: 'naldRegionId', value: 9, select: 'id' },
-        batchType: 'two_part_tariff',
-        fromFinancialYearEnding: '2023',
-        toFinancialYearEnding: '2023',
-        status: 'sent'
-      }
-    ],
-    chargeVersions: [
-      {
-        id: 'fb1c7c5d-e723-4ab2-861e-5aae6d428019',
-        licenceId: '8717da0e-28d4-4833-8e32-1da050b60055',
-        licenceRef: 'AT/TE/ST/01/01',
-        billingAccountId: '16cb50a5-e3e6-41f4-a42b-9dad6a69fc0c',
-        regionCode: 9,
-        scheme: 'alcs',
-        versionNumber: 1,
-        startDate: '2018-01-01',
-        status: 'current',
-        source: 'wrls',
-        companyId: 'e8abdbb4-aeea-47d4-91b2-97bf82bc2778'
-      }
-    ],
     chargeReferences: [
       {
-        id: '69ea7fd9-961b-4d5d-be8b-ecd0e9cc8482',
-        chargeVersionId: 'fb1c7c5d-e723-4ab2-861e-5aae6d428019',
+        id: chargeReferenceId,
+        chargeVersionId: chargeVersion.id,
         factorsOverridden: false,
         abstractionPeriodStartDay: 1,
         abstractionPeriodStartMonth: 4,
