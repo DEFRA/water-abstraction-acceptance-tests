@@ -6,9 +6,9 @@ import unregisteredLicenceWithChargeVersionScenario from './unregistered-licence
 import { previousPeriod } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Two-part tariff review 01'
+export const title = 'Unregistered licence with tpt charge version and completed return log'
 export const description =
-  'Testing a two-part tariff bill run with a simple scenario, licence is current and not in workflow, it has one applicable charge version with a single charge reference and element both of which are 2pt. It has just one return, and it and the charge element exactly match'
+  'Unregistered licence with a return version and TPT charge version based on the licence data, plus a completed return log for the previous winter cycle'
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
