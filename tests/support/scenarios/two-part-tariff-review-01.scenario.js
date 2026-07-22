@@ -20,23 +20,33 @@ export default function (calculatedDates) {
     quarterly: false
   })
 
-  const unregisteredLicenceWithChargeVersion = unregisteredLicenceWithChargeVersionScenario()
+  const currentPeriodDetails = {
+    startDate: new Date(currentWinterReturnCycle.startDate),
+    endDate: new Date(currentWinterReturnCycle.endDate),
+    dueDate: null,
+    quarterly: false
+  }
 
-  // The charge element uses purpose 400, so align the licence version purpose (which drives the return requirement and
-  // return log purpose) to 400. This ensures the return matches the charge element during two-part tariff matching.
-  unregisteredLicenceWithChargeVersion.licenceVersionPurposes[0].purposeId.value = '400'
+  const licence = unregisteredLicenceWithChargeVersionScenario()
 
-  const returnVersion = returnVersionData(unregisteredLicenceWithChargeVersion)
+  const returnVersion = returnVersionData(licence)
 
-  const returnRequirement = returnRequirementData(returnVersion, unregisteredLicenceWithChargeVersion)
-  returnRequirement.returnRequirements[0].collectionFrequency = 'month'
-  returnRequirement.returnRequirements[0].reportingFrequency = 'month'
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the first return log we're seeding.
+  returnVersion.returnVersions[0].startDate = previousPeriodDetails.startDate
 
-  const returnLog = returnLogData(unregisteredLicenceWithChargeVersion, returnRequirement, previousPeriodDetails)
-  returnLog.returnLogs[0].metadata.isTwoPartTariff = true
-  returnLog.returnLogs[0].status = 'completed'
+  const returnRequirement = returnRequirementData(returnVersion, licence)
 
-  const returnSubmission = returnSubmissionData(previousPeriodDetails, returnLog)
+  returnRequirement.returnRequirements[0].twoPartTariff = true
 
-  return mergeByKey(unregisteredLicenceWithChargeVersion, returnVersion, returnRequirement, returnLog, returnSubmission)
+  const previousReturnLog = returnLogData(licence, returnRequirement, previousPeriodDetails)
+  const currentReturnLog = returnLogData(licence, returnRequirement, currentPeriodDetails)
+
+  previousReturnLog.returnLogs[0].status = 'completed'
+
+  const totalVolume = licence.licenceVersionPurposes[0].annualQuantity
+
+  const returnSubmission = returnSubmissionData(previousPeriodDetails, previousReturnLog, totalVolume)
+
+  return mergeByKey(licence, returnVersion, returnRequirement, previousReturnLog, currentReturnLog, returnSubmission)
 }
