@@ -1,5 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-two-purposes-and-requirements.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 
 test.describe('Cancel a return version using copy from existing (internal)', () => {
   let licence
@@ -64,7 +65,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
     await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see the start date information we expect
-    await expect(page.locator('[data-test="start-date"]')).toContainText('1 January 2018')
+    await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(licence.startDate))
 
     // confirm we see the reason we selected
     await expect(page.locator('[data-test="reason"]')).toContainText('Change to special agreement')

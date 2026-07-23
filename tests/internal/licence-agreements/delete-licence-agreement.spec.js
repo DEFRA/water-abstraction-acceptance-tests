@@ -1,5 +1,6 @@
-import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
+import scenarioData from '../../support/scenarios/licence-pre-sroc-with-agreement.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 
 test.describe('Delete licence agreement journey (internal)', () => {
   let licence
@@ -42,7 +43,7 @@ test.describe('Delete licence agreement journey (internal)', () => {
 
     await expect(row.locator('td').nth(0)).toContainText('Two-part tariff') // agreement
     await expect(row.locator('td').nth(1)).toContainText('') // date signed
-    await expect(row.locator('td').nth(2)).toContainText('1 January 2018') // start date
+    await expect(row.locator('td').nth(2)).toContainText(formatLongDate(licence.startDate)) // start date
     await expect(row.locator('td').nth(3)).toContainText('') // end date
 
     await page.getByText('Delete agreement').click()

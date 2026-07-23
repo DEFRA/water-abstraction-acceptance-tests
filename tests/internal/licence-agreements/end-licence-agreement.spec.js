@@ -1,8 +1,11 @@
-import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
+import scenarioData from '../../support/scenarios/licence-pre-sroc-with-agreement.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 
 test.describe('End licence agreement journey (internal)', () => {
   let licence
+  let invalidEndDateYear
+  let validEndDateYear
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
@@ -12,6 +15,15 @@ test.describe('End licence agreement journey (internal)', () => {
     } = scenario
 
     licence = scenarioLicence
+
+    // The agreement's start date matches the licence's start date, which is always 1 April. A valid end date must
+    // either match existing charge information or be 31 March, and cannot be before the agreement start date, so we
+    // use 31 March of the following year. The invalid date only needs to be before the start date.
+    const startDateYear = new Date(licence.startDate).getUTCFullYear()
+
+    invalidEndDateYear = startDateYear - 1
+
+    validEndDateYear = startDateYear + 1
 
     await setup(scenario)
   })
@@ -40,7 +52,7 @@ test.describe('End licence agreement journey (internal)', () => {
     // first check the validation for invalid dates is working
     await page.locator('#endDate-day').fill('01')
     await page.locator('#endDate-month').fill('01')
-    await page.locator('#endDate-year').fill('2021')
+    await page.locator('#endDate-year').fill(String(invalidEndDateYear))
     await page.locator('form > .govuk-button').click()
     await expect(page.locator('.govuk-error-summary')).toContainText(
       'You must enter an end date that matches some existing charge information or is 31 March.You cannot use a date that is before the agreement start date.'
@@ -49,7 +61,7 @@ test.describe('End licence agreement journey (internal)', () => {
     // then repeat using a valid date
     await page.locator('#endDate-day').fill('31')
     await page.locator('#endDate-month').fill('03')
-    await page.locator('#endDate-year').fill('2022')
+    await page.locator('#endDate-year').fill(String(validEndDateYear))
     await page.locator('form > .govuk-button').click()
 
     // You're about to end this agreement
@@ -58,8 +70,8 @@ test.describe('End licence agreement journey (internal)', () => {
 
     await expect(confirmRow.locator('td').nth(0)).toContainText('Two-part tariff') // agreement
     await expect(confirmRow.locator('td').nth(1)).toContainText('') // date signed
-    await expect(confirmRow.locator('td').nth(2)).toContainText('1 January 2018') // start date
-    await expect(confirmRow.locator('td').nth(3)).toContainText('31 March 2022') // end date
+    await expect(confirmRow.locator('td').nth(2)).toContainText(formatLongDate(licence.startDate)) // start date
+    await expect(confirmRow.locator('td').nth(3)).toContainText(formatLongDate(validEndDateYear + '-03-31')) // end date
 
     await page.locator('form > .govuk-button', { hasText: 'End agreement' }).click()
 
@@ -70,8 +82,8 @@ test.describe('End licence agreement journey (internal)', () => {
 
     const row = page.locator('tbody tr', { hasText: 'Two-part tariff' })
 
-    await expect(row.locator('td').nth(0)).toContainText('1 January 2018')
-    await expect(row.locator('td').nth(1)).toContainText('31 March 2022')
+    await expect(row.locator('td').nth(0)).toContainText(formatLongDate(licence.startDate))
+    await expect(row.locator('td').nth(1)).toContainText(formatLongDate(validEndDateYear + '-03-31'))
     await expect(row.locator('td').nth(2)).toContainText('Two-part tariff')
     await expect(row.locator('td').nth(3)).toContainText('')
     await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()
