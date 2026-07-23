@@ -10,6 +10,10 @@ export const description = 'Licence with one charge version, reference and eleme
 export default function () {
   const licence = licenceScenario()
 
+  // charge-version.data.js derives the charge version's startDate and scheme from the licence's own startDate, so we
+  // move it to the start of SRoC to get an SRoC charge version
+  licence.licences[0].startDate = '2022-04-01'
+
   const billingAccount = billingAccountData(licence)
   const chargeVersion = chargeVersionData(billingAccount, licence)
   const chargeReference = chargeReferenceData(chargeVersion, licence)

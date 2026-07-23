@@ -1,8 +1,8 @@
 import billingAccountData from '../data/billing-account.data.js'
 import billRunData from '../data/bill-run.data.js'
+import chargeVersionData from '../data/charge-version.data.js'
 import licenceScenario from './licence.scenario.js'
 import presrocChargeReferenceData from '../data/presroc-charge-reference.data.js'
-import presrocChargeVersionData from '../data/presroc-charge-version.data.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a pre-SRoC charge version'
@@ -11,8 +11,10 @@ export const description = 'Licence with an ALCS (pre-SRoC) charge version and a
 export default function () {
   const licence = licenceScenario()
 
+  // charge-version.data.js derives the charge version's startDate and scheme from the licence's own startDate. The
+  // licence already starts before SRoC by default, so no override is needed here to get an ALCS charge version
   const billingAccount = billingAccountData(licence)
-  const chargeVersion = presrocChargeVersionData(billingAccount, licence)
+  const chargeVersion = chargeVersionData(billingAccount, licence)
   const chargeReference = presrocChargeReferenceData(chargeVersion)
 
   const billRun = billRunData()
