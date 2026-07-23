@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/licence.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
 import { determineReturnCycleStartDate, formatLongDate, today } from '../../support/helpers/date.helpers.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('New licence agreement journey (internal)', () => {
   let licence
@@ -73,12 +73,15 @@ test.describe('New licence agreement journey (internal)', () => {
     // confirm we are back on the Charge Information page and our licence agreement is present
     await expect(page.locator('h1')).toContainText('Licence set up')
 
-    const row = page.locator('tbody tr', { hasText: formatLongDate(startDateYear + '-04-01') })
+    const row = page.getByRole('row', { name: formatLongDate(startDateYear + '-04-01') })
 
-    await expect(row.locator('td').nth(0)).toContainText(formatLongDate(startDateYear + '-04-01')) // start date
-    await expect(row.locator('td').nth(1)).toContainText('') // end date
-    await expect(row.locator('td').nth(2)).toContainText('Two-part tariff') // agreement
-    await expect(row.locator('td').nth(3)).toContainText('') // date signed
+    // start date, end date, agreement, date signed
+    await expect(row.getByRole('cell')).toHaveText([
+      formatLongDate(startDateYear + '-04-01'),
+      '',
+      'Two-part tariff',
+      ''
+    ])
 
     // actions
     await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()

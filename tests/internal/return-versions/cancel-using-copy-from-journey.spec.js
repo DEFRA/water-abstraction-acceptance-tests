@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-two-purposes-and-requirements.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Cancel a return version using copy from existing (internal)', () => {
   let licence

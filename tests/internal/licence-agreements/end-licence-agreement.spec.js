@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('End licence agreement journey (internal)', () => {
   let licence
@@ -66,12 +66,15 @@ test.describe('End licence agreement journey (internal)', () => {
 
     // You're about to end this agreement
     // confirm the details match what was entered and continue
-    const confirmRow = page.locator('tbody tr')
+    const confirmRow = page.getByRole('row', { name: 'Two-part tariff' })
 
-    await expect(confirmRow.locator('td').nth(0)).toContainText('Two-part tariff') // agreement
-    await expect(confirmRow.locator('td').nth(1)).toContainText('') // date signed
-    await expect(confirmRow.locator('td').nth(2)).toContainText(formatLongDate(licence.startDate)) // start date
-    await expect(confirmRow.locator('td').nth(3)).toContainText(formatLongDate(validEndDateYear + '-03-31')) // end date
+    // agreement, date signed, start date, end date
+    await expect(confirmRow.getByRole('cell')).toHaveText([
+      'Two-part tariff',
+      '',
+      formatLongDate(licence.startDate),
+      formatLongDate(validEndDateYear + '-03-31')
+    ])
 
     await page.locator('form > .govuk-button', { hasText: 'End agreement' }).click()
 
@@ -80,12 +83,15 @@ test.describe('End licence agreement journey (internal)', () => {
     // the delete action available
     await expect(page.locator('h1')).toContainText('Licence set up')
 
-    const row = page.locator('tbody tr', { hasText: 'Two-part tariff' })
+    const row = page.getByRole('row', { name: 'Two-part tariff' })
 
-    await expect(row.locator('td').nth(0)).toContainText(formatLongDate(licence.startDate))
-    await expect(row.locator('td').nth(1)).toContainText(formatLongDate(validEndDateYear + '-03-31'))
-    await expect(row.locator('td').nth(2)).toContainText('Two-part tariff')
-    await expect(row.locator('td').nth(3)).toContainText('')
+    // start date, end date, agreement, date signed
+    await expect(row.getByRole('cell')).toHaveText([
+      formatLongDate(licence.startDate),
+      formatLongDate(validEndDateYear + '-03-31'),
+      'Two-part tariff',
+      ''
+    ])
     await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()
     await expect(page.locator('[data-test="end-agreement-0"]')).toHaveCount(0)
   })

@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Delete licence agreement journey (internal)', () => {
   let licence
@@ -39,12 +39,10 @@ test.describe('Delete licence agreement journey (internal)', () => {
     // confirm we are on the right page and it is showing the right agreement then delete it
     await expect(page.locator('.govuk-heading-l')).toContainText("You're about to delete this agreement")
 
-    const row = page.locator('tbody tr')
+    const row = page.getByRole('row', { name: 'Two-part tariff' })
 
-    await expect(row.locator('td').nth(0)).toContainText('Two-part tariff') // agreement
-    await expect(row.locator('td').nth(1)).toContainText('') // date signed
-    await expect(row.locator('td').nth(2)).toContainText(formatLongDate(licence.startDate)) // start date
-    await expect(row.locator('td').nth(3)).toContainText('') // end date
+    // agreement, date signed, start date, end date
+    await expect(row.getByRole('cell')).toHaveText(['Two-part tariff', '', formatLongDate(licence.startDate), ''])
 
     await page.getByText('Delete agreement').click()
 
