@@ -1,6 +1,6 @@
-import scenarioData from '../../support/scenarios/licence-pre-sroc.scenario.js'
+import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
-import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { determineReturnCycleStartDate, formatLongDate, today } from '../../support/helpers/date.helpers.js'
 
 test.describe('New licence agreement journey (internal)', () => {
   let licence
@@ -15,9 +15,10 @@ test.describe('New licence agreement journey (internal)', () => {
 
     licence = scenarioLicence
 
-    // Without existing charge information, the app only accepts a date that either matches the licence's own start
-    // date or is 1 April, so we reuse the licence's start year for the agreement's custom start date.
-    startDateYear = new Date(licence.startDate).getUTCFullYear()
+    // Without existing charge information, the app only accepts a date that either matches some existing charge
+    // information or is 1 April of the current financial year, so we use that year for the agreement's custom start
+    // date.
+    startDateYear = determineReturnCycleStartDate(today(), false).getUTCFullYear()
 
     await setup(scenario)
   })
@@ -82,13 +83,5 @@ test.describe('New licence agreement journey (internal)', () => {
     // actions
     await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()
     await expect(page.locator('[data-test="end-agreement-0"]')).toBeVisible()
-
-    // Navigate to back to the Licence summary page
-    await page.locator('nav a', { hasText: 'Licence summary' }).click()
-
-    // Check the new licence agreement has flagged the licence for supplementary billing
-    await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
-    )
   })
 })

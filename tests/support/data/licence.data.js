@@ -18,15 +18,11 @@ export default function (licenceRef, companyData) {
 
   const startDate = formatDateToIso(previousCycleStartDate)
 
-  const permitLicenceStartDate = new Date(previousCycleStartDate)
-
-  permitLicenceStartDate.setUTCMonth(permitLicenceStartDate.getUTCMonth() - 2)
-
   return {
     permitLicences: [
       {
         licenceRef,
-        startDate: formatDateToIso(permitLicenceStartDate),
+        startDate,
         metadata: {
           source: 'acceptance-test-setup'
         }

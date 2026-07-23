@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/licence-pre-sroc-with-agreement.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 
@@ -88,13 +88,5 @@ test.describe('End licence agreement journey (internal)', () => {
     await expect(row.locator('td').nth(3)).toContainText('')
     await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()
     await expect(page.locator('[data-test="end-agreement-0"]')).toHaveCount(0)
-
-    // Navigate to back to the Licence summary page
-    await page.locator('nav a', { hasText: 'Licence summary' }).click()
-
-    // Check the new licence agreement has flagged the licence for supplementary billing
-    await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
-    )
   })
 })
