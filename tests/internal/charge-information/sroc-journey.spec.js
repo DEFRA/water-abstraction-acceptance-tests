@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/licence-with-presroc-charge-version.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-presroc-charge-version-and-bill-run.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('SROC charge information journey (internal)', () => {

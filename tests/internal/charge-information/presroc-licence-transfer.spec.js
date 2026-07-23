@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/licence-with-presroc-charge-version.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-presroc-charge-version-and-bill-run.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
@@ -21,7 +21,7 @@ test.describe('PRESROC licence transfer (internal)', () => {
     await login(users.billingAndData)
   })
 
-  test('adds a new charge information which transfers the licence to a new billing account with new address and FAO contact then approves it and confirms licence is flagged for supplementary billing', async ({
+  test('adds a new charge version which transfers the licence to a new billing account with new address and FAO contact then approves it and confirms licence is flagged for supplementary billing', async ({
     page
   }) => {
     await page.goto(`/system/licences/${licence.id}/set-up`)
