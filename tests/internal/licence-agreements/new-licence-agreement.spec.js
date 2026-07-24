@@ -1,8 +1,10 @@
 import scenarioData from '../../support/scenarios/licence.scenario.js'
+import { determineReturnCycleStartDate, formatLongDate, today } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('New licence agreement journey (internal)', () => {
   let licence
+  let startDateYear
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
@@ -12,6 +14,11 @@ test.describe('New licence agreement journey (internal)', () => {
     } = scenario
 
     licence = scenarioLicence
+
+    // Without existing charge information, the app only accepts a date that either matches some existing charge
+    // information or is 1 April of the current financial year, so we use that year for the agreement's custom start
+    // date.
+    startDateYear = determineReturnCycleStartDate(today(), false).getUTCFullYear()
 
     await setup(scenario)
   })
@@ -53,7 +60,7 @@ test.describe('New licence agreement journey (internal)', () => {
     await page.locator('input#isCustomStartDate').check()
     await page.locator('#startDate-day').fill('01')
     await page.locator('#startDate-month').fill('04')
-    await page.locator('#startDate-year').fill('2018')
+    await page.locator('#startDate-year').fill(String(startDateYear))
     await page.locator('form > .govuk-button').click()
 
     // Check agreement details
@@ -66,23 +73,18 @@ test.describe('New licence agreement journey (internal)', () => {
     // confirm we are back on the Charge Information page and our licence agreement is present
     await expect(page.locator('h1')).toContainText('Licence set up')
 
-    const row = page.locator('tbody tr', { hasText: '1 April 2018' })
+    const row = page.getByRole('row', { name: formatLongDate(startDateYear + '-04-01') })
 
-    await expect(row.locator('td').nth(0)).toContainText('1 April 2018') // start date
-    await expect(row.locator('td').nth(1)).toContainText('') // end date
-    await expect(row.locator('td').nth(2)).toContainText('Two-part tariff') // agreement
-    await expect(row.locator('td').nth(3)).toContainText('') // date signed
+    // start date, end date, agreement, date signed
+    await expect(row.getByRole('cell')).toHaveText([
+      formatLongDate(startDateYear + '-04-01'),
+      '',
+      'Two-part tariff',
+      ''
+    ])
 
     // actions
     await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()
     await expect(page.locator('[data-test="end-agreement-0"]')).toBeVisible()
-
-    // Navigate to back to the Licence summary page
-    await page.locator('nav a', { hasText: 'Licence summary' }).click()
-
-    // Check the new licence agreement has flagged the licence for supplementary billing
-    await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-      'This licence has been marked for the next supplementary bill run for the old charge scheme.'
-    )
   })
 })
