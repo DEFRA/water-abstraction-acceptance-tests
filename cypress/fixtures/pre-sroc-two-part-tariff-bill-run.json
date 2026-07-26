@@ -223,8 +223,8 @@
       "abstractionPeriodEndMonth": 10,
       "authorisedAnnualQuantity": 30,
       "billableAnnualQuantity": 25,
-      "season": "summer",
-      "seasonDerived": "summer",
+      "season": "all year",
+      "seasonDerived": "all year",
       "source": "unsupported",
       "loss": "high",
       "purposePrimaryId": {
@@ -253,7 +253,7 @@
       "scheme": "alcs",
       "adjustments": null,
       "eiucRegion": null,
-      "section127Agreement": null,
+      "section127Agreement": true,
       "restrictedSource": false,
       "volume": 0
     }

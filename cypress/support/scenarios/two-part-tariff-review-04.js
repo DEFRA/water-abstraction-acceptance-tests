@@ -1,11 +1,17 @@
 import chargeVersionData from '../fixture-builder/two-part-tariff-review-charge-version.js'
 import reviewLicenceData from '../fixture-builder/two-part-tariff-review-licence.js'
+import { currentFinancialYear } from '../helpers/date.helpers.js'
 
 export const title = 'Two-part tariff review 04'
 export const description =
   'Testing a two-part tariff bill run with a similar licence to scenario one, licence is current and not in workflow, it has one applicable charge version with a single charge reference and one charge element. The charge reference has an aggregate value. It has one return that matches.'
 
-export default function (endYear, startYear) {
+export default function () {
+  const previousFinancialYearInfo = currentFinancialYear(31, 3, -1)
+
+  const endYear = previousFinancialYearInfo.end.year
+  const startYear = previousFinancialYearInfo.start.year
+
   return {
     ...reviewLicenceData(),
     chargeVersions: [chargeVersionData()],
