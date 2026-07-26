@@ -80,7 +80,8 @@ test.describe('New licence agreement journey (internal)', () => {
       formatLongDate(startDateYear + '-04-01'),
       '',
       'Two-part tariff',
-      ''
+      '',
+      'Delete | End'
     ])
 
     // actions

@@ -90,7 +90,8 @@ test.describe('End licence agreement journey (internal)', () => {
       formatLongDate(licence.startDate),
       formatLongDate(validEndDateYear + '-03-31'),
       'Two-part tariff',
-      ''
+      '',
+      'Delete'
     ])
     await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()
     await expect(page.locator('[data-test="end-agreement-0"]')).toHaveCount(0)
