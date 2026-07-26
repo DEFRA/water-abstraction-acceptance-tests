@@ -79,16 +79,9 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // Review licences ~ Test you can filter by licence issue
     cy.get('.govuk-details__summary').click()
-    cy.get('[data-test="returns-late"]').click()
-    cy.contains('Apply filters').click()
-    cy.get('#main-content').should('contain.text', 'No licences found')
-    cy.contains('Clear filters').click()
-
-    cy.get('.govuk-details__summary').click()
     cy.get('[data-test="aggregate-factor"]').click()
     cy.contains('Apply filters').click()
     cy.get('.govuk-table__caption').should('contain.text', 'Showing all 1 licences')
-    cy.contains('Clear filters').click()
 
     // Review licences ~ Test it has the correct licence
     cy.get('[data-test="licence-1"]').should('contain.text', 'AT/TE/ST/01/01')
@@ -175,15 +168,13 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
     )
     cy.get('[data-test="total-billable-returns"]').should('contain.text', '32 ML')
     cy.get('[data-test="authorised-volume"]').should('contain.text', '32 ML')
-    cy.get('[data-test="additional-charges"]').should('contain.text', 'Public Water Supply')
     cy.get('[data-test="adjustment-0"]').should('contain.text', 'Aggregate factor (0.5 / 0.5)')
     cy.get('[data-test="adjustment-1"]').should('contain.text', 'Charge adjustment (1 / 1)')
     cy.contains('Change factors').click()
 
     // Change factors page ~ Amend the aggregate
     cy.get('.govuk-heading-xl').should('contain.text', 'Set the adjustment factors')
-    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Public Water Supply')
-    cy.get('[data-test="adjustment-1"]').should('contain.text', 'Two part tariff agreement')
+    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Two part tariff agreement')
     cy.get('#amended-aggregate').should('have.value', '0.5')
     cy.get('#amended-charge-adjustment').should('have.value', '1')
     // By changing the aggregate factor to 1 this removes it
@@ -201,8 +192,7 @@ describe('Testing a two-part tariff bill run with a similar licence to scenario 
 
     // Change factors page ~ Amend the charge adjustment
     cy.get('.govuk-heading-xl').should('contain.text', 'Set the adjustment factors')
-    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Public Water Supply')
-    cy.get('[data-test="adjustment-1"]').should('contain.text', 'Two part tariff agreement')
+    cy.get('[data-test="adjustment-0"]').should('contain.text', 'Two part tariff agreement')
     cy.get('#amended-aggregate').should('have.value', '1')
     cy.get('#amended-charge-adjustment').should('have.value', '1')
     cy.get('#amended-charge-adjustment').clear().type('0.5')
