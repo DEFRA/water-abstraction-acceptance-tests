@@ -112,6 +112,24 @@ test.describe('Submit a return with no meter readings (internal)', () => {
 - When porting a Cypress test, do not carry over Cypress's positional/class-chain selectors (e.g. `:nth-child(2) > .govuk-summary-list__actions > .govuk-link`) verbatim — rewrite them as Playwright locators that target what the element means (its role, label, or `data-test` attribute), not where it sits in the DOM
 - When several elements could match, disambiguate by scoping the `name`/`hasText` option or via a shared helper (e.g. a `_summaryRow(page, label)` that filters a `.govuk-summary-list__row` by its label) rather than reaching for `:nth-child`
 
+## Page structure (Playwright)
+
+- Do not use a comment to say what page a block of actions is on — assert the page's `h1` instead. The assertion documents itself and fails immediately if the page's copy changes, where a comment would silently go stale
+- For every page a journey visits, group its actions as: an `h1` assertion, then the input action(s) for that page, then the action that confirms or navigates on to the next page — separated by a blank line from the next page's block
+- Some pages render more than one `<h1>` (e.g. a GOV.UK confirmation panel alongside another heading). If `page.locator('h1')` hits a strict-mode violation, use `.last()` to target the specific, actionable heading rather than reaching for an unrelated locator
+
+```js
+// Bad — a comment stands in for actually asserting what page we're on
+// Select reason for new charge information
+await page.getByRole('radio', { name: 'New licence', exact: true }).check()
+await page.getByRole('button', { name: 'Continue' }).click()
+
+// Good — h1, input, action
+await expect(page.locator('h1')).toContainText('Select reason for new charge information')
+await page.getByRole('radio', { name: 'New licence', exact: true }).check()
+await page.getByRole('button', { name: 'Continue' }).click()
+```
+
 ## Naming conventions
 
 - **Directories and JavaScript files**: `kebab-case` (e.g. `core-licence.data.js`)
