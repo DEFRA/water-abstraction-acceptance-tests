@@ -22,7 +22,7 @@ export default function (billingAccountData, licenceData) {
         regionCode,
         scheme: 'sroc',
         versionNumber: 100,
-        startDate: '2022-04-01',
+        startDate: licence.startDate,
         status: 'current',
         source: 'wrls',
         changeReasonId: {

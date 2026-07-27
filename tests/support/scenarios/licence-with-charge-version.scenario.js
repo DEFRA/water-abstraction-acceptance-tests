@@ -1,6 +1,7 @@
 import billingAccountData from '../data/billing-account.data.js'
-import chargeVersionData from '../data/charge-version.data.js'
+import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
+import chargeVersionData from '../data/charge-version.data.js'
 import licenceScenario from './licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
@@ -12,7 +13,13 @@ export default function () {
 
   const billingAccount = billingAccountData(licence)
   const chargeVersion = chargeVersionData(billingAccount, licence)
-  const chargeReference = chargeReferenceData(chargeVersion, licence)
 
-  return mergeByKey(licence, billingAccount, chargeVersion, chargeReference)
+  const {
+    licenceVersionPurposes: [licenceVersionPurpose]
+  } = licence
+
+  const chargeReference = chargeReferenceData(chargeVersion, licenceVersionPurpose)
+  const chargeElement = chargeElementData(chargeReference, licenceVersionPurpose)
+
+  return mergeByKey(licence, billingAccount, chargeVersion, chargeReference, chargeElement)
 }

@@ -1,5 +1,6 @@
-import { generateUUID } from '../helpers/generate-uuid.js'
 import { regionCode } from '../default-values.js'
+import { determineReturnCycleStartDate, formatDateToIso, previousPeriod, today } from '../helpers/date.helpers.js'
+import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (licenceRef, companyData) {
   const licenceDocumentHeaderId = generateUUID()
@@ -12,11 +13,16 @@ export default function (licenceRef, companyData) {
     addresses: [address]
   } = companyData
 
+  const currentCycleStartDate = determineReturnCycleStartDate(today(), false)
+  const { startDate: previousCycleStartDate } = previousPeriod({ startDate: currentCycleStartDate, quarterly: false })
+
+  const startDate = formatDateToIso(previousCycleStartDate)
+
   return {
     permitLicences: [
       {
         licenceRef,
-        startDate: '2020-01-01',
+        startDate,
         metadata: {
           source: 'acceptance-test-setup'
         }
@@ -79,7 +85,7 @@ export default function (licenceRef, companyData) {
       {
         id: licenceDocumentId,
         licenceRef,
-        startDate: '2018-01-01'
+        startDate
       }
     ],
     licenceDocumentRoles: [
@@ -92,7 +98,7 @@ export default function (licenceRef, companyData) {
           value: 'licenceHolder',
           select: 'id'
         },
-        startDate: '2018-01-01',
+        startDate,
         companyId: company.id,
         addressId: address.id
       }
@@ -106,7 +112,7 @@ export default function (licenceRef, companyData) {
           historicalAreaCode: 'SAAR',
           regionalChargeArea: 'Southern'
         },
-        startDate: '2018-01-01',
+        startDate,
         waterUndertaker: false
       }
     ],
@@ -117,7 +123,7 @@ export default function (licenceRef, companyData) {
         issue: 1,
         increment: 0,
         status: 'current',
-        startDate: '2018-01-01',
+        startDate,
         externalId: `${regionCode}:1234:1:0`,
         companyId: company.id,
         addressId: address.id

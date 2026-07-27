@@ -1,4 +1,5 @@
 import scenarioData from '../../support/scenarios/licence-with-two-purposes-and-requirements.scenario.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Update the purpose and points of a copied return requirement and add another manually (internal)', () => {
@@ -61,7 +62,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
     await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see the start date and reason selected
-    await expect(page.locator('[data-test="start-date"]')).toContainText('1 January 2018')
+    await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(licence.startDate))
     await expect(page.locator('[data-test="reason"]')).toContainText('Minor change')
 
     // confirm we see the purpose and purpose description for the requirement copied from existing

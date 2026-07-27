@@ -6,9 +6,9 @@ export const title = 'Licence with an agreement'
 export const description = 'A licence, licence holder, company and a section 127 two-part tariff agreement'
 
 export default function () {
-  const unregisteredLicence = licenceScenario()
+  const licence = licenceScenario()
 
-  const licenceAgreement = licenceAgreementData(unregisteredLicence)
+  const licenceAgreement = licenceAgreementData(licence)
 
-  return mergeByKey(unregisteredLicence, licenceAgreement)
+  return mergeByKey(licence, licenceAgreement)
 }

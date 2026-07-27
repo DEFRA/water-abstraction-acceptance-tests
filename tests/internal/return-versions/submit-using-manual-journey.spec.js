@@ -1,8 +1,10 @@
 import scenarioData from '../../support/scenarios/licence-with-two-purposes.scenario.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Submit return version manually (internal)', () => {
   let licence
+  let customStartDateYear
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
@@ -12,6 +14,9 @@ test.describe('Submit return version manually (internal)', () => {
     } = scenario
 
     licence = scenarioLicence
+
+    // Must be a date after the licence's own start date, which defaults to a recent date
+    customStartDateYear = new Date(licence.startDate).getUTCFullYear() + 1
 
     await setup(scenario)
   })
@@ -111,7 +116,7 @@ test.describe('Submit return version manually (internal)', () => {
     await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
 
     // confirm we see the start date information we expect
-    await expect(page.locator('[data-test="start-date"]')).toContainText('1 January 2018')
+    await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(licence.startDate))
 
     // choose the change option for the start date
     await page.locator('[data-test="change-start-date"]').click()
@@ -120,12 +125,12 @@ test.describe('Submit return version manually (internal)', () => {
     await page.getByRole('radio', { name: 'Another date' }).check()
     await page.locator('#startDateDay').fill('02')
     await page.locator('#startDateMonth').fill('08')
-    await page.locator('#startDateYear').fill('2023')
+    await page.locator('#startDateYear').fill(String(customStartDateYear))
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on check page and see the start date changes
     await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
-    await expect(page.locator('[data-test="start-date"]')).toContainText('2 August 2023')
+    await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(customStartDateYear + '-08-02'))
 
     // confirm we see the reason we selected
     await expect(page.locator('[data-test="reason"]')).toContainText('Change to special agreement')
@@ -389,7 +394,9 @@ test.describe('Submit return version manually (internal)', () => {
     // Confirm we can display the return version details
     await page.locator('[data-test="return-version-0"]').click()
 
-    await expect(page.locator('h1')).toContainText('Requirements for returns starting 2 August 2023')
+    await expect(page.locator('h1')).toContainText(
+      `Requirements for returns starting ${formatLongDate(customStartDateYear + '-08-02')}`
+    )
 
     await expect(page.getByText('approved', { exact: true })).toBeVisible()
     await expect(page.locator('.govuk-body-l')).toContainText('Minor change created on')
