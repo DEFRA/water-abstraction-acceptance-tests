@@ -1,4 +1,5 @@
 import scenarioData from '../../support/scenarios/licence.scenario.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Submit no returns requirement (internal)', () => {
@@ -50,7 +51,7 @@ test.describe('Submit no returns requirement (internal)', () => {
     await expect(page.getByText('Returns are not required for this licence')).toBeVisible()
 
     // confirm we are seeing the details we selected
-    await expect(page.locator('[data-test="start-date"]')).toContainText('1 January 2018')
+    await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(licence.startDate))
     await expect(page.locator('[data-test="reason"]')).toContainText('Licence conditions do not require returns')
 
     // click the change link for the reason
@@ -133,7 +134,9 @@ test.describe('Submit no returns requirement (internal)', () => {
     // Confirm we can display the return version details
     await page.locator('[data-test="return-version-0"]').click()
 
-    await expect(page.locator('h1')).toContainText('Requirements for returns starting 1 January 2018')
+    await expect(page.locator('h1')).toContainText(
+      `Requirements for returns starting ${formatLongDate(licence.startDate)}`
+    )
 
     await expect(page.getByText('approved', { exact: true })).toBeVisible()
     await expect(page.locator('.govuk-body-l')).toContainText('Returns exception created on')

@@ -4,7 +4,7 @@ import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with an agreement and a bill run'
 export const description =
-  'A licence, licence holder, company, section 127 two-part tariff agreement, and a sent two-part tariff bill run'
+  'A licence, licence holder (company), section 127 two-part tariff agreement, and a sent two-part tariff bill run.'
 
 export default function () {
   const licenceAgreement = licenceWithAgreementScenario()
