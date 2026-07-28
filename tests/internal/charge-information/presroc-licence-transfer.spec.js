@@ -45,38 +45,38 @@ test.describe('Presroc licence transfer journey (internal)', () => {
 
       await expect(page.locator('h1')).toContainText('Select reason for new charge information')
       await page.getByRole('radio', { name: 'Licence transferred and now chargeable' }).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Set charge start date')
       await page.getByRole('radio', { description: formatLongDate(new Date()), exact: true }).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select an existing billing account for Big Farm Co Ltd')
       await page.getByRole('radio', { name: 'Set up a new billing account' }).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Who should the bills go to?')
       await page.getByRole('radio', { name: 'Another billing contact' }).check()
       await page.getByLabel('Search for organisation or individual').fill('Test Farm Co Ltd')
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the account type')
       await page.getByRole('radio', { name: 'Individual' }).check()
       await page.getByLabel('Full name').fill('Test Farm Co Ltd')
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select an existing address for Big Farm Co Ltd')
       await page.getByRole('radio').first().check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Do you need to add an FAO?')
       await page.getByRole('radio').first().check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Set up a contact')
       await page.getByRole('radio', { name: 'Add a new department' }).check()
       await page.getByRole('textbox', { name: 'Department name' }).fill('Test Farm Manager')
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check billing account details')
       await expect(page.locator('.govuk-summary-list__value', { hasText: 'Test Farm Co Ltd' })).toBeVisible()
@@ -88,7 +88,7 @@ test.describe('Presroc licence transfer journey (internal)', () => {
       await page
         .getByRole('radio', { name: `Use charge information valid from ${formatLongDate(chargeVersion.startDate)}` })
         .check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check charge information')
       await expect(
@@ -103,39 +103,39 @@ test.describe('Presroc licence transfer journey (internal)', () => {
 
       await expect(page.locator('h1')).toContainText('Enter a description for the charge reference')
       await page.locator('#description').fill('Automation-Test')
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the source')
       await page.getByRole('radio', { name: 'Non-tidal' }).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the loss category')
       await page.getByRole('radio', { name: 'Low' }).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Enter the total quantity to use for this charge reference')
       await page.locator('#volume').fill('150')
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the water availability')
       await page.locator('#isRestrictedSource').nth(1).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the water modelling charge')
       await page.locator('#waterModel').nth(1).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Do additional charges apply?')
       await page.getByRole('radio', { name: 'No' }).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Do adjustments apply?')
       await page.locator('#isAdjustments').nth(1).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Which adjustments apply?')
       await page.getByRole('checkbox', { name: 'Two-part tariff agreement' }).check()
-      await page.locator('form > .govuk-button').click()
+      await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check charge information')
       await page.getByRole('button', { name: 'Confirm' }).click()
