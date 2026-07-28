@@ -36,14 +36,14 @@ export default function (chargeReferenceData, licenceVersionPurpose) {
           schema: 'public',
           table: 'primaryPurposes',
           lookup: 'legacyId',
-          value: 'A',
+          value: licenceVersionPurpose.primaryPurposeId.value,
           select: 'id'
         },
         purposeSecondaryId: {
           schema: 'public',
           table: 'secondaryPurposes',
           lookup: 'legacyId',
-          value: 'AGR',
+          value: licenceVersionPurpose.secondaryPurposeId.value,
           select: 'id'
         }
       }
