@@ -22,7 +22,7 @@ test.describe('SROC charge information journey (internal)', () => {
   })
 
   test(
-    'journey',
+    'all three states of a charge version; creating, replacing and adding charge versions to a licence',
     {
       annotation: {
         type: 'description',
