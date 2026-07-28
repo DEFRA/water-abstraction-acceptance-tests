@@ -20,13 +20,8 @@ export default function (returnVersionData, licenceVersionPurpose, points) {
         abstractionPeriodStartMonth: licenceVersionPurpose.abstractionPeriodStartMonth,
         abstractionPeriodEndDay: licenceVersionPurpose.abstractionPeriodEndDay,
         abstractionPeriodEndMonth: licenceVersionPurpose.abstractionPeriodEndMonth,
-        siteDescription: {
-          schema: 'public',
-          table: 'purposes',
-          lookup: 'legacyId',
-          value: licenceVersionPurpose.purposeId.value,
-          select: 'description'
-        },
+        siteDescription:
+          licenceVersionPurpose.purposeId.value === '400' ? 'Spray Irrigation - Direct' : 'Make-Up Or Top Up Water',
         legacyId: Number(`9999${licenceVersionPurpose.purposeId.value}`),
         reference: Number(`9999${licenceVersionPurpose.purposeId.value}`),
         twoPartTariff: licenceVersionPurpose.purposeId.value === '400'
