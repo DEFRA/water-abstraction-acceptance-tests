@@ -2,7 +2,7 @@ import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { formatLongDate, yesterday } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
-test.describe('SROC charge information journey (internal)', () => {
+test.describe('Create, replace then add a charge version (internal)', () => {
   let licence
 
   test.beforeAll(async ({ setup }) => {
@@ -22,7 +22,7 @@ test.describe('SROC charge information journey (internal)', () => {
   })
 
   test(
-    'journey',
+    'all three states of a charge version; creating, replacing and adding charge versions to a licence',
     {
       annotation: {
         type: 'description',
