@@ -48,7 +48,7 @@ test.describe('Presroc licence transfer journey (internal)', () => {
       await page.locator('form > .govuk-button').click()
 
       await expect(page.locator('h1')).toContainText('Set charge start date')
-      await page.getByRole('radio', { name: 'Licence version start date' }).check()
+      await page.getByRole('radio', { description: formatLongDate(new Date()), exact: true }).check()
       await page.locator('form > .govuk-button').click()
 
       await expect(page.locator('h1')).toContainText('Select an existing billing account for Big Farm Co Ltd')
@@ -94,13 +94,50 @@ test.describe('Presroc licence transfer journey (internal)', () => {
       await expect(
         page.locator('.govuk-summary-list__value', { hasText: 'Licence transferred and now chargeable' })
       ).toBeVisible()
-      await expect(
-        page.locator('.govuk-summary-list__value', { hasText: formatLongDate(chargeVersion.startDate) })
-      ).toBeVisible()
+      await expect(page.locator('.govuk-summary-list__value', { hasText: formatLongDate(new Date()) })).toBeVisible()
       const annualQuantity = convertCubicMetresToMegalitres(licenceVersionPurpose.annualQuantity)
       await expect(
         page.locator('.govuk-summary-list__value', { hasText: `${annualQuantity}ML authorised` })
       ).toBeVisible()
+      await page.locator('button[value="addChargeCategory"]').click()
+
+      await expect(page.locator('h1')).toContainText('Enter a description for the charge reference')
+      await page.locator('#description').fill('Automation-Test')
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Select the source')
+      await page.getByRole('radio', { name: 'Non-tidal' }).check()
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Select the loss category')
+      await page.getByRole('radio', { name: 'Low' }).check()
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Enter the total quantity to use for this charge reference')
+      await page.locator('#volume').fill('150')
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Select the water availability')
+      await page.locator('#isRestrictedSource').nth(1).check()
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Select the water modelling charge')
+      await page.locator('#waterModel').nth(1).check()
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Do additional charges apply?')
+      await page.getByRole('radio', { name: 'No' }).check()
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Do adjustments apply?')
+      await page.locator('#isAdjustments').nth(1).check()
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Which adjustments apply?')
+      await page.getByRole('checkbox', { name: 'Two-part tariff agreement' }).check()
+      await page.locator('form > .govuk-button').click()
+
+      await expect(page.locator('h1')).toContainText('Check charge information')
       await page.getByRole('button', { name: 'Confirm' }).click()
 
       await expect(page.locator('h1').last()).toContainText('Charge information complete')
@@ -123,7 +160,7 @@ test.describe('Presroc licence transfer journey (internal)', () => {
       await page.locator('nav a', { hasText: 'Licence summary' }).click()
 
       await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-        'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+        'This licence has been marked for the next supplementary bill run.'
       )
     }
   )
