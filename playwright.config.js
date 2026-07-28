@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test'
+import { defineConfig } from '@playwright/test'
 import { readFileSync } from 'fs'
 
 const environment = process.env.TEST_ENV ?? 'local'
@@ -10,7 +10,13 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
+      use: {
+        // Remove ...devices['Desktop Chrome'] here
+        viewport: null,
+        launchOptions: {
+          args: ['--start-maximized']
+        }
+      }
     }
   ],
   reporter: [['html'], ['list']],
