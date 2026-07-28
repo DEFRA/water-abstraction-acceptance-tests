@@ -29,7 +29,7 @@ test.describe('Presroc licence transfer journey (internal)', () => {
   })
 
   test(
-    'adds a new charge version which transfers the licence to a new billing account with new address and FAO contact then approves it and confirms licence is flagged for supplementary billing',
+    'creating new SROC charge version by copying existing pre-sroc, and add new billing account with FAO',
     {
       annotation: {
         type: 'description',
