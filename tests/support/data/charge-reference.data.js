@@ -10,7 +10,7 @@ export default function (chargeVersionData, licence) {
   let twoPartTariff = false
 
   for (const licenceVersionPurpose of licence.licenceVersionPurposes) {
-    annualQuantity = annualQuantity + licenceVersionPurpose.annualQuantity
+    annualQuantity += licenceVersionPurpose.annualQuantity
 
     if (!twoPartTariff) {
       // We make an assumption that if the purpose is not 400 (the default), then we have been passed our alternate
