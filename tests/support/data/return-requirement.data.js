@@ -1,14 +1,9 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (returnVersionData, licence) {
+export default function (returnVersionData, licenceVersionPurpose, points) {
   const {
     returnVersions: [returnVersion]
   } = returnVersionData
-
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose],
-    points
-  } = licence
 
   const returnRequirementId = generateUUID()
 
@@ -21,14 +16,20 @@ export default function (returnVersionData, licence) {
         returnVersionId: returnVersion.id,
         summer: false,
         upload: false,
-        abstractionPeriodStartDay: 1,
-        abstractionPeriodStartMonth: 1,
-        abstractionPeriodEndDay: 31,
-        abstractionPeriodEndMonth: 12,
-        siteDescription: 'TANKS ON JUPITER',
-        legacyId: 9999990,
-        reference: 9999990,
-        twoPartTariff: false
+        abstractionPeriodStartDay: licenceVersionPurpose.abstractionPeriodStartDay,
+        abstractionPeriodStartMonth: licenceVersionPurpose.abstractionPeriodStartMonth,
+        abstractionPeriodEndDay: licenceVersionPurpose.abstractionPeriodEndDay,
+        abstractionPeriodEndMonth: licenceVersionPurpose.abstractionPeriodEndMonth,
+        siteDescription: {
+          schema: 'public',
+          table: 'purposes',
+          lookup: 'legacyId',
+          value: licenceVersionPurpose.purposeId.value,
+          select: 'description'
+        },
+        legacyId: Number(`9999${licenceVersionPurpose.purposeId.value}`),
+        reference: Number(`9999${licenceVersionPurpose.purposeId.value}`),
+        twoPartTariff: licenceVersionPurpose.purposeId.value === '400'
       }
     ],
     returnRequirementPoints: points.map((point) => {
@@ -42,18 +43,18 @@ export default function (returnVersionData, licence) {
         returnRequirementId,
         alias: `TEST RET REQ PURPOSE ${licenceVersionPurpose.purposeId.value}`,
         primaryPurposeId: {
-          schema: 'water',
-          table: 'purposesPrimary',
+          schema: 'public',
+          table: 'primaryPurposes',
           lookup: 'legacyId',
           value: licenceVersionPurpose.primaryPurposeId.value,
-          select: 'purposePrimaryId'
+          select: 'id'
         },
         secondaryPurposeId: {
-          schema: 'water',
-          table: 'purposesSecondary',
+          schema: 'public',
+          table: 'secondaryPurposes',
           lookup: 'legacyId',
           value: licenceVersionPurpose.secondaryPurposeId.value,
-          select: 'purposeSecondaryId'
+          select: 'id'
         },
         purposeId: {
           schema: 'public',
