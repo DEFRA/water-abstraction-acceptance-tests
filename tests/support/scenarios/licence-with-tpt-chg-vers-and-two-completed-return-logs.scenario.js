@@ -8,7 +8,7 @@ import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with tpt charge version and two completed return logs'
 export const description =
-  'Licence with a return version and TPT charge version based on the licence data, plus a completed return log for the previous winter cycle'
+  'Licence with a return version and TPT charge version based on the licence data, plus two completed return logs for the previous winter cycle, one TPT and one not'
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
