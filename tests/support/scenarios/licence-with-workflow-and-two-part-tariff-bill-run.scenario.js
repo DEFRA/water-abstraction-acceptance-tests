@@ -32,7 +32,7 @@ export default function (calculatedDates) {
   const workflow = workflowData(licence)
 
   // The workflow createdAt date is used to show the supplementary billing flag.
-  // It should be set to a date within the two-part tariff year.
+  // It should be set to a date before the two-part tariff bill run's end date.
   workflow.workflows[0].createdAt = `${new Date(twoPartTariffDates.endDate).getUTCFullYear()}-01-01`
   workflow.workflows[0].updatedAt = yesterday()
 
