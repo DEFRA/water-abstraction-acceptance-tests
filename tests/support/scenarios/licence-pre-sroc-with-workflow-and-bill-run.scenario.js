@@ -35,8 +35,8 @@ export default function () {
 
   // workflow.data.js defaults createdAt/updatedAt to today, but today falls outside the bill runs' financial year, so we
   // align them to the licence's own start date instead
-  workflow.workflows[0].createdAt = startDate
-  workflow.workflows[0].updatedAt = startDate
+  workflow.workflows[0].createdAt = '2020-04-01' // two part tariff -
+  workflow.workflows[0].updatedAt = '2020-04-01'
 
   return mergeByKey(licence, annualBillRun, twoPartTariffBillRun, workflow)
 }

@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/licence-with-pre-sroc-draft-workflow-and-bill-run.scenario.js'
+import scenarioData from '../../support/scenarios/licence-pre-sroc-with-workflow-and-bill-run.scenario.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
@@ -24,7 +24,7 @@ test.describe('Cancelling a workflow item (internal)', { tag: ['@presroc', '@sup
     await login(users.billingAndData)
   })
 
-  test('flags the licence for supplementary billing', async ({ page, users }) => {
+  test('does not flag the licence for supplementary billing', async ({ page, users }) => {
     await page.goto(`/system/licences/${licence.id}/summary`)
 
     await expect(page.locator('h1')).toContainText(`Licence summary ${licence.licenceRef}`)
@@ -54,8 +54,6 @@ test.describe('Cancelling a workflow item (internal)', { tag: ['@presroc', '@sup
     await expect(page.locator('h1')).toContainText('Licence set up')
     await page.getByRole('link', { name: 'Licence summary' }).click()
 
-    await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-      'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run.'
-    )
+    await expect(page.locator('.govuk-notification-banner')).not.toBeVisible()
   })
 })
