@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/licence-with-workflow-and-bill-run.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-workflow-and-annual-bill-run.scenario.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
@@ -56,7 +56,7 @@ test.describe('Cancelling a workflow item (internal)', { tag: ['@presroc', '@sup
     await page.getByRole('link', { name: 'Licence summary' }).click()
 
     await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-      'This licence has been marked for the next two-part tariff supplementary bill run and the supplementary bill run.'
+      'This licence has been marked for the next supplementary bill run.'
     )
   })
 })
