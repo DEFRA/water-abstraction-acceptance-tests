@@ -4,8 +4,9 @@ import workflowData from '../data/workflow.data.js'
 import { today, yesterday } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Licence with a workflow entry, and a two-part tariff bill run'
-export const description = 'Licence with a workflow entry, and a sent two-part tariff bill run'
+export const title = 'Licence in workflow, and a two-part tariff bill run'
+export const description =
+  'Licence in workflow, and a sent two-part tariff bill run, the workflow created at date is within the two-part tariff year'
 
 /**
  * For a bill run to exist, there needs to be a charge version.
