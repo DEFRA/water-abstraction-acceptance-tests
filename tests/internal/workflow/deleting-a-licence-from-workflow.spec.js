@@ -59,5 +59,3 @@ test.describe('Deleting a licence from workflow (internal)', { tag: '@supplement
     )
   })
 })
-
-// Chnage some statsu to setup or not

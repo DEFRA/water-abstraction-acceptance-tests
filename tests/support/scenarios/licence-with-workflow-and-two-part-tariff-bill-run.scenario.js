@@ -1,12 +1,12 @@
 import billRunData from '../data/bill-run.data.js'
-import workflowData from '../data/workflow.data.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
+import workflowData from '../data/workflow.data.js'
 import { today, yesterday } from '../helpers/date.helpers.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Licence with a charge version and a pre-SRoC draft workflow entry'
+export const title = 'Licence with a charge version, a draft workflow entry, and a two-part tariff bill run'
 export const description =
-  'Licence with a current SRoC charge version, sent annual and two-part tariff bill runs, and a pre-SRoC draft charge version workflow entry awaiting review'
+  'Licence with a current SRoC charge version, a draft charge version workflow entry awaiting review, and a sent two-part tariff bill run'
 
 export default function (calculatedDates) {
   const licence = licenceWithChargeVersionScenario()
@@ -18,6 +18,7 @@ export default function (calculatedDates) {
   } = calculatedDates
 
   const twoPartTariffBillRun = billRunData()
+
   twoPartTariffBillRun.billRuns[0].createdAt = today()
   twoPartTariffBillRun.billRuns[0].batchType = 'two_part_tariff'
   twoPartTariffBillRun.billRuns[0].fromFinancialYearEnding = new Date(twoPartTariffDates.endDate).getUTCFullYear()
@@ -26,7 +27,7 @@ export default function (calculatedDates) {
   const workflow = workflowData(licence)
 
   // The workflow createdAt date is used to show the supplementary billing flag.
-  //It should be set to a date within the two-part tariff year.
+  // It should be set to a date within the two-part tariff year.
   workflow.workflows[0].createdAt = `${new Date(twoPartTariffDates.endDate).getUTCFullYear()}-01-01`
   workflow.workflows[0].updatedAt = yesterday()
 
