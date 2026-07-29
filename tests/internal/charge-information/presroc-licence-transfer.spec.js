@@ -3,7 +3,7 @@ import { convertCubicMetresToMegalitres } from '../../support/helpers/conversion
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
-test.describe('Presroc licence transfer journey (internal)', { tag: '@presroc' }, () => {
+test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplementary-billing', '@presroc'] }, () => {
   let chargeVersion
   let licence
   let licenceVersionPurpose

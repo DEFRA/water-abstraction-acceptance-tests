@@ -2,7 +2,7 @@ import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { formatLongDate, yesterday } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
-test.describe('Create, replace then add a charge version (internal)', () => {
+test.describe('Create, replace then add a charge version (internal)', { tag: '@supplementary-billing' }, () => {
   let licence
 
   test.beforeAll(async ({ setup }) => {

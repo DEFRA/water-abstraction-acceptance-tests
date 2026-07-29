@@ -1,7 +1,7 @@
 import scenarioData from '../../support/scenarios/licence-with-agreement-and-bill-run.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
-test.describe('Recalculate bills link (internal)', () => {
+test.describe('Recalculate bills link (internal)', { tag: ['@supplementary-billing', '@presroc'] }, () => {
   let licence
   let billRun
 

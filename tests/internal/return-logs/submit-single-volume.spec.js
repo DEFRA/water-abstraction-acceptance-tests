@@ -1,7 +1,7 @@
 import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
 
-test.describe('Submit a single volume return (internal)', () => {
+test.describe('Submit a single volume return (internal)', { tag: '@supplementary-billing' }, () => {
   let returnLog
 
   test.beforeAll(async ({ setup, calculatedDates }) => {
