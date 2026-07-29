@@ -7,6 +7,11 @@ import { mergeByKey } from '../helpers/scenario.helpers.js'
 export const title = 'Licence with a workflow entry, and a two-part tariff bill run'
 export const description = 'Licence with a workflow entry, and a sent two-part tariff bill run'
 
+/**
+ * For a bill run to exist, there needs to be a charge version.
+ *
+ * This is omitted from the scenario name and description to keep them concise, but is still part of the scenario.
+ */
 export default function (calculatedDates) {
   const licence = licenceWithChargeVersionScenario()
 
