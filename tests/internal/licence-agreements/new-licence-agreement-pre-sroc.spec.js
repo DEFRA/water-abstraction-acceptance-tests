@@ -1,34 +1,35 @@
-import scenarioData from '../../support/scenarios/licence.scenario.js'
-import { determineReturnCycleStartDate, formatLongDate, today } from '../../support/helpers/date.helpers.js'
+import scenarioData from '../../support/scenarios/licence-with-pre-sroc-charge-version.scenario.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'New licence agreement journey (internal)',
+  'New licence agreement with charge version journey (pre-Sroc) (internal)',
   {
-    tag: '@supplementary-billing',
+    tag: ['@supplementary-billing', '@presroc'],
     annotation: {
       type: 'info',
       description:
-        'When a licence agreement is added to a licence, the licence should not be flagged for supplementary billing. '
+        'When a licence agreement is added to a licence (pre-Sroc), the licence should be flagged for supplementary billing. '
     }
   },
   () => {
     let licence
-    let startDateYear
+    let chargeVersionStartDate
 
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData()
 
       const {
-        licences: [scenarioLicence]
+        licences: [scenarioLicence],
+        chargeVersions: [scenarioChargeVersion]
       } = scenario
 
       licence = scenarioLicence
 
-      // Without existing charge information, the app only accepts a date that either matches some existing charge
-      // information or is 1 April of the current financial year, so we use that year for the agreement's custom start
-      // date.
-      startDateYear = determineReturnCycleStartDate(today(), false).getUTCFullYear()
+      // With existing charge information, the app accepts a custom start date that matches it, so we use the charge
+      // version's start date for the agreement's custom start date. It also pre-dates the SROC scheme, so setting up
+      // the agreement against it flags the licence for the next old charge scheme supplementary bill run.
+      chargeVersionStartDate = scenarioChargeVersion.startDate
 
       await setup(scenario)
     })
@@ -37,7 +38,9 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('setup a new agreement for a license and then view it', async ({ page }) => {
+    test('setup a new agreement for a license, view it, and confirm it flags the licence for supplementary billing', async ({
+      page
+    }) => {
       await page.goto(`/system/licences/${licence.id}/summary`)
 
       // Check there are no notification banners present initially
@@ -66,11 +69,13 @@ test.describe(
 
       // Check agreement start date
       // select Yes to set a different agreement start date. A section appears allowing the user to enter the custom
-      // date then continue
+      // date, matching the licence's existing charge version, then continue
+      const [year, month, day] = chargeVersionStartDate.split('-')
+
       await page.locator('input#isCustomStartDate').check()
-      await page.locator('#startDate-day').fill('01')
-      await page.locator('#startDate-month').fill('04')
-      await page.locator('#startDate-year').fill(String(startDateYear))
+      await page.locator('#startDate-day').fill(day)
+      await page.locator('#startDate-month').fill(month)
+      await page.locator('#startDate-year').fill(year)
       await page.locator('form > .govuk-button').click()
 
       // Check agreement details
@@ -83,16 +88,11 @@ test.describe(
       // confirm we are back on the Charge Information page and our licence agreement is present
       await expect(page.locator('h1')).toContainText('Licence set up')
 
-      const row = page.getByRole('row', { name: formatLongDate(startDateYear + '-04-01') })
+      const row = page.getByRole('row').filter({ hasText: 'Two-part tariff' })
 
-      // start date, end date, agreement, date signed
-      await expect(row.getByRole('cell')).toHaveText([
-        formatLongDate(startDateYear + '-04-01'),
-        '',
-        'Two-part tariff',
-        '',
-        'Delete | End'
-      ])
+      // start date, agreement
+      await expect(row.getByRole('cell', { name: formatLongDate(chargeVersionStartDate), exact: true })).toBeVisible()
+      await expect(row.getByRole('cell', { name: 'Two-part tariff', exact: true })).toBeVisible()
 
       // actions
       await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()
@@ -101,8 +101,10 @@ test.describe(
       // Navigate to back to the Licence summary page
       await page.locator('nav a', { hasText: 'Licence summary' }).click()
 
-      // Check the deleted licence agreement has not flagged the licence for supplementary billing
-      await expect(page.locator('.govuk-notification-banner__content')).not.toBeVisible()
+      // Check the new licence agreement has flagged the licence for supplementary billing
+      await expect(page.locator('.govuk-notification-banner__content')).toContainText(
+        'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+      )
     })
   }
 )
