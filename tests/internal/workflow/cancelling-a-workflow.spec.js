@@ -3,7 +3,7 @@ import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'Cancelling a workflow item (internal)',
+  'Cancelling a licence in workflow (internal)',
   {
     tag: '@supplementaryBilling',
     annotation: {
@@ -34,7 +34,7 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('flags the licence for supplementary billing', async ({ page, users }) => {
+    test('does not flag the licence for supplementary billing', async ({ page, users }) => {
       await page.goto(`/system/licences/${licence.id}/summary`)
 
       await expect(page.locator('h1')).toContainText(`Licence summary ${licence.licenceRef}`)

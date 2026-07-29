@@ -3,7 +3,7 @@ import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'Cancelling a workflow item (internal)',
+  'Cancelling a licence in workflow with an annual bill run (internal)',
   {
     tag: ['@presroc', '@supplementaryBilling'],
     annotation: {
