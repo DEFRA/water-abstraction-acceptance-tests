@@ -4,9 +4,8 @@ import workflowData from '../data/workflow.data.js'
 import { today, yesterday } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Licence with a charge version, a draft workflow entry, and an annual bill run'
-export const description =
-  'Licence with a current SRoC charge version, a draft workflow entry awaiting review, and a sent annual bill run'
+export const title = 'Licence with a workflow entry, and an annual bill run'
+export const description = 'Licence with a workflow entry, and a sent annual bill run'
 
 export default function (calculatedDates) {
   const licence = licenceWithChargeVersionScenario()
