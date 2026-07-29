@@ -6,6 +6,8 @@ export default function (returnVersionData, licenceVersionPurpose, points) {
   } = returnVersionData
 
   const returnRequirementId = generateUUID()
+  const siteDescription =
+    licenceVersionPurpose.purposeId.value === '400' ? 'Spray Irrigation - Direct' : 'Make-Up Or Top Up Water'
 
   return {
     returnRequirements: [
@@ -20,8 +22,7 @@ export default function (returnVersionData, licenceVersionPurpose, points) {
         abstractionPeriodStartMonth: licenceVersionPurpose.abstractionPeriodStartMonth,
         abstractionPeriodEndDay: licenceVersionPurpose.abstractionPeriodEndDay,
         abstractionPeriodEndMonth: licenceVersionPurpose.abstractionPeriodEndMonth,
-        siteDescription:
-          licenceVersionPurpose.purposeId.value === '400' ? 'Spray Irrigation - Direct' : 'Make-Up Or Top Up Water',
+        siteDescription,
         legacyId: Number(`9999${licenceVersionPurpose.purposeId.value}`),
         reference: Number(`9999${licenceVersionPurpose.purposeId.value}`),
         twoPartTariff: licenceVersionPurpose.purposeId.value === '400'
