@@ -1,8 +1,7 @@
 import licenceScenario from './licence.scenario.js'
 
-export const title = 'Licence with a pre-SRoC charge version'
-export const description =
-  'Licence with one charge version and reference pre-dating the SRoC scheme, so it can be used to test old charge scheme behaviour'
+export const title = 'Licence for pre-SRoC'
+export const description = 'Licence for pre-SRoC '
 
 export default function () {
   const licence = licenceScenario()
