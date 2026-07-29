@@ -4,8 +4,9 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe('Deleting a licence from workflow (internal)', { tag: '@supplementaryBilling' }, () => {
   let licence
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ calculatedDates, setup }) => {
+    const dates = await calculatedDates()
+    const scenario = scenarioData(dates)
 
     const {
       licences: [scenarioLicence]
