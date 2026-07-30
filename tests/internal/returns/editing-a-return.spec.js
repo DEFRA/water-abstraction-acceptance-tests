@@ -24,7 +24,7 @@ test.describe('Editing a return (internal)', { tag: '@supplementaryBilling' }, (
     await login(users.billingAndData)
   })
 
-  test('submit a return for a licence from its returns tab and mark the licence for two-part tariff supplementary billing', async ({
+  test('Edit a return and mark the licence for two-part tariff supplementary billing', async ({
     page
   }) => {
     await page.goto(`/system/licences/${licence.id}/returns`)
