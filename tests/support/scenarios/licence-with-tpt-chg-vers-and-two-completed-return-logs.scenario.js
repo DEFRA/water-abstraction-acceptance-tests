@@ -54,9 +54,16 @@ export default function (calculatedDates) {
 
   previousSecondReturnLog.returnLogs[0].status = 'completed'
 
-  const totalVolume = firstLicenceVersionPurpose.annualQuantity
-
-  const returnSubmission = returnSubmissionData(previousPeriodDetails, previousFirstReturnLog, totalVolume)
+  const firstReturnSubmission = returnSubmissionData(
+    previousPeriodDetails,
+    previousFirstReturnLog,
+    firstLicenceVersionPurpose.annualQuantity
+  )
+  const secondReturnSubmission = returnSubmissionData(
+    previousPeriodDetails,
+    previousSecondReturnLog,
+    secondLicenceVersionPurpose.annualQuantity
+  )
 
   return mergeByKey(
     licence,
@@ -67,6 +74,7 @@ export default function (calculatedDates) {
     previousSecondReturnLog,
     currentFirstReturnLog,
     currentSecondReturnLog,
-    returnSubmission
+    firstReturnSubmission,
+    secondReturnSubmission
   )
 }
