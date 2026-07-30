@@ -41,3 +41,11 @@ billRun.billRuns[0].toFinancialYearEnding = 2023
 ## Naming
 
 See `.agents/skills/standards/SKILL.md` for file/import naming conventions (`kebab-case`, `.scenario.js`/`.data.js` suffixes, import/result naming).
+
+A scenario file's name must lead with the type of licence it builds, then describe what's added on top with `-with-`:
+
+- `licence-` on its own means an unregistered licence, e.g. `licence-with-agreement.scenario.js`.
+- `registered-licence-` means a registered licence, e.g. `registered-licence-with-monitoring-station-tagged.scenario.js`.
+- `presroc-licence-` means a licence pre-dating the SRoC scheme, e.g. `presroc-licence-with-charge-version.scenario.js`.
+
+Any scenario that composes one of these as a dependency must carry the same prefix, so the name still tells you the licence type without opening the file. Test spec files that build on one of these scenarios should follow the same prefix convention in their own file name where the licence type is relevant to picking the right spec.
