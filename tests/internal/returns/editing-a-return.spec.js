@@ -24,9 +24,7 @@ test.describe('Editing a return (internal)', { tag: '@supplementaryBilling' }, (
     await login(users.billingAndData)
   })
 
-  test('Edit a return and mark the licence for two-part tariff supplementary billing', async ({
-    page
-  }) => {
+  test('Edit a return and mark the licence for two-part tariff supplementary billing', async ({ page }) => {
     await page.goto(`/system/licences/${licence.id}/returns`)
 
     await expect(page.locator('h1')).toContainText('Returns')
