@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/licence-with-agreement-and-pre-sroc-charge-version.scenario.js'
+import scenarioData from '../../support/scenarios/presroc-licence-with-agreement.scenario.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 

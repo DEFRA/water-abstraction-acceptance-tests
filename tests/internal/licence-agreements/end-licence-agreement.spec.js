@@ -42,7 +42,7 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('ends a licence agreement using a valid date and check its flags the licence for supplementary billing', async ({
+    test('ends a licence agreement using a valid date and check it does not flag the licence for supplementary billing', async ({
       page
     }) => {
       await page.goto(`/system/licences/${licence.id}/summary`)
