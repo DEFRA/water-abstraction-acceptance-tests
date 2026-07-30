@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/licence-with-pre-sroc-charge-version.scenario.js'
+import scenarioData from '../../support/scenarios/presroc-licence-with-charge-version.scenario.js'
 import { convertCubicMetresToMegalitres } from '../../support/helpers/conversion.helpers.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
