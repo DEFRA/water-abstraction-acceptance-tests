@@ -8,7 +8,7 @@ test.describe(
     annotation: {
       type: 'description',
       description:
-        'When a user recalculates bills for a licence and includes a pre-SRoC year, the licence should be flagged for supplementary billing for the old charge scheme.'
+        'When a user recalculates bills for a licence and includes a presroc year, the licence should be flagged for supplementary billing for the old charge scheme.'
     }
   },
   () => {
