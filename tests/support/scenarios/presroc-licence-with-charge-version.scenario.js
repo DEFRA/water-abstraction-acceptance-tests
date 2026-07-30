@@ -1,7 +1,7 @@
 import billingAccountData from '../data/billing-account.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import chargeReferenceData from '../data/charge-reference-presroc.data.js'
-import licencePreSrocScenario from './licence-with-pre-sroc.scenario.js'
+import presrocLicenceScenario from './presroc-licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a pre-SRoC charge version'
@@ -9,7 +9,7 @@ export const description =
   'Licence with one charge version and reference pre-dating the SRoC scheme, so it can be used to test old charge scheme behaviour'
 
 export default function () {
-  const licence = licencePreSrocScenario()
+  const licence = presrocLicenceScenario()
 
   const billingAccount = billingAccountData(licence)
   const chargeVersion = chargeVersionData(billingAccount, licence)
