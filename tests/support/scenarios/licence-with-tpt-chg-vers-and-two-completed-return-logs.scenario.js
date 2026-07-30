@@ -35,18 +35,38 @@ export default function (calculatedDates) {
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
   returnVersion.returnVersions[0].startDate = previousPeriodDetails.startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, licence)
+  const {
+    licenceVersionPurposes: [firstLicenceVersionPurpose, secondLicenceVersionPurpose],
+    points: [firstPoint, secondPoint]
+  } = licence
 
-  returnRequirement.returnRequirements[0].twoPartTariff = true
+  const firstReturnRequirement = returnRequirementData(returnVersion, firstLicenceVersionPurpose, [firstPoint])
 
-  const previousReturnLog = returnLogData(licence, returnRequirement, previousPeriodDetails)
-  const currentReturnLog = returnLogData(licence, returnRequirement, currentPeriodDetails)
+  const previousFirstReturnLog = returnLogData(licence, firstReturnRequirement, previousPeriodDetails)
+  const currentFirstReturnLog = returnLogData(licence, firstReturnRequirement, currentPeriodDetails)
 
-  previousReturnLog.returnLogs[0].status = 'completed'
+  previousFirstReturnLog.returnLogs[0].status = 'completed'
 
-  const totalVolume = licence.licenceVersionPurposes[0].annualQuantity
+  const secondReturnRequirement = returnRequirementData(returnVersion, secondLicenceVersionPurpose, [secondPoint])
 
-  const returnSubmission = returnSubmissionData(previousPeriodDetails, previousReturnLog, totalVolume)
+  const previousSecondReturnLog = returnLogData(licence, secondReturnRequirement, previousPeriodDetails)
+  const currentSecondReturnLog = returnLogData(licence, secondReturnRequirement, currentPeriodDetails)
 
-  return mergeByKey(licence, returnVersion, returnRequirement, previousReturnLog, currentReturnLog, returnSubmission)
+  previousSecondReturnLog.returnLogs[0].status = 'completed'
+
+  const totalVolume = firstLicenceVersionPurpose.annualQuantity + secondLicenceVersionPurpose.annualQuantity
+
+  const returnSubmission = returnSubmissionData(previousPeriodDetails, previousFirstReturnLog, totalVolume)
+
+  return mergeByKey(
+    licence,
+    returnVersion,
+    firstReturnRequirement,
+    secondReturnRequirement,
+    previousFirstReturnLog,
+    previousSecondReturnLog,
+    currentFirstReturnLog,
+    currentSecondReturnLog,
+    returnSubmission
+  )
 }
