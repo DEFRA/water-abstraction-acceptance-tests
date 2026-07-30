@@ -7,7 +7,7 @@ test.describe(
   {
     tag: ['@presroc', '@supplementary-billing'],
     annotation: {
-      type: 'info',
+      type: 'description',
       description:
         'When the licence is in workflow, and you cancel a workflow item, and there is a two-part tariff bill run, and the workflow was created before the bill run ends, the licence should be flagged for supplementary billing' +
         '/n A two-part tariff bill run is created for the two-part tariff year, which is the year before the annual bill run. The workflow created at date is set to a date before the bill run end date.'

@@ -7,7 +7,7 @@ test.describe(
   {
     tag: ['@supplementary-billing', '@presroc'],
     annotation: {
-      type: 'info',
+      type: 'description',
       description:
         'When a licence agreement exists for a licence (presroc), and it is ended, the licence should be flagged for supplementary billing. '
     }

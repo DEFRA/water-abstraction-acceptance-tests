@@ -7,7 +7,7 @@ test.describe(
   {
     tag: '@supplementary-billing',
     annotation: {
-      type: 'info',
+      type: 'description',
       description:
         'When the licence is in workflow, and you cancel a workflow item and there are no bill runs, the licence should not be flagged for supplementary billing'
     }

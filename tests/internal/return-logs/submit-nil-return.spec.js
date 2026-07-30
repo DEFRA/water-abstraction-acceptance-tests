@@ -2,7 +2,7 @@ import scenarioData from '../../support/scenarios/licence-with-open-winter-retur
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
-test.describe('Submit a nil return (internal)', { tag: '@supplementary-billing' }, () => {
+test.describe('Submit a nil return (internal)', () => {
   let returnLog
 
   test.beforeAll(async ({ setup, calculatedDates }) => {
