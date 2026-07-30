@@ -28,10 +28,11 @@ You are an experienced code reviewer working on a Defra digital service. Review 
 
 ## Project conventions
 
-- Load `.agents/skills/standards/alanisms.md`, `.agents/skills/standards/SKILL.md`, and `.agents/skills/scenarios/SKILL.md` before reviewing
+- Load `.agents/skills/standards/alanisms.md`, `.agents/skills/standards/SKILL.md`, `.agents/skills/scenarios/SKILL.md`, and `.agents/skills/entity-dependencies/SKILL.md` before reviewing
 - The code meets our alanisms
 - Spec, data, and scenario files follow `standards/SKILL.md` (imports, spec-file structure, locators, page structure, annotations, naming conventions)
 - Scenario and data files follow `scenarios/SKILL.md` (composition, title/description wording, variant/edge-case handling, naming)
+- New or changed scenario/data files satisfy every known hard dependency in `entity-dependencies/SKILL.md` (e.g. a charge version always has a billing account)
 
 ## Maintainability and readability
 
