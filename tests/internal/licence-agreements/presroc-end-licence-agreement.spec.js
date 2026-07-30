@@ -3,13 +3,13 @@ import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'End licence agreement journey (pre-Sroc) (internal)',
+  'End licence agreement journey (pre-SRoC) (internal)',
   {
     tag: ['@supplementary-billing', '@presroc'],
     annotation: {
       type: 'info',
       description:
-        'When a licence agreement exists for a licence (pre-Sroc), and it is ended, the licence should be flagged for supplementary billing. '
+        'When a licence agreement exists for a licence (pre-SRoC), and it is ended, the licence should be flagged for supplementary billing. '
     }
   },
   () => {
@@ -42,7 +42,7 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('ends a licence agreement using a valid date and check its flags the licence for supplementary billing', async ({
+    test('ends a licence agreement using a valid date and check it flags the licence for supplementary billing', async ({
       page
     }) => {
       await page.goto(`/system/licences/${licence.id}/summary`)

@@ -5,7 +5,7 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe(
   'Cancelling a licence in workflow with an annual bill run (internal)',
   {
-    tag: ['@presroc', '@supplementaryBilling'],
+    tag: ['@presroc', '@supplementary-billing'],
     annotation: {
       type: 'info',
       description:

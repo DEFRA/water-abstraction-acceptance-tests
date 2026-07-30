@@ -3,13 +3,13 @@ import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'Delete licence agreement journey (pre-Sroc) (internal)',
+  'Delete licence agreement journey (pre-SRoC) (internal)',
   {
     tag: ['@supplementary-billing', '@presroc'],
     annotation: {
       type: 'info',
       description:
-        'When a licence agreement exists for a licence (pre-Sroc), and it is deleted, the licence should be flagged for supplementary billing. '
+        'When a licence agreement exists for a licence (pre-SRoC), and it is deleted, the licence should be flagged for supplementary billing. '
     }
   },
   () => {
@@ -31,7 +31,7 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('deletes a licence agreement and check its flags the licence for supplementary billing', async ({ page }) => {
+    test('deletes a licence agreement and check it flags the licence for supplementary billing', async ({ page }) => {
       await page.goto(`/system/licences/${licence.id}/summary`)
 
       // Check there are no notification banners present initially
