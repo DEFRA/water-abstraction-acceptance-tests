@@ -54,7 +54,7 @@ export default function (calculatedDates) {
 
   previousSecondReturnLog.returnLogs[0].status = 'completed'
 
-  const totalVolume = firstLicenceVersionPurpose.annualQuantity + secondLicenceVersionPurpose.annualQuantity
+  const totalVolume = firstLicenceVersionPurpose.annualQuantity
 
   const returnSubmission = returnSubmissionData(previousPeriodDetails, previousFirstReturnLog, totalVolume)
 
