@@ -1,15 +1,15 @@
-import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
+import scenarioData from '../../support/scenarios/presroc-licence-with-agreement.scenario.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'End licence agreement journey (internal)',
+  'End licence agreement journey (pre-Sroc) (internal)',
   {
-    tag: '@supplementary-billing',
+    tag: ['@supplementary-billing', '@presroc'],
     annotation: {
       type: 'info',
       description:
-        'When a licence agreement exists for a licence, and it is ended, the licence should not be flagged for supplementary billing. '
+        'When a licence agreement exists for a licence (pre-Sroc), and it is ended, the licence should be flagged for supplementary billing. '
     }
   },
   () => {
@@ -42,7 +42,7 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('ends a licence agreement using a valid date and check it does not flag the licence for supplementary billing', async ({
+    test('ends a licence agreement using a valid date and check its flags the licence for supplementary billing', async ({
       page
     }) => {
       await page.goto(`/system/licences/${licence.id}/summary`)
@@ -109,8 +109,10 @@ test.describe(
       // Navigate to back to the Licence summary page
       await page.locator('nav a', { hasText: 'Licence summary' }).click()
 
-      // Check the deleted licence agreement has not flagged the licence for supplementary billing
-      await expect(page.locator('.govuk-notification-banner__content')).not.toBeVisible()
+      // Check the ended licence agreement has flagged the licence for supplementary billing
+      await expect(page.locator('.govuk-notification-banner__content')).toContainText(
+        'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+      )
     })
   }
 )
