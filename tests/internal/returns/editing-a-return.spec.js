@@ -36,32 +36,32 @@ test.describe('Editing a return (internal)', { tag: '@supplementaryBilling' }, (
     await page.getByRole('button', { name: 'Edit return' }).click()
 
     await expect(page.locator('h1')).toContainText('When was the return received?')
-    await page.locator('#today').click()
+    await page.getByRole('radio', { name: 'Today' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('What do you want to do with this return?')
-    await page.locator('#enterReturn').click()
+    await page.getByRole('radio', { name: 'Enter and submit' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('How was this return reported?')
-    await page.locator('#abstractionVolumes').click()
+    await page.getByRole('radio', { name: 'Abstraction Volumes' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Which units were used?')
-    await page.locator('#cubicMetres').check()
+    await page.getByRole('radio', { name: 'Cubic Metres' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Have meter details been provided?')
-    await page.locator('#no').click()
+    await page.getByRole('radio', { name: 'No' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Is it a single volume?')
-    await page.locator('#yes').click()
-    await page.locator('#singleVolumeQuantity').fill('100')
+    await page.getByRole('radio', { name: 'Yes' }).check()
+    await page.getByLabel('Enter the total amount').fill('100')
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('What period was used for this volume?')
-    await page.locator('#default').click()
+    await page.getByRole('radio', { name: 'Default abstraction period' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Check details and enter new volumes or readings')
