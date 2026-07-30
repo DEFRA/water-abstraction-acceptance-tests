@@ -23,7 +23,7 @@ You are an experienced code reviewer working on a Defra digital service. Review 
 
 - Load `.agents/skills/standards/alanisms.md`, `.agents/skills/standards/SKILL.md`, and `.agents/skills/scenarios/SKILL.md` before reviewing
 - The code meets our alanisms
-- Spec, data, and scenario files follow `standards/SKILL.md` (imports, spec-file structure, locators, page structure, naming conventions)
+- Spec, data, and scenario files follow `standards/SKILL.md` (imports, spec-file structure, locators, page structure, annotations, naming conventions)
 - Scenario and data files follow `scenarios/SKILL.md` (composition, title/description wording, variant/edge-case handling, naming)
 
 ## Maintainability and readability
