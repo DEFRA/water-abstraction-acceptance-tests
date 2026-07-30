@@ -3,13 +3,13 @@ import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'New licence agreement with charge version journey (pre-Sroc) (internal)',
+  'New licence agreement with charge version journey (presroc) (internal)',
   {
     tag: ['@supplementary-billing', '@presroc'],
     annotation: {
-      type: 'info',
+      type: 'description',
       description:
-        'When a licence agreement is added to a licence (pre-Sroc), the licence should be flagged for supplementary billing. '
+        'When a licence agreement is added to a licence (presroc), the licence should be flagged for supplementary billing. '
     }
   },
   () => {

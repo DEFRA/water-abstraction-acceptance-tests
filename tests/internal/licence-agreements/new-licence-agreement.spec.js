@@ -7,7 +7,7 @@ test.describe(
   {
     tag: '@supplementary-billing',
     annotation: {
-      type: 'info',
+      type: 'description',
       description:
         'When a licence agreement is added to a licence, the licence should not be flagged for supplementary billing. '
     }
