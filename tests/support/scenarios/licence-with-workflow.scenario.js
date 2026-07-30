@@ -3,7 +3,7 @@ import licenceScenario from './licence.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence in workflow'
-export const description = 'Licence in workflow'
+export const description = 'A licence, licence holder (company), and a workflow entry'
 
 export default function () {
   const licence = licenceScenario()
