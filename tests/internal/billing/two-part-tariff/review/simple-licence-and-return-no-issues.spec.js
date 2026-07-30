@@ -3,7 +3,7 @@ import { test, expect } from '../../../../support/fixtures.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
-test.describe('Simple Licence and Returns with No Issues (internal)', () => {
+test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@supplementary-billing' }, () => {
   let endYear
   let licence
   let startYear

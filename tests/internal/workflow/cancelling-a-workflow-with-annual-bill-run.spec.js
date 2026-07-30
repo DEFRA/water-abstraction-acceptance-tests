@@ -5,9 +5,9 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe(
   'Cancelling a licence in workflow with an annual bill run (internal)',
   {
-    tag: ['@presroc', '@supplementaryBilling'],
+    tag: ['@presroc', '@supplementary-billing'],
     annotation: {
-      type: 'info',
+      type: 'description',
       description:
         'When the licence is in workflow, and you cancel a workflow item, and there is an annual bill run, and the workflow was created before the bill run, the licence should be flagged for supplementary billing'
     }

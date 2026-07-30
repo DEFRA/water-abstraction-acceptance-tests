@@ -132,6 +132,10 @@ await page.getByRole('radio', { name: 'New licence', exact: true }).check()
 await page.getByRole('button', { name: 'Continue' }).click()
 ```
 
+## Annotations (Playwright)
+
+- When a `test` or `test.describe` needs an annotation explaining what it covers (e.g. the supplementary-billing trigger a test proves), use `type: 'description'`, not `type: 'info'`. `type: 'issue'` remains correct for linking a ticket, and other specific types (e.g. `'tpt-review'`) remain correct where a suite already uses one to group or report on a distinct category of test
+
 ## Naming conventions
 
 - **Directories and JavaScript files**: `kebab-case` (e.g. `core-licence.data.js`)

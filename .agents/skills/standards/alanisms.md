@@ -33,6 +33,8 @@ This applies everywhere: return values, inline objects, exported objects, test a
 
 **Exception — data and scenario files (`tests/support/data/*.data.js`, `tests/support/scenarios/*.scenario.js`):** The API that seeds test data processes entities in insertion order, so the keys in the returned object and the `const` declarations above it must follow dependency order (parent entities before children that reference them), not alphabetical order. Do not sort these.
 
+**Exception — `test.describe`/`test` options objects (the second argument carrying `tag`/`annotation`):** put `tag` before `annotation`, not alphabetical order. `tag` is the property used to select and filter the test, so it leads.
+
 ## 2 — `import` statements must be in alphabetical order by variable name
 
 Within each group (see rule 3), sort imports A–Z by the local name. Named imports (destructured) are an exception: place them after default imports within the same group, then sort named imports alphabetically by file name (not by the variable names being imported).
