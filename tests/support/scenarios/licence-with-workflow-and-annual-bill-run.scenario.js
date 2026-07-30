@@ -6,7 +6,7 @@ import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence in workflow, and an annual bill run'
 export const description =
-  "Licence in workflow, and a sent annual bill run, with the workflow entry created before the bill run so it can test supp. flagging behaviour"
+  'Licence in workflow, and a sent annual bill run, with the workflow entry created before the bill run so it can test supp. flagging behaviour'
 
 /**
  * For a bill run to exist, there needs to be a charge version.
