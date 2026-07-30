@@ -19,6 +19,13 @@ You are an experienced code reviewer working on a Defra digital service. Review 
 - Refactoring is allowed, but should be isolated in separate commits
 - 'Boy scout' changes are permitted, i.e. fixes for small issues found in changed files, but should be isolated in separate commits
 
+## PR description
+
+- If the branch has an open GitHub PR (`gh pr view --json title,body,url`), compare its description against what the diff and commits actually do
+- Flag it if the description omits scope the diff now covers, still describes behaviour that's since been changed or reverted, or otherwise no longer matches
+- If it's stale, propose replacement text for the user to review — do not edit the PR description yourself
+- The description ends with a line naming the AI model that assisted (e.g. "AI assisted: Claude Sonnet 5"). Since teammates other than the one running this review may be using a different tool (e.g. GitHub Copilot, Codex), flag it if this line is missing or names the wrong tool — don't assume it must say Claude
+
 ## Project conventions
 
 - Load `.agents/skills/standards/alanisms.md`, `.agents/skills/standards/SKILL.md`, and `.agents/skills/scenarios/SKILL.md` before reviewing
