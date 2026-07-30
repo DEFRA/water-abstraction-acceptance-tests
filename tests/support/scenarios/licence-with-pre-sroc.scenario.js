@@ -1,7 +1,7 @@
 import licenceScenario from './licence.scenario.js'
 
 export const title = 'Licence for pre-SRoC'
-export const description = 'Licence for pre-SRoC '
+export const description = 'Licence with a start date before 2022-04-01'
 
 export default function () {
   const licence = licenceScenario()
