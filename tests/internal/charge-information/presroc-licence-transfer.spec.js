@@ -29,12 +29,12 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
   })
 
   test(
-    'creating new SROC charge version by copying existing pre-sroc, and add new billing account with FAO',
+    'creating new SROC charge version by copying existing presroc, and add new billing account with FAO',
     {
       annotation: {
         type: 'description',
         description:
-          'Transfers a pre-SRoC licence to a new billing account (new address, FAO contact) reusing its existing charge information, then approves the resulting charge version via the review flow and confirms the licence is flagged for the next supplementary bill run on the old charge scheme.'
+          'Transfers a presroc licence to a new billing account (new address, FAO contact) reusing its existing charge information, then approves the resulting charge version via the review flow and confirms the licence is flagged for the next supplementary bill run on the old charge scheme.'
       }
     },
     async ({ page }) => {

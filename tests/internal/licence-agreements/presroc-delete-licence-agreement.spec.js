@@ -3,13 +3,13 @@ import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'Delete licence agreement journey (pre-SRoC) (internal)',
+  'Delete licence agreement journey (presroc) (internal)',
   {
     tag: ['@supplementary-billing', '@presroc'],
     annotation: {
       type: 'info',
       description:
-        'When a licence agreement exists for a licence (pre-SRoC), and it is deleted, the licence should be flagged for supplementary billing. '
+        'When a licence agreement exists for a licence (presroc), and it is deleted, the licence should be flagged for supplementary billing. '
     }
   },
   () => {

@@ -49,3 +49,5 @@ A scenario file's name must lead with the type of licence it builds, then descri
 - `presroc-licence-` means a licence pre-dating the SRoC scheme, e.g. `presroc-licence-with-charge-version.scenario.js`.
 
 Any scenario that composes one of these as a dependency must carry the same prefix, so the name still tells you the licence type without opening the file. Test spec files that build on one of these scenarios should follow the same prefix convention in their own file name where the licence type is relevant to picking the right spec.
+
+**In prose** (titles, descriptions, test names, annotations, comments), the standard spelling is `presroc` — one word, no hyphen. Lower case mid-sentence (`a presroc licence`); capitalise only as the first word of a title or sentence (`Presroc licence with an agreement`). Don't use `pre-SRoC`, `pre-Sroc`, or `PreSRoC`. This applies to our own shorthand for "pre-dating the SRoC scheme" — it doesn't apply to `SRoC`/`SROC` when text is naming the actual charging scheme itself.
