@@ -60,7 +60,7 @@ test.describe('Submit a meter readings return (internal)', () => {
 
     // Summary of monthly readings
     // choose enter monthly readings for
-    await page.locator('[data-test="action-0"]').click()
+    await page.getByRole('link', { name: 'Enter monthly readings   for April' }).click()
 
     // Water abstracted
     // enter meter reading of 120 and continue

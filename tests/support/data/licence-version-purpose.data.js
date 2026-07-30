@@ -17,18 +17,18 @@ export default function (licenceData, pointData) {
         id: licenceVersionPurposeId,
         licenceVersionId: licenceVersion.id,
         primaryPurposeId: {
-          schema: 'water',
-          table: 'purposesPrimary',
+          schema: 'public',
+          table: 'primaryPurposes',
           lookup: 'legacyId',
           value: 'A',
-          select: 'purposePrimaryId'
+          select: 'id'
         },
         secondaryPurposeId: {
-          schema: 'water',
-          table: 'purposesSecondary',
+          schema: 'public',
+          table: 'secondaryPurposes',
           lookup: 'legacyId',
           value: 'AGR',
-          select: 'purposeSecondaryId'
+          select: 'id'
         },
         purposeId: {
           schema: 'public',

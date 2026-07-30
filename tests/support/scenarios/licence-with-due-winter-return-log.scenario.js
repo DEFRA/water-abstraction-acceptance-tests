@@ -1,14 +1,13 @@
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
-import returnSubmissionData from '../data/return-submission.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
+import licenceScenario from './licence.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'Licence with tpt charge version and completed return log'
+export const title = 'Licence with an open return log (winter cycle)'
 export const description =
-  'Licence with a return version and TPT charge version based on the licence data, plus a completed return log for the previous winter cycle'
+  'Licence with one return requirement and an open winter return log for the previous winter cycle'
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
@@ -16,7 +15,7 @@ export default function (calculatedDates) {
   const previousPeriodDetails = previousPeriod({
     startDate: currentWinterReturnCycle.startDate,
     endDate: currentWinterReturnCycle.endDate,
-    dueDate: null,
+    dueDate: currentWinterReturnCycle.dueDate,
     quarterly: false
   })
 
@@ -27,7 +26,7 @@ export default function (calculatedDates) {
     quarterly: false
   }
 
-  const licence = licenceWithChargeVersionScenario()
+  const licence = licenceScenario()
 
   const returnVersion = returnVersionData(licence)
 
@@ -42,16 +41,8 @@ export default function (calculatedDates) {
 
   const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
 
-  returnRequirement.returnRequirements[0].twoPartTariff = true
-
   const previousReturnLog = returnLogData(licence, returnRequirement, previousPeriodDetails)
   const currentReturnLog = returnLogData(licence, returnRequirement, currentPeriodDetails)
 
-  previousReturnLog.returnLogs[0].status = 'completed'
-
-  const totalVolume = licence.licenceVersionPurposes[0].annualQuantity
-
-  const returnSubmission = returnSubmissionData(previousPeriodDetails, previousReturnLog, totalVolume)
-
-  return mergeByKey(licence, returnVersion, returnRequirement, previousReturnLog, currentReturnLog, returnSubmission)
+  return mergeByKey(licence, returnVersion, returnRequirement, previousReturnLog, currentReturnLog)
 }

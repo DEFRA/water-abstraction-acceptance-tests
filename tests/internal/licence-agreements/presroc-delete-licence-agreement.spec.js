@@ -1,15 +1,15 @@
-import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
+import scenarioData from '../../support/scenarios/presroc-licence-with-agreement.scenario.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { test, expect } from '../../support/fixtures.js'
 
 test.describe(
-  'Delete licence agreement journey (internal)',
+  'Delete licence agreement journey (pre-Sroc) (internal)',
   {
-    tag: '@supplementary-billing',
+    tag: ['@supplementary-billing', '@presroc'],
     annotation: {
       type: 'info',
       description:
-        'When a licence agreement exists for a licence, and it is deleted, the licence should not be flagged for supplementary billing. '
+        'When a licence agreement exists for a licence (pre-Sroc), and it is deleted, the licence should be flagged for supplementary billing. '
     }
   },
   () => {
@@ -31,9 +31,7 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('deletes a licence agreement and check it does not flag the licence for supplementary billing', async ({
-      page
-    }) => {
+    test('deletes a licence agreement and check its flags the licence for supplementary billing', async ({ page }) => {
       await page.goto(`/system/licences/${licence.id}/summary`)
 
       // Check there are no notification banners present initially
@@ -66,8 +64,10 @@ test.describe(
       // Navigate to back to the Licence summary page
       await page.locator('nav a', { hasText: 'Licence summary' }).click()
 
-      // Check the deleted licence agreement has not flagged the licence for supplementary billing
-      await expect(page.locator('.govuk-notification-banner__content')).not.toBeVisible()
+      // Check the deleted licence agreement has flagged the licence for supplementary billing
+      await expect(page.locator('.govuk-notification-banner__content')).toContainText(
+        'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+      )
     })
   }
 )
