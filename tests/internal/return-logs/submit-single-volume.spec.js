@@ -21,7 +21,7 @@ test.describe('Submit a single volume return (internal)', () => {
     await login(users.billingAndData)
   })
 
-  test('submit a return by entering a single abstraction volume and mark the licence for supplementary billing', async ({
+  test('submit a return by entering a single abstraction volume', async ({
     page
   }) => {
     await page.goto(`/system/return-logs/${returnLog.id}/details`)
