@@ -176,12 +176,7 @@ function _previousPeriod(currentPeriod) {
  * @private
  */
 function _returnLog(licence, returnVersion, period) {
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose],
-    points
-  } = licence
-
-  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
+  const returnRequirement = returnRequirementData(returnVersion, licence)
 
   returnRequirement.returnRequirements[0].legacyId = period.reference
   returnRequirement.returnRequirements[0].reference = period.reference

@@ -12,12 +12,7 @@ export default function () {
 
   const returnVersion = returnVersionData(licence)
 
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose],
-    points
-  } = licence
-
-  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
+  const returnRequirement = returnRequirementData(returnVersion, licence)
 
   return mergeByKey(licence, returnVersion, returnRequirement)
 }

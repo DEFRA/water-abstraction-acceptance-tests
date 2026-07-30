@@ -31,12 +31,7 @@ export default function (calculatedDates) {
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
   returnVersion.returnVersions[0].startDate = firstPeriod.startDate
 
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose],
-    points
-  } = licence
-
-  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
+  const returnRequirement = returnRequirementData(returnVersion, licence)
 
   const periods = _periods(firstPeriod, calculatedDates)
   const returnLogs = _returnLogs(licence, returnRequirement, periods)

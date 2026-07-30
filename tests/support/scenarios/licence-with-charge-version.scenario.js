@@ -14,12 +14,8 @@ export default function () {
   const billingAccount = billingAccountData(licence)
   const chargeVersion = chargeVersionData(billingAccount, licence)
 
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose]
-  } = licence
-
-  const chargeReference = chargeReferenceData(chargeVersion, licenceVersionPurpose)
-  const chargeElement = chargeElementData(chargeReference, licenceVersionPurpose)
+  const chargeReference = chargeReferenceData(chargeVersion, licence)
+  const chargeElement = chargeElementData(chargeReference, licence)
 
   return mergeByKey(licence, billingAccount, chargeVersion, chargeReference, chargeElement)
 }
