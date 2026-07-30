@@ -9,7 +9,7 @@ test.describe(
     annotation: {
       type: 'info',
       description:
-        'When the the licence is in workflow, and you cancel a workflow item, and there is an annual bill run, and the workflow was created before the bill run, the licence should be flagged for supplementary billing'
+        'When the licence is in workflow, and you cancel a workflow item, and there is an annual bill run, and the workflow was created before the bill run, the licence should be flagged for supplementary billing'
     }
   },
   () => {
