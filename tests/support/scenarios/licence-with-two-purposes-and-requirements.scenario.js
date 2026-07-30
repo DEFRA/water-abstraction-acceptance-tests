@@ -11,7 +11,13 @@ export default function () {
   const licence = licenceWithTwoPurposesScenario()
 
   const returnVersion = returnVersionData(licence)
-  const returnRequirement = returnRequirementData(returnVersion, licence)
+
+  const {
+    licenceVersionPurposes: [licenceVersionPurpose],
+    points
+  } = licence
+
+  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
 
   return mergeByKey(licence, returnVersion, returnRequirement)
 }

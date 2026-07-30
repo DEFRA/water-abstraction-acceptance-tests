@@ -22,7 +22,7 @@ test.describe('Submit a nil return (internal)', { tag: '@supplementary-billing' 
     await login(users.billingAndData)
   })
 
-  test('submit a return and mark the licence for supplementary billing', async ({ page }) => {
+  test('submit a nil return', async ({ page }) => {
     await page.goto(`/system/return-logs/${returnLog.id}/details`)
 
     // Abstraction return
@@ -45,17 +45,12 @@ test.describe('Submit a nil return (internal)', { tag: '@supplementary-billing' 
     await page.locator('.govuk-button').first().click()
 
     // Return submitted
-    // confirm we see the success panel and then click the Mark for supplementary bill run button
+    // confirm we see the success panel
     await expect(page.locator('.govuk-panel')).toContainText(`Return ${returnLog.returnReference} submitted`)
-    await page.locator('.govuk-button', { hasText: 'Mark for supplementary bill run' }).click()
 
-    // Navigate to the Licence summary page
-    await page.locator('nav a', { hasText: 'Licence summary' }).click()
-
-    // Summary
-    // confirm the licence has been flagged for the next supplementary bill run
-    await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-      'This licence has been marked for the next supplementary bill run.'
-    )
+    // Navigate to the Return page
+    // Confirm the return is a nil return
+    await page.getByRole('link', { name: 'View this return' }).click()
+    await expect(page.locator('[data-test="total"]')).toContainText('Nil return')
   })
 })

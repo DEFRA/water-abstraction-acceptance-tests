@@ -66,11 +66,11 @@ export default function (licenceData, returnRequirementData, period) {
         status: 'due',
         underQuery: false,
         returnCycleId: {
-          schema: 'returns',
+          schema: 'public',
           table: 'returnCycles',
           lookup: 'startDate',
           value: formatDateToIso(returnCycleStartDate),
-          select: 'returnCycleId'
+          select: 'id'
         },
         returnRequirementId: returnRequirement.id,
         quarterly: period.quarterly

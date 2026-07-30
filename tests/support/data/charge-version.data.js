@@ -26,11 +26,11 @@ export default function (billingAccountData, licenceData) {
         status: 'current',
         source: 'wrls',
         changeReasonId: {
-          schema: 'water',
+          schema: 'public',
           table: 'changeReasons',
           lookup: 'description',
           value: 'New licence',
-          select: 'changeReasonId'
+          select: 'id'
         }
       }
     ]
