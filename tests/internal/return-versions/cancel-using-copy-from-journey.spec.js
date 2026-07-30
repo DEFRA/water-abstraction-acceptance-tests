@@ -79,7 +79,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
     )
 
     // confirm we see the abstraction period copied from the existing requirement
-    await expect(page.locator('[data-test="abstraction-period-0"]')).toContainText('From 1 January to 31 December')
+    await expect(page.locator('[data-test="abstraction-period-0"]')).toContainText('From 1 April to 31 March')
 
     // confirm we see the returns cycle copied from the existing requirement
     await expect(page.locator('[data-test="returns-cycle-0"]')).toContainText('Winter and all year')
@@ -94,7 +94,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
     await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
 
     // confirm we see the agreements and exceptions copied from the existing requirement
-    await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('None')
+    await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('Two-part tariff')
 
     // choose the cancel return requirement button
     await page.getByText('Cancel return requirement').click()

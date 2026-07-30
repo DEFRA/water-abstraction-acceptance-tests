@@ -32,11 +32,11 @@ export default function (licenceRef, companyData) {
       {
         id: licenceDocumentHeaderId,
         regimeEntityId: {
-          schema: 'crm',
-          table: 'entity',
-          lookup: 'entityType',
+          schema: 'public',
+          table: 'licenceEntities',
+          lookup: 'type',
           value: 'regime',
-          select: 'entityId'
+          select: 'id'
         },
         licenceRef,
         naldId: {

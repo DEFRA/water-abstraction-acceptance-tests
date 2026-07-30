@@ -41,18 +41,18 @@ export default function (chargeVersionData, licenceData) {
           select: 'id'
         },
         purposePrimaryId: {
-          schema: 'water',
-          table: 'purposesPrimary',
+          schema: 'public',
+          table: 'primaryPurposes',
           lookup: 'legacyId',
           value: 'A',
-          select: 'purposePrimaryId'
+          select: 'id'
         },
         purposeSecondaryId: {
-          schema: 'water',
-          table: 'purposesSecondary',
+          schema: 'public',
+          table: 'secondaryPurposes',
           lookup: 'legacyId',
           value: 'AGR',
-          select: 'purposeSecondaryId'
+          select: 'id'
         },
         section127Agreement: twoPartTariff,
         scheme: 'alcs',
