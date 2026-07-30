@@ -67,22 +67,18 @@ test.describe('Submit a single volume return (internal)', () => {
     await page.locator('.govuk-button').click()
 
     // Volumes
-    // we leave the defaulted values of 50CM, which are 100CM split by the number of months in the abstraction
-    // period (2) and continue
+    // we leave the defaulted volumes which are 100CM split by the number of months in the abstraction
+    // and check the total volume is 100CM and continue
+    await expect(page.locator('[data-test="total-cubic-metres"]')).toContainText('100')
     await page.locator('.govuk-button').first().click()
 
     // Return submitted
-    // confirm we see the success panel and then click the Mark for supplementary bill run button
+    // confirm we see the success panel
     await expect(page.locator('.govuk-panel')).toContainText(`Return ${returnLog.returnReference} submitted`)
-    await page.locator('.govuk-button', { hasText: 'Mark for supplementary bill run' }).click()
 
-    // Navigate to the Licence summary page
-    await page.locator('nav a', { hasText: 'Licence summary' }).click()
-
-    // Summary
-    // confirm the licence has been flagged for the next supplementary bill run
-    await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-      'This licence has been marked for the next supplementary bill run.'
-    )
+    // Navigate to the Return page
+    // Confirm the return has a total volume of 100 cubic metres
+    await page.getByRole('link', { name: 'View this return' }).click()
+    await expect(page.locator('[data-test="total"]')).toContainText('100')
   })
 })
