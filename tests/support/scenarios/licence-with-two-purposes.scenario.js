@@ -1,7 +1,7 @@
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
+import licenceVersionPurposePointData from '../data/licence-version-purpose-point.data.js'
 import pointData from '../data/point.data.js'
 import licenceScenario from './licence.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regionCode } from '../default-values.js'
 
 export const title = 'Licence with two purposes'
@@ -11,19 +11,23 @@ export const description =
 export default function () {
   const licence = licenceScenario()
 
-  const secondPoint = pointData('Example point 2', 'TT 9876 5432')
+  const secondPoint = pointData()
 
-  secondPoint.points[0].description = 'Example point 2'
-  secondPoint.points[0].ngr1 = 'TT 9876 5432'
-  secondPoint.points[0].externalId = `${regionCode}:9000092`
+  secondPoint.description = 'Example point 2'
+  secondPoint.ngr1 = 'TT 9876 5432'
+  secondPoint.externalId = `${regionCode}:9000092`
 
-  const secondPurpose = licenceVersionPurposeData(licence, secondPoint)
+  const secondPurpose = licenceVersionPurposeData(licence.licenceVersion)
 
-  secondPurpose.licenceVersionPurposes[0].purposeId.value = '280'
-  secondPurpose.licenceVersionPurposes[0].externalId = `${regionCode}:9000092`
+  secondPurpose.purposeId.value = '280'
+  secondPurpose.externalId = `${regionCode}:9000092`
 
-  // Simpler to push straight onto licence.points than pull in mergeByKey just for this one array
-  licence.points.push(...secondPoint.points)
+  const secondPurposePoint = licenceVersionPurposePointData(secondPurpose, secondPoint)
 
-  return mergeByKey(licence, secondPurpose)
+  return {
+    ...licence,
+    points: [licence.point, secondPoint],
+    licenceVersionPurposes: [licence.licenceVersionPurpose, secondPurpose],
+    licenceVersionPurposePoints: [licence.licenceVersionPurposePoint, secondPurposePoint]
+  }
 }

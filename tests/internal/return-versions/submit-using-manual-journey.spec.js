@@ -9,11 +9,7 @@ test.describe('Submit return version manually (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licences: [scenarioLicence]
-    } = scenario
-
-    licence = scenarioLicence
+    licence = scenario.licence
 
     // Must be a date after the licence's own start date, which defaults to a recent date
     customStartDateYear = new Date(licence.startDate).getUTCFullYear() + 1
