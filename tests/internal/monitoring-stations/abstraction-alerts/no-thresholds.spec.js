@@ -7,11 +7,7 @@ test.describe('Attempt set up of abstraction alert with no thresholds (internal)
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      monitoringStations: [scenarioMonitoringStation]
-    } = scenario
-
-    monitoringStation = scenarioMonitoringStation
+    monitoringStation = scenario.monitoringStation
 
     await setup(scenario)
   })

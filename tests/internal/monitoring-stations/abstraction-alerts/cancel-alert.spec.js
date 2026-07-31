@@ -9,13 +9,8 @@ test.describe('Set up but then cancel an abstraction alert (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licences: [scenarioLicence],
-      monitoringStations: [scenarioMonitoringStation]
-    } = scenario
-
-    licence = scenarioLicence
-    monitoringStation = scenarioMonitoringStation
+    licence = scenario.licence
+    monitoringStation = scenario.monitoringStation
 
     await setup(scenario)
   })
