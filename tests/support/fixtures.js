@@ -91,15 +91,27 @@ export const test = base.extend({
  * with plain entity names throughout, never having to know or care that the wire format is a pluralized array
  * per key.
  *
+ * A scenario overriding a single-entity result with several instances (e.g. a second point on top of the one a
+ * base scenario already built) sets its own plural-named key (`points: [...]`) alongside whatever singular key
+ * the base scenario already spread in (`point: {...}`) — object spread can't make one key replace another with a
+ * different name. Rather than requiring every override to know and exactly match the base scenario's key name,
+ * the plural key wins here: when both a key and its pluralized form are present, the singular one is skipped.
+ *
  * @private
  */
 function _asArrays(data) {
   const result = {}
 
   for (const key of Object.keys(data)) {
+    const pluralKey = _pluralize(key)
+
+    if (pluralKey !== key && Object.hasOwn(data, pluralKey)) {
+      continue
+    }
+
     const value = data[key]
 
-    result[_pluralize(key)] = Array.isArray(value) ? value : [value]
+    result[pluralKey] = Array.isArray(value) ? value : [value]
   }
 
   return result

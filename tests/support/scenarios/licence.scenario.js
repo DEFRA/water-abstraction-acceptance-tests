@@ -7,6 +7,7 @@ import licenceDocumentHeaderData from '../data/licence-document-header.data.js'
 import licenceDocumentRoleData from '../data/licence-document-role.data.js'
 import licenceVersionData from '../data/licence-version.data.js'
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
+import licenceVersionPurposePointData from '../data/licence-version-purpose-point.data.js'
 import permitLicenceData from '../data/permit-licence.data.js'
 import pointData from '../data/point.data.js'
 import { determineReturnCycleStartDate, formatDateToIso, previousPeriod, today } from '../helpers/date.helpers.js'
@@ -19,13 +20,15 @@ export default function () {
   const company = _company()
   const point = pointData()
   const licence = _licence(licenceRef, company.company, company.address)
-  const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion, point)
+  const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion)
+  const licenceVersionPurposePoint = licenceVersionPurposePointData(licenceVersionPurpose, point)
 
   return {
     ...company,
     point,
     ...licence,
-    ...licenceVersionPurpose
+    licenceVersionPurpose,
+    licenceVersionPurposePoint
   }
 }
 
