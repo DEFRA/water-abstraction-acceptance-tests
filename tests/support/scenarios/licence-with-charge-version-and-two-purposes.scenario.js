@@ -1,7 +1,7 @@
 import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
-import chargeVersionData from '../data/charge-version.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
+import chargeVersionData from '../data/charge-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 

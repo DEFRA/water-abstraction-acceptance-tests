@@ -1,7 +1,7 @@
 import { convertCubicMetresToMegalitres } from '../helpers/conversion.helpers.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (chargeVersionData, licence) {
+export default function (chargeVersionData, licenceData) {
   const {
     chargeVersions: [chargeVersion]
   } = chargeVersionData
@@ -9,7 +9,7 @@ export default function (chargeVersionData, licence) {
   let annualQuantity = 0
   let twoPartTariff = false
 
-  for (const licenceVersionPurpose of licence.licenceVersionPurposes) {
+  for (const licenceVersionPurpose of licenceData.licenceVersionPurposes) {
     annualQuantity += licenceVersionPurpose.annualQuantity
 
     if (!twoPartTariff) {

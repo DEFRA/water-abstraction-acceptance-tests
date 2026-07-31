@@ -165,9 +165,6 @@ test.describe('Simple Licence and Two Returns with No Issues (internal)', () => 
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-element-description-0"]')
       ).toContainText('Spray Irrigation - Direct')
-      await expect(
-        page.locator('[data-test="charge-version-0-charge-reference-0-element-description-0"]')
-      ).toContainText('Spray Irrigation - Direct')
       await expect(page.locator('[data-test="charge-version-0-charge-reference-0-element-dates-0"]')).toContainText(
         `1 April ${startYear} to 31 March ${endYear}`
       )
