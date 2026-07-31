@@ -1,9 +1,9 @@
+import billingAccountAddressData from '../data/billing-account-address.data.js'
 import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a charge version and two purposes'
 export const description =
@@ -12,15 +12,21 @@ export const description =
 export default function () {
   const licence = licenceWithTwoPurposesScenario()
 
-  const billingAccount = billingAccountData(licence)
-  const chargeVersion = chargeVersionData(billingAccount, licence)
-  const chargeReference = chargeReferenceData(chargeVersion, licence)
+  const billingAccount = billingAccountData(licence.company)
+  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
+  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
+  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes)
 
-  const {
-    licenceVersionPurposes: [firstLicenceVersionPurpose, secondLicenceVersionPurpose]
-  } = licence
+  const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
   const firstChargeElement = chargeElementData(chargeReference, firstLicenceVersionPurpose)
   const secondChargeElement = chargeElementData(chargeReference, secondLicenceVersionPurpose)
 
-  return mergeByKey(licence, billingAccount, chargeVersion, chargeReference, firstChargeElement, secondChargeElement)
+  return {
+    ...licence,
+    billingAccount,
+    billingAccountAddress,
+    chargeVersion,
+    chargeReference,
+    chargeElements: [firstChargeElement, secondChargeElement]
+  }
 }

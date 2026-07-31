@@ -10,15 +10,9 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licences: [scenarioLicence],
-      returnRequirements: [scenarioReturnRequirement],
-      returnRequirementPurposes: [scenarioReturnRequirementPurpose]
-    } = scenario
-
-    licence = scenarioLicence
-    returnRequirement = scenarioReturnRequirement
-    returnRequirementPurpose = scenarioReturnRequirementPurpose
+    licence = scenario.licence
+    returnRequirement = scenario.returnRequirement
+    returnRequirementPurpose = scenario.returnRequirementPurpose
 
     await setup(scenario)
   })

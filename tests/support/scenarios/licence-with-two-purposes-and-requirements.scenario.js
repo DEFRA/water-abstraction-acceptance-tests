@@ -1,7 +1,8 @@
 import returnRequirementData from '../data/return-requirement.data.js'
+import returnRequirementPointData from '../data/return-requirement-point.data.js'
+import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with two purposes and a return requirement'
 export const description =
@@ -10,14 +11,21 @@ export const description =
 export default function () {
   const licence = licenceWithTwoPurposesScenario()
 
-  const returnVersion = returnVersionData(licence)
+  const returnVersion = returnVersionData(licence.licence)
 
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose],
-    points
-  } = licence
+  const [licenceVersionPurpose] = licence.licenceVersionPurposes
 
-  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
+  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose)
+  const returnRequirementPoints = licence.points.map((point) => {
+    return returnRequirementPointData(returnRequirement, point)
+  })
+  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
 
-  return mergeByKey(licence, returnVersion, returnRequirement)
+  return {
+    ...licence,
+    returnVersion,
+    returnRequirement,
+    returnRequirementPoints,
+    returnRequirementPurpose
+  }
 }
