@@ -8,10 +8,14 @@ export const description =
 export default function (calculatedDates) {
   const licence = licenceWithTptChargeVersionAndCompletedReturnLogScenario(calculatedDates)
 
-  const receivedDate = new Date(licence.returnLogs[0].dueDate)
+  const {
+    returnLogs: [returnLog]
+  } = licence
+
+  const receivedDate = new Date(returnLog.dueDate)
 
   receivedDate.setUTCDate(receivedDate.getUTCDate() + 3)
-  licence.returnLogs[0].receivedDate = formatDateToIso(receivedDate)
+  returnLog.receivedDate = formatDateToIso(receivedDate)
 
   return licence
 }
