@@ -44,26 +44,26 @@ test.describe('Similar Licence to Simple Licence with a Late Return (internal)',
       const formattedCurrentDate = formatLongDate(new Date())
 
       await page.goto('/system/bill-runs')
+
       await expect(page.locator('h1')).toContainText('Bill runs')
-
       await page.getByRole('button', { name: 'Create a bill run' }).click()
-      await expect(page.locator('h1')).toContainText('Select the bill run type')
 
+      await expect(page.locator('h1')).toContainText('Select the bill run type')
       await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
-      await expect(page.locator('h1')).toContainText('Select the region')
 
+      await expect(page.locator('h1')).toContainText('Select the region')
       await page.getByRole('radio', { name: 'Test Region' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
-      await expect(page.locator('h1')).toContainText('Select the financial year')
 
+      await expect(page.locator('h1')).toContainText('Select the financial year')
       await page.locator(`input[value="${endYear}"]`).check()
       await page.getByRole('button', { name: 'Continue' }).click()
+
       await expect(page.locator('h1')).toContainText('Check the bill run to be created')
-
       await page.getByRole('button', { name: 'Create bill run' }).click()
-      await expect(page.locator('h1')).toContainText('Bill runs')
 
+      await expect(page.locator('h1')).toContainText('Bill runs')
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'review')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
       await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
