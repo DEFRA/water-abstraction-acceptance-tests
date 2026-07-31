@@ -1,11 +1,7 @@
 import { splitTotalVolume } from '../helpers/conversion.helpers.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (period, returnLogData, totalVolume) {
-  const {
-    returnLogs: [returnLog]
-  } = returnLogData
-
+export default function (period, returnLog, totalVolume) {
   const returnSubmissionId = generateUUID()
 
   const startYear = period.startDate.getFullYear()
@@ -14,15 +10,13 @@ export default function (period, returnLogData, totalVolume) {
   const splitVolumes = splitTotalVolume(totalVolume, 12)
 
   return {
-    returnSubmissions: [
-      {
-        id: returnSubmissionId,
-        returnId: returnLog.returnId,
-        returnLogId: returnLog.id,
-        nilReturn: false,
-        current: true
-      }
-    ],
+    returnSubmission: {
+      id: returnSubmissionId,
+      returnId: returnLog.returnId,
+      returnLogId: returnLog.id,
+      nilReturn: false,
+      current: true
+    },
     returnSubmissionLines: [
       {
         id: generateUUID(),
