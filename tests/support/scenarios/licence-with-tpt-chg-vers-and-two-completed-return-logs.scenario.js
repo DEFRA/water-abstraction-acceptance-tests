@@ -1,10 +1,13 @@
+import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
+import pointData from '../data/point.data.js'
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnSubmissionData from '../data/return-submission.data.js'
-import returnVersionData from '../data/return-version.data.js'
-import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
+import licenceWithTptChgVersAndCompletedReturnLogScenario from './licence-with-tpt-chg-vers-and-completed-return-log.scenario.js'
+import { convertCubicMetresToMegalitres } from '../helpers/conversion.helpers.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { regionCode } from '../default-values.js'
 
 export const title = 'Licence with tpt charge version and two completed return logs'
 export const description =
@@ -27,54 +30,54 @@ export default function (calculatedDates) {
     quarterly: false
   }
 
-  const licence = licenceWithChargeVersionAndTwoPurposesScenario()
+  const licence = licenceWithTptChgVersAndCompletedReturnLogScenario(calculatedDates)
 
-  const returnVersion = returnVersionData(licence)
+  // The base scenario only gives us one purpose and point (the TPT one). We add a second, non-TPT purpose and point
+  // here so we have a second return requirement to hang the "not TPT" completed return log off.
+  const secondPoint = pointData('Example point 2', 'TT 9876 5432')
 
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnVersion.returnVersions[0].startDate = previousPeriodDetails.startDate
+  secondPoint.points[0].description = 'Example point 2'
+  secondPoint.points[0].ngr1 = 'TT 9876 5432'
+  secondPoint.points[0].externalId = `${regionCode}:9000092`
 
+  const secondPurpose = licenceVersionPurposeData(licence, secondPoint)
+
+  secondPurpose.licenceVersionPurposes[0].purposeId.value = '280'
+  secondPurpose.licenceVersionPurposes[0].externalId = `${regionCode}:9000092`
+
+  // Simpler to push straight onto licence.points than pull in mergeByKey just for this one array
+  licence.points.push(...secondPoint.points)
+
+  // The charge reference (built as part of licenceWithTptChgVersAndCompletedReturnLogScenario()) only accounts for the
+  // first purpose's annual quantity. As it now covers both purposes' charge elements, we correct its volume to the
+  // combined total.
   const {
-    licenceVersionPurposes: [firstLicenceVersionPurpose, secondLicenceVersionPurpose],
-    points: [firstPoint, secondPoint]
+    licenceVersionPurposes: [firstLicenceVersionPurpose]
   } = licence
+  const totalAnnualQuantity =
+    firstLicenceVersionPurpose.annualQuantity + secondPurpose.licenceVersionPurposes[0].annualQuantity
 
-  const firstReturnRequirement = returnRequirementData(returnVersion, firstLicenceVersionPurpose, [firstPoint])
+  licence.chargeReferences[0].volume = convertCubicMetresToMegalitres(totalAnnualQuantity)
 
-  const previousFirstReturnLog = returnLogData(licence, firstReturnRequirement, previousPeriodDetails)
-  const currentFirstReturnLog = returnLogData(licence, firstReturnRequirement, currentPeriodDetails)
-
-  previousFirstReturnLog.returnLogs[0].status = 'completed'
-
-  const secondReturnRequirement = returnRequirementData(returnVersion, secondLicenceVersionPurpose, [secondPoint])
+  const secondReturnRequirement = returnRequirementData(licence, mergeByKey(secondPurpose, secondPoint))
 
   const previousSecondReturnLog = returnLogData(licence, secondReturnRequirement, previousPeriodDetails)
   const currentSecondReturnLog = returnLogData(licence, secondReturnRequirement, currentPeriodDetails)
 
   previousSecondReturnLog.returnLogs[0].status = 'completed'
 
-  const firstReturnSubmission = returnSubmissionData(
-    previousPeriodDetails,
-    previousFirstReturnLog,
-    firstLicenceVersionPurpose.annualQuantity
-  )
   const secondReturnSubmission = returnSubmissionData(
     previousPeriodDetails,
     previousSecondReturnLog,
-    secondLicenceVersionPurpose.annualQuantity
+    secondPurpose.licenceVersionPurposes[0].annualQuantity
   )
 
   return mergeByKey(
     licence,
-    returnVersion,
-    firstReturnRequirement,
+    secondPurpose,
     secondReturnRequirement,
-    previousFirstReturnLog,
     previousSecondReturnLog,
-    currentFirstReturnLog,
     currentSecondReturnLog,
-    firstReturnSubmission,
     secondReturnSubmission
   )
 }
