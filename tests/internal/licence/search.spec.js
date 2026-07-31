@@ -7,11 +7,7 @@ test.describe('Search for a licence (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licences: [scenarioLicence]
-    } = scenario
-
-    licence = scenarioLicence
+    licence = scenario.licence
 
     await setup(scenario)
   })

@@ -37,7 +37,7 @@ export const test = base.extend({
 
   load: async ({ request }, use) => {
     await use((data) => {
-      return request.post('/system/data/load', { data })
+      return request.post('/system/data/load', { data: _asArrays(data) })
     })
   },
 
@@ -83,3 +83,24 @@ export const test = base.extend({
     await use(usersData)
   }
 })
+
+/**
+ * Data/scenario files may use a singular key naming an entity directly (e.g. `licence`) rather than the plural
+ * table name the load endpoint expects (`licences`), and may return either a single object or an array for it.
+ * Normalizing both here means scenario/data files can compose with plain entity names throughout, never having
+ * to know or care that the wire format is a pluralized array per key.
+ *
+ * @private
+ */
+function _asArrays(data) {
+  const result = {}
+
+  for (const key of Object.keys(data)) {
+    const value = data[key]
+    const pluralKey = key.endsWith('s') ? key : `${key}s`
+
+    result[pluralKey] = Array.isArray(value) ? value : [value]
+  }
+
+  return result
+}
