@@ -54,27 +54,25 @@ test.describe('Simple Licence and Two Returns with No Issues (internal)', () => 
 
       // Confirm there are no flags already on the licence
       await expect(page.locator('.govuk-notification-banner__content')).toHaveCount(0)
-
-      // Click the Bill runs menu link
       await page.locator('#nav-bill-runs').click()
 
-      // Bill runs ~ Click the Create a bill run button
+      await expect(page.locator('h1')).toContainText('Bill runs')
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
-      // Which kind of bill run do you want to create? ~ Choose Two-part tariff then continue
+      await expect(page.locator('h1')).toContainText('Select the bill run type')
       await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      // Select the region ~ Choose Test Region and continue
+      await expect(page.locator('h1')).toContainText('Select the region')
       await page.getByRole('radio', { name: 'Test Region' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      // Select the financial year ~ choose the most recent option (it is what the scenario seed data is setup for) and
-      // continue
+      // The most recent year is the one the scenario seed data is set up for
+      await expect(page.locator('h1')).toContainText('Select the financial year')
       await page.locator(`input[value="${endYear}"]`).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      // Check the bill run
+      await expect(page.locator('h1')).toContainText('Check the bill run')
       await page.getByRole('button', { name: 'Create bill run' }).click()
 
       // The bill run we created will be the top result. We expect its status to be BUILDING. Building might take a few
@@ -87,16 +85,14 @@ test.describe('Simple Licence and Two Returns with No Issues (internal)', () => 
       await expect(page.locator('[data-test="bill-run-total-0"]')).toContainText('')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
-      // Review licences ~ Test its the correct bill run
-      await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
       await expect(page.locator('h1')).toContainText('Review licences')
+      await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
       await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
 
-      // Review licences ~ Test it has the correct licence
       await expect(page.locator('[data-test="licence-1"]')).toContainText('AT/TE/ST/01/01')
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
@@ -105,7 +101,6 @@ test.describe('Simple Licence and Two Returns with No Issues (internal)', () => 
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
-      // Review Licence AT/TE/ST/01/01 ~ Check the licence details
       await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
       await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('div > .govuk-tag')).toContainText('ready')
@@ -116,7 +111,6 @@ test.describe('Simple Licence and Two Returns with No Issues (internal)', () => 
         `1 April ${startYear} to 31 March ${endYear}`
       )
 
-      // Review Licence AT/TE/ST/01/01 ~ Check the first matched return details
       await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
       await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999400')
       await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
@@ -131,11 +125,10 @@ test.describe('Simple Licence and Two Returns with No Issues (internal)', () => 
       await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
       await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('1.554 ML / 1.554 ML')
 
-      // Review Licence AT/TE/ST/01/01 ~ Check there are no other returns
+      // Confirm there are no other returns
       await expect(page.locator('[data-test="matched-return-action-1"] > .govuk-link')).toHaveCount(0)
       await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
 
-      // Review Licence AT/TE/ST/01/01 ~ Check charge Information details
       await expect(page.locator('[data-test="financial-year"]')).toContainText(
         `Financial year ${startYear} to ${endYear}`
       )
@@ -178,7 +171,7 @@ test.describe('Simple Licence and Two Returns with No Issues (internal)', () => 
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
       ).toContainText('1.554 ML (9999400)')
 
-      // Review Licence AT/TE/ST/01/01 ~ Check there is only 1 charge version, charge reference and charge element
+      // Confirm there is only one charge version, charge reference and charge element
       await expect(page.locator('#charge-version-1 > .govuk-heading-l')).toHaveCount(0)
       await expect(page.locator('[data-test="charge-version-0-reference-1"]')).toHaveCount(0)
       await expect(page.locator('[data-test="charge-version-0-charge-reference-0-element-count-1"]')).toHaveCount(0)
