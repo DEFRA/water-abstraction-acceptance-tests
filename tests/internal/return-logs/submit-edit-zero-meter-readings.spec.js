@@ -8,11 +8,7 @@ test.describe('Submit then edit a meter readings return with zero reading (inter
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      returnLogs: [scenarioReturnLog]
-    } = scenario
-
-    returnLog = scenarioReturnLog
+    returnLog = scenario.returnLogs[0]
 
     await setup(scenario)
   })

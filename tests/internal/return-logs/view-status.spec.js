@@ -9,13 +9,8 @@ test.describe('View returns and their status (internal)', () => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      licences: [licenceScenario],
-      returnLogs: returnLogsScenario
-    } = scenario
-
-    licence = licenceScenario
-    returnLogs = returnLogsScenario
+    licence = scenario.licence
+    returnLogs = scenario.returnLogs
 
     await setup(scenario)
   })

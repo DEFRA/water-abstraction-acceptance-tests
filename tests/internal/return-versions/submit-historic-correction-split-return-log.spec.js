@@ -9,11 +9,7 @@ test.describe('Submit historic correction that results in a split-log (internal)
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      licences: [scenarioLicence]
-    } = scenario
-
-    licence = scenarioLicence
+    licence = scenario.licence
     startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
 
     await setup(scenario)
