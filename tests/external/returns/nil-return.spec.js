@@ -10,12 +10,11 @@ test.describe('Submit a nil return (external)', () => {
     const scenario = scenarioData(dates)
 
     const {
-      returnLogs: [scenarioReturnLog],
-      users: [scenarioUser]
+      returnLogs: [scenarioReturnLog]
     } = scenario
 
     returnLog = scenarioReturnLog
-    user = scenarioUser
+    user = scenario.user
 
     await setup(scenario)
   })
