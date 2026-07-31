@@ -1,9 +1,9 @@
+import billingAccountAddressData from '../data/billing-account-address.data.js'
 import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceScenario from './licence.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a charge version'
 export const description = 'Licence with one charge version, reference and element based on the licence data'
@@ -11,15 +11,18 @@ export const description = 'Licence with one charge version, reference and eleme
 export default function () {
   const licence = licenceScenario()
 
-  const billingAccount = billingAccountData(licence)
-  const chargeVersion = chargeVersionData(billingAccount, licence)
+  const billingAccount = billingAccountData(licence.company)
+  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
+  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
+  const chargeReference = chargeReferenceData(chargeVersion, [licence.licenceVersionPurpose])
+  const chargeElement = chargeElementData(chargeReference, licence.licenceVersionPurpose)
 
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose]
-  } = licence
-
-  const chargeReference = chargeReferenceData(chargeVersion, licence)
-  const chargeElement = chargeElementData(chargeReference, licenceVersionPurpose)
-
-  return mergeByKey(licence, billingAccount, chargeVersion, chargeReference, chargeElement)
+  return {
+    ...licence,
+    billingAccount,
+    billingAccountAddress,
+    chargeVersion,
+    chargeReference,
+    chargeElement
+  }
 }
