@@ -9,12 +9,9 @@ test.describe('Sharing licence access with another user (external)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licences: [scenarioLicence],
-      users: [scenarioFirstUser, scenarioSecondUser]
-    } = scenario
+    const [scenarioFirstUser, scenarioSecondUser] = scenario.users
 
-    licence = scenarioLicence
+    licence = scenario.licence
     firstUser = scenarioFirstUser
     secondUser = scenarioSecondUser
 
