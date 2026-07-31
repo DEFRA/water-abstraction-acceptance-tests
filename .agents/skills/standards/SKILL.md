@@ -31,12 +31,14 @@ This document defines the standards an agent must apply when reviewing or writin
 - No error handling for scenarios that cannot happen
 - No abstractions for a single use case
 - Private functions must be ordered alphabetically by name
-- In spec files and data files, destructure entities out of scenario/data-file results with array patterns rather than indexing directly, e.g. prefer `const { companies: [company], licences: [licence] } = scenario` over `const company = scenario.companies[0]`, and prefer `const { companies: [company], addresses: [address] } = companyData` over `const company = companyData.companies[0]`
+- In spec files and data files still on the legacy array-returning shape, destructure entities out of scenario/data-file results with array patterns rather than indexing directly, e.g. prefer `const { companies: [company], licences: [licence] } = scenario` over `const company = scenario.companies[0]`, and prefer `const { companies: [company], addresses: [address] } = companyData` over `const company = companyData.companies[0]`. Data files migrated to the single-object return shape (see `.agents/skills/scenarios/SKILL.md`) don't need this — a single-object key is used directly, e.g. `licence.licenceVersions`, with no `[0]` and no array-pattern destructure
 
 ## Spec file structure (Playwright)
 
 - Every spec file must have a single `test.describe` block containing everything: entity variables declared with `let`, then `test.beforeAll`, then `test.beforeEach`, then the `test`s. Nothing scenario-related lives at module scope above the `describe`.
-- `test.beforeAll` builds the scenario, destructures the entities the tests need (using temporary `scenario`-prefixed names to avoid shadowing), assigns them to the outer `let` variables, then loads the scenario via the `setup` fixture. When the scenario needs calculated dates, call `calculatedDates` first to get the dates and pass them into the scenario builder, but still load the result with `setup` rather than calling `tearDown` + `load` individually.
+- `test.beforeAll` builds the scenario, pulls out the entities the tests need, assigns them to the outer `let` variables, then loads the scenario via the `setup` fixture. When the scenario needs calculated dates, call `calculatedDates` first to get the dates and pass them into the scenario builder, but still load the result with `setup` rather than calling `tearDown` + `load` individually.
+  - On a scenario still on the legacy array shape, pull an entity out with a destructure using temporary `scenario`-prefixed names to avoid shadowing the outer `let`, e.g. `const { licences: [scenarioLicence] } = scenario` then `licence = scenarioLicence`.
+  - On a scenario migrated to the single-object shape (see `.agents/skills/scenarios/SKILL.md`), the scenario's key is already the singular entity name, so a plain property assignment replaces the destructure entirely — no temp name needed since there's no `const`/`let` to collide with the outer one: `licence = scenario.licence`.
 
 ```js
 // Bad — scenario built and destructured at module scope, outside the describe
@@ -104,6 +106,25 @@ test.describe('Submit a return with no meter readings (internal)', () => {
 
   test('attempt to submit a return without entering any readings', async ({ page }) => { ... })
 })
+
+// Good — scenario is on the migrated single-object shape, so no destructure/array-pattern is needed at all
+test.describe('Search for a licence (internal)', () => {
+  let licence
+
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
+
+    licence = scenario.licence
+
+    await setup(scenario)
+  })
+
+  test.beforeEach(async ({ login, users }) => {
+    await login(users.super)
+  })
+
+  test('can find a licence by exact licence reference', async ({ page }) => { ... })
+})
 ```
 
 ## Locators (Playwright)
@@ -144,7 +165,8 @@ await page.getByRole('button', { name: 'Continue' }).click()
 - **Scenario files**: `kebab-case` with a `.scenario.js` suffix (e.g. `licence.scenario.js`)
 - **Data/scenario file imports**: name the import after the file itself, including its `Data`/`Scenario` suffix, e.g. `import companyData from '../data/company.data.js'` and `import licenceScenario from './licence.scenario.js'`, not `import company from '../data/company.data.js'`
 - **Data/scenario file call results**: when invoking a `../data/*` or scenario import to build its data, use a plain descriptive name for the result rather than repeating the `Data`/`Scenario` suffix, e.g. `const company = companyData()` and `const licence = licenceScenario()`, not `const companyData = companyData()` (which also collides with the import binding)
-- **Data file parameters**: parameter names inside `../data/*.data.js` files must stay consistent with each other across the whole data folder for the same concept, always `Data`-suffixed regardless of what the caller named its local result, e.g. every data file that accepts a company's data calls the parameter `companyData` — `export default function (licenceRef, companyData, primaryUserData = null) { ... }`, not `export default function (licenceRef, company, primaryUser = null) { ... }`
+- **Data file parameters (legacy array-returning data files)**: parameter names inside a `../data/*.data.js` file that still returns the legacy array shape must stay consistent with each other across the whole data folder for the same concept, always `Data`-suffixed regardless of what the caller named its local result, e.g. every such data file that accepts a company's data calls the parameter `companyData` — `export default function (licenceRef, companyData, primaryUserData = null) { ... }`, not `export default function (licenceRef, company, primaryUser = null) { ... }`
+- **Data file parameters (single-object data files)**: a data file migrated to the single-object return shape takes the specific entity object(s)/array(s) it needs directly, not the whole upstream `*Data` result — e.g. `export default function (licenceRef, company, address) { ... }`, not `export default function (licenceRef, companyData) { ... }` with an internal destructure. The caller pulls each entity off the upstream result via direct property access and passes it as its own argument, e.g. `licenceData(licenceRef, company.companies, company.addresses)`. Once an entity exists (e.g. a `licence` built by `licenceData`), pass that whole entity object into builders that depend on it — never pre-extract its individual fields into separate scalar arguments. E.g. `permitLicenceData(licence)` (reading `licence.licenceRef`/`licence.startDate` internally), not `permitLicenceData(licence.licenceRef, licence.startDate)`. Raw scalars are only passed for values that don't yet exist as part of any entity (e.g. the `licenceRef` and `startDate` used to first create the licence itself)
 
 ## Alanisms
 
