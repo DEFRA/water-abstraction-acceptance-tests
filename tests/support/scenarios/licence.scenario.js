@@ -1,3 +1,5 @@
+import addressData from '../data/address.data.js'
+import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
 import licenceData from '../data/licence.data.js'
 import licenceDocumentData from '../data/licence-document.data.js'
@@ -14,9 +16,9 @@ export const title = 'Licence only'
 export const description = 'Just the licence, licence version, and licence holder (company)'
 
 export default function () {
-  const company = companyData()
+  const company = _company()
   const point = pointData()
-  const licence = _licence(licenceRef, company.companies, company.addresses)
+  const licence = _licence(licenceRef, company.company, company.address)
   const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion, point)
 
   return {
@@ -24,6 +26,23 @@ export default function () {
     point,
     ...licence,
     ...licenceVersionPurpose
+  }
+}
+
+/**
+ * Builds a company and its address, linked together as the licence holder.
+ *
+ * @private
+ */
+function _company() {
+  const company = companyData()
+  const address = addressData()
+  const companyAddress = companyAddressData(company, address)
+
+  return {
+    company,
+    address,
+    companyAddress
   }
 }
 

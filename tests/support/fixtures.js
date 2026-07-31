@@ -85,10 +85,11 @@ export const test = base.extend({
 })
 
 /**
- * Data/scenario files may use a singular key naming an entity directly (e.g. `licence`) rather than the plural
- * table name the load endpoint expects (`licences`), and may return either a single object or an array for it.
- * Normalizing both here means scenario/data files can compose with plain entity names throughout, never having
- * to know or care that the wire format is a pluralized array per key.
+ * Data/scenario files may use a singular key naming an entity directly (e.g. `licence`, `company`, `address`)
+ * rather than the plural table name the load endpoint expects (`licences`, `companies`, `addresses`), and may
+ * return either a single object or an array for it. Normalizing both here means scenario/data files can compose
+ * with plain entity names throughout, never having to know or care that the wire format is a pluralized array
+ * per key.
  *
  * @private
  */
@@ -97,10 +98,35 @@ function _asArrays(data) {
 
   for (const key of Object.keys(data)) {
     const value = data[key]
-    const pluralKey = key.endsWith('s') ? key : `${key}s`
 
-    result[pluralKey] = Array.isArray(value) ? value : [value]
+    result[_pluralize(key)] = Array.isArray(value) ? value : [value]
   }
 
   return result
+}
+
+/**
+ * A key already ending in a single `s` (`companies`, `licences`, `licenceVersionPurposePoints`) is treated as
+ * already plural and left alone, since most entity names in this codebase pluralize with a plain `s` and we
+ * can't tell "singular, happens to end in s" apart from "already plural" by spelling alone. `address` and
+ * `companyAddress` are the known exceptions — they end in a doubled `ss`, which is never how a word already
+ * pluralized this way would end, so that case is handled explicitly (`address` -> `addresses`). Words ending in
+ * a consonant + `y` (`company`) pluralize as `-ies`.
+ *
+ * @private
+ */
+function _pluralize(word) {
+  if (word.endsWith('ss')) {
+    return `${word}es`
+  }
+
+  if (/[^aeiou]y$/i.test(word)) {
+    return `${word.slice(0, -1)}ies`
+  }
+
+  if (word.endsWith('s')) {
+    return word
+  }
+
+  return `${word}s`
 }
