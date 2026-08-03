@@ -151,6 +151,7 @@ test.describe('Simple Licence with an Aggregate (internal)', () => {
       )
       await page.getByRole('link', { name: 'Change details' }).click()
 
+      await expect(page.locator('h1')).toContainText('Charge reference')
       await expect(page.locator('[data-test="charge-reference"]')).toContainText('Charge reference 4.6.1')
       await expect(page.locator('[data-test="financial-year"]')).toContainText(
         `Financial Year ${startYear} to ${endYear}`
@@ -164,31 +165,29 @@ test.describe('Simple Licence with an Aggregate (internal)', () => {
       await expect(page.locator('[data-test="adjustment-1"]')).toContainText('Charge adjustment (1 / 1)')
       await page.getByRole('link', { name: 'Change factors' }).click()
 
-      // Change factors page ~ Amend the aggregate
-      await expect(page.locator('.govuk-heading-xl')).toContainText('Set the adjustment factors')
+      await expect(page.locator('h1')).toContainText('Set the adjustment factors')
       await expect(page.locator('[data-test="adjustment-0"]')).toContainText('Two part tariff agreement')
       await expect(page.locator('#amended-aggregate')).toHaveValue('0.5')
       await expect(page.locator('#amended-charge-adjustment')).toHaveValue('1')
-      // By changing the aggregate factor to 1 this removes it
+      // Changing the aggregate factor to 1 removes it
       await page.locator('#amended-aggregate').fill('1')
       await page.getByRole('button', { name: 'Confirm' }).click()
 
-      // Charge reference details page ~ Checking the amended aggregate
+      await expect(page.locator('h1')).toContainText('Charge reference')
       await expect(page.locator('.govuk-notification-banner')).toBeVisible()
       await expect(page.locator('#govuk-notification-banner-title')).toContainText('Adjustment updated')
       await expect(page.locator('[data-test="adjustment-0"]')).toContainText('Aggregate factor (1 / 0.5)')
       await expect(page.locator('.govuk-summary-list__actions > .govuk-link')).toContainText('Change factors')
       await page.getByRole('link', { name: 'Change factors' }).click()
 
-      // Change factors page ~ Amend the charge adjustment
-      await expect(page.locator('.govuk-heading-xl')).toContainText('Set the adjustment factors')
+      await expect(page.locator('h1')).toContainText('Set the adjustment factors')
       await expect(page.locator('[data-test="adjustment-0"]')).toContainText('Two part tariff agreement')
       await expect(page.locator('#amended-aggregate')).toHaveValue('1')
       await expect(page.locator('#amended-charge-adjustment')).toHaveValue('1')
       await page.locator('#amended-charge-adjustment').fill('0.5')
       await page.getByRole('button', { name: 'Confirm' }).click()
 
-      // Charge reference details page ~ Checking the amended charge factor
+      await expect(page.locator('h1')).toContainText('Charge reference')
       await expect(page.locator('.govuk-notification-banner')).toBeVisible()
       await expect(page.locator('#govuk-notification-banner-title')).toContainText('Adjustment updated')
       await expect(page.locator('[data-test="adjustment-1"]')).toContainText('Charge adjustment (0.5 / 1)')
