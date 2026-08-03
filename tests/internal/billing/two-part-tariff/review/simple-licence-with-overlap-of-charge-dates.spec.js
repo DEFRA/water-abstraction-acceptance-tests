@@ -104,7 +104,7 @@ test.describe('Simple Licence with an Overlap of Charge Dates (internal)', () =>
         'Test Region two-part tariff'
       )
       await expect(page.locator('.govuk-list > li > .govuk-link')).toContainText(
-        `1 April ${startYear} to 31 March ${endYear}`
+        `15 April ${startYear} to 31 March ${endYear}`
       )
 
       await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
