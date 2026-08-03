@@ -105,9 +105,10 @@
       "id": "fa3c73d0-0459-41f0-b6cf-0e0758775ca4",
       "chargeVersionId": "8e5626ee-5e4c-48f6-a668-471d35997e2c",
       "description": "SROC Charge Reference 01",
+      "scheme": "sroc",
       "source": "tidal",
       "loss": "medium",
-      "factorsOverridden": false,
+      "restrictedSource": false,
       "chargeCategoryId": {
         "schema": "public",
         "table": "chargeCategories",
@@ -115,17 +116,18 @@
         "value": "4.6.12",
         "select": "id"
       },
+      "waterModel": "no model",
+      "volume": 32,
+      "eiucRegion": "Southern",
+      "section127Agreement": true,
+      "additionalCharges": {},
       "adjustments": {
         "s126": null,
         "s127": true,
         "s130": false,
         "charge": null,
         "winter": false
-      },
-      "waterModel": "no model",
-      "volume": 32,
-      "eiucRegion": "Southern",
-      "section127Agreement": true
+      }
     }
   ],
   "chargeElements": [
