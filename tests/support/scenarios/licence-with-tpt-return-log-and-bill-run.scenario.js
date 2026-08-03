@@ -28,7 +28,12 @@ export default function (calculatedDates) {
   // realistic, we alter the start date of the return version to match the return log we're seeding.
   returnVersion.returnVersions[0].startDate = previousPeriodDetails.startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, licence)
+  const {
+    licenceVersionPurposes: [licenceVersionPurpose],
+    points
+  } = licence
+
+  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
 
   returnRequirement.returnRequirements[0].twoPartTariff = true
 
