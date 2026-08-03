@@ -601,7 +601,6 @@
       "source": "tidal",
       "loss": "medium",
       "restrictedSource": false,
-      "factorsOverridden": false,
       "chargeCategoryId": {
         "schema": "public",
         "table": "chargeCategories",
@@ -612,7 +611,16 @@
       "waterModel": "no model",
       "volume": 100,
       "eiucRegion": "Southern",
-      "section127Agreement": false
+      "section127Agreement": false,
+      "additionalCharges": {},
+      "adjustments": {
+        "aggregate": null,
+        "s126": null,
+        "s127": false,
+        "s130": false,
+        "charge": null,
+        "winter": false
+      }
     },
     {
       "id": "851cbb90-f85d-4f1d-b8ef-9f493be00d46",
@@ -660,7 +668,6 @@
       "source": "tidal",
       "loss": "medium",
       "restrictedSource": false,
-      "factorsOverridden": false,
       "chargeCategoryId": {
         "schema": "public",
         "table": "chargeCategories",
@@ -671,7 +678,16 @@
       "waterModel": "no model",
       "volume": 100,
       "eiucRegion": "Southern",
-      "section127Agreement": false
+      "section127Agreement": false,
+      "additionalCharges": {},
+      "adjustments": {
+        "aggregate": null,
+        "s126": null,
+        "s127": false,
+        "s130": false,
+        "charge": null,
+        "winter": false
+      }
     },
     {
       "id": "3e9fb51f-644e-47f9-b2df-e61f7435f2d3",
@@ -719,7 +735,6 @@
       "source": "tidal",
       "loss": "medium",
       "restrictedSource": false,
-      "factorsOverridden": false,
       "chargeCategoryId": {
         "schema": "public",
         "table": "chargeCategories",
@@ -730,7 +745,16 @@
       "waterModel": "no model",
       "volume": 100,
       "eiucRegion": "Southern",
-      "section127Agreement": false
+      "section127Agreement": false,
+      "additionalCharges": {},
+      "adjustments": {
+        "aggregate": null,
+        "s126": null,
+        "s127": false,
+        "s130": false,
+        "charge": null,
+        "winter": false
+      }
     },
     {
       "id": "66576363-83df-46b8-80d5-3642382105fb",
@@ -740,7 +764,6 @@
       "source": "tidal",
       "loss": "medium",
       "restrictedSource": false,
-      "factorsOverridden": false,
       "chargeCategoryId": {
         "schema": "public",
         "table": "chargeCategories",
@@ -751,7 +774,16 @@
       "waterModel": "no model",
       "volume": 100,
       "eiucRegion": "Southern",
-      "section127Agreement": false
+      "section127Agreement": false,
+      "additionalCharges": {},
+      "adjustments": {
+        "aggregate": null,
+        "s126": null,
+        "s127": false,
+        "s130": false,
+        "charge": null,
+        "winter": false
+      }
     },
     {
       "id": "57474972-5978-4399-a189-50e71b6c71a9",
@@ -761,7 +793,6 @@
       "source": "tidal",
       "loss": "medium",
       "restrictedSource": false,
-      "factorsOverridden": false,
       "chargeCategoryId": {
         "schema": "public",
         "table": "chargeCategories",
@@ -772,7 +803,16 @@
       "waterModel": "no model",
       "volume": 750,
       "eiucRegion": "Southern",
-      "section127Agreement": false
+      "section127Agreement": false,
+      "additionalCharges": {},
+      "adjustments": {
+        "aggregate": null,
+        "s126": null,
+        "s127": false,
+        "s130": false,
+        "charge": null,
+        "winter": false
+      }
     }
   ],
   "chargeElements": [
@@ -786,7 +826,6 @@
       "authorisedAnnualQuantity": 15.54,
       "section127Agreement": false,
       "loss": "medium",
-      "factorsOverridden": false,
       "description": "SROC Charge Purpose 01",
       "purposeId": {
         "schema": "public",
@@ -820,7 +859,6 @@
       "authorisedAnnualQuantity": 15.54,
       "section127Agreement": false,
       "loss": "medium",
-      "factorsOverridden": false,
       "description": "SROC Charge Purpose 02",
       "purposeId": {
         "schema": "public",
@@ -854,7 +892,6 @@
       "authorisedAnnualQuantity": 15.54,
       "section127Agreement": false,
       "loss": "medium",
-      "factorsOverridden": false,
       "description": "SROC Charge Purpose 03",
       "purposeId": {
         "schema": "public",
@@ -888,7 +925,6 @@
       "authorisedAnnualQuantity": 15.54,
       "section127Agreement": false,
       "loss": "medium",
-      "factorsOverridden": false,
       "description": "SROC Charge Purpose 04",
       "purposeId": {
         "schema": "public",
@@ -922,7 +958,6 @@
       "authorisedAnnualQuantity": 10.5,
       "section127Agreement": false,
       "loss": "medium",
-      "factorsOverridden": false,
       "description": "SROC Charge Purpose 05",
       "purposeId": {
         "schema": "public",
@@ -956,7 +991,6 @@
       "authorisedAnnualQuantity": 12.5,
       "section127Agreement": false,
       "loss": "medium",
-      "factorsOverridden": false,
       "description": "SROC Charge Purpose 06",
       "purposeId": {
         "schema": "public",

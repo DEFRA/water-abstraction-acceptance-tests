@@ -62,9 +62,10 @@ function _srocChargeReference(chargeVersion) {
     id: 'fa3c73d0-0459-41f0-b6cf-0e0758775ca4',
     chargeVersionId: chargeVersion.id,
     description: 'SROC Charge Reference',
+    scheme: 'sroc',
     source: 'tidal',
     loss: 'medium',
-    factorsOverridden: false,
+    restrictedSource: false,
     chargeCategoryId: {
       schema: 'public',
       table: 'chargeCategories',
@@ -72,6 +73,11 @@ function _srocChargeReference(chargeVersion) {
       value: '4.6.12',
       select: 'id'
     },
+    waterModel: 'no model',
+    volume: 32,
+    eiucRegion: 'Southern',
+    section127Agreement: false,
+    additionalCharges: {},
     adjustments: {
       aggregate: null,
       s126: null,
@@ -79,10 +85,6 @@ function _srocChargeReference(chargeVersion) {
       s130: false,
       charge: null,
       winter: false
-    },
-    waterModel: 'no model',
-    volume: 32,
-    eiucRegion: 'Southern',
-    section127Agreement: false
+    }
   }
 }
