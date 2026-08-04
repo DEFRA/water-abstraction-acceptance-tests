@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-winter-and-summer-return-requirements.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
+import { test, expect } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction using previous return requirements across winter and summer cycles (internal)', () => {
   let licence
@@ -11,25 +11,24 @@ test.describe('Submit historic correction using previous return requirements acr
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    licence = scenario.licence
-    startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
-
     const [currentWinterReturnLog, currentSummerReturnLog, previousWinterReturnLog, previousSummerReturnLog] =
       scenario.returnLogs
 
+    licence = scenario.licence
+    startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
     expectedReturnLogs = {
       currentWinter: returnLogDateDetails(currentWinterReturnLog),
       newSummerFragment: returnLogDateDetails({
         startDate: new Date(`${startYear}-04-01`),
         endDate: currentSummerReturnLog.endDate
       }),
-      oldSummerFull: returnLogDateDetails(currentSummerReturnLog),
       oldSummerFragment: returnLogDateDetails({
         startDate: currentSummerReturnLog.startDate,
         endDate: new Date(`${startYear}-03-31`)
       }),
-      previousWinter: returnLogDateDetails(previousWinterReturnLog),
-      previousSummer: returnLogDateDetails(previousSummerReturnLog)
+      oldSummerFull: returnLogDateDetails(currentSummerReturnLog),
+      previousSummer: returnLogDateDetails(previousSummerReturnLog),
+      previousWinter: returnLogDateDetails(previousWinterReturnLog)
     }
 
     await setup(scenario)
@@ -45,7 +44,6 @@ test.describe('Submit historic correction using previous return requirements acr
     await page.goto(`/system/licences/${licence.id}/returns`)
 
     await expect(page.locator('h1')).toContainText('Returns')
-
     await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(
       expectedReturnLogs.currentWinter.status
     )
@@ -54,55 +52,48 @@ test.describe('Submit historic correction using previous return requirements acr
     )
     await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('complete')
     await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('complete')
-
-    await page.getByText('Licence set up').click()
+    await page.getByRole('link', { name: 'Licence set up' }).click()
 
     await expect(page.locator('h1')).toContainText('Licence set up')
+    await page.getByRole('button', { name: 'Set up new requirements' }).click()
 
-    await page.getByText('Set up new requirements').click()
-
+    await expect(page.locator('h1')).toContainText('Select the start date for the requirements for returns')
     await page.getByRole('radio', { name: 'Another date' }).check()
     await page.locator('#startDateDay').fill('01')
     await page.locator('#startDateMonth').fill('04')
     await page.locator('#startDateYear').fill(`${startYear}`)
-    await page.locator('form > .govuk-button').click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the reason for the requirements for returns')
-
     await page.locator('#newLicence').check()
-    await page.locator('form > .govuk-button').click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('How do you want to set up the requirements for returns?')
-
     await page.locator('#useExistingRequirements').check()
-    await page.locator('form > .govuk-button').click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Use previous requirements for returns')
-
     await page.locator('#existing').check()
-    await page.locator('form > .govuk-button').click()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
-
-    await page.getByText('Approve returns requirement').click()
+    await page.getByRole('button', { name: 'Approve returns requirements' }).click()
 
     await expect(page.locator('.govuk-panel__title')).toContainText('Requirements for returns approved')
+    await page.getByRole('link', { name: 'Return to licence set up' }).click()
 
-    await page.getByText('Return to licence set up').click()
+    await expect(page.locator('h1')).toContainText('Licence set up')
     await page.getByRole('link', { name: 'Returns' }).click()
 
     await expect(page.locator('h1')).toContainText('Returns')
-
     await expect(page.locator('[data-test="return-due-date-0"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(
       expectedReturnLogs.currentWinter.status
     )
-
     await expect(page.locator('[data-test="return-due-date-1"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(
       expectedReturnLogs.newSummerFragment.status
     )
-
     await expect(page.locator('[data-test="return-due-date-2"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('void')
 
@@ -118,12 +109,10 @@ test.describe('Submit historic correction using previous return requirements acr
     await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText(
       expectedReturnLogs.oldSummerFragment.status
     )
-
     await expect(page.locator('[data-test="return-due-date-5"]')).toContainText(
       expectedReturnLogs.previousWinter.dueDateString
     )
     await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText('complete')
-
     await expect(page.locator('[data-test="return-due-date-6"]')).toContainText(
       expectedReturnLogs.previousSummer.dueDateString
     )

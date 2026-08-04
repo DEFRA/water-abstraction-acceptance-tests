@@ -75,6 +75,7 @@ export default function (calculatedDates) {
     [winterPoint],
     previousWinterPeriod
   )
+
   previousWinterReturnLog.status = 'completed'
 
   const previousSummerReturnLog = returnLogData(
@@ -84,6 +85,7 @@ export default function (calculatedDates) {
     [summerPoint],
     previousSummerPeriod
   )
+
   previousSummerReturnLog.status = 'completed'
 
   return {
