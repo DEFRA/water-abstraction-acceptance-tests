@@ -46,9 +46,9 @@ export default function (calculatedDates) {
   const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
   const chargeVersion = chargeVersionData(billingAccount, licence.licence)
 
-  // Two separate charge references, each with a single charge element. The reference and element volumes are
-  // deliberately mismatched (and swapped between the two) so we can prove the engine allocates only up to the lower of
-  // the reference volume and the element's authorised volume.
+  // Two separate charge references, each with a single charge element. The same two volumes (22 and 42) are used for
+  // both, with the reference and element swapped between them, so the lower volume is the reference on the first and
+  // the element on the second. This proves the engine always allocates up to the lower of the reference and element.
   const firstChargeReference = chargeReferenceData(chargeVersion, [firstLicenceVersionPurpose])
   firstChargeReference.volume = 22
 
@@ -56,10 +56,10 @@ export default function (calculatedDates) {
   firstChargeElement.authorisedAnnualQuantity = 42
 
   const secondChargeReference = chargeReferenceData(chargeVersion, [secondLicenceVersionPurpose])
-  secondChargeReference.volume = 52
+  secondChargeReference.volume = 42
 
   const secondChargeElement = chargeElementData(secondChargeReference, secondLicenceVersionPurpose)
-  secondChargeElement.authorisedAnnualQuantity = 32
+  secondChargeElement.authorisedAnnualQuantity = 22
 
   const returnVersion = returnVersionData(licence.licence)
 
