@@ -35,6 +35,9 @@ export default function (calculatedDates) {
   const licence = licenceWithTwoPurposesScenario()
 
   const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
+  firstLicenceVersionPurpose.annualQuantity = 4200
+  secondLicenceVersionPurpose.annualQuantity = 4200
+
   const [firstPoint, secondPoint] = licence.points
 
   // Both purposes are two-part tariff (400 Spray Irrigation - Direct and 420 Spray Irrigation - Storage), so the
