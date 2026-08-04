@@ -19,17 +19,12 @@ test.describe(
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData()
 
-      const {
-        licences: [scenarioLicence],
-        chargeVersions: [scenarioChargeVersion]
-      } = scenario
-
-      licence = scenarioLicence
+      licence = scenario.licence
 
       // With existing charge information, the app accepts a custom start date that matches it, so we use the charge
       // version's start date for the agreement's custom start date. It also pre-dates the SROC scheme, so setting up
       // the agreement against it flags the licence for the next old charge scheme supplementary bill run.
-      chargeVersionStartDate = scenarioChargeVersion.startDate
+      chargeVersionStartDate = scenario.chargeVersion.startDate
 
       await setup(scenario)
     })

@@ -9,13 +9,8 @@ test.describe('Update the purpose and points of a copied return requirement and 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licences: [scenarioLicence],
-      returnRequirementPurposes: [scenarioReturnRequirementPurpose]
-    } = scenario
-
-    licence = scenarioLicence
-    returnRequirementPurpose = scenarioReturnRequirementPurpose
+    licence = scenario.licence
+    returnRequirementPurpose = scenario.returnRequirementPurpose
 
     await setup(scenario)
   })

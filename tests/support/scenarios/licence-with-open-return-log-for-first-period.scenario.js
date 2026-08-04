@@ -1,9 +1,10 @@
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
+import returnRequirementPointData from '../data/return-requirement-point.data.js'
+import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import licenceScenario from './licence.scenario.js'
 import { compareDates } from '../helpers/date.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with open return log (first period)'
 export const description = 'Licence with an open return log for the first return period with no due date set'
@@ -23,27 +24,31 @@ export default function (calculatedDates) {
   // We want the return logs for the licence to match with the first quarter shown in the journey. This is dynamically
   // calculated based on the current date, so could be a quarterly period, or the winter or summer cycle.
   // Only licences flagged as water undertakers are eligible for quarterly returns, so we ensure the licence aligns.
-  licence.licences[0].waterUndertaker = firstPeriod.quarterly
+  licence.licence.waterUndertaker = firstPeriod.quarterly
 
-  const returnVersion = returnVersionData(licence)
+  const returnVersion = returnVersionData(licence.licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnVersion.returnVersions[0].startDate = firstPeriod.startDate
+  returnVersion.startDate = firstPeriod.startDate
 
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose],
-    points
-  } = licence
-
-  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
+  const returnRequirement = returnRequirementData(returnVersion, licence.licenceVersionPurpose)
+  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licence.point)
+  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licence.licenceVersionPurpose)
 
   const periods = _periods(firstPeriod, calculatedDates)
-  const returnLogs = _returnLogs(licence, returnRequirement, periods)
+  const returnLogs = periods.map((period) => {
+    return returnLogData(licence.licence, returnRequirement, [returnRequirementPurpose], [licence.point], period)
+  })
 
-  const result = mergeByKey(licence, returnVersion, returnRequirement, returnLogs)
-
-  return result
+  return {
+    ...licence,
+    returnVersion,
+    returnRequirement,
+    returnRequirementPoint,
+    returnRequirementPurpose,
+    returnLogs
+  }
 }
 
 /**
@@ -78,25 +83,4 @@ function _periods(firstPeriod, calculatedDates) {
   }
 
   return periods
-}
-
-/**
- * Generate the return logs for the determined periods
- *
- * The complexity is we need an object with a property `returnLogs:` for `mergeKeys()` to work. But that's how
- * `returnLogData()` returns its data!
- *
- * So we need to pluck each new return log out of it, and add it to our own array of return logs, before returning it
- * in a new object!
- *
- * @private
- */
-function _returnLogs(unregisteredLicence, returnRequirement, periods) {
-  const returnLogs = []
-
-  for (const period of periods) {
-    returnLogs.push(returnLogData(unregisteredLicence, returnRequirement, period).returnLogs[0])
-  }
-
-  return { returnLogs }
 }

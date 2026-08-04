@@ -18,13 +18,8 @@ test.describe(
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData()
 
-      const {
-        licences: [scenarioLicence],
-        billRuns: [scenarioBillRun]
-      } = scenario
-
-      licence = scenarioLicence
-      billRun = scenarioBillRun
+      licence = scenario.licence
+      billRun = scenario.billRun
 
       await setup(scenario)
     })

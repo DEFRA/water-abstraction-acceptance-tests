@@ -22,11 +22,7 @@ test.describe('Simple Licence and Two Returns with No Issues (internal)', () => 
 
     const scenario = scenarioData(dates)
 
-    const {
-      licences: [scenarioLicence]
-    } = scenario
-
-    licence = scenarioLicence
+    licence = scenario.licence
 
     await setup(scenario)
   })

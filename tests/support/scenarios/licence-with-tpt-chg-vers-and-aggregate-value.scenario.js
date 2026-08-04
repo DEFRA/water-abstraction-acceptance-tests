@@ -7,11 +7,7 @@ export const description =
 export default function (calculatedDates) {
   const licence = licenceWithTptChargeVersionAndCompletedReturnLogScenario(calculatedDates)
 
-  const {
-    chargeReferences: [chargeReference]
-  } = licence
-
-  chargeReference.adjustments.aggregate = '0.5'
+  licence.chargeReference.adjustments.aggregate = '0.5'
 
   return licence
 }

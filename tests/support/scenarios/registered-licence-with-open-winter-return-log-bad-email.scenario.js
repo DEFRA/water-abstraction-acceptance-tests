@@ -7,10 +7,8 @@ export const description =
 export default function (calculatedDates) {
   const registeredLicenceWithOpenWinterReturnLog = registeredLicenceWithOpenWinterReturnLogScenario(calculatedDates)
 
-  const {
-    addresses: [address],
-    licenceEntities: [licenceEntity]
-  } = registeredLicenceWithOpenWinterReturnLog
+  const { address } = registeredLicenceWithOpenWinterReturnLog
+  const [licenceEntity] = registeredLicenceWithOpenWinterReturnLog.licenceEntities
 
   // We'll only set the due date on the OPEN return log if the alternate notification is successful. The Notify
   // service will reject the request if the address is not real, even though we're using our Notify test API key.

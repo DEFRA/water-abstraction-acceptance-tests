@@ -1,10 +1,12 @@
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
+import returnRequirementPointData from '../data/return-requirement-point.data.js'
+import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnSubmissionData from '../data/return-submission.data.js'
+import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with tpt charge version and two completed return logs'
 export const description =
@@ -29,52 +31,81 @@ export default function (calculatedDates) {
 
   const licence = licenceWithChargeVersionAndTwoPurposesScenario()
 
-  const returnVersion = returnVersionData(licence)
+  const returnVersion = returnVersionData(licence.licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnVersion.returnVersions[0].startDate = previousPeriodDetails.startDate
+  returnVersion.startDate = previousPeriodDetails.startDate
 
-  const {
-    licenceVersionPurposes: [firstLicenceVersionPurpose, secondLicenceVersionPurpose],
-    points: [firstPoint, secondPoint]
-  } = licence
+  const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
+  const [firstPoint, secondPoint] = licence.points
 
-  const firstReturnRequirement = returnRequirementData(returnVersion, firstLicenceVersionPurpose, [firstPoint])
+  const firstReturnRequirement = returnRequirementData(returnVersion, firstLicenceVersionPurpose)
+  const firstReturnRequirementPoint = returnRequirementPointData(firstReturnRequirement, firstPoint)
+  const firstReturnRequirementPurpose = returnRequirementPurposeData(firstReturnRequirement, firstLicenceVersionPurpose)
 
-  const previousFirstReturnLog = returnLogData(licence, firstReturnRequirement, previousPeriodDetails)
-  const currentFirstReturnLog = returnLogData(licence, firstReturnRequirement, currentPeriodDetails)
+  const previousFirstReturnLog = returnLogData(
+    licence.licence,
+    firstReturnRequirement,
+    [firstReturnRequirementPurpose],
+    [firstPoint],
+    previousPeriodDetails
+  )
+  const currentFirstReturnLog = returnLogData(
+    licence.licence,
+    firstReturnRequirement,
+    [firstReturnRequirementPurpose],
+    [firstPoint],
+    currentPeriodDetails
+  )
 
-  previousFirstReturnLog.returnLogs[0].status = 'completed'
+  previousFirstReturnLog.status = 'completed'
 
-  const secondReturnRequirement = returnRequirementData(returnVersion, secondLicenceVersionPurpose, [secondPoint])
+  const secondReturnRequirement = returnRequirementData(returnVersion, secondLicenceVersionPurpose)
+  const secondReturnRequirementPoint = returnRequirementPointData(secondReturnRequirement, secondPoint)
+  const secondReturnRequirementPurpose = returnRequirementPurposeData(
+    secondReturnRequirement,
+    secondLicenceVersionPurpose
+  )
 
-  const previousSecondReturnLog = returnLogData(licence, secondReturnRequirement, previousPeriodDetails)
-  const currentSecondReturnLog = returnLogData(licence, secondReturnRequirement, currentPeriodDetails)
+  const previousSecondReturnLog = returnLogData(
+    licence.licence,
+    secondReturnRequirement,
+    [secondReturnRequirementPurpose],
+    [secondPoint],
+    previousPeriodDetails
+  )
+  const currentSecondReturnLog = returnLogData(
+    licence.licence,
+    secondReturnRequirement,
+    [secondReturnRequirementPurpose],
+    [secondPoint],
+    currentPeriodDetails
+  )
 
-  previousSecondReturnLog.returnLogs[0].status = 'completed'
+  previousSecondReturnLog.status = 'completed'
 
-  const firstReturnSubmission = returnSubmissionData(
+  const firstReturnSubmission = returnSubmissionData(previousFirstReturnLog)
+  const firstReturnSubmissionLines = returnSubmissionLinesData(
     previousPeriodDetails,
-    previousFirstReturnLog,
+    firstReturnSubmission,
     firstLicenceVersionPurpose.annualQuantity
   )
-  const secondReturnSubmission = returnSubmissionData(
+  const secondReturnSubmission = returnSubmissionData(previousSecondReturnLog)
+  const secondReturnSubmissionLines = returnSubmissionLinesData(
     previousPeriodDetails,
-    previousSecondReturnLog,
+    secondReturnSubmission,
     secondLicenceVersionPurpose.annualQuantity
   )
 
-  return mergeByKey(
-    licence,
+  return {
+    ...licence,
     returnVersion,
-    firstReturnRequirement,
-    secondReturnRequirement,
-    previousFirstReturnLog,
-    previousSecondReturnLog,
-    currentFirstReturnLog,
-    currentSecondReturnLog,
-    firstReturnSubmission,
-    secondReturnSubmission
-  )
+    returnRequirements: [firstReturnRequirement, secondReturnRequirement],
+    returnRequirementPoints: [firstReturnRequirementPoint, secondReturnRequirementPoint],
+    returnRequirementPurposes: [firstReturnRequirementPurpose, secondReturnRequirementPurpose],
+    returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog],
+    returnSubmissions: [firstReturnSubmission, secondReturnSubmission],
+    returnSubmissionLines: [...firstReturnSubmissionLines, ...secondReturnSubmissionLines]
+  }
 }

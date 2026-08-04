@@ -9,15 +9,9 @@ test.describe('Unregister a licence (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      companies: [scenarioCompany],
-      licences: [scenarioLicence],
-      users: [scenarioUser]
-    } = scenario
-
-    company = scenarioCompany
-    licence = scenarioLicence
-    user = scenarioUser
+    company = scenario.company
+    licence = scenario.licence
+    user = scenario.user
 
     await setup(scenario)
   })

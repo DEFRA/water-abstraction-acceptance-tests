@@ -10,15 +10,9 @@ test.describe('Tag a licence linked to a condition. The abstraction period is de
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licences: [scenarioLicence],
-      licenceVersionPurposeConditions: [scenarioLicenceVersionPurposeCondition],
-      monitoringStations: [scenarioMonitoringStation]
-    } = scenario
-
-    licence = scenarioLicence
-    licenceVersionPurposeCondition = scenarioLicenceVersionPurposeCondition
-    monitoringStation = scenarioMonitoringStation
+    licence = scenario.licence
+    licenceVersionPurposeCondition = scenario.licenceVersionPurposeCondition
+    monitoringStation = scenario.monitoringStation
 
     await setup(scenario)
   })

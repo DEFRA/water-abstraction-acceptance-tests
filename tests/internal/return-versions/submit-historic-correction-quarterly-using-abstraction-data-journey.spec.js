@@ -12,13 +12,8 @@ test.describe('Submit historic correction changing to quarterly on new return ve
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      licences: [scenarioLicence],
-      returnLogs: scenarioReturnLogs
-    } = scenario
-
-    licence = scenarioLicence
-    returnLogs = scenarioReturnLogs
+    licence = scenario.licence
+    returnLogs = scenario.returnLogs
     startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
 
     expectedReturnLogs = {

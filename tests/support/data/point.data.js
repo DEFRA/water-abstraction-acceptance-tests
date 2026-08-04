@@ -5,20 +5,16 @@ export default function () {
   const pointId = generateUUID()
 
   return {
-    points: [
-      {
-        id: pointId,
-        description: 'Example point 1',
-        ngr1: 'TQ 1234 5678',
-        externalId: `${regionCode}:9000091`,
-        sourceId: {
-          schema: 'public',
-          table: 'sources',
-          lookup: 'legacyId',
-          value: 'S',
-          select: 'id'
-        }
-      }
-    ]
+    id: pointId,
+    description: 'Example point 1',
+    ngr1: 'TQ 1234 5678',
+    externalId: `${regionCode}:9000091`,
+    sourceId: {
+      schema: 'public',
+      table: 'sources',
+      lookup: 'legacyId',
+      value: 'S',
+      select: 'id'
+    }
   }
 }

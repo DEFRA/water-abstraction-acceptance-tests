@@ -7,11 +7,7 @@ test.describe('Creating internal user with existing external account (internal)'
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      users: [scenarioUser]
-    } = scenario
-
-    user = scenarioUser
+    user = scenario.user
 
     await setup(scenario)
   })

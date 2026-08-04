@@ -8,11 +8,7 @@ test.describe('Submit a return with no meter readings - validation errors (inter
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      returnLogs: [scenarioReturnLog]
-    } = scenario
-
-    returnLog = scenarioReturnLog
+    returnLog = scenario.returnLogs[0]
 
     await setup(scenario)
   })

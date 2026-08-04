@@ -9,13 +9,8 @@ test.describe('Tag a licence that is not linked to a condition (internal)', () =
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licences: [scenarioLicence],
-      monitoringStations: [scenarioMonitoringStation]
-    } = scenario
-
-    licence = scenarioLicence
-    monitoringStation = scenarioMonitoringStation
+    licence = scenario.licence
+    monitoringStation = scenario.monitoringStation
 
     await setup(scenario)
   })

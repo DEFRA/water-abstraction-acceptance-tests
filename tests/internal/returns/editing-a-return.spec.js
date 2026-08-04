@@ -9,13 +9,8 @@ test.describe('Editing a return (internal)', { tag: '@supplementaryBilling' }, (
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      licences: [scenarioLicence],
-      returnLogs: [scenarioReturnLog]
-    } = scenario
-
-    licence = scenarioLicence
-    returnLog = scenarioReturnLog
+    licence = scenario.licence
+    returnLog = scenario.returnLog
 
     await setup(scenario)
   })

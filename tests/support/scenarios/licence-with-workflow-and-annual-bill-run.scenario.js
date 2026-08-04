@@ -2,7 +2,6 @@ import billRunData from '../data/bill-run.data.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import workflowData from '../data/workflow.data.js'
 import { today, yesterday } from '../helpers/date.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence in workflow, and an annual bill run'
 export const description =
@@ -22,17 +21,21 @@ export default function (calculatedDates) {
     }
   } = calculatedDates
 
-  const annualBillRun = billRunData()
+  const billRun = billRunData()
 
-  annualBillRun.billRuns[0].createdAt = today()
-  annualBillRun.billRuns[0].fromFinancialYearEnding = new Date(annualDates.endDate).getUTCFullYear()
-  annualBillRun.billRuns[0].toFinancialYearEnding = new Date(annualDates.endDate).getUTCFullYear()
+  billRun.createdAt = today()
+  billRun.fromFinancialYearEnding = new Date(annualDates.endDate).getUTCFullYear()
+  billRun.toFinancialYearEnding = new Date(annualDates.endDate).getUTCFullYear()
 
-  const workflow = workflowData(licence)
+  const workflow = workflowData(licence.licence)
 
   // The workflow createdAt date is used to show the supplementary billing flag.
-  workflow.workflows[0].createdAt = yesterday()
-  workflow.workflows[0].updatedAt = yesterday()
+  workflow.createdAt = yesterday()
+  workflow.updatedAt = yesterday()
 
-  return mergeByKey(licence, annualBillRun, workflow)
+  return {
+    ...licence,
+    billRun,
+    workflow
+  }
 }

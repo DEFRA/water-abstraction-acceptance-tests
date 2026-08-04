@@ -8,13 +8,8 @@ test.describe('Licence alias naming (external)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      licenceDocumentHeaders: [scenarioLicenceDocumentHeader],
-      users: [scenarioUser]
-    } = scenario
-
-    licenceDocumentHeader = scenarioLicenceDocumentHeader
-    user = scenarioUser
+    licenceDocumentHeader = scenario.licenceDocumentHeader
+    user = scenario.user
 
     await setup(scenario)
   })

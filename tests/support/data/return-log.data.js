@@ -1,17 +1,7 @@
 import { determineReturnCycleStartDate, formatDateToIso } from '../helpers/date.helpers.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (licenceData, returnRequirementData, period) {
-  const {
-    licences: [licence],
-    points
-  } = licenceData
-
-  const {
-    returnRequirements: [returnRequirement],
-    returnRequirementPurposes
-  } = returnRequirementData
-
+export default function (licence, returnRequirement, returnRequirementPurposes, points, period) {
   const returnLogId = generateUUID()
 
   const startDate = new Date(period.startDate)
@@ -24,58 +14,54 @@ export default function (licenceData, returnRequirementData, period) {
   const returnCycleStartDate = determineReturnCycleStartDate(startDate, returnRequirement.summer)
 
   return {
-    returnLogs: [
-      {
-        id: returnLogId,
-        returnId: `v1:9:${licence.licenceRef}:${returnRequirement.reference}:${startDateString}:${endDateString}`,
-        returnReference: returnRequirement.reference,
-        licenceRef: licence.licenceRef,
-        metadata: {
-          nald: {
-            areaCode: 'AREA',
-            formatId: returnRequirement.reference,
-            regionCode: 9,
-            periodEndDay: returnRequirement.abstractionPeriodEndDay,
-            periodEndMonth: returnRequirement.abstractionPeriodEndMonth,
-            periodStartDay: returnRequirement.abstractionPeriodStartDay,
-            periodStartMonth: returnRequirement.abstractionPeriodStartMonth
-          },
-          points: points.map((point) => {
-            return {
-              name: point.description,
-              ngr1: point.ngr1,
-              ngr2: null,
-              ngr3: null,
-              ngr4: null
-            }
-          }),
-          isFinal: false,
-          version: 1,
-          isSummer: returnRequirement.summer,
-          isUpload: false,
-          purposes: _purposes(returnRequirementPurposes),
-          isCurrent: true,
-          description: returnRequirement.siteDescription,
-          isTwoPartTariff: returnRequirement.twoPartTariff
-        },
-        returnsFrequency: 'month',
-        startDate: startDateString,
-        endDate: endDateString,
-        dueDate: dueDateString,
-        source: 'WRLS',
-        status: 'due',
-        underQuery: false,
-        returnCycleId: {
-          schema: 'public',
-          table: 'returnCycles',
-          lookup: 'startDate',
-          value: formatDateToIso(returnCycleStartDate),
-          select: 'id'
-        },
-        returnRequirementId: returnRequirement.id,
-        quarterly: period.quarterly
-      }
-    ]
+    id: returnLogId,
+    returnId: `v1:9:${licence.licenceRef}:${returnRequirement.reference}:${startDateString}:${endDateString}`,
+    returnReference: returnRequirement.reference,
+    licenceRef: licence.licenceRef,
+    metadata: {
+      nald: {
+        areaCode: 'AREA',
+        formatId: returnRequirement.reference,
+        regionCode: 9,
+        periodEndDay: returnRequirement.abstractionPeriodEndDay,
+        periodEndMonth: returnRequirement.abstractionPeriodEndMonth,
+        periodStartDay: returnRequirement.abstractionPeriodStartDay,
+        periodStartMonth: returnRequirement.abstractionPeriodStartMonth
+      },
+      points: points.map((point) => {
+        return {
+          name: point.description,
+          ngr1: point.ngr1,
+          ngr2: null,
+          ngr3: null,
+          ngr4: null
+        }
+      }),
+      isFinal: false,
+      version: 1,
+      isSummer: returnRequirement.summer,
+      isUpload: false,
+      purposes: _purposes(returnRequirementPurposes),
+      isCurrent: true,
+      description: returnRequirement.siteDescription,
+      isTwoPartTariff: returnRequirement.twoPartTariff
+    },
+    returnsFrequency: 'month',
+    startDate: startDateString,
+    endDate: endDateString,
+    dueDate: dueDateString,
+    source: 'WRLS',
+    status: 'due',
+    underQuery: false,
+    returnCycleId: {
+      schema: 'public',
+      table: 'returnCycles',
+      lookup: 'startDate',
+      value: formatDateToIso(returnCycleStartDate),
+      select: 'id'
+    },
+    returnRequirementId: returnRequirement.id,
+    quarterly: period.quarterly
   }
 }
 

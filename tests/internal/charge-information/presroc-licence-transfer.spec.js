@@ -11,15 +11,9 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      chargeVersions: [scenarioChargeVersion],
-      licences: [scenarioLicence],
-      licenceVersionPurposes: [scenarioLicenceVersionPurpose]
-    } = scenario
-
-    chargeVersion = scenarioChargeVersion
-    licence = scenarioLicence
-    licenceVersionPurpose = scenarioLicenceVersionPurpose
+    chargeVersion = scenario.chargeVersion
+    licence = scenario.licence
+    licenceVersionPurpose = scenario.licenceVersionPurpose
 
     await setup(scenario)
   })

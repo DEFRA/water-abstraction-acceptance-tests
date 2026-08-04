@@ -7,7 +7,7 @@ export const description =
 export default function (calculatedDates) {
   const licence = licenceWithOpenWinterReturnLog(calculatedDates)
 
-  licence.licences[0].waterUndertaker = true
+  licence.licence.waterUndertaker = true
 
   return licence
 }

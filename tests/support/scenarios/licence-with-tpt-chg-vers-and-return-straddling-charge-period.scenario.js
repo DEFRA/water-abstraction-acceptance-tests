@@ -15,9 +15,7 @@ export default function (calculatedDates) {
 
   const chargePeriodStartYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-  const {
-    chargeVersions: [chargeVersion]
-  } = licence
+  const { chargeVersion } = licence
 
   // Start the charge version mid-April so the charge period begins mid-month; the return's whole-month April line then
   // spans the charge period start, flagging an overlap of charge dates issue

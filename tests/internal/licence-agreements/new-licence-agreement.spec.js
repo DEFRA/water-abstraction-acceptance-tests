@@ -19,11 +19,7 @@ test.describe(
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData()
 
-      const {
-        licences: [scenarioLicence]
-      } = scenario
-
-      licence = scenarioLicence
+      licence = scenario.licence
 
       // Without existing charge information, the app only accepts a date that either matches some existing charge
       // information or is 1 April of the current financial year, so we use that year for the agreement's custom start
