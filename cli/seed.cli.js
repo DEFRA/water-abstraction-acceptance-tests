@@ -21,6 +21,7 @@ import { search } from '@inquirer/prompts'
 
 import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
 import { get, post } from './system.request.js'
+import { asArrays } from '../tests/support/helpers/wire-format.helpers.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 const SCENARIOS_DIRS = ['cypress/support/scenarios', 'tests/support/scenarios']
@@ -107,7 +108,7 @@ async function _body(selectedScenario, currentServiceData) {
 async function _load(selectedScenario, body) {
   logInfo(`Loading scenario ${styleBold(selectedScenario.title)}...`)
 
-  await post('/system/data/load', body)
+  await post('/system/data/load', asArrays(body))
 }
 
 /**
