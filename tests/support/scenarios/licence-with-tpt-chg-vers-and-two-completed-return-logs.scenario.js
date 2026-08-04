@@ -3,6 +3,7 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnSubmissionData from '../data/return-submission.data.js'
+import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
@@ -84,14 +85,16 @@ export default function (calculatedDates) {
 
   previousSecondReturnLog.status = 'completed'
 
-  const firstSubmission = returnSubmissionData(
+  const firstReturnSubmission = returnSubmissionData(previousFirstReturnLog)
+  const firstReturnSubmissionLines = returnSubmissionLinesData(
     previousPeriodDetails,
-    previousFirstReturnLog,
+    firstReturnSubmission,
     firstLicenceVersionPurpose.annualQuantity
   )
-  const secondSubmission = returnSubmissionData(
+  const secondReturnSubmission = returnSubmissionData(previousSecondReturnLog)
+  const secondReturnSubmissionLines = returnSubmissionLinesData(
     previousPeriodDetails,
-    previousSecondReturnLog,
+    secondReturnSubmission,
     secondLicenceVersionPurpose.annualQuantity
   )
 
@@ -102,7 +105,7 @@ export default function (calculatedDates) {
     returnRequirementPoints: [firstReturnRequirementPoint, secondReturnRequirementPoint],
     returnRequirementPurposes: [firstReturnRequirementPurpose, secondReturnRequirementPurpose],
     returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog],
-    returnSubmissions: [firstSubmission.returnSubmission, secondSubmission.returnSubmission],
-    returnSubmissionLines: [...firstSubmission.returnSubmissionLines, ...secondSubmission.returnSubmissionLines]
+    returnSubmissions: [firstReturnSubmission, secondReturnSubmission],
+    returnSubmissionLines: [...firstReturnSubmissionLines, ...secondReturnSubmissionLines]
   }
 }

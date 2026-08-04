@@ -3,6 +3,7 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnSubmissionData from '../data/return-submission.data.js'
+import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
@@ -62,11 +63,8 @@ export default function (calculatedDates) {
 
   const totalVolume = licence.licenceVersionPurpose.annualQuantity
 
-  const { returnSubmission, returnSubmissionLines } = returnSubmissionData(
-    previousPeriodDetails,
-    previousReturnLog,
-    totalVolume
-  )
+  const returnSubmission = returnSubmissionData(previousReturnLog)
+  const returnSubmissionLines = returnSubmissionLinesData(previousPeriodDetails, returnSubmission, totalVolume)
 
   return {
     ...licence,
