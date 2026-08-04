@@ -161,7 +161,7 @@ await page.getByRole('button', { name: 'Continue' }).click()
 
 - **Directories and JavaScript files**: `kebab-case` (e.g. `core-licence.data.js`)
 - **Test files**: `kebab-case` with a `.spec.js` suffix (e.g. `view-licence.spec.js`)
-- **Data files**: `kebab-case` with a `.data.js` suffix (e.g. `company.data.js`)
+- **Data files**: `kebab-case` with a `.data.js` suffix (e.g. `company.data.js`). A singular filename (`return-submission.data.js`) returns the bare single entity; a plural filename (`return-submission-lines.data.js`) returns an array of that entity's rows directly, no wrapper key — the trailing `s` is the signal, so the caller knows the return shape without opening the file. See the "Migrated array-returning data file" rule in `.agents/skills/scenarios/SKILL.md` for the full convention.
 - **Scenario files**: `kebab-case` with a `.scenario.js` suffix (e.g. `licence.scenario.js`)
 - **Data/scenario file imports**: name the import after the file itself, including its `Data`/`Scenario` suffix, e.g. `import companyData from '../data/company.data.js'` and `import licenceScenario from './licence.scenario.js'`, not `import company from '../data/company.data.js'`
 - **Data/scenario file call results**: when invoking a `../data/*` or scenario import to build its data, use a plain descriptive name for the result rather than repeating the `Data`/`Scenario` suffix, e.g. `const company = companyData()` and `const licence = licenceScenario()`, not `const companyData = companyData()` (which also collides with the import binding)
