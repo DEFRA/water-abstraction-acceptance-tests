@@ -1,11 +1,6 @@
-import returnLogData from '../data/return-log.data.js'
-import returnRequirementData from '../data/return-requirement.data.js'
-import returnRequirementPointData from '../data/return-requirement-point.data.js'
-import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnSubmissionData from '../data/return-submission.data.js'
 import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
-import returnVersionData from '../data/return-version.data.js'
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
+import licenceWithTptChgVersAndDueReturnLogScenario from './licence-with-tpt-chg-vers-and-due-return-log.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with tpt charge version and completed return log'
@@ -22,42 +17,11 @@ export default function (calculatedDates) {
     quarterly: false
   })
 
-  const currentPeriodDetails = {
-    startDate: new Date(currentWinterReturnCycle.startDate),
-    endDate: new Date(currentWinterReturnCycle.endDate),
-    dueDate: null,
-    quarterly: false
-  }
+  const licence = licenceWithTptChgVersAndDueReturnLogScenario(calculatedDates)
 
-  const licence = licenceWithChargeVersionScenario()
-
-  const returnVersion = returnVersionData(licence.licence)
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnVersion.startDate = previousPeriodDetails.startDate
-
-  const returnRequirement = returnRequirementData(returnVersion, licence.licenceVersionPurpose)
-
-  returnRequirement.twoPartTariff = true
-
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licence.point)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licence.licenceVersionPurpose)
-
-  const previousReturnLog = returnLogData(
-    licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [licence.point],
-    previousPeriodDetails
-  )
-  const currentReturnLog = returnLogData(
-    licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [licence.point],
-    currentPeriodDetails
-  )
+  const {
+    returnLogs: [previousReturnLog]
+  } = licence
 
   previousReturnLog.status = 'completed'
 
@@ -68,11 +32,6 @@ export default function (calculatedDates) {
 
   return {
     ...licence,
-    returnVersion,
-    returnRequirement,
-    returnRequirementPoint,
-    returnRequirementPurpose,
-    returnLogs: [previousReturnLog, currentReturnLog],
     returnSubmission,
     returnSubmissionLines
   }
