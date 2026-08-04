@@ -8,11 +8,7 @@ test.describe('Change user permissions (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      users: [scenarioUserToUpdate]
-    } = scenario
-
-    userToUpdate = scenarioUserToUpdate
+    userToUpdate = scenario.user
 
     await setup(scenario)
   })

@@ -7,10 +7,11 @@ export default function () {
   const licence = licenceScenario()
 
   const preSrocDate = '2018-04-01'
-  licence.licences[0].startDate = preSrocDate
-  licence.licenceVersions[0].startDate = preSrocDate
-  licence.licenceDocuments[0].startDate = preSrocDate
-  licence.licenceDocumentRoles[0].startDate = preSrocDate
+
+  licence.licence.startDate = preSrocDate
+  licence.licenceVersion.startDate = preSrocDate
+  licence.licenceDocument.startDate = preSrocDate
+  licence.licenceDocumentRole.startDate = preSrocDate
 
   return licence
 }

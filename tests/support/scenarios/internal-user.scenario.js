@@ -5,6 +5,6 @@ export const description = 'A single internal basic user with no associated lice
 
 export default function () {
   return {
-    ...internalUserData()
+    user: internalUserData()
   }
 }

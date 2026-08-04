@@ -5,6 +5,6 @@ export const description = 'A single external user with no associated licence or
 
 export default function () {
   return {
-    ...externalUserData()
+    user: externalUserData()
   }
 }

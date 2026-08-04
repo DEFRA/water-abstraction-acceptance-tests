@@ -9,13 +9,8 @@ test.describe('Licence holder (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      companies: [scenarioCompany],
-      licences: [scenarioLicence]
-    } = scenario
-
-    company = scenarioCompany
-    licence = scenarioLicence
+    company = scenario.company
+    licence = scenario.licence
 
     await setup(scenario)
   })

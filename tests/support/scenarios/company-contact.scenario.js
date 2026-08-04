@@ -1,37 +1,44 @@
 import companyContactData from '../data/company-contact.data.js'
+import contactData from '../data/contact.data.js'
 import notificationData from '../data/notification.data.js'
 import licenceScenario from './licence.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Company contact'
 export const description = 'A licence, licence holder, company, a contact and notification data'
 
 export default function () {
-  const unregisteredLicence = licenceScenario()
+  const licence = licenceScenario()
 
-  const companyContact = companyContactData(unregisteredLicence)
+  const contact = contactData()
+  const companyContact = companyContactData(contact, licence.company)
 
-  const editCompanyContact = companyContactData(unregisteredLicence)
+  const editContact = contactData()
 
-  editCompanyContact.contacts[0].department = 'Test Contact Edit Alerts'
-  editCompanyContact.contacts[0].email = 'test.contact.edit@example.com'
+  editContact.department = 'Test Contact Edit Alerts'
+  editContact.email = 'test.contact.edit@example.com'
 
-  const removeCompanyContact = companyContactData(unregisteredLicence)
+  const editCompanyContact = companyContactData(editContact, licence.company)
 
-  removeCompanyContact.contacts[0].department = 'Test Contact Remove'
-  removeCompanyContact.contacts[0].email = 'test.contact.remove@example.com'
+  const removeContact = contactData()
 
-  const restoreCompanyContact = companyContactData(unregisteredLicence)
+  removeContact.department = 'Test Contact Remove'
+  removeContact.email = 'test.contact.remove@example.com'
 
-  restoreCompanyContact.contacts[0].department = 'Test Contact Restore'
-  restoreCompanyContact.contacts[0].email = 'test.contact.restore@example.com'
+  const removeCompanyContact = companyContactData(removeContact, licence.company)
 
-  return mergeByKey(
-    unregisteredLicence,
-    companyContact,
-    editCompanyContact,
-    removeCompanyContact,
-    restoreCompanyContact,
-    notificationData(unregisteredLicence.licences[0].licenceRef, restoreCompanyContact)
-  )
+  const restoreContact = contactData()
+
+  restoreContact.department = 'Test Contact Restore'
+  restoreContact.email = 'test.contact.restore@example.com'
+
+  const restoreCompanyContact = companyContactData(restoreContact, licence.company)
+
+  const notification = notificationData(licence.licence.licenceRef, restoreContact)
+
+  return {
+    ...licence,
+    contacts: [contact, editContact, removeContact, restoreContact],
+    companyContacts: [companyContact, editCompanyContact, removeCompanyContact, restoreCompanyContact],
+    ...notification
+  }
 }

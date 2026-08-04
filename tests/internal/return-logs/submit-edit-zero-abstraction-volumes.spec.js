@@ -8,11 +8,7 @@ test.describe('Submit then edit an abstraction volumes return with zero quantiti
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      returnLogs: [scenarioReturnLog]
-    } = scenario
-
-    returnLog = scenarioReturnLog
+    returnLog = scenario.returnLogs[0]
 
     await setup(scenario)
   })

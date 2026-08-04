@@ -20,11 +20,7 @@ test.describe(
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData()
 
-      const {
-        licences: [scenarioLicence]
-      } = scenario
-
-      licence = scenarioLicence
+      licence = scenario.licence
 
       // The agreement's start date matches the licence's start date, which is always 1 April. A valid end date must
       // either match existing charge information or be 31 March, and cannot be before the agreement start date, so we

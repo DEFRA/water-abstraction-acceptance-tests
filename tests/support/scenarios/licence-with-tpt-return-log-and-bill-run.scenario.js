@@ -1,10 +1,11 @@
 import billRunData from '../data/bill-run.data.js'
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
+import returnRequirementPointData from '../data/return-requirement-point.data.js'
+import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licence with a two-part tariff return log and bill run'
 export const description =
@@ -22,32 +23,44 @@ export default function (calculatedDates) {
 
   const licence = licenceWithChargeVersionScenario()
 
-  const returnVersion = returnVersionData(licence)
+  const returnVersion = returnVersionData(licence.licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnVersion.returnVersions[0].startDate = previousPeriodDetails.startDate
+  returnVersion.startDate = previousPeriodDetails.startDate
 
-  const {
-    licenceVersionPurposes: [licenceVersionPurpose],
-    points
-  } = licence
+  const returnRequirement = returnRequirementData(returnVersion, licence.licenceVersionPurpose)
 
-  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose, points)
+  returnRequirement.twoPartTariff = true
 
-  returnRequirement.returnRequirements[0].twoPartTariff = true
+  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licence.point)
+  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licence.licenceVersionPurpose)
 
-  const returnLog = returnLogData(licence, returnRequirement, previousPeriodDetails)
+  const returnLog = returnLogData(
+    licence.licence,
+    returnRequirement,
+    [returnRequirementPurpose],
+    [licence.point],
+    previousPeriodDetails
+  )
 
-  returnLog.returnLogs[0].status = 'completed'
+  returnLog.status = 'completed'
 
   const financialYearEnding = previousPeriodDetails.endDate.getFullYear()
 
   const billRun = billRunData()
 
-  billRun.billRuns[0].batchType = 'two_part_tariff'
-  billRun.billRuns[0].fromFinancialYearEnding = financialYearEnding
-  billRun.billRuns[0].toFinancialYearEnding = financialYearEnding
+  billRun.batchType = 'two_part_tariff'
+  billRun.fromFinancialYearEnding = financialYearEnding
+  billRun.toFinancialYearEnding = financialYearEnding
 
-  return mergeByKey(licence, returnVersion, returnRequirement, returnLog, billRun)
+  return {
+    ...licence,
+    returnVersion,
+    returnRequirement,
+    returnRequirementPoint,
+    returnRequirementPurpose,
+    returnLog,
+    billRun
+  }
 }

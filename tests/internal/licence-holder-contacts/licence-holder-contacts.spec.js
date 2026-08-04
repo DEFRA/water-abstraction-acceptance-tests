@@ -14,14 +14,10 @@ test.describe('Licence holder contacts (internal)', () => {
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    const {
-      companies: [scenarioCompany],
-      licences: [scenarioLicence],
-      contacts: [scenarioContact, scenarioEditContact, scenarioRemoveContact, scenarioRestoreContact]
-    } = scenario
+    const [scenarioContact, scenarioEditContact, scenarioRemoveContact, scenarioRestoreContact] = scenario.contacts
 
-    company = scenarioCompany
-    licence = scenarioLicence
+    company = scenario.company
+    licence = scenario.licence
     contact = scenarioContact
     editContact = scenarioEditContact
     removeContact = scenarioRemoveContact

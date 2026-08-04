@@ -12,13 +12,8 @@ test.describe('Submit historic correction changing return cycle type on new retu
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      licences: [scenarioLicence],
-      returnLogs: scenarioReturnLogs
-    } = scenario
-
-    licence = scenarioLicence
-    returnLogs = scenarioReturnLogs
+    licence = scenario.licence
+    returnLogs = scenario.returnLogs
     startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
 
     expectedReturnLogs = {

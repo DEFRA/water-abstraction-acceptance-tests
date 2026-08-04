@@ -1,46 +1,43 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
 
-export default function (email, companyData) {
+export default function (email, company) {
   const licenceEntityRoleId = generateUUID()
   const individualEntityId = generateUUID()
   const companyEntityId = generateUUID()
 
-  const {
-    companies: [company]
-  } = companyData
+  const individualEntity = {
+    id: individualEntityId,
+    name: email,
+    type: 'individual'
+  }
+
+  const companyEntity = {
+    id: companyEntityId,
+    name: company.name,
+    type: 'company'
+  }
+
+  const licenceEntityRole = {
+    id: licenceEntityRoleId,
+    licenceEntityId: individualEntityId,
+    companyEntityId,
+    role: 'primary_user',
+    createdBy: 'acceptance-test-setup'
+  }
+
+  const user = {
+    username: email,
+    password: 'P@55word',
+    resetRequired: 0,
+    application: 'water_vml',
+    badLogins: 0,
+    enabled: true,
+    licenceEntityId: individualEntityId
+  }
 
   return {
-    licenceEntities: [
-      {
-        id: individualEntityId,
-        name: email,
-        type: 'individual'
-      },
-      {
-        id: companyEntityId,
-        name: company.name,
-        type: 'company'
-      }
-    ],
-    licenceEntityRoles: [
-      {
-        id: licenceEntityRoleId,
-        licenceEntityId: individualEntityId,
-        companyEntityId,
-        role: 'primary_user',
-        createdBy: 'acceptance-test-setup'
-      }
-    ],
-    users: [
-      {
-        username: email,
-        password: 'P@55word',
-        resetRequired: 0,
-        application: 'water_vml',
-        badLogins: 0,
-        enabled: true,
-        licenceEntityId: individualEntityId
-      }
-    ]
+    licenceEntities: [individualEntity, companyEntity],
+    licenceEntityRole,
+    user
   }
 }

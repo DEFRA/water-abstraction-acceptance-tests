@@ -20,13 +20,8 @@ test.describe(
       const dates = await calculatedDates()
       const scenario = scenarioData(dates)
 
-      const {
-        licences: [scenarioLicence],
-        companies: [scenarioCompany]
-      } = scenario
-
-      licence = scenarioLicence
-      company = scenarioCompany
+      licence = scenario.licence
+      company = scenario.company
 
       await setup(scenario)
     })

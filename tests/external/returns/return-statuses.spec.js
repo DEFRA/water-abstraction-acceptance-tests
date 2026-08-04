@@ -10,15 +10,9 @@ test.describe('View return statuses (external)', () => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
 
-    const {
-      licences: [scenarioLicence],
-      returnLogs: scenarioReturnLogs,
-      users: [scenarioUser]
-    } = scenario
-
-    licence = scenarioLicence
-    returnLogs = scenarioReturnLogs
-    user = scenarioUser
+    licence = scenario.licence
+    returnLogs = scenario.returnLogs
+    user = scenario.user
 
     await setup(scenario)
   })

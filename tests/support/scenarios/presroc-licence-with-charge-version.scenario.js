@@ -1,8 +1,8 @@
+import billingAccountAddressData from '../data/billing-account-address.data.js'
 import billingAccountData from '../data/billing-account.data.js'
-import chargeVersionData from '../data/charge-version.data.js'
 import chargeReferenceData from '../data/charge-reference-presroc.data.js'
+import chargeVersionData from '../data/charge-version.data.js'
 import presrocLicenceScenario from './presroc-licence.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Presroc licence with a charge version'
 export const description =
@@ -11,13 +11,20 @@ export const description =
 export default function () {
   const licence = presrocLicenceScenario()
 
-  const billingAccount = billingAccountData(licence)
-  const chargeVersion = chargeVersionData(billingAccount, licence)
+  const billingAccount = billingAccountData(licence.company)
+  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
+  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
 
   // charge-version.data.js hardcodes the scheme to sroc, so we override it to alcs to match the presroc start date
-  chargeVersion.chargeVersions[0].scheme = 'alcs'
+  chargeVersion.scheme = 'alcs'
 
-  const chargeReference = chargeReferenceData(chargeVersion, licence)
+  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurpose)
 
-  return mergeByKey(licence, billingAccount, chargeVersion, chargeReference)
+  return {
+    ...licence,
+    billingAccount,
+    billingAccountAddress,
+    chargeVersion,
+    chargeReference
+  }
 }
