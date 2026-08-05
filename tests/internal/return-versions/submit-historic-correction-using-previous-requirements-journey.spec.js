@@ -97,13 +97,8 @@ test.describe('Submit historic correction using previous return requirements acr
     await expect(page.locator('[data-test="return-due-date-2"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('void')
 
-    // The old summer return log spans the new return version's start date, so it should have been replaced by the
-    // void/open pair below like the old winter return log was. Instead the service currently leaves it in place
-    // unchanged alongside them, still showing its pre-correction status.
     await expect(page.locator('[data-test="return-due-date-3"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.oldSummerFull.status
-    )
+    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void')
 
     await expect(page.locator('[data-test="return-due-date-4"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText(
