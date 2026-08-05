@@ -4,7 +4,7 @@ import { test, expect } from '../../../support/fixtures.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
-test.describe('Remove a licence from an annual bill run that has not been sent(internal)', () => {
+test.describe('Remove a licence from an annual bill run that has not been sent (internal)', () => {
   let scenario
 
   test.beforeAll(async ({ setup }) => {

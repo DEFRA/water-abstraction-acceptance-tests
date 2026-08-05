@@ -1,8 +1,8 @@
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import { asArrays } from '../helpers/wire-format.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { licenceRef } from '../default-values.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { asArrays } from '../helpers/wire-format.helpers.js'
 
 export const title = 'Two water company licences, each with a charge version'
 export const description =
