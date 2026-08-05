@@ -114,10 +114,14 @@ test.describe('Simple Licence with a Return Split Over Charge References (intern
       await expect(page.locator('[data-test="matched-return-action-1"] > .govuk-link')).toHaveCount(0)
       await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
 
-      // Two charge references, each with one element; the return's 24 ML is split 10 ML / 14 ML across them
+      // Two charge references, each with one element; the return's 24 ML is split 10 ML / 14 ML across them. The
+      // references have different charge categories and sort by subsistence charge (highest first), so 4.6.19 is shown
+      // before 4.6.1.
       await expect(page.locator('[data-test="charge-version-0-details"]')).toContainText(
         '2 charge references with 2 two-part tariff charge elements'
       )
+      await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.6.19')
+      await expect(page.locator('[data-test="charge-version-0-reference-1"]')).toContainText('Charge reference 4.6.1')
       await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText(
         '10 ML / 32 ML'
       )
