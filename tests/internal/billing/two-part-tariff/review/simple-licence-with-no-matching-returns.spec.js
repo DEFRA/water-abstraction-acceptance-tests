@@ -1,0 +1,142 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-completed-non-tpt-return-log.scenario.js'
+import { test, expect } from '../../../../support/fixtures.js'
+import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
+
+test.describe('Simple Licence with No Matching Returns (internal)', () => {
+  let endYear
+  let startYear
+
+  test.beforeAll(async ({ calculatedDates, setup }) => {
+    const dates = await calculatedDates()
+
+    const {
+      billingPeriods: {
+        twoPartTariff: [twoPartTariffPeriod]
+      }
+    } = dates
+
+    endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
+    startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
+
+    const scenario = scenarioData(dates)
+
+    await setup(scenario)
+  })
+
+  test.beforeEach(async ({ login, users }) => {
+    await login(users.billingAndData)
+  })
+
+  test(
+    'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the charge information',
+    {
+      annotation: {
+        type: 'tpt-review',
+        description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. Its only return is not two-part tariff, so the engine finds no matching returns.
+
+**Acceptance Criteria**
+- The licence is flagged with the unable to match return issue.
+- With no matching returns the charge element's full authorised volume is billable.`
+      }
+    },
+    async ({ page }) => {
+      const formattedCurrentDate = formatLongDate(new Date())
+
+      await page.goto('/system/bill-runs')
+
+      await expect(page.locator('h1')).toContainText('Bill runs')
+      await page.getByRole('button', { name: 'Create a bill run' }).click()
+
+      await expect(page.locator('h1')).toContainText('Select the bill run type')
+      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page.locator('h1')).toContainText('Select the region')
+      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page.locator('h1')).toContainText('Select the financial year')
+      await page.locator(`input[value="${endYear}"]`).check()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page.locator('h1')).toContainText('Check the bill run to be created')
+      await page.getByRole('button', { name: 'Create bill run' }).click()
+
+      await expect(page.locator('h1')).toContainText('Bill runs')
+      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'review')
+      await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
+      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Two-part tariff')
+      await page.locator('[data-test="date-created-0"] > .govuk-link').click()
+
+      await expect(page.locator('h1')).toContainText('Review licences')
+      await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
+      await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff')
+      await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
+      await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
+
+      await page.locator('.govuk-details__summary').click()
+      await page.locator('[data-test="aggregate-factor"]').check()
+      await page.getByRole('button', { name: 'Apply filters' }).click()
+      await expect(page.locator('#main-content')).toContainText('No licences found')
+      await page.getByRole('button', { name: 'Clear filters' }).click()
+      await page.locator('.govuk-details__summary').click()
+      await page.locator('[data-test="unable-to-match-return"]').check()
+      await page.getByRole('button', { name: 'Apply filters' }).click()
+      await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 licences')
+      await page.getByRole('button', { name: 'Clear filters' }).click()
+
+      await expect(page.locator('[data-test="licence-1"]')).toContainText('AT/TE/ST/01/01')
+      await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
+      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Unable to match return')
+      await expect(page.locator('[data-test="licence-progress-1"]')).toContainText('')
+      await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('review')
+      await page.locator('[data-test="licence-1"] > .govuk-link').click()
+
+      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('div > .govuk-tag')).toContainText('review')
+      await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
+        'Test Region two-part tariff'
+      )
+      await expect(page.locator('.govuk-list > li > .govuk-link')).toContainText(
+        `1 April ${startYear} to 31 March ${endYear}`
+      )
+
+      await expect(page.locator('h2.govuk-heading-m')).toContainText('No two-part tariff returns')
+      await expect(page.locator('[data-test="matched-return-action-0"] > div')).toHaveCount(0)
+      await expect(page.locator('[data-test="matched-return-summary-0"] > div')).toHaveCount(0)
+      await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toHaveCount(0)
+      await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
+
+      await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText(
+        '1.554 ML / 1.554 ML'
+      )
+      // Without an aggregate or charge factor we should only see the "View details" link, not "Change details"
+      await expect(page.locator('[data-test="charge-version-0-charge-reference-link-0"]')).toContainText('View details')
+      await expect(
+        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]')
+      ).toContainText('Unable to match return')
+      await expect(
+        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
+      ).toContainText('1.554 ML / 1.554 ML')
+      await expect(
+        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
+      ).toContainText('')
+
+      await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+      await expect(page.locator('[data-test="billable-returns"]')).toContainText('1.554 ML')
+      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('1.554 ML')
+      await expect(page.locator('[data-test="issues-0"]')).toContainText('Unable to match return')
+      await expect(page.locator('[data-test="no-returns-message"]')).toContainText(
+        'No matching two-part tariff returns'
+      )
+      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toHaveCount(0)
+      await expect(page.locator('[data-test="matched-return-summary-0"]')).toHaveCount(0)
+    }
+  )
+})
