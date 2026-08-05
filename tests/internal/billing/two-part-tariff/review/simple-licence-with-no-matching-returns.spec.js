@@ -127,8 +127,9 @@ test.describe('Simple Licence with No Matching Returns (internal)', () => {
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
       ).toContainText('')
-
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+
+      await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
       await expect(page.locator('[data-test="billable-returns"]')).toContainText('1.554 ML')
       await expect(page.locator('[data-test="authorised-volume"]')).toContainText('1.554 ML')
       await expect(page.locator('[data-test="issues-0"]')).toContainText('Unable to match return')
