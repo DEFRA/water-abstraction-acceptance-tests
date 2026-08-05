@@ -157,24 +157,44 @@ test.describe('Simple Licence with a Return Straddling Two Charge Elements (inte
       // Drive the over-authorised warning: drop the first element's billable returns, reduce the reference's authorised
       // volume below the combined element volume, then restore the element so the elements together exceed the reference
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+
+      await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
       await page.getByRole('button', { name: 'Edit the billable returns' }).click()
+
+      await expect(page.locator('h1')).toContainText('Set the billable returns quantity for this bill run')
       await page.locator('#custom-quantity-selector').check()
       await page.locator('#custom-quantity').fill('0.1')
       await page.getByRole('button', { name: 'Confirm' }).click()
+
+      await expect(page.locator('[data-test="billable-returns"]')).toContainText('0.1 ML')
       await page.locator('.govuk-back-link').click()
 
+      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
       await page.locator('[data-test="charge-version-0-charge-reference-link-0"]').click()
+
+      await expect(page.locator('[data-test="charge-reference"]')).toContainText('Charge reference 4.6.1')
       await page.getByRole('button', { name: 'Change the authorised volume' }).click()
+
+      await expect(page.locator('h1')).toContainText('Set the authorised volume')
       await page.locator('#amended-authorised-volume').fill('1')
       await page.getByRole('button', { name: 'Confirm' }).click()
+
+      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('1 ML')
       await page.locator('.govuk-back-link').click()
 
+      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+
+      await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
       await page.getByRole('button', { name: 'Edit the billable returns' }).click()
+
+      await expect(page.locator('h1')).toContainText('Set the billable returns quantity for this bill run')
       await page.locator('#authorised-quantity').check()
       await page.getByRole('button', { name: 'Confirm' }).click()
       await page.locator('.govuk-back-link').click()
 
+      // With both elements back at their authorised volumes they now exceed the reference's reduced authorised volume
+      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
       await expect(page.locator('.govuk-warning-text__icon')).toBeVisible()
       await expect(page.locator('.govuk-warning-text__text')).toContainText(
         'The total billable return volume exceeds the total authorised volume'

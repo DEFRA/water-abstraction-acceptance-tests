@@ -10,11 +10,15 @@ import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
+import { convertCubicMetresToMegalitres, splitTotalVolume } from '../helpers/conversion.helpers.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with tpt charge version and a return straddling two charge elements'
 export const description =
   'Licence with a return version and a TPT charge version made up of one charge reference with two charge elements covering different parts of the year, plus a single completed return whose volume straddles and fully allocates to both elements'
+
+// The first charge element covers April to October, leaving the remaining five months to the second
+const FIRST_ELEMENT_MONTHS = 7
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
@@ -46,15 +50,18 @@ export default function (calculatedDates) {
   chargeReference.adjustments.charge = 1.5
 
   // Both elements share the reference's two-part tariff purpose but cover different parts of the year (April to October
-  // and November to March). The licence's authorised volume is split between them in line with the months each covers,
-  // so the single return straddles both and fills each exactly.
+  // and November to March). The return spreads the licence's authorised volume evenly across the twelve months, so we
+  // split that volume the same way and authorise each element the share of the months its period covers. That way the
+  // single return straddles both and fills each exactly.
+  const monthlyVolumes = splitTotalVolume(licenceVersionPurpose.annualQuantity, 12)
+
   const firstChargeElement = chargeElementData(chargeReference, licenceVersionPurpose)
   firstChargeElement.abstractionPeriodEndMonth = 10
-  firstChargeElement.authorisedAnnualQuantity = 0.9065
+  firstChargeElement.authorisedAnnualQuantity = _elementVolume(monthlyVolumes.slice(0, FIRST_ELEMENT_MONTHS))
 
   const secondChargeElement = chargeElementData(chargeReference, licenceVersionPurpose)
   secondChargeElement.abstractionPeriodStartMonth = 11
-  secondChargeElement.authorisedAnnualQuantity = 0.6475
+  secondChargeElement.authorisedAnnualQuantity = _elementVolume(monthlyVolumes.slice(FIRST_ELEMENT_MONTHS))
 
   const returnVersion = returnVersionData(licence.licence)
 
@@ -107,4 +114,17 @@ export default function (calculatedDates) {
     returnSubmission,
     returnSubmissionLines
   }
+}
+
+/**
+ * Totals a run of monthly volumes and converts the result to the megalitres a charge element is authorised in.
+ *
+ * @private
+ */
+function _elementVolume(monthlyVolumes) {
+  const totalVolume = monthlyVolumes.reduce((total, monthlyVolume) => {
+    return total + monthlyVolume
+  }, 0)
+
+  return convertCubicMetresToMegalitres(totalVolume)
 }
