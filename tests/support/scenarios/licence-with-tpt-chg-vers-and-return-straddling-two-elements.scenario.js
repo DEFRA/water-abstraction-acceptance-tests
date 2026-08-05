@@ -104,7 +104,7 @@ export default function (calculatedDates) {
     ...licence,
     ...billingAccountEntity,
     chargeVersion,
-    chargeReferences: [chargeReference],
+    chargeReference,
     chargeElements: [firstChargeElement, secondChargeElement],
     returnVersion,
     returnRequirement,
