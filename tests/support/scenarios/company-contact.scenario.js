@@ -1,13 +1,13 @@
 import companyContactData from '../data/company-contact.data.js'
 import contactData from '../data/contact.data.js'
 import notificationData from '../data/notification.data.js'
-import licenceScenario from './licence.scenario.js'
+import licenceEntity from '../entities/licence.entity.js'
 
 export const title = 'Company contact'
 export const description = 'A licence, licence holder, company, a contact and notification data'
 
 export default function () {
-  const licence = licenceScenario()
+  const licence = licenceEntity()
 
   const contact = contactData()
   const companyContact = companyContactData(contact, licence.company)
