@@ -1,7 +1,4 @@
-import billingAccountAddressData from '../data/billing-account-address.data.js'
-import billingAccountData from '../data/billing-account.data.js'
-import chargeReferenceData from '../data/charge-reference-presroc.data.js'
-import chargeVersionData from '../data/charge-version.data.js'
+import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
 import presrocLicenceScenario from './presroc-licence.scenario.js'
 
 export const title = 'Presroc licence with a charge version'
@@ -10,21 +7,15 @@ export const description =
 
 export default function () {
   const licence = presrocLicenceScenario()
-
-  const billingAccount = billingAccountData(licence.company)
-  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
-
-  // charge-version.data.js hardcodes the scheme to sroc, so we override it to alcs to match the presroc start date
-  chargeVersion.scheme = 'alcs'
-
-  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurpose)
+  const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(
+    licence.company,
+    licence.address,
+    licence.licence,
+    licence.licenceVersionPurpose
+  )
 
   return {
     ...licence,
-    billingAccount,
-    billingAccountAddress,
-    chargeVersion,
-    chargeReference
+    ...presrocChargeVersionEntity
   }
 }
