@@ -93,7 +93,7 @@ test.describe('Simple Licence with an Unmatched Return (internal)', () => {
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Multiple Issues')
-      await expect(page.locator('[data-test="licence-progress-1"]')).toContainText('')
+      await expect(page.locator('[data-test="licence-progress-1"]')).toBeEmpty()
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('review')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
@@ -138,7 +138,7 @@ test.describe('Simple Licence with an Unmatched Return (internal)', () => {
       ).toContainText('1.554 ML / 1.554 ML')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
-      ).toContainText('')
+      ).toBeEmpty()
 
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
 
@@ -150,6 +150,7 @@ test.describe('Simple Licence with an Unmatched Return (internal)', () => {
         'No matching two-part tariff returns'
       )
       await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toHaveCount(0)
+      await expect(page.locator('[data-test="matched-return-summary-0"]')).toHaveCount(0)
     }
   )
 })
