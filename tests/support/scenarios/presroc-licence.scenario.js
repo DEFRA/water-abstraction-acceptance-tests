@@ -1,17 +1,17 @@
-import licenceEntity from '../entities/licence.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 
 export const title = 'Presroc licence'
 export const description = 'Licence with a start date before 2022-04-01'
 
 export default function () {
-  const licence = licenceEntity()
+  const licenceEntity = buildLicenceEntity()
 
   const preSrocDate = '2018-04-01'
 
-  licence.licence.startDate = preSrocDate
-  licence.licenceVersion.startDate = preSrocDate
-  licence.licenceDocument.startDate = preSrocDate
-  licence.licenceDocumentRole.startDate = preSrocDate
+  licenceEntity.licence.startDate = preSrocDate
+  licenceEntity.licenceVersion.startDate = preSrocDate
+  licenceEntity.licenceDocument.startDate = preSrocDate
+  licenceEntity.licenceDocumentRole.startDate = preSrocDate
 
-  return licence
+  return licenceEntity
 }

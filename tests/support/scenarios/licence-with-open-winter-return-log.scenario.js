@@ -3,7 +3,7 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import licenceEntity from '../entities/licence.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with an open return log (winter cycle)'
@@ -27,35 +27,35 @@ export default function (calculatedDates) {
     quarterly: false
   }
 
-  const licence = licenceEntity()
+  const licenceEntity = buildLicenceEntity()
 
-  const returnVersion = returnVersionData(licence.licence)
+  const returnVersion = returnVersionData(licenceEntity.licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
   returnVersion.startDate = previousPeriodDetails.startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, licence.licenceVersionPurpose)
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licence.point)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licence.licenceVersionPurpose)
+  const returnRequirement = returnRequirementData(returnVersion, licenceEntity.licenceVersionPurpose)
+  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licenceEntity.point)
+  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceEntity.licenceVersionPurpose)
 
   const previousReturnLog = returnLogData(
-    licence.licence,
+    licenceEntity.licence,
     returnRequirement,
     [returnRequirementPurpose],
-    [licence.point],
+    [licenceEntity.point],
     previousPeriodDetails
   )
   const currentReturnLog = returnLogData(
-    licence.licence,
+    licenceEntity.licence,
     returnRequirement,
     [returnRequirementPurpose],
-    [licence.point],
+    [licenceEntity.point],
     currentPeriodDetails
   )
 
   return {
-    ...licence,
+    ...licenceEntity,
     returnVersion,
     returnRequirement,
     returnRequirementPoint,
