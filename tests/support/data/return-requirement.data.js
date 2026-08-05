@@ -1,9 +1,9 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { isTwoPartTariffPurpose, purposeDescription } from '../helpers/purpose.helpers.js'
 
 export default function (returnVersion, licenceVersionPurpose) {
   const returnRequirementId = generateUUID()
-  const siteDescription =
-    licenceVersionPurpose.purposeId.value === '400' ? 'Spray Irrigation - Direct' : 'Make-Up Or Top Up Water'
+  const siteDescription = purposeDescription(licenceVersionPurpose.purposeId.value)
 
   return {
     id: returnRequirementId,
@@ -19,6 +19,6 @@ export default function (returnVersion, licenceVersionPurpose) {
     siteDescription,
     legacyId: Number(`9999${licenceVersionPurpose.purposeId.value}`),
     reference: Number(`9999${licenceVersionPurpose.purposeId.value}`),
-    twoPartTariff: licenceVersionPurpose.purposeId.value === '400'
+    twoPartTariff: isTwoPartTariffPurpose(licenceVersionPurpose.purposeId.value)
   }
 }
