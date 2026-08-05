@@ -1,14 +1,12 @@
 import { convertCubicMetresToMegalitres } from '../helpers/conversion.helpers.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { isTwoPartTariffPurpose, purposeDescription } from '../helpers/purpose.helpers.js'
 
 export default function (chargeVersion, licenceVersionPurpose) {
   const chargeReferenceId = generateUUID()
 
-  // We make an assumption that if the purpose is not 400 (the default), then we have been passed our alternate which
-  // is typically 280 (Make-Up Or Top Up Water). Both have a high loss, and assuming non-tidal and the same volume, both
-  // would fall under charge category 4.6.1. Obviously, the calling scenario is free to override any of these values.
-  const twoPartTariff = licenceVersionPurpose.purposeId.value === '400'
-  const description = twoPartTariff ? 'Spray Irrigation - Direct' : 'Make-Up Or Top Up Water'
+  const twoPartTariff = isTwoPartTariffPurpose(licenceVersionPurpose.purposeId.value)
+  const description = purposeDescription(licenceVersionPurpose.purposeId.value)
 
   return {
     id: chargeReferenceId,
