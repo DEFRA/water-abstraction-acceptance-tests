@@ -1,5 +1,3 @@
-import billingAccountAddressData from '../data/billing-account-address.data.js'
-import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
@@ -8,6 +6,7 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
@@ -45,9 +44,8 @@ export default function (calculatedDates) {
   // distinct lets each return match its own element.
   secondLicenceVersionPurpose.purposeId.value = '420'
 
-  const billingAccount = billingAccountData(licence.company)
-  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
+  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
+  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
 
   // Two separate charge references, each with a single charge element. The same two volumes (22 and 42) are used for
   // both, with the reference and element swapped between them, so the lower volume is the reference on the first and
@@ -113,8 +111,7 @@ export default function (calculatedDates) {
 
   return {
     ...licence,
-    billingAccount,
-    billingAccountAddress,
+    ...billingAccountEntity,
     chargeVersion,
     chargeReferences: [firstChargeReference, secondChargeReference],
     chargeElements: [firstChargeElement, secondChargeElement],

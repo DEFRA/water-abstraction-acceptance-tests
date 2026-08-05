@@ -4,7 +4,8 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import licenceEntity from '../entities/licence.entity.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with a two-part tariff return log and bill run'
@@ -21,7 +22,13 @@ export default function (calculatedDates) {
     quarterly: false
   })
 
-  const licence = licenceWithChargeVersionScenario()
+  const licence = licenceEntity()
+  const chargeVersionEntity = buildChargeVersionEntity(
+    licence.company,
+    licence.address,
+    licence.licence,
+    licence.licenceVersionPurpose
+  )
 
   const returnVersion = returnVersionData(licence.licence)
 
@@ -56,6 +63,7 @@ export default function (calculatedDates) {
 
   return {
     ...licence,
+    ...chargeVersionEntity,
     returnVersion,
     returnRequirement,
     returnRequirementPoint,

@@ -1,8 +1,7 @@
-import billingAccountAddressData from '../data/billing-account-address.data.js'
-import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
 export const title = 'Licence with a charge version and two purposes'
@@ -12,9 +11,8 @@ export const description =
 export default function () {
   const licence = licenceWithTwoPurposesScenario()
 
-  const billingAccount = billingAccountData(licence.company)
-  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
+  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
+  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
   const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes)
 
   const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
@@ -23,8 +21,7 @@ export default function () {
 
   return {
     ...licence,
-    billingAccount,
-    billingAccountAddress,
+    ...billingAccountEntity,
     chargeVersion,
     chargeReference,
     chargeElements: [firstChargeElement, secondChargeElement]
