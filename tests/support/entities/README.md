@@ -1,6 +1,6 @@
 # Entities
 
-An entity file (`*.entity.js`) builds one thing completely — the valid, minimum data an entity needs to exist, with all the child records the API requires to accept it. It answers "what does a valid licence look like?", not "what does *this test* need a licence to look like?".
+An entity file (`*.entity.js`) builds one thing completely — the valid, minimum data an entity needs to exist. It answers "what does a valid licence look like?", not "what does *this test* need a licence to look like?".
 
 This is different from `tests/support/data/*.data.js` and `tests/support/scenarios/*.scenario.js`:
 
@@ -13,6 +13,8 @@ This is different from `tests/support/data/*.data.js` and `tests/support/scenari
 Scenario files used to reach a "valid licence" by importing another scenario file (e.g. `licence-with-charge-version.scenario.js` importing `licence.scenario.js`, which `registered-licence.scenario.js` or a water-company variant might then build on top of again). That works, but it means the definition of "a valid licence" lives inside a scenario file — one entry in a flat, cli:seed-pickable list — that other scenarios then have to import as if it were just another building block, several levels deep.
 
 An entity file gives every scenario a single, direct place to get a valid instance of that entity, with no scenario-to-scenario chaining. A scenario file can still exist for the entity on its own (e.g. `licence.scenario.js` is a thin wrapper around `licence.entity.js`, kept so "just a licence" remains pickable in `cli:seed`), but anything composing *on top of* that entity should import the entity file directly, not the scenario file.
+
+It also makes it simple for a scenario to use more than one of something — two licences, or a licence and a charge version — since calling `licenceEntity()` again (or combining it with another entity file) just works, without needing a scenario file purpose-built for that exact combination.
 
 ## Adding a new entity
 
