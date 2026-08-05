@@ -27,3 +27,32 @@ export async function reloadUntilTextFound(page, locator, textToMatch, retries =
   await page.reload()
   await reloadUntilTextFound(page, locator, textToMatch, retries - 1, retryWait)
 }
+
+/**
+ * Reloads the page until the given locator matches no elements, or the retries are exhausted
+ *
+ * Mirrors {@link reloadUntilTextFound}, but for waiting on something to be removed rather than to appear, for
+ * example a bill run's row disappearing from the list once its background deletion completes.
+ *
+ * @param {import('@playwright/test').Page} page - The page to reload
+ * @param {import('@playwright/test').Locator} locator - The locator that should eventually match no elements
+ * @param {number} [retries=10] - How many times to reload and re-check before giving up
+ * @param {number} [retryWait=2000] - How long to wait, in milliseconds, before each reload
+ *
+ * @returns {Promise<void>}
+ */
+export async function reloadUntilGone(page, locator, retries = 10, retryWait = 2000) {
+  if (retries === 0) {
+    throw new Error('Exhausted retries waiting for element to be removed.')
+  }
+
+  const count = await locator.count()
+
+  if (count === 0) {
+    return
+  }
+
+  await page.waitForTimeout(retryWait)
+  await page.reload()
+  await reloadUntilGone(page, locator, retries - 1, retryWait)
+}
