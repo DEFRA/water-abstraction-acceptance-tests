@@ -1,13 +1,23 @@
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 
 export const title = 'Water company licence with a charge version'
 export const description =
   'Water company licence with one charge version, reference and element based on the licence data'
 
 export default function () {
-  const licence = licenceWithChargeVersionScenario()
+  const licenceEntity = buildLicenceEntity()
+  const chargeVersionEntity = buildChargeVersionEntity(
+    licenceEntity.company,
+    licenceEntity.address,
+    licenceEntity.licence,
+    licenceEntity.licenceVersionPurpose
+  )
 
-  licence.licence.waterUndertaker = true
+  licenceEntity.licence.waterUndertaker = true
 
-  return licence
+  return {
+    ...licenceEntity,
+    ...chargeVersionEntity
+  }
 }

@@ -1,6 +1,7 @@
 import billRunData from '../data/bill-run.data.js'
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import workflowData from '../data/workflow.data.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 import { today, yesterday } from '../helpers/date.helpers.js'
 
 export const title = 'Licence in workflow, and a two-part tariff bill run'
@@ -13,7 +14,13 @@ export const description =
  * This is omitted from the scenario name and description to keep them concise, but is still part of the scenario.
  */
 export default function (calculatedDates) {
-  const licence = licenceWithChargeVersionScenario()
+  const licenceEntity = buildLicenceEntity()
+  const chargeVersionEntity = buildChargeVersionEntity(
+    licenceEntity.company,
+    licenceEntity.address,
+    licenceEntity.licence,
+    licenceEntity.licenceVersionPurpose
+  )
 
   const {
     billingPeriods: {
@@ -28,7 +35,7 @@ export default function (calculatedDates) {
   billRun.fromFinancialYearEnding = new Date(twoPartTariffDates.endDate).getUTCFullYear()
   billRun.toFinancialYearEnding = new Date(twoPartTariffDates.endDate).getUTCFullYear()
 
-  const workflow = workflowData(licence.licence)
+  const workflow = workflowData(licenceEntity.licence)
 
   // The workflow createdAt date is used to show the supplementary billing flag.
   // It should be set to a date before the two-part tariff bill run's end date.
@@ -36,7 +43,8 @@ export default function (calculatedDates) {
   workflow.updatedAt = yesterday()
 
   return {
-    ...licence,
+    ...licenceEntity,
+    ...chargeVersionEntity,
     billRun,
     workflow
   }

@@ -4,7 +4,8 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with a two-part tariff return log and bill run'
@@ -21,26 +22,32 @@ export default function (calculatedDates) {
     quarterly: false
   })
 
-  const licence = licenceWithChargeVersionScenario()
+  const licenceEntity = buildLicenceEntity()
+  const chargeVersionEntity = buildChargeVersionEntity(
+    licenceEntity.company,
+    licenceEntity.address,
+    licenceEntity.licence,
+    licenceEntity.licenceVersionPurpose
+  )
 
-  const returnVersion = returnVersionData(licence.licence)
+  const returnVersion = returnVersionData(licenceEntity.licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
   returnVersion.startDate = previousPeriodDetails.startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, licence.licenceVersionPurpose)
+  const returnRequirement = returnRequirementData(returnVersion, licenceEntity.licenceVersionPurpose)
 
   returnRequirement.twoPartTariff = true
 
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licence.point)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licence.licenceVersionPurpose)
+  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licenceEntity.point)
+  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceEntity.licenceVersionPurpose)
 
   const returnLog = returnLogData(
-    licence.licence,
+    licenceEntity.licence,
     returnRequirement,
     [returnRequirementPurpose],
-    [licence.point],
+    [licenceEntity.point],
     previousPeriodDetails
   )
 
@@ -55,7 +62,8 @@ export default function (calculatedDates) {
   billRun.toFinancialYearEnding = financialYearEnding
 
   return {
-    ...licence,
+    ...licenceEntity,
+    ...chargeVersionEntity,
     returnVersion,
     returnRequirement,
     returnRequirementPoint,

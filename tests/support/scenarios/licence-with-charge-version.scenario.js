@@ -1,28 +1,20 @@
-import billingAccountAddressData from '../data/billing-account-address.data.js'
-import billingAccountData from '../data/billing-account.data.js'
-import chargeElementData from '../data/charge-element.data.js'
-import chargeReferenceData from '../data/charge-reference.data.js'
-import chargeVersionData from '../data/charge-version.data.js'
-import licenceEntity from '../entities/licence.entity.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 
 export const title = 'Licence with a charge version'
 export const description = 'Licence with one charge version, reference and element based on the licence data'
 
 export default function () {
-  const licence = licenceEntity()
-
-  const billingAccount = billingAccountData(licence.company)
-  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
-  const chargeReference = chargeReferenceData(chargeVersion, [licence.licenceVersionPurpose])
-  const chargeElement = chargeElementData(chargeReference, licence.licenceVersionPurpose)
+  const licenceEntity = buildLicenceEntity()
+  const chargeVersionEntity = buildChargeVersionEntity(
+    licenceEntity.company,
+    licenceEntity.address,
+    licenceEntity.licence,
+    licenceEntity.licenceVersionPurpose
+  )
 
   return {
-    ...licence,
-    billingAccount,
-    billingAccountAddress,
-    chargeVersion,
-    chargeReference,
-    chargeElement
+    ...licenceEntity,
+    ...chargeVersionEntity
   }
 }
