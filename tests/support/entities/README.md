@@ -1,12 +1,12 @@
 # Entities
 
-An entity file (`*.entity.js`) builds one thing completely — the valid, minimum data an entity needs to exist. It answers "what does a valid licence look like?", not "what does *this test* need a licence to look like?".
+A **data object** is the single row a `tests/support/data/*.data.js` file builds for one table (e.g. `companyData()` returns the one `company` row). An **entity** is a complete, valid data group: several dependent data objects — and, where one already exists, other entities — composed by a `tests/support/entities/*.entity.js` file into the smallest whole that's valid/queryable on its own. It answers "what does a valid licence look like?", not "what does *this test* need a licence to look like?".
 
 This is different from `tests/support/data/*.data.js` and `tests/support/scenarios/*.scenario.js`:
 
-- A **data file** builds a single row for a single table (e.g. `licence.data.js` builds just the `licences` row).
-- An **entity file** composes several data files into the smallest valid whole (e.g. `licence.entity.js` composes a company and address as the licence holder, the licence itself, its permit licence, licence document, licence document header, licence document role, licence version, and a licence version purpose/point — because a licence isn't valid/queryable without them).
-- A **scenario file** composes data files, entity files, and/or other scenario files into whatever a specific spec needs to seed, and is what `cli:seed.cli.js` lists for manual seeding.
+- A **data file** builds a single data object for a single table (e.g. `licence.data.js` builds just the `licence` row).
+- An **entity file** composes several data objects — and, where one already exists, other entities — into the smallest valid whole (e.g. `licence.entity.js` composes a company and address as the licence holder, the licence itself, its permit licence, licence document, licence document header, licence document role, licence version, and a licence version purpose/point — because a licence isn't valid/queryable without them).
+- A **scenario file** composes data objects, entities, and/or other scenario files into whatever a specific spec needs to seed, and is what `cli:seed.cli.js` lists for manual seeding.
 
 ## Why this exists
 
