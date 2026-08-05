@@ -1,5 +1,6 @@
 import { determineReturnCycleStartDate, formatDateToIso } from '../helpers/date.helpers.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { purposeDescription } from '../helpers/purpose.helpers.js'
 
 export default function (licence, returnRequirement, returnRequirementPurposes, points, period) {
   const returnLogId = generateUUID()
@@ -87,7 +88,7 @@ function _purposes(returnRequirementPurposes) {
       },
       tertiary: {
         code: returnRequirementPurpose.purposeId.value,
-        description: 'Spray Irrigation - Direct'
+        description: purposeDescription(returnRequirementPurpose.purposeId.value)
       }
     }
   })
