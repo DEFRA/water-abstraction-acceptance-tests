@@ -15,7 +15,7 @@ import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with tpt charge version and two over-abstracted returns'
 export const description =
-  'Licence with a return version and a TPT charge version of one charge reference and two charge elements, plus two completed returns for the previous winter cycle that are both over-abstracted, the second also abstracting outside the charge period'
+  'Licence with a return version and a TPT charge version of one charge reference and two charge elements, plus two completed returns for the previous winter cycle that are both over-abstracted, the second also abstracting outside its own abstraction period'
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
@@ -74,6 +74,7 @@ export default function (calculatedDates) {
   // Start the second return's abstraction period in May so its April submission volume falls outside it, flagging the
   // abstraction outside period issue on top of the over abstraction.
   secondReturnRequirement.abstractionPeriodStartMonth = 5
+
   const secondReturnRequirementPoint = returnRequirementPointData(secondReturnRequirement, secondPoint)
   const secondReturnRequirementPurpose = returnRequirementPurposeData(
     secondReturnRequirement,

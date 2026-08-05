@@ -111,7 +111,7 @@ test.describe('Simple Licence with Over-abstracted Returns (internal)', () => {
       await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('32 ML / 38 ML')
       await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('Over abstraction')
 
-      // Second matched return is over-abstracted and abstracts outside the charge period
+      // Second matched return is over-abstracted and abstracts outside its own abstraction period
       await expect(page.locator('[data-test="matched-return-status-1"] > .govuk-tag')).toContainText('completed')
       await expect(page.locator('[data-test="matched-return-total-1"]')).toContainText('30 ML / 36 ML')
       await expect(page.locator('[data-test="matched-return-total-1"]')).toContainText('Abstraction outside period')
@@ -133,6 +133,34 @@ test.describe('Simple Licence with Over-abstracted Returns (internal)', () => {
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-1"]')
       ).toContainText('30 ML / 30 ML')
+
+      // First element's match details: 32 ML allocates of the 38 ML submitted, flagged over abstraction
+      await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
+
+      await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
+      await expect(page.locator('[data-test="billable-returns"]')).toContainText('32 ML')
+      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('32 ML')
+      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('32 ML / 38 ML')
+      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText(
+        'Over abstraction'
+      )
+      await page.getByRole('link', { name: 'Go back to review licence' }).click()
+
+      // Second element's match details: 30 ML allocates of the 36 ML submitted, flagged abstraction outside period and
+      // over abstraction
+      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-1"]').click()
+
+      await expect(page.locator('h1')).toContainText('Spray Irrigation - Storage')
+      await expect(page.locator('[data-test="billable-returns"]')).toContainText('30 ML')
+      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('30 ML')
+      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('30 ML / 36 ML')
+      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText(
+        'Abstraction outside period'
+      )
+      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(3)')).toContainText(
+        'Over abstraction'
+      )
     }
   )
 })
