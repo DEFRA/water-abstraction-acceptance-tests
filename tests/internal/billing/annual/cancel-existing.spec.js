@@ -1,6 +1,7 @@
 import scenarioData from '../../../support/scenarios/water-company-licence-with-charge-version.scenario.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { test, expect } from '../../../support/fixtures.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Cancel an existing annual bill run (internal)', () => {
@@ -51,13 +52,20 @@ test.describe('Cancel an existing annual bill run (internal)', () => {
     await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
     await expect(page.locator('h1')).toContainText("You're about to cancel this bill run")
-    await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-    await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
-    await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Annual')
-    await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
+    await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
+    await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
+    await expect(_summaryValue(page, 'Bill run type')).toContainText('Annual')
+    await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
     await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
     await expect(page.locator('h1')).toContainText('Bill runs')
     await reloadUntilGone(page, billRunsTable.getByRole('row', { name: 'Test Region' }))
   })
 })
+
+/**
+ * Locates the value cell of a govuk-summary-list row identified by its label
+ */
+function _summaryValue(page, label) {
+  return summaryRow(page, label).locator('.govuk-summary-list__value')
+}
