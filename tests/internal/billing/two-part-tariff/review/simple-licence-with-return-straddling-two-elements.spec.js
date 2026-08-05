@@ -104,7 +104,9 @@ test.describe('Simple Licence with a Return Straddling Two Charge Elements (inte
       )
       await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
       await expect(page.locator('[data-test="matched-0-issue-0"]')).toHaveCount(0)
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('60 ML / 60 ML')
+      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText(
+        '1.554 ML / 1.554 ML'
+      )
       await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
       await expect(page.locator('[data-test="matched-return-action-1"] > .govuk-link')).toHaveCount(0)
 
@@ -112,13 +114,13 @@ test.describe('Simple Licence with a Return Straddling Two Charge Elements (inte
         '1 charge reference with 2 two-part tariff charge elements'
       )
       await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText(
-        '60 ML / 60 ML'
+        '1.554 ML / 1.554 ML'
       )
       await expect(page.locator('[data-test="charge-version-0-charge-reference-link-0"]')).toContainText(
         'Change details'
       )
 
-      // First element ~ April to October, filled to its authorised 35 ML
+      // First element ~ April to October, filled to its authorised 0.9065 ML
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-element-description-0"]')
       ).toContainText('Spray Irrigation - Direct')
@@ -130,12 +132,12 @@ test.describe('Simple Licence with a Return Straddling Two Charge Elements (inte
       ).toBeEmpty()
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
-      ).toContainText('35 ML / 35 ML')
+      ).toContainText('0.9065 ML / 0.9065 ML')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
-      ).toContainText('60 ML (9999400)')
+      ).toContainText('1.554 ML (9999400)')
 
-      // Second element ~ November to March, filled to its authorised 25 ML
+      // Second element ~ November to March, filled to its authorised 0.6475 ML
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-element-description-1"]')
       ).toContainText('Spray Irrigation - Direct')
@@ -147,23 +149,23 @@ test.describe('Simple Licence with a Return Straddling Two Charge Elements (inte
       ).toBeEmpty()
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-1"]')
-      ).toContainText('25 ML / 25 ML')
+      ).toContainText('0.6475 ML / 0.6475 ML')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-1"]')
-      ).toContainText('60 ML (9999400)')
+      ).toContainText('1.554 ML (9999400)')
 
       // Drive the over-authorised warning: drop the first element's billable returns, reduce the reference's authorised
       // volume below the combined element volume, then restore the element so the elements together exceed the reference
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
       await page.getByRole('button', { name: 'Edit the billable returns' }).click()
       await page.locator('#custom-quantity-selector').check()
-      await page.locator('#custom-quantity').fill('10')
+      await page.locator('#custom-quantity').fill('0.1')
       await page.getByRole('button', { name: 'Confirm' }).click()
       await page.locator('.govuk-back-link').click()
 
       await page.locator('[data-test="charge-version-0-charge-reference-link-0"]').click()
       await page.getByRole('button', { name: 'Change the authorised volume' }).click()
-      await page.locator('#amended-authorised-volume').fill('40')
+      await page.locator('#amended-authorised-volume').fill('1')
       await page.getByRole('button', { name: 'Confirm' }).click()
       await page.locator('.govuk-back-link').click()
 

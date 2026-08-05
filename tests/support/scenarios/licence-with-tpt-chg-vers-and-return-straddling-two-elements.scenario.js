@@ -40,21 +40,21 @@ export default function (calculatedDates) {
   const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
 
-  // A single charge reference holding two charge elements. It keeps a charge factor so the review page offers the
-  // "Change details" link, and its authorised volume matches the combined authorised volume of the two elements.
+  // The reference keeps a charge factor so the review page offers the "Change details" link we need to amend its
+  // authorised volume.
   const chargeReference = chargeReferenceData(chargeVersion, [licenceVersionPurpose])
-  chargeReference.volume = 60
   chargeReference.adjustments.charge = 1.5
 
-  // Both elements share the reference's two-part tariff purpose but cover different halves of the year (April to
-  // October and November to March), so the single return's monthly lines straddle them.
+  // Both elements share the reference's two-part tariff purpose but cover different parts of the year (April to October
+  // and November to March). The licence's authorised volume is split between them in line with the months each covers,
+  // so the single return straddles both and fills each exactly.
   const firstChargeElement = chargeElementData(chargeReference, licenceVersionPurpose)
   firstChargeElement.abstractionPeriodEndMonth = 10
-  firstChargeElement.authorisedAnnualQuantity = 35
+  firstChargeElement.authorisedAnnualQuantity = 0.9065
 
   const secondChargeElement = chargeElementData(chargeReference, licenceVersionPurpose)
   secondChargeElement.abstractionPeriodStartMonth = 11
-  secondChargeElement.authorisedAnnualQuantity = 25
+  secondChargeElement.authorisedAnnualQuantity = 0.6475
 
   const returnVersion = returnVersionData(licence.licence)
 
@@ -83,10 +83,15 @@ export default function (calculatedDates) {
 
   previousReturnLog.status = 'completed'
 
-  // The return submits 60 ML spread evenly across the year (5 ML a month), so the seven months in the first element's
-  // period allocate 35 ML to it and the five months in the second element's period allocate 25 ML, filling both.
+  // The return abstracts the licence's full authorised volume spread evenly across the year, so the seven months in
+  // the first element's period allocate to it and the five months in the second element's period allocate to that,
+  // filling both.
   const returnSubmission = returnSubmissionData(previousReturnLog)
-  const returnSubmissionLines = returnSubmissionLinesData(previousPeriodDetails, returnSubmission, 60000)
+  const returnSubmissionLines = returnSubmissionLinesData(
+    previousPeriodDetails,
+    returnSubmission,
+    licenceVersionPurpose.annualQuantity
+  )
 
   return {
     ...licence,
