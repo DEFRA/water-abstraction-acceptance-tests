@@ -9,10 +9,10 @@ export const description =
   'Two separate water company licences, each with a charge version, so an annual bill run picks up more than one bill'
 
 export default function () {
-  const first = _licenceWithChargeVersion(licenceRef)
-  const second = _secondLicenceWithChargeVersion(`${licenceRef.slice(0, -2)}02`)
+  const firstLicence = _licenceWithChargeVersion(licenceRef)
+  const secondLicence = _secondLicenceWithChargeVersion(`${licenceRef.slice(0, -2)}02`)
 
-  return mergeByKey(asArrays(first), asArrays(second))
+  return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
 
 /**
