@@ -3,7 +3,7 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import licenceEntity from '../entities/licence.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 import { compareDates } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with open return log (first period)'
@@ -19,30 +19,36 @@ export default function (calculatedDates) {
     quarterly: firstReturnPeriod.quarterly
   }
 
-  const licence = licenceEntity()
+  const licenceEntity = buildLicenceEntity()
 
   // We want the return logs for the licence to match with the first quarter shown in the journey. This is dynamically
   // calculated based on the current date, so could be a quarterly period, or the winter or summer cycle.
   // Only licences flagged as water undertakers are eligible for quarterly returns, so we ensure the licence aligns.
-  licence.licence.waterUndertaker = firstPeriod.quarterly
+  licenceEntity.licence.waterUndertaker = firstPeriod.quarterly
 
-  const returnVersion = returnVersionData(licence.licence)
+  const returnVersion = returnVersionData(licenceEntity.licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
   returnVersion.startDate = firstPeriod.startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, licence.licenceVersionPurpose)
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licence.point)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licence.licenceVersionPurpose)
+  const returnRequirement = returnRequirementData(returnVersion, licenceEntity.licenceVersionPurpose)
+  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licenceEntity.point)
+  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceEntity.licenceVersionPurpose)
 
   const periods = _periods(firstPeriod, calculatedDates)
   const returnLogs = periods.map((period) => {
-    return returnLogData(licence.licence, returnRequirement, [returnRequirementPurpose], [licence.point], period)
+    return returnLogData(
+      licenceEntity.licence,
+      returnRequirement,
+      [returnRequirementPurpose],
+      [licenceEntity.point],
+      period
+    )
   })
 
   return {
-    ...licence,
+    ...licenceEntity,
     returnVersion,
     returnRequirement,
     returnRequirementPoint,
