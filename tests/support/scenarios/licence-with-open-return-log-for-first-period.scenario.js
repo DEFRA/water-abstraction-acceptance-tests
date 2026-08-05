@@ -3,7 +3,7 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import licenceScenario from './licence.scenario.js'
+import licenceEntity from '../entities/licence.entity.js'
 import { compareDates } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with open return log (first period)'
@@ -19,7 +19,7 @@ export default function (calculatedDates) {
     quarterly: firstReturnPeriod.quarterly
   }
 
-  const licence = licenceScenario()
+  const licence = licenceEntity()
 
   // We want the return logs for the licence to match with the first quarter shown in the journey. This is dynamically
   // calculated based on the current date, so could be a quarterly period, or the winter or summer cycle.

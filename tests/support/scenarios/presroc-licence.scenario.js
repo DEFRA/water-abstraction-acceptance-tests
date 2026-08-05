@@ -1,10 +1,10 @@
-import licenceScenario from './licence.scenario.js'
+import licenceEntity from '../entities/licence.entity.js'
 
 export const title = 'Presroc licence'
 export const description = 'Licence with a start date before 2022-04-01'
 
 export default function () {
-  const licence = licenceScenario()
+  const licence = licenceEntity()
 
   const preSrocDate = '2018-04-01'
 

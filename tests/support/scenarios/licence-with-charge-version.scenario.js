@@ -3,13 +3,13 @@ import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import licenceScenario from './licence.scenario.js'
+import licenceEntity from '../entities/licence.entity.js'
 
 export const title = 'Licence with a charge version'
 export const description = 'Licence with one charge version, reference and element based on the licence data'
 
 export default function () {
-  const licence = licenceScenario()
+  const licence = licenceEntity()
 
   const billingAccount = billingAccountData(licence.company)
   const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)

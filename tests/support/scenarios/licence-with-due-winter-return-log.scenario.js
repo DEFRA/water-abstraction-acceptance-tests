@@ -3,7 +3,7 @@ import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import licenceScenario from './licence.scenario.js'
+import licenceEntity from '../entities/licence.entity.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with an open return log (winter cycle)'
@@ -27,7 +27,7 @@ export default function (calculatedDates) {
     quarterly: false
   }
 
-  const licence = licenceScenario()
+  const licence = licenceEntity()
 
   const returnVersion = returnVersionData(licence.licence)
 
