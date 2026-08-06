@@ -7,9 +7,8 @@ import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnSubmissionData from '../data/return-submission.data.js'
-import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 import returnVersionData from '../data/return-version.data.js'
+import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import licenceScenario from './licence.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
@@ -95,8 +94,7 @@ export default function (calculatedDates) {
 
   // The return submits 24 ML spread evenly across the year (2 ML a month). The April to October element takes its seven
   // months (14 ML) and the November to March element its five months (10 ML), fully allocating the return across both.
-  const returnSubmission = returnSubmissionData(previousReturnLog)
-  const returnSubmissionLines = returnSubmissionLinesData(previousPeriodDetails, returnSubmission, 24000)
+  const returnSubmissionEntity = buildReturnSubmissionEntity(previousReturnLog, 24000)
 
   return {
     ...licence,
@@ -110,7 +108,6 @@ export default function (calculatedDates) {
     returnRequirementPoint,
     returnRequirementPurpose,
     returnLogs: [previousReturnLog, currentReturnLog],
-    returnSubmission,
-    returnSubmissionLines
+    ...returnSubmissionEntity
   }
 }

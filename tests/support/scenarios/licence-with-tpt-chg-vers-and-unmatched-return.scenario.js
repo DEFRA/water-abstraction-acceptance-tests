@@ -7,9 +7,8 @@ import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnSubmissionData from '../data/return-submission.data.js'
-import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 import returnVersionData from '../data/return-version.data.js'
+import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
@@ -78,12 +77,7 @@ export default function (calculatedDates) {
   previousReturnLog.status = 'completed'
 
   // The return submits its authorised quantity but has no charge element to allocate to, so it is left over-abstracted.
-  const returnSubmission = returnSubmissionData(previousReturnLog)
-  const returnSubmissionLines = returnSubmissionLinesData(
-    previousPeriodDetails,
-    returnSubmission,
-    returnPurpose.annualQuantity
-  )
+  const returnSubmissionEntity = buildReturnSubmissionEntity(previousReturnLog, returnPurpose.annualQuantity)
 
   return {
     ...licence,
@@ -97,7 +91,6 @@ export default function (calculatedDates) {
     returnRequirementPoint,
     returnRequirementPurpose,
     returnLogs: [previousReturnLog, currentReturnLog],
-    returnSubmission,
-    returnSubmissionLines
+    ...returnSubmissionEntity
   }
 }

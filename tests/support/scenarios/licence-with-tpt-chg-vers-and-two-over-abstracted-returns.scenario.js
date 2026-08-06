@@ -7,9 +7,8 @@ import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnSubmissionData from '../data/return-submission.data.js'
-import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 import returnVersionData from '../data/return-version.data.js'
+import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
@@ -117,10 +116,8 @@ export default function (calculatedDates) {
 
   // Each return submits more than its element's authorised volume (38 > 32 and 36 > 30) so both are over-abstracted;
   // the engine still only allocates up to the authorised volume.
-  const firstReturnSubmission = returnSubmissionData(previousFirstReturnLog)
-  const firstReturnSubmissionLines = returnSubmissionLinesData(previousPeriodDetails, firstReturnSubmission, 38000)
-  const secondReturnSubmission = returnSubmissionData(previousSecondReturnLog)
-  const secondReturnSubmissionLines = returnSubmissionLinesData(previousPeriodDetails, secondReturnSubmission, 36000)
+  const firstReturnSubmissionEntity = buildReturnSubmissionEntity(previousFirstReturnLog, 38000)
+  const secondReturnSubmissionEntity = buildReturnSubmissionEntity(previousSecondReturnLog, 36000)
 
   return {
     ...licence,
@@ -134,7 +131,10 @@ export default function (calculatedDates) {
     returnRequirementPoints: [firstReturnRequirementPoint, secondReturnRequirementPoint],
     returnRequirementPurposes: [firstReturnRequirementPurpose, secondReturnRequirementPurpose],
     returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog],
-    returnSubmissions: [firstReturnSubmission, secondReturnSubmission],
-    returnSubmissionLines: [...firstReturnSubmissionLines, ...secondReturnSubmissionLines]
+    returnSubmissions: [firstReturnSubmissionEntity.returnSubmission, secondReturnSubmissionEntity.returnSubmission],
+    returnSubmissionLines: [
+      ...firstReturnSubmissionEntity.returnSubmissionLines,
+      ...secondReturnSubmissionEntity.returnSubmissionLines
+    ]
   }
 }

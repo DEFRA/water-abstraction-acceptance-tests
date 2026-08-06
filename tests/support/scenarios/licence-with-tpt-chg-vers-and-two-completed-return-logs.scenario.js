@@ -2,9 +2,8 @@ import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnSubmissionData from '../data/return-submission.data.js'
-import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 import returnVersionData from '../data/return-version.data.js'
+import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
@@ -85,16 +84,12 @@ export default function (calculatedDates) {
 
   previousSecondReturnLog.status = 'completed'
 
-  const firstReturnSubmission = returnSubmissionData(previousFirstReturnLog)
-  const firstReturnSubmissionLines = returnSubmissionLinesData(
-    previousPeriodDetails,
-    firstReturnSubmission,
+  const firstReturnSubmissionEntity = buildReturnSubmissionEntity(
+    previousFirstReturnLog,
     firstLicenceVersionPurpose.annualQuantity
   )
-  const secondReturnSubmission = returnSubmissionData(previousSecondReturnLog)
-  const secondReturnSubmissionLines = returnSubmissionLinesData(
-    previousPeriodDetails,
-    secondReturnSubmission,
+  const secondReturnSubmissionEntity = buildReturnSubmissionEntity(
+    previousSecondReturnLog,
     secondLicenceVersionPurpose.annualQuantity
   )
 
@@ -105,7 +100,10 @@ export default function (calculatedDates) {
     returnRequirementPoints: [firstReturnRequirementPoint, secondReturnRequirementPoint],
     returnRequirementPurposes: [firstReturnRequirementPurpose, secondReturnRequirementPurpose],
     returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog],
-    returnSubmissions: [firstReturnSubmission, secondReturnSubmission],
-    returnSubmissionLines: [...firstReturnSubmissionLines, ...secondReturnSubmissionLines]
+    returnSubmissions: [firstReturnSubmissionEntity.returnSubmission, secondReturnSubmissionEntity.returnSubmission],
+    returnSubmissionLines: [
+      ...firstReturnSubmissionEntity.returnSubmissionLines,
+      ...secondReturnSubmissionEntity.returnSubmissionLines
+    ]
   }
 }
