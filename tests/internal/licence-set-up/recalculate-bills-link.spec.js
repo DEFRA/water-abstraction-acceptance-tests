@@ -8,7 +8,7 @@ test.describe(
     annotation: {
       type: 'description',
       description:
-        'When a user recalculates bills for a licence and includes a presroc year, the licence should be flagged for supplementary billing for the old charge scheme.'
+        'Recalculating bills only flags a licence if a bill run has already been sent for the selected year, and only two-part tariff bill runs are checked for this — an annual bill run for that year has no effect. This test selects a year with a sent two-part tariff bill run and confirms the licence gets flagged for the next two-part tariff supplementary bill run.'
     }
   },
   () => {
@@ -29,7 +29,7 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('flags the licence for supplementary billing', async ({ page }) => {
+    test('flags the licence for the next two-part tariff supplementary bill run', async ({ page }) => {
       await page.goto(`/system/licences/${licence.id}/set-up`)
 
       // Click the recalculate bills link
@@ -50,12 +50,8 @@ test.describe(
 
       // Check the new licence agreement has flagged the licence for supplementary billing
       await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-        'This licence has been marked for the next supplementary bill run.'
+        'This licence has been marked for the next two-part tariff supplementary bill run.'
       )
     })
   }
 )
-
-// TODO: add these tests and fix this one
-// Add presroc - no bill run - just a lcience sleectr the pre sroc - it'll flag anyway -
-// Add sroc - with with chrage version (no bill run)

@@ -13,12 +13,14 @@ export const description =
 export default function (calculatedDates) {
   const {
     billingPeriods: {
-      annual: [annualDates]
+      twoPartTariff: [twoPartTariffDates]
     }
   } = calculatedDates
 
   const licence = licenceWithAgreementScenario()
-  const billRunEntity = buildBillRunEntity(licence, annualDates)
+  const billRunEntity = buildBillRunEntity(licence, twoPartTariffDates)
+
+  billRunEntity.billRun.batchType = 'two_part_tariff'
 
   return {
     ...licence,
