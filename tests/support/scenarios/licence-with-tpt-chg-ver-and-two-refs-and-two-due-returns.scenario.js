@@ -1,14 +1,13 @@
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnVersionData from '../data/return-version.data.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
+import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
+import { buildReturnLogs } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
-import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with tpt charge version, two charge references and two due returns'
 export const description =
@@ -16,20 +15,6 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
-
-  const previousPeriodDetails = previousPeriod({
-    startDate: currentWinterReturnCycle.startDate,
-    endDate: currentWinterReturnCycle.endDate,
-    dueDate: null,
-    quarterly: false
-  })
-
-  const currentPeriodDetails = {
-    startDate: new Date(currentWinterReturnCycle.startDate),
-    endDate: new Date(currentWinterReturnCycle.endDate),
-    dueDate: null,
-    quarterly: false
-  }
 
   const licence = licenceWithTwoPurposesScenario()
 
@@ -47,9 +32,67 @@ export default function (calculatedDates) {
   const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
 
-  // Two separate charge references, each with a single charge element. The same two volumes (22 and 42) are used for
-  // both, with the reference and element swapped between them, so the lower volume is the reference on the first and
-  // the element on the second. This proves the engine always allocates up to the lower of the reference and element.
+  const { chargeReferences, chargeElements } = _chargeReferences(
+    chargeVersion,
+    firstLicenceVersionPurpose,
+    secondLicenceVersionPurpose
+  )
+
+  const returnRequirementEntity = buildReturnRequirementEntity(licence.licence, firstLicenceVersionPurpose, firstPoint)
+
+  const [previousFirstReturnLog, currentFirstReturnLog] = buildReturnLogs(
+    licence.licence,
+    returnRequirementEntity.returnRequirement,
+    returnRequirementEntity.returnRequirementPurpose,
+    firstPoint,
+    currentWinterReturnCycle
+  )
+
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the return logs we're seeding.
+  returnRequirementEntity.returnVersion.startDate = previousFirstReturnLog.startDate
+
+  const secondReturnRequirement = _returnRequirement(
+    returnRequirementEntity.returnVersion,
+    secondLicenceVersionPurpose,
+    secondPoint
+  )
+
+  const [previousSecondReturnLog, currentSecondReturnLog] = buildReturnLogs(
+    licence.licence,
+    secondReturnRequirement.returnRequirement,
+    secondReturnRequirement.returnRequirementPurpose,
+    secondPoint,
+    currentWinterReturnCycle
+  )
+
+  return {
+    ...licence,
+    ...billingAccountEntity,
+    chargeVersion,
+    chargeReferences,
+    chargeElements,
+    returnVersion: returnRequirementEntity.returnVersion,
+    returnRequirements: [returnRequirementEntity.returnRequirement, secondReturnRequirement.returnRequirement],
+    returnRequirementPoints: [
+      returnRequirementEntity.returnRequirementPoint,
+      secondReturnRequirement.returnRequirementPoint
+    ],
+    returnRequirementPurposes: [
+      returnRequirementEntity.returnRequirementPurpose,
+      secondReturnRequirement.returnRequirementPurpose
+    ],
+    returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog]
+  }
+}
+
+/**
+ * Builds two charge references, each with a single charge element, using mismatched reference/element volumes (22
+ * and 42 swapped between them) so the engine always allocates up to the lower of the two
+ *
+ * @private
+ */
+function _chargeReferences(chargeVersion, firstLicenceVersionPurpose, secondLicenceVersionPurpose) {
   const firstChargeReference = chargeReferenceData(chargeVersion, [firstLicenceVersionPurpose])
   firstChargeReference.volume = 22
 
@@ -62,63 +105,21 @@ export default function (calculatedDates) {
   const secondChargeElement = chargeElementData(secondChargeReference, secondLicenceVersionPurpose)
   secondChargeElement.authorisedAnnualQuantity = 22
 
-  const returnVersion = returnVersionData(licence.licence)
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the return logs we're seeding.
-  returnVersion.startDate = previousPeriodDetails.startDate
-
-  const firstReturnRequirement = returnRequirementData(returnVersion, firstLicenceVersionPurpose)
-  const firstReturnRequirementPoint = returnRequirementPointData(firstReturnRequirement, firstPoint)
-  const firstReturnRequirementPurpose = returnRequirementPurposeData(firstReturnRequirement, firstLicenceVersionPurpose)
-
-  const secondReturnRequirement = returnRequirementData(returnVersion, secondLicenceVersionPurpose)
-  const secondReturnRequirementPoint = returnRequirementPointData(secondReturnRequirement, secondPoint)
-  const secondReturnRequirementPurpose = returnRequirementPurposeData(
-    secondReturnRequirement,
-    secondLicenceVersionPurpose
-  )
-
-  const previousFirstReturnLog = returnLogData(
-    licence.licence,
-    firstReturnRequirement,
-    [firstReturnRequirementPurpose],
-    [firstPoint],
-    previousPeriodDetails
-  )
-  const currentFirstReturnLog = returnLogData(
-    licence.licence,
-    firstReturnRequirement,
-    [firstReturnRequirementPurpose],
-    [firstPoint],
-    currentPeriodDetails
-  )
-
-  const previousSecondReturnLog = returnLogData(
-    licence.licence,
-    secondReturnRequirement,
-    [secondReturnRequirementPurpose],
-    [secondPoint],
-    previousPeriodDetails
-  )
-  const currentSecondReturnLog = returnLogData(
-    licence.licence,
-    secondReturnRequirement,
-    [secondReturnRequirementPurpose],
-    [secondPoint],
-    currentPeriodDetails
-  )
-
   return {
-    ...licence,
-    ...billingAccountEntity,
-    chargeVersion,
     chargeReferences: [firstChargeReference, secondChargeReference],
-    chargeElements: [firstChargeElement, secondChargeElement],
-    returnVersion,
-    returnRequirements: [firstReturnRequirement, secondReturnRequirement],
-    returnRequirementPoints: [firstReturnRequirementPoint, secondReturnRequirementPoint],
-    returnRequirementPurposes: [firstReturnRequirementPurpose, secondReturnRequirementPurpose],
-    returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog]
+    chargeElements: [firstChargeElement, secondChargeElement]
   }
+}
+
+/**
+ * Builds a return requirement, point, and purpose against a shared return version
+ *
+ * @private
+ */
+function _returnRequirement(returnVersion, licenceVersionPurpose, point) {
+  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose)
+  const returnRequirementPoint = returnRequirementPointData(returnRequirement, point)
+  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
+
+  return { returnRequirement, returnRequirementPoint, returnRequirementPurpose }
 }

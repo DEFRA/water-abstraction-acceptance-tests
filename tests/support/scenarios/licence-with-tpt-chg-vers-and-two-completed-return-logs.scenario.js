@@ -18,27 +18,27 @@ export default function (calculatedDates) {
   const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
   const [firstPoint, secondPoint] = licence.points
 
-  const { returnVersion, ...firstReturnRequirement } = buildReturnRequirementEntity(
-    licence.licence,
-    firstLicenceVersionPurpose,
-    firstPoint
-  )
+  const returnRequirementEntity = buildReturnRequirementEntity(licence.licence, firstLicenceVersionPurpose, firstPoint)
 
   const [previousFirstReturnLog, currentFirstReturnLog] = buildReturnLogs(
     licence.licence,
-    firstReturnRequirement.returnRequirement,
-    firstReturnRequirement.returnRequirementPurpose,
+    returnRequirementEntity.returnRequirement,
+    returnRequirementEntity.returnRequirementPurpose,
     firstPoint,
     currentWinterReturnCycle
   )
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnVersion.startDate = previousFirstReturnLog.startDate
+  returnRequirementEntity.returnVersion.startDate = previousFirstReturnLog.startDate
 
   previousFirstReturnLog.status = 'completed'
 
-  const secondReturnRequirement = _returnRequirement(returnVersion, secondLicenceVersionPurpose, secondPoint)
+  const secondReturnRequirement = _returnRequirement(
+    returnRequirementEntity.returnVersion,
+    secondLicenceVersionPurpose,
+    secondPoint
+  )
 
   const [previousSecondReturnLog, currentSecondReturnLog] = buildReturnLogs(
     licence.licence,
@@ -61,14 +61,14 @@ export default function (calculatedDates) {
 
   return {
     ...licence,
-    returnVersion,
-    returnRequirements: [firstReturnRequirement.returnRequirement, secondReturnRequirement.returnRequirement],
+    returnVersion: returnRequirementEntity.returnVersion,
+    returnRequirements: [returnRequirementEntity.returnRequirement, secondReturnRequirement.returnRequirement],
     returnRequirementPoints: [
-      firstReturnRequirement.returnRequirementPoint,
+      returnRequirementEntity.returnRequirementPoint,
       secondReturnRequirement.returnRequirementPoint
     ],
     returnRequirementPurposes: [
-      firstReturnRequirement.returnRequirementPurpose,
+      returnRequirementEntity.returnRequirementPurpose,
       secondReturnRequirement.returnRequirementPurpose
     ],
     returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog],
