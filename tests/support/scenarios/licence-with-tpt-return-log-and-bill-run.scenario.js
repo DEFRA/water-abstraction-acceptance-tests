@@ -1,10 +1,9 @@
-import billRunData from '../data/bill-run.data.js'
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { previousPeriod } from '../helpers/date.helpers.js'
 
@@ -23,12 +22,9 @@ export default function (calculatedDates) {
   })
 
   const licenceEntity = buildLicenceEntity()
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
-  )
+  const billRunEntity = buildBillRunEntity(licenceEntity, previousPeriodDetails)
+
+  billRunEntity.billRun.batchType = 'two_part_tariff'
 
   const returnVersion = returnVersionData(licenceEntity.licence)
 
@@ -53,22 +49,13 @@ export default function (calculatedDates) {
 
   returnLog.status = 'completed'
 
-  const financialYearEnding = previousPeriodDetails.endDate.getFullYear()
-
-  const billRun = billRunData()
-
-  billRun.batchType = 'two_part_tariff'
-  billRun.fromFinancialYearEnding = financialYearEnding
-  billRun.toFinancialYearEnding = financialYearEnding
-
   return {
     ...licenceEntity,
-    ...chargeVersionEntity,
+    ...billRunEntity,
     returnVersion,
     returnRequirement,
     returnRequirementPoint,
     returnRequirementPurpose,
-    returnLog,
-    billRun
+    returnLog
   }
 }

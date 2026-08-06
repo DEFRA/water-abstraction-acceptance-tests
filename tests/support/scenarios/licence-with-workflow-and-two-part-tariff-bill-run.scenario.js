@@ -13,13 +13,14 @@ export const description =
  * This is omitted from the scenario name and description to keep them concise, but is still part of the scenario.
  */
 export default function (calculatedDates) {
+  const licenceEntity = buildLicenceEntity()
+
   const {
     billingPeriods: {
       twoPartTariff: [twoPartTariffDates]
     }
   } = calculatedDates
 
-  const licenceEntity = buildLicenceEntity()
   const billRunEntity = buildBillRunEntity(licenceEntity, twoPartTariffDates)
 
   billRunEntity.billRun.batchType = 'two_part_tariff'

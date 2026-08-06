@@ -4,7 +4,7 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe(
   'Recalculate bills link (internal)',
   {
-    tag: ['@supplementary-billing', '@presroc'],
+    tag: ['@supplementary-billing'],
     annotation: {
       type: 'description',
       description:
@@ -15,8 +15,9 @@ test.describe(
     let licence
     let billRun
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ setup, calculatedDates }) => {
+      const dates = await calculatedDates()
+      const scenario = scenarioData(dates)
 
       licence = scenario.licence
       billRun = scenario.billRun
@@ -35,7 +36,6 @@ test.describe(
       await page.locator('a.govuk-button', { hasText: 'Recalculate bills' }).click()
       await page.locator('.govuk-caption-l', { hasText: licence.licenceRef }).click()
       await page.locator(`[data-test="sroc-years-${billRun.toFinancialYearEnding}"]`).click()
-      await page.locator('[data-test="pre-sroc-years"]').click()
       await page.locator('.govuk-button').click()
 
       // You've marked this licence for the next supplementary bill run
@@ -50,8 +50,12 @@ test.describe(
 
       // Check the new licence agreement has flagged the licence for supplementary billing
       await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-        'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+        'This licence has been marked for the next supplementary bill run.'
       )
     })
   }
 )
+
+// TODO: add these tests and fix this one
+// Add presroc - no bill run - just a lcience sleectr the pre sroc - it'll flag anyway -
+// Add sroc - with with chrage version (no bill run)
