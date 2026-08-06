@@ -11,14 +11,14 @@ import licenceVersionPurposePointData from '../data/licence-version-purpose-poin
 import permitLicenceData from '../data/permit-licence.data.js'
 import pointData from '../data/point.data.js'
 import { determineReturnCycleStartDate, formatDateToIso, previousPeriod, today } from '../helpers/date.helpers.js'
-import { licenceRef } from '../default-values.js'
+import { licenceRef as defaultLicenceRef } from '../default-values.js'
 
 /**
  * Builds a licence in its entirety: the licence itself, its licence holder (company and address), permit licence,
  * licence document, licence document header, licence document role, licence version, and a licence version purpose
  * and point — the minimum valid data a licence needs to exist.
  */
-export default function () {
+export default function (licenceRef = defaultLicenceRef) {
   const company = _company()
   const point = pointData()
   const licence = _licence(licenceRef, company.company, company.address)
