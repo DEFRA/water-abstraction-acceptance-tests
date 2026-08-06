@@ -1,11 +1,10 @@
-import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnVersionData from '../data/return-version.data.js'
+import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import { buildReturnLogs } from '../helpers/return-log.helpers.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
-import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with tpt charge version and two completed return logs'
 export const description =
@@ -14,72 +13,39 @@ export const description =
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
 
-  const previousPeriodDetails = previousPeriod({
-    startDate: currentWinterReturnCycle.startDate,
-    endDate: currentWinterReturnCycle.endDate,
-    dueDate: null,
-    quarterly: false
-  })
-
-  const currentPeriodDetails = {
-    startDate: new Date(currentWinterReturnCycle.startDate),
-    endDate: new Date(currentWinterReturnCycle.endDate),
-    dueDate: null,
-    quarterly: false
-  }
-
   const licence = licenceWithChargeVersionAndTwoPurposesScenario()
-
-  const returnVersion = returnVersionData(licence.licence)
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnVersion.startDate = previousPeriodDetails.startDate
 
   const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
   const [firstPoint, secondPoint] = licence.points
 
-  const firstReturnRequirement = returnRequirementData(returnVersion, firstLicenceVersionPurpose)
-  const firstReturnRequirementPoint = returnRequirementPointData(firstReturnRequirement, firstPoint)
-  const firstReturnRequirementPurpose = returnRequirementPurposeData(firstReturnRequirement, firstLicenceVersionPurpose)
+  const { returnVersion, ...firstReturnRequirement } = buildReturnRequirementEntity(
+    licence.licence,
+    firstLicenceVersionPurpose,
+    firstPoint
+  )
 
-  const previousFirstReturnLog = returnLogData(
+  const [previousFirstReturnLog, currentFirstReturnLog] = buildReturnLogs(
     licence.licence,
-    firstReturnRequirement,
-    [firstReturnRequirementPurpose],
-    [firstPoint],
-    previousPeriodDetails
+    firstReturnRequirement.returnRequirement,
+    firstReturnRequirement.returnRequirementPurpose,
+    firstPoint,
+    currentWinterReturnCycle
   )
-  const currentFirstReturnLog = returnLogData(
-    licence.licence,
-    firstReturnRequirement,
-    [firstReturnRequirementPurpose],
-    [firstPoint],
-    currentPeriodDetails
-  )
+
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the first return log we're seeding.
+  returnVersion.startDate = previousFirstReturnLog.startDate
 
   previousFirstReturnLog.status = 'completed'
 
-  const secondReturnRequirement = returnRequirementData(returnVersion, secondLicenceVersionPurpose)
-  const secondReturnRequirementPoint = returnRequirementPointData(secondReturnRequirement, secondPoint)
-  const secondReturnRequirementPurpose = returnRequirementPurposeData(
-    secondReturnRequirement,
-    secondLicenceVersionPurpose
-  )
+  const secondReturnRequirement = _returnRequirement(returnVersion, secondLicenceVersionPurpose, secondPoint)
 
-  const previousSecondReturnLog = returnLogData(
+  const [previousSecondReturnLog, currentSecondReturnLog] = buildReturnLogs(
     licence.licence,
-    secondReturnRequirement,
-    [secondReturnRequirementPurpose],
-    [secondPoint],
-    previousPeriodDetails
-  )
-  const currentSecondReturnLog = returnLogData(
-    licence.licence,
-    secondReturnRequirement,
-    [secondReturnRequirementPurpose],
-    [secondPoint],
-    currentPeriodDetails
+    secondReturnRequirement.returnRequirement,
+    secondReturnRequirement.returnRequirementPurpose,
+    secondPoint,
+    currentWinterReturnCycle
   )
 
   previousSecondReturnLog.status = 'completed'
@@ -96,9 +62,15 @@ export default function (calculatedDates) {
   return {
     ...licence,
     returnVersion,
-    returnRequirements: [firstReturnRequirement, secondReturnRequirement],
-    returnRequirementPoints: [firstReturnRequirementPoint, secondReturnRequirementPoint],
-    returnRequirementPurposes: [firstReturnRequirementPurpose, secondReturnRequirementPurpose],
+    returnRequirements: [firstReturnRequirement.returnRequirement, secondReturnRequirement.returnRequirement],
+    returnRequirementPoints: [
+      firstReturnRequirement.returnRequirementPoint,
+      secondReturnRequirement.returnRequirementPoint
+    ],
+    returnRequirementPurposes: [
+      firstReturnRequirement.returnRequirementPurpose,
+      secondReturnRequirement.returnRequirementPurpose
+    ],
     returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog],
     returnSubmissions: [firstReturnSubmissionEntity.returnSubmission, secondReturnSubmissionEntity.returnSubmission],
     returnSubmissionLines: [
@@ -106,4 +78,17 @@ export default function (calculatedDates) {
       ...secondReturnSubmissionEntity.returnSubmissionLines
     ]
   }
+}
+
+/**
+ * Builds a return requirement, point, and purpose against a shared return version
+ *
+ * @private
+ */
+function _returnRequirement(returnVersion, licenceVersionPurpose, point) {
+  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose)
+  const returnRequirementPoint = returnRequirementPointData(returnRequirement, point)
+  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
+
+  return { returnRequirement, returnRequirementPoint, returnRequirementPurpose }
 }

@@ -3,14 +3,10 @@ import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import returnLogData from '../data/return-log.data.js'
-import returnRequirementData from '../data/return-requirement.data.js'
-import returnRequirementPointData from '../data/return-requirement-point.data.js'
-import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnVersionData from '../data/return-version.data.js'
+import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import { buildReturnLogs } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
-import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with tpt charge version and an unmatched return'
 export const description =
@@ -18,20 +14,6 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
-
-  const previousPeriodDetails = previousPeriod({
-    startDate: currentWinterReturnCycle.startDate,
-    endDate: currentWinterReturnCycle.endDate,
-    dueDate: null,
-    quarterly: false
-  })
-
-  const currentPeriodDetails = {
-    startDate: new Date(currentWinterReturnCycle.startDate),
-    endDate: new Date(currentWinterReturnCycle.endDate),
-    dueDate: null,
-    quarterly: false
-  }
 
   const licence = licenceWithTwoPurposesScenario()
 
@@ -49,30 +31,19 @@ export default function (calculatedDates) {
   const chargeReference = chargeReferenceData(chargeVersion, [elementPurpose])
   const chargeElement = chargeElementData(chargeReference, elementPurpose)
 
-  const returnVersion = returnVersionData(licence.licence)
+  const returnRequirementEntity = buildReturnRequirementEntity(licence.licence, returnPurpose, returnPoint)
+
+  const [previousReturnLog, currentReturnLog] = buildReturnLogs(
+    licence.licence,
+    returnRequirementEntity.returnRequirement,
+    returnRequirementEntity.returnRequirementPurpose,
+    returnPoint,
+    currentWinterReturnCycle
+  )
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnVersion.startDate = previousPeriodDetails.startDate
-
-  const returnRequirement = returnRequirementData(returnVersion, returnPurpose)
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, returnPoint)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, returnPurpose)
-
-  const previousReturnLog = returnLogData(
-    licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [returnPoint],
-    previousPeriodDetails
-  )
-  const currentReturnLog = returnLogData(
-    licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [returnPoint],
-    currentPeriodDetails
-  )
+  returnRequirementEntity.returnVersion.startDate = previousReturnLog.startDate
 
   previousReturnLog.status = 'completed'
 
@@ -86,10 +57,7 @@ export default function (calculatedDates) {
     chargeVersion,
     chargeReference,
     chargeElement,
-    returnVersion,
-    returnRequirement,
-    returnRequirementPoint,
-    returnRequirementPurpose,
+    ...returnRequirementEntity,
     returnLogs: [previousReturnLog, currentReturnLog],
     ...returnSubmissionEntity
   }
