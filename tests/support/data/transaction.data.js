@@ -14,7 +14,7 @@ export default function (billLicence, chargeReference, dates, netAmount) {
     scheme: chargeReference.scheme,
     section127Agreement: chargeReference.section127Agreement,
     description: chargeReference.description,
-    chargeCategoryCode: '4.6.1',
+    chargeCategoryCode: chargeReference.chargeCategoryId.value,
     chargeCategoryDescription: 'Test charge category',
     purposes: [{}],
     netAmount,

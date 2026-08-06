@@ -4,7 +4,7 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe(
   'Recalculate bills link, selecting presroc (internal)',
   {
-    tag: ['@supplementary-billing'],
+    tag: ['@supplementary-billing', '@presroc'],
     annotation: {
       type: 'description',
       description:
