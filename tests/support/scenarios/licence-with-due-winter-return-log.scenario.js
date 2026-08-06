@@ -2,9 +2,9 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
 import { buildReturnLogs } from '../helpers/return-log.helpers.js'
 
-export const title = 'Licence with an open return log (winter cycle)'
+export const title = 'Licence with a due return log (winter cycle)'
 export const description =
-  'Licence with one return requirement and an open winter return log for the previous winter cycle'
+  'Licence with one return requirement and a due winter return log for the previous winter cycle'
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
