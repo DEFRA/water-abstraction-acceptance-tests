@@ -3,7 +3,7 @@ import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import { convertCubicMetresToMegalitres, splitTotalVolume } from '../helpers/conversion.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
@@ -28,16 +28,16 @@ export default function (calculatedDates) {
 
   const { chargeReference, chargeElements } = _chargeReference(chargeVersion, licenceVersionPurpose)
 
-  const returnRequirementEntity = buildReturnRequirementEntity(licence.licence, licenceVersionPurpose, point)
+  const returnVersionEntity = buildReturnVersionEntity(licence.licence, licenceVersionPurpose, point)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
+  returnVersionEntity.returnVersion.startDate = periods[0].startDate
 
   const [previousReturnLog, currentReturnLog] = buildReturnLogs(
     licence.licence,
-    returnRequirementEntity.returnRequirement,
-    returnRequirementEntity.returnRequirementPurpose,
+    returnVersionEntity.returnRequirement,
+    returnVersionEntity.returnRequirementPurpose,
     point,
     periods
   )
@@ -55,7 +55,7 @@ export default function (calculatedDates) {
     chargeVersion,
     chargeReference,
     chargeElements,
-    ...returnRequirementEntity,
+    ...returnVersionEntity,
     returnLogs: [previousReturnLog, currentReturnLog],
     ...returnSubmissionEntity
   }

@@ -1,6 +1,6 @@
 import returnLogData from '../data/return-log.data.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { compareDates } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with open return log (first period)'
@@ -23,7 +23,7 @@ export default function (calculatedDates) {
   // Only licences flagged as water undertakers are eligible for quarterly returns, so we ensure the licence aligns.
   licenceEntity.licence.waterUndertaker = firstPeriod.quarterly
 
-  const returnRequirementEntity = buildReturnRequirementEntity(
+  const returnVersionEntity = buildReturnVersionEntity(
     licenceEntity.licence,
     licenceEntity.licenceVersionPurpose,
     licenceEntity.point
@@ -33,8 +33,8 @@ export default function (calculatedDates) {
   const returnLogs = periods.map((period) => {
     return returnLogData(
       licenceEntity.licence,
-      returnRequirementEntity.returnRequirement,
-      [returnRequirementEntity.returnRequirementPurpose],
+      returnVersionEntity.returnRequirement,
+      [returnVersionEntity.returnRequirementPurpose],
       [licenceEntity.point],
       period
     )
@@ -42,11 +42,11 @@ export default function (calculatedDates) {
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnRequirementEntity.returnVersion.startDate = returnLogs[0].startDate
+  returnVersionEntity.returnVersion.startDate = returnLogs[0].startDate
 
   return {
     ...licenceEntity,
-    ...returnRequirementEntity,
+    ...returnVersionEntity,
     returnLogs
   }
 }

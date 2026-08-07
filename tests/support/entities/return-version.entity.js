@@ -4,8 +4,8 @@ import returnRequirementPurposeData from '../data/return-requirement-purpose.dat
 import returnVersionData from '../data/return-version.data.js'
 
 /**
- * Builds a return requirement in its entirety: a return version, the return requirement itself, and its point and
- * purpose links — the minimum valid data a return requirement needs to exist against a licence.
+ * Builds a return version in its entirety: the return version itself, a return requirement, and its point and
+ * purpose links — the minimum valid data a return version needs to exist against a licence.
  */
 export default function (licence, licenceVersionPurpose, point) {
   const returnVersion = returnVersionData(licence)

@@ -1,5 +1,5 @@
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
-import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
 export const title = 'Licence with two purposes and a return requirement'
@@ -12,7 +12,7 @@ export default function () {
   const [licenceVersionPurpose] = licence.licenceVersionPurposes
   const [firstPoint] = licence.points
 
-  const { returnVersion, returnRequirement, returnRequirementPurpose } = buildReturnRequirementEntity(
+  const { returnVersion, returnRequirement, returnRequirementPurpose } = buildReturnVersionEntity(
     licence.licence,
     licenceVersionPurpose,
     firstPoint

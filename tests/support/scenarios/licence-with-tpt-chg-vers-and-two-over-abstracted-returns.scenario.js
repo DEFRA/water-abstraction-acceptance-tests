@@ -6,7 +6,7 @@ import chargeVersionData from '../data/charge-version.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
@@ -45,16 +45,16 @@ export default function (calculatedDates) {
   const firstChargeElement = chargeElementData(chargeReference, firstLicenceVersionPurpose)
   const secondChargeElement = chargeElementData(chargeReference, secondLicenceVersionPurpose)
 
-  const returnRequirementEntity = buildReturnRequirementEntity(licence.licence, firstLicenceVersionPurpose, firstPoint)
+  const returnVersionEntity = buildReturnVersionEntity(licence.licence, firstLicenceVersionPurpose, firstPoint)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return logs we're seeding.
-  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
+  returnVersionEntity.returnVersion.startDate = periods[0].startDate
 
   const [previousFirstReturnLog, currentFirstReturnLog] = buildReturnLogs(
     licence.licence,
-    returnRequirementEntity.returnRequirement,
-    returnRequirementEntity.returnRequirementPurpose,
+    returnVersionEntity.returnRequirement,
+    returnVersionEntity.returnRequirementPurpose,
     firstPoint,
     periods
   )
@@ -62,7 +62,7 @@ export default function (calculatedDates) {
   previousFirstReturnLog.status = 'completed'
 
   const secondReturnRequirement = _returnRequirement(
-    returnRequirementEntity.returnVersion,
+    returnVersionEntity.returnVersion,
     secondLicenceVersionPurpose,
     secondPoint
   )
@@ -93,14 +93,14 @@ export default function (calculatedDates) {
     chargeVersion,
     chargeReference,
     chargeElements: [firstChargeElement, secondChargeElement],
-    returnVersion: returnRequirementEntity.returnVersion,
-    returnRequirements: [returnRequirementEntity.returnRequirement, secondReturnRequirement.returnRequirement],
+    returnVersion: returnVersionEntity.returnVersion,
+    returnRequirements: [returnVersionEntity.returnRequirement, secondReturnRequirement.returnRequirement],
     returnRequirementPoints: [
-      returnRequirementEntity.returnRequirementPoint,
+      returnVersionEntity.returnRequirementPoint,
       secondReturnRequirement.returnRequirementPoint
     ],
     returnRequirementPurposes: [
-      returnRequirementEntity.returnRequirementPurpose,
+      returnVersionEntity.returnRequirementPurpose,
       secondReturnRequirement.returnRequirementPurpose
     ],
     returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog],

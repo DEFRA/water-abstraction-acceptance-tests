@@ -1,6 +1,6 @@
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a two-part tariff return log and bill run'
@@ -16,22 +16,22 @@ export default function (calculatedDates) {
 
   billRunEntity.billRun.batchType = 'two_part_tariff'
 
-  const returnRequirementEntity = buildReturnRequirementEntity(
+  const returnVersionEntity = buildReturnVersionEntity(
     licenceEntity.licence,
     licenceEntity.licenceVersionPurpose,
     licenceEntity.point
   )
 
-  returnRequirementEntity.returnRequirement.twoPartTariff = true
+  returnVersionEntity.returnRequirement.twoPartTariff = true
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
+  returnVersionEntity.returnVersion.startDate = periods[0].startDate
 
   const [returnLog] = buildReturnLogs(
     licenceEntity.licence,
-    returnRequirementEntity.returnRequirement,
-    returnRequirementEntity.returnRequirementPurpose,
+    returnVersionEntity.returnRequirement,
+    returnVersionEntity.returnRequirementPurpose,
     licenceEntity.point,
     periods
   )
@@ -41,7 +41,7 @@ export default function (calculatedDates) {
   return {
     ...licenceEntity,
     ...billRunEntity,
-    ...returnRequirementEntity,
+    ...returnVersionEntity,
     returnLog
   }
 }

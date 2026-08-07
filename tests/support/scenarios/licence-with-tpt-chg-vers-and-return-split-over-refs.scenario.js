@@ -3,7 +3,7 @@ import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceScenario from './licence.scenario.js'
@@ -48,20 +48,16 @@ export default function (calculatedDates) {
   secondChargeElement.abstractionPeriodStartMonth = 11
   secondChargeElement.abstractionPeriodEndMonth = 3
 
-  const returnRequirementEntity = buildReturnRequirementEntity(
-    licence.licence,
-    licence.licenceVersionPurpose,
-    licence.point
-  )
+  const returnVersionEntity = buildReturnVersionEntity(licence.licence, licence.licenceVersionPurpose, licence.point)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
+  returnVersionEntity.returnVersion.startDate = periods[0].startDate
 
   const [previousReturnLog, currentReturnLog] = buildReturnLogs(
     licence.licence,
-    returnRequirementEntity.returnRequirement,
-    returnRequirementEntity.returnRequirementPurpose,
+    returnVersionEntity.returnRequirement,
+    returnVersionEntity.returnRequirementPurpose,
     licence.point,
     periods
   )
@@ -79,7 +75,7 @@ export default function (calculatedDates) {
     chargeVersion,
     chargeReferences: [firstChargeReference, secondChargeReference],
     chargeElements: [firstChargeElement, secondChargeElement],
-    ...returnRequirementEntity,
+    ...returnVersionEntity,
     returnLogs: [previousReturnLog, currentReturnLog],
     ...returnSubmissionEntity
   }
