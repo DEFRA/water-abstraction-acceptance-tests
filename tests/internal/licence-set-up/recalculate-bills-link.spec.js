@@ -4,19 +4,20 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe(
   'Recalculate bills link (internal)',
   {
-    tag: ['@supplementary-billing', '@presroc'],
+    tag: ['@supplementary-billing'],
     annotation: {
       type: 'description',
       description:
-        'When a user recalculates bills for a licence and includes a presroc year, the licence should be flagged for supplementary billing for the old charge scheme.'
+        'Recalculating bills only flags a licence if a bill run has already been sent for the selected year, and only two-part tariff bill runs are checked for this — an annual bill run for that year has no effect. This test selects a year with a sent two-part tariff bill run and confirms the licence gets flagged for the next two-part tariff supplementary bill run.'
     }
   },
   () => {
     let licence
     let billRun
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ setup, calculatedDates }) => {
+      const dates = await calculatedDates()
+      const scenario = scenarioData(dates)
 
       licence = scenario.licence
       billRun = scenario.billRun
@@ -28,14 +29,13 @@ test.describe(
       await login(users.billingAndData)
     })
 
-    test('flags the licence for supplementary billing', async ({ page }) => {
+    test('flags the licence for the next two-part tariff supplementary bill run', async ({ page }) => {
       await page.goto(`/system/licences/${licence.id}/set-up`)
 
       // Click the recalculate bills link
       await page.locator('a.govuk-button', { hasText: 'Recalculate bills' }).click()
       await page.locator('.govuk-caption-l', { hasText: licence.licenceRef }).click()
       await page.locator(`[data-test="sroc-years-${billRun.toFinancialYearEnding}"]`).click()
-      await page.locator('[data-test="pre-sroc-years"]').click()
       await page.locator('.govuk-button').click()
 
       // You've marked this licence for the next supplementary bill run
@@ -50,7 +50,7 @@ test.describe(
 
       // Check the new licence agreement has flagged the licence for supplementary billing
       await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-        'This licence has been marked for the next supplementary bill run for the old charge scheme.'
+        'This licence has been marked for the next two-part tariff supplementary bill run.'
       )
     })
   }

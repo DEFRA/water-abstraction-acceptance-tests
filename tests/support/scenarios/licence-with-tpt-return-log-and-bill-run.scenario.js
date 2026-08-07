@@ -1,5 +1,4 @@
-import billRunData from '../data/bill-run.data.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
@@ -13,12 +12,9 @@ export default function (calculatedDates) {
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licenceEntity = buildLicenceEntity()
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
-  )
+  const billRunEntity = buildBillRunEntity(licenceEntity, periods[0])
+
+  billRunEntity.billRun.batchType = 'two_part_tariff'
 
   const returnRequirementEntity = buildReturnRequirementEntity(
     licenceEntity.licence,
@@ -42,19 +38,10 @@ export default function (calculatedDates) {
 
   returnLog.status = 'completed'
 
-  const financialYearEnding = new Date(returnLog.endDate).getFullYear()
-
-  const billRun = billRunData()
-
-  billRun.batchType = 'two_part_tariff'
-  billRun.fromFinancialYearEnding = financialYearEnding
-  billRun.toFinancialYearEnding = financialYearEnding
-
   return {
     ...licenceEntity,
-    ...chargeVersionEntity,
+    ...billRunEntity,
     ...returnRequirementEntity,
-    returnLog,
-    billRun
+    returnLog
   }
 }

@@ -1,8 +1,7 @@
-import billRunData from '../data/bill-run.data.js'
 import workflowData from '../data/workflow.data.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import { today, yesterday } from '../helpers/date.helpers.js'
+import { yesterday } from '../helpers/date.helpers.js'
 
 export const title = 'Licence in workflow, and an annual bill run'
 export const description =
@@ -14,25 +13,14 @@ export const description =
  * This is omitted from the scenario name and description to keep them concise, but is still part of the scenario.
  */
 export default function (calculatedDates) {
-  const licenceEntity = buildLicenceEntity()
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
-  )
-
   const {
     billingPeriods: {
       annual: [annualDates]
     }
   } = calculatedDates
 
-  const billRun = billRunData()
-
-  billRun.createdAt = today()
-  billRun.fromFinancialYearEnding = new Date(annualDates.endDate).getUTCFullYear()
-  billRun.toFinancialYearEnding = new Date(annualDates.endDate).getUTCFullYear()
+  const licenceEntity = buildLicenceEntity()
+  const billRunEntity = buildBillRunEntity(licenceEntity, annualDates)
 
   const workflow = workflowData(licenceEntity.licence)
 
@@ -42,8 +30,7 @@ export default function (calculatedDates) {
 
   return {
     ...licenceEntity,
-    ...chargeVersionEntity,
-    billRun,
+    ...billRunEntity,
     workflow
   }
 }

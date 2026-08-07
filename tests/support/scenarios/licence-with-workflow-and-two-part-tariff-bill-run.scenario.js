@@ -1,8 +1,7 @@
-import billRunData from '../data/bill-run.data.js'
 import workflowData from '../data/workflow.data.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import { today, yesterday } from '../helpers/date.helpers.js'
+import { yesterday } from '../helpers/date.helpers.js'
 
 export const title = 'Licence in workflow, and a two-part tariff bill run'
 export const description =
@@ -15,12 +14,6 @@ export const description =
  */
 export default function (calculatedDates) {
   const licenceEntity = buildLicenceEntity()
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
-  )
 
   const {
     billingPeriods: {
@@ -28,12 +21,9 @@ export default function (calculatedDates) {
     }
   } = calculatedDates
 
-  const billRun = billRunData()
+  const billRunEntity = buildBillRunEntity(licenceEntity, twoPartTariffDates)
 
-  billRun.createdAt = today()
-  billRun.batchType = 'two_part_tariff'
-  billRun.fromFinancialYearEnding = new Date(twoPartTariffDates.endDate).getUTCFullYear()
-  billRun.toFinancialYearEnding = new Date(twoPartTariffDates.endDate).getUTCFullYear()
+  billRunEntity.billRun.batchType = 'two_part_tariff'
 
   const workflow = workflowData(licenceEntity.licence)
 
@@ -44,8 +34,7 @@ export default function (calculatedDates) {
 
   return {
     ...licenceEntity,
-    ...chargeVersionEntity,
-    billRun,
+    ...billRunEntity,
     workflow
   }
 }
