@@ -3,15 +3,10 @@ import billingAccountData from '../data/billing-account.data.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import returnLogData from '../data/return-log.data.js'
-import returnRequirementData from '../data/return-requirement.data.js'
-import returnRequirementPointData from '../data/return-requirement-point.data.js'
-import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnSubmissionData from '../data/return-submission.data.js'
-import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
-import returnVersionData from '../data/return-version.data.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceScenario from './licence.scenario.js'
-import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with tpt charge version and a return split over two charge references'
 export const description =
@@ -19,20 +14,7 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
-
-  const previousPeriodDetails = previousPeriod({
-    startDate: currentWinterReturnCycle.startDate,
-    endDate: currentWinterReturnCycle.endDate,
-    dueDate: null,
-    quarterly: false
-  })
-
-  const currentPeriodDetails = {
-    startDate: new Date(currentWinterReturnCycle.startDate),
-    endDate: new Date(currentWinterReturnCycle.endDate),
-    dueDate: null,
-    quarterly: false
-  }
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceScenario()
 
@@ -66,37 +48,25 @@ export default function (calculatedDates) {
   secondChargeElement.abstractionPeriodStartMonth = 11
   secondChargeElement.abstractionPeriodEndMonth = 3
 
-  const returnVersion = returnVersionData(licence.licence)
+  const returnVersionEntity = buildReturnVersionEntity(licence.licence, licence.licenceVersionPurpose, licence.point)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnVersion.startDate = previousPeriodDetails.startDate
+  returnVersionEntity.returnVersion.startDate = periods[0].startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, licence.licenceVersionPurpose)
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licence.point)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licence.licenceVersionPurpose)
-
-  const previousReturnLog = returnLogData(
+  const [previousReturnLog, currentReturnLog] = buildReturnLogs(
     licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [licence.point],
-    previousPeriodDetails
-  )
-  const currentReturnLog = returnLogData(
-    licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [licence.point],
-    currentPeriodDetails
+    returnVersionEntity.returnRequirement,
+    returnVersionEntity.returnRequirementPurpose,
+    licence.point,
+    periods
   )
 
   previousReturnLog.status = 'completed'
 
   // The return submits 24 ML spread evenly across the year (2 ML a month). The April to October element takes its seven
   // months (14 ML) and the November to March element its five months (10 ML), fully allocating the return across both.
-  const returnSubmission = returnSubmissionData(previousReturnLog)
-  const returnSubmissionLines = returnSubmissionLinesData(previousPeriodDetails, returnSubmission, 24000)
+  const returnSubmissionEntity = buildReturnSubmissionEntity(previousReturnLog, 24000)
 
   return {
     ...licence,
@@ -105,12 +75,8 @@ export default function (calculatedDates) {
     chargeVersion,
     chargeReferences: [firstChargeReference, secondChargeReference],
     chargeElements: [firstChargeElement, secondChargeElement],
-    returnVersion,
-    returnRequirement,
-    returnRequirementPoint,
-    returnRequirementPurpose,
+    ...returnVersionEntity,
     returnLogs: [previousReturnLog, currentReturnLog],
-    returnSubmission,
-    returnSubmissionLines
+    ...returnSubmissionEntity
   }
 }

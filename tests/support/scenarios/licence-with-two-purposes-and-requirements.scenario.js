@@ -1,7 +1,5 @@
-import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
-import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnVersionData from '../data/return-version.data.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
 export const title = 'Licence with two purposes and a return requirement'
@@ -11,15 +9,18 @@ export const description =
 export default function () {
   const licence = licenceWithTwoPurposesScenario()
 
-  const returnVersion = returnVersionData(licence.licence)
-
   const [licenceVersionPurpose] = licence.licenceVersionPurposes
+  const [firstPoint] = licence.points
 
-  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose)
+  const { returnVersion, returnRequirement, returnRequirementPurpose } = buildReturnVersionEntity(
+    licence.licence,
+    licenceVersionPurpose,
+    firstPoint
+  )
+
   const returnRequirementPoints = licence.points.map((point) => {
     return returnRequirementPointData(returnRequirement, point)
   })
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
 
   return {
     ...licence,

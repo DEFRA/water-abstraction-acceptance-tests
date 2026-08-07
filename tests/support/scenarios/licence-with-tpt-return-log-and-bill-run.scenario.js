@@ -1,11 +1,7 @@
-import returnLogData from '../data/return-log.data.js'
-import returnRequirementData from '../data/return-requirement.data.js'
-import returnRequirementPointData from '../data/return-requirement-point.data.js'
-import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnVersionData from '../data/return-version.data.js'
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import { previousPeriod } from '../helpers/date.helpers.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a two-part tariff return log and bill run'
 export const description =
@@ -13,38 +9,31 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
-
-  const previousPeriodDetails = previousPeriod({
-    startDate: currentWinterReturnCycle.startDate,
-    endDate: currentWinterReturnCycle.endDate,
-    dueDate: null,
-    quarterly: false
-  })
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licenceEntity = buildLicenceEntity()
-  const billRunEntity = buildBillRunEntity(licenceEntity, previousPeriodDetails)
+  const billRunEntity = buildBillRunEntity(licenceEntity, periods[0])
 
   billRunEntity.billRun.batchType = 'two_part_tariff'
 
-  const returnVersion = returnVersionData(licenceEntity.licence)
+  const returnVersionEntity = buildReturnVersionEntity(
+    licenceEntity.licence,
+    licenceEntity.licenceVersionPurpose,
+    licenceEntity.point
+  )
+
+  returnVersionEntity.returnRequirement.twoPartTariff = true
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnVersion.startDate = previousPeriodDetails.startDate
+  returnVersionEntity.returnVersion.startDate = periods[0].startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, licenceEntity.licenceVersionPurpose)
-
-  returnRequirement.twoPartTariff = true
-
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, licenceEntity.point)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceEntity.licenceVersionPurpose)
-
-  const returnLog = returnLogData(
+  const [returnLog] = buildReturnLogs(
     licenceEntity.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [licenceEntity.point],
-    previousPeriodDetails
+    returnVersionEntity.returnRequirement,
+    returnVersionEntity.returnRequirementPurpose,
+    licenceEntity.point,
+    periods
   )
 
   returnLog.status = 'completed'
@@ -52,10 +41,7 @@ export default function (calculatedDates) {
   return {
     ...licenceEntity,
     ...billRunEntity,
-    returnVersion,
-    returnRequirement,
-    returnRequirementPoint,
-    returnRequirementPurpose,
+    ...returnVersionEntity,
     returnLog
   }
 }

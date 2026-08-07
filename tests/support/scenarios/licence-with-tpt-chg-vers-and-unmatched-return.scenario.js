@@ -1,17 +1,8 @@
-import billingAccountAddressData from '../data/billing-account-address.data.js'
-import billingAccountData from '../data/billing-account.data.js'
-import chargeElementData from '../data/charge-element.data.js'
-import chargeReferenceData from '../data/charge-reference.data.js'
-import chargeVersionData from '../data/charge-version.data.js'
-import returnLogData from '../data/return-log.data.js'
-import returnRequirementData from '../data/return-requirement.data.js'
-import returnRequirementPointData from '../data/return-requirement-point.data.js'
-import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnSubmissionData from '../data/return-submission.data.js'
-import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
-import returnVersionData from '../data/return-version.data.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
-import { previousPeriod } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with tpt charge version and an unmatched return'
 export const description =
@@ -19,20 +10,7 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
-
-  const previousPeriodDetails = previousPeriod({
-    startDate: currentWinterReturnCycle.startDate,
-    endDate: currentWinterReturnCycle.endDate,
-    dueDate: null,
-    quarterly: false
-  })
-
-  const currentPeriodDetails = {
-    startDate: new Date(currentWinterReturnCycle.startDate),
-    endDate: new Date(currentWinterReturnCycle.endDate),
-    dueDate: null,
-    quarterly: false
-  }
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceWithTwoPurposesScenario()
 
@@ -43,61 +21,37 @@ export default function (calculatedDates) {
   // Spray Irrigation - Storage), so the return cannot match the element and is left unmatched.
   returnPurpose.purposeId.value = '420'
 
-  const billingAccount = billingAccountData(licence.company)
-  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
+  const chargeVersionEntity = buildChargeVersionEntity(
+    licence.company,
+    licence.address,
+    licence.licence,
+    elementPurpose
+  )
 
-  const chargeReference = chargeReferenceData(chargeVersion, [elementPurpose])
-  const chargeElement = chargeElementData(chargeReference, elementPurpose)
-
-  const returnVersion = returnVersionData(licence.licence)
+  const returnVersionEntity = buildReturnVersionEntity(licence.licence, returnPurpose, returnPoint)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnVersion.startDate = previousPeriodDetails.startDate
+  returnVersionEntity.returnVersion.startDate = periods[0].startDate
 
-  const returnRequirement = returnRequirementData(returnVersion, returnPurpose)
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, returnPoint)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, returnPurpose)
-
-  const previousReturnLog = returnLogData(
+  const [previousReturnLog, currentReturnLog] = buildReturnLogs(
     licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [returnPoint],
-    previousPeriodDetails
-  )
-  const currentReturnLog = returnLogData(
-    licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [returnPoint],
-    currentPeriodDetails
+    returnVersionEntity.returnRequirement,
+    returnVersionEntity.returnRequirementPurpose,
+    returnPoint,
+    periods
   )
 
   previousReturnLog.status = 'completed'
 
   // The return submits its authorised quantity but has no charge element to allocate to, so it is left over-abstracted.
-  const returnSubmission = returnSubmissionData(previousReturnLog)
-  const returnSubmissionLines = returnSubmissionLinesData(
-    previousPeriodDetails,
-    returnSubmission,
-    returnPurpose.annualQuantity
-  )
+  const returnSubmissionEntity = buildReturnSubmissionEntity(previousReturnLog, returnPurpose.annualQuantity)
 
   return {
     ...licence,
-    billingAccount,
-    billingAccountAddress,
-    chargeVersion,
-    chargeReference,
-    chargeElement,
-    returnVersion,
-    returnRequirement,
-    returnRequirementPoint,
-    returnRequirementPurpose,
+    ...chargeVersionEntity,
+    ...returnVersionEntity,
     returnLogs: [previousReturnLog, currentReturnLog],
-    returnSubmission,
-    returnSubmissionLines
+    ...returnSubmissionEntity
   }
 }

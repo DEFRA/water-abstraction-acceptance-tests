@@ -1,17 +1,12 @@
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import returnLogData from '../data/return-log.data.js'
-import returnRequirementData from '../data/return-requirement.data.js'
-import returnRequirementPointData from '../data/return-requirement-point.data.js'
-import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
-import returnSubmissionData from '../data/return-submission.data.js'
-import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
-import returnVersionData from '../data/return-version.data.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import { convertCubicMetresToMegalitres, splitTotalVolume } from '../helpers/conversion.helpers.js'
-import { previousPeriod } from '../helpers/date.helpers.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with tpt charge version and a return straddling two charge elements'
 export const description =
@@ -22,20 +17,7 @@ const FIRST_ELEMENT_MONTHS = 7
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
-
-  const previousPeriodDetails = previousPeriod({
-    startDate: currentWinterReturnCycle.startDate,
-    endDate: currentWinterReturnCycle.endDate,
-    dueDate: null,
-    quarterly: false
-  })
-
-  const currentPeriodDetails = {
-    startDate: new Date(currentWinterReturnCycle.startDate),
-    endDate: new Date(currentWinterReturnCycle.endDate),
-    dueDate: null,
-    quarterly: false
-  }
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = buildLicenceEntity()
 
@@ -44,6 +26,48 @@ export default function (calculatedDates) {
   const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
 
+  const { chargeReference, chargeElements } = _chargeReference(chargeVersion, licenceVersionPurpose)
+
+  const returnVersionEntity = buildReturnVersionEntity(licence.licence, licenceVersionPurpose, point)
+
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the return log we're seeding.
+  returnVersionEntity.returnVersion.startDate = periods[0].startDate
+
+  const [previousReturnLog, currentReturnLog] = buildReturnLogs(
+    licence.licence,
+    returnVersionEntity.returnRequirement,
+    returnVersionEntity.returnRequirementPurpose,
+    point,
+    periods
+  )
+
+  previousReturnLog.status = 'completed'
+
+  // The return abstracts the licence's full authorised volume spread evenly across the year, so the seven months in
+  // the first element's period allocate to it and the five months in the second element's period allocate to that,
+  // filling both.
+  const returnSubmissionEntity = buildReturnSubmissionEntity(previousReturnLog, licenceVersionPurpose.annualQuantity)
+
+  return {
+    ...licence,
+    ...billingAccountEntity,
+    chargeVersion,
+    chargeReference,
+    chargeElements,
+    ...returnVersionEntity,
+    returnLogs: [previousReturnLog, currentReturnLog],
+    ...returnSubmissionEntity
+  }
+}
+
+/**
+ * Builds a charge reference with a charge factor, and two charge elements sharing its purpose but covering
+ * different parts of the year, so a return spanning the whole year straddles and fully allocates to both
+ *
+ * @private
+ */
+function _chargeReference(chargeVersion, licenceVersionPurpose) {
   // The reference keeps a charge factor so the review page offers the "Change details" link we need to amend its
   // authorised volume.
   const chargeReference = chargeReferenceData(chargeVersion, [licenceVersionPurpose])
@@ -63,57 +87,7 @@ export default function (calculatedDates) {
   secondChargeElement.abstractionPeriodStartMonth = 11
   secondChargeElement.authorisedAnnualQuantity = _elementVolume(monthlyVolumes.slice(FIRST_ELEMENT_MONTHS))
 
-  const returnVersion = returnVersionData(licence.licence)
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnVersion.startDate = previousPeriodDetails.startDate
-
-  const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose)
-  const returnRequirementPoint = returnRequirementPointData(returnRequirement, point)
-  const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
-
-  const previousReturnLog = returnLogData(
-    licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [point],
-    previousPeriodDetails
-  )
-  const currentReturnLog = returnLogData(
-    licence.licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [point],
-    currentPeriodDetails
-  )
-
-  previousReturnLog.status = 'completed'
-
-  // The return abstracts the licence's full authorised volume spread evenly across the year, so the seven months in
-  // the first element's period allocate to it and the five months in the second element's period allocate to that,
-  // filling both.
-  const returnSubmission = returnSubmissionData(previousReturnLog)
-  const returnSubmissionLines = returnSubmissionLinesData(
-    previousPeriodDetails,
-    returnSubmission,
-    licenceVersionPurpose.annualQuantity
-  )
-
-  return {
-    ...licence,
-    ...billingAccountEntity,
-    chargeVersion,
-    chargeReference,
-    chargeElements: [firstChargeElement, secondChargeElement],
-    returnVersion,
-    returnRequirement,
-    returnRequirementPoint,
-    returnRequirementPurpose,
-    returnLogs: [previousReturnLog, currentReturnLog],
-    returnSubmission,
-    returnSubmissionLines
-  }
+  return { chargeReference, chargeElements: [firstChargeElement, secondChargeElement] }
 }
 
 /**
