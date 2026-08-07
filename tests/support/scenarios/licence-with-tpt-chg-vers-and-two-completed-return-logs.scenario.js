@@ -3,7 +3,7 @@ import returnRequirementPointData from '../data/return-requirement-point.data.js
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
-import { buildReturnLogs } from '../helpers/return-log.helpers.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
 
 export const title = 'Licence with tpt charge version and two completed return logs'
@@ -12,6 +12,7 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceWithChargeVersionAndTwoPurposesScenario()
 
@@ -20,17 +21,17 @@ export default function (calculatedDates) {
 
   const returnRequirementEntity = buildReturnRequirementEntity(licence.licence, firstLicenceVersionPurpose, firstPoint)
 
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the first return log we're seeding.
+  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
+
   const [previousFirstReturnLog, currentFirstReturnLog] = buildReturnLogs(
     licence.licence,
     returnRequirementEntity.returnRequirement,
     returnRequirementEntity.returnRequirementPurpose,
     firstPoint,
-    currentWinterReturnCycle
+    periods
   )
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnRequirementEntity.returnVersion.startDate = previousFirstReturnLog.startDate
 
   previousFirstReturnLog.status = 'completed'
 
@@ -45,7 +46,7 @@ export default function (calculatedDates) {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    currentWinterReturnCycle
+    periods
   )
 
   previousSecondReturnLog.status = 'completed'

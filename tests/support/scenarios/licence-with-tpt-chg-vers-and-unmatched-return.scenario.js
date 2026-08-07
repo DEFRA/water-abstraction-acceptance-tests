@@ -1,11 +1,7 @@
-import billingAccountAddressData from '../data/billing-account-address.data.js'
-import billingAccountData from '../data/billing-account.data.js'
-import chargeElementData from '../data/charge-element.data.js'
-import chargeReferenceData from '../data/charge-reference.data.js'
-import chargeVersionData from '../data/charge-version.data.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
-import { buildReturnLogs } from '../helpers/return-log.helpers.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
 export const title = 'Licence with tpt charge version and an unmatched return'
@@ -14,6 +10,7 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceWithTwoPurposesScenario()
 
@@ -24,26 +21,26 @@ export default function (calculatedDates) {
   // Spray Irrigation - Storage), so the return cannot match the element and is left unmatched.
   returnPurpose.purposeId.value = '420'
 
-  const billingAccount = billingAccountData(licence.company)
-  const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
-
-  const chargeReference = chargeReferenceData(chargeVersion, [elementPurpose])
-  const chargeElement = chargeElementData(chargeReference, elementPurpose)
+  const chargeVersionEntity = buildChargeVersionEntity(
+    licence.company,
+    licence.address,
+    licence.licence,
+    elementPurpose
+  )
 
   const returnRequirementEntity = buildReturnRequirementEntity(licence.licence, returnPurpose, returnPoint)
+
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the return log we're seeding.
+  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
 
   const [previousReturnLog, currentReturnLog] = buildReturnLogs(
     licence.licence,
     returnRequirementEntity.returnRequirement,
     returnRequirementEntity.returnRequirementPurpose,
     returnPoint,
-    currentWinterReturnCycle
+    periods
   )
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnRequirementEntity.returnVersion.startDate = previousReturnLog.startDate
 
   previousReturnLog.status = 'completed'
 
@@ -52,11 +49,7 @@ export default function (calculatedDates) {
 
   return {
     ...licence,
-    billingAccount,
-    billingAccountAddress,
-    chargeVersion,
-    chargeReference,
-    chargeElement,
+    ...chargeVersionEntity,
     ...returnRequirementEntity,
     returnLogs: [previousReturnLog, currentReturnLog],
     ...returnSubmissionEntity

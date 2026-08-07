@@ -6,7 +6,7 @@ import returnRequirementPointData from '../data/return-requirement-point.data.js
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
-import { buildReturnLogs } from '../helpers/return-log.helpers.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
 export const title = 'Licence with tpt charge version, two charge references and two due returns'
@@ -15,6 +15,7 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceWithTwoPurposesScenario()
 
@@ -40,17 +41,17 @@ export default function (calculatedDates) {
 
   const returnRequirementEntity = buildReturnRequirementEntity(licence.licence, firstLicenceVersionPurpose, firstPoint)
 
-  const [previousFirstReturnLog, currentFirstReturnLog] = buildReturnLogs(
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the return logs we're seeding.
+  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
+
+  const firstReturnLogs = buildReturnLogs(
     licence.licence,
     returnRequirementEntity.returnRequirement,
     returnRequirementEntity.returnRequirementPurpose,
     firstPoint,
-    currentWinterReturnCycle
+    periods
   )
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the return logs we're seeding.
-  returnRequirementEntity.returnVersion.startDate = previousFirstReturnLog.startDate
 
   const secondReturnRequirement = _returnRequirement(
     returnRequirementEntity.returnVersion,
@@ -58,12 +59,12 @@ export default function (calculatedDates) {
     secondPoint
   )
 
-  const [previousSecondReturnLog, currentSecondReturnLog] = buildReturnLogs(
+  const secondReturnLogs = buildReturnLogs(
     licence.licence,
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    currentWinterReturnCycle
+    periods
   )
 
   return {
@@ -82,7 +83,7 @@ export default function (calculatedDates) {
       returnRequirementEntity.returnRequirementPurpose,
       secondReturnRequirement.returnRequirementPurpose
     ],
-    returnLogs: [previousFirstReturnLog, currentFirstReturnLog, previousSecondReturnLog, currentSecondReturnLog]
+    returnLogs: [...firstReturnLogs, ...secondReturnLogs]
   }
 }
 

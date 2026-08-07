@@ -1,6 +1,6 @@
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
-import { buildReturnLogs } from '../helpers/return-log.helpers.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with an open return log (winter cycle)'
 export const description =
@@ -8,6 +8,7 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licenceEntity = buildLicenceEntity()
 
@@ -17,21 +18,21 @@ export default function (calculatedDates) {
     licenceEntity.point
   )
 
-  const [previousReturnLog, currentReturnLog] = buildReturnLogs(
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the first return log we're seeding.
+  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
+
+  const returnLogs = buildReturnLogs(
     licenceEntity.licence,
     returnRequirementEntity.returnRequirement,
     returnRequirementEntity.returnRequirementPurpose,
     licenceEntity.point,
-    currentWinterReturnCycle
+    periods
   )
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the first return log we're seeding.
-  returnRequirementEntity.returnVersion.startDate = previousReturnLog.startDate
 
   return {
     ...licenceEntity,
     ...returnRequirementEntity,
-    returnLogs: [previousReturnLog, currentReturnLog]
+    returnLogs
   }
 }

@@ -5,7 +5,7 @@ import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import buildReturnRequirementEntity from '../entities/return-requirement.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
-import { buildReturnLogs } from '../helpers/return-log.helpers.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceScenario from './licence.scenario.js'
 
 export const title = 'Licence with tpt charge version and a return split over two charge references'
@@ -14,6 +14,7 @@ export const description =
 
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
+  const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceScenario()
 
@@ -53,17 +54,17 @@ export default function (calculatedDates) {
     licence.point
   )
 
+  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
+  // realistic, we alter the start date of the return version to match the return log we're seeding.
+  returnRequirementEntity.returnVersion.startDate = periods[0].startDate
+
   const [previousReturnLog, currentReturnLog] = buildReturnLogs(
     licence.licence,
     returnRequirementEntity.returnRequirement,
     returnRequirementEntity.returnRequirementPurpose,
     licence.point,
-    currentWinterReturnCycle
+    periods
   )
-
-  // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
-  // realistic, we alter the start date of the return version to match the return log we're seeding.
-  returnRequirementEntity.returnVersion.startDate = previousReturnLog.startDate
 
   previousReturnLog.status = 'completed'
 
