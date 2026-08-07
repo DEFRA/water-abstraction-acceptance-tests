@@ -1,10 +1,10 @@
-import scenarioData from '../../../support/scenarios/water-company-licences-with-shared-billing-account.scenario.js'
+import scenarioData from '../../../support/scenarios/water-company-licences-with-charge-versions.scenario.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { test, expect } from '../../../support/fixtures.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
-test.describe('Remove a licence from an annual bill run that has not been sent (internal)', () => {
+test.describe('Remove a bill from an annual bill run that has not been sent (internal)', () => {
   let scenario
 
   test.beforeAll(async ({ setup }) => {
@@ -17,12 +17,12 @@ test.describe('Remove a licence from an annual bill run that has not been sent (
     await login(users.billingAndData)
   })
 
-  test('creates an annual bill run then removes a licence from the bill run and confirms it is not included', async ({
+  test('creates an annual bill run then removes bill from the bill run and confirms it is not included', async ({
     page
   }) => {
     const formattedCurrentDate = formatLongDate(new Date())
-    const [licenceToRemove, remainingLicenceOnSharedAccount] = scenario.licences
-    const [billingAccountToRemove] = scenario.billingAccounts
+    const [, licenceToRemove] = scenario.licences
+    const [, billingAccountToRemove] = scenario.billingAccounts
 
     await page.goto(`/system/licences/${licenceToRemove.id}/summary`)
 
@@ -61,58 +61,35 @@ test.describe('Remove a licence from an annual bill run that has not been sent (
     await expect(page.locator('[data-test="other-abstractors"]')).toHaveCount(0)
 
     const waterCompaniesTable = page.locator('[data-test="water-companies"]')
-    const sharedBillingAccountRow = waterCompaniesTable.getByRole('row', { name: billingAccountToRemove.accountNumber })
 
-    await expect(sharedBillingAccountRow).toContainText(licenceToRemove.licenceRef)
-    await expect(sharedBillingAccountRow).toContainText(remainingLicenceOnSharedAccount.licenceRef)
-
-    await sharedBillingAccountRow.getByRole('link', { name: 'View' }).click()
-
-    await expect(page.locator('h1')).toContainText(billingAccountToRemove.accountNumber)
-
-    const billLicencesTable = page.locator('[data-test="licences"]')
-
-    await billLicencesTable
-      .getByRole('row', { name: licenceToRemove.licenceRef })
-      .getByRole('link', { name: 'View transactions' })
-      .click()
+    await waterCompaniesTable.getByRole('row', { name: licenceToRemove.licenceRef }).getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText(`Transactions for ${licenceToRemove.licenceRef}`)
-    await page.getByRole('button', { name: 'Remove licence' }).click()
+    await page.getByRole('button', { name: 'Remove bill' }).click()
 
     await expect(page.locator('h1')).toContainText(
-      `You're about to remove ${licenceToRemove.licenceRef} from the bill run`
+      `You're about to remove the bill for ${billingAccountToRemove.accountNumber} from the bill run`
     )
-
-    const [companyOnSharedBillingAccount] = scenario.companies
-
     await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
     await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
     await expect(_summaryValue(page, 'Bill run type')).toContainText('Annual')
     await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
-    await expect(_summaryValue(page, 'Billing account')).toContainText(billingAccountToRemove.accountNumber)
-    await expect(_summaryValue(page, 'Bill for')).toContainText(companyOnSharedBillingAccount.name)
-    await page.getByRole('button', { name: 'Remove this licence' }).click()
-
-    await reloadUntilTextFound(page, page.locator('#main-content .govuk-tag'), 'ready')
-    await expect(page.locator('h1')).toContainText(`Transactions for ${remainingLicenceOnSharedAccount.licenceRef}`)
-    await page.getByRole('link', { name: /Go back to bill run/ }).click()
+    await page.getByRole('button', { name: 'Remove this bill' }).click()
 
     await expect(page.locator('h1')).toContainText('Test Region annual')
-    await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
-    await page.getByRole('button', { name: 'Send bill run' }).click()
+    await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
+    await expect(page.locator('[data-test="water-companies"]')).toBeVisible()
+    await expect(page.locator('[data-test="other-abstractors"]')).toHaveCount(0)
+    await expect(waterCompaniesTable.locator('tbody > tr')).toHaveCount(1)
 
-    await expect(page.locator('h1')).toContainText("You're about to send this bill run")
-    await page.getByRole('button', { name: 'Send bill run' }).click()
+    await page.getByRole('link', { name: 'Search' }).click()
+    await page.locator('#query').fill(licenceToRemove.licenceRef)
+    await page.getByRole('button', { name: 'Search' }).click()
+    await page.locator('.searchresult-row', { hasText: licenceToRemove.licenceRef }).getByRole('link').click()
 
-    await reloadUntilTextFound(page, page.locator('h1'), 'Bill run sent')
-    await page.getByRole('link', { name: 'Go to bill run' }).click()
-
-    await expect(page.locator('h1')).toContainText('Test Region annual')
-    await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
-
-    await expect(sharedBillingAccountRow).not.toContainText(licenceToRemove.licenceRef)
-    await expect(sharedBillingAccountRow).toContainText(remainingLicenceOnSharedAccount.licenceRef)
+    await expect(page.locator('.govuk-notification-banner__content')).toContainText(
+      'This licence has been marked for the next supplementary bill run.'
+    )
   })
 })
 
