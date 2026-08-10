@@ -4,11 +4,13 @@ import { test, expect } from '../../../support/fixtures.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Create and send PRESROC two-part tariff bill run (internal)', () => {
+  let company
   let licence
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
 
     await setup(scenario)
@@ -64,7 +66,7 @@ test.describe('Create and send PRESROC two-part tariff bill run (internal)', () 
     const dataIssuesTable = page.locator('#dataIssues')
 
     await expect(dataIssuesTable.getByRole('cell', { name: licence.licenceRef })).toBeVisible()
-    await expect(dataIssuesTable.getByRole('cell', { name: 'Big Farm Co Ltd' })).toBeVisible()
+    await expect(dataIssuesTable.getByRole('cell', { name: company.name })).toBeVisible()
     await expect(dataIssuesTable.getByRole('cell', { name: 'No returns received' })).toBeVisible()
     await dataIssuesTable.getByRole('link', { name: 'Review' }).click()
 
@@ -76,6 +78,7 @@ test.describe('Create and send PRESROC two-part tariff bill run (internal)', () 
     await page.locator('input#quantity').check()
     await page.getByRole('button', { name: 'Confirm' }).click()
 
+    await expect(page.locator('h1')).toContainText('Review data issues')
     await expect(page.locator('#main-content')).toContainText(
       'You have resolved all returns data issues. Continue to generate bills.'
     )
@@ -88,7 +91,9 @@ test.describe('Create and send PRESROC two-part tariff bill run (internal)', () 
     await expect(_definitionValue(page, 'Status')).toContainText('Review')
     await page.getByRole('button', { name: 'Confirm' }).click()
 
+    await expect(page.locator('h1')).toContainText('Test Region two-part tariff')
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
+    await expect(page.locator('[data-test="bill-total"]')).toContainText('£14.94')
     await expect(page.locator('[data-test="bills-count"]')).toContainText('1 Two-part tariff winter and all year bill')
     await page.getByRole('button', { name: 'Send bill run' }).click()
 
