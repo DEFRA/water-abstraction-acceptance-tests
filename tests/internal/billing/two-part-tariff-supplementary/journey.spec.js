@@ -34,7 +34,7 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
     {
       annotation: {
         type: 'tpt-supplementary-journey',
-        description: `A licence that is current and not in workflow, has one applicable charge version with a single charge reference and two two-part tariff charge elements, and two due returns matching them. The licence also has a sent two-part tariff bill run for the same year, which is what flags it for the next two-part tariff supplementary bill run.
+        description: `A licence that is current and not in workflow, has one applicable charge version with a single charge reference and two two-part tariff charge elements, and two completed returns matching them. The licence also has a sent two-part tariff bill run for the same year, which is what flags it for the next two-part tariff supplementary bill run.
 
 **Acceptance Criteria**
 - The licence appears in the review with a 'ready' status, having no issues.
@@ -61,7 +61,7 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
       await page.locator(`input[value="${endYear}"]`).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Check the bill run')
+      await expect(page.locator('h1')).toContainText('Check the bill run to be created')
       await page.getByRole('button', { name: 'Create bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Bill runs')
