@@ -52,14 +52,14 @@ export default function (calculatedDates) {
   // realistic, we alter the start date of the return version to match the return logs we're seeding.
   returnVersionEntity.returnVersion.startDate = twoPartTariffPeriod.startDate
 
-  const [, period] = returnLogPeriods(twoPartTariffPeriod)
+  const [, currentPeriodDetails] = returnLogPeriods(twoPartTariffPeriod)
 
   const [firstReturnLog] = buildReturnLogs(
     licence.licence,
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     firstPoint,
-    [period]
+    [currentPeriodDetails]
   )
 
   // The return needs an actual submitted volume, not just a due return log, or the two-part tariff engine has
@@ -77,7 +77,7 @@ export default function (calculatedDates) {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    [period]
+    [currentPeriodDetails]
   )
 
   secondReturnLog.status = 'completed'
@@ -90,7 +90,7 @@ export default function (calculatedDates) {
     secondReturnLog,
     secondLicenceVersionPurpose.annualQuantity
   )
-
+ox
   const billRunResult = _billRun(
     licence.licence,
     billingAccountEntity.billingAccount,
