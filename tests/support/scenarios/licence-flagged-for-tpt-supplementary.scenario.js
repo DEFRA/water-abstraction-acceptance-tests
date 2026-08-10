@@ -90,7 +90,7 @@ export default function (calculatedDates) {
     secondReturnLog,
     secondLicenceVersionPurpose.annualQuantity
   )
-ox
+
   const billRunResult = _billRun(
     licence.licence,
     billingAccountEntity.billingAccount,
