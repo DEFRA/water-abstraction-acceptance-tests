@@ -107,7 +107,7 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
       // step is so fast the test will fail because it doesn't see the element
 
       await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
-      await page.locator('#main-content > div > div > p:nth-child(4) > a').click()
+      await page.getByRole('link', { name: 'Go to bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Test Region two-part tariff')
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
