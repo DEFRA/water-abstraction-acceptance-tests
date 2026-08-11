@@ -1,20 +1,22 @@
 /**
  * Works out how many presroc and sroc billing periods a supplementary bill run is expected to generate bills for
  *
- * Both the presroc and sroc schemes support calculating bill runs up to 5 years back. So, when you make a change to
- * a licence's charge versions, the supplementary billing engine is expected to calculate the charges for each year
- * (what we refer to as a billing period). Tests need to be able to determine this in order to work out how many
- * bills will appear in a supplementary bill run.
+ * The two schemes are calculated independently, by two different engines, each with their own rule:
  *
- * However, 2022-04-01 was the date presroc was replaced by sroc. So, when we calculate how many billing periods a
- * bill run will be generating bills for, we know it will be for the number of years from 2023 to whatever
- * `financialYearToBaseItOn` is. For example
+ * - sroc (DetermineBillingPeriodsService in water-abstraction-system): up to 5 years back from
+ *   `financialYearToBaseItOn`, never earlier than 2023, the first sroc financial year.
+ * - presroc (the legacy water-abstraction-service's batch-service.js): always exactly 5 years back from
+ *   `financialYearToBaseItOn`, but capped at 2022, the last presroc financial year, on both ends. Once
+ *   `financialYearToBaseItOn` is more than 5 years past 2022, that range inverts and there are no presroc periods
+ *   left to bill at all.
  *
- * - financialYearToBaseItOn is 2024 (2023-04-01 to 2024-03-31) so result will be 2 sroc and 3 presroc
- * - financialYearToBaseItOn is 2025 (2024-04-01 to 2025-03-31) so result will be 3 sroc and 2 presroc
- * - financialYearToBaseItOn is 2026 (2025-04-01 to 2026-03-31) so result will be 4 sroc and 1 presroc
- * - financialYearToBaseItOn is 2027 (2026-04-01 to 2027-03-31) so result will be 5 sroc and 0 presroc
- * - financialYearToBaseItOn is 2028 (2027-04-01 to 2028-03-31) so result will be 5 sroc and 0 presroc
+ * For example
+ *
+ * - financialYearToBaseItOn is 2024 so result will be 2 sroc and 4 presroc
+ * - financialYearToBaseItOn is 2025 so result will be 3 sroc and 3 presroc
+ * - financialYearToBaseItOn is 2026 so result will be 4 sroc and 2 presroc
+ * - financialYearToBaseItOn is 2027 so result will be 5 sroc and 1 presroc
+ * - financialYearToBaseItOn is 2028 so result will be 5 sroc and 0 presroc
  *
  * @param {number} financialYearToBaseItOn - The financial year (end year) to base the billing period counts on
  *
@@ -22,9 +24,22 @@
  * scheme
  */
 export function billingPeriodCounts(financialYearToBaseItOn) {
-  const earliestPossibleFinancialYear = Math.max(2023, financialYearToBaseItOn - 5)
-  const srocBillingPeriods = Math.min(financialYearToBaseItOn - earliestPossibleFinancialYear + 1, 5)
-  const presrocBillingPeriods = 6 - srocBillingPeriods
+  const SROC_FIRST_FINANCIAL_YEAR = 2023
+  const PRESROC_LAST_FINANCIAL_YEAR = 2022
+  const MAX_YEARS_LOOKED_BACK = 5
+
+  const earliestPossibleSrocFinancialYear = Math.max(
+    SROC_FIRST_FINANCIAL_YEAR,
+    financialYearToBaseItOn - MAX_YEARS_LOOKED_BACK
+  )
+  const srocBillingPeriods = Math.min(
+    financialYearToBaseItOn - earliestPossibleSrocFinancialYear + 1,
+    MAX_YEARS_LOOKED_BACK
+  )
+
+  const presrocFromFinancialYear = financialYearToBaseItOn - MAX_YEARS_LOOKED_BACK
+  const presrocToFinancialYear = Math.min(financialYearToBaseItOn, PRESROC_LAST_FINANCIAL_YEAR)
+  const presrocBillingPeriods = Math.max(presrocToFinancialYear - presrocFromFinancialYear + 1, 0)
 
   return { presroc: presrocBillingPeriods, sroc: srocBillingPeriods }
 }

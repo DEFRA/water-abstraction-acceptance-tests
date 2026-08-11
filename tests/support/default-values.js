@@ -35,6 +35,14 @@ export const licenceRef = 'AT/TE/ST/01/01'
 export const password = 'P@55word'
 
 /**
+ * When a scenario or data file needs a date safely before the sroc charging scheme came into force, we use
+ * 2018-04-01 as our default — comfortably before the earliest financial year presroc supplementary billing could
+ * ever need to look back to.
+ * @type {string}
+ */
+export const presrocStartDate = '2018-04-01'
+
+/**
  * All tests use the region code 9, the teardown uses this region code to delete test data
  * @type {number}
  */
