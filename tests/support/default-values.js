@@ -39,3 +39,10 @@ export const password = 'P@55word'
  * @type {number}
  */
 export const regionCode = 9
+
+/**
+ * When a scenario or data file needs the date the sroc charging scheme came into force, we use 2022-04-01 as our
+ * default — the first day of the first sroc financial year (2022 to 2023).
+ * @type {string}
+ */
+export const srocStartDate = '2022-04-01'
