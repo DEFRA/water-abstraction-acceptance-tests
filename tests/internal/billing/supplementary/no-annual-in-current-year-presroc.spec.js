@@ -1,10 +1,12 @@
 import scenarioData from '../../../support/scenarios/presroc-licence-flagged-for-supplementary-with-previous-annual-bill-run.scenario.js'
 import { test, expect } from '../../../support/fixtures.js'
-import { billingPeriodCounts, formatLongDate } from '../../../support/helpers/date.helpers.js'
+import {
+  billingPeriodCounts,
+  formatLongDate,
+  PRESROC_LAST_FINANCIAL_YEAR,
+  SROC_FIRST_FINANCIAL_YEAR
+} from '../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-
-const PRESROC_LAST_FINANCIAL_YEAR = 2022
-const FIRST_SROC_FINANCIAL_YEAR = 2023
 
 test.describe('Create a presroc supplementary bill run with no annual in the current year (internal)', () => {
   let billingPeriodCount
@@ -103,6 +105,7 @@ test.describe('Create a presroc supplementary bill run with no annual in the cur
     // coverage of both engines running side by side, not just the presroc one
     await page.goto('/system/bill-runs')
 
+    await expect(page.locator('h1')).toContainText('Bill runs')
     await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
     await expect(page.locator('[data-test="date-created-1"]')).toContainText(formattedCurrentDate)
     await expect(page.locator('[data-test="region-1"]')).toContainText('Test Region')
@@ -118,7 +121,7 @@ test.describe('Create a presroc supplementary bill run with no annual in the cur
 
     await expect(srocAbstractorsTable).toBeVisible()
 
-    const srocBillRow = srocAbstractorsTable.getByRole('row', { name: String(FIRST_SROC_FINANCIAL_YEAR) })
+    const srocBillRow = srocAbstractorsTable.getByRole('row', { name: String(SROC_FIRST_FINANCIAL_YEAR) })
 
     await expect(srocBillRow).toContainText(srocBillingAccount.accountNumber)
     await expect(srocBillRow).toContainText(company.name)

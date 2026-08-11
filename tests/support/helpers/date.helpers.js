@@ -1,4 +1,18 @@
 /**
+ * The last presroc financial year (end year) — water-abstraction-service's batch-service.js caps presroc
+ * supplementary billing at this year, and its legacy engine is never triggered for anything after it.
+ * @type {number}
+ */
+export const PRESROC_LAST_FINANCIAL_YEAR = 2022
+
+/**
+ * The first sroc financial year (end year) — DetermineBillingPeriodsService in water-abstraction-system never
+ * looks back further than this for sroc supplementary billing.
+ * @type {number}
+ */
+export const SROC_FIRST_FINANCIAL_YEAR = 2023
+
+/**
  * Works out how many presroc and sroc billing periods a supplementary bill run is expected to generate bills for
  *
  * The two schemes are calculated independently, by two different engines, each with their own rule:
@@ -24,17 +38,15 @@
  * scheme
  */
 export function billingPeriodCounts(financialYearToBaseItOn) {
-  const SROC_FIRST_FINANCIAL_YEAR = 2023
-  const PRESROC_LAST_FINANCIAL_YEAR = 2022
   const MAX_YEARS_LOOKED_BACK = 5
 
   const earliestPossibleSrocFinancialYear = Math.max(
     SROC_FIRST_FINANCIAL_YEAR,
     financialYearToBaseItOn - MAX_YEARS_LOOKED_BACK
   )
-  const srocBillingPeriods = Math.min(
-    financialYearToBaseItOn - earliestPossibleSrocFinancialYear + 1,
-    MAX_YEARS_LOOKED_BACK
+  const srocBillingPeriods = Math.max(
+    Math.min(financialYearToBaseItOn - earliestPossibleSrocFinancialYear + 1, MAX_YEARS_LOOKED_BACK),
+    0
   )
 
   const presrocFromFinancialYear = financialYearToBaseItOn - MAX_YEARS_LOOKED_BACK

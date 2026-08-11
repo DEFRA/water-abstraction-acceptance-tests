@@ -127,6 +127,7 @@ test.describe('Create an supplementary bill run with no annual in the current ye
     // bill run (row '0') ends up empty
     await page.goto('/system/bill-runs')
 
+    await expect(page.locator('h1')).toContainText('Bill runs')
     await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'empty')
     await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
     await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
