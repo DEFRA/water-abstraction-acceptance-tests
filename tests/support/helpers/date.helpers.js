@@ -51,7 +51,10 @@ export function billingPeriodCounts(financialYearToBaseItOn) {
 
   const presrocFromFinancialYear = financialYearToBaseItOn - MAX_YEARS_LOOKED_BACK
   const presrocToFinancialYear = Math.min(financialYearToBaseItOn, PRESROC_LAST_FINANCIAL_YEAR)
-  const presrocBillingPeriods = Math.max(presrocToFinancialYear - presrocFromFinancialYear + 1, 0)
+  const presrocBillingPeriods = Math.max(
+    Math.min(presrocToFinancialYear - presrocFromFinancialYear + 1, MAX_YEARS_LOOKED_BACK),
+    0
+  )
 
   return { presroc: presrocBillingPeriods, sroc: srocBillingPeriods }
 }
