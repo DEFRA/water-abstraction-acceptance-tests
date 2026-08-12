@@ -3,8 +3,7 @@ import { test, expect } from '../../../support/fixtures.js'
 import {
   billingPeriodCounts,
   formatLongDate,
-  PRESROC_LAST_FINANCIAL_YEAR,
-  SROC_FIRST_FINANCIAL_YEAR
+  PRESROC_LAST_FINANCIAL_YEAR
 } from '../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
@@ -18,6 +17,7 @@ test.describe(
     let presrocBillingAccount
     let presrocToFinancialYearEnding
     let srocBillingAccount
+    let toFinancialYearEnding
 
     test.beforeAll(async ({ setup, calculatedDates }) => {
       const dates = await calculatedDates()
@@ -36,8 +36,9 @@ test.describe(
 
       // The supplementary engine bases its calculation on the seeded annual bill run's own year, not the current one.
       // The presroc engine then caps that at 2022, the last presroc financial year
-      billingPeriodCount = billingPeriodCounts(scenario.billRun.toFinancialYearEnding)
-      presrocToFinancialYearEnding = Math.min(scenario.billRun.toFinancialYearEnding, PRESROC_LAST_FINANCIAL_YEAR)
+      toFinancialYearEnding = scenario.billRun.toFinancialYearEnding
+      billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
+      presrocToFinancialYearEnding = Math.min(toFinancialYearEnding, PRESROC_LAST_FINANCIAL_YEAR)
 
       await setup(scenario)
     })
@@ -103,9 +104,8 @@ test.describe(
         await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()
       }
 
-      // The modern sroc engine also gets triggered (see the scenario comment) and, unlike the presroc side, its charge
-      // period is scoped to only the first sroc financial year, so it should have exactly one bill to show — giving us
-      // coverage of both engines running side by side, not just the presroc one
+      // The modern sroc engine also gets triggered (see the scenario comment), giving us coverage of both engines
+      // running side by side, not just the presroc one
       await page.goto('/system/bill-runs')
 
       await expect(page.locator('h1')).toContainText('Bill runs')
@@ -118,18 +118,25 @@ test.describe(
       await expect(page.locator('h1')).toContainText('Test Region supplementary')
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
-      await expect(page.locator('[data-test="bills-count"]')).toContainText('1 Supplementary bill')
+
+      const expectedSrocBillsText =
+        billingPeriodCount.sroc === 1 ? '1 Supplementary bill' : `${billingPeriodCount.sroc} Supplementary bills`
+
+      await expect(page.locator('[data-test="bills-count"]')).toContainText(expectedSrocBillsText)
 
       const srocAbstractorsTable = page.locator('[data-test="other-abstractors"]')
 
       await expect(srocAbstractorsTable).toBeVisible()
 
-      const srocBillRow = srocAbstractorsTable.getByRole('row', { name: String(SROC_FIRST_FINANCIAL_YEAR) })
+      for (let index = 0; index < billingPeriodCount.sroc; index++) {
+        const billedFinancialYear = toFinancialYearEnding - index
+        const billRow = srocAbstractorsTable.getByRole('row', { name: String(billedFinancialYear) })
 
-      await expect(srocBillRow).toContainText(srocBillingAccount.accountNumber)
-      await expect(srocBillRow).toContainText(company.name)
-      await expect(srocBillRow).toContainText(licence.licenceRef)
-      await expect(srocBillRow.getByRole('link', { name: 'View' })).toBeVisible()
+        await expect(billRow).toContainText(srocBillingAccount.accountNumber)
+        await expect(billRow).toContainText(company.name)
+        await expect(billRow).toContainText(licence.licenceRef)
+        await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()
+      }
     })
   }
 )
