@@ -8,11 +8,11 @@ export const description =
 export default function (dates) {
   const currentEndYear = new Date(dates.currentFinancialYear.endDate).getUTCFullYear()
 
-  const scenario = licenceWithChargeVersionScenario()
+  const licence = licenceWithChargeVersionScenario()
 
   // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
   // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
-  scenario.licence.includeInSrocBilling = true
+  licence.licence.includeInSrocBilling = true
 
   const billRun = billRunData()
 
@@ -20,7 +20,7 @@ export default function (dates) {
   billRun.toFinancialYearEnding = currentEndYear
 
   return {
-    ...scenario,
+    ...licence,
     billRun
   }
 }

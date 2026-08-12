@@ -9,13 +9,15 @@ export const description =
 export default function (dates) {
   const currentEndYear = new Date(dates.currentFinancialYear.endDate).getUTCFullYear()
 
+  const licence = presrocLicenceFlaggedForSupplementaryScenario()
+
   const billRun = billRunData()
 
   billRun.fromFinancialYearEnding = currentEndYear
   billRun.toFinancialYearEnding = currentEndYear
 
   return {
-    ...presrocLicenceFlaggedForSupplementaryScenario(),
+    ...licence,
     billRun
   }
 }
