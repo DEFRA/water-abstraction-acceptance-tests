@@ -23,12 +23,6 @@ export const externalUserEmail = 'external@example.com'
 export const internalUserEmail = 'regression.tests@wrls.gov.uk'
 
 /**
- * When a scenario or data file needs a licence reference, we use AT/TE/ST/01/01 as our default.
- * @type {string}
- */
-export const licenceRef = 'AT/TE/ST/01/01'
-
-/**
  * When a scenario or data file needs a password, we use P@55word as our default.
  * @type {string}
  */

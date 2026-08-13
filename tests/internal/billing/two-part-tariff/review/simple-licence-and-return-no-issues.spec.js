@@ -99,7 +99,7 @@ test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@s
       await expect(page.locator('#main-content')).toContainText('No licences found')
       await page.getByRole('button', { name: 'Clear filters' }).click()
       await page.locator('.govuk-details__summary').click()
-      await page.locator('#licenceHolderNumber').fill('AT/TE/ST/01/01')
+      await page.locator('#licenceHolderNumber').fill(licence.licenceRef)
       await page.getByRole('button', { name: 'Apply filters' }).click()
       await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 licences')
       await page.getByRole('button', { name: 'Clear filters' }).click()
@@ -116,7 +116,7 @@ test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@s
       await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 licences')
 
       // Review licences ~ Test it has the correct licence
-      await expect(page.locator('[data-test="licence-1"]')).toContainText('AT/TE/ST/01/01')
+      await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('')
@@ -124,8 +124,8 @@ test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@s
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
-      // Review Licence AT/TE/ST/01/01 ~ Check the licence details
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      // Review Licence ~ Check the licence details
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('div > .govuk-tag')).toContainText('ready')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
@@ -135,14 +135,14 @@ test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@s
         `1 April ${startYear} to 31 March ${endYear}`
       )
 
-      // Review Licence AT/TE/ST/01/01 ~ Check the Licence links
+      // Review Licence ~ Check the Licence links
       await expect(page.locator('[data-test="summary-link"]')).toBeVisible()
       await expect(page.locator('[data-test="returns-link"]')).toBeVisible()
       await expect(page.locator('[data-test="charge-information-link"]')).toBeVisible()
       await expect(page.locator('[data-test="charge-period-0"]')).toBeVisible()
       await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toBeVisible()
 
-      // Review Licence AT/TE/ST/01/01 ~ Check the return details
+      // Review Licence ~ Check the return details
       await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
       await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999400')
       await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
@@ -157,11 +157,11 @@ test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@s
       await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
       await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('1.554 ML / 1.554 ML')
 
-      // Review Licence AT/TE/ST/01/01 ~ Check there are no other returns
+      // Review Licence ~ Check there are no other returns
       await expect(page.locator('[data-test="matched-return-action-1"] > .govuk-link')).toHaveCount(0)
       await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
 
-      // Review Licence AT/TE/ST/01/01 ~ Check charge Information details
+      // Review Licence ~ Check charge Information details
       await expect(page.locator('[data-test="financial-year"]')).toContainText(
         `Financial year ${startYear} to ${endYear}`
       )
@@ -207,7 +207,7 @@ test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@s
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
       ).toContainText('1.554 ML (9999400)')
 
-      // Review Licence AT/TE/ST/01/01 ~ Check there is only 1 charge version, charge reference and charge element
+      // Review Licence ~ Check there is only 1 charge version, charge reference and charge element
       await expect(page.locator('#charge-version-1 > .govuk-heading-l')).toHaveCount(0)
       await expect(page.locator('[data-test="charge-version-0-reference-1"]')).toHaveCount(0)
       await expect(page.locator('[data-test="charge-version-0-charge-reference-0-element-count-1"]')).toHaveCount(0)
@@ -286,28 +286,28 @@ test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@s
       await expect(page.locator('[data-test="billable-returns"]')).toContainText('1 ML')
       await page.locator('.govuk-back-link').click()
 
-      // Review Licence AT/TE/ST/01/01 ~ Check billable returns has updated on licence review page
+      // Review Licence ~ Check billable returns has updated on licence review page
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
       ).toContainText('1 ML / 1.554 ML')
 
-      // Review Licence AT/TE/ST/01/01 ~ Put licence into review
+      // Review Licence ~ Put licence into review
       await page.getByText('Put licence into review').click()
       await expect(page.locator('.govuk-notification-banner')).toBeVisible()
       await expect(page.locator('.govuk-notification-banner__heading')).toContainText('Licence changed to review.')
       await expect(page.locator('div > .govuk-tag')).toContainText('review')
       await expect(page.locator('.govuk-button--primary')).toContainText('Confirm licence is ready')
 
-      // Review Licence AT/TE/ST/01/01 ~ Mark licence progress
+      // Review Licence ~ Mark licence progress
       await page.getByText('Mark progress').click()
       await expect(page.locator('.govuk-notification-banner')).toBeVisible()
       await expect(page.locator('.govuk-notification-banner__heading')).toContainText('This licence has been marked.')
       await expect(page.locator('button.govuk-button--secondary')).toContainText('Remove progress mark')
 
-      // Review Licence AT/TE/ST/01/01 ~ Remove licence from bill run
+      // Review Licence ~ Remove licence from bill run
       await page.getByText('Remove from bill run').click()
       await expect(page.locator('.govuk-heading-xl')).toContainText(
-        "You're about to remove AT/TE/ST/01/01 from the bill run"
+        `You're about to remove ${licence.licenceRef} from the bill run`
       )
       await expect(page.locator('.govuk-inset-text')).toContainText(
         'The licence will go into the next two-part tariff supplementary bill run.'
@@ -324,9 +324,9 @@ test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@s
 
       // Search the licence that was removed
       await page.locator('#nav-search').click()
-      await page.locator('#query').fill('AT/TE/ST/01/01')
+      await page.locator('#query').fill(licence.licenceRef)
       await page.locator('#search-button').click()
-      await page.locator('.searchresult-row', { hasText: 'AT/TE/ST/01/01' }).getByRole('link').click()
+      await page.locator('.searchresult-row', { hasText: licence.licenceRef }).getByRole('link').click()
 
       // Confirm the licence has been flagged for two-part tariff supplementary billing
       await expect(page.locator('.govuk-notification-banner__content')).toContainText(

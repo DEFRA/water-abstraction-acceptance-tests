@@ -2,9 +2,13 @@ import scenarioData from '../../../support/scenarios/registered-licence-with-ope
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc returns invitation journey (internal)', () => {
+  let licence
+
   test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
+
+    licence = scenario.licence
 
     await setup(scenario)
   })
@@ -27,11 +31,11 @@ test.describe('Ad-hoc returns invitation journey (internal)', () => {
     // Enter a licence number
     // NOTE: the licence number textbox has no accessible label in the rendered markup, so it can't be targeted by
     // role/label. Target it by its id instead.
-    await page.locator('#licenceRef').fill('AT/TE/ST/01/01')
+    await page.locator('#licenceRef').fill(licence.licenceRef)
     await page.getByRole('button', { name: 'Continue' }).click()
 
     // Check the notice type
-    await expect(page.locator('[data-test="licence-number"]')).toContainText('AT/TE/ST/01/01')
+    await expect(page.locator('[data-test="licence-number"]')).toContainText(licence.licenceRef)
     await expect(page.locator('[data-test="notice-type"]')).toContainText('Returns invitation')
     await page.getByRole('button', { name: 'Confirm' }).click()
 
@@ -71,7 +75,7 @@ test.describe('Ad-hoc returns invitation journey (internal)', () => {
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
 
     await expect(page.locator('[data-test="recipient-contact-0"]')).toContainText('external@example.com')
-    await expect(page.locator('[data-test="recipient-licence-numbers-0"]')).toContainText('AT/TE/ST/01/01')
+    await expect(page.locator('[data-test="recipient-licence-numbers-0"]')).toContainText(licence.licenceRef)
     await expect(page.locator('[data-test="recipient-method-0"]')).toContainText('Email - primary user')
     await expect(page.locator('[data-test="recipient-action-0"]')).toContainText('Preview')
 
@@ -80,7 +84,7 @@ test.describe('Ad-hoc returns invitation journey (internal)', () => {
     await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('HORIZON HOUSE DEANERY ROAD')
     await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('BRISTOL')
     await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('BS1 5AH')
-    await expect(page.locator('[data-test="recipient-licence-numbers-1"]')).toContainText('AT/TE/ST/01/01')
+    await expect(page.locator('[data-test="recipient-licence-numbers-1"]')).toContainText(licence.licenceRef)
     await expect(page.locator('[data-test="recipient-method-1"]')).toContainText('Letter - single use')
     await expect(page.locator('[data-test="recipient-action-1"]')).toContainText('Preview')
 

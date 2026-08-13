@@ -4,6 +4,7 @@ import { test, expect } from '../../../support/fixtures.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
+  let licence
   let returnLog
 
   test.beforeAll(async ({ setup, calculatedDates }) => {
@@ -14,6 +15,7 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
       returnLogs: [scenarioReturnLog]
     } = scenario
 
+    licence = scenario.licence
     returnLog = scenarioReturnLog
 
     await setup(scenario)
@@ -45,11 +47,11 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     // Enter a licence number
     // NOTE: the licence number textbox has no accessible label in the rendered markup, so it can't be targeted by
     // role/label. Target it by its id instead.
-    await page.locator('#licenceRef').fill('AT/TE/ST/01/01')
+    await page.locator('#licenceRef').fill(licence.licenceRef)
     await page.getByRole('button', { name: 'Continue' }).click()
 
     // Check the notice type
-    await expect(page.locator('[data-test="licence-number"]')).toContainText('AT/TE/ST/01/01')
+    await expect(page.locator('[data-test="licence-number"]')).toContainText(licence.licenceRef)
     await expect(page.locator('[data-test="notice-type"]')).toContainText('Returns invitation')
     await page.getByRole('button', { name: 'Confirm' }).click()
 
@@ -63,7 +65,7 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(1)
 
     await expect(page.locator('[data-test="recipient-contact-0"]')).toContainText('iwill-fail@e')
-    await expect(page.locator('[data-test="recipient-licence-numbers-0"]')).toContainText('AT/TE/ST/01/01')
+    await expect(page.locator('[data-test="recipient-licence-numbers-0"]')).toContainText(licence.licenceRef)
     await expect(page.locator('[data-test="recipient-method-0"]')).toContainText('Email - primary user')
     await expect(page.locator('[data-test="recipient-action-0"]')).toContainText('Preview')
 
@@ -106,9 +108,9 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
 
     // Search for the licence so we can check the 'OPEN' return now has a due date assigned
     await page.locator('#nav-search').click()
-    await page.locator('[name="query"]').fill('AT/TE/ST/01/01')
+    await page.locator('[name="query"]').fill(licence.licenceRef)
     await page.locator('#search-button').click()
-    await page.locator('.searchresult-link', { hasText: 'AT/TE/ST/01/01' }).click()
+    await page.locator('.searchresult-link', { hasText: licence.licenceRef }).click()
     await page.locator(':nth-child(4) > .x-govuk-sub-navigation__link').click()
 
     // Depending on whether the first period is quarterly or annual, and if quarterly, which quarter it is, the return

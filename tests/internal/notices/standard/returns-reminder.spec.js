@@ -2,9 +2,13 @@ import scenarioData from '../../../support/scenarios/licence-with-due-return-log
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Standard returns reminder journey (internal)', () => {
+  let licence
+
   test.beforeAll(async ({ setup, calculatedDates }) => {
     const dates = await calculatedDates()
     const scenario = scenarioData(dates)
+
+    licence = scenario.licence
 
     await setup(scenario)
   })
@@ -46,8 +50,8 @@ test.describe('Standard returns reminder journey (internal)', () => {
     await expect(page.locator('.govuk-caption-l', { hasText: noticeReference })).toBeVisible()
 
     await page.locator('#main-content > details > summary > span').click()
-    await page.locator('[data-test="filter-licence"]').fill('AT/TE/ST/01/01')
+    await page.locator('[data-test="filter-licence"]').fill(licence.licenceRef)
     await page.getByRole('button', { name: 'Apply filters' }).click()
-    await expect(page.locator('[data-test="notification-licences-0"]')).toContainText('AT/TE/ST/01/01')
+    await expect(page.locator('[data-test="notification-licences-0"]')).toContainText(licence.licenceRef)
   })
 })

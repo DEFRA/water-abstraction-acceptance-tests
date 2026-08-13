@@ -1,6 +1,5 @@
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import { licenceRef } from '../default-values.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { asArrays } from '../helpers/wire-format.helpers.js'
 
@@ -9,8 +8,8 @@ export const description =
   'Two separate water company licences, each with a charge version, so an annual bill run picks up more than one bill'
 
 export default function () {
-  const firstLicence = _licenceWithChargeVersion(licenceRef)
-  const secondLicence = _secondLicenceWithChargeVersion(`${licenceRef.slice(0, -2)}02`)
+  const firstLicence = _licenceWithChargeVersion()
+  const secondLicence = _secondLicenceWithChargeVersion()
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
@@ -20,8 +19,8 @@ export default function () {
  *
  * @private
  */
-function _licenceWithChargeVersion(ref) {
-  const licenceEntity = buildLicenceEntity(ref)
+function _licenceWithChargeVersion() {
+  const licenceEntity = buildLicenceEntity()
   const chargeVersionEntity = buildChargeVersionEntity(
     licenceEntity.company,
     licenceEntity.address,
@@ -44,8 +43,8 @@ function _licenceWithChargeVersion(ref) {
  *
  * @private
  */
-function _secondLicenceWithChargeVersion(ref) {
-  const result = _licenceWithChargeVersion(ref)
+function _secondLicenceWithChargeVersion() {
+  const result = _licenceWithChargeVersion()
 
   // Not required by the database, but makes the two licences easy to tell apart in the seeded data and the UI. If
   // you were to go to the companies page, you might expect both licences to merge into one row if they had the
