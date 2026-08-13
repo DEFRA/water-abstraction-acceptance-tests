@@ -1,5 +1,5 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
-import { regionCode } from '../default-values.js'
+import { generateTestExternalId } from '../helpers/generate-test-ref.js'
 
 export default function () {
   const pointId = generateUUID()
@@ -8,7 +8,7 @@ export default function () {
     id: pointId,
     description: 'Example point 1',
     ngr1: 'TQ 1234 5678',
-    externalId: `${regionCode}:9000091`,
+    externalId: generateTestExternalId(),
     sourceId: {
       schema: 'public',
       table: 'sources',

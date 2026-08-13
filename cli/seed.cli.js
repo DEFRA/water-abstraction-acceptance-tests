@@ -1,8 +1,12 @@
 /**
  * Load test scenarios for use with manual exploratory testing
  *
- * This script provides an interactive CLI to seed the local database with specific test scenarios. It automates the
- * "Tear Down" and "Data Load" cycles.
+ * This script provides an interactive CLI to seed the local database with specific test scenarios.
+ *
+ * On startup it tears down any existing data and seeds a small baseline set of scenarios (see BASELINE_SCENARIOS) in
+ * one combined load. From there you can keep picking further scenarios - each pick is loaded alongside whatever's
+ * already there rather than replacing it, so you can, for example, mess around with a licence in the UI and pick the
+ * same scenario again to get a fresh copy to compare against.
  *
  * To run this script use
  *
@@ -21,10 +25,16 @@ import { search } from '@inquirer/prompts'
 
 import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
 import { get, post } from './system.request.js'
+import { mergeByKey } from '../tests/support/helpers/scenario.helpers.js'
 import { asArrays } from '../tests/support/helpers/wire-format.helpers.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 const SCENARIOS_DIRS = ['cypress/support/scenarios', 'tests/support/scenarios']
+
+// Scenarios seeded together as a baseline every time the CLI starts. Only scenarios with a dynamically generated
+// licence ref can be seeded together without colliding, so this list is deliberately small until more scenarios
+// support that.
+const BASELINE_SCENARIOS = ['licence.scenario', 'registered-licence.scenario']
 
 async function run() {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
@@ -33,14 +43,15 @@ async function run() {
 
   const scenarios = await _scenarios()
 
+  await _seedBaseline(scenarios, currentServiceData)
+
   let selectedScenario
 
-  // Persistent loop until user aborts
+  // Persistent loop until user aborts. Each pick is loaded alongside whatever's already seeded rather than tearing
+  // down first, so you can keep adding scenarios without losing earlier ones.
   while (true) {
     try {
       selectedScenario = await _prompt(scenarios, selectedScenario)
-
-      await _tearDown()
 
       const body = await _body(selectedScenario, currentServiceData)
 
@@ -59,6 +70,32 @@ async function run() {
       }
     }
   }
+}
+
+/**
+ * Tear down, then seed BASELINE_SCENARIOS together, so there's always a known-good set of licences to compare
+ * against
+ * @private
+ */
+async function _seedBaseline(scenarios, currentServiceData) {
+  const targetScenarios = scenarios.filter((scenario) => {
+    return BASELINE_SCENARIOS.includes(scenario.filename)
+  })
+
+  await _tearDown()
+
+  const payloads = []
+
+  for (const targetScenario of targetScenarios) {
+    const body = await _body(targetScenario, currentServiceData)
+    const payload = asArrays(body)
+
+    _attachLicenceRefToTitle(targetScenario, payload)
+
+    payloads.push(payload)
+  }
+
+  await post('/system/data/load', mergeByKey(...payloads))
 }
 
 /**
@@ -106,9 +143,33 @@ async function _body(selectedScenario, currentServiceData) {
  * @private
  */
 async function _load(selectedScenario, body) {
-  logInfo(`Loading scenario ${styleBold(selectedScenario.title)}...`)
+  const payload = asArrays(body)
 
-  await post('/system/data/load', asArrays(body))
+  _attachLicenceRefToTitle(selectedScenario, payload)
+
+  await post('/system/data/load', payload)
+}
+
+/**
+ * Update a scenario's title to include the licence ref(s) it has seeded, so the picker shows them next to the
+ * title. As loading is additive rather than replacing, refs from earlier loads of the same scenario are kept on
+ * `scenario.licenceRefs` and accumulated into the title, rather than the latest load overwriting the previous ones.
+ * @private
+ */
+function _attachLicenceRefToTitle(scenario, payload) {
+  const newLicenceRefs = (payload.licences ?? [])
+    .map((licence) => {
+      return licence.licenceRef
+    })
+    .filter(Boolean)
+
+  if (newLicenceRefs.length === 0) {
+    return
+  }
+
+  scenario.licenceRefs = [...(scenario.licenceRefs ?? []), ...newLicenceRefs]
+
+  scenario.title = `${scenario.baseTitle} (${scenario.licenceRefs.join(', ')})`
 }
 
 /**
@@ -190,16 +251,34 @@ async function _scenarios() {
       const scenarioPath = path.resolve(dir, `${filename}.js`)
       const mod = await import(`file://${scenarioPath}`)
 
+      const baseTitle = mod.title ?? filename
+
       scenarios.push({
         filename,
         path: scenarioPath,
-        title: mod.title ?? filename,
+        baseTitle,
+        title: baseTitle,
         description: mod.description ?? ''
       })
     }
   }
 
-  return scenarios
+  return scenarios.sort(_byBaselineThenTitle)
+}
+
+/**
+ * Sort baseline scenarios first (alphabetically by title), then everything else (alphabetically by title)
+ * @private
+ */
+function _byBaselineThenTitle(scenarioA, scenarioB) {
+  const scenarioAIsBaseline = BASELINE_SCENARIOS.includes(scenarioA.filename)
+  const scenarioBIsBaseline = BASELINE_SCENARIOS.includes(scenarioB.filename)
+
+  if (scenarioAIsBaseline !== scenarioBIsBaseline) {
+    return scenarioAIsBaseline ? -1 : 1
+  }
+
+  return scenarioA.baseTitle.localeCompare(scenarioB.baseTitle)
 }
 
 /**

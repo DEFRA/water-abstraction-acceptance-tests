@@ -1,4 +1,5 @@
 import { generateUUID } from '../helpers/generate-uuid.js'
+import { generateTestExternalId } from '../helpers/generate-test-ref.js'
 
 export default function (licenceVersion) {
   const licenceVersionPurposeId = generateUUID()
@@ -32,6 +33,6 @@ export default function (licenceVersion) {
     abstractionPeriodEndDay: 31,
     abstractionPeriodEndMonth: 3,
     annualQuantity: 1554,
-    externalId: '9:1234'
+    externalId: generateTestExternalId()
   }
 }

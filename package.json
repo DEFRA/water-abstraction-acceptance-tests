@@ -32,7 +32,8 @@
   "dependencies": {
     "big.js": "7.0.1",
     "cypress": "^15.14.2",
-    "cypress-mochawesome-reporter": "^4.0.0"
+    "cypress-mochawesome-reporter": "^4.0.0",
+    "water-abstraction-engine": "github:DEFRA/water-abstraction-engine#main"
   },
   "devDependencies": {
     "@inquirer/prompts": "^8.2.0",
