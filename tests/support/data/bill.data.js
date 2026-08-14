@@ -1,4 +1,3 @@
-import { accountNumber } from '../default-values.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (billingAccount, billRun, netAmount) {
@@ -6,7 +5,7 @@ export default function (billingAccount, billRun, netAmount) {
     id: generateUUID(),
     billingAccountId: billingAccount.id,
     address: {},
-    accountNumber,
+    accountNumber: billingAccount.accountNumber,
     billRunId: billRun.id,
     financialYearEnding: billRun.toFinancialYearEnding,
     netAmount,

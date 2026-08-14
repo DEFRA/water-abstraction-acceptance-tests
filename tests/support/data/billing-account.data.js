@@ -1,4 +1,4 @@
-import { accountNumber } from '../default-values.js'
+import { generateTestAccountNumber } from '../helpers/generate-test-ref.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (company) {
@@ -6,7 +6,7 @@ export default function (company) {
 
   return {
     id: billingAccountId,
-    accountNumber,
+    accountNumber: generateTestAccountNumber(),
     companyId: company.id
   }
 }

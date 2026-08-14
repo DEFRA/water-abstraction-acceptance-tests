@@ -36,10 +36,8 @@ function _licenceWithChargeVersion() {
 /**
  * Builds the second water company licence and its charge version
  *
- * The point, licence version, licence version purpose and billing account each carry a fixed NALD-derived
- * identifier that's unique per record in the database, so building a second licence means giving each its own
- * value to avoid colliding with the first. The company name is also suffixed so that anyone reading the seeded
- * data or the app's UI can tell the two licences apart at a glance, though this isn't required by the database.
+ * The company name is suffixed so that anyone reading the seeded data or the app's UI can tell the two licences
+ * apart at a glance, though this isn't required by the database.
  *
  * @private
  */
@@ -50,11 +48,6 @@ function _secondLicenceWithChargeVersion() {
   // you were to go to the companies page, you might expect both licences to merge into one row if they had the
   // same name, but that's not the case - the company id is different, so duplicate company names are possible.
   result.company.name = `${result.company.name} 02`
-
-  result.point.externalId = '9:9000093'
-  result.licenceVersion.externalId = '9:1234:2:0'
-  result.licenceVersionPurpose.externalId = '9:1235'
-  result.billingAccount.accountNumber = 'S99999992A'
 
   return result
 }

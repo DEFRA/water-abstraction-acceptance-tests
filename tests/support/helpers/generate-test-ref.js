@@ -38,3 +38,17 @@ export function generateTestExternalId(...suffixParts) {
 
   return [regionCode, naldId, ...suffixParts].join(':')
 }
+
+/**
+ * Generate a unique billing account number
+ *
+ * Billing accounts need a unique account number, so rather than the previous fixed value we generate a random one,
+ * keeping the `S` prefix and `A` suffix of the legacy `S99999991A` format.
+ *
+ * @returns {string} a unique billing account number, for example `S12345678A`
+ */
+export function generateTestAccountNumber() {
+  const unique = randomInt(10000000, 99999999)
+
+  return `S${unique}A`
+}
