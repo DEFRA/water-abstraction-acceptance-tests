@@ -53,9 +53,5 @@ function _secondLicenceSharingBillingAccount(billingAccount) {
   licenceEntity.licence.waterUndertaker = true
   licenceEntity.company.name = `${licenceEntity.company.name} 03`
 
-  licenceEntity.point.externalId = '9:9000094'
-  licenceEntity.licenceVersion.externalId = '9:1234:3:0'
-  licenceEntity.licenceVersionPurpose.externalId = '9:1236'
-
   return { ...licenceEntity, chargeVersion, chargeReference, chargeElement }
 }

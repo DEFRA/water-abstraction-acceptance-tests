@@ -34,7 +34,14 @@ const SCENARIOS_DIRS = ['cypress/support/scenarios', 'tests/support/scenarios']
 // Scenarios seeded together as a baseline every time the CLI starts. Only scenarios with a dynamically generated
 // licence ref can be seeded together without colliding, so this list is deliberately small until more scenarios
 // support that.
-const BASELINE_SCENARIOS = ['licence.scenario', 'registered-licence.scenario']
+const BASELINE_SCENARIOS = [
+  'licence.scenario',
+  'registered-licence.scenario',
+  'water-company-licence-with-charge-version.scenario',
+  'water-company-licence-with-open-winter-return-log.scenario',
+  'water-company-licences-with-charge-versions.scenario',
+  'water-company-licences-with-shared-billing-account.scenario'
+]
 
 async function run() {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
