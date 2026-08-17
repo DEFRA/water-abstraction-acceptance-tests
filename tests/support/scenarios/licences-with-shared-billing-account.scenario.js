@@ -7,9 +7,9 @@ import { licenceRef } from '../default-values.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { asArrays } from '../helpers/wire-format.helpers.js'
 
-export const title = 'Two water company licences on the same billing account'
+export const title = 'Two licences on the same billing account'
 export const description =
-  'Two separate water company licences, both billed to the same billing account, so an annual bill run creates a single bill covering both'
+  'Two separate licences, both billed to the same billing account, so an annual bill run creates a single bill covering both'
 
 export default function () {
   const firstLicence = _licenceWithChargeVersion(licenceRef)
@@ -19,7 +19,7 @@ export default function () {
 }
 
 /**
- * Builds a water company licence and its charge version
+ * Builds a licence and its charge version
  *
  * @private
  */
@@ -32,13 +32,11 @@ function _licenceWithChargeVersion(ref) {
     licenceEntity.licenceVersionPurpose
   )
 
-  licenceEntity.licence.waterUndertaker = true
-
   return { ...licenceEntity, ...chargeVersionEntity }
 }
 
 /**
- * Builds the second water company licence and its charge version, billed to the first licence's billing account
+ * Builds the second licence and its charge version, billed to the first licence's billing account
  *
  * Unlike a typical second licence, this one doesn't build its own billing account - its charge version references
  * the billing account passed in, so the two licences end up sharing a single bill between them.
@@ -51,7 +49,6 @@ function _secondLicenceSharingBillingAccount(ref, billingAccount) {
   const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose])
   const chargeElement = chargeElementData(chargeReference, licenceEntity.licenceVersionPurpose)
 
-  licenceEntity.licence.waterUndertaker = true
   licenceEntity.company.name = `${licenceEntity.company.name} 03`
 
   licenceEntity.point.externalId = '9:9000094'

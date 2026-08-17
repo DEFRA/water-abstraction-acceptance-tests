@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/water-company-licence-with-charge-version.scenario.js'
+import scenarioData from '../../../support/scenarios/licence-with-charge-version.scenario.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { test, expect } from '../../../support/fixtures.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
@@ -47,8 +47,6 @@ test.describe('Create and send annual bill run (internal)', () => {
 
     await expect(page.locator('h1')).toContainText('Test Region annual')
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
-    await expect(page.locator('[data-test="water-companies"]')).toBeVisible()
-    await expect(page.locator('[data-test="other-abstractors"]')).toHaveCount(0)
     await page.getByRole('button', { name: 'Send bill run' }).click()
 
     await expect(page.locator('h1')).toContainText("You're about to send this bill run")

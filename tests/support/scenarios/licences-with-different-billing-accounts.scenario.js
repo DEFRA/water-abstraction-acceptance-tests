@@ -1,41 +1,21 @@
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
-import buildLicenceEntity from '../entities/licence.entity.js'
+import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { licenceRef } from '../default-values.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { asArrays } from '../helpers/wire-format.helpers.js'
 
-export const title = 'Two water company licences, each with a charge version'
+export const title = 'Two licences, with different billing accounts'
 export const description =
-  'Two separate water company licences, each with a charge version, so an annual bill run picks up more than one bill'
+  'Two separate licences, each with a charge version and billing account, so an annual bill run picks up more than one bill'
 
 export default function () {
-  const firstLicence = _licenceWithChargeVersion(licenceRef)
+  const firstLicence = licenceWithChargeVersionScenario(licenceRef)
   const secondLicence = _secondLicenceWithChargeVersion(`${licenceRef.slice(0, -2)}02`)
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
 
 /**
- * Builds a water company licence and its charge version
- *
- * @private
- */
-function _licenceWithChargeVersion(ref) {
-  const licenceEntity = buildLicenceEntity(ref)
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
-  )
-
-  licenceEntity.licence.waterUndertaker = true
-
-  return { ...licenceEntity, ...chargeVersionEntity }
-}
-
-/**
- * Builds the second water company licence and its charge version
+ * Builds the second licence and its charge version
  *
  * The point, licence version, licence version purpose and billing account each carry a fixed NALD-derived
  * identifier that's unique per record in the database, so building a second licence means giving each its own
@@ -45,14 +25,17 @@ function _licenceWithChargeVersion(ref) {
  * @private
  */
 function _secondLicenceWithChargeVersion(ref) {
-  const result = _licenceWithChargeVersion(ref)
+  const result = licenceWithChargeVersionScenario(ref)
 
   // Not required by the database, but makes the two licences easy to tell apart in the seeded data and the UI. If
   // you were to go to the companies page, you might expect both licences to merge into one row if they had the
   // same name, but that's not the case - the company id is different, so duplicate company names are possible.
   result.company.name = `${result.company.name} 02`
 
-  result.point.externalId = '9:9000093'
+  // The acceptance tests app's tear-down service only cleans up water.points for a hardcoded set of external_ids
+  // (9000031, 9000032, 9000090, 9000091) rather than relying solely on its relational delete, so a genuinely new
+  // external_id here would be left behind after every run and collide with itself on the next.
+  result.point.externalId = '9:9000032'
   result.licenceVersion.externalId = '9:1234:2:0'
   result.licenceVersionPurpose.externalId = '9:1235'
   result.billingAccount.accountNumber = 'S99999992A'

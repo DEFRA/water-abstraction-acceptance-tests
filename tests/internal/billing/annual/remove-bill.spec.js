@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/water-company-licences-with-charge-versions.scenario.js'
+import scenarioData from '../../../support/scenarios/licences-with-different-billing-accounts.scenario.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { test, expect } from '../../../support/fixtures.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
@@ -57,12 +57,10 @@ test.describe('Remove a bill from an annual bill run that has not been sent (int
 
     await expect(page.locator('h1')).toContainText('Test Region annual')
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
-    await expect(page.locator('[data-test="water-companies"]')).toBeVisible()
-    await expect(page.locator('[data-test="other-abstractors"]')).toHaveCount(0)
 
-    const waterCompaniesTable = page.locator('[data-test="water-companies"]')
+    const otherAbstractorsTable = page.locator('[data-test="other-abstractors"]')
 
-    await waterCompaniesTable.getByRole('row', { name: licenceToRemove.licenceRef }).getByRole('link').click()
+    await otherAbstractorsTable.getByRole('row', { name: licenceToRemove.licenceRef }).getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText(`Transactions for ${licenceToRemove.licenceRef}`)
     await page.getByRole('button', { name: 'Remove bill' }).click()
@@ -78,9 +76,7 @@ test.describe('Remove a bill from an annual bill run that has not been sent (int
 
     await expect(page.locator('h1')).toContainText('Test Region annual')
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
-    await expect(page.locator('[data-test="water-companies"]')).toBeVisible()
-    await expect(page.locator('[data-test="other-abstractors"]')).toHaveCount(0)
-    await expect(waterCompaniesTable.locator('tbody > tr')).toHaveCount(1)
+    await expect(otherAbstractorsTable.locator('tbody > tr')).toHaveCount(1)
 
     await page.getByRole('link', { name: 'Search' }).click()
     await page.locator('#query').fill(licenceToRemove.licenceRef)
