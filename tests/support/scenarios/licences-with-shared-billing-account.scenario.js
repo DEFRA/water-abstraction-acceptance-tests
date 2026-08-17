@@ -13,7 +13,7 @@ export const description =
 
 export default function () {
   const firstLicence = _licenceWithChargeVersion(licenceRef)
-  const secondLicence = _secondLicenceSharingBillingAccount(`${licenceRef.slice(0, -2)}03`, firstLicence.billingAccount)
+  const secondLicence = _secondLicenceSharingBillingAccount(`${licenceRef.slice(0, -2)}03`, firstLicence)
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
@@ -39,19 +39,30 @@ function _licenceWithChargeVersion(ref) {
  * Builds the second licence and its charge version, billed to the first licence's billing account
  *
  * Unlike a typical second licence, this one doesn't build its own billing account - its charge version references
- * the billing account passed in, so the two licences end up sharing a single bill between them.
+ * the billing account passed in, so the two licences end up sharing a single bill between them. It's also billed
+ * to the same company as the first licence, since a shared billing account implies a shared licence holder, so
+ * its own generated company is discarded rather than seeded as a second, unused record.
  *
  * @private
  */
-function _secondLicenceSharingBillingAccount(ref, billingAccount) {
+function _secondLicenceSharingBillingAccount(ref, firstLicence) {
+  const { billingAccount, company } = firstLicence
+
   const licenceEntity = buildLicenceEntity(ref)
   const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence)
   const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose])
   const chargeElement = chargeElementData(chargeReference, licenceEntity.licenceVersionPurpose)
 
-  licenceEntity.company.name = `${licenceEntity.company.name} 03`
+  // The licence's own company and companyAddress (built by buildLicenceEntity) are discarded rather than reused,
+  // since the licence holder here is firstLicence's company - reusing them would either duplicate that company's
+  // row or leave licenceDocumentRole/licenceVersion pointing at a company that's no longer part of the payload.
+  delete licenceEntity.company
+  delete licenceEntity.companyAddress
 
-  licenceEntity.point.externalId = '9:9000094'
+  licenceEntity.licenceDocumentRole.companyId = company.id
+  licenceEntity.licenceVersion.companyId = company.id
+
+  licenceEntity.point.externalId = '9:9000032'
   licenceEntity.licenceVersion.externalId = '9:1234:3:0'
   licenceEntity.licenceVersionPurpose.externalId = '9:1236'
 
