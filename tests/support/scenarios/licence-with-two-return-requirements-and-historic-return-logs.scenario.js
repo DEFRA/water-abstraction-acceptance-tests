@@ -1,14 +1,13 @@
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
 import licenceVersionPurposePointData from '../data/licence-version-purpose-point.data.js'
 import pointData from '../data/point.data.js'
-import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import { regionCode } from '../default-values.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
-import { previousPeriod } from '../helpers/date.helpers.js'
+import { buildDueAndCompletedReturnLogs } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with two return requirements and historic return logs'
 export const description =
@@ -25,14 +24,14 @@ export default function (calculatedDates) {
   const [firstRequirementPurpose, secondRequirementPurpose] = licenceWithTwoReturnRequirements.returnRequirementPurposes
 
   const returnLogs = [
-    ..._requirementReturnLogs(
+    ...buildDueAndCompletedReturnLogs(
       licenceWithTwoReturnRequirements.licence,
       firstRequirement,
       firstRequirementPurpose,
       firstPoint,
       currentWinterReturnCycle
     ),
-    ..._requirementReturnLogs(
+    ...buildDueAndCompletedReturnLogs(
       licenceWithTwoReturnRequirements.licence,
       secondRequirement,
       secondRequirementPurpose,
@@ -92,34 +91,4 @@ function _licenceWithTwoReturnRequirements() {
     returnRequirementPoints: [returnVersionEntity.returnRequirementPoint, secondReturnRequirementPoint],
     returnRequirementPurposes: [returnVersionEntity.returnRequirementPurpose, secondReturnRequirementPurpose]
   }
-}
-
-/**
- * Builds a due return log for the current cycle and a completed return log for the previous cycle, for a single
- * return requirement
- *
- * @private
- */
-function _requirementReturnLogs(licence, returnRequirement, returnRequirementPurpose, point, cycle) {
-  const currentPeriod = {
-    startDate: new Date(cycle.startDate),
-    endDate: new Date(cycle.endDate),
-    dueDate: new Date(cycle.dueDate),
-    quarterly: false
-  }
-  const previousPeriodDetails = previousPeriod(currentPeriod)
-
-  const currentReturnLog = returnLogData(licence, returnRequirement, [returnRequirementPurpose], [point], currentPeriod)
-  currentReturnLog.status = 'due'
-
-  const previousReturnLog = returnLogData(
-    licence,
-    returnRequirement,
-    [returnRequirementPurpose],
-    [point],
-    previousPeriodDetails
-  )
-  previousReturnLog.status = 'completed'
-
-  return [currentReturnLog, previousReturnLog]
 }
