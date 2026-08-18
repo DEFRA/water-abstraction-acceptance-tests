@@ -1,4 +1,65 @@
 /**
+ * The last presroc financial year (end year) — water-abstraction-service's batch-service.js caps presroc
+ * supplementary billing at this year, and its legacy engine is never triggered for anything after it.
+ * @type {number}
+ */
+export const PRESROC_LAST_FINANCIAL_YEAR = 2022
+
+/**
+ * The first sroc financial year (end year) — DetermineBillingPeriodsService in water-abstraction-system never
+ * looks back further than this for sroc supplementary billing.
+ * @type {number}
+ */
+export const SROC_FIRST_FINANCIAL_YEAR = 2023
+
+/**
+ * Works out how many presroc and sroc billing periods a supplementary bill run is expected to generate bills for
+ *
+ * The two schemes are calculated independently, by two different engines, each with their own rule:
+ *
+ * - sroc (DetermineBillingPeriodsService in water-abstraction-system): up to 5 years back from
+ *   `financialYearToBaseItOn`, never earlier than 2023, the first sroc financial year.
+ * - presroc (the legacy water-abstraction-service's batch-service.js): always exactly 5 years back from
+ *   `financialYearToBaseItOn`, but capped at 2022, the last presroc financial year, on both ends. Once
+ *   `financialYearToBaseItOn` is more than 5 years past 2022, that range inverts and there are no presroc periods
+ *   left to bill at all.
+ *
+ * For example
+ *
+ * - financialYearToBaseItOn is 2024 so result will be 2 sroc and 4 presroc
+ * - financialYearToBaseItOn is 2025 so result will be 3 sroc and 3 presroc
+ * - financialYearToBaseItOn is 2026 so result will be 4 sroc and 2 presroc
+ * - financialYearToBaseItOn is 2027 so result will be 5 sroc and 1 presroc
+ * - financialYearToBaseItOn is 2028 so result will be 5 sroc and 0 presroc
+ *
+ * @param {number} financialYearToBaseItOn - The financial year (end year) to base the billing period counts on
+ *
+ * @returns {object} An object with `presroc` and `sroc` properties holding the number of billing periods for each
+ * scheme
+ */
+export function billingPeriodCounts(financialYearToBaseItOn) {
+  const MAX_YEARS_LOOKED_BACK = 5
+
+  const earliestPossibleSrocFinancialYear = Math.max(
+    SROC_FIRST_FINANCIAL_YEAR,
+    financialYearToBaseItOn - MAX_YEARS_LOOKED_BACK
+  )
+  const srocBillingPeriods = Math.max(
+    Math.min(financialYearToBaseItOn - earliestPossibleSrocFinancialYear + 1, MAX_YEARS_LOOKED_BACK),
+    0
+  )
+
+  const presrocFromFinancialYear = financialYearToBaseItOn - MAX_YEARS_LOOKED_BACK
+  const presrocToFinancialYear = Math.min(financialYearToBaseItOn, PRESROC_LAST_FINANCIAL_YEAR)
+  const presrocBillingPeriods = Math.max(
+    Math.min(presrocToFinancialYear - presrocFromFinancialYear + 1, MAX_YEARS_LOOKED_BACK),
+    0
+  )
+
+  return { presroc: presrocBillingPeriods, sroc: srocBillingPeriods }
+}
+
+/**
  * Compares two dates and returns:
  *
  * -1 if dateA is before dateB
