@@ -2,7 +2,7 @@ import scenarioData from '../../support/scenarios/licence-with-two-return-requir
 import { test, expect } from '../../support/fixtures.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 
-test.describe('Submit historic correction using abstraction data for two abstraction points (internal)', () => {
+test.describe('Submit historic correction using abstraction data for licence with two purposes (internal)', () => {
   let licence
   let startYear
   let current
@@ -27,7 +27,7 @@ test.describe('Submit historic correction using abstraction data for two abstrac
     await login(users.billingAndData)
   })
 
-  test('creates a return requirement using abstraction data and approves the requirement', async ({ page }) => {
+  test('adds a new return version using abstraction data for a licence with two purposes', async ({ page }) => {
     await page.goto(`/system/licences/${licence.id}/returns`)
 
     await expect(page.locator('h1')).toContainText('Returns')
@@ -52,7 +52,7 @@ test.describe('Submit historic correction using abstraction data for two abstrac
     await expect(page.locator('h1')).toContainText('Select the start date for the requirements for returns')
     await page.getByRole('radio', { name: 'Another date' }).check()
     await page.locator('#startDateDay').fill('01')
-    await page.locator('#startDateMonth').fill('11')
+    await page.locator('#startDateMonth').fill('09')
     await page.locator('#startDateYear').fill(`${startYear - 1}`)
     await page.getByRole('button', { name: 'Continue' }).click()
 

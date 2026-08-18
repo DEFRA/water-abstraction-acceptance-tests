@@ -2,7 +2,7 @@ import scenarioData from '../../support/scenarios/licence-with-winter-and-summer
 import { test, expect } from '../../support/fixtures.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 
-test.describe('Submit historic correction using previous return requirements (internal)', () => {
+test.describe('Submit historic correction for licence with both a winter and summer return requirement (internal)', () => {
   let licence
   let startYear
   let winterCurrent
@@ -31,7 +31,7 @@ test.describe('Submit historic correction using previous return requirements (in
     await login(users.billingAndData)
   })
 
-  test('creates a return requirement using previous return requirements and approves the requirement', async ({
+  test('adds a new return version using copy existing for a licence with existing winter and summer return requirement', async ({
     page
   }) => {
     await page.goto(`/system/licences/${licence.id}/returns`)
