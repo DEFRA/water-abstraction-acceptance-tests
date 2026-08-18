@@ -7,6 +7,7 @@ export const description =
 
 export default function () {
   const licence = presrocLicenceScenario()
+
   const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(
     licence.company,
     licence.address,
