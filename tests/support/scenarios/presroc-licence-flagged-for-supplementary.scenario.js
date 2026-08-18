@@ -38,9 +38,6 @@ export default function () {
 /**
  * Builds the sroc charge version that succeeds the presroc licence's alcs one
  *
- * Left open-ended rather than scoped to a single year, so the sroc engine has every outstanding sroc period to bill,
- * not just the first one
- *
  * @private
  */
 function _srocChargeVersion(company, address, licence, licenceVersionPurpose) {
