@@ -59,7 +59,9 @@ test.describe('Remove a licence from an annual bill run that has not been sent (
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
     const otherAbstractorsTable = page.locator('[data-test="other-abstractors"]')
-    const sharedBillingAccountRow = otherAbstractorsTable.getByRole('row', { name: billingAccountToRemove.accountNumber })
+    const sharedBillingAccountRow = otherAbstractorsTable.getByRole('row', {
+      name: billingAccountToRemove.accountNumber
+    })
 
     await expect(sharedBillingAccountRow).toContainText(licenceToRemove.licenceRef)
     await expect(sharedBillingAccountRow).toContainText(remainingLicenceOnSharedAccount.licenceRef)
