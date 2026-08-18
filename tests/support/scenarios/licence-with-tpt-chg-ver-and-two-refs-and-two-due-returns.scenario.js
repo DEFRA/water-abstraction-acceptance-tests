@@ -6,6 +6,7 @@ import returnRequirementPointData from '../data/return-requirement-point.data.js
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
@@ -13,8 +14,8 @@ export const title = 'Licence with tpt charge version, two charge references and
 export const description =
   'Licence with a return version and a TPT charge version made up of two charge references, each with one charge element, plus two due return logs for the previous winter cycle whose reference and element volumes are mismatched so allocation caps at the lower of the two'
 
-export default function (calculatedDates) {
-  const { currentWinterReturnCycle } = calculatedDates
+export default function () {
+  const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceWithTwoPurposesScenario()

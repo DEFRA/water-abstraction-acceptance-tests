@@ -1,6 +1,7 @@
 import workflowData from '../data/workflow.data.js'
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { yesterday } from '../helpers/date.helpers.js'
 
 export const title = 'Licence in workflow, and a two-part tariff bill run'
@@ -12,14 +13,14 @@ export const description =
  *
  * This is omitted from the scenario name and description to keep them concise, but is still part of the scenario.
  */
-export default function (calculatedDates) {
+export default function () {
   const licenceEntity = buildLicenceEntity()
 
   const {
     billingPeriods: {
       twoPartTariff: [twoPartTariffDates]
     }
-  } = calculatedDates
+  } = calculatedDates()
 
   const billRunEntity = buildBillRunEntity(licenceEntity, twoPartTariffDates)
 

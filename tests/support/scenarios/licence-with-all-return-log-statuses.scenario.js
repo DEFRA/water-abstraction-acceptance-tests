@@ -4,13 +4,14 @@ import returnRequirementPointData from '../data/return-requirement-point.data.js
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { relativeToToday } from '../helpers/date.helpers.js'
 
 export const title = 'All return log statuses'
 export const description = 'Licence with return logs covering all possible statuses'
 
-export default function (calculatedDates) {
-  const currentPeriod = _currentPeriod(calculatedDates)
+export default function () {
+  const currentPeriod = _currentPeriod(calculatedDates())
   const previousPeriod = _previousPeriod(currentPeriod)
 
   const licenceEntity = buildLicenceEntity()

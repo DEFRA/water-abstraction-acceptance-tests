@@ -1,5 +1,6 @@
 import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-ver-and-two-refs-and-two-due-returns.scenario.js'
 import { test, expect } from '../../../../support/fixtures.js'
+import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
@@ -7,19 +8,17 @@ test.describe('Simple Licence with Two Charge References (internal)', () => {
   let endYear
   let startYear
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-
+  test.beforeAll(async ({ setup }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
       }
-    } = dates
+    } = calculatedDates()
 
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-    const scenario = scenarioData(dates)
+    const scenario = scenarioData()
 
     await setup(scenario)
   })

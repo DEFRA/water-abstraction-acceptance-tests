@@ -2,9 +2,8 @@ import scenarioData from '../../../support/scenarios/licence-with-open-return-lo
 import { test, expect } from '../../../support/fixtures.js'
 
 test.describe('Standard returns invitation journey (internal)', () => {
-  test.beforeAll(async ({ setup, calculatedDates }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     await setup(scenario)
   })

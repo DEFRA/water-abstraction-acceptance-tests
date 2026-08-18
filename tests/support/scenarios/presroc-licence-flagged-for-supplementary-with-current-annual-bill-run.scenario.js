@@ -1,4 +1,5 @@
 import billRunData from '../data/bill-run.data.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import presrocLicenceFlaggedForSupplementaryScenario from './presroc-licence-flagged-for-supplementary.scenario.js'
 
 export const title =
@@ -6,8 +7,8 @@ export const title =
 export const description =
   'A presroc licence flagged for both the next presroc and sroc supplementary bill runs, plus a sent annual bill run for the current year, so a supplementary bill run picks up every outstanding presroc and sroc period'
 
-export default function (dates) {
-  const currentEndYear = new Date(dates.currentFinancialYear.endDate).getUTCFullYear()
+export default function () {
+  const currentEndYear = new Date(calculatedDates().currentFinancialYear.endDate).getUTCFullYear()
 
   const licence = presrocLicenceFlaggedForSupplementaryScenario()
 

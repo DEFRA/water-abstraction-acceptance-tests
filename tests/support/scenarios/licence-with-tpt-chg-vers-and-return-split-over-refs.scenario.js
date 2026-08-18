@@ -5,6 +5,7 @@ import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceScenario from './licence.scenario.js'
 
@@ -12,8 +13,8 @@ export const title = 'Licence with tpt charge version and a return split over tw
 export const description =
   'Licence with a return version and a TPT charge version of two charge references, each with one charge element sharing the same purpose but a different abstraction period, plus one completed return that matches and is split across both references'
 
-export default function (calculatedDates) {
-  const { currentWinterReturnCycle } = calculatedDates
+export default function () {
+  const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceScenario()

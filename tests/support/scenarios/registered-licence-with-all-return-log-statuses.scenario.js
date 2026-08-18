@@ -5,8 +5,8 @@ import { externalUserEmail } from '../default-values.js'
 export const title = 'Registered licence with all return log statuses'
 export const description = 'Registered licence with return logs covering all possible statuses'
 
-export default function (calculatedDates) {
-  const licence = licenceWithAllReturnLogStatuses(calculatedDates)
+export default function () {
+  const licence = licenceWithAllReturnLogStatuses()
 
   const primaryUser = primaryUserData(externalUserEmail, licence.company)
 

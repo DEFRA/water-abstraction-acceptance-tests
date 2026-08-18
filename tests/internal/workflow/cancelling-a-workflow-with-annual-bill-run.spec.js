@@ -16,9 +16,8 @@ test.describe(
     let company
     let licence
 
-    test.beforeAll(async ({ calculatedDates, setup }) => {
-      const dates = await calculatedDates()
-      const scenario = scenarioData(dates)
+    test.beforeAll(async ({ setup }) => {
+      const scenario = scenarioData()
 
       licence = scenario.licence
       company = scenario.company

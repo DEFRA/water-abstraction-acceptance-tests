@@ -4,8 +4,8 @@ export const title = 'Registered licence with an open return log and bad primary
 export const description =
   "Registered licence linked to a 'bad' external user, with one return requirement and an open return log for the previous winter cycle to test the triggering of alternate notices"
 
-export default function (calculatedDates) {
-  const registeredLicenceWithOpenWinterReturnLog = registeredLicenceWithOpenWinterReturnLogScenario(calculatedDates)
+export default function () {
+  const registeredLicenceWithOpenWinterReturnLog = registeredLicenceWithOpenWinterReturnLogScenario()
 
   const { address } = registeredLicenceWithOpenWinterReturnLog
   const [licenceEntity] = registeredLicenceWithOpenWinterReturnLog.licenceEntities

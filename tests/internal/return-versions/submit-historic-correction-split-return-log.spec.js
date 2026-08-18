@@ -1,16 +1,16 @@
 import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
+import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 
 test.describe('Submit historic correction that results in a split-log (internal)', () => {
   let licence
   let startYear
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     licence = scenario.licence
-    startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
+    startYear = new Date(calculatedDates().currentFinancialYear.startDate).getFullYear()
 
     await setup(scenario)
   })

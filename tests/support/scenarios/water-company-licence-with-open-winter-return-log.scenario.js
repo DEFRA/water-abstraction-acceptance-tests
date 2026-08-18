@@ -4,8 +4,8 @@ export const title = 'Water company licence with open return log (winter cycle)'
 export const description =
   'Water company licence with one non-quarterly return requirement and an open winter return log for the previous winter cycle'
 
-export default function (calculatedDates) {
-  const licence = licenceWithOpenWinterReturnLog(calculatedDates)
+export default function () {
+  const licence = licenceWithOpenWinterReturnLog()
 
   licence.licence.waterUndertaker = true
 

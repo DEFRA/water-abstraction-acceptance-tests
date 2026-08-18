@@ -1,5 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
+import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 
 test.describe('Submit historic correction changing return cycle type on new return version (internal)', () => {
@@ -8,13 +9,12 @@ test.describe('Submit historic correction changing return cycle type on new retu
   let startYear
   let expectedReturnLogs
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs
-    startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
+    startYear = new Date(calculatedDates().currentFinancialYear.startDate).getFullYear()
 
     expectedReturnLogs = {
       newSummer: returnLogDateDetails({

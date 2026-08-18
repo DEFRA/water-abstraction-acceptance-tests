@@ -5,9 +5,9 @@ export const title = 'Registered licence with an open return log (winter cycle)'
 export const description =
   'Registered licence with one return requirement and an open winter return log for the previous winter cycle'
 
-export default function (calculatedDates) {
+export default function () {
   // We load in the unregistered open scenario because it has 99% of the data we need
-  const licence = licenceWithOpenWinterReturnLog(calculatedDates)
+  const licence = licenceWithOpenWinterReturnLog()
 
   // We then add the primary user, which is what makes the licence 'registered'
   const primaryUser = primaryUserData('external@example.com', licence.company)

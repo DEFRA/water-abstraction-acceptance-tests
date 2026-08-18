@@ -6,8 +6,8 @@ export const title =
 export const description =
   'The current-year annual bill run scenario, with the licence and its charge version starting on the sroc scheme start date so every outstanding sroc period has something to bill'
 
-export default function (dates) {
-  const licence = licenceWithCurrentAnnualBillRunScenario(dates)
+export default function () {
+  const licence = licenceWithCurrentAnnualBillRunScenario()
 
   // Without this, both the licence and its charge version only cover the last year or so (their default start
   // dates), so there's nothing for a supplementary bill run to pick up in earlier sroc periods
