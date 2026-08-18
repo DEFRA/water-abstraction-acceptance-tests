@@ -106,7 +106,7 @@ export function determineReturnCycleStartDate(returnLogStartDate, summer) {
   if (summer) {
     cycleMonth = '11'
 
-    if (startDateMonth < 11) {
+    if (startDateMonth < 10) {
       cycleYear = startDateYear - 1
     }
   } else {

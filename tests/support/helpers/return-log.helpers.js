@@ -44,3 +44,34 @@ export function buildReturnLogs(licence, returnRequirement, returnRequirementPur
     return returnLogData(licence, returnRequirement, [returnRequirementPurpose], [point], period)
   })
 }
+
+/**
+ * Builds a due return log for the current cycle and the previous cycle, for a single return requirement
+ *
+ * @param {object} licence - the licence the return logs belong to
+ * @param {object} returnRequirement - the return requirement the return logs are for
+ * @param {object} returnRequirementPurpose - the return requirement purpose the return logs are for
+ * @param {object} point - the point the return logs are for
+ * @param {object} cycle - the return cycle (start, end and due date) the return logs cover
+ *
+ * @returns {object[]} The due return log for the current cycle and the previous cycle
+ */
+export function buildPreviousAndCurrentReturnLogs(licence, returnRequirement, returnRequirementPurpose, point, cycle) {
+  const currentPeriod = {
+    startDate: new Date(cycle.startDate),
+    endDate: new Date(cycle.endDate),
+    dueDate: cycle.dueDate ? new Date(cycle.dueDate) : null,
+    quarterly: false
+  }
+  const previousPeriodDetails = previousPeriod(currentPeriod)
+
+  const [currentReturnLog, previousReturnLog] = buildReturnLogs(
+    licence,
+    returnRequirement,
+    returnRequirementPurpose,
+    point,
+    [currentPeriod, previousPeriodDetails]
+  )
+
+  return [currentReturnLog, previousReturnLog]
+}
