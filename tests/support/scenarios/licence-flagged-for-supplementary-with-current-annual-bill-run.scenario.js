@@ -7,7 +7,9 @@ export const description =
   'A licence with a charge version flagged for the next supplementary bill run, plus a sent annual bill run for the current year, so a supplementary bill run picks up the one outstanding sroc period'
 
 export default function () {
-  const currentEndYear = new Date(calculatedDates().currentFinancialYear.endDate).getUTCFullYear()
+  const { currentFinancialYear } = calculatedDates()
+
+  const currentEndYear = new Date(currentFinancialYear.endDate).getUTCFullYear()
 
   const licence = licenceWithChargeVersionScenario()
 

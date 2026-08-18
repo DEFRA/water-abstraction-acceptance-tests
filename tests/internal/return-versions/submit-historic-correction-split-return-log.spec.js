@@ -7,10 +7,13 @@ test.describe('Submit historic correction that results in a split-log (internal)
   let startYear
 
   test.beforeAll(async ({ setup }) => {
+    const { currentFinancialYear } = calculatedDates()
+
+    startYear = new Date(currentFinancialYear.startDate).getFullYear()
+
     const scenario = scenarioData()
 
     licence = scenario.licence
-    startYear = new Date(calculatedDates().currentFinancialYear.startDate).getFullYear()
 
     await setup(scenario)
   })

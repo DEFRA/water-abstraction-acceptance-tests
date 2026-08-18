@@ -10,11 +10,14 @@ test.describe('Submit historic correction changing return cycle type on new retu
   let expectedReturnLogs
 
   test.beforeAll(async ({ setup }) => {
+    const { currentFinancialYear } = calculatedDates()
+
+    startYear = new Date(currentFinancialYear.startDate).getFullYear()
+
     const scenario = scenarioData()
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs
-    startYear = new Date(calculatedDates().currentFinancialYear.startDate).getFullYear()
 
     expectedReturnLogs = {
       newSummer: returnLogDateDetails({

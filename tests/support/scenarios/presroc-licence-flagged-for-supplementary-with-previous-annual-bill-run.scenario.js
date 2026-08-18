@@ -8,7 +8,9 @@ export const description =
   'A presroc licence flagged for both the next presroc and sroc supplementary bill runs, plus a sent annual bill run for the year before the current one, so a supplementary bill run has no annual in the current year to pick up from'
 
 export default function () {
-  const currentEndYear = new Date(calculatedDates().currentFinancialYear.endDate).getUTCFullYear()
+  const { currentFinancialYear } = calculatedDates()
+
+  const currentEndYear = new Date(currentFinancialYear.endDate).getUTCFullYear()
 
   const licence = presrocLicenceFlaggedForSupplementaryScenario()
 

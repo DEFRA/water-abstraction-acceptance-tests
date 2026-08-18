@@ -10,7 +10,9 @@ export const description =
   'A licence starting on the day the sroc scheme began, with a charge version flagged for the next supplementary bill run, plus a sent annual bill run for the year before the current one, so a supplementary bill run has no annual in the current year to pick up from'
 
 export default function () {
-  const currentEndYear = new Date(calculatedDates().currentFinancialYear.endDate).getUTCFullYear()
+  const { currentFinancialYear } = calculatedDates()
+
+  const currentEndYear = new Date(currentFinancialYear.endDate).getUTCFullYear()
 
   const licenceEntity = buildLicenceEntity()
 
