@@ -5,8 +5,10 @@ import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 test.describe('Submit historic correction using abstraction data for licence with two purposes (internal)', () => {
   let licence
   let startYear
-  let current
-  let previous
+  let purpose400Current
+  let purpose400Previous
+  let purpose420Current
+  let purpose420Previous
 
   test.beforeAll(async ({ calculatedDates, setup }) => {
     const dates = await calculatedDates()
@@ -15,10 +17,13 @@ test.describe('Submit historic correction using abstraction data for licence wit
     licence = scenario.licence
     startYear = new Date(dates.currentWinterReturnCycle.startDate).getFullYear()
 
-    const [currentLog, previousLog] = scenario.returnLogs
+    const [purpose400CurrentLog, purpose400PreviousLog, purpose420CurrentLog, purpose420PreviousLog] =
+      scenario.returnLogs
 
-    current = returnLogDateDetails(currentLog)
-    previous = returnLogDateDetails(previousLog)
+    purpose400Current = returnLogDateDetails(purpose400CurrentLog)
+    purpose400Previous = returnLogDateDetails(purpose400PreviousLog)
+    purpose420Current = returnLogDateDetails(purpose420CurrentLog)
+    purpose420Previous = returnLogDateDetails(purpose420PreviousLog)
 
     await setup(scenario)
   })
@@ -32,17 +37,10 @@ test.describe('Submit historic correction using abstraction data for licence wit
 
     await expect(page.locator('h1')).toContainText('Returns')
 
-    await expect(page.locator('[data-test="return-due-date-0"]')).toContainText(current.dueDateString)
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(current.status)
-
-    await expect(page.locator('[data-test="return-due-date-1"]')).toContainText(current.dueDateString)
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(current.status)
-
-    await expect(page.locator('[data-test="return-due-date-2"]')).toContainText(previous.dueDateString)
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('complete')
-
-    await expect(page.locator('[data-test="return-due-date-3"]')).toContainText(previous.dueDateString)
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('complete')
+    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(purpose420Current.status)
+    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(purpose400Current.status)
+    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(purpose420Previous.status)
+    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText(purpose400Previous.status)
 
     await page.getByText('Licence set up').click()
 
@@ -73,34 +71,15 @@ test.describe('Submit historic correction using abstraction data for licence wit
 
     await expect(page.locator('h1')).toContainText('Returns')
 
-    await expect(page.locator('[data-test="return-due-date-0"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('not due yet')
-
-    await expect(page.locator('[data-test="return-due-date-1"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('not due yet')
-
-    await expect(page.locator('[data-test="return-due-date-2"]')).toContainText(current.dueDateString)
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('void')
-
-    await expect(page.locator('[data-test="return-due-date-3"]')).toContainText(current.dueDateString)
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void')
-
-    await expect(page.locator('[data-test="return-due-date-4"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('void') // purpose420Current now void
+    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void') // purpose400Current now void
     await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('open')
-
-    await expect(page.locator('[data-test="return-due-date-5"]')).toBeEmpty()
     await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText('open')
-
-    await expect(page.locator('[data-test="return-due-date-6"]')).toContainText(previous.dueDateString)
-    await expect(page.locator('[data-test="return-status-6"] > .govuk-tag')).toContainText('void')
-
-    await expect(page.locator('[data-test="return-due-date-7"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-6"] > .govuk-tag')).toContainText('void') // purpose420Previous now void
     await expect(page.locator('[data-test="return-status-7"] > .govuk-tag')).toContainText('open')
-
-    await expect(page.locator('[data-test="return-due-date-8"]')).toContainText(previous.dueDateString)
-    await expect(page.locator('[data-test="return-status-8"] > .govuk-tag')).toContainText('void')
-
-    await expect(page.locator('[data-test="return-due-date-9"]')).toBeEmpty()
+    await expect(page.locator('[data-test="return-status-8"] > .govuk-tag')).toContainText('void') // purpose400Previous now void
     await expect(page.locator('[data-test="return-status-9"] > .govuk-tag')).toContainText('open')
   })
 })

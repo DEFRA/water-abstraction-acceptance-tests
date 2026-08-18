@@ -7,7 +7,7 @@ import returnRequirementPurposeData from '../data/return-requirement-purpose.dat
 import { regionCode } from '../default-values.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
-import { buildDueAndCompletedReturnLogs } from '../helpers/return-log.helpers.js'
+import { buildPreviousAndCurrentReturnLogs } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with two return requirements and historic return logs'
 export const description =
@@ -17,6 +17,8 @@ export const description =
 export default function (calculatedDates) {
   const { currentWinterReturnCycle } = calculatedDates
 
+  currentWinterReturnCycle.dueDate = null
+
   const licenceWithTwoReturnRequirements = _licenceWithTwoReturnRequirements()
 
   const [firstRequirement, secondRequirement] = licenceWithTwoReturnRequirements.returnRequirements
@@ -24,14 +26,14 @@ export default function (calculatedDates) {
   const [firstRequirementPurpose, secondRequirementPurpose] = licenceWithTwoReturnRequirements.returnRequirementPurposes
 
   const returnLogs = [
-    ...buildDueAndCompletedReturnLogs(
+    ...buildPreviousAndCurrentReturnLogs(
       licenceWithTwoReturnRequirements.licence,
       firstRequirement,
       firstRequirementPurpose,
       firstPoint,
       currentWinterReturnCycle
     ),
-    ...buildDueAndCompletedReturnLogs(
+    ...buildPreviousAndCurrentReturnLogs(
       licenceWithTwoReturnRequirements.licence,
       secondRequirement,
       secondRequirementPurpose,
