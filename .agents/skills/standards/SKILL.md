@@ -36,7 +36,7 @@ This document defines the standards an agent must apply when reviewing or writin
 ## Spec file structure (Playwright)
 
 - Every spec file must have a single `test.describe` block containing everything: entity variables declared with `let`, then `test.beforeAll`, then `test.beforeEach`, then the `test`s. Nothing scenario-related lives at module scope above the `describe`.
-- `test.beforeAll` builds the scenario, pulls out the entities the tests need, assigns them to the outer `let` variables, then loads the scenario via the `setup` fixture. When the scenario needs calculated dates, call `calculatedDates` first to get the dates and pass them into the scenario builder, but still load the result with `setup` rather than calling `tearDown` + `load` individually.
+- `test.beforeAll` builds the scenario, pulls out the entities the tests need, assigns them to the outer `let` variables, then loads the scenario via the `setup` fixture, rather than calling `tearDown` + `load` individually. When a scenario needs calculated dates (current financial year, return cycles, billing periods), the scenario file imports `calculatedDates` from `tests/support/helpers/calculated-dates.helpers.js` and calls it itself — it's a plain function, not a fixture, so the spec file doesn't need to fetch it or pass it in. If the spec itself also needs a calculated date for its own assertions (e.g. an expected year), it imports and calls `calculatedDates` directly too, independently of the scenario.
   - On a scenario still on the legacy array shape, pull an entity out with a destructure using temporary `scenario`-prefixed names to avoid shadowing the outer `let`, e.g. `const { licences: [scenarioLicence] } = scenario` then `licence = scenarioLicence`.
   - On a scenario migrated to the single-object shape (see `.agents/skills/scenarios/SKILL.md`), the scenario's key is already the singular entity name, so a plain property assignment replaces the destructure entirely — no temp name needed since there's no `const`/`let` to collide with the outer one: `licence = scenario.licence`.
 
@@ -83,13 +83,13 @@ test.describe('Delete licence agreement journey (internal)', () => {
   test('deletes a licence agreement', async ({ page }) => { ... })
 })
 
-// Good — scenario needs calculated dates, so calculatedDates is called before building it, but setup still loads it
+// Good — the scenario needs calculated dates, so it imports and calls calculatedDates itself; the spec just builds
+// and loads the scenario as normal
 test.describe('Submit a return with no meter readings (internal)', () => {
   let returnLog
 
-  test.beforeAll(async ({ setup, calculatedDates }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     const {
       returnLogs: [scenarioReturnLog]
