@@ -4,7 +4,7 @@ import { calculatedDates } from '../../../../support/helpers/calculated-dates.he
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
-test.describe('Simple Licence with a Return Straddling Two Charge Elements (internal)', () => {
+test.describe('Licence with a Return Straddling Two Charge Elements (internal)', () => {
   let endYear
   let startYear
 
