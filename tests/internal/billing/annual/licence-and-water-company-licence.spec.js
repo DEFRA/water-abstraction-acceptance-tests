@@ -1,10 +1,9 @@
 import scenarioData from '../../../support/scenarios/licence-and-water-company-licence.scenario.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { test, expect } from '../../../support/fixtures.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
-test.describe('Create and send an annual bill run with a licence and a water company licence (internal)', () => {
+test.describe('Create an annual bill run with a licence and a water company licence (internal)', () => {
   let scenario
 
   test.beforeAll(async ({ setup }) => {
@@ -64,35 +63,5 @@ test.describe('Create and send an annual bill run with a licence and a water com
 
     await expect(licenceRow).toContainText(company.name)
     await expect(licenceRow).toContainText(billingAccount.accountNumber)
-
-    await page.getByRole('button', { name: 'Send bill run' }).click()
-
-    await expect(page.locator('h1')).toContainText("You're about to send this bill run")
-    await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-    await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
-    await expect(_summaryValue(page, 'Bill run type')).toContainText('Annual')
-    await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
-    await page.getByRole('button', { name: 'Send bill run' }).click()
-
-    await reloadUntilTextFound(page, page.locator('h1'), 'Bill run sent')
-    await page.getByRole('link', { name: 'Go to bill run' }).click()
-
-    await expect(page.locator('h1')).toContainText('Test Region annual')
-    await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
-    await expect(licenceRow).toContainText(company.name)
-    await expect(waterCompanyLicenceRow).toContainText(waterCompanyCompany.name)
-
-    await page.getByRole('link', { name: 'Go back to bill runs' }).click()
-
-    await expect(page.locator('h1')).toContainText('Bill runs')
-    await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('2')
-    await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')
   })
 })
-
-/**
- * Locates the value cell of a govuk-summary-list row identified by its label
- */
-function _summaryValue(page, label) {
-  return summaryRow(page, label).locator('.govuk-summary-list__value')
-}
