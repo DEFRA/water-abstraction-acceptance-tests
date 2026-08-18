@@ -49,6 +49,7 @@ test.describe('Submit historic correction using abstraction data for two abstrac
     await expect(page.locator('h1')).toContainText('Licence set up')
     await page.getByText('Set up new requirements').click()
 
+    await expect(page.locator('h1')).toContainText('Select the start date for the requirements for returns')
     await page.getByRole('radio', { name: 'Another date' }).check()
     await page.locator('#startDateDay').fill('01')
     await page.locator('#startDateMonth').fill('11')
