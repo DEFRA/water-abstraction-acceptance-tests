@@ -2,13 +2,12 @@
 
 ## Project overview
 
-Acceptance tests for the water abstraction service, delivered and maintained by DEFRA. Tests are written in Playwright (with a legacy Cypress suite).
+Acceptance tests for the water abstraction service, delivered and maintained by DEFRA. Tests are written in Playwright.
 
 ## Technology
 
 - **Runtime**: Node.js v22 (ES modules)
 - **Test framework**: Playwright
-- **Legacy test framework**: Cypress
 
 ## Agentic configuration
 
