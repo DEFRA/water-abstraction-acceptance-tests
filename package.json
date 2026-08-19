@@ -6,21 +6,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "cli:seed": "node cli/seed.cli.js",
-    "cy:open:local": "cypress open --e2e --env environment=local",
-    "cy:open:dev": "cypress open --e2e --env environment=dev",
-    "cy:open:tst": "cypress open --e2e --env environment=tst",
-    "cy:open:pre": "cypress open --e2e --env environment=pre",
-    "cy:run:local": "npm run cy:reports:delete && cypress run --e2e --env environment=local",
-    "cy:run:dev": "npm run cy:reports:delete && cypress run --e2e --env environment=dev",
-    "cy:run:tst": "npm run cy:reports:delete && cypress run --e2e --env environment=tst",
-    "cy:run:pre": "npm run cy:reports:delete && cypress run --e2e --env environment=pre",
-    "cy:run:ci": "npm run cy:reports:delete && cypress run --e2e --env environment=ci",
-    "cy:reports:delete": "rm -rf cypress/reports",
-    "cy:verify": "cypress verify",
-    "pw:open:local": "playwright test --ui",
-    "pw:run:local": "playwright test",
-    "test:local": "npm run pw:run:local && npm run cy:run:local",
+    "cli": "node cli/seed.cli.js",
+    "open": "playwright test --ui",
+    "run": "playwright test",
+    "report": "playwright show-report",
     "lint": "eslint .",
     "postinstall": "npx playwright install"
   },
@@ -31,8 +20,7 @@
   "license": "OGL-UK-3.0",
   "dependencies": {
     "big.js": "7.0.1",
-    "cypress": "^15.14.2",
-    "cypress-mochawesome-reporter": "^4.0.0"
+    "dotenv": "17.4.2"
   },
   "devDependencies": {
     "@inquirer/prompts": "^8.2.0",
@@ -47,7 +35,6 @@
   },
   "allowScripts": {
     "fsevents@2.3.2": true,
-    "unrs-resolver@1.12.2": true,
-    "cypress@15.18.1": true
+    "unrs-resolver@1.12.2": true
   }
 }

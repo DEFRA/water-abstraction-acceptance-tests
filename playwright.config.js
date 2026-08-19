@@ -1,8 +1,6 @@
 import { defineConfig } from '@playwright/test'
-import { readFileSync } from 'fs'
 
-const environment = process.env.TEST_ENV ?? 'local'
-const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 'utf8'))
+import config from './tests/config.js'
 
 export default defineConfig({
   forbidOnly: !!process.env.CI,
@@ -23,7 +21,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   testDir: './tests',
   use: {
-    baseURL: envConfig.config.baseUrl,
+    baseURL: config.baseUrl,
     trace: 'on-first-retry'
   },
   // Must be 1: each spec's beforeAll calls /system/data/tear-down, which wipes all test data in the
