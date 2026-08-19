@@ -50,6 +50,8 @@ You can run tests using the Playwright UI mode or headless from the CLI.
 
 > Playwright's UI mode runs tests in a unique interactive runner that allows you to see commands as they execute while also viewing the application under test.
 
+<img src="docs/open.png" width="800" alt="Screenshot of test runner" />
+
 To open the test runner use
 
 ```bash
@@ -60,10 +62,12 @@ npm run open
 
 > Runs Playwright tests to completion, headless, in Chromium.
 
+<img src="docs/test.png" width="800" alt="Screenshot of test" />
+
 To run the tests from the CLI use
 
 ```bash
-npm run run
+npm test
 ```
 
 ## Test data
@@ -90,6 +94,8 @@ When Playwright is [run](https://playwright.dev/docs/running-tests) headless, fo
 ```bash
 npm run report
 ```
+
+<img src="docs/report.png" width="800" alt="Screenshot of html report" />
 
 ## CLI
 
