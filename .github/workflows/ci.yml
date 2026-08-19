@@ -47,8 +47,7 @@ jobs:
           npm run lint
 
       # We don't have unit tests in this project. We also can't access the service as its hidden behind a VPN. Instead
-      # we ask Playwright to list all tests, which confirms every spec and its fixtures/scenarios still load and
-      # parse correctly
+      # we run a smoke test to confirm we haven't broken being able to run the project
       - name: Run unit tests
         run: |
-          npx playwright test --list
+          npx playwright test tests/ci.spec.js
