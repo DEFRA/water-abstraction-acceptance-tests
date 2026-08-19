@@ -76,18 +76,5 @@
         "clear": true
       }
     }
-  ],
-  "inputs": [
-    {
-      "id": "environments",
-      "description": "Environments",
-      "type": "pickString",
-      "options": [
-        "local",
-        "dev",
-        "tst",
-        "pre"
-      ]
-    }
   ]
 }
