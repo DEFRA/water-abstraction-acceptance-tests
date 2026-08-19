@@ -32,6 +32,21 @@
       }
     },
     {
+      "label": "🔁 Retry failed (Tests)",
+      "detail": "Re-run only the tests that failed in the last Playwright run",
+      "type": "shell",
+      "command": "npm run failed; echo 'All done! 🎉'",
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
       "label": "🔍 Lint (Tests)",
       "detail": "Run linting for system",
       "type": "shell",
