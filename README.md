@@ -5,8 +5,6 @@
 [![Licence](https://img.shields.io/badge/Licence-OGLv3-blue.svg)](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3)
 
 > This project originated with the migration of existing tests from the [water-abstraction-ui](https://github.com/DEFRA/water-abstraction-ui). It used Cypress v8 and did not have test isolation so all had to be restructured. The quality of these tests is not great but it's been our aim to review and improve all tests over time.
->
-> All tests have now been migrated to [Playwright](https://playwright.dev/) and Cypress has been removed.
 
 These acceptance tests support the [Manage your water abstraction or impoundment licence service](https://manage-water-abstraction-impoundment-licence.service.gov.uk/) and it's internal counterpart.
 
@@ -68,18 +66,15 @@ npm run run
 
 ## Test data
 
-When building [water-abstraction-system](https://github.com/DEFRA/water-abstraction-system) we found there there were numerous times we needed certain data to exist in the DB for our integration tests. To support this we built a series of test helpers that can quickly add test data to a DB, populated with what is needed for the service to 'work', or overridden with what is needed for a test.
+When building [water-abstraction-system](https://github.com/DEFRA/water-abstraction-system) we found there were numerous times we needed certain data to exist in the DB for our integration tests. To support this we built a series of test helpers that can quickly add test data to a DB, populated with what is needed for the service to 'work', or overridden with what is needed for a test.
 
 The same applies to our acceptance tests. You can't generate a bill run, if you haven't licences with charging information to base the bill run on!
 
-We created a an API endpoint in **water-abstraction-system** that allows us to 'seed' data for our acceptance tests, making use of the test helpers. We also created a 'tear down' endpoint that will delete any test data, so the service can be 'refreshed' between tests.
+We created an API endpoint in **water-abstraction-system** that allows us to 'seed' data for our acceptance tests, making use of the test helpers. We also created a 'tear down' endpoint that will delete any test data, so the service can be 'refreshed' between tests.
 
-At the start of this project we used Cypress's [fixtures](https://docs.cypress.io/api/commands/fixture) (JSON files) to hold the test data we wanted to seed. But we soon hit some issues.
+We've made every effort to make our scenarios and data as realistic as possible. Where one piece of data can't exist without another, we compose them together as an 'entity' — for example, a licence isn't valid without a licence holder, so `licence.entity.js` builds both together.
 
-- Duplication - There was _a lot_ of duplication in the fixtures. To be fair, you're encouraged to not keep your tests 'dry' when it comes to acceptance testing. But we were storing multiple files of hundreds of lines, of which only a small number might be different between fixtures
-- Dynamic data - The most common need we have for dynamic data is dates. A lot of the business logic is date-dependent. Depending on what the current date is can alter the behaviour of the service. You also need test data that will match to the current date. JSON files don't support dynamic content.
-
-So, now when creating tests we use our own concept named 'scenarios'. These are standard JavaScript modules that return POJO's which we can pass to our API to load. But as JavaScript modules we can use code to dynamically generate data and collate the objects to be loaded.
+We also allow scenarios to 'extend' from a previous scenario, reducing the duplication of some of the more complex scenarios.
 
 Most of our acceptance tests will start with two steps
 
