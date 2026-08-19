@@ -8,7 +8,7 @@
   "scripts": {
     "cli": "node cli/seed.cli.js",
     "open": "playwright test --ui",
-    "run": "playwright test",
+    "test": "playwright test",
     "report": "playwright show-report",
     "lint": "eslint .",
     "failed": "playwright test --last-failed",

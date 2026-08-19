@@ -20,7 +20,7 @@
       "label": "📻 Run (Tests)",
       "detail": "Run Playwright tests headless using the runner",
       "type": "shell",
-      "command": "npm run run; echo 'All done! 🎉'",
+      "command": "npm test; echo 'All done! 🎉'",
       "group": "test",
       "presentation": {
         "echo": true,
