@@ -1,5 +1,6 @@
 import scenarioData from '../../support/scenarios/water-company-licence-with-open-winter-return-log.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
+import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 
 test.describe('Submit historic correction changing to quarterly on new return version (internal)', () => {
@@ -8,13 +9,15 @@ test.describe('Submit historic correction changing to quarterly on new return ve
   let startYear
   let expectedReturnLogs
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const { currentFinancialYear } = calculatedDates()
+
+    startYear = new Date(currentFinancialYear.startDate).getFullYear()
+
+    const scenario = scenarioData()
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs
-    startYear = new Date(dates.currentFinancialYear.startDate).getFullYear()
 
     expectedReturnLogs = {
       currentFourthPeriod: returnLogDateDetails({

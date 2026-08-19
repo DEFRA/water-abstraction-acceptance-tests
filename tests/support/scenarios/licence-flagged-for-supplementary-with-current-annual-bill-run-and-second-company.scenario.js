@@ -11,8 +11,8 @@ export const title =
 export const description =
   'The current-year annual bill run scenario, with its charge version starting on the sroc scheme start date so every outstanding sroc period has something to bill, plus a second company and address so a new charge version can move the billing account to it'
 
-export default function (dates) {
-  const { billRun, ...licence } = licenceWithCurrentAnnualBillRunScenario(dates)
+export default function () {
+  const { billRun, ...licence } = licenceWithCurrentAnnualBillRunScenario()
   const secondCompany = _secondCompany()
 
   // Without this, both the licence and its charge version only cover the last year or so (their default start

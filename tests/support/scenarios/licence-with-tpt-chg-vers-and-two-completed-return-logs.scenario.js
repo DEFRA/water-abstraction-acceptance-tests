@@ -3,6 +3,7 @@ import returnRequirementPointData from '../data/return-requirement-point.data.js
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
 
@@ -10,8 +11,8 @@ export const title = 'Licence with tpt charge version and two completed return l
 export const description =
   'Licence with a return version and TPT charge version based on the licence data, plus two completed return logs for the previous winter cycle, one TPT and one not'
 
-export default function (calculatedDates) {
-  const { currentWinterReturnCycle } = calculatedDates
+export default function () {
+  const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceWithChargeVersionAndTwoPurposesScenario()

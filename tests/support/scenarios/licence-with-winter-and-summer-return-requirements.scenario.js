@@ -7,6 +7,7 @@ import returnRequirementPurposeData from '../data/return-requirement-purpose.dat
 import { regionCode } from '../default-values.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildPreviousAndCurrentReturnLogs } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with winter and summer return requirements'
@@ -14,8 +15,8 @@ export const description =
   'Licence with two return requirements, a winter and a summer cycle, each with a due return log for the current ' +
   'cycle and a completed return log for the previous cycle'
 
-export default function (calculatedDates) {
-  const { currentSummerReturnCycle, currentWinterReturnCycle } = calculatedDates
+export default function () {
+  const { currentSummerReturnCycle, currentWinterReturnCycle } = calculatedDates()
 
   currentSummerReturnCycle.dueDate = null
   currentWinterReturnCycle.dueDate = null

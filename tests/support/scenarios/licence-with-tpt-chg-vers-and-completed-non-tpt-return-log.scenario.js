@@ -4,8 +4,8 @@ export const title = 'Licence with tpt charge version and completed non-two-part
 export const description =
   'Licence with a return version and TPT charge version based on the licence data, plus a completed non-two-part-tariff return log for the previous winter cycle'
 
-export default function (calculatedDates) {
-  const licence = licenceWithTptChgVersAndCompletedReturnLogScenario(calculatedDates)
+export default function () {
+  const licence = licenceWithTptChgVersAndCompletedReturnLogScenario()
 
   const {
     returnLogs: [previousReturnLog, currentReturnLog],

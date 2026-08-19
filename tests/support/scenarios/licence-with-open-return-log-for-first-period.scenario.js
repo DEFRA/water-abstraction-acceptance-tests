@@ -1,13 +1,16 @@
 import returnLogData from '../data/return-log.data.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { compareDates } from '../helpers/date.helpers.js'
 
 export const title = 'Licence with open return log (first period)'
 export const description = 'Licence with an open return log for the first return period with no due date set'
 
-export default function (calculatedDates) {
-  const { firstReturnPeriod } = calculatedDates
+export default function () {
+  const dates = calculatedDates()
+
+  const { firstReturnPeriod } = dates
 
   const firstPeriod = {
     startDate: new Date(firstReturnPeriod.startDate),
@@ -29,7 +32,7 @@ export default function (calculatedDates) {
     licenceEntity.point
   )
 
-  const periods = _periods(firstPeriod, calculatedDates)
+  const periods = _periods(firstPeriod, dates)
   const returnLogs = periods.map((period) => {
     return returnLogData(
       licenceEntity.licence,
@@ -64,14 +67,14 @@ export default function (calculatedDates) {
  *
  * @private
  */
-function _periods(firstPeriod, calculatedDates) {
+function _periods(firstPeriod, dates) {
   const periods = [firstPeriod]
 
   if (!firstPeriod.quarterly) {
     return periods
   }
 
-  for (const quarterlyPeriod of calculatedDates.quarterlyPeriods) {
+  for (const quarterlyPeriod of dates.quarterlyPeriods) {
     if (compareDates(new Date(quarterlyPeriod.startDate), firstPeriod.startDate) === 1) {
       periods.push({
         startDate: new Date(quarterlyPeriod.startDate),

@@ -6,9 +6,8 @@ test.describe('View return statuses (external)', () => {
   let returnLogs
   let user
 
-  test.beforeAll(async ({ setup, calculatedDates }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs

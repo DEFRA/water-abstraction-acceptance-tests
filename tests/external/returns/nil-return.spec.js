@@ -5,9 +5,8 @@ test.describe('Submit a nil return (external)', () => {
   let returnLog
   let user
 
-  test.beforeAll(async ({ setup, calculatedDates }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     const {
       returnLogs: [scenarioReturnLog]

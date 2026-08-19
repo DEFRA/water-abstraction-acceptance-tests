@@ -2,14 +2,17 @@ import billRunData from '../data/bill-run.data.js'
 import { srocStartDate } from '../default-values.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 
 export const title =
   'Licence starting on the sroc scheme start date, flagged for supplementary billing, and a sent annual bill run for the previous year'
 export const description =
   'A licence starting on the day the sroc scheme began, with a charge version flagged for the next supplementary bill run, plus a sent annual bill run for the year before the current one, so a supplementary bill run has no annual in the current year to pick up from'
 
-export default function (dates) {
-  const currentEndYear = new Date(dates.currentFinancialYear.endDate).getUTCFullYear()
+export default function () {
+  const { currentFinancialYear } = calculatedDates()
+
+  const currentEndYear = new Date(currentFinancialYear.endDate).getUTCFullYear()
 
   const licenceEntity = buildLicenceEntity()
 

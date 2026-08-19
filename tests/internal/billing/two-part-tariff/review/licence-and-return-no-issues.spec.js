@@ -1,26 +1,25 @@
 import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-completed-return-log.scenario.js'
 import { test, expect } from '../../../../support/fixtures.js'
+import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
-test.describe('Simple Licence and Returns with No Issues (internal)', { tag: '@supplementary-billing' }, () => {
+test.describe('Licence and Returns with No Issues (internal)', { tag: '@supplementary-billing' }, () => {
   let endYear
   let licence
   let startYear
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-
+  test.beforeAll(async ({ setup }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
       }
-    } = dates
+    } = calculatedDates()
 
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-    const scenario = scenarioData(dates)
+    const scenario = scenarioData()
 
     licence = scenario.licence
 

@@ -5,9 +5,8 @@ test.describe('Editing a return (internal)', { tag: '@supplementaryBilling' }, (
   let licence
   let returnLog
 
-  test.beforeAll(async ({ setup, calculatedDates }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     licence = scenario.licence
     returnLog = scenario.returnLog

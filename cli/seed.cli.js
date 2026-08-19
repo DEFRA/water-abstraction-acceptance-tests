@@ -20,7 +20,7 @@ import path from 'path'
 import { search } from '@inquirer/prompts'
 
 import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
-import { get, post } from './system.request.js'
+import { post } from './system.request.js'
 import { asArrays } from '../tests/support/helpers/wire-format.helpers.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
@@ -28,8 +28,6 @@ const SCENARIOS_DIRS = ['tests/support/scenarios']
 
 async function run() {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
-
-  const currentServiceData = await _currentServiceData()
 
   const scenarios = await _scenarios()
 
@@ -42,7 +40,7 @@ async function run() {
 
       await _tearDown()
 
-      const body = await _body(selectedScenario, currentServiceData)
+      const body = await _body(selectedScenario)
 
       await _load(selectedScenario, body)
 
@@ -62,27 +60,10 @@ async function run() {
 }
 
 /**
- * Fetch 'current' data for the service
- *
- * This is information like the current financial year, summer and winter
- * cycles, and billing periods.
- *
- * Some scenarios need this information to dynamically generate the data they
- * will seed.
- *
- * @private
- */
-async function _currentServiceData() {
-  const response = await get('/system/data/dates')
-
-  return response.json()
-}
-
-/**
  * Extract data from the scenario file
  * @private
  */
-async function _body(selectedScenario, currentServiceData) {
+async function _body(selectedScenario) {
   // 1. Get the absolute path
   const scenarioPath = selectedScenario.path
 
@@ -98,7 +79,7 @@ async function _body(selectedScenario, currentServiceData) {
   }
 
   // 4. Call the function here to get the actual data object
-  return await getBody(currentServiceData)
+  return await getBody()
 }
 
 /**

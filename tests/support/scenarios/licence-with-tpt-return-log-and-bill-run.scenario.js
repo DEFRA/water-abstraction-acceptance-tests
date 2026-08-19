@@ -1,14 +1,15 @@
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a two-part tariff return log and bill run'
 export const description =
   'Licence with a two-part tariff return version, completed return log ready for editing, and a sent two-part tariff bill run for the same year so editing the return flags the licence for two-part tariff supplementary billing'
 
-export default function (calculatedDates) {
-  const { currentWinterReturnCycle } = calculatedDates
+export default function () {
+  const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licenceEntity = buildLicenceEntity()

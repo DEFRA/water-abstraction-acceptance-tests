@@ -8,9 +8,8 @@ test.describe(
   'Cancel existing supplementary bill runs (internal)',
   { tag: ['@presroc', '@supplementary-billing'] },
   () => {
-    test.beforeAll(async ({ setup, calculatedDates }) => {
-      const dates = await calculatedDates()
-      const scenario = scenarioData(dates)
+    test.beforeAll(async ({ setup }) => {
+      const scenario = scenarioData()
 
       await setup(scenario)
     })

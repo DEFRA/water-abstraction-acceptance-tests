@@ -5,6 +5,7 @@ import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { convertCubicMetresToMegalitres, splitTotalVolume } from '../helpers/conversion.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
@@ -15,8 +16,8 @@ export const description =
 // The first charge element covers April to October, leaving the remaining five months to the second
 const FIRST_ELEMENT_MONTHS = 7
 
-export default function (calculatedDates) {
-  const { currentWinterReturnCycle } = calculatedDates
+export default function () {
+  const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = buildLicenceEntity()

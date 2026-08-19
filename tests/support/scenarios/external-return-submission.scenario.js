@@ -4,8 +4,8 @@ export const title = 'External return submission'
 export const description =
   'Registered licence with an open return log for testing the external return submission journey'
 
-export default function (calculatedDates) {
-  const licence = registeredLicenceWithOpenWinterReturnLog(calculatedDates)
+export default function () {
+  const licence = registeredLicenceWithOpenWinterReturnLog()
 
   // The external return submission journey validates the region digit in the return ID against `v1:[1-8]:...`, so we
   // override the '9' our data builders default to for this scenario only, rather than changing it for every consumer.

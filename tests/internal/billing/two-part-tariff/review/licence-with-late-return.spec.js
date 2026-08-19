@@ -1,25 +1,24 @@
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-return-log-under-query.scenario.js'
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-late-return-log.scenario.js'
 import { test, expect } from '../../../../support/fixtures.js'
+import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
-test.describe('Simple Licence with a Return Under Query (internal)', () => {
+test.describe('Licence with a Late Return (internal)', () => {
   let endYear
   let startYear
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-
+  test.beforeAll(async ({ setup }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
       }
-    } = dates
+    } = calculatedDates()
 
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-    const scenario = scenarioData(dates)
+    const scenario = scenarioData()
 
     await setup(scenario)
   })
@@ -33,11 +32,11 @@ test.describe('Simple Licence with a Return Under Query (internal)', () => {
     {
       annotation: {
         type: 'tpt-review',
-        description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. It has one matching return which is under query.
+        description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. It has one return however this was received late.
 
 **Acceptance Criteria**
-- The licence is flagged with the checking query issue.
-- A return under query is not allocated, so it is also flagged with the over abstraction issue.`
+- The licence is flagged with the returns received late issue.
+- The return still fully allocates to the charge element.`
       }
     },
     async ({ page }) => {
@@ -84,7 +83,7 @@ test.describe('Simple Licence with a Return Under Query (internal)', () => {
       await expect(page.locator('#main-content')).toContainText('No licences found')
       await page.getByRole('button', { name: 'Clear filters' }).click()
       await page.locator('.govuk-details__summary').click()
-      await page.locator('[data-test="checking-query"]').check()
+      await page.locator('[data-test="returns-late"]').check()
       await page.getByRole('button', { name: 'Apply filters' }).click()
       await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 licences')
       await page.getByRole('button', { name: 'Clear filters' }).click()
@@ -92,14 +91,14 @@ test.describe('Simple Licence with a Return Under Query (internal)', () => {
       await expect(page.locator('[data-test="licence-1"]')).toContainText('AT/TE/ST/01/01')
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
-      await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Multiple Issues')
+      await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Returns received late')
       await expect(page.locator('[data-test="licence-progress-1"]')).toContainText('')
-      await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('review')
+      await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
       await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
-      await expect(page.locator('div > .govuk-tag')).toContainText('review')
+      await expect(page.locator('div > .govuk-tag')).toContainText('ready')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
         'Test Region two-part tariff'
       )
@@ -118,28 +117,21 @@ test.describe('Simple Licence with a Return Under Query (internal)', () => {
       await expect(page.locator('[data-test="matched-return-summary-0"] > div')).toContainText(
         'Spray Irrigation - Direct'
       )
-      await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('query')
-      // A return under query is not allocated, so it shows no allocated volume and is flagged as over abstracted
-      await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('0 ML / 1.554 ML')
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText('Checking query')
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(3)')).toContainText(
-        'Over abstraction'
+      await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
+      await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('1.554 ML / 1.554 ML')
+      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText(
+        'Returns received late'
       )
 
       await expect(page.locator('[data-test="matched-return-action-1"] > .govuk-link')).toHaveCount(0)
       await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
 
-      await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText(
-        '0 ML / 1.554 ML'
-      )
-      // Without an aggregate or charge factor we should only see the "View details" link, not "Change details"
-      await expect(page.locator('[data-test="charge-version-0-charge-reference-link-0"]')).toContainText('View details')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]')
       ).toContainText('')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
-      ).toContainText('0 ML / 1.554 ML')
+      ).toContainText('1.554 ML / 1.554 ML')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
       ).toContainText('1.554 ML (9999400)')
@@ -151,15 +143,13 @@ test.describe('Simple Licence with a Return Under Query (internal)', () => {
         `1 April ${startYear} to 31 March ${endYear}`
       )
       await expect(page.locator('[data-test="matched-return-summary-0"]')).toContainText('Spray Irrigation - Direct')
-      await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('query')
+      await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
       await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText(
-        '0 ML / 1.554 ML'
+        '1.554 ML / 1.554 ML'
       )
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText('Checking query')
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(3)')).toContainText(
-        'Over abstraction'
+      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText(
+        'Returns received late'
       )
-      await page.getByRole('link', { name: 'Go back to review licence' }).click()
     }
   )
 })

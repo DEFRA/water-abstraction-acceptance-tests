@@ -4,9 +4,8 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe('Submit then edit a meter readings return with zero reading (internal)', () => {
   let returnLog
 
-  test.beforeAll(async ({ setup, calculatedDates }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     returnLog = scenario.returnLogs[0]
 

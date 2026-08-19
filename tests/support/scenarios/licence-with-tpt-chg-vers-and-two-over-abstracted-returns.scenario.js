@@ -8,6 +8,7 @@ import returnRequirementPointData from '../data/return-requirement-point.data.js
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
@@ -15,8 +16,8 @@ export const title = 'Licence with tpt charge version and two over-abstracted re
 export const description =
   'Licence with a return version and a TPT charge version of one charge reference and two charge elements, plus two completed returns for the previous winter cycle that are both over-abstracted, the second also abstracting outside its own abstraction period'
 
-export default function (calculatedDates) {
-  const { currentWinterReturnCycle } = calculatedDates
+export default function () {
+  const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licence = licenceWithTwoPurposesScenario()

@@ -15,9 +15,8 @@ test.describe(
     let secondCompany
     let toFinancialYearEnding
 
-    test.beforeAll(async ({ setup, calculatedDates }) => {
-      const dates = await calculatedDates()
-      const scenario = scenarioData(dates)
+    test.beforeAll(async ({ setup }) => {
+      const scenario = scenarioData()
 
       const [companyFromScenario, secondCompanyFromScenario] = scenario.companies
 

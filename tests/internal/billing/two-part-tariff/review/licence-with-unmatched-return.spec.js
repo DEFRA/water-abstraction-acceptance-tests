@@ -1,25 +1,24 @@
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-two-over-abstracted-returns.scenario.js'
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-unmatched-return.scenario.js'
 import { test, expect } from '../../../../support/fixtures.js'
+import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
-test.describe('Simple Licence with Over-abstracted Returns (internal)', () => {
+test.describe('Licence with an Unmatched Return (internal)', () => {
   let endYear
   let startYear
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-
+  test.beforeAll(async ({ setup }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
       }
-    } = dates
+    } = calculatedDates()
 
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-    const scenario = scenarioData(dates)
+    const scenario = scenarioData()
 
     await setup(scenario)
   })
@@ -29,15 +28,15 @@ test.describe('Simple Licence with Over-abstracted Returns (internal)', () => {
   })
 
   test(
-    'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns and the allocated quantities',
+    'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the unmatched return, the return issues and the allocated quantities',
     {
       annotation: {
         type: 'tpt-review',
-        description: `A test case with one applicable charge version, a single charge reference and two charge elements. The return matching the first element is over-abstracted; the return matching the second is over-abstracted and abstracts outside the charge period.
+        description: `A test case with one applicable charge version, a single charge reference and one charge element. Its only return is two-part tariff but has a different purpose to the charge element, so the engine cannot match it.
 
 **Acceptance Criteria**
-- The licence is flagged with the over abstraction and abstraction outside period issues.
-- An over-abstracted return still only allocates up to the lower of the charge element and charge reference volume, not the over-abstracted amount.`
+- The charge element is flagged unable to match a return and the unmatched return is flagged over abstraction, so the licence has multiple issues.
+- With no matching return the charge element's full authorised volume is billable and the unmatched return allocates nothing.`
       }
     },
     async ({ page }) => {
@@ -84,8 +83,7 @@ test.describe('Simple Licence with Over-abstracted Returns (internal)', () => {
       await expect(page.locator('#main-content')).toContainText('No licences found')
       await page.getByRole('button', { name: 'Clear filters' }).click()
       await page.locator('.govuk-details__summary').click()
-      await page.locator('[data-test="abs-outside-period"]').check()
-      await page.locator('[data-test="over-abstraction"]').check()
+      await page.locator('[data-test="unable-to-match-return"]').check()
       await page.getByRole('button', { name: 'Apply filters' }).click()
       await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 licences')
       await page.getByRole('button', { name: 'Clear filters' }).click()
@@ -94,73 +92,64 @@ test.describe('Simple Licence with Over-abstracted Returns (internal)', () => {
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Multiple Issues')
-      await expect(page.locator('[data-test="licence-progress-1"]')).toContainText('')
-      await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
+      await expect(page.locator('[data-test="licence-progress-1"]')).toBeEmpty()
+      await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('review')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
       await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
-      await expect(page.locator('div > .govuk-tag')).toContainText('ready')
+      await expect(page.locator('div > .govuk-tag')).toContainText('review')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
         'Test Region two-part tariff'
       )
 
-      // First matched return is over-abstracted: 38 ML submitted but only the element's 32 ML allocates
-      await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
-      await expect(page.locator('[data-test="matched-return-status-0"] > .govuk-tag')).toContainText('completed')
-      await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('32 ML / 38 ML')
-      await expect(page.locator('[data-test="matched-return-total-0"]')).toContainText('Over abstraction')
+      // The return is two-part tariff but its purpose differs from the element, so it sits in the unmatched returns
+      // table, over-abstracted with nothing allocated
+      await expect(page.locator('.govuk-table__caption')).toContainText('Unmatched returns')
+      await expect(page.locator('[data-test="unmatched-return-summary-0"] > div')).toContainText(
+        'Spray Irrigation - Storage'
+      )
+      await expect(page.locator('[data-test="unmatched-return-status-0"] > .govuk-tag')).toContainText('completed')
+      await expect(page.locator('[data-test="unmatched-return-total-0"] > :nth-child(1)')).toContainText(
+        '0 ML / 1.554 ML'
+      )
+      await expect(page.locator('[data-test="unmatched-return-total-0"] > :nth-child(2)')).toContainText(
+        'Over abstraction'
+      )
+      await expect(page.locator('[data-test="unmatched-return-action-1"] > .govuk-link')).toHaveCount(0)
+      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toHaveCount(0)
 
-      // Second matched return is over-abstracted and abstracts outside its own abstraction period
-      await expect(page.locator('[data-test="matched-return-status-1"] > .govuk-tag')).toContainText('completed')
-      await expect(page.locator('[data-test="matched-return-total-1"]')).toContainText('30 ML / 36 ML')
-      await expect(page.locator('[data-test="matched-return-total-1"]')).toContainText('Abstraction outside period')
-      await expect(page.locator('[data-test="matched-return-total-1"]')).toContainText('Over abstraction')
-
-      await expect(page.locator('[data-test="matched-return-action-2"] > .govuk-link')).toHaveCount(0)
-      await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
-
-      // One charge reference with two two-part tariff elements; both elements fully allocate (32 + 30 of the 64 volume)
+      // The charge element has no matching return, so it is flagged unable to match and bills its full authorised volume
       await expect(page.locator('[data-test="charge-version-0-details"]')).toContainText(
-        '1 charge reference with 2 two-part tariff charge elements'
+        '1 charge reference with 1 two-part tariff charge element'
       )
       await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText(
-        '62 ML / 64 ML'
+        '1.554 ML / 1.554 ML'
       )
       await expect(
-        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
-      ).toContainText('32 ML / 32 ML')
+        page.locator('[data-test="charge-version-0-charge-reference-0-element-description-0"]')
+      ).toContainText('Spray Irrigation - Direct')
       await expect(
-        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-1"]')
-      ).toContainText('30 ML / 30 ML')
+        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-issues-0"]')
+      ).toContainText('Unable to match return')
+      await expect(
+        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
+      ).toContainText('1.554 ML / 1.554 ML')
+      await expect(
+        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
+      ).toBeEmpty()
 
-      // First element's match details: 32 ML allocates of the 38 ML submitted, flagged over abstraction
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
 
       await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
-      await expect(page.locator('[data-test="billable-returns"]')).toContainText('32 ML')
-      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('32 ML')
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('32 ML / 38 ML')
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText(
-        'Over abstraction'
+      await expect(page.locator('[data-test="billable-returns"]')).toContainText('1.554 ML')
+      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('1.554 ML')
+      await expect(page.locator('[data-test="issues-0"]')).toContainText('Unable to match return')
+      await expect(page.locator('[data-test="no-returns-message"]')).toContainText(
+        'No matching two-part tariff returns'
       )
-      await page.getByRole('link', { name: 'Go back to review licence' }).click()
-
-      // Second element's match details: 30 ML allocates of the 36 ML submitted, flagged abstraction outside period and
-      // over abstraction
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
-      await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-1"]').click()
-
-      await expect(page.locator('h1')).toContainText('Spray Irrigation - Storage')
-      await expect(page.locator('[data-test="billable-returns"]')).toContainText('30 ML')
-      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('30 ML')
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('30 ML / 36 ML')
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText(
-        'Abstraction outside period'
-      )
-      await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(3)')).toContainText(
-        'Over abstraction'
-      )
+      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toHaveCount(0)
+      await expect(page.locator('[data-test="matched-return-summary-0"]')).toHaveCount(0)
     }
   )
 })

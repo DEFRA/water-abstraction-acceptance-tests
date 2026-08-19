@@ -11,6 +11,7 @@ import transactionData from '../data/transaction.data.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { today } from '../helpers/date.helpers.js'
 import { generateUUID } from '../helpers/generate-uuid.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
@@ -22,12 +23,12 @@ export const description =
 
 const netAmount = 6600
 
-export default function (calculatedDates) {
+export default function () {
   const {
     billingPeriods: {
       twoPartTariff: [twoPartTariffPeriod]
     }
-  } = calculatedDates
+  } = calculatedDates()
 
   const licence = licenceWithTwoPurposesScenario()
 

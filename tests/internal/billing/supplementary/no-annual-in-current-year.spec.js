@@ -13,9 +13,8 @@ test.describe(
     let licence
     let toFinancialYearEnding
 
-    test.beforeAll(async ({ setup, calculatedDates }) => {
-      const dates = await calculatedDates()
-      const scenario = scenarioData(dates)
+    test.beforeAll(async ({ setup }) => {
+      const scenario = scenarioData()
 
       billingAccount = scenario.billingAccount
       company = scenario.company

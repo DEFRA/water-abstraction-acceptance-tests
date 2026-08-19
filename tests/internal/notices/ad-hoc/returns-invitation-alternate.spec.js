@@ -6,9 +6,8 @@ import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
   let returnLog
 
-  test.beforeAll(async ({ setup, calculatedDates }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     const {
       returnLogs: [scenarioReturnLog]

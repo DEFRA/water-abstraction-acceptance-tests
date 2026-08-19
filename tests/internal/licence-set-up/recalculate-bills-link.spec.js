@@ -15,9 +15,8 @@ test.describe(
     let licence
     let billRun
 
-    test.beforeAll(async ({ setup, calculatedDates }) => {
-      const dates = await calculatedDates()
-      const scenario = scenarioData(dates)
+    test.beforeAll(async ({ setup }) => {
+      const scenario = scenarioData()
 
       licence = scenario.licence
       billRun = scenario.billRun

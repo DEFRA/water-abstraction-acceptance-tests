@@ -21,7 +21,8 @@
   "license": "OGL-UK-3.0",
   "dependencies": {
     "big.js": "7.0.1",
-    "dotenv": "17.4.2"
+    "dotenv": "17.4.2",
+    "water-abstraction-engine": "github:DEFRA/water-abstraction-engine#main"
   },
   "devDependencies": {
     "@inquirer/prompts": "^8.2.0",

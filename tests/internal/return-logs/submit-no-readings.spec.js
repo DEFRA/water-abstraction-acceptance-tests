@@ -4,9 +4,8 @@ import { test, expect } from '../../support/fixtures.js'
 test.describe('Submit a return with no meter readings - validation errors (internal)', () => {
   let returnLog
 
-  test.beforeAll(async ({ setup, calculatedDates }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const scenario = scenarioData()
 
     returnLog = scenario.returnLogs[0]
 

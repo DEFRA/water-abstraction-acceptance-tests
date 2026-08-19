@@ -1,4 +1,5 @@
 import buildBillRunEntity from '../entities/bill-run.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithAgreementScenario from './licence-with-agreement.scenario.js'
 
 export const title = 'Licence with an agreement and a bill run'
@@ -10,12 +11,12 @@ export const description =
  *
  * This is omitted from the scenario name and description to keep them concise, but is still part of the scenario.
  */
-export default function (calculatedDates) {
+export default function () {
   const {
     billingPeriods: {
       twoPartTariff: [twoPartTariffDates]
     }
-  } = calculatedDates
+  } = calculatedDates()
 
   const licence = licenceWithAgreementScenario()
   const billRunEntity = buildBillRunEntity(licence, twoPartTariffDates)

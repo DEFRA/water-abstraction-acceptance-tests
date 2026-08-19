@@ -1,5 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-two-return-requirements-and-historic-return-logs.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
+import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 
 test.describe('Submit historic correction using abstraction data for licence with two purposes (internal)', () => {
@@ -10,12 +11,14 @@ test.describe('Submit historic correction using abstraction data for licence wit
   let purpose420Current
   let purpose420Previous
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const { currentWinterReturnCycle } = calculatedDates()
+
+    startYear = new Date(currentWinterReturnCycle.startDate).getFullYear()
+
+    const scenario = scenarioData()
 
     licence = scenario.licence
-    startYear = new Date(dates.currentWinterReturnCycle.startDate).getFullYear()
 
     const [purpose400CurrentLog, purpose400PreviousLog, purpose420CurrentLog, purpose420PreviousLog] =
       scenario.returnLogs
