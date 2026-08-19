@@ -1,5 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-winter-and-summer-return-requirements.scenario.js'
 import { test, expect } from '../../support/fixtures.js'
+import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 
 test.describe('Submit historic correction for licence with both a winter and summer return requirement (internal)', () => {
@@ -10,12 +11,14 @@ test.describe('Submit historic correction for licence with both a winter and sum
   let winterPrevious
   let summerPrevious
 
-  test.beforeAll(async ({ calculatedDates, setup }) => {
-    const dates = await calculatedDates()
-    const scenario = scenarioData(dates)
+  test.beforeAll(async ({ setup }) => {
+    const { currentWinterReturnCycle } = calculatedDates()
+
+    startYear = new Date(currentWinterReturnCycle.startDate).getFullYear()
+
+    const scenario = scenarioData()
 
     licence = scenario.licence
-    startYear = new Date(dates.currentWinterReturnCycle.startDate).getFullYear()
 
     const [winterCurrentLog, winterPreviousLog, summerCurrentLog, summerPreviousLog] = scenario.returnLogs
 

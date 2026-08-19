@@ -9,7 +9,7 @@ import {
   determineUpcomingReturnPeriods
 } from 'water-abstraction-engine/lib/return-periods.lib.js'
 
-import { determineBillingPeriods } from './determine-billing-periods.helpers.js'
+import DetermineBillingPeriodsService from 'water-abstraction-engine/services/bill-runs/determine-billing-periods.service.js'
 
 /**
  * Returns dynamic dates used to seed data, for example, current financial year and returns periods
@@ -40,10 +40,13 @@ export function calculatedDates() {
   const quarterlyPeriods = determineReturnsPeriods(currentWinterReturnCycle)
   const currentFinancialYear = determineCurrentFinancialYear()
   const billingPeriods = {
-    annual: determineBillingPeriods('annual', currentFinancialYear.endDate.getFullYear()),
-    supplementary: determineBillingPeriods('supplementary', currentFinancialYear.endDate.getFullYear()),
-    twoPartTariff: determineBillingPeriods('two_part_tariff', currentFinancialYear.endDate.getFullYear() - 1),
-    twoPartSupplementary: determineBillingPeriods('two_part_supplementary', currentFinancialYear.endDate.getFullYear())
+    annual: DetermineBillingPeriodsService('annual', currentFinancialYear.endDate.getFullYear()),
+    supplementary: DetermineBillingPeriodsService('supplementary', currentFinancialYear.endDate.getFullYear()),
+    twoPartTariff: DetermineBillingPeriodsService('two_part_tariff', currentFinancialYear.endDate.getFullYear() - 1),
+    twoPartSupplementary: DetermineBillingPeriodsService(
+      'two_part_supplementary',
+      currentFinancialYear.endDate.getFullYear()
+    )
   }
 
   return {
