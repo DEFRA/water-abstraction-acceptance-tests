@@ -7,7 +7,7 @@ description: How to use the Playwright CLI to run and debug specs against the re
 
 ## Context
 
-When writing or fixing a Playwright spec in this repo — especially when porting a Cypress test — do not guess at selectors from memory, from the old Cypress locator, or from a pasted HTML snippet. Run the spec against the real running app and read the actual failure output. See `.agents/skills/standards/SKILL.md` for the locator conventions to apply once you know what the real markup looks like.
+When writing or fixing a Playwright spec in this repo, do not guess at selectors from memory or from a pasted HTML snippet. Run the spec against the real running app and read the actual failure output. See `.agents/skills/standards/SKILL.md` for the locator conventions to apply once you know what the real markup looks like.
 
 ## Running a spec
 
