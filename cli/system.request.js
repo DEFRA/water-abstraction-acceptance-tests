@@ -12,15 +12,10 @@
  * @module SystemRequest
  */
 
-import fs from 'fs'
-import path from 'path'
-
-const ENVS_DIR = 'environments'
+import config from '../tests/config.js'
 
 export async function get(path) {
-  const env = await _environment()
-
-  const url = new URL(path, env.config.baseUrl)
+  const url = new URL(path, config.baseUrl)
   const requestOptions = _requestOptions('GET')
 
   const response = await fetch(url, requestOptions)
@@ -33,9 +28,7 @@ export async function get(path) {
 }
 
 export async function post(path, body = null) {
-  const env = await _environment()
-
-  const url = new URL(path, env.config.baseUrl)
+  const url = new URL(path, config.baseUrl)
   const requestOptions = _requestOptions('POST', body)
 
   const response = await fetch(url, requestOptions)
@@ -45,21 +38,6 @@ export async function post(path, body = null) {
   }
 
   return response
-}
-
-/**
- * Loads the 'local' environment config.
- *
- * @private
- */
-async function _environment() {
-  const configPath = path.join(process.cwd(), ENVS_DIR, 'local.json')
-  const fileContent = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
-
-  return {
-    name: 'local',
-    ...fileContent
-  }
 }
 
 async function _error(path, response) {

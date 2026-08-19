@@ -4,23 +4,14 @@ import neostandard from 'neostandard'
 
 export default [
   {
-    ignores: ['cypress/reports/**/*', 'test-results/**/*', 'playwright-report/**/*']
+    ignores: ['test-results/**/*', 'playwright-report/**/*']
   },
   ...neostandard({ noStyle: true }),
   {
     languageOptions: {
       ecmaVersion: 'latest',
       globals: {
-        ...globals.browser,
-        after: 'readonly',
-        afterEach: 'readonly',
-        before: 'readonly',
-        beforeEach: 'readonly',
-        cy: 'readonly',
-        Cypress: 'readonly',
-        describe: 'readonly',
-        expect: 'readonly',
-        it: 'readonly'
+        ...globals.browser
       },
       sourceType: 'module'
     },
