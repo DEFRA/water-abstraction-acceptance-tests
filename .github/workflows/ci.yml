@@ -12,13 +12,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
 
-      # Before we do anything, check we haven't accidentally left any `describe.only()` or `it.only(` statements in the
-      # tests
+      # Before we do anything, check we haven't accidentally left any `test.only(` statements in the tests
       #
       # Reworking of https://stackoverflow.com/a/21788642/6117745
       - name: Temporary tag check
         run: |
-          ! grep -R 'describe.only(\|it.only(' cypress/e2e/
+          ! grep -R '\.only(' tests/
 
       - name: Install Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 #v7.0.0
@@ -48,7 +47,8 @@ jobs:
           npm run lint
 
       # We don't have unit tests in this project. We also can't access the service as its hidden behind a VPN. Instead
-      # we run a special CI test to confirm we haven't broken being able to run the project
+      # we ask Playwright to list all tests, which confirms every spec and its fixtures/scenarios still load and
+      # parse correctly
       - name: Run unit tests
         run: |
-          npm run cy:run:ci
+          npx playwright test --list

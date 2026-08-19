@@ -6,7 +6,7 @@
 
 > This project originated with the migration of existing tests from the [water-abstraction-ui](https://github.com/DEFRA/water-abstraction-ui). It used Cypress v8 and did not have test isolation so all had to be restructured. The quality of these tests is not great but it's been our aim to review and improve all tests over time.
 >
-> We're now migrating all the tests to [Playwright](https://playwright.dev/), and using this opportunity to carry out that review. This README refers to CYpress only for now, but will be updated to reflect Playwright once the migration is complete.
+> All tests have now been migrated to [Playwright](https://playwright.dev/) and Cypress has been removed.
 
 These acceptance tests support the [Manage your water abstraction or impoundment licence service](https://manage-water-abstraction-impoundment-licence.service.gov.uk/) and it's internal counterpart.
 
@@ -34,51 +34,36 @@ npm ci
 
 ## Configuration
 
-> Important! Do not add environment files to source control
+> Important! Do not add your `.env` file to source control
 
-We have 4 environments the tests can run against; local, development, test, and pre-production.
+The tests run against your local instance of the service, so most configuration (base URLs, the default test password) is fixed in [tests/config.js](/tests/config.js).
 
-Each has its own [JSON](https://www.json.org/json-en.html) config file stored in `environments/`.
+The only things that vary are a couple of secrets the tests need but which shouldn't be committed: a JWT token and the Notify callback token. These are read from environment variables loaded from a `.env` file at the root of the project using [dotenv](https://www.npmjs.com/package/dotenv).
 
-### Environment files
-
-The config or 'environment' files hold environment variables which are key-value pairs; _name of the thing_ and the _value of the thing_. For example, `"defaultPassword": "P@55word"`. These are grouped by `config` and `values`.
-
-- `config` is used to configure Cypress itself
-- `values` are used within the tests and accessible via [Cypress.env()](https://docs.cypress.io/api/cypress-api/env)
-
-You tell Cypress which environment to use by which [npm run script](https://docs.npmjs.com/cli/v9/commands/npm-run-script) you launch from [package.json](/package.json), for example `npm run cy:open:tst`.
-
-Using these `*.json` files allows us to store both config and credentials that change across environments in one place but it is important they are _**never**_ committed to source control.
-
-Checkout [environments/example.json](/environments/example.json) for an example of the file you'll need to create for each environment.
+Copy [.env.example](/.env.example) to `.env` and fill in the values. `.env` is gitignored, so it's safe to keep your real credentials in it.
 
 ## Execution
 
-You can run tests using the Cypress test runner or headless using the Cypress CLI.
+You can run tests using the Playwright UI mode or headless from the CLI.
 
 ### Test runner
 
-> Cypress runs tests in a unique interactive runner that allows you to see commands as they execute while also viewing the application under test.
+> Playwright's UI mode runs tests in a unique interactive runner that allows you to see commands as they execute while also viewing the application under test.
 
-<img src="docs/runner.png" width="800" alt="Screenshot of test runner" />
-
-To open the test runner use `npm run cy:open:[env]` replacing `[env]` with your chosen environment
+To open the test runner use
 
 ```bash
-npm run cy:open:tst
+npm run open
 ```
 
 ### Headless
 
-> Runs Cypress tests to completion. By default, it will run all tests headless in the Electron browser.
+> Runs Playwright tests to completion, headless, in Chromium.
 
-<img src="docs/cli.png" width="800" alt="Screenshot of cli" />
-
-To open the CLI use `npm run cy:run:[env]` replacing `[env]` with your chosen environment
+To run the tests from the CLI use
 
 ```bash
-npm run cy:run:tst
+npm run run
 ```
 
 ## Test data
@@ -89,7 +74,7 @@ The same applies to our acceptance tests. You can't generate a bill run, if you 
 
 We created a an API endpoint in **water-abstraction-system** that allows us to 'seed' data for our acceptance tests, making use of the test helpers. We also created a 'tear down' endpoint that will delete any test data, so the service can be 'refreshed' between tests.
 
-Cypress supports the idea of [fixtures](https://docs.cypress.io/api/commands/fixture). At the start of this project we used this to hold the test data we wanted to seed. But we soon hit some issues.
+At the start of this project we used Cypress's [fixtures](https://docs.cypress.io/api/commands/fixture) (JSON files) to hold the test data we wanted to seed. But we soon hit some issues.
 
 - Duplication - There was _a lot_ of duplication in the fixtures. To be fair, you're encouraged to not keep your tests 'dry' when it comes to acceptance testing. But we were storing multiple files of hundreds of lines, of which only a small number might be different between fixtures
 - Dynamic data - The most common need we have for dynamic data is dates. A lot of the business logic is date-dependent. Depending on what the current date is can alter the behaviour of the service. You also need test data that will match to the current date. JSON files don't support dynamic content.
@@ -103,23 +88,23 @@ Most of our acceptance tests will start with two steps
 
 ## Reporting
 
-When Cypress is [run](https://docs.cypress.io/guides/guides/command-line#cypress-run), for example `npm run cy:run:tst`, a HTML report of the results is automatically generated.
+When Playwright is [run](https://playwright.dev/docs/running-tests) headless, for example `npm run run`, an HTML report of the results is automatically generated. Open it with
 
-<img src="docs/report.png" width="800" alt="Screenshot of html report" />
+```bash
+npm run report
+```
 
 ## CLI
 
 > Only one CLI function currently exists, but we'll add more in the future!
 
-We provide a CLI for other functionality that can be accessed using `npm run cli:[function]`.
+We provide a CLI for other functionality that can be accessed using `npm run cli`.
 
 ### seed
 
 We realised our scenarios can be really useful when working on new features and for manual and exploratory testing. This was to the extent that some team members would comment out the 'assert' part of a test in order to just load the scenario.
 
 To better support this we created the **seed cli**. It will list the scenarios we have by file name, and when selected, will first run tear down, then load the scenario's test data
-
-> It does not support our standard Cypress test files. If you need to load these, feel free to take the chance to convert them!
 
 ## VSCode tasks
 

@@ -27,13 +27,6 @@ chromedriver.log
 # Dependency directories
 node_modules/
 
-# Ignore our environment config files as they contain actual credentials.
-# The example.json is retained as it is used for documentation.
-# The ci.json is retained to support our automated CI build.
-/environments/*
-!/environments/ci.json
-!/environments/example.json
-
 # Playwright
 /test-results/
 /playwright-report/
