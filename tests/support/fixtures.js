@@ -1,23 +1,20 @@
 import { test as base } from '@playwright/test'
-import { readFileSync } from 'fs'
 
 import usersData from './data/users.data.js'
 import { asArrays } from './helpers/wire-format.helpers.js'
-
-const environment = process.env.TEST_ENV ?? 'local'
-const envConfig = JSON.parse(readFileSync(`./environments/${environment}.json`, 'utf8'))
+import config from '../config.js'
 
 export { expect } from '@playwright/test'
 
 export const test = base.extend({
   // eslint-disable-next-line no-empty-pattern
   defaultPassword: async ({}, use) => {
-    await use(envConfig.values.defaultPassword)
+    await use(config.defaultPassword)
   },
 
   // eslint-disable-next-line no-empty-pattern
   externalUrl: async ({}, use) => {
-    await use(envConfig.values.externalUrl)
+    await use(config.externalUrl)
   },
 
   lastNotification: async ({ request }, use) => {

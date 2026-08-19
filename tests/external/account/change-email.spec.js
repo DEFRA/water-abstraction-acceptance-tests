@@ -41,8 +41,7 @@ test.describe('Change user email address (external)', () => {
     await page.locator('button.govuk-button', { hasText: 'Continue' }).click()
 
     // Verify your email address
-    // NOTE: no accessible hook for this element in the rendered markup, so it's targeted by its DOM position,
-    // matching the original Cypress selector.
+    // NOTE: no accessible hook for this element in the rendered markup, so it's targeted by its DOM position.
     await expect(page.locator('#main-content > div:nth-child(2) > div:nth-child(2) > p > span')).toContainText(newEmail)
 
     const code = await page.locator('[data-test="security-code"]').innerText()
