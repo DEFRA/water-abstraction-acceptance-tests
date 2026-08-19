@@ -5,6 +5,8 @@
 [![Licence](https://img.shields.io/badge/Licence-OGLv3-blue.svg)](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3)
 
 > This project originated with the migration of existing tests from the [water-abstraction-ui](https://github.com/DEFRA/water-abstraction-ui). It used Cypress v8 and did not have test isolation so all had to be restructured. The quality of these tests is not great but it's been our aim to review and improve all tests over time.
+>
+> We believe we've achieved this with the rewrite to Playwright. We've rebuilt all of the data and scenarios, and improved the tests where possible.
 
 These acceptance tests support the [Manage your water abstraction or impoundment licence service](https://manage-water-abstraction-impoundment-licence.service.gov.uk/) and it's internal counterpart.
 
