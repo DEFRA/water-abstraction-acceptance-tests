@@ -1,7 +1,5 @@
 # Tear down
 
-This function supports our [water-abstraction-acceptance-tests](https://github.com/DEFRA/water-abstraction-acceptance-tests). At the start of each test, it will make an HTTP call to `POST /data/tear-down` resulting in `TearDownService` being called.
-
 The service and those it calls are responsible for clearing the various schemas we use of test data. Some tables have a `is_test` field that immediately identifies the record as being created for a test.
 
 But each test will create data that won't be flagged this way. So, the tear-down services also remove records we can identify as being test data.
