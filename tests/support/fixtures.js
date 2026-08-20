@@ -1,8 +1,8 @@
 import { test as base } from '@playwright/test'
 
 import config from '../config.js'
-import TearDownService from './tear-down/tear-down.service.js'
-import LoadService from './load/load.service.js'
+import loadService from './load/load.service.js'
+import tearDownService from './tear-down/tear-down.service.js'
 import usersData from './data/users.data.js'
 
 export { expect } from '@playwright/test'
@@ -29,7 +29,7 @@ export const test = base.extend({
   // eslint-disable-next-line no-empty-pattern
   load: async ({}, use) => {
     await use((data) => {
-      return LoadService(data)
+      return loadService(data)
     })
   },
 
@@ -61,7 +61,7 @@ export const test = base.extend({
   // eslint-disable-next-line no-empty-pattern
   tearDown: async ({}, use) => {
     await use(async () => {
-      await TearDownService()
+      await tearDownService()
     })
   },
 

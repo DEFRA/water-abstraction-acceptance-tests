@@ -391,7 +391,7 @@ async function _selector(schema, table, select, where, value) {
 
     return result[select]
   } catch (error) {
-    globalThis.GlobalNotifier.omg('Load service failed to apply lookup', { schema, table, select, where, value })
+    console.error('Load service failed to apply lookup', { schema, table, select, where, value })
 
     throw error
   }
