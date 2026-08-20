@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test'
 
-import TearDownService from '../tear-down/tear-down.service.js'
+import TearDownService from './tear-down/tear-down.service.js'
 
 import usersData from './data/users.data.js'
 import { asArrays } from './helpers/wire-format.helpers.js'
