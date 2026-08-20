@@ -1,5 +1,5 @@
 /**
- * Loads the entities requested by our acceptance tests when `/data/load` is called into the DB using the helpers
+ * Loads the entities using the DB helpers
  * @module LoadService
  */
 
@@ -65,7 +65,7 @@ import { db } from 'water-abstraction-engine/db/db.js'
 
 import { asArrays } from '../helpers/wire-format.helpers.js'
 
-// The entities defined in the payload need to match the properties of this object else you'll get an error. The loader
+// The entities defined in the scenarioData need to match the properties of this object else you'll get an error. The loader
 // uses the matched value to determine which helper to use to 'load' the entity instance, and whether we can flag it
 // as `is_test`.
 const LOAD_HELPERS = {
@@ -189,10 +189,10 @@ const LOAD_HELPERS = {
 }
 
 /**
- * Loads the entities requested by our acceptance tests when `/data/load` is called into the DB using the helpers
+ * Loads the entities using the DB helpers
  *
- * Takes arrays of entities from the payload and using our test helpers creates associated records in the DB. For
- * example, given the following payload a new 'region' record will be created using the `RegionHelper`, and a 'licence'
+ * Takes arrays of entities from the scenarioData and using our test helpers creates associated records in the DB. For
+ * example, given the following scenarioData a new 'region' record will be created using the `RegionHelper`, and a 'licence'
  * using the `LicenceHelper`.
  *
  * ```json
@@ -222,11 +222,11 @@ const LOAD_HELPERS = {
  * }
  * ```
  *
- * The IDs have been defined in the payload to make it possible to link the new licence to the new region.
+ * The IDs have been defined in the scenarioData to make it possible to link the new licence to the new region.
  *
  * > Order matters!
  *
- * This is only possible because the region is defined in the payload _before_ the licence. If they were the other way
+ * This is only possible because the region is defined in the scenarioData _before_ the licence. If they were the other way
  * round an error would be thrown when inserting the licence due to a foreign key constraint that requires the
  * referenced region to exist.
  *
@@ -261,7 +261,7 @@ const LOAD_HELPERS = {
  * `LicenceDocumentHeaderHelper`. You _must_ provide all elements for the query. Transformed to SQL this would be
  * `SELECT entity_id FROM crm.entity WHERE entity_type = 'regime'`.
  *
- * @param {object} payload - the body from the request containing the entities to be created
+ * @param {object} scenarioData - the body from the request containing the entities to be created
  *
  * @returns {Promise<object>} for each entity type passed in an array of ID's for the records created, for example
  *
@@ -272,13 +272,13 @@ const LOAD_HELPERS = {
  * }
  * ```
  */
-export default async function loadService(payload) {
+export default async function loadService(scenarioData) {
   // Instantiate a result object to which we'll record the ID's generated/used
   const result = {}
 
-  const data = asArrays(payload)
+  const data = asArrays(scenarioData)
 
-  // From the payload grab the entities to load; regions, licences, chargeVersions etc
+  // From the scenarioData grab the entities to load; regions, licences, chargeVersions etc
   const entityKeys = Object.keys(data)
 
   for (const entityKey of entityKeys) {
