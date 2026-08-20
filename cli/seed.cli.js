@@ -19,9 +19,9 @@ import fs from 'fs'
 import path from 'path'
 import { search } from '@inquirer/prompts'
 
+import loadService from '../tests/support/load/load.service.js'
 import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
-import { post } from './system.request.js'
-import { asArrays } from '../tests/support/helpers/wire-format.helpers.js'
+import tearDownService from '../tests/support/tear-down/tear-down.service.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 const SCENARIOS_DIRS = ['tests/support/scenarios']
@@ -38,11 +38,15 @@ async function run() {
     try {
       selectedScenario = await _prompt(scenarios, selectedScenario)
 
-      await _tearDown()
+      logInfo('Tearing down previous scenario data...')
+
+      await tearDownService()
 
       const body = await _body(selectedScenario)
 
-      await _load(selectedScenario, body)
+      logInfo(`Loading scenario ${styleBold(selectedScenario.title)}...`)
+
+      await loadService(body)
 
       logSuccess(`${styleBold('Finished!')} (press Escape to exit)\n`)
     } catch (err) {
@@ -80,16 +84,6 @@ async function _body(selectedScenario) {
 
   // 4. Call the function here to get the actual data object
   return await getBody()
-}
-
-/**
- * Send scenario data to the water-abstraction-system for loading
- * @private
- */
-async function _load(selectedScenario, body) {
-  logInfo(`Loading scenario ${styleBold(selectedScenario.title)}...`)
-
-  await post('/system/data/load', asArrays(body))
 }
 
 /**
@@ -181,16 +175,6 @@ async function _scenarios() {
   }
 
   return scenarios
-}
-
-/**
- * Clear existing data
- * @private
- */
-async function _tearDown() {
-  logInfo('Tearing down previous scenario data...')
-
-  await post('/system/data/tear-down')
 }
 
 /**
