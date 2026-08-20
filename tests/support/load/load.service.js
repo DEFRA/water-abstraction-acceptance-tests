@@ -343,14 +343,10 @@ async function _applyLookups(instance) {
   const keys = Object.keys(instance)
 
   for (const key of keys) {
-    try {
-      if (instance[key].schema) {
-        const { schema, table, lookup, value, select } = instance[key]
+    if (instance[key] && instance[key].schema) {
+      const { schema, table, lookup, value, select } = instance[key]
 
-        instance[key] = await _selector(schema, table, select, lookup, value)
-      }
-    } catch (error) {
-      console.error(`Apply lookup failed for key: "${key}"`, error.message)
+      instance[key] = await _selector(schema, table, select, lookup, value)
     }
   }
 }
@@ -397,6 +393,6 @@ async function _selector(schema, table, select, where, value) {
   } catch (error) {
     console.error('Load service failed to apply lookup', { schema, table, select, where, value })
 
-    // throw error
+    throw error
   }
 }
