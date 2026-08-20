@@ -1,5 +1,7 @@
 import { test as base } from '@playwright/test'
 
+import TearDownService from './tear-down/tear-down.service.js'
+
 import usersData from './data/users.data.js'
 import { asArrays } from './helpers/wire-format.helpers.js'
 import config from '../config.js'
@@ -56,9 +58,10 @@ export const test = base.extend({
     })
   },
 
-  tearDown: async ({ request }, use) => {
-    await use(() => {
-      return request.post('/system/data/tear-down')
+  // eslint-disable-next-line no-empty-pattern
+  tearDown: async ({}, use) => {
+    await use(async () => {
+      await TearDownService()
     })
   },
 
