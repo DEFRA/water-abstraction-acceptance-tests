@@ -4,7 +4,7 @@ import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { compareDates } from '../helpers/date.helpers.js'
 
-export const title = 'Licence with open return log (first period)'
+export const title = 'Licence with an open return log (first period)'
 export const description = 'Licence with an open return log for the first return period with no due date set'
 
 export default function () {

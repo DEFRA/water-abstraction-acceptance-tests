@@ -7,7 +7,7 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { relativeToToday } from '../helpers/date.helpers.js'
 
-export const title = 'All return log statuses'
+export const title = 'Licence with all return log statuses'
 export const description = 'Licence with return logs covering all possible statuses'
 
 export default function () {

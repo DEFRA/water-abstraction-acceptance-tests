@@ -3,7 +3,7 @@ import { licenceRef } from '../default-values.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { asArrays } from '../helpers/wire-format.helpers.js'
 
-export const title = 'A licence and a water company licence, with different billing accounts'
+export const title = 'A licence and a water company licence'
 export const description = 'A licence and a water company licence, each with a charge version and billing account'
 
 export default function () {

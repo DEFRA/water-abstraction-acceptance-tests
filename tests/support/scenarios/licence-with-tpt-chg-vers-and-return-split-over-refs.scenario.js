@@ -9,7 +9,7 @@ import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceScenario from './licence.scenario.js'
 
-export const title = 'Licence with tpt charge version and a return split over two charge references'
+export const title = 'Licence with a two-part tariff charge version and a return split over two charge references'
 export const description =
   'Licence with a return version and a TPT charge version of two charge references, each with one charge element sharing the same purpose but a different abstraction period, plus one completed return that matches and is split across both references'
 

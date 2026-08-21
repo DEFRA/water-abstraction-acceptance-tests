@@ -9,7 +9,7 @@ import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { convertCubicMetresToMegalitres, splitTotalVolume } from '../helpers/conversion.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
-export const title = 'Licence with tpt charge version and a return straddling two charge elements'
+export const title = 'Licence with a two-part tariff charge version and a return straddling two charge elements'
 export const description =
   'Licence with a return version and a TPT charge version made up of one charge reference with two charge elements covering different parts of the year, plus a single completed return whose volume straddles and fully allocates to both elements'
 

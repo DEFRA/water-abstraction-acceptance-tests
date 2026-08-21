@@ -2,7 +2,7 @@ import licenceMonitoringStationData from '../data/licence-monitoring-station.dat
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
 import registeredLicenceWithMonitoringStationUntaggedScenario from './registered-licence-with-monitoring-station-untagged.scenario.js'
 
-export const title = 'Registered licence with monitoring station tagged'
+export const title = 'Registered licence with a monitoring station (tagged)'
 export const description = 'Registered licence with a licence linked to a monitoring station'
 
 /**

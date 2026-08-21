@@ -4,7 +4,7 @@ import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
-export const title = 'Licence with tpt charge version and due return log'
+export const title = 'Licence with a two-part tariff charge version and a due return log'
 export const description =
   'Licence with a return version and TPT charge version based on the licence data, plus a due return log for the previous winter cycle'
 
