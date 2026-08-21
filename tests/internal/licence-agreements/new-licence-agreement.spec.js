@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { determineReturnCycleStartDate, formatLongDate, today } from '../../support/helpers/date.helpers.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
   'New licence agreement journey (internal)',

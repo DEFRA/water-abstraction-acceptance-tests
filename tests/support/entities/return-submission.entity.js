@@ -7,6 +7,9 @@ import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
  *
  * A return log doesn't need a return submission to be valid, so this isn't part of the return log's own
  * composition — it's built separately and only when a scenario needs a submitted (not just due) return log.
+ *
+ * @param {object} returnLog - the return log the submission is for
+ * @param {number} totalVolume - the total volume to record across the submission lines
  */
 export default function (returnLog, totalVolume) {
   const returnSubmission = returnSubmissionData(returnLog)

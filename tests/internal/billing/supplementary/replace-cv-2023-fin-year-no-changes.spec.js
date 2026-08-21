@@ -1,9 +1,9 @@
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-full-sroc-history-and-current-annual-bill-run.scenario.js'
-import { test, expect } from '../../../support/fixtures.js'
-import { formatLongDate, SROC_FIRST_FINANCIAL_YEAR } from '../../../support/helpers/date.helpers.js'
 import { srocStartDate } from '../../../support/default-values.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
+import { SROC_FIRST_FINANCIAL_YEAR, formatLongDate } from '../../../support/helpers/date.helpers.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Replace charge version in the 2023 financial year with no changes (internal)',

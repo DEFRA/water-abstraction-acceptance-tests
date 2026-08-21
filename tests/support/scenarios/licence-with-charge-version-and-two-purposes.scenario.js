@@ -1,7 +1,7 @@
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
 export const title = 'Licence with a charge version and two purposes'

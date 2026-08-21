@@ -1,3 +1,4 @@
+import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
@@ -5,7 +6,6 @@ import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import { licenceRef } from '../default-values.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { asArrays } from '../helpers/wire-format.helpers.js'
 
 export const title = 'Two licences on the same billing account'
 export const description =

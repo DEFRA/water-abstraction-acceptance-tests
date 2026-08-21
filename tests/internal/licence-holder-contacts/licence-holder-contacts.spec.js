@@ -1,7 +1,7 @@
-import scenarioData from '../../support/scenarios/company-contact.scenario.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import scenarioData from '../../support/scenarios/company-contact.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Licence holder contacts (internal)', () => {
   let company
@@ -325,6 +325,8 @@ test.describe('Licence holder contacts (internal)', () => {
 
 /**
  * Locates the value cell of a govuk-summary-list row identified by its label
+ *
+ * @private
  */
 function _summaryValue(page, label) {
   return summaryRow(page, label).locator('.govuk-summary-list__value')
@@ -332,6 +334,8 @@ function _summaryValue(page, label) {
 
 /**
  * Locates the contacts table row whose name cell exactly matches the given text
+ *
+ * @private
  */
 function _contactRow(page, name) {
   return page.locator('.govuk-table__row').filter({ has: page.getByText(name, { exact: true }) })

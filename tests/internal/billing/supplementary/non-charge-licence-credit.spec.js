@@ -1,8 +1,8 @@
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
-import { test, expect } from '../../../support/fixtures.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
+import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Make licence non-chargeable then see credit in next bill run (internal)',

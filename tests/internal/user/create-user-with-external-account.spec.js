@@ -1,5 +1,5 @@
 import scenarioData from '../../support/scenarios/external-gov-uk-user.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Creating internal user with existing external account (internal)', () => {
   let user

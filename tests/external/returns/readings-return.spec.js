@@ -1,6 +1,6 @@
-import scenarioData from '../../support/scenarios/external-return-submission.scenario.js'
 import { monthlyReturnPeriods } from '../../support/helpers/date.helpers.js'
-import { test, expect } from '../../support/fixtures.js'
+import scenarioData from '../../support/scenarios/external-return-submission.scenario.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a readings return (external)', () => {
   let returnLog

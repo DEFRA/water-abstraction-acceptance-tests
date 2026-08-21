@@ -1,5 +1,5 @@
 import scenarioData from '../../../support/scenarios/registered-licence-with-open-winter-return-log.scenario.js'
-import { test, expect } from '../../../support/fixtures.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc returns invitation journey (internal)', () => {
   test.beforeAll(async ({ setup }) => {

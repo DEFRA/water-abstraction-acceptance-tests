@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a nil return (internal)', () => {
   let returnLog

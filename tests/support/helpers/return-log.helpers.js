@@ -1,5 +1,5 @@
-import returnLogData from '../data/return-log.data.js'
 import { previousPeriod } from './date.helpers.js'
+import returnLogData from '../data/return-log.data.js'
 
 /**
  * Builds the previous and current return cycle periods for a return requirement

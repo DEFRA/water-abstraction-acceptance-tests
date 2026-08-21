@@ -1,6 +1,6 @@
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-untagged.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
-import { test, expect } from '../../../support/fixtures.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Tag a licence but attempt to change the tag type during the journey (internal)', () => {
   let licence

@@ -1,9 +1,9 @@
-import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary.scenario.js'
-import { test, expect } from '../../../support/fixtures.js'
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
+import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary.scenario.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Send a two-part tariff supplementary bill run (internal)', { tag: '@supplementary-billing' }, () => {
   let endYear
@@ -116,6 +116,8 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
 
 /**
  * Locates the value cell of a govuk-summary-list row identified by its label
+ *
+ * @private
  */
 function _summaryValue(page, label) {
   return summaryRow(page, label).locator('.govuk-summary-list__value')

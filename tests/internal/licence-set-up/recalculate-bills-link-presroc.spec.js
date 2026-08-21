@@ -1,5 +1,5 @@
 import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
   'Recalculate bills link, selecting presroc (internal)',

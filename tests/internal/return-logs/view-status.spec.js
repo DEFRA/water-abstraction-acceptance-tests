@@ -1,5 +1,5 @@
 import scenarioData from '../../support/scenarios/licence-with-all-return-log-statuses.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('View returns and their status (internal)', () => {
   let licence

@@ -1,5 +1,5 @@
-import primaryUserData from '../data/primary-user.data.js'
 import licenceWithOpenWinterReturnLog from './licence-with-open-winter-return-log.scenario.js'
+import primaryUserData from '../data/primary-user.data.js'
 
 export const title = 'Registered licence with an open return log (winter cycle)'
 export const description =

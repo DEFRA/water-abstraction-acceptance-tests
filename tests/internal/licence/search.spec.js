@@ -1,5 +1,5 @@
 import scenarioData from '../../support/scenarios/licence.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Search for a licence (internal)', () => {
   let licence

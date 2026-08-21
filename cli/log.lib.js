@@ -22,22 +22,49 @@ const RESET_ALL = '\x1b[0m'
 const RESET_BOLD = '\x1b[22m'
 const YELLOW = '\x1b[33m'
 
+/**
+ * Logs a message in blue, for general informational output
+ *
+ * @param {string} message - the message to log
+ */
 export function logInfo(message) {
   _log(BLUE, message)
 }
 
+/**
+ * Logs a message in red, for errors
+ *
+ * @param {string} message - the message to log
+ */
 export function logError(message) {
   _log(RED, message)
 }
 
+/**
+ * Logs a message in green, for successful outcomes
+ *
+ * @param {string} message - the message to log
+ */
 export function logSuccess(message) {
   _log(GREEN, message)
 }
 
+/**
+ * Logs a message in yellow, for warnings
+ *
+ * @param {string} message - the message to log
+ */
 export function logWarning(message) {
   _log(YELLOW, message)
 }
 
+/**
+ * Wraps a message in ANSI codes to style it bold
+ *
+ * @param {string} message - the message to style
+ *
+ * @returns {string} the message wrapped in bold ANSI escape codes
+ */
 export function styleBold(message) {
   return `${BOLD}${message}${RESET_BOLD}`
 }

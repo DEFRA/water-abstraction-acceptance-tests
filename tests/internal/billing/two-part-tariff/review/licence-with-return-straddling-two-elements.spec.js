@@ -1,8 +1,8 @@
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-return-straddling-two-elements.scenario.js'
-import { test, expect } from '../../../../support/fixtures.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-return-straddling-two-elements.scenario.js'
+import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence with a Return Straddling Two Charge Elements (internal)', () => {
   let endYear

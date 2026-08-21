@@ -1,6 +1,6 @@
-import primaryUserData from '../data/primary-user.data.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { externalUserEmail } from '../default-values.js'
+import primaryUserData from '../data/primary-user.data.js'
 
 export const title = 'Registered licence'
 export const description = 'A licence that has been registered (primary user), licence holder and a company'
