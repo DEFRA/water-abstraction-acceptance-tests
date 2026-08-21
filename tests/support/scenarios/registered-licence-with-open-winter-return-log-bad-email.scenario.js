@@ -7,19 +7,7 @@ export const description =
 export default function () {
   const registeredLicenceWithOpenWinterReturnLog = registeredLicenceWithOpenWinterReturnLogScenario()
 
-  const { address } = registeredLicenceWithOpenWinterReturnLog
   const [licenceEntity] = registeredLicenceWithOpenWinterReturnLog.licenceEntities
-
-  // We'll only set the due date on the OPEN return log if the alternate notification is successful. The Notify
-  // service will reject the request if the address is not real, even though we're using our Notify test API key.
-  // This is why we override the address record that will be linked to the licence's licence holder.
-  address.address1 = 'HORIZON HOUSE'
-  address.address2 = 'DEANERY ROAD'
-  address.address3 = null
-  address.address4 = null
-  address.address5 = null
-  address.address6 = null
-  address.postcode = 'BS1 5AH'
 
   licenceEntity.name = 'iwill-fail@e'
 
