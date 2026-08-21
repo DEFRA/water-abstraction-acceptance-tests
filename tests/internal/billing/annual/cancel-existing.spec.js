@@ -1,7 +1,7 @@
-import scenarioData from '../../../support/scenarios/licence-with-charge-version.scenario.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { test, expect } from '../../../support/fixtures.js'
+import scenarioData from '../../../support/scenarios/licence-with-charge-version.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { expect, test } from '../../../support/fixtures.js'
 import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Cancel an existing annual bill run (internal)', () => {
@@ -63,6 +63,8 @@ test.describe('Cancel an existing annual bill run (internal)', () => {
 
 /**
  * Locates the value cell of a govuk-summary-list row identified by its label
+ *
+ * @private
  */
 function _summaryValue(page, label) {
   return summaryRow(page, label).locator('.govuk-summary-list__value')

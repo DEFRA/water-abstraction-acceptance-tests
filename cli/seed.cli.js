@@ -20,8 +20,8 @@ import path from 'path'
 import { search } from '@inquirer/prompts'
 
 import loadService from '../tests/support/load/load.service.js'
-import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
 import tearDownService from '../tests/support/tear-down/tear-down.service.js'
+import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
 const SCENARIOS_DIRS = ['tests/support/scenarios']

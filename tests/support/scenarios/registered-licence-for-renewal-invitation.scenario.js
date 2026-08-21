@@ -1,5 +1,5 @@
-import registeredLicenceScenario from './registered-licence.scenario.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
+import registeredLicenceScenario from './registered-licence.scenario.js'
 
 export const title = 'Registered licence for renewal invitation'
 export const description =

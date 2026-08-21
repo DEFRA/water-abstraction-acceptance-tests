@@ -1,5 +1,5 @@
 import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit then edit an abstraction volumes return with zero quantities (internal)', () => {
   let returnLog

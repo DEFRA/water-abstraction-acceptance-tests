@@ -1,5 +1,6 @@
+import { generateUUID } from 'water-abstraction-engine/test/generators.js'
+
 import { convertCubicMetresToMegalitres } from '../helpers/conversion.helpers.js'
-import { generateUUID } from '../helpers/generate-uuid.js'
 import { isTwoPartTariffPurpose, purposeDescription } from '../helpers/purpose.helpers.js'
 
 export default function (chargeReference, licenceVersionPurpose) {

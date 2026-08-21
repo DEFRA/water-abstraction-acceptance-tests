@@ -1,37 +1,27 @@
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
-import globals from 'globals'
-import neostandard from 'neostandard'
+import sharedConfig from 'water-abstraction-engine/eslint.config.js'
 
 export default [
+  ...sharedConfig,
   {
-    ignores: ['test-results/**/*', 'playwright-report/**/*']
-  },
-  ...neostandard({ noStyle: true }),
-  {
-    languageOptions: {
-      ecmaVersion: 'latest',
-      globals: {
-        ...globals.browser
-      },
-      sourceType: 'module'
-    },
-    plugins: {
-      import: neostandard.plugins['import-x']
-    },
+    files: ['tests/support/scenarios/**/*'],
     rules: {
-      'import/extensions': ['error', 'always']
+      'local/no-mixed-exports': 'off',
+      'jsdoc/check-alignment': 'off',
+      'jsdoc/check-indentation': 'off',
+      'jsdoc/check-types': 'off',
+      'jsdoc/check-tag-names': 'off',
+      'jsdoc/lines-before-block': 'off',
+      'jsdoc/require-description': 'off',
+      'jsdoc/require-hyphen-before-param-description': 'off',
+      'jsdoc/require-jsdoc': 'off',
+      'jsdoc/require-param': 'off',
+      'jsdoc/require-returns': 'off'
     }
   },
   {
-    files: ['eslint.config.js'],
+    files: ['tests/support/data/**/*'],
     rules: {
-      'import/extensions': 'off'
-    }
-  },
-  eslintPluginPrettierRecommended,
-  {
-    rules: {
-      'arrow-body-style': ['error', 'always']
+      'jsdoc/require-jsdoc': 'off'
     }
   }
 ]

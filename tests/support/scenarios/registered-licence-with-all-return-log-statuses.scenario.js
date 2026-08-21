@@ -1,6 +1,6 @@
-import primaryUserData from '../data/primary-user.data.js'
-import licenceWithAllReturnLogStatuses from './licence-with-all-return-log-statuses.scenario.js'
 import { externalUserEmail } from '../default-values.js'
+import licenceWithAllReturnLogStatuses from './licence-with-all-return-log-statuses.scenario.js'
+import primaryUserData from '../data/primary-user.data.js'
 
 export const title = 'Registered licence with all return log statuses'
 export const description = 'Registered licence with return logs covering all possible statuses'

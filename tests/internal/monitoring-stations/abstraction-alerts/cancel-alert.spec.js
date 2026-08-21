@@ -1,6 +1,6 @@
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
-import { test, expect } from '../../../support/fixtures.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Set up but then cancel an abstraction alert (internal)', () => {
   let licence

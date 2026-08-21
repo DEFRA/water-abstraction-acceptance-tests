@@ -1,6 +1,6 @@
-import scenarioData from '../../support/scenarios/presroc-licence-with-agreement.scenario.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import { test, expect } from '../../support/fixtures.js'
+import scenarioData from '../../support/scenarios/presroc-licence-with-agreement.scenario.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
   'End licence agreement journey (presroc) (internal)',

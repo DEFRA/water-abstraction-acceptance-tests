@@ -1,4 +1,4 @@
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Creating a user (internal)', () => {
   test.beforeEach(async ({ login, users }) => {

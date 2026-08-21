@@ -1,5 +1,5 @@
-import { test, expect } from '../../support/fixtures.js'
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Reset password journey (internal)', () => {
   test('displays the change password page when the link in the email is clicked and automatically logs in when the password is changed', async ({

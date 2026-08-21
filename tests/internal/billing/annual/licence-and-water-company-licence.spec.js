@@ -1,7 +1,7 @@
-import scenarioData from '../../../support/scenarios/licence-and-water-company-licence.scenario.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { test, expect } from '../../../support/fixtures.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
+import scenarioData from '../../../support/scenarios/licence-and-water-company-licence.scenario.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Create an annual bill run with a licence and a water company licence (internal)', () => {
   let scenario

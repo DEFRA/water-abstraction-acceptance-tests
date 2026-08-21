@@ -1,8 +1,8 @@
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-ver-and-two-refs-and-two-due-returns.scenario.js'
-import { test, expect } from '../../../../support/fixtures.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-ver-and-two-refs-and-two-due-returns.scenario.js'
+import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence with Two Charge References (internal)', () => {
   let endYear

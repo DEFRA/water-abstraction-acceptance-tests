@@ -1,7 +1,7 @@
-import scenarioData from '../../support/scenarios/presroc-licence-with-charge-version.scenario.js'
 import { convertCubicMetresToMegalitres } from '../../support/helpers/conversion.helpers.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import { test, expect } from '../../support/fixtures.js'
+import scenarioData from '../../support/scenarios/presroc-licence-with-charge-version.scenario.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplementary-billing', '@presroc'] }, () => {
   let chargeVersion

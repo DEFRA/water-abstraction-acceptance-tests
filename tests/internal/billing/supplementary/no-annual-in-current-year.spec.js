@@ -1,7 +1,7 @@
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-previous-annual-bill-run.scenario.js'
-import { test, expect } from '../../../support/fixtures.js'
-import { billingPeriodCounts, formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
+import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-previous-annual-bill-run.scenario.js'
+import { billingPeriodCounts, formatLongDate } from '../../../support/helpers/date.helpers.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Create an supplementary bill run with no annual in the current year (internal)',

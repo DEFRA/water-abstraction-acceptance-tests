@@ -1,5 +1,6 @@
+import { generateUUID } from 'water-abstraction-engine/test/generators.js'
+
 import { splitTotalVolume } from '../helpers/conversion.helpers.js'
-import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (period, returnSubmission, totalVolume) {
   const startYear = period.startDate.getFullYear()
