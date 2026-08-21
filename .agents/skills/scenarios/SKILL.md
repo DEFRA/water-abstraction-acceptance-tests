@@ -13,6 +13,7 @@ A scenario file (`tests/support/scenarios/*.scenario.js`) composes one or more d
 
 - Every scenario file exports a `title` and a `description`.
 - `title` is short — a noun phrase naming what's in the scenario, e.g. `'Licence in workflow, and an annual bill run'`.
+- `title` must be a grammatically correct rendering of the file name: split the `kebab-case` stem on hyphens, sentence-case it, add the articles (`a`/`an`) and joining words (`and`, `with`) English needs, and expand any abbreviation the file name uses (e.g. `tpt` → `two-part tariff`, `chg-ver(s)` → `charge version(s)`) rather than leaving it literal. Don't drop a word the file name carries (e.g. `external-sharing-access.scenario.js` must keep "External" in its title) and don't fold in extra detail the file name doesn't carry, even if it's true of the scenario — that belongs in `description` instead.
 - `description` is one flowing sentence (not a comma-spliced run-on of three or more clauses) that says what's actually composed — the entities and any detail a caller would need to pick the right scenario from a list. It's fine to end with a short reason clause (e.g. `'...so it can be used to test old charge scheme behaviour'`, `'...making it eligible for a renewal invitation'`).
 - `description` must add information beyond `title` — never repeat `title` verbatim.
 - Don't restate implementation detail that's already covered by an in-code comment (e.g. why a date field is set the way it is) — the description is for picking a scenario, not for explaining the builder's internals.

@@ -12,7 +12,7 @@ import returnRequirementPointData from '../data/return-requirement-point.data.js
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
-export const title = 'Licence with tpt charge version and two over-abstracted returns'
+export const title = 'Licence with a two-part tariff charge version and two over-abstracted returns'
 export const description =
   'Licence with a return version and a TPT charge version of one charge reference and two charge elements, plus two completed returns for the previous winter cycle that are both over-abstracted, the second also abstracting outside its own abstraction period'
 

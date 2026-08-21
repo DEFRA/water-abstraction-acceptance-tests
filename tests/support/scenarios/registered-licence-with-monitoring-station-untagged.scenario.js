@@ -1,7 +1,7 @@
 import monitoringStationData from '../data/monitoring-station.data.js'
 import registeredLicenceScenario from './registered-licence.scenario.js'
 
-export const title = 'Registered licence with monitoring station (untagged)'
+export const title = 'Registered licence with a monitoring station (untagged)'
 export const description = 'Registered licence and monitoring station created separately with no tag between them'
 
 /**

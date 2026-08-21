@@ -7,7 +7,7 @@ import returnRequirementPointData from '../data/return-requirement-point.data.js
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
 import returnVersionData from '../data/return-version.data.js'
 
-export const title = 'All return log statuses'
+export const title = 'Licence with all return log statuses'
 export const description = 'Licence with return logs covering all possible statuses'
 
 export default function () {

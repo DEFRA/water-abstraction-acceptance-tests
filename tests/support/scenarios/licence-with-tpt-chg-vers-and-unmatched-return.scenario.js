@@ -5,7 +5,7 @@ import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
-export const title = 'Licence with tpt charge version and an unmatched return'
+export const title = 'Licence with a two-part tariff charge version and an unmatched return'
 export const description =
   'Licence with a return version and a TPT charge version whose charge element and completed return have different two-part tariff purposes, so the return cannot match the element'
 

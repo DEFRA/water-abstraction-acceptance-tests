@@ -1,6 +1,6 @@
 import registeredLicenceForRenewalInvitation from './registered-licence-for-renewal-invitation.scenario.js'
 
-export const title = 'Registered licence for renewal invitation with bad primary user'
+export const title = 'Registered licence for renewal invitation with a bad primary user'
 export const description =
   "Registered licence eligible for a renewal invitation, linked to a 'bad' external user, to test the triggering of alternate notices"
 

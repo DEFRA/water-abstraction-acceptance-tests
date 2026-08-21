@@ -3,7 +3,7 @@ import { licenceRef } from '../default-values.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
-export const title = 'A licence and a water company licence, with different billing accounts'
+export const title = 'A licence and a water company licence'
 export const description = 'A licence and a water company licence, each with a charge version and billing account'
 
 export default function () {
