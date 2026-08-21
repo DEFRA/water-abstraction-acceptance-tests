@@ -7,7 +7,7 @@ import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
 
-export const title = 'Licence with tpt charge version and two completed return logs'
+export const title = 'Licence with a two-part tariff charge version and two completed return logs'
 export const description =
   'Licence with a return version and TPT charge version based on the licence data, plus two completed return logs for the previous winter cycle, one TPT and one not'
 

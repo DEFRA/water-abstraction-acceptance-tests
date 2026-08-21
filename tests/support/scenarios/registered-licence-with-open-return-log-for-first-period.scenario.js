@@ -2,7 +2,7 @@ import primaryUserData from '../data/primary-user.data.js'
 import licenceWithOpenReturnLogForFirstPeriod from './licence-with-open-return-log-for-first-period.scenario.js'
 import { externalUserEmail } from '../default-values.js'
 
-export const title = 'Registered licence with open return log (first period)'
+export const title = 'Registered licence with an open return log (first period)'
 export const description = 'Registered licence with an open return log for the first return period with no due date set'
 
 export default function () {

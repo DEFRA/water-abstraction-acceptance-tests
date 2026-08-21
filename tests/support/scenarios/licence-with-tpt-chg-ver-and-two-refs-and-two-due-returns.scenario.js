@@ -10,7 +10,7 @@ import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
 
-export const title = 'Licence with tpt charge version, two charge references and two due returns'
+export const title = 'Licence with a two-part tariff charge version, two charge references and two due returns'
 export const description =
   'Licence with a return version and a TPT charge version made up of two charge references, each with one charge element, plus two due return logs for the previous winter cycle whose reference and element volumes are mismatched so allocation caps at the lower of the two'
 

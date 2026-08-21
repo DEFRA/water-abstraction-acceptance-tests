@@ -1,7 +1,7 @@
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import registeredLicenceWithOpenReturnLogForFirstPeriod from './registered-licence-with-open-return-log-for-first-period.scenario.js'
 
-export const title = 'Registered licence with due return log (first period)'
+export const title = 'Registered licence with a due return log (first period)'
 export const description = 'Registered licence with a due return log for the first return period'
 
 export default function () {
