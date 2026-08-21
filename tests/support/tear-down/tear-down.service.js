@@ -15,5 +15,5 @@ import WaterSchemaService from './water-schema.service.js'
 export default async function tearDownService() {
   await Promise.all([CrmSchemaService(), IdmSchemaService(), PermitSchemaService(), ReturnsSchemaService()])
 
-  return await WaterSchemaService()
+  await WaterSchemaService()
 }

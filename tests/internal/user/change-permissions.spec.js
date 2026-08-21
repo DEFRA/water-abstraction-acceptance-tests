@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/internal-user.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Change user permissions (internal)', () => {
   let userToUpdate

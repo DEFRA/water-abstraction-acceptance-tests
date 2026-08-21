@@ -18,11 +18,11 @@ export const SROC_FIRST_FINANCIAL_YEAR = 2023
  * The two schemes are calculated independently, by two different engines, each with their own rule:
  *
  * - sroc (DetermineBillingPeriodsService in water-abstraction-system): up to 5 years back from
- *   `financialYearToBaseItOn`, never earlier than 2023, the first sroc financial year.
+ * `financialYearToBaseItOn`, never earlier than 2023, the first sroc financial year.
  * - presroc (the legacy water-abstraction-service's batch-service.js): always exactly 5 years back from
- *   `financialYearToBaseItOn`, but capped at 2022, the last presroc financial year, on both ends. Once
- *   `financialYearToBaseItOn` is more than 5 years past 2022, that range inverts and there are no presroc periods
- *   left to bill at all.
+ * `financialYearToBaseItOn`, but capped at 2022, the last presroc financial year, on both ends. Once
+ * `financialYearToBaseItOn` is more than 5 years past 2022, that range inverts and there are no presroc periods
+ * left to bill at all.
  *
  * For example
  *
@@ -197,7 +197,7 @@ export function monthlyReturnPeriods(startDate, endDate) {
  *
  * @param {object} period - The return period to calculate the previous period for
  *
- * @return {object} The previous return period to the one provided
+ * @returns {object} The previous return period to the one provided
  */
 export function previousPeriod(period) {
   const startDate = new Date(period.startDate)

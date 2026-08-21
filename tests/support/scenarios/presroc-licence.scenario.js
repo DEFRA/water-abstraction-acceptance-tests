@@ -1,5 +1,5 @@
-import { presrocStartDate } from '../default-values.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
+import { presrocStartDate } from '../default-values.js'
 
 export const title = 'Presroc licence'
 export const description = 'Licence with a start date before 2022-04-01'

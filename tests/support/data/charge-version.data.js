@@ -1,5 +1,6 @@
+import { generateUUID } from 'water-abstraction-engine/test/generators.js'
+
 import { regionCode } from '../default-values.js'
-import { generateUUID } from '../helpers/generate-uuid.js'
 
 export default function (billingAccount, licence) {
   const chargeVersionId = generateUUID()

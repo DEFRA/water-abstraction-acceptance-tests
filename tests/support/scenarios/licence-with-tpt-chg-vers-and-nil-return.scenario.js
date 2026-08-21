@@ -1,5 +1,5 @@
-import returnSubmissionData from '../data/return-submission.data.js'
 import licenceWithTptChgVersAndDueReturnLogScenario from './licence-with-tpt-chg-vers-and-due-return-log.scenario.js'
+import returnSubmissionData from '../data/return-submission.data.js'
 
 export const title = 'Licence with tpt charge version and a nil return'
 export const description =

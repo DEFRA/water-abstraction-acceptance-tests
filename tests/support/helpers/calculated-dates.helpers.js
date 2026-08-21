@@ -1,3 +1,4 @@
+import DetermineBillingPeriodsService from 'water-abstraction-engine/services/bill-runs/determine-billing-periods.service.js'
 import { determineCurrentFinancialYear, today } from 'water-abstraction-engine/lib/general.lib.js'
 import {
   determineCycleDueDate,
@@ -8,8 +9,6 @@ import {
   determineReturnsPeriods,
   determineUpcomingReturnPeriods
 } from 'water-abstraction-engine/lib/return-periods.lib.js'
-
-import DetermineBillingPeriodsService from 'water-abstraction-engine/services/bill-runs/determine-billing-periods.service.js'
 
 /**
  * Returns dynamic dates used to seed data, for example, current financial year and returns periods

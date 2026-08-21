@@ -1,7 +1,7 @@
-import scenarioData from '../../../support/scenarios/registered-licence-with-open-winter-return-log-bad-email.scenario.js'
-import { formatLongDate, relativeToToday } from '../../../support/helpers/date.helpers.js'
-import { test, expect } from '../../../support/fixtures.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
+import scenarioData from '../../../support/scenarios/registered-licence-with-open-winter-return-log-bad-email.scenario.js'
+import { expect, test } from '../../../support/fixtures.js'
+import { formatLongDate, relativeToToday } from '../../../support/helpers/date.helpers.js'
 
 test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
   let returnLog

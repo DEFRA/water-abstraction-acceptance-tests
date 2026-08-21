@@ -1,13 +1,13 @@
 import billingAccountAddressData from '../data/billing-account-address.data.js'
 import billingAccountData from '../data/billing-account.data.js'
+import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
+import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import buildReturnVersionEntity from '../entities/return-version.entity.js'
-import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
-import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import licenceScenario from './licence.scenario.js'
+import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with tpt charge version and a return split over two charge references'
 export const description =

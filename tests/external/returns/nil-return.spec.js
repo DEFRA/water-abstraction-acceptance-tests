@@ -1,5 +1,5 @@
 import scenarioData from '../../support/scenarios/external-return-submission.scenario.js'
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a nil return (external)', () => {
   let returnLog

@@ -6,6 +6,10 @@ import returnVersionData from '../data/return-version.data.js'
 /**
  * Builds a return version in its entirety: the return version itself, a return requirement, and its point and
  * purpose links — the minimum valid data a return version needs to exist against a licence.
+ *
+ * @param {object} licence - the licence the return version is for
+ * @param {object} licenceVersionPurpose - the licence version purpose the return requirement is for
+ * @param {object} point - the point the return requirement is for
  */
 export default function (licence, licenceVersionPurpose, point) {
   const returnVersion = returnVersionData(licence)

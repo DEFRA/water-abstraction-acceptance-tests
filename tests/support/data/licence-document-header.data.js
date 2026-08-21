@@ -1,4 +1,4 @@
-import { generateUUID } from '../helpers/generate-uuid.js'
+import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function (licence) {
   const licenceDocumentHeaderId = generateUUID()

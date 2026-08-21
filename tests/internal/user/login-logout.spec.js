@@ -1,4 +1,4 @@
-import { test, expect } from '../../support/fixtures.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Login and log out (internal)', () => {
   test('can log in and out as an internal user', async ({ page, login, users }) => {

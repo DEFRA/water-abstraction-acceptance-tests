@@ -1,7 +1,7 @@
-import scenarioData from '../../../support/scenarios/presroc-licence-with-agreement-and-due-return.scenario.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { test, expect } from '../../../support/fixtures.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
+import scenarioData from '../../../support/scenarios/presroc-licence-with-agreement-and-due-return.scenario.js'
+import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Create and send PRESROC two-part tariff bill run (internal)',
@@ -129,6 +129,8 @@ test.describe(
 
 /**
  * Locates the `dd` value following the `dt` term matching the given label
+ *
+ * @private
  */
 function _definitionValue(page, label) {
   return page.locator(`dt:text-is("${label}") + dd`)

@@ -1,7 +1,7 @@
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
-import { licenceRef } from '../default-values.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { asArrays } from '../helpers/wire-format.helpers.js'
+import { licenceRef } from '../default-values.js'
+import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'A licence and a water company licence, with different billing accounts'
 export const description = 'A licence and a water company licence, each with a charge version and billing account'

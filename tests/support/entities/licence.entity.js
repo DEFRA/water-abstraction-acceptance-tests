@@ -1,6 +1,7 @@
 import addressData from '../data/address.data.js'
 import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
+import { licenceRef as defaultLicenceRef } from '../default-values.js'
 import licenceData from '../data/licence.data.js'
 import licenceDocumentData from '../data/licence-document.data.js'
 import licenceDocumentHeaderData from '../data/licence-document-header.data.js'
@@ -11,12 +12,13 @@ import licenceVersionPurposePointData from '../data/licence-version-purpose-poin
 import permitLicenceData from '../data/permit-licence.data.js'
 import pointData from '../data/point.data.js'
 import { determineReturnCycleStartDate, formatDateToIso, previousPeriod, today } from '../helpers/date.helpers.js'
-import { licenceRef as defaultLicenceRef } from '../default-values.js'
 
 /**
  * Builds a licence in its entirety: the licence itself, its licence holder (company and address), permit licence,
  * licence document, licence document header, licence document role, licence version, and a licence version purpose
  * and point — the minimum valid data a licence needs to exist.
+ *
+ * @param {string} [licenceRef] - the licence reference to use; defaults to the standard test licence reference
  */
 export default function (licenceRef = defaultLicenceRef) {
   const company = _company()

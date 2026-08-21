@@ -1,10 +1,10 @@
 import addressData from '../data/address.data.js'
+import { asArrays } from '../helpers/wire-format.helpers.js'
 import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
-import { srocStartDate } from '../default-values.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { asArrays } from '../helpers/wire-format.helpers.js'
 import licenceWithCurrentAnnualBillRunScenario from './licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { srocStartDate } from '../default-values.js'
 
 export const title =
   'Licence flagged for supplementary billing with a sent annual bill run for the current year, plus a second company'

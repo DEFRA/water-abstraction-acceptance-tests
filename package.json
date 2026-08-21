@@ -33,7 +33,8 @@
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^14.0.0",
     "neostandard": "^0.12.0",
-    "prettier": "3.3.3"
+    "prettier": "3.3.3",
+    "eslint-plugin-jsdoc": "^63.1.0"
   },
   "allowScripts": {
     "fsevents@2.3.2": true,
