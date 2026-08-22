@@ -5,14 +5,12 @@ export default function () {
 
   return {
     id: addressId,
-    address1: 'Big Farm',
-    address2: 'Windy road',
-    address3: 'Buttercup meadow',
-    address4: 'Buttercup Village',
-    address5: 'Testington',
-    address6: 'Testingshire',
-    postcode: 'TT1 1TT',
-    country: 'UK',
-    dataSource: 'nald'
+    address1: 'ENVIRONMENT AGENCY',
+    address2: 'HORIZON HOUSE',
+    address3: 'DEANERY ROAD',
+    address4: 'BRISTOL',
+    postcode: 'BS1 5AH',
+    country: 'United Kingdom',
+    dataSource: 'wrls'
   }
 }

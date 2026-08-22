@@ -26,12 +26,12 @@ export default function (licence) {
       IsCurrent: true,
       Salutation: '',
       AddressLine1: 'Big Farm',
-      AddressLine2: 'Windy road',
-      AddressLine3: 'Buttercup meadow',
-      AddressLine4: 'Buttercup Village',
-      Town: 'Testington',
-      County: 'Testingshire',
-      Postcode: 'TT1 1TT',
+      AddressLine2: 'ENVIRONMENT AGENCY',
+      AddressLine3: 'HORIZON HOUSE',
+      AddressLine4: 'DEANERY ROAD',
+      Town: 'BRISTOL',
+      County: 'BRISTOL',
+      Postcode: 'BS1 5AH',
       Country: 'United Kingdom',
       contacts: [
         {
