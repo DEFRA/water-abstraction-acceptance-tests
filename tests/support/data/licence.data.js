@@ -1,7 +1,8 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
+import { generateLicenceRef, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-export default function (licenceRef, startDate) {
+export default function (startDate) {
   const licenceId = generateUUID()
+  const licenceRef = generateLicenceRef()
 
   return {
     id: licenceId,

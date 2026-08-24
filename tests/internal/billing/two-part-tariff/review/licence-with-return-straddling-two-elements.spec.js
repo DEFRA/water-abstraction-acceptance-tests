@@ -7,6 +7,7 @@ import { expect, test } from '../../../../support/fixtures.js'
 test.describe('Licence with a Return Straddling Two Charge Elements (internal)', () => {
   let endYear
   let startYear
+  let licence
 
   test.beforeAll(async ({ setup }) => {
     const {
@@ -19,6 +20,8 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
     const scenario = scenarioData()
+
+    licence = scenario.licence
 
     await setup(scenario)
   })
@@ -77,7 +80,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
 
-      await expect(page.locator('[data-test="licence-1"]')).toContainText('AT/TE/ST/01/01')
+      await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('[data-test="licence-issue-1"]')).toBeEmpty()
@@ -86,7 +89,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('div > .govuk-tag')).toContainText('ready')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
@@ -168,7 +171,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       await expect(page.locator('[data-test="billable-returns"]')).toContainText('0.1 ML')
       await page.locator('.govuk-back-link').click()
 
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await page.locator('[data-test="charge-version-0-charge-reference-link-0"]').click()
 
       await expect(page.locator('[data-test="charge-reference"]')).toContainText('Charge reference 4.6.1')
@@ -181,7 +184,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       await expect(page.locator('[data-test="authorised-volume"]')).toContainText('1 ML')
       await page.locator('.govuk-back-link').click()
 
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
 
       await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
@@ -193,7 +196,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       await page.locator('.govuk-back-link').click()
 
       // With both elements back at their authorised volumes they now exceed the reference's reduced authorised volume
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await expect(page.locator('.govuk-warning-text__icon')).toBeVisible()
       await expect(page.locator('.govuk-warning-text__text')).toContainText(
         'The total billable return volume exceeds the total authorised volume'
