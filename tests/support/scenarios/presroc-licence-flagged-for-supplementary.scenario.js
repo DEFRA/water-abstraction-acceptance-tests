@@ -1,6 +1,7 @@
 import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
+import { generateAccountNumber } from '../helpers/generators.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import presrocLicenceWithChargeVersionScenario from './presroc-licence-with-charge-version.scenario.js'
 import { srocStartDate } from '../default-values.js'
@@ -43,7 +44,7 @@ export default function () {
 function _srocChargeVersion(company, address, licence, licenceVersionPurpose) {
   const chargeVersionEntity = buildChargeVersionEntity(company, address, licence, licenceVersionPurpose)
 
-  chargeVersionEntity.billingAccount.accountNumber = 'S99999992A'
+  chargeVersionEntity.billingAccount.accountNumber = generateAccountNumber()
 
   // Starts on the sroc scheme's first day rather than inheriting the licence's own (pre-sroc) start date, and uses
   // the change reason a real presroc-to-sroc transition would have, rather than the "New licence" default

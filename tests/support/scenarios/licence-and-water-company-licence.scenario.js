@@ -1,6 +1,12 @@
+import {
+  generateLicenceVersionExternalId,
+  generateLicenceVersionPurposeExternalId
+} from 'water-abstraction-engine/test/generators.js'
+
 import { asArrays } from '../helpers/wire-format.helpers.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { generateAccountNumber, generatePointExternalId } from '../helpers/generators.helpers.js'
 
 export const title = 'A licence and a water company licence'
 export const description = 'A licence and a water company licence, each with a charge version and billing account'
@@ -28,13 +34,10 @@ function _waterCompanyLicenceWithChargeVersion() {
   result.licence.waterUndertaker = true
   result.company.name = `${result.company.name} 02`
 
-  // The acceptance tests app's tear-down service only cleans up water.points for a hardcoded set of external_ids
-  // (9000031, 9000032, 9000090, 9000091) rather than relying solely on its relational delete, so a genuinely new
-  // external_id here would be left behind after every run and collide with itself on the next.
-  result.point.externalId = '9:9000032'
-  result.licenceVersion.externalId = '9:1234:2:0'
-  result.licenceVersionPurpose.externalId = '9:1235'
-  result.billingAccount.accountNumber = 'S99999992A'
+  result.point.externalId = generatePointExternalId()
+  result.licenceVersion.externalId = generateLicenceVersionExternalId()
+  result.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
+  result.billingAccount.accountNumber = generateAccountNumber()
 
   return result
 }

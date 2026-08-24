@@ -1,9 +1,15 @@
+import {
+  generateLicenceVersionExternalId,
+  generateLicenceVersionPurposeExternalId
+} from 'water-abstraction-engine/test/generators.js'
+
 import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
+import { generatePointExternalId } from '../helpers/generators.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Two licences on the same billing account'
@@ -61,9 +67,9 @@ function _secondLicenceSharingBillingAccount(firstLicence) {
   licenceEntity.licenceDocumentRole.companyId = company.id
   licenceEntity.licenceVersion.companyId = company.id
 
-  licenceEntity.point.externalId = '9:9000032'
-  licenceEntity.licenceVersion.externalId = '9:1234:3:0'
-  licenceEntity.licenceVersionPurpose.externalId = '9:1236'
+  licenceEntity.point.externalId = generatePointExternalId()
+  licenceEntity.licenceVersion.externalId = generateLicenceVersionExternalId()
+  licenceEntity.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
 
   return { ...licenceEntity, chargeVersion, chargeReference, chargeElement }
 }
