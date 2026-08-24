@@ -18,7 +18,7 @@ export function generateAccountNumber() {
 /**
  * Generates a Bill run number
  *
- * @returns {string} - A bill run number
+ * @returns {number} - A bill run number
  */
 export function generateBillRunNumber() {
   return Number(`${regionCode}${generateRandomInteger(10000, 99999)}`)
