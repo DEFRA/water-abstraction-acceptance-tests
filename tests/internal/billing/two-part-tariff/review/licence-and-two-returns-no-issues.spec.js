@@ -5,10 +5,10 @@ import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-ver
 import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence and Two Returns with No Issues (internal)', () => {
+  let billingAccount
   let endYear
   let licence
   let startYear
-  let billingAccount
 
   test.beforeAll(async ({ setup }) => {
     const {
