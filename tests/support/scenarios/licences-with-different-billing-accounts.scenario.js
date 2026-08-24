@@ -37,9 +37,6 @@ function _secondLicenceWithChargeVersion() {
   // same name, but that's not the case - the company id is different, so duplicate company names are possible.
   result.company.name = `${result.company.name} 02`
 
-  // TODO: maybe this ?
-  delete result.company.externalId
-
   result.point.externalId = generatePointExternalId()
   result.licenceVersion.externalId = generateLicenceVersionExternalId()
   result.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
