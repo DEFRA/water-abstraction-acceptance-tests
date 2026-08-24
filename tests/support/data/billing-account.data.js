@@ -1,4 +1,6 @@
-import { generateAccountNumber, generateUUID } from 'water-abstraction-engine/test/generators.js'
+import { generateUUID } from 'water-abstraction-engine/test/generators.js'
+
+import { generateAccountNumber } from '../helpers/generators.helpers.js'
 
 export default function (company) {
   const billingAccountId = generateUUID()

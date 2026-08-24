@@ -1,8 +1,7 @@
-import { generateAccountNumber } from 'water-abstraction-engine/test/generators.js'
-
 import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
+import { generateAccountNumber } from '../helpers/generators.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import presrocLicenceWithChargeVersionScenario from './presroc-licence-with-charge-version.scenario.js'
 import { srocStartDate } from '../default-values.js'
