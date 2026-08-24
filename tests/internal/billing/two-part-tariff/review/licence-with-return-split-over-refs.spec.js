@@ -88,7 +88,7 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
       await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 licences')
       await page.getByRole('button', { name: 'Clear filters' }).click()
 
-      await expect(page.locator('[data-test="licence-1"]')).toContainText('AT/TE/ST/01/01')
+      await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Return split over charge references')
@@ -96,7 +96,7 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('review')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('div > .govuk-tag')).toContainText('review')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
@@ -147,7 +147,7 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
       await page.getByRole('link', { name: 'Go back to review licence' }).click()
 
       // Second element's match details: the other 14 ML of the return allocates to it
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await page.locator('[data-test="charge-version-0-charge-reference-1-charge-element-match-details-0"]').click()
 
       await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')

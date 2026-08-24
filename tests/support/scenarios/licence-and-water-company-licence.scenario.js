@@ -1,5 +1,4 @@
 import { asArrays } from '../helpers/wire-format.helpers.js'
-import { licenceRef } from '../default-values.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
@@ -7,8 +6,8 @@ export const title = 'A licence and a water company licence'
 export const description = 'A licence and a water company licence, each with a charge version and billing account'
 
 export default function () {
-  const firstLicence = licenceWithChargeVersionScenario(licenceRef)
-  const secondLicence = _waterCompanyLicenceWithChargeVersion(`${licenceRef.slice(0, -2)}02`)
+  const firstLicence = licenceWithChargeVersionScenario()
+  const secondLicence = _waterCompanyLicenceWithChargeVersion()
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
@@ -23,8 +22,8 @@ export default function () {
  *
  * @private
  */
-function _waterCompanyLicenceWithChargeVersion(ref) {
-  const result = licenceWithChargeVersionScenario(ref)
+function _waterCompanyLicenceWithChargeVersion() {
+  const result = licenceWithChargeVersionScenario()
 
   result.licence.waterUndertaker = true
   result.company.name = `${result.company.name} 02`

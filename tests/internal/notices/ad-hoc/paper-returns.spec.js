@@ -28,7 +28,7 @@ test.describe('Ad-hoc Paper returns journey (internal)', () => {
     // Enter a licence number
     // NOTE: the licence number textbox has no accessible label in the rendered markup, so it can't be targeted by
     // role/label. Target it by its id instead.
-    await page.locator('#licenceRef').fill('AT/TE/ST/01/01')
+    await page.locator('#licenceRef').fill(licence.licenceRef)
     await page.locator('button.govuk-button').click()
 
     // Select the returns for the paper return
@@ -36,7 +36,7 @@ test.describe('Ad-hoc Paper returns journey (internal)', () => {
     await page.getByRole('button', { name: 'Continue' }).click()
 
     // Check the notice type
-    await expect(page.locator('[data-test="licence-number"]')).toContainText('AT/TE/ST/01/01')
+    await expect(page.locator('[data-test="licence-number"]')).toContainText(licence.licenceRef)
     await expect(page.locator('[data-test="notice-type"]')).toContainText('Paper return')
     await page.getByRole('button', { name: 'Confirm' }).click()
 
@@ -84,7 +84,7 @@ test.describe('Ad-hoc Paper returns journey (internal)', () => {
     await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Little Whinging')
     await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Surrey')
     await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('WD25 7LR')
-    await expect(page.locator('[data-test="recipient-licence-numbers-1"]')).toContainText('AT/TE/ST/01/01')
+    await expect(page.locator('[data-test="recipient-licence-numbers-1"]')).toContainText(licence.licenceRef)
     await expect(page.locator('[data-test="recipient-method-1"]')).toContainText('Letter - single use')
     await expect(page.locator('[data-test="recipient-action-1"]')).toContainText('Preview')
 

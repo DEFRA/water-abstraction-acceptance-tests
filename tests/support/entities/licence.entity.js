@@ -1,7 +1,6 @@
 import addressData from '../data/address.data.js'
 import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
-import { licenceRef as defaultLicenceRef } from '../default-values.js'
 import licenceData from '../data/licence.data.js'
 import licenceDocumentData from '../data/licence-document.data.js'
 import licenceDocumentHeaderData from '../data/licence-document-header.data.js'
@@ -18,12 +17,11 @@ import { determineReturnCycleStartDate, formatDateToIso, previousPeriod, today }
  * licence document, licence document header, licence document role, licence version, and a licence version purpose
  * and point — the minimum valid data a licence needs to exist.
  *
- * @param {string} [licenceRef] - the licence reference to use; defaults to the standard test licence reference
  */
-export default function (licenceRef = defaultLicenceRef) {
+export default function () {
   const company = _company()
   const point = pointData()
-  const licence = _licence(licenceRef, company.company, company.address)
+  const licence = _licence(company.company, company.address)
   const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion)
   const licenceVersionPurposePoint = licenceVersionPurposePointData(licenceVersionPurpose, point)
 
@@ -59,12 +57,12 @@ function _company() {
  *
  * @private
  */
-function _licence(licenceRef, company, address) {
+function _licence(company, address) {
   const currentCycleStartDate = determineReturnCycleStartDate(today(), false)
   const { startDate: previousCycleStartDate } = previousPeriod({ startDate: currentCycleStartDate, quarterly: false })
   const startDate = formatDateToIso(previousCycleStartDate)
 
-  const licence = licenceData(licenceRef, startDate)
+  const licence = licenceData(startDate)
   const permitLicence = permitLicenceData(licence)
   const licenceDocumentHeader = licenceDocumentHeaderData(licence)
   const licenceDocument = licenceDocumentData(licence)

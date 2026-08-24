@@ -88,7 +88,7 @@ test.describe('Licence with an Overlap of Charge Dates (internal)', () => {
       await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 licences')
       await page.getByRole('button', { name: 'Clear filters' }).click()
 
-      await expect(page.locator('[data-test="licence-1"]')).toContainText('AT/TE/ST/01/01')
+      await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Overlap of charge dates')
@@ -96,7 +96,7 @@ test.describe('Licence with an Overlap of Charge Dates (internal)', () => {
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('review')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('div > .govuk-tag')).toContainText('review')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(

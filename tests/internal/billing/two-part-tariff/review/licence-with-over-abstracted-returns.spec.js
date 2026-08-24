@@ -89,7 +89,7 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
       await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 licences')
       await page.getByRole('button', { name: 'Clear filters' }).click()
 
-      await expect(page.locator('[data-test="licence-1"]')).toContainText('AT/TE/ST/01/01')
+      await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
       await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Multiple Issues')
@@ -97,7 +97,7 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('div > .govuk-tag')).toContainText('ready')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
@@ -147,7 +147,7 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
 
       // Second element's match details: 30 ML allocates of the 36 ML submitted, flagged abstraction outside period and
       // over abstraction
-      await expect(page.locator('h1')).toContainText('Licence AT/TE/ST/01/01')
+      await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-1"]').click()
 
       await expect(page.locator('h1')).toContainText('Spray Irrigation - Storage')

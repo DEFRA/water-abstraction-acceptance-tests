@@ -1,5 +1,4 @@
 import { asArrays } from '../helpers/wire-format.helpers.js'
-import { licenceRef } from '../default-values.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
@@ -8,8 +7,8 @@ export const description =
   'Two separate licences, each with a charge version and billing account, so an annual bill run picks up more than one bill'
 
 export default function () {
-  const firstLicence = licenceWithChargeVersionScenario(licenceRef)
-  const secondLicence = _secondLicenceWithChargeVersion(`${licenceRef.slice(0, -2)}02`)
+  const firstLicence = licenceWithChargeVersionScenario()
+  const secondLicence = _secondLicenceWithChargeVersion()
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
@@ -24,8 +23,8 @@ export default function () {
  *
  * @private
  */
-function _secondLicenceWithChargeVersion(ref) {
-  const result = licenceWithChargeVersionScenario(ref)
+function _secondLicenceWithChargeVersion() {
+  const result = licenceWithChargeVersionScenario()
 
   // Not required by the database, but makes the two licences easy to tell apart in the seeded data and the UI. If
   // you were to go to the companies page, you might expect both licences to merge into one row if they had the

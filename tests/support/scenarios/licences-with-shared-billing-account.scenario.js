@@ -4,7 +4,6 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import { licenceRef } from '../default-values.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Two licences on the same billing account'
@@ -12,8 +11,8 @@ export const description =
   'Two separate licences, both billed to the same billing account, so an annual bill run creates a single bill covering both'
 
 export default function () {
-  const firstLicence = _licenceWithChargeVersion(licenceRef)
-  const secondLicence = _secondLicenceSharingBillingAccount(`${licenceRef.slice(0, -2)}03`, firstLicence)
+  const firstLicence = _licenceWithChargeVersion()
+  const secondLicence = _secondLicenceSharingBillingAccount(firstLicence)
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
@@ -23,8 +22,8 @@ export default function () {
  *
  * @private
  */
-function _licenceWithChargeVersion(ref) {
-  const licenceEntity = buildLicenceEntity(ref)
+function _licenceWithChargeVersion() {
+  const licenceEntity = buildLicenceEntity()
   const chargeVersionEntity = buildChargeVersionEntity(
     licenceEntity.company,
     licenceEntity.address,
@@ -45,10 +44,10 @@ function _licenceWithChargeVersion(ref) {
  *
  * @private
  */
-function _secondLicenceSharingBillingAccount(ref, firstLicence) {
+function _secondLicenceSharingBillingAccount(firstLicence) {
   const { billingAccount, company } = firstLicence
 
-  const licenceEntity = buildLicenceEntity(ref)
+  const licenceEntity = buildLicenceEntity()
   const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence)
   const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose])
   const chargeElement = chargeElementData(chargeReference, licenceEntity.licenceVersionPurpose)
