@@ -9,8 +9,8 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { generatePointExternalId } from '../helpers/generators.helpers.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Two licences on the same billing account'
 export const description =
