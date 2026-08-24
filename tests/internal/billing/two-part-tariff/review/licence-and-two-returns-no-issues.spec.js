@@ -8,6 +8,7 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
   let endYear
   let licence
   let startYear
+  let billingAccount
 
   test.beforeAll(async ({ setup }) => {
     const {
@@ -21,6 +22,7 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
 
     const scenario = scenarioData()
 
+    billingAccount = scenario.billingAccount
     licence = scenario.licence
 
     await setup(scenario)
@@ -137,7 +139,7 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
         'Big Farm Co Ltd billing account details'
       )
       await page.locator('.govuk-details__summary').click()
-      await expect(page.locator('[data-test="billing-account"]')).toContainText('S99999991A')
+      await expect(page.locator('[data-test="billing-account"]')).toContainText(billingAccount.accountNumber)
       await expect(page.locator('[data-test="account-name"]')).toContainText('Big Farm Co Ltd')
       await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.6.1')
       await expect(page.locator('[data-test="charge-version-0-charge-description-0"]')).toContainText(

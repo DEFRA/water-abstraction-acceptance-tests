@@ -1,3 +1,5 @@
+import { generateLicenceVersionPurposeExternalId } from 'water-abstraction-engine/test/generators.js'
+
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { buildPreviousAndCurrentReturnLogs } from '../helpers/return-log.helpers.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
@@ -9,6 +11,7 @@ import { regionCode } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
+import { generatePointExternalId } from '../helpers/generators.helpers.js'
 
 export const title = 'Licence with two return requirements and historic return logs'
 export const description =
@@ -60,15 +63,11 @@ function _licenceWithTwoReturnRequirements() {
   const secondPoint = pointData()
   secondPoint.description = 'Example point 2'
   secondPoint.ngr1 = 'TQ 1234 5679'
-  // Reuses the same external_id licence-with-two-purposes.scenario.js already uses for its second point. The
-  // acceptance tests app's tear-down service only cleans up water.points for a hardcoded set of external_ids
-  // (9000031, 9000032, 9000090, 9000091) rather than relying solely on its relational delete, so a genuinely new
-  // external_id here would be left behind after every run and collide with itself on the next.
-  secondPoint.externalId = `${regionCode}:9000090`
+  secondPoint.externalId = generatePointExternalId()
 
   const secondLicenceVersionPurpose = licenceVersionPurposeData(licenceEntity.licenceVersion)
   secondLicenceVersionPurpose.purposeId.value = '420'
-  secondLicenceVersionPurpose.externalId = `${regionCode}:9000092`
+  secondLicenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
   const secondLicenceVersionPurposePoint = licenceVersionPurposePointData(secondLicenceVersionPurpose, secondPoint)
 
   const returnVersionEntity = buildReturnVersionEntity(

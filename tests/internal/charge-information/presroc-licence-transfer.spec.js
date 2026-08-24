@@ -74,7 +74,7 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
 
       await expect(page.locator('h1')).toContainText('Check billing account details')
       await expect(page.locator('.govuk-summary-list__value', { hasText: 'Test Farm Co Ltd' })).toBeVisible()
-      await expect(page.locator('.govuk-summary-list__value', { hasText: 'Big Farm' })).toBeVisible()
+      await expect(page.locator('.govuk-summary-list__value', { hasText: 'Environment Agency' })).toBeVisible()
       await expect(page.locator('.govuk-summary-list__value', { hasText: 'Test Farm Manager' })).toBeVisible()
       await page.getByRole('button', { name: 'Confirm' }).click()
 

@@ -1,10 +1,4 @@
 /**
- * When a scenario or data file needs an account number, we use S99999991A as our default.
- * @type {string}
- */
-export const accountNumber = 'S99999991A'
-
-/**
  * When a scenario or data file needs a company name, we use Big Farm Co Ltd as our default.
  * @type {string}
  */

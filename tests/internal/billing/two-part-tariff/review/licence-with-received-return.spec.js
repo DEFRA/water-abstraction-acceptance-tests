@@ -21,6 +21,8 @@ test.describe('Licence with a Received Return (internal)', () => {
 
     const scenario = scenarioData()
 
+    licence = scenario.licence
+
     await setup(scenario)
   })
 
