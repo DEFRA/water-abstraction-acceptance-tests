@@ -109,7 +109,7 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     await page.locator('#nav-search').click()
     await page.locator('[name="query"]').fill(licence.licenceRef)
     await page.locator('#search-button').click()
-    await page.locator('.searchresult-link', { hasText: 'AT/TE/ST/01/01' }).click()
+    await page.locator('.searchresult-link', { hasText: licence.licenceRef }).click()
     await page.locator(':nth-child(4) > .x-govuk-sub-navigation__link').click()
 
     // Depending on whether the first period is quarterly or annual, and if quarterly, which quarter it is, the return

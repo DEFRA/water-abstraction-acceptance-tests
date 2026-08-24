@@ -325,7 +325,7 @@ test.describe('Licence and Returns with No Issues (internal)', { tag: '@suppleme
       await page.locator('#nav-search').click()
       await page.locator('#query').fill(licence.licenceRef)
       await page.locator('#search-button').click()
-      await page.locator('.searchresult-row', { hasText: 'AT/TE/ST/01/01' }).getByRole('link').click()
+      await page.locator('.searchresult-row', { hasText: licence.licenceRef }).getByRole('link').click()
 
       // Confirm the licence has been flagged for two-part tariff supplementary billing
       await expect(page.locator('.govuk-notification-banner__content')).toContainText(
