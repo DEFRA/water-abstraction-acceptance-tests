@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/external-return-submission.scenario.js'
+import scenarioData from '../../support/scenarios/registered-licence-with-open-winter-return-log.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a nil return (external)', () => {
