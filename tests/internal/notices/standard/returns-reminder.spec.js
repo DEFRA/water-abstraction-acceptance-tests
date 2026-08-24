@@ -2,8 +2,12 @@ import scenarioData from '../../../support/scenarios/licence-with-due-return-log
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Standard returns reminder journey (internal)', () => {
+  let licence
+
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
+
+    licence = scenario.licence
 
     await setup(scenario)
   })

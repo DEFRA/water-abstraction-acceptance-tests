@@ -7,6 +7,7 @@ import { expect, test } from '../../../../support/fixtures.js'
 test.describe('Licence with a Return Straddling Two Charge Elements (internal)', () => {
   let endYear
   let startYear
+  let licence
 
   test.beforeAll(async ({ setup }) => {
     const {
@@ -19,6 +20,8 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
     const scenario = scenarioData()
+
+    licence = scenario.licence
 
     await setup(scenario)
   })

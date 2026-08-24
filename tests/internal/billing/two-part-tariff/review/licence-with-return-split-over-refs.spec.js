@@ -7,6 +7,7 @@ import { expect, test } from '../../../../support/fixtures.js'
 test.describe('Licence with a Return Split Over Charge References (internal)', () => {
   let endYear
   let startYear
+  let licence
 
   test.beforeAll(async ({ setup }) => {
     const {
@@ -20,6 +21,7 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
 
     const scenario = scenarioData()
 
+    licence = scenario.licence
     await setup(scenario)
   })
 

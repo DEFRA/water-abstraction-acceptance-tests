@@ -5,6 +5,7 @@ import { formatLongDate, relativeToToday } from '../../../support/helpers/date.h
 
 test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
   let returnLog
+  let licence
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
@@ -14,6 +15,7 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     } = scenario
 
     returnLog = scenarioReturnLog
+    licence = scenario.licence
 
     await setup(scenario)
   })

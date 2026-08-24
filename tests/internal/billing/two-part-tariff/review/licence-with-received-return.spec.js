@@ -7,6 +7,7 @@ import { expect, test } from '../../../../support/fixtures.js'
 test.describe('Licence with a Received Return (internal)', () => {
   let endYear
   let startYear
+  let licence
 
   test.beforeAll(async ({ setup }) => {
     const {
