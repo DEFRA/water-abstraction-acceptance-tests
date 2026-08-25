@@ -172,7 +172,7 @@ test.describe(
       await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
       await page.getByRole('button', { name: 'Send bill run' }).click()
 
-      await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
+      await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 30000 })
       await page.getByRole('link', { name: 'Go to bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Test Region supplementary')

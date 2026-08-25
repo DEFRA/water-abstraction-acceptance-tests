@@ -20,6 +20,10 @@ export default defineConfig({
   reporter: [['html'], ['list']],
   retries: process.env.CI ? 2 : 0,
   testDir: './tests',
+  // The default is 30 seconds (30,000 milliseconds) and applies to the _whole_ test, including before hooks. On slower
+  // machines, or because services we depend on are running a little slow, sometimes a test might take a bit longer. To
+  // avoid thinking there is an issue, we give the tests extra time to complete.
+  timeout: 60 * 1000,
   use: {
     baseURL: config.baseUrl,
     trace: 'on-first-retry'
