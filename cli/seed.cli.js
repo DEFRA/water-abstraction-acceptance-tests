@@ -2,15 +2,20 @@
  * Interactive CLI to seed the local database with test scenarios. See cli/README.md. Run with `npm run cli`
  */
 
+import { menu } from './src/menu.js'
 import { searchScenarios } from './src/search.lib.js'
-import tearDownService from '../tests/support/tear-down/tear-down.service.js'
+import { tearDown } from './src/tear-down.js'
 import { listScenarios, loadScenario } from './src/scenarios.js'
-import { logError, logInfo, logSuccess, logWarning, styleBold } from './src/log.lib.js'
+import { logError, logInfo, logSuccess, logWarning, printBanner, styleBold } from './src/log.lib.js'
 
-const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
+// Reassigned after each use — an AbortController can't be un-aborted, so the next prompt needs a fresh one
+let escapeAbortController = new AbortController()
+let tabAbortController = new AbortController()
 
 async function run() {
-  logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
+  console.clear()
+
+  printBanner('Type to search, or press Tab for the menu')
 
   const scenarios = await listScenarios()
 
@@ -18,27 +23,48 @@ async function run() {
 
   while (true) {
     try {
-      selectedScenario = await searchScenarios(scenarios, selectedScenario, ESCAPE_KEY_ABORT_CONTROLLER)
+      const signal = AbortSignal.any([escapeAbortController.signal, tabAbortController.signal])
+
+      selectedScenario = await searchScenarios(scenarios, selectedScenario, signal)
 
       logInfo('Tearing down previous scenario data...')
 
-      await tearDownService()
+      await tearDown()
 
       await loadScenario(selectedScenario)
 
       logSuccess(`${styleBold('Finished!')} (press Escape to exit)\n`)
     } catch (err) {
-      // Handle exit signals from Inquirer
-      if (['AbortPromptError', 'ExitPromptError'].includes(err.name)) {
-        logWarning('\nGoodbye!')
-        break
+      if (tabAbortController.signal.aborted) {
+        tabAbortController = new AbortController()
+
+        const menuSignal = AbortSignal.any([escapeAbortController.signal, tabAbortController.signal])
+
+        await menu(scenarios, menuSignal, _exit)
+
+        escapeAbortController = new AbortController()
+        tabAbortController = new AbortController()
+
+        continue
+      }
+
+      // ExitPromptError comes from a real Ctrl+C (SIGINT), distinct from our own Escape/Tab AbortController signals
+      if (escapeAbortController.signal.aborted || err.name === 'ExitPromptError') {
+        _exit()
       } else {
-        // Log the error but stay in the loop so the user can try again
         logError(`\nError: ${err.message}`)
         logInfo('Returning to menu... (press Escape to exit)\n')
       }
     }
   }
+}
+
+/**
+ * Log a goodbye message and exit the CLI
+ * @private
+ */
+function _exit() {
+  logWarning('\nGoodbye!')
 
   // Without this, the keypress listener below keeps stdin resumed and the process hangs after
   // "Goodbye!" instead of exiting, requiring a second Ctrl+C to force it closed
@@ -46,10 +72,12 @@ async function run() {
   process.exit(0)
 }
 
-// Escape aborts whichever prompt is currently awaiting ESCAPE_KEY_ABORT_CONTROLLER's signal
+// Escape quits (from the search prompt) or backs out of the menu; Tab opens the menu
 process.stdin.on('keypress', (str, key) => {
   if (key.name === 'escape') {
-    ESCAPE_KEY_ABORT_CONTROLLER.abort()
+    escapeAbortController.abort()
+  } else if (key.name === 'tab') {
+    tabAbortController.abort()
   }
 })
 

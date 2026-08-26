@@ -5,10 +5,10 @@ import { search } from '@inquirer/prompts'
  *
  * @param {object[]} scenarios - the full list of scenarios to search
  * @param {object} [defaultValue] - the previously selected scenario, highlighted by default
- * @param {AbortController} ESCAPE_KEY_ABORT_CONTROLLER - aborts the prompt when Escape is pressed
+ * @param {AbortSignal} signal - aborts the prompt (Escape to quit, Tab for the menu)
  * @returns {Promise<object>} the scenario the user selected
  */
-export async function searchScenarios(scenarios, defaultValue, ESCAPE_KEY_ABORT_CONTROLLER) {
+export async function searchScenarios(scenarios, defaultValue, signal) {
   return search(
     {
       message: 'Type to search scenarios:',
@@ -23,7 +23,7 @@ export async function searchScenarios(scenarios, defaultValue, ESCAPE_KEY_ABORT_
         return _presentScenarios(filteredScenarios)
       }
     },
-    { signal: ESCAPE_KEY_ABORT_CONTROLLER.signal }
+    { signal }
   )
 }
 

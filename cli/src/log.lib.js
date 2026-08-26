@@ -10,6 +10,16 @@ const RESET_BOLD = '\x1b[22m'
 const YELLOW = '\x1b[33m'
 
 /**
+ * Print the CLI's title, followed by a context-specific subtitle
+ *
+ * @param {string} subtitle - the line shown under the title
+ */
+export function printBanner(subtitle) {
+  logInfo(styleBold('Acceptance test CLI'))
+  logInfo(`${subtitle}\n`)
+}
+
+/**
  * Log a message in blue, for general info
  *
  * @param {string} message - the message to log
