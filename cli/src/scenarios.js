@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 
 import loadService from '../../tests/support/load/load.service.js'
-import { logInfo, styleBold } from './log.lib.js'
 
 const SCENARIOS_DIR = 'tests/support/scenarios'
 
@@ -44,8 +43,6 @@ export async function listScenarios() {
  * @param {object} selectedScenario - the scenario chosen from the CLI prompt
  */
 export async function loadScenario(selectedScenario) {
-  logInfo(`Loading scenario ${styleBold(selectedScenario.title)}...`)
-
   const scenarioPath = selectedScenario.path
 
   // Dynamic import() (rather than a static import) so the scenario, an ESM file that may itself import

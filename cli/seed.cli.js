@@ -27,8 +27,6 @@ async function run() {
 
       selectedScenario = await searchScenarios(scenarios, selectedScenario, signal)
 
-      logInfo('Tearing down previous scenario data...')
-
       await tearDown()
 
       await loadScenario(selectedScenario)
