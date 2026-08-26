@@ -1,3 +1,4 @@
+import { generateExternalEmailAddress } from '../../../support/helpers/generators.helpers.js'
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
@@ -70,7 +71,7 @@ test.describe('Set up but then cancel an abstraction alert (internal)', () => {
 
     // Select Use another email address, enter an email address and continue
     await page.locator('input[type="radio"][value="other"]').check()
-    await page.locator('#otherUser').fill('test.user@testing.com')
+    await page.locator('#otherUser').fill(generateExternalEmailAddress())
     await page.getByRole('button', { name: 'Continue' }).click()
 
     // Confirm data on Check the recipients page is correct and cancel the alert
