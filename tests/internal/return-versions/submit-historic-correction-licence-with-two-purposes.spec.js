@@ -23,10 +23,10 @@ test.describe('Submit historic correction using abstraction data for licence wit
     const [purpose400CurrentLog, purpose400PreviousLog, purpose420CurrentLog, purpose420PreviousLog] =
       scenario.returnLogs
 
-    purpose400Current = returnLogDateDetails(purpose400CurrentLog)
-    purpose400Previous = returnLogDateDetails(purpose400PreviousLog)
-    purpose420Current = returnLogDateDetails(purpose420CurrentLog)
-    purpose420Previous = returnLogDateDetails(purpose420PreviousLog)
+    purpose400Current = { ...returnLogDateDetails(purpose400CurrentLog), returnReference: purpose400CurrentLog.returnReference }
+    purpose400Previous = { ...returnLogDateDetails(purpose400PreviousLog), returnReference: purpose400PreviousLog.returnReference }
+    purpose420Current = { ...returnLogDateDetails(purpose420CurrentLog), returnReference: purpose420CurrentLog.returnReference }
+    purpose420Previous = { ...returnLogDateDetails(purpose420PreviousLog), returnReference: purpose420PreviousLog.returnReference }
 
     await setup(scenario)
   })
@@ -36,14 +36,28 @@ test.describe('Submit historic correction using abstraction data for licence wit
   })
 
   test('adds a new return version using abstraction data for a licence with two purposes', async ({ page }) => {
+    // The two purposes' return requirements are seeded with independent random references, so we can't assume which
+    // sorts first on the page - look each row up by its known reference instead
+    const returnRow = (reference) => {
+      return page.locator('tr', { hasText: `${reference}` })
+    }
+
     await page.goto(`/system/licences/${licence.id}/returns`)
 
     await expect(page.locator('h1')).toContainText('Returns')
 
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(purpose420Current.status)
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(purpose400Current.status)
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(purpose420Previous.status)
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText(purpose400Previous.status)
+    await expect(
+      returnRow(purpose420Current.returnReference).locator('[data-test^="return-status-"] > .govuk-tag')
+    ).toContainText(purpose420Current.status)
+    await expect(
+      returnRow(purpose400Current.returnReference).locator('[data-test^="return-status-"] > .govuk-tag')
+    ).toContainText(purpose400Current.status)
+    await expect(
+      returnRow(purpose420Previous.returnReference).locator('[data-test^="return-status-"] > .govuk-tag')
+    ).toContainText(purpose420Previous.status)
+    await expect(
+      returnRow(purpose400Previous.returnReference).locator('[data-test^="return-status-"] > .govuk-tag')
+    ).toContainText(purpose400Previous.status)
 
     await page.getByText('Licence set up').click()
 
@@ -74,15 +88,33 @@ test.describe('Submit historic correction using abstraction data for licence wit
 
     await expect(page.locator('h1')).toContainText('Returns')
 
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('not due yet')
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('not due yet')
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('void') // purpose420Current now void
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void') // purpose400Current now void
-    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('open')
-    await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText('open')
-    await expect(page.locator('[data-test="return-status-6"] > .govuk-tag')).toContainText('void') // purpose420Previous now void
-    await expect(page.locator('[data-test="return-status-7"] > .govuk-tag')).toContainText('open')
-    await expect(page.locator('[data-test="return-status-8"] > .govuk-tag')).toContainText('void') // purpose400Previous now void
-    await expect(page.locator('[data-test="return-status-9"] > .govuk-tag')).toContainText('open')
+    // The four original return logs are now superseded by the new return version, so all four are void - this we can
+    // confirm by looking each up by its known reference, regardless of where the page now lists it
+    await expect(
+      returnRow(purpose420Current.returnReference).locator('[data-test^="return-status-"] > .govuk-tag')
+    ).toContainText('void')
+    await expect(
+      returnRow(purpose400Current.returnReference).locator('[data-test^="return-status-"] > .govuk-tag')
+    ).toContainText('void')
+    await expect(
+      returnRow(purpose420Previous.returnReference).locator('[data-test^="return-status-"] > .govuk-tag')
+    ).toContainText('void')
+    await expect(
+      returnRow(purpose400Previous.returnReference).locator('[data-test^="return-status-"] > .govuk-tag')
+    ).toContainText('void')
+
+    // The new return version creates 6 more return logs, whose references aren't known ahead of the journey creating
+    // them, so we confirm them by status count instead of position: 2 new current periods (not due yet) plus 4 new
+    // split logs for the previous period (open)
+    const statuses = (await page.locator('[data-test^="return-status-"] > .govuk-tag').allTextContents()).map(
+      (status) => {
+        return status.trim()
+      }
+    )
+
+    expect(statuses).toHaveLength(10)
+    expect(statuses.filter((status) => status === 'void')).toHaveLength(4)
+    expect(statuses.filter((status) => status === 'not due yet')).toHaveLength(2)
+    expect(statuses.filter((status) => status === 'open')).toHaveLength(4)
   })
 })
