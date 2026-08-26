@@ -19,6 +19,6 @@ async function _deleteAllTestData() {
   DELETE
   FROM
     "idm"."users"
- WHERE "user_name" LIKE '%acceptance.test%'
+  WHERE "user_name" LIKE '%acceptance.test%'
   `)
 }
