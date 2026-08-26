@@ -5,12 +5,14 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Set up but then cancel an abstraction alert (internal)', () => {
   let licence
   let monitoringStation
+  let user
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
     licence = scenario.licence
     monitoringStation = scenario.monitoringStation
+    user = scenario.user
 
     await setup(scenario)
   })
@@ -75,7 +77,7 @@ test.describe('Set up but then cancel an abstraction alert (internal)', () => {
     await expect(page.locator('.govuk-caption-l')).toContainText('Notice WAA-')
     await expect(page.locator('.govuk-heading-l')).toContainText('Check the recipients')
     await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 recipients')
-    await expect(page.locator('.govuk-table__body')).toContainText('external@example.com')
+    await expect(page.locator('.govuk-table__body')).toContainText(user.username)
     await expect(page.locator('.govuk-table__body')).toContainText(licence.licenceRef)
     await expect(page.locator('.govuk-table__body')).toContainText('Email - primary user')
     await expect(page.locator('.govuk-table__body')).toContainText('Preview')

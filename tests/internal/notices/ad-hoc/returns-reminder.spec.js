@@ -3,10 +3,13 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc returns reminder journey (internal)', () => {
   let licence
+  let user
+
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
     licence = scenario.licence
+    user = scenario.user
 
     await setup(scenario)
   })
@@ -72,7 +75,7 @@ test.describe('Ad-hoc returns reminder journey (internal)', () => {
     // Additional recipient is shown in the list
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
 
-    await expect(page.locator('[data-test="recipient-contact-0"]')).toContainText('external@example.com')
+    await expect(page.locator('[data-test="recipient-contact-0"]')).toContainText(user.username)
     await expect(page.locator('[data-test="recipient-licence-numbers-0"]')).toContainText(licence.licenceRef)
     await expect(page.locator('[data-test="recipient-method-0"]')).toContainText('Email - primary user')
     await expect(page.locator('[data-test="recipient-action-0"]')).toContainText('Preview')
@@ -106,7 +109,7 @@ test.describe('Ad-hoc returns reminder journey (internal)', () => {
     await expect(page.getByText('Showing all 2 notifications')).toBeVisible()
 
     await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(2)
-    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText('external@example.com')
+    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText(user.username)
     await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('Lookup recipient')
     await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('ENVIRONMENT AGENCY')
     await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('HORIZON HOUSE DEANERY ROAD')

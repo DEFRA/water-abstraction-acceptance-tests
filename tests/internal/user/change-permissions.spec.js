@@ -3,12 +3,12 @@ import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Change user permissions (internal)', () => {
-  let userToUpdate
+  let user
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    userToUpdate = scenario.user
+    user = scenario.user
 
     await setup(scenario)
   })
@@ -22,15 +22,15 @@ test.describe('Change user permissions (internal)', () => {
 
     // Search for the user by email
     await page.locator('.govuk-details__summary').click()
-    await page.locator('#email').fill(userToUpdate.username)
+    await page.locator('#email').fill(user.username)
     await page.getByRole('button', { name: 'Apply filters' }).click()
 
     // Confirm we see the expected result then select it
-    await expect(page.locator('[data-test="user-email-0"]')).toContainText(userToUpdate.username)
+    await expect(page.locator('[data-test="user-email-0"]')).toContainText(user.username)
     await page.locator('[data-test="user-email-0"] a').click()
 
     // Confirm we see the expected result then select edit
-    await expect(page.locator('.govuk-caption-l')).toHaveText(userToUpdate.username)
+    await expect(page.locator('.govuk-caption-l')).toHaveText(user.username)
     await expect(page.locator('.govuk-heading-l')).toHaveText('User details')
     await expect(page.locator('[data-test="no-roles-msg"]')).toHaveText('Basic access grants no additional roles.')
     await page.locator('.govuk-button').click()
@@ -52,7 +52,7 @@ test.describe('Change user permissions (internal)', () => {
 
     // Confirm notification shown and permissions updated
     await expect(page.locator('.govuk-notification-banner__heading')).toContainText(
-      `${userToUpdate.username} has been updated.`
+      `${user.username} has been updated.`
     )
     await page.getByRole('button', { name: 'Apply filters' }).click()
     await expect(page.locator('[data-test="user-permissions-0"]')).toContainText('Environment Officer')

@@ -4,7 +4,7 @@ import { yesterday } from '../helpers/date.helpers.js'
 
 export default function () {
   return {
-    username: generateGovUKEmail,
+    username: generateGovUKEmail(),
     password,
     resetRequired: 0,
     application: 'water_admin',

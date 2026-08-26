@@ -478,7 +478,7 @@ async function _deleteAllTestData() {
   WHERE
     "e"."licences" <> '"[]"'
     AND (
-      "e"."issuer" LIKE 'acceptance-test%'
+      "e"."issuer" LIKE '%acceptance.test%'
       OR EXISTS (
         SELECT 1
         FROM jsonb_array_elements_text("e"."licences") AS l
@@ -493,7 +493,7 @@ async function _deleteAllTestData() {
   WHERE
     "licences" <> '"[]"'
     AND (
-      "issuer" LIKE 'acceptance-test%'
+      "issuer" LIKE '%acceptance.test%'
       OR EXISTS (
         SELECT 1
         FROM jsonb_array_elements_text("licences") AS l
