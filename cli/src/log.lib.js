@@ -11,6 +11,7 @@ const YELLOW = '\x1b[33m'
 
 /**
  * Log a message in blue, for general info
+ *
  * @param {string} message - the message to log
  */
 export function logInfo(message) {
@@ -19,6 +20,7 @@ export function logInfo(message) {
 
 /**
  * Log a message in red, for errors
+ *
  * @param {string} message - the message to log
  */
 export function logError(message) {
@@ -27,6 +29,7 @@ export function logError(message) {
 
 /**
  * Log a message in green, for success
+ *
  * @param {string} message - the message to log
  */
 export function logSuccess(message) {
@@ -35,6 +38,7 @@ export function logSuccess(message) {
 
 /**
  * Log a message in yellow, for warnings
+ *
  * @param {string} message - the message to log
  */
 export function logWarning(message) {
@@ -43,6 +47,7 @@ export function logWarning(message) {
 
 /**
  * Wrap a message in bold ANSI codes
+ *
  * @param {string} message - the message to style
  * @returns {string} the message wrapped in bold
  */
