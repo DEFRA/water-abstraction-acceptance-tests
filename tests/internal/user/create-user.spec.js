@@ -1,3 +1,4 @@
+import { generateGovUKEmail } from '../../support/helpers/generators.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Creating a user (internal)', () => {
@@ -9,7 +10,7 @@ test.describe('Creating a user (internal)', () => {
     await page.goto('/account/create-user')
 
     // Enter a generated email address to avoid duplicates on subsequent runs of the test
-    const newEmail = `regression.tests.${Date.now()}@defra.gov.uk`
+    const newEmail = generateGovUKEmail()
 
     await expect(page.locator('.govuk-label')).toContainText('Enter a gov.uk email address')
     await page.locator('input#email').fill(newEmail)

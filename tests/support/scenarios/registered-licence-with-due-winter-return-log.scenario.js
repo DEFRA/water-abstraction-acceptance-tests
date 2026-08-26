@@ -10,7 +10,7 @@ export default function () {
   const licence = licenceWithDueWinterReturnLog()
 
   // We then add the primary user, which is what makes the licence 'registered'
-  const primaryUser = primaryUserData('external@example.com', licence.company)
+  const primaryUser = primaryUserData(licence.company)
 
   // Linking a primary user's company entity to the licence's licence document header is the only way we can link a
   // registered licence to a licence holder.

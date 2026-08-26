@@ -1,9 +1,10 @@
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
+import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('User registration (external)', () => {
   test('can register a new user', async ({ page, externalUrl, defaultPassword, lastNotification }) => {
-    const userEmail = `external.${Date.now()}@example.com`
+    const userEmail = generateExternalEmailAddress()
 
     await page.goto(externalUrl)
 

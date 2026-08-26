@@ -1,9 +1,10 @@
+import { generateExternalEmailAddress } from '../helpers/generators.helpers.js'
+import { password } from '../default-values.js'
 import { yesterday } from '../helpers/date.helpers.js'
-import { externalUserEmail, password } from '../default-values.js'
 
 export default function () {
   return {
-    username: externalUserEmail,
+    username: generateExternalEmailAddress(),
     password,
     resetRequired: 0,
     application: 'water_vml',

@@ -32,3 +32,42 @@ export function generateBillRunNumber() {
 export function generatePointExternalId() {
   return `${regionCode}:${regionCode}${generateRandomInteger(100000, 999999)}`
 }
+
+/**
+ * Generate a unique GOV UK email address (internal)
+ *
+ * We use 'acceptance.test.' to delete all relevant test email address.
+ *
+ * We use 'Date.now()' to ensure all email are unique.
+ *
+ * @returns {string} - A gov uk email
+ */
+export function generateGovUKEmail() {
+  return `${Date.now()}-${_additionalRandomness()}@acceptance.test.gov.uk`
+}
+
+/**
+ * Generate a unique email address (external)
+ *
+ * We use 'acceptance.test.' to delete all relevant test email address.
+ *
+ * We use 'Date.now()' to ensure all email are unique.
+ *
+ * @returns {string} - An email address
+ */
+export function generateExternalEmailAddress() {
+  return `${Date.now()}-${_additionalRandomness()}@acceptance.test.com`
+}
+
+/**
+ * We need some additional randomness
+ *
+ * We have seen timestamp collisions when we create multiple emails fro the same scenario
+ *
+ * We use this instead of a UUID to avoid confusion.
+ *
+ * @private
+ */
+function _additionalRandomness() {
+  return Math.random().toString(36).slice(2, 10)
+}
