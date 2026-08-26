@@ -1,52 +1,30 @@
 /**
- * Load test scenarios for use with manual exploratory testing
- *
- * This script provides an interactive CLI to seed the local database with specific test scenarios. It automates the
- * "Tear Down" and "Data Load" cycles.
- *
- * To run this script use
- *
- * ```bash
- * npm run cli:seed
- * ```
- *
- * > Defined in `package.json` as `"cli:seed": "node cli/seed.cli.js"`
- *
- * @module SeedCLI
+ * Interactive CLI to seed the local database with test scenarios. See cli/README.md. Run with `npm run cli`
  */
 
-import fs from 'fs'
-import path from 'path'
-import { search } from '@inquirer/prompts'
-
-import loadService from '../tests/support/load/load.service.js'
+import { searchScenarios } from './src/search.lib.js'
 import tearDownService from '../tests/support/tear-down/tear-down.service.js'
-import { logError, logInfo, logSuccess, logWarning, styleBold } from './log.lib.js'
+import { listScenarios, loadScenario } from './src/scenarios.js'
+import { logError, logInfo, logSuccess, logWarning, styleBold } from './src/log.lib.js'
 
 const ESCAPE_KEY_ABORT_CONTROLLER = new AbortController()
-const SCENARIOS_DIRS = ['tests/support/scenarios']
 
 async function run() {
   logInfo(styleBold('Use this tool to load test scenarios for manual exploratory testing\n'))
 
-  const scenarios = await _scenarios()
+  const scenarios = await listScenarios()
 
   let selectedScenario
 
-  // Persistent loop until user aborts
   while (true) {
     try {
-      selectedScenario = await _prompt(scenarios, selectedScenario)
+      selectedScenario = await searchScenarios(scenarios, selectedScenario, ESCAPE_KEY_ABORT_CONTROLLER)
 
       logInfo('Tearing down previous scenario data...')
 
       await tearDownService()
 
-      const body = await _body(selectedScenario)
-
-      logInfo(`Loading scenario ${styleBold(selectedScenario.title)}...`)
-
-      await loadService(body)
+      await loadScenario(selectedScenario)
 
       logSuccess(`${styleBold('Finished!')} (press Escape to exit)\n`)
     } catch (err) {
@@ -68,123 +46,7 @@ async function run() {
   process.exit(0)
 }
 
-/**
- * Extract data from the scenario file
- * @private
- */
-async function _body(selectedScenario) {
-  // 1. Get the absolute path
-  const scenarioPath = selectedScenario.path
-
-  // 2. Use dynamic import() to load the ESM scenario file.
-  // This allows the scenario to 'import' other ESM files (like licence.js)
-  const scenarioModule = await import(`file://${scenarioPath}`)
-
-  // 3. Handle the export (ESM uses .default)
-  const getBody = scenarioModule.default || scenarioModule
-
-  if (typeof getBody !== 'function') {
-    throw new Error(`The file "${selectedScenario.filename}.js" must have an "export default" function.`)
-  }
-
-  // 4. Call the function here to get the actual data object
-  return await getBody()
-}
-
-/**
- * Generate the CLI prompt the user will use to select the scenario to load
- *
- * {@link https://github.com/SBoudrias/Inquirer.js|@inquirer/prompts} is the package we use to create the CLI prompt. It
- * has a lot of different prompt types, but we use the `search` type which gives us a nice searchable dropdown in the
- * terminal.
- *
- * We have to provide 2 args to `search()`. The first is 'options' which defines how the prompt looks and behaves. It
- * must contain a `message` which is the text shown to the user when asking the question, and a `source` function which
- * is called each time the user types to get the list of options to show in the dropdown.
- *
- * The second is an object that can be used to pass in an `AbortSignal`, which we use to allow the user to cancel the
- * prompt by pressing the Escape key.
- *
- * The function we provide to `source` filters the list of scenarios based on the user's input, and then maps them into
- * the format expected by `search()`.
- *
- * Normally we would declare the function elsewhere to simplify things in _`prompt()`. However, we take advantage of a
- * closure here so that `source` has access to the `scenarios` variable without us having to pass it in as an argument.
- *
- * If we didn't, we would either have to fetch all the possible scenarios on each key press, or declare it globally
- * within the module.
- *
- * @private
- */
-async function _prompt(scenarios, defaultValue) {
-  return search(
-    {
-      message: 'Type to search scenarios:',
-      default: defaultValue, // Highlights the last used scenario
-      source: async (input) => {
-        let filteredScenarios = scenarios
-
-        if (input) {
-          const query = input.toLowerCase()
-
-          filteredScenarios = scenarios.filter((scenario) => {
-            return scenario.title.toLowerCase().includes(query) || scenario.filename.toLowerCase().includes(query)
-          })
-        }
-
-        return filteredScenarios.map((scenario) => {
-          return {
-            name: scenario.title,
-            value: scenario,
-            description: scenario.description
-          }
-        })
-      }
-    },
-    { signal: ESCAPE_KEY_ABORT_CONTROLLER.signal }
-  )
-}
-
-/**
- * Get list of available scenario files with their title and description
- * @private
- */
-async function _scenarios() {
-  const scenarios = []
-
-  for (const dir of SCENARIOS_DIRS) {
-    if (!fs.existsSync(dir)) {
-      continue
-    }
-
-    const filenames = fs
-      .readdirSync(dir)
-      .filter((file) => {
-        return file.endsWith('.js')
-      })
-      .map((file) => {
-        return file.replace('.js', '')
-      })
-
-    for (const filename of filenames) {
-      const scenarioPath = path.resolve(dir, `${filename}.js`)
-      const mod = await import(`file://${scenarioPath}`)
-
-      scenarios.push({
-        filename,
-        path: scenarioPath,
-        title: mod.title ?? filename,
-        description: mod.description ?? ''
-      })
-    }
-  }
-
-  return scenarios
-}
-
-/**
- * Global keypress listener for the Escape key signal
- */
+// Escape aborts whichever prompt is currently awaiting ESCAPE_KEY_ABORT_CONTROLLER's signal
 process.stdin.on('keypress', (str, key) => {
   if (key.name === 'escape') {
     ESCAPE_KEY_ABORT_CONTROLLER.abort()
