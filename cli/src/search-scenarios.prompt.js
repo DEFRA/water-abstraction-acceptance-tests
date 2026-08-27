@@ -8,7 +8,7 @@ import { search } from '@inquirer/prompts'
  * @param {AbortSignal} signal - aborts the prompt (Escape to quit, Tab for the menu)
  * @returns {Promise<object>} the scenario the user selected
  */
-export async function searchScenariosMenu(scenarios, defaultValue, signal) {
+export async function searchScenariosPrompt(scenarios, defaultValue, signal) {
   return search(
     {
       message: 'Search for a scenario:',

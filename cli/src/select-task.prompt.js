@@ -18,7 +18,7 @@ const MENU_ITEMS = {
  * @param {AbortSignal} signal - aborts the prompt (Escape or Tab to return to the search prompt)
  * @param {Function} exit - called if the user force-closes the prompt with Ctrl+C
  */
-export async function selectTaskMenu(scenarios, signal, exit) {
+export async function selectTaskPrompt(scenarios, signal, exit) {
   console.clear()
 
   printBanner('Select a task:')

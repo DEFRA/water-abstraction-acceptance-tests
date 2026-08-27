@@ -2,8 +2,8 @@
  * Interactive CLI to seed the local database with test scenarios. See cli/README.md. Run with `npm run cli`
  */
 
-import { searchScenariosMenu } from './src/search-scenarios.menu.js'
-import { selectTaskMenu } from './src/select-task.menu.js'
+import { searchScenariosPrompt } from './src/search-scenarios.prompt.js'
+import { selectTaskPrompt } from './src/select-task.prompt.js'
 import { tearDown } from './src/tear-down.lib.js'
 import { listScenarios, loadScenario } from './src/scenarios.lib.js'
 import { logError, logInfo, logSuccess, logWarning, printBanner, styleBold } from './src/log.lib.js'
@@ -25,7 +25,7 @@ async function run() {
     try {
       const signal = AbortSignal.any([escapeAbortController.signal, tabAbortController.signal])
 
-      selectedScenario = await searchScenariosMenu(scenarios, selectedScenario, signal)
+      selectedScenario = await searchScenariosPrompt(scenarios, selectedScenario, signal)
 
       await tearDown()
 
@@ -38,7 +38,7 @@ async function run() {
 
         const menuSignal = AbortSignal.any([escapeAbortController.signal, tabAbortController.signal])
 
-        await selectTaskMenu(scenarios, menuSignal, _exit)
+        await selectTaskPrompt(scenarios, menuSignal, _exit)
 
         escapeAbortController = new AbortController()
         tabAbortController = new AbortController()
