@@ -2,7 +2,7 @@ import { select } from '@inquirer/prompts'
 
 import { seedAll } from './seed-all.lib.js'
 import { tearDown } from './tear-down.lib.js'
-import { logError, logSuccess, printBanner, styleBold } from './log.lib.js'
+import { logError, printBanner } from './log.lib.js'
 
 const MENU_ITEMS = {
   SEED_ALL: 'seed-all',
@@ -19,13 +19,14 @@ const MENU_ITEMS = {
  * @param {Function} exit - called if the user force-closes the prompt with Ctrl+C
  */
 export async function selectTaskPrompt(scenarios, signal, exit) {
-  console.clear()
+  // console.clear()
 
-  printBanner('Select a task:')
+  printBanner('Select a task, or ESC to return to scenarios')
 
   try {
     const selected = await select(
       {
+        instruction: 'Hello mom',
         message: 'Select a task:',
         choices: [
           { name: 'Seed all scenarios', value: MENU_ITEMS.SEED_ALL },
@@ -40,8 +41,6 @@ export async function selectTaskPrompt(scenarios, signal, exit) {
     } else {
       await tearDown()
     }
-
-    logSuccess(`${styleBold('Finished!')} (press Escape to exit)\n`)
   } catch (err) {
     if (signal.aborted) {
       return

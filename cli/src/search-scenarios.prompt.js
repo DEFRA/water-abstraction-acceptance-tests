@@ -1,5 +1,7 @@
 import { search } from '@inquirer/prompts'
 
+import { printBanner } from './log.lib.js'
+
 /**
  * Show a searchable scenario picker in the terminal
  *
@@ -9,6 +11,8 @@ import { search } from '@inquirer/prompts'
  * @returns {Promise<object>} the scenario the user selected
  */
 export async function searchScenariosPrompt(scenarios, defaultValue, signal) {
+  printBanner('Type to search, Tab for other tasks, ESC to exit')
+
   return search(
     {
       message: 'Search for a scenario:',

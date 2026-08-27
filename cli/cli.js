@@ -6,17 +6,13 @@ import { searchScenariosPrompt } from './src/search-scenarios.prompt.js'
 import { selectTaskPrompt } from './src/select-task.prompt.js'
 import { tearDown } from './src/tear-down.lib.js'
 import { listScenarios, loadScenario } from './src/scenarios.lib.js'
-import { logError, logInfo, logSuccess, logWarning, printBanner, styleBold } from './src/log.lib.js'
+import { logError, logInfo, logWarning } from './src/log.lib.js'
 
 // Reassigned after each use — an AbortController can't be un-aborted, so the next prompt needs a fresh one
 let escapeAbortController = new AbortController()
 let tabAbortController = new AbortController()
 
 async function run() {
-  console.clear()
-
-  printBanner('Type to search, or press Tab for the menu')
-
   const scenarios = await listScenarios()
 
   let selectedScenario
@@ -30,8 +26,6 @@ async function run() {
       await tearDown()
 
       await loadScenario(selectedScenario)
-
-      logSuccess(`${styleBold('Finished!')} (press Escape to exit)\n`)
     } catch (err) {
       if (tabAbortController.signal.aborted) {
         tabAbortController = new AbortController()
