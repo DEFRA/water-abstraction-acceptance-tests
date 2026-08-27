@@ -1,4 +1,4 @@
-import { loadScenario } from './scenarios.js'
+import { loadScenario } from './scenarios.lib.js'
 
 const ALL_SCENARIOS = ['licence.scenario', 'registered-licence.scenario']
 

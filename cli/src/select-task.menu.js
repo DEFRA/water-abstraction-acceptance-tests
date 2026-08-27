@@ -1,7 +1,7 @@
 import { select } from '@inquirer/prompts'
 
-import { seedAll } from './all.js'
-import { tearDown } from './tear-down.js'
+import { seedAll } from './seed-all.lib.js'
+import { tearDown } from './tear-down.lib.js'
 import { logError, logSuccess, printBanner, styleBold } from './log.lib.js'
 
 const MENU_ITEMS = {
@@ -18,15 +18,15 @@ const MENU_ITEMS = {
  * @param {AbortSignal} signal - aborts the prompt (Escape or Tab to return to the search prompt)
  * @param {Function} exit - called if the user force-closes the prompt with Ctrl+C
  */
-export async function menu(scenarios, signal, exit) {
+export async function selectTaskMenu(scenarios, signal, exit) {
   console.clear()
 
-  printBanner('Menu')
+  printBanner('Select a task:')
 
   try {
     const selected = await select(
       {
-        message: 'Select an option:',
+        message: 'Select a task:',
         choices: [
           { name: 'Seed all scenarios', value: MENU_ITEMS.SEED_ALL },
           { name: 'Tear down', value: MENU_ITEMS.TEAR_DOWN }
