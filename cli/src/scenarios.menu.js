@@ -36,7 +36,7 @@ export default async function scenariosMenu(scenarios, escapeSignal, tabSignal, 
       return
     }
 
-    logError(`\nError: ${err.message}`)
+    await logError(`\nError: ${err.message}`)
   }
 
   return selectedScenario

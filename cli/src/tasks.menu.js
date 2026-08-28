@@ -34,7 +34,7 @@ export default async function tasksMenu(scenarios, escapeSignal, tabSignal) {
       return
     }
 
-    logError(`\nError: ${err.message}`)
+    await logError(`\nError: ${err.message}`)
   }
 }
 
