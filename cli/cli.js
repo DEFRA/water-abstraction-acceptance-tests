@@ -35,7 +35,7 @@ async function run() {
 }
 
 // Escape quits; Tab opens the tasks menu
-process.stdin.on('keypress', (str, key) => {
+process.stdin.on('keypress', (_str, key) => {
   if (key.name === 'escape') {
     escapeAbortController.abort()
   } else if (key.name === 'tab') {
