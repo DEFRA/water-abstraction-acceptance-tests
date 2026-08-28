@@ -1,5 +1,6 @@
 import { search } from '@inquirer/prompts'
 
+import { cliTheme } from './theme.lib.js'
 import { printBanner } from './log.lib.js'
 
 /**
@@ -11,7 +12,7 @@ import { printBanner } from './log.lib.js'
  * @returns {Promise<object>} the scenario the user selected
  */
 export async function searchScenariosPrompt(scenarios, defaultValue, signal) {
-  printBanner('Type to search, Tab for other tasks, ESC to exit')
+  printBanner('Type to search')
 
   return search(
     {
@@ -25,7 +26,8 @@ export async function searchScenariosPrompt(scenarios, defaultValue, signal) {
         }
 
         return _presentScenarios(filteredScenarios)
-      }
+      },
+      theme: cliTheme('Task menu')
     },
     { signal }
   )

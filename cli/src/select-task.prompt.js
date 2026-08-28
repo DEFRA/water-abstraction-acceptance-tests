@@ -1,5 +1,6 @@
 import { select } from '@inquirer/prompts'
 
+import { cliTheme } from './theme.lib.js'
 import { seedAll } from './seed-all.lib.js'
 import { tearDown } from './tear-down.lib.js'
 import { logError, printBanner } from './log.lib.js'
@@ -21,7 +22,7 @@ const MENU_ITEMS = {
 export async function selectTaskPrompt(scenarios, signal, exit) {
   // console.clear()
 
-  printBanner('Select a task, or ESC to return to scenarios')
+  printBanner('Select a task')
 
   try {
     const selected = await select(
@@ -31,7 +32,8 @@ export async function selectTaskPrompt(scenarios, signal, exit) {
         choices: [
           { name: 'Seed all scenarios', value: MENU_ITEMS.SEED_ALL },
           { name: 'Tear down', value: MENU_ITEMS.TEAR_DOWN }
-        ]
+        ],
+        theme: cliTheme('Scenarios menu')
       },
       { signal }
     )
