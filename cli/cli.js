@@ -8,7 +8,9 @@ import tasksMenu from './src/tasks.menu.js'
 
 const escapeAbortController = new AbortController()
 
-// Reassigned after each use — an AbortController can't be un-aborted, so the next prompt needs a fresh one
+// Reassigned after each use — an AbortController can't be un-aborted, so the next prompt needs a fresh one.
+//
+// fresh signal for the first scenariosMenu call
 let tabAbortController = new AbortController()
 
 async function run() {
@@ -25,10 +27,13 @@ async function run() {
     )
 
     if (tabAbortController.signal.aborted) {
+      // Tab just fired to open the tasks menu; reset so it can also be pressed to exit tasksMenu
       tabAbortController = new AbortController()
 
       await tasksMenu(scenarios, escapeAbortController.signal, tabAbortController.signal)
 
+      // tasksMenu may have aborted the signal i.e. switched back to scenarios; reset so Tab is detectable again in the
+      // next scenariosMenu call
       tabAbortController = new AbortController()
     }
   }
