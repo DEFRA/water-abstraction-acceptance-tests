@@ -1,25 +1,23 @@
 import { search } from '@inquirer/prompts'
 
 import { cliTheme } from './theme.lib.js'
-import { printBanner } from './log.lib.js'
 
 /**
  * Show a searchable scenario picker in the terminal
  *
  * @param {object[]} scenarios - the full list of scenarios to search
- * @param {object} [defaultValue] - the previously selected scenario, highlighted by default
  * @param {AbortSignal} escapeSignal - aborted when Escape is pressed; exits the CLI
  * @param {AbortSignal} tabSignal - aborted when Tab is pressed; switches to the task menu
+ * @param {object} [selectedScenario] - the previously selected scenario, highlighted by default
  *
  * @returns {Promise<object>} the scenario the user selected
  */
-export async function searchScenariosPrompt(scenarios, defaultValue, escapeSignal, tabSignal) {
-  printBanner('Type to search')
-
+export default async function searchScenariosPrompt(scenarios, escapeSignal, tabSignal, selectedScenario) {
   return search(
     {
       message: 'Search for a scenario:',
-      default: defaultValue, // Highlights the last used scenario
+      // Highlights the last used scenario
+      default: selectedScenario,
       source: async (input) => {
         let filteredScenarios = scenarios
 
