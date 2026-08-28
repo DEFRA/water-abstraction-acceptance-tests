@@ -9,8 +9,9 @@ import { tearDown } from './src/tear-down.lib.js'
 import { listScenarios, loadScenario } from './src/scenarios.lib.js'
 import { logError, logInfo } from './src/log.lib.js'
 
+const escapeAbortController = new AbortController()
+
 // Reassigned after each use — an AbortController can't be un-aborted, so the next prompt needs a fresh one
-let escapeAbortController = new AbortController()
 let tabAbortController = new AbortController()
 
 async function run() {
@@ -31,11 +32,8 @@ async function run() {
       if (tabAbortController.signal.aborted) {
         tabAbortController = new AbortController()
 
-        const menuSignal = AbortSignal.any([escapeAbortController.signal, tabAbortController.signal])
+        await selectTaskPrompt(scenarios, escapeAbortController.signal, tabAbortController.signal)
 
-        await selectTaskPrompt(scenarios, menuSignal)
-
-        escapeAbortController = new AbortController()
         tabAbortController = new AbortController()
 
         continue

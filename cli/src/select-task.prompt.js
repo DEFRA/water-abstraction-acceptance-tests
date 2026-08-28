@@ -14,21 +14,18 @@ const MENU_ITEMS = {
 /**
  * Show the CLI's menu (seed all, tear down) and run whichever entry the user selects
  *
- * Escape or Tab (aborting `signal`) returns quietly to the search prompt. A real Ctrl+C calls `exit`
+ * Tab returns quietly to the search prompt. Escape and Ctrl+C both exit the CLI.
  *
  * @param {object[]} scenarios - the full list of available scenarios, as returned by listScenarios()
- * @param {AbortSignal} signal - aborts the prompt (Escape or Tab to return to the search prompt)
- * @param {Function} exit - called if the user force-closes the prompt with Ctrl+C
+ * @param {AbortSignal} escapeSignal - aborted when Escape is pressed; exits the CLI
+ * @param {AbortSignal} tabSignal - aborted when Tab is pressed; returns to the search prompt
  */
-export async function selectTaskPrompt(scenarios, signal) {
-  // console.clear()
-
+export async function selectTaskPrompt(scenarios, escapeSignal, tabSignal) {
   printBanner('Select a task')
 
   try {
     const selected = await select(
       {
-        instruction: 'Hello mom',
         message: 'Select a task:',
         choices: [
           { name: 'Seed all scenarios', value: MENU_ITEMS.SEED_ALL },
@@ -36,7 +33,7 @@ export async function selectTaskPrompt(scenarios, signal) {
         ],
         theme: cliTheme('Scenarios menu')
       },
-      { signal }
+      { signal: AbortSignal.any([escapeSignal, tabSignal]) }
     )
 
     if (selected === MENU_ITEMS.SEED_ALL) {
@@ -45,11 +42,11 @@ export async function selectTaskPrompt(scenarios, signal) {
       await tearDown()
     }
   } catch (err) {
-    if (signal.aborted) {
+    if (tabSignal.aborted) {
       return
     }
 
-    if (err.name === 'ExitPromptError') {
+    if (escapeSignal.aborted || err.name === 'ExitPromptError') {
       exit()
       return
     }
