@@ -8,10 +8,12 @@ import { printBanner } from './log.lib.js'
  *
  * @param {object[]} scenarios - the full list of scenarios to search
  * @param {object} [defaultValue] - the previously selected scenario, highlighted by default
- * @param {AbortSignal} signal - aborts the prompt (Escape to quit, Tab for the menu)
+ * @param {AbortSignal} escapeSignal - aborted when Escape is pressed; exits the CLI
+ * @param {AbortSignal} tabSignal - aborted when Tab is pressed; returns to the search
+ *
  * @returns {Promise<object>} the scenario the user selected
  */
-export async function searchScenariosPrompt(scenarios, defaultValue, signal) {
+export async function searchScenariosPrompt(scenarios, defaultValue, escapeSignal, tabSignal) {
   printBanner('Type to search')
 
   return search(
@@ -29,7 +31,7 @@ export async function searchScenariosPrompt(scenarios, defaultValue, signal) {
       },
       theme: cliTheme('Task menu')
     },
-    { signal }
+    { signal: AbortSignal.any([escapeSignal, tabSignal]) }
   )
 }
 

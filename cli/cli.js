@@ -21,9 +21,12 @@ async function run() {
 
   while (true) {
     try {
-      const signal = AbortSignal.any([escapeAbortController.signal, tabAbortController.signal])
-
-      selectedScenario = await searchScenariosPrompt(scenarios, selectedScenario, signal)
+      selectedScenario = await searchScenariosPrompt(
+        scenarios,
+        selectedScenario,
+        escapeAbortController.signal,
+        tabAbortController.signal
+      )
 
       await tearDown()
 
