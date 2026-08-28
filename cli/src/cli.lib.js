@@ -1,4 +1,4 @@
-import { logWarning } from './src/log.lib.js'
+import { logWarning } from './log.lib.js'
 
 /**
  * Log a goodbye message and exit the CLI
