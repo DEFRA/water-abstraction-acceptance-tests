@@ -2,7 +2,7 @@ import { exit } from './cli.lib.js'
 import { loadScenario } from './scenarios.lib.js'
 import searchScenariosPrompt from './search-scenarios.prompt.js'
 import { tearDown } from './tasks.lib.js'
-import { logError, printBanner } from './log.lib.js'
+import { logError, printBanner, withSpinner } from './log.lib.js'
 
 /**
  * Show the CLI's scenarios menu and load whichever scenario the user selects
@@ -21,9 +21,11 @@ export default async function scenariosMenu(scenarios, escapeSignal, tabSignal, 
   try {
     selectedScenario = await searchScenariosPrompt(scenarios, escapeSignal, tabSignal, selectedScenario)
 
-    await tearDown()
+    await withSpinner('Loading scenario...', async () => {
+      await tearDown()
 
-    await loadScenario(selectedScenario)
+      return loadScenario(selectedScenario)
+    })
   } catch (err) {
     if (tabSignal.aborted) {
       return selectedScenario

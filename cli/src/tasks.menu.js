@@ -1,6 +1,6 @@
 import { exit } from './cli.lib.js'
 import selectTaskPrompt from './select-task.prompt.js'
-import { logError, printBanner } from './log.lib.js'
+import { logError, printBanner, withSpinner } from './log.lib.js'
 import { seedAll, tearDown } from './tasks.lib.js'
 
 /**
@@ -40,8 +40,10 @@ export default async function tasksMenu(scenarios, escapeSignal, tabSignal) {
 
 async function _processTask(selectedTask, scenarios) {
   if (selectedTask === 'seed-all') {
-    await seedAll(scenarios)
+    await withSpinner('Seeding all scenarios...', async () => {
+      return seedAll(scenarios)
+    })
   } else if (selectedTask === 'tear-down') {
-    await tearDown()
+    await withSpinner('Tearing down...', tearDown)
   }
 }

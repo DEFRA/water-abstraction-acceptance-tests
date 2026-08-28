@@ -3,10 +3,14 @@
 
 const BOLD = '\x1b[1m'
 const BLUE = '\x1b[34m'
+const CLEAR_LINE = '\r\x1b[2K'
 const GREEN = '\x1b[32m'
+const HIDE_CURSOR = '\x1b[?25l'
 const RED = '\x1b[31m'
 const RESET_ALL = '\x1b[0m'
 const RESET_BOLD = '\x1b[22m'
+const SHOW_CURSOR = '\x1b[?25h'
+const SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 const YELLOW = '\x1b[33m'
 
 /**
@@ -65,6 +69,31 @@ export function logWarning(message) {
  */
 export function styleBold(message) {
   return `${BOLD}${message}${RESET_BOLD}`
+}
+
+/**
+ * Run an async function whilst showing a spinner. Restores the cursor even if the function throws
+ *
+ * @param {string} message - the label shown next to the spinner
+ * @param {Function} fn - the async function to run
+ */
+export async function withSpinner(message, fn) {
+  let i = 0
+
+  process.stdout.write(HIDE_CURSOR)
+
+  const interval = setInterval(() => {
+    const frame = SPINNER_FRAMES[i++ % SPINNER_FRAMES.length]
+    process.stdout.write(`\r${YELLOW}${frame}${RESET_ALL} ${message}`)
+  }, 80)
+
+  try {
+    await fn()
+  } finally {
+    clearInterval(interval)
+    process.stdout.write(CLEAR_LINE)
+    process.stdout.write(SHOW_CURSOR)
+  }
 }
 
 function _log(color, message) {
