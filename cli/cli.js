@@ -4,8 +4,8 @@
 
 import { exit } from './src/cli.lib.js'
 import { searchScenariosPrompt } from './src/search-scenarios.prompt.js'
-import { selectTaskPrompt } from './src/select-task.prompt.js'
-import { tearDown } from './src/tear-down.lib.js'
+import tasksMenu from './src/tasks.menu.js'
+import { tearDown } from './src/tasks.lib.js'
 import { listScenarios, loadScenario } from './src/scenarios.lib.js'
 import { logError, logInfo } from './src/log.lib.js'
 
@@ -35,7 +35,7 @@ async function run() {
       if (tabAbortController.signal.aborted) {
         tabAbortController = new AbortController()
 
-        await selectTaskPrompt(scenarios, escapeAbortController.signal, tabAbortController.signal)
+        await tasksMenu(scenarios, escapeAbortController.signal, tabAbortController.signal)
 
         tabAbortController = new AbortController()
 
