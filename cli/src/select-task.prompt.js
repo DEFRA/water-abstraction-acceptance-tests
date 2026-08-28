@@ -1,6 +1,7 @@
 import { select } from '@inquirer/prompts'
 
 import { cliTheme } from './theme.lib.js'
+import { exit } from './cli.lib.js'
 import { seedAll } from './seed-all.lib.js'
 import { tearDown } from './tear-down.lib.js'
 import { logError, printBanner } from './log.lib.js'
@@ -19,7 +20,7 @@ const MENU_ITEMS = {
  * @param {AbortSignal} signal - aborts the prompt (Escape or Tab to return to the search prompt)
  * @param {Function} exit - called if the user force-closes the prompt with Ctrl+C
  */
-export async function selectTaskPrompt(scenarios, signal, exit) {
+export async function selectTaskPrompt(scenarios, signal) {
   // console.clear()
 
   printBanner('Select a task')
