@@ -9,7 +9,7 @@ import { printBanner } from './log.lib.js'
  * @param {object[]} scenarios - the full list of scenarios to search
  * @param {object} [defaultValue] - the previously selected scenario, highlighted by default
  * @param {AbortSignal} escapeSignal - aborted when Escape is pressed; exits the CLI
- * @param {AbortSignal} tabSignal - aborted when Tab is pressed; returns to the search
+ * @param {AbortSignal} tabSignal - aborted when Tab is pressed; switches to the task menu
  *
  * @returns {Promise<object>} the scenario the user selected
  */

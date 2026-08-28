@@ -18,7 +18,7 @@ const MENU_ITEMS = {
  *
  * @param {object[]} scenarios - the full list of available scenarios, as returned by listScenarios()
  * @param {AbortSignal} escapeSignal - aborted when Escape is pressed; exits the CLI
- * @param {AbortSignal} tabSignal - aborted when Tab is pressed; returns to the search prompt
+ * @param {AbortSignal} tabSignal - aborted when Tab is pressed; switches to the scenarios menu
  */
 export async function selectTaskPrompt(scenarios, escapeSignal, tabSignal) {
   printBanner('Select a task')
