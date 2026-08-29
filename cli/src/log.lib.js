@@ -1,3 +1,5 @@
+import { input } from '@inquirer/prompts'
+
 // A minimal stand-in for a dependency like Chalk, using ANSI escape codes directly to avoid adding another
 // dependency to this project (see recent supply chain attacks via npm packages)
 
@@ -35,12 +37,21 @@ export function logInfo(message) {
 }
 
 /**
- * Log a message in red, for errors
+ * Log a message in red, for errors, then wait for the user to acknowledge it
+ *
+ * The menu this returns to always starts with a `console.clear()`, which would otherwise wipe the error off the
+ * screen before it could be read
  *
  * @param {string} message - the message to log
  */
-export function logError(message) {
+export async function logError(message) {
   _log(RED, message)
+
+  try {
+    await input({ message: 'Press Enter to continue' })
+  } catch {
+    // Ctrl+C here just dismisses the error; the caller's own keypress handling still governs Escape/quit
+  }
 }
 
 /**
