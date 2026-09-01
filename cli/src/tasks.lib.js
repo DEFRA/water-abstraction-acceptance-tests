@@ -1,4 +1,5 @@
-import { loadScenario } from './scenarios.js'
+import { loadScenario } from './scenarios.lib.js'
+import tearDownService from '../../tests/support/tear-down/tear-down.service.js'
 
 const ALL_SCENARIOS = ['licence.scenario', 'registered-licence.scenario']
 
@@ -19,4 +20,11 @@ export async function seedAll(scenarios) {
 
     await loadScenario(scenario)
   }
+}
+
+/**
+ * Tear down all test data. Does not load anything afterwards
+ */
+export async function tearDown() {
+  await tearDownService()
 }
