@@ -1,3 +1,4 @@
+import { generateExternalEmailAddress } from '../../../support/helpers/generators.helpers.js'
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
@@ -5,12 +6,14 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Set up but then cancel an abstraction alert (internal)', () => {
   let licence
   let monitoringStation
+  let user
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
     licence = scenario.licence
     monitoringStation = scenario.monitoringStation
+    user = scenario.user
 
     await setup(scenario)
   })
@@ -68,14 +71,14 @@ test.describe('Set up but then cancel an abstraction alert (internal)', () => {
 
     // Select Use another email address, enter an email address and continue
     await page.locator('input[type="radio"][value="other"]').check()
-    await page.locator('#otherUser').fill('test.user@testing.com')
+    await page.locator('#otherUser').fill(generateExternalEmailAddress())
     await page.getByRole('button', { name: 'Continue' }).click()
 
     // Confirm data on Check the recipients page is correct and cancel the alert
     await expect(page.locator('.govuk-caption-l')).toContainText('Notice WAA-')
     await expect(page.locator('.govuk-heading-l')).toContainText('Check the recipients')
     await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 recipients')
-    await expect(page.locator('.govuk-table__body')).toContainText('external@example.com')
+    await expect(page.locator('.govuk-table__body')).toContainText(user.username)
     await expect(page.locator('.govuk-table__body')).toContainText(licence.licenceRef)
     await expect(page.locator('.govuk-table__body')).toContainText('Email - primary user')
     await expect(page.locator('.govuk-table__body')).toContainText('Preview')

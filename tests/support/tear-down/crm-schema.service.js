@@ -127,10 +127,7 @@ async function _deleteAllTestData() {
     "er".entity_id = "e".entity_id
     AND (
       "er"."created_by" = 'acceptance-test-setup'
-      OR "e"."entity_nm" LIKE 'acceptance-test.%'
-      OR "e"."entity_nm" LIKE '%@example.com'
-      OR "e"."entity_nm" LIKE '%@e'
-      OR "e"."entity_nm" LIKE 'regression.tests.%'
+      OR "e"."entity_nm" LIKE '%acceptance.test%'
       OR "e"."entity_nm" LIKE 'Big Farm Co Ltd%'
       OR "e"."entity_nm" LIKE 'Test Farm Co Ltd%'
       OR "e"."source" = 'acceptance-test-setup'
@@ -140,10 +137,7 @@ async function _deleteAllTestData() {
   FROM
     "crm"."entity"
   WHERE
-    "entity_nm" LIKE 'acceptance-test.%'
-    OR "entity_nm" LIKE '%@example.com'
-    OR "entity_nm" LIKE '%@e'
-    OR "entity_nm" LIKE 'regression.tests.%'
+    "entity_nm" LIKE '%acceptance.test%'
     OR "entity_nm" LIKE 'Big Farm Co Ltd%'
     OR "entity_nm" LIKE 'Test Farm Co Ltd%'
     OR "source" = 'acceptance-test-setup';

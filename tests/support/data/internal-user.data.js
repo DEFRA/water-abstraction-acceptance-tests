@@ -1,9 +1,10 @@
+import { generateGovUKEmail } from '../helpers/generators.helpers.js'
+import { password } from '../default-values.js'
 import { yesterday } from '../helpers/date.helpers.js'
-import { internalUserEmail, password } from '../default-values.js'
 
 export default function () {
   return {
-    username: internalUserEmail,
+    username: generateGovUKEmail(),
     password,
     resetRequired: 0,
     application: 'water_admin',

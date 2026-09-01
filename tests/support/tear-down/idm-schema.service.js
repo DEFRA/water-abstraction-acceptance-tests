@@ -19,13 +19,6 @@ async function _deleteAllTestData() {
   DELETE
   FROM
     "idm"."users"
-  WHERE
-    jsonb_path_query_first(
-      "user_data",
-      '$.source'
-    ) #>> '{}' = 'acceptance-test-setup'
-    OR "user_name" LIKE '%@example.com'
-    OR "user_name" LIKE '%@e'
-    OR "user_name" LIKE 'regression.tests%';
+  WHERE "user_name" LIKE '%acceptance.test%'
   `)
 }

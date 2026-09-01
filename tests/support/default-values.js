@@ -5,18 +5,6 @@
 export const companyName = 'Big Farm Co Ltd'
 
 /**
- * When a scenario or data file needs an external user email, we use external@example.com as our default.
- * @type {string}
- */
-export const externalUserEmail = 'external@example.com'
-
-/**
- * When a scenario or data file needs an internal user email, we use regression.tests@wrls.gov.uk as our default.
- * @type {string}
- */
-export const internalUserEmail = 'regression.tests@wrls.gov.uk'
-
-/**
  * When a scenario or data file needs a password, we use P@55word as our default.
  * @type {string}
  */

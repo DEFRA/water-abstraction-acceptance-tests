@@ -9,8 +9,6 @@ export default function () {
   const registeredLicence = registeredLicenceScenario()
   const sharingUser = externalUserData()
 
-  sharingUser.username = 'external.shared@example.com'
-
   return {
     ...registeredLicence,
     users: [registeredLicence.user, sharingUser]
