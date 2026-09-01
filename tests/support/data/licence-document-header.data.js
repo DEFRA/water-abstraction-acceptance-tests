@@ -1,6 +1,6 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-export default function (licence) {
+export default function (licence, company) {
   const licenceDocumentHeaderId = generateUUID()
 
   return {
@@ -21,7 +21,7 @@ export default function (licence) {
       select: 'id'
     },
     metadata: {
-      Name: 'cupcake factory',
+      Name: company.name,
       dataType: 'acceptance-test-setup',
       IsCurrent: true,
       Salutation: '',
@@ -35,7 +35,7 @@ export default function (licence) {
       Country: 'United Kingdom',
       contacts: [
         {
-          name: 'Environment Agency',
+          name: company.name,
           role: 'Licence holder',
           town: 'Bristol',
           type: 'Organisation',
