@@ -1,6 +1,7 @@
+import { generateReference } from 'water-abstraction-engine/test/generators.js'
+
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { generateReturnRequirementReference } from '../helpers/generators.helpers.js'
 import { relativeToToday } from '../helpers/date.helpers.js'
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
@@ -34,7 +35,7 @@ export default function () {
   // The returns list page orders rows by start date desc, then return reference desc as a tie-breaker. Assigning
   // descending references here, highest first, keeps these return logs in the same order as `periods`, which the
   // internal and external returns list specs rely on to identify each status by array position.
-  const referenceBase = generateReturnRequirementReference()
+  const referenceBase = generateReference()
 
   const results = periods.map((period, index) => {
     return _returnLog(licenceEntity, returnVersion, period, referenceBase - index)

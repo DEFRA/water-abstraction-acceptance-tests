@@ -34,24 +34,6 @@ export function generatePointExternalId() {
 }
 
 /**
- * Generates a return requirement reference
- *
- * The reference is a 7-digit number starting '9', in the range 9,000,000-9,999,999. We keep it below 10,000,000
- * because that's where `water.return_reference_seq` starts - the sequence Postgres uses to assign a reference when
- * the app itself creates a return requirement (for example, through a 'submit new return version' journey). Staying
- * below it means our seeded data and anything the app creates live during a test sort in a consistent, predictable
- * order relative to each other.
- *
- * We don't use the engine's own `generateReference()` because its range (10,000,000-99,999,999) overlaps that same
- * sequence, which introduces exactly the ordering ambiguity we're trying to avoid.
- *
- * @returns {number} - A return requirement reference
- */
-export function generateReturnRequirementReference() {
-  return generateRandomInteger(9000000, 9999999)
-}
-
-/**
  * Generate a unique GOV UK email address (internal)
  *
  * We use 'acceptance.test.' to delete all relevant test email address.

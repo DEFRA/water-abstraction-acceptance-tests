@@ -1,12 +1,11 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
+import { generateReference, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-import { generateReturnRequirementReference } from '../helpers/generators.helpers.js'
 import { isTwoPartTariffPurpose, purposeDescription } from '../helpers/purpose.helpers.js'
 
 export default function (returnVersion, licenceVersionPurpose) {
   const returnRequirementId = generateUUID()
   const siteDescription = purposeDescription(licenceVersionPurpose.purposeId.value)
-  const reference = generateReturnRequirementReference()
+  const reference = generateReference()
 
   return {
     id: returnRequirementId,
