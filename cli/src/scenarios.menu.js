@@ -1,7 +1,6 @@
 import { exit } from './cli.lib.js'
 import { loadScenario } from './scenarios.lib.js'
 import searchScenariosPrompt from './search-scenarios.prompt.js'
-import { tearDown } from './tasks.lib.js'
 import { logError, printBanner, withSpinner } from './log.lib.js'
 
 /**
