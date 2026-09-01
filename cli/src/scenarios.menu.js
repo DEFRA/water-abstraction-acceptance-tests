@@ -22,8 +22,6 @@ export default async function scenariosMenu(scenarios, escapeSignal, tabSignal, 
     selectedScenario = await searchScenariosPrompt(scenarios, escapeSignal, tabSignal, selectedScenario)
 
     await withSpinner('Loading scenario...', async () => {
-      await tearDown()
-
       return loadScenario(selectedScenario)
     })
   } catch (err) {
