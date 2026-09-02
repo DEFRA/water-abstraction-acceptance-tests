@@ -11,6 +11,8 @@ export const description =
 
 /**
  * Both tagged licences are linked to the same monitoring station via a licenceMonitoringStation.
+ *
+ * We seed a separate 'licenceVersionPurposeCondition' on the licence, available for a test to select when tagging.
  */
 export default function () {
   const monitoringStation = monitoringStationData()
