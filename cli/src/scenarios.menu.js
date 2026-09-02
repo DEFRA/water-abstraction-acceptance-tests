@@ -1,7 +1,6 @@
 import { exit } from './cli.lib.js'
 import { loadScenario } from './scenarios.lib.js'
 import searchScenariosPrompt from './search-scenarios.prompt.js'
-import { tearDown } from './tasks.lib.js'
 import { logError, printBanner, withSpinner } from './log.lib.js'
 
 /**
@@ -22,8 +21,6 @@ export default async function scenariosMenu(scenarios, escapeSignal, tabSignal, 
     selectedScenario = await searchScenariosPrompt(scenarios, escapeSignal, tabSignal, selectedScenario)
 
     await withSpinner('Loading scenario...', async () => {
-      await tearDown()
-
       return loadScenario(selectedScenario)
     })
   } catch (err) {

@@ -8,6 +8,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
   let endYear
   let startYear
   let licence
+  let returnReference
 
   test.beforeAll(async ({ setup }) => {
     const {
@@ -22,6 +23,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
     const scenario = scenarioData()
 
     licence = scenario.licence
+    returnReference = scenario.returnLogs[0].returnReference
 
     await setup(scenario)
   })
@@ -100,7 +102,9 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       )
 
       await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
-      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999400')
+      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText(
+        `${returnReference}`
+      )
       await expect(page.locator('[data-test="matched-return-summary-0"] > div')).toContainText(
         'Spray Irrigation - Direct'
       )
@@ -137,7 +141,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       ).toContainText('0.9065 ML / 0.9065 ML')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
-      ).toContainText('1.554 ML (9999400)')
+      ).toContainText(`1.554 ML (${returnReference})`)
 
       // Second element ~ November to March, filled to its authorised 0.6475 ML
       await expect(
@@ -154,7 +158,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       ).toContainText('0.6475 ML / 0.6475 ML')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-1"]')
-      ).toContainText('1.554 ML (9999400)')
+      ).toContainText(`1.554 ML (${returnReference})`)
 
       // Drive the over-authorised warning: drop the first element's billable returns, reduce the reference's authorised
       // volume below the combined element volume, then restore the element so the elements together exceed the reference
