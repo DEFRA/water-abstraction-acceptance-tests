@@ -22,10 +22,10 @@ test.describe('Submit historic correction for licence with both a winter and sum
 
     const [winterCurrentLog, winterPreviousLog, summerCurrentLog, summerPreviousLog] = scenario.returnLogs
 
-    winterCurrent = returnLogDateDetails(winterCurrentLog)
-    summerCurrent = returnLogDateDetails(summerCurrentLog)
-    winterPrevious = returnLogDateDetails(winterPreviousLog)
-    summerPrevious = returnLogDateDetails(summerPreviousLog)
+    winterCurrent = { ...returnLogDateDetails(winterCurrentLog), returnReference: winterCurrentLog.returnReference }
+    summerCurrent = { ...returnLogDateDetails(summerCurrentLog), returnReference: summerCurrentLog.returnReference }
+    winterPrevious = { ...returnLogDateDetails(winterPreviousLog), returnReference: winterPreviousLog.returnReference }
+    summerPrevious = { ...returnLogDateDetails(summerPreviousLog), returnReference: summerPreviousLog.returnReference }
 
     await setup(scenario)
   })
@@ -37,14 +37,41 @@ test.describe('Submit historic correction for licence with both a winter and sum
   test('adds a new return version using copy existing for a licence with existing winter and summer return requirement', async ({
     page
   }) => {
+    // The winter and summer return requirements are seeded with independent random references, so we can't assume
+    // which sorts first on the page - look each row up by its known reference instead. A reference alone isn't
+    // enough though: the same requirement's current and previous period logs share it, so filter on the date range
+    // too
+    const returnRow = (reference, dateString) => {
+      return page
+        .locator('tr')
+        .filter({ hasText: `${reference}` })
+        .filter({ hasText: dateString })
+    }
+
     await page.goto(`/system/licences/${licence.id}/returns`)
 
     await expect(page.locator('h1')).toContainText('Returns')
 
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(winterCurrent.status)
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(summerCurrent.status)
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(winterPrevious.status)
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText(summerPrevious.status)
+    await expect(
+      returnRow(winterCurrent.returnReference, winterCurrent.dateString).locator(
+        '[data-test^="return-status-"] > .govuk-tag'
+      )
+    ).toContainText(winterCurrent.status)
+    await expect(
+      returnRow(summerCurrent.returnReference, summerCurrent.dateString).locator(
+        '[data-test^="return-status-"] > .govuk-tag'
+      )
+    ).toContainText(summerCurrent.status)
+    await expect(
+      returnRow(winterPrevious.returnReference, winterPrevious.dateString).locator(
+        '[data-test^="return-status-"] > .govuk-tag'
+      )
+    ).toContainText(winterPrevious.status)
+    await expect(
+      returnRow(summerPrevious.returnReference, summerPrevious.dateString).locator(
+        '[data-test^="return-status-"] > .govuk-tag'
+      )
+    ).toContainText(summerPrevious.status)
 
     await page.getByText('Licence set up').click()
 
@@ -78,12 +105,59 @@ test.describe('Submit historic correction for licence with both a winter and sum
     await page.getByRole('link', { name: 'Returns' }).click()
 
     await expect(page.locator('h1')).toContainText('Returns')
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('not due yet')
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('not due yet')
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('void') // summerCurrent now void
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void') // winterCurrent now void
-    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('open')
-    await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText(summerPrevious.status)
-    await expect(page.locator('[data-test="return-status-6"] > .govuk-tag')).toContainText(winterPrevious.status)
+
+    // The two current-period return logs are now superseded by the new return version, so both are void; the two
+    // previous-period logs are untouched and keep their original status. Look each up by its known reference rather
+    // than assuming page position
+    await expect(
+      returnRow(summerCurrent.returnReference, summerCurrent.dateString).locator(
+        '[data-test^="return-status-"] > .govuk-tag'
+      )
+    ).toContainText('void')
+    await expect(
+      returnRow(winterCurrent.returnReference, winterCurrent.dateString).locator(
+        '[data-test^="return-status-"] > .govuk-tag'
+      )
+    ).toContainText('void')
+    await expect(
+      returnRow(summerPrevious.returnReference, summerPrevious.dateString).locator(
+        '[data-test^="return-status-"] > .govuk-tag'
+      )
+    ).toContainText(summerPrevious.status)
+    await expect(
+      returnRow(winterPrevious.returnReference, winterPrevious.dateString).locator(
+        '[data-test^="return-status-"] > .govuk-tag'
+      )
+    ).toContainText(winterPrevious.status)
+
+    // The new return version creates 3 more return logs, whose references aren't known ahead of the journey creating
+    // them, so we confirm them by status count instead of position: 2 new current periods (not due yet) plus 1 new
+    // split log for the previous period (open)
+    const statuses = (await page.locator('[data-test^="return-status-"] > .govuk-tag').allTextContents()).map(
+      (status) => {
+        return status.trim()
+      }
+    )
+    const expectedOpenCount =
+      [summerPrevious.status, winterPrevious.status].filter((status) => {
+        return status === 'open'
+      }).length + 1
+
+    expect(statuses).toHaveLength(7)
+    expect(
+      statuses.filter((status) => {
+        return status === 'void'
+      })
+    ).toHaveLength(2)
+    expect(
+      statuses.filter((status) => {
+        return status === 'not due yet'
+      })
+    ).toHaveLength(2)
+    expect(
+      statuses.filter((status) => {
+        return status === 'open'
+      })
+    ).toHaveLength(expectedOpenCount)
   })
 })

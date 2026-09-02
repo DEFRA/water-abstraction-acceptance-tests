@@ -1,4 +1,5 @@
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
+import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import scenarioData from '../../support/scenarios/registered-licence.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
@@ -25,7 +26,7 @@ test.describe('Sharing licence access with a new user (external)', () => {
     defaultPassword,
     lastNotification
   }) => {
-    const newUserEmail = 'external.new@example.com'
+    const newUserEmail = generateExternalEmailAddress()
 
     await page.goto(`${externalUrl}/manage_licences`)
 

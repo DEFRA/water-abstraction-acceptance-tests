@@ -8,6 +8,7 @@ test.describe('Licence and Returns with No Issues (internal)', { tag: '@suppleme
   let billingAccount
   let endYear
   let licence
+  let returnReference
   let startYear
 
   test.beforeAll(async ({ setup }) => {
@@ -24,6 +25,7 @@ test.describe('Licence and Returns with No Issues (internal)', { tag: '@suppleme
 
     billingAccount = scenario.billingAccount
     licence = scenario.licence
+    returnReference = scenario.returnLogs[0].returnReference
 
     await setup(scenario)
   })
@@ -145,7 +147,9 @@ test.describe('Licence and Returns with No Issues (internal)', { tag: '@suppleme
 
       // Review Licence~ Check the return details
       await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
-      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999400')
+      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText(
+        `${returnReference}`
+      )
       await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
         `1 April ${startYear} to 31 March ${endYear}`
       )
@@ -206,7 +210,7 @@ test.describe('Licence and Returns with No Issues (internal)', { tag: '@suppleme
       ).toContainText('1.554 ML / 1.554 ML')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
-      ).toContainText('1.554 ML (9999400)')
+      ).toContainText(`1.554 ML (${returnReference})`)
 
       // Review Licence~ Check there is only 1 charge version, charge reference and charge element
       await expect(page.locator('#charge-version-1 > .govuk-heading-l')).toHaveCount(0)
@@ -250,7 +254,9 @@ test.describe('Licence and Returns with No Issues (internal)', { tag: '@suppleme
       await expect(page.locator('[data-test="billable-returns"]')).toContainText('1.554 ML')
       await expect(page.locator('[data-test="authorised-volume"]')).toContainText('1.554 ML')
       await expect(page.locator('[data-test="issues-0"]')).toHaveCount(0)
-      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999400')
+      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText(
+        `${returnReference}`
+      )
       await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
         `1 April ${startYear} to 31 March ${endYear}`
       )

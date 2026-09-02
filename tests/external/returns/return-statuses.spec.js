@@ -21,12 +21,6 @@ test.describe('View return statuses (external)', () => {
   })
 
   test('login as an existing user and view returns', async ({ page, externalUrl }) => {
-    const returnLog = (reference) => {
-      return returnLogs.find((log) => {
-        return log.returnReference === reference
-      })
-    }
-
     await page.goto(`${externalUrl}/licences`)
 
     await page.getByRole('link', { name: licence.licenceRef }).click()
@@ -44,19 +38,19 @@ test.describe('View return statuses (external)', () => {
     expect(statuses).not.toContain('void')
 
     await expect(
-      returnsTable.locator('tr', { hasText: `${returnLog(9999990).returnReference}` }).locator('.govuk-tag')
+      returnsTable.locator('tr', { hasText: `${returnLogs[5].returnReference}` }).locator('.govuk-tag')
     ).toContainText('complete')
 
     await expect(
-      returnsTable.locator('tr', { hasText: `${returnLog(9999991).returnReference}` }).locator('.govuk-tag')
+      returnsTable.locator('tr', { hasText: `${returnLogs[4].returnReference}` }).locator('.govuk-tag')
     ).toContainText('open')
 
     await expect(
-      returnsTable.locator('tr', { hasText: `${returnLog(9999992).returnReference}` }).locator('.govuk-tag')
+      returnsTable.locator('tr', { hasText: `${returnLogs[3].returnReference}` }).locator('.govuk-tag')
     ).toContainText('overdue')
 
     await expect(
-      returnsTable.locator('tr', { hasText: `${returnLog(9999993).returnReference}` }).locator('.govuk-tag')
+      returnsTable.locator('tr', { hasText: `${returnLogs[2].returnReference}` }).locator('.govuk-tag')
     ).toContainText('due')
   })
 })

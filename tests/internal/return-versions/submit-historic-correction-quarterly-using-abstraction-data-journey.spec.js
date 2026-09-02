@@ -1,6 +1,7 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 import scenarioData from '../../support/scenarios/water-company-licence-with-open-winter-return-log.scenario.js'
+import { sortReturnLogsByDisplayOrder } from '../../support/helpers/return-log.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction changing to quarterly on new return version (internal)', () => {
@@ -52,8 +53,8 @@ test.describe('Submit historic correction changing to quarterly on new return ve
         startDate: new Date(`${startYear - 1}-04-01`),
         endDate: new Date(`${startYear - 1}-08-31`)
       }),
-      existingCurrent: returnLogDateDetails(returnLogs[1]),
-      existingPrevious: returnLogDateDetails(returnLogs[0])
+      existingCurrent: { ...returnLogDateDetails(returnLogs[1]), status: 'void' },
+      existingPrevious: { ...returnLogDateDetails(returnLogs[0]), status: 'void' }
     }
 
     await setup(scenario)
@@ -127,81 +128,48 @@ test.describe('Submit historic correction changing to quarterly on new return ve
     // confirm we are on the licence set up tab
     await expect(page.locator('h1')).toContainText('Returns')
 
-    // Confirm the return logs have been updated and created as expected
-    await expect(page.locator('[data-test="return-reference-0"]')).toContainText(
-      expectedReturnLogs.currentFourthPeriod.dateString
-    )
+    // Confirm the return logs have been updated and created as expected, in the order the page displays them: start
+    // date descending
+    const sortedReturnLogs = sortReturnLogsByDisplayOrder(Object.values(expectedReturnLogs))
+
+    await expect(page.locator('[data-test="return-reference-0"]')).toContainText(sortedReturnLogs[0].dateString)
     await expect(page.locator('[data-test="return-due-date-0"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.currentFourthPeriod.status
-    )
+    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText(sortedReturnLogs[0].status)
 
-    await expect(page.locator('[data-test="return-reference-1"]')).toContainText(
-      expectedReturnLogs.currentThirdPeriod.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-1"]')).toContainText(sortedReturnLogs[1].dateString)
     await expect(page.locator('[data-test="return-due-date-1"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.currentThirdPeriod.status
-    )
+    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(sortedReturnLogs[1].status)
 
-    await expect(page.locator('[data-test="return-reference-2"]')).toContainText(
-      expectedReturnLogs.currentSecondPeriod.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-2"]')).toContainText(sortedReturnLogs[2].dateString)
     await expect(page.locator('[data-test="return-due-date-2"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.currentSecondPeriod.status
-    )
+    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(sortedReturnLogs[2].status)
 
-    await expect(page.locator('[data-test="return-reference-3"]')).toContainText(
-      expectedReturnLogs.currentFirstPeriod.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-3"]')).toContainText(sortedReturnLogs[3].dateString)
     await expect(page.locator('[data-test="return-due-date-3"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.currentFirstPeriod.status
-    )
+    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText(sortedReturnLogs[3].status)
 
-    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(
-      expectedReturnLogs.existingCurrent.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(sortedReturnLogs[4].dateString)
     await expect(page.locator('[data-test="return-due-date-4"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('void')
+    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText(sortedReturnLogs[4].status)
 
-    await expect(page.locator('[data-test="return-reference-5"]')).toContainText(
-      expectedReturnLogs.fourthPeriod.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-5"]')).toContainText(sortedReturnLogs[5].dateString)
     await expect(page.locator('[data-test="return-due-date-5"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.fourthPeriod.status
-    )
+    await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText(sortedReturnLogs[5].status)
 
-    await expect(page.locator('[data-test="return-reference-6"]')).toContainText(
-      expectedReturnLogs.thirdPeriod.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-6"]')).toContainText(sortedReturnLogs[6].dateString)
     await expect(page.locator('[data-test="return-due-date-6"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-6"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.thirdPeriod.status
-    )
+    await expect(page.locator('[data-test="return-status-6"] > .govuk-tag')).toContainText(sortedReturnLogs[6].status)
 
-    await expect(page.locator('[data-test="return-reference-7"]')).toContainText(
-      expectedReturnLogs.splitSecondPeriod.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-7"]')).toContainText(sortedReturnLogs[7].dateString)
     await expect(page.locator('[data-test="return-due-date-7"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-7"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.splitSecondPeriod.status
-    )
+    await expect(page.locator('[data-test="return-status-7"] > .govuk-tag')).toContainText(sortedReturnLogs[7].status)
 
-    await expect(page.locator('[data-test="return-reference-8"]')).toContainText(
-      expectedReturnLogs.existingPrevious.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-8"]')).toContainText(sortedReturnLogs[8].dateString)
     await expect(page.locator('[data-test="return-due-date-8"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-8"] > .govuk-tag')).toContainText('void')
+    await expect(page.locator('[data-test="return-status-8"] > .govuk-tag')).toContainText(sortedReturnLogs[8].status)
 
-    await expect(page.locator('[data-test="return-reference-9"]')).toContainText(
-      expectedReturnLogs.splitWinter.dateString
-    )
+    await expect(page.locator('[data-test="return-reference-9"]')).toContainText(sortedReturnLogs[9].dateString)
     await expect(page.locator('[data-test="return-due-date-9"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-9"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.splitWinter.status
-    )
+    await expect(page.locator('[data-test="return-status-9"] > .govuk-tag')).toContainText(sortedReturnLogs[9].status)
   })
 })

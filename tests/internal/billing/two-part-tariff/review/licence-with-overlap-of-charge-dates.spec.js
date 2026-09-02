@@ -8,6 +8,7 @@ test.describe('Licence with an Overlap of Charge Dates (internal)', () => {
   let endYear
   let startYear
   let licence
+  let returnReference
 
   test.beforeAll(async ({ setup }) => {
     const {
@@ -22,6 +23,7 @@ test.describe('Licence with an Overlap of Charge Dates (internal)', () => {
     const scenario = scenarioData()
 
     licence = scenario.licence
+    returnReference = scenario.returnLogs[0].returnReference
 
     await setup(scenario)
   })
@@ -110,7 +112,9 @@ test.describe('Licence with an Overlap of Charge Dates (internal)', () => {
       )
 
       await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
-      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999400')
+      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText(
+        `${returnReference}`
+      )
       await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
         `1 April ${startYear} to 31 March ${endYear}`
       )
@@ -135,13 +139,15 @@ test.describe('Licence with an Overlap of Charge Dates (internal)', () => {
       ).toContainText('1.554 ML / 1.554 ML')
       await expect(
         page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-return-volumes-0"]')
-      ).toContainText('1.554 ML (9999400)')
+      ).toContainText(`1.554 ML (${returnReference})`)
       // Without an aggregate or charge factor we should only see the "View details" link, not "Change details"
       await expect(page.locator('[data-test="charge-version-0-charge-reference-link-0"]')).toContainText('View details')
 
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
       await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
-      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText('9999400')
+      await expect(page.locator('[data-test="matched-return-action-0"] > .govuk-link')).toContainText(
+        `${returnReference}`
+      )
       await expect(page.locator('[data-test="matched-return-action-0"] > div').first()).toContainText(
         `1 April ${startYear} to 31 March ${endYear}`
       )

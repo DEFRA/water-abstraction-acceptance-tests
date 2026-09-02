@@ -1,4 +1,5 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import scenarioData from '../../support/scenarios/company-contact.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
@@ -54,7 +55,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('#name').fill('Test Contact No Licences')
     await page.locator('button.govuk-button').click()
 
-    await page.locator('#email').fill('test.contact.none@example.com')
+    await page.locator('#email').fill(generateExternalEmailAddress())
     await page.locator('button.govuk-button').click()
 
     await page.locator('input[name="abstractionAlerts"][value="no"]').check()
@@ -90,7 +91,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('#name').fill('Test Contact All Licences')
     await page.locator('button.govuk-button').click()
 
-    await page.locator('#email').fill('test.contact.all@example.com')
+    await page.locator('#email').fill(generateExternalEmailAddress())
     await page.locator('button.govuk-button').click()
 
     await page.locator('input[name="abstractionAlerts"][value="yes"]').check()
@@ -126,7 +127,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('#name').fill('Test Contact Some Licences')
     await page.locator('button.govuk-button').click()
 
-    await page.locator('#email').fill('test.contact.some@example.com')
+    await page.locator('#email').fill(generateExternalEmailAddress())
     await page.locator('button.govuk-button').click()
 
     await page.locator('input[name="abstractionAlerts"][value="some"]').check()

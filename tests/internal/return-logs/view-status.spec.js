@@ -19,46 +19,28 @@ test.describe('View returns and their status (internal)', () => {
   })
 
   test('lists the returns for a licence and their status', async ({ page }) => {
-    const returnLog = (returnReference) => {
-      return returnLogs.find((log) => {
-        return log.returnReference === returnReference
-      })
-    }
-
     await page.goto(`/system/licences/${licence.id}/returns`)
 
     // confirm we are on the returns tab page
     await expect(page.locator('h1')).toContainText('Returns')
 
     // confirm we see the expected returns and their statuses
-    await expect(page.locator('[data-test="return-reference-0"]')).toContainText(
-      `${returnLog(9999995).returnReference}`
-    )
+    await expect(page.locator('[data-test="return-reference-0"]')).toContainText(`${returnLogs[0].returnReference}`)
     await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('not due yet')
 
-    await expect(page.locator('[data-test="return-reference-1"]')).toContainText(
-      `${returnLog(9999994).returnReference}`
-    )
+    await expect(page.locator('[data-test="return-reference-1"]')).toContainText(`${returnLogs[1].returnReference}`)
     await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('void')
 
-    await expect(page.locator('[data-test="return-reference-2"]')).toContainText(
-      `${returnLog(9999993).returnReference}`
-    )
+    await expect(page.locator('[data-test="return-reference-2"]')).toContainText(`${returnLogs[2].returnReference}`)
     await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('due')
 
-    await expect(page.locator('[data-test="return-reference-3"]')).toContainText(
-      `${returnLog(9999992).returnReference}`
-    )
+    await expect(page.locator('[data-test="return-reference-3"]')).toContainText(`${returnLogs[3].returnReference}`)
     await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('overdue')
 
-    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(
-      `${returnLog(9999991).returnReference}`
-    )
+    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(`${returnLogs[4].returnReference}`)
     await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('open')
 
-    await expect(page.locator('[data-test="return-reference-5"]')).toContainText(
-      `${returnLog(9999990).returnReference}`
-    )
+    await expect(page.locator('[data-test="return-reference-5"]')).toContainText(`${returnLogs[5].returnReference}`)
     await expect(page.locator('[data-test="return-status-5"] > .govuk-tag')).toContainText('complete')
   })
 })

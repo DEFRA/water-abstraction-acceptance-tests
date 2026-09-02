@@ -1,5 +1,5 @@
-import { previousPeriod } from './date.helpers.js'
 import returnLogData from '../data/return-log.data.js'
+import { compareDates, previousPeriod } from './date.helpers.js'
 
 /**
  * Builds the previous and current return cycle periods for a return requirement
@@ -74,4 +74,32 @@ export function buildPreviousAndCurrentReturnLogs(licence, returnRequirement, re
   )
 
   return [currentReturnLog, previousReturnLog]
+}
+
+/**
+ * Sorts return logs by start date descending, then reference descending, then end date descending
+ *
+ * This matches the order the licence returns tab displays return logs in.
+ *
+ * @param {object[]} returnLogs - The return logs to sort, each with a `startDate`, `returnReference` and `endDate`
+ *
+ * @returns {object[]} An array of the return logs sorted by start date descending, then reference descending,
+ * then end date descending
+ */
+export function sortReturnLogsByDisplayOrder(returnLogs) {
+  return [...returnLogs].sort((a, b) => {
+    const startDateDiff = compareDates(new Date(b.startDate), new Date(a.startDate))
+
+    if (startDateDiff !== 0) {
+      return startDateDiff
+    }
+
+    const referenceDiff = compareDates(b.returnReference ?? 0, a.returnReference ?? 0)
+
+    if (referenceDiff !== 0) {
+      return referenceDiff
+    }
+
+    return compareDates(new Date(b.endDate), new Date(a.endDate))
+  })
 }

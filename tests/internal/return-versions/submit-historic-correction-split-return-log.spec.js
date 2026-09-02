@@ -1,10 +1,17 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
+import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
+import { tableRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction that results in a split-log (internal)', () => {
   let licence
+  let oldReference
   let startYear
+  let truncatedOldPeriod
+  let newFromSplitPeriod
+  let currentCyclePeriod
+  let previousCyclePeriod
 
   test.beforeAll(async ({ setup }) => {
     const { currentFinancialYear } = calculatedDates()
@@ -14,6 +21,22 @@ test.describe('Submit historic correction that results in a split-log (internal)
     const scenario = scenarioData()
 
     licence = scenario.licence
+    oldReference = `${scenario.returnRequirement.reference}`
+
+    // The correction splits the previous winter cycle return log at 1 September, so the old requirement's log for
+    // that cycle is truncated to end the day before, and a new log covering the remainder is created
+    const splitDate = new Date(`${startYear - 1}-09-01`)
+    const truncatedOldPeriodEnd = new Date(splitDate)
+
+    truncatedOldPeriodEnd.setUTCDate(truncatedOldPeriodEnd.getUTCDate() - 1)
+
+    truncatedOldPeriod = returnLogDateDetails({
+      startDate: scenario.returnLogs[0].startDate,
+      endDate: truncatedOldPeriodEnd
+    })
+    newFromSplitPeriod = returnLogDateDetails({ startDate: splitDate, endDate: scenario.returnLogs[0].endDate })
+    currentCyclePeriod = returnLogDateDetails(scenario.returnLogs[1])
+    previousCyclePeriod = returnLogDateDetails(scenario.returnLogs[0])
 
     await setup(scenario)
   })
@@ -87,20 +110,23 @@ test.describe('Submit historic correction that results in a split-log (internal)
     // confirm we are on the licence set up tab
     await expect(page.locator('h1')).toContainText('Returns')
 
-    // Confirm the return logs have been updated and created as expected
-    await expect(page.locator('[data-test="return-due-date-0"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('not due yet')
+    // Confirm the return logs have been updated and created as expected. The old (now voided) and new return logs
+    // for the current cycle cover the exact same period, so we identify which row is which by return reference
+    // rather than by table position or date alone
+    const currentCycleRows = tableRow(page, currentCyclePeriod.dateString)
 
-    await expect(page.locator('[data-test="return-due-date-1"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText('void')
+    await expect(currentCycleRows.filter({ hasText: oldReference }).locator('.govuk-tag')).toContainText('void')
+    await expect(currentCycleRows.filter({ hasNotText: oldReference }).locator('.govuk-tag')).toContainText(
+      'not due yet'
+    )
 
-    await expect(page.locator('[data-test="return-due-date-2"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText('open')
+    await expect(tableRow(page, newFromSplitPeriod.dateString).locator('[data-test^="return-due-date-"]')).toBeEmpty()
+    await expect(tableRow(page, newFromSplitPeriod.dateString).locator('.govuk-tag')).toContainText('open')
 
-    await expect(page.locator('[data-test="return-due-date-3"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void')
+    await expect(tableRow(page, previousCyclePeriod.dateString).locator('[data-test^="return-due-date-"]')).toBeEmpty()
+    await expect(tableRow(page, previousCyclePeriod.dateString).locator('.govuk-tag')).toContainText('void')
 
-    await expect(page.locator('[data-test="return-due-date-4"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText('open')
+    await expect(tableRow(page, truncatedOldPeriod.dateString).locator('[data-test^="return-due-date-"]')).toBeEmpty()
+    await expect(tableRow(page, truncatedOldPeriod.dateString).locator('.govuk-tag')).toContainText('open')
   })
 })

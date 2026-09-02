@@ -6,7 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "cli": "node cli/seed.cli.js",
+    "cli": "node cli/cli.js",
     "open": "playwright test --ui",
     "test": "playwright test",
     "report": "playwright show-report",

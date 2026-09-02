@@ -1,6 +1,7 @@
 import buildLicenceEntity from '../entities/licence.entity.js'
 import companyContactData from '../data/company-contact.data.js'
 import contactData from '../data/contact.data.js'
+import { generateExternalEmailAddress } from '../helpers/generators.helpers.js'
 import notificationData from '../data/notification.data.js'
 
 export const title = 'Company contact'
@@ -15,21 +16,21 @@ export default function () {
   const editContact = contactData()
 
   editContact.department = 'Test Contact Edit Alerts'
-  editContact.email = 'test.contact.edit@example.com'
+  editContact.email = generateExternalEmailAddress()
 
   const editCompanyContact = companyContactData(editContact, licenceEntity.company)
 
   const removeContact = contactData()
 
   removeContact.department = 'Test Contact Remove'
-  removeContact.email = 'test.contact.remove@example.com'
+  removeContact.email = generateExternalEmailAddress()
 
   const removeCompanyContact = companyContactData(removeContact, licenceEntity.company)
 
   const restoreContact = contactData()
 
   restoreContact.department = 'Test Contact Restore'
-  restoreContact.email = 'test.contact.restore@example.com'
+  restoreContact.email = generateExternalEmailAddress()
 
   const restoreCompanyContact = companyContactData(restoreContact, licenceEntity.company)
 

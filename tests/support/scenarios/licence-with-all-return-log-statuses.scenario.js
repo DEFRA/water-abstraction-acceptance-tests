@@ -1,3 +1,5 @@
+import { generateReference } from 'water-abstraction-engine/test/generators.js'
+
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { relativeToToday } from '../helpers/date.helpers.js'
@@ -30,8 +32,13 @@ export default function () {
     _completedPeriod(previousPeriod)
   ]
 
-  const results = periods.map((period) => {
-    return _returnLog(licenceEntity, returnVersion, period)
+  // The returns list page orders rows by start date desc, then return reference desc as a tie-breaker. Assigning
+  // descending references here, highest first, keeps these return logs in the same order as `periods`, which the
+  // internal and external returns list specs rely on to identify each status by array position.
+  const referenceBase = generateReference()
+
+  const results = periods.map((period, index) => {
+    return _returnLog(licenceEntity, returnVersion, period, referenceBase - index)
   })
 
   return {
@@ -66,7 +73,6 @@ function _completedPeriod(previousPeriod) {
   const dueDate = new Date(`${endDate.getFullYear()}-04-29`)
 
   return {
-    reference: 9999990,
     startDate,
     endDate,
     dueDate,
@@ -101,7 +107,6 @@ function _duePeriod(previousPeriod) {
   const { startDate, endDate } = previousPeriod
 
   return {
-    reference: 9999993,
     startDate,
     endDate,
     dueDate: relativeToToday(5),
@@ -121,7 +126,6 @@ function _notDueYetPeriod(currentPeriod) {
   const { startDate, endDate } = currentPeriod
 
   return {
-    reference: 9999995,
     startDate,
     endDate,
     dueDate: null,
@@ -142,7 +146,6 @@ function _openPeriod(previousPeriod) {
   const { startDate, endDate } = previousPeriod
 
   return {
-    reference: 9999991,
     startDate,
     endDate,
     dueDate: null,
@@ -163,7 +166,6 @@ function _overduePeriod(previousPeriod) {
   const { startDate, endDate } = previousPeriod
 
   return {
-    reference: 9999992,
     startDate,
     endDate,
     dueDate: relativeToToday(-1),
@@ -191,16 +193,16 @@ function _previousPeriod(currentPeriod) {
 }
 
 /**
- * Builds a return requirement and return log for the given period, then applies the status and return cycle
- * overrides that can't be expressed through the shared data builders alone.
+ * Builds a return requirement and return log for the given period, then applies the status and reference overrides
+ * that can't be expressed through the shared data builders alone.
  *
  * @private
  */
-function _returnLog(licenceEntity, returnVersion, period) {
+function _returnLog(licenceEntity, returnVersion, period, reference) {
   const returnRequirement = returnRequirementData(returnVersion, licenceEntity.licenceVersionPurpose)
 
-  returnRequirement.legacyId = period.reference
-  returnRequirement.reference = period.reference
+  returnRequirement.legacyId = reference
+  returnRequirement.reference = reference
 
   const returnRequirementPoint = returnRequirementPointData(returnRequirement, licenceEntity.point)
   const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceEntity.licenceVersionPurpose)
@@ -231,7 +233,6 @@ function _voidPeriod(currentPeriod) {
   const { startDate, endDate } = currentPeriod
 
   return {
-    reference: 9999994,
     startDate,
     endDate,
     dueDate: null,
