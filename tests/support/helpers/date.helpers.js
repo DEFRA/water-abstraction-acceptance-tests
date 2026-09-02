@@ -349,27 +349,6 @@ export function returnLogStatusLabel(endDate, dueDate = null) {
 }
 
 /**
- * Sorts return logs by start date descending, then end date descending
- *
- * This matches the order the licence returns tab displays return logs in.
- *
- * @param {object[]} returnLogs - The return logs to sort, each with a `startDate` and `endDate`
- *
- * @returns {object[]} A new array of the return logs sorted by start date descending, then end date descending
- */
-export function sortReturnLogsByStartDateDesc(returnLogs) {
-  return [...returnLogs].sort((a, b) => {
-    const startDateDiff = compareDates(new Date(b.startDate), new Date(a.startDate))
-
-    if (startDateDiff !== 0) {
-      return startDateDiff
-    }
-
-    return compareDates(new Date(b.endDate), new Date(a.endDate))
-  })
-}
-
-/**
  * Returns today's date with the time set to midnight, for example '2023-01-13T00:00:00.000Z'.
  *
  * A number of dates in our data are held as date-only, and we have to make decisions based on comparing them to

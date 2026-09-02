@@ -1,7 +1,8 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
+import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
 import scenarioData from '../../support/scenarios/water-company-licence-with-open-winter-return-log.scenario.js'
+import { sortReturnLogsByDisplayOrder } from '../../support/helpers/return-log.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
-import { returnLogDateDetails, sortReturnLogsByStartDateDesc } from '../../support/helpers/date.helpers.js'
 
 test.describe('Submit historic correction changing to quarterly on new return version (internal)', () => {
   let licence
@@ -129,7 +130,7 @@ test.describe('Submit historic correction changing to quarterly on new return ve
 
     // Confirm the return logs have been updated and created as expected, in the order the page displays them: start
     // date descending
-    const sortedReturnLogs = sortReturnLogsByStartDateDesc(Object.values(expectedReturnLogs))
+    const sortedReturnLogs = sortReturnLogsByDisplayOrder(Object.values(expectedReturnLogs))
 
     await expect(page.locator('[data-test="return-reference-0"]')).toContainText(sortedReturnLogs[0].dateString)
     await expect(page.locator('[data-test="return-due-date-0"]')).toBeEmpty()

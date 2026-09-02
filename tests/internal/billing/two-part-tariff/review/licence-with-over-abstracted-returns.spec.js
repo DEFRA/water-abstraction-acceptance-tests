@@ -2,6 +2,7 @@ import { calculatedDates } from '../../../../support/helpers/calculated-dates.he
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-two-over-abstracted-returns.scenario.js'
+import { tableRow } from '../../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence with Over-abstracted Returns (internal)', () => {
@@ -115,34 +116,30 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
 
       // The two purposes' returns are seeded with independent random references, so look each row up by its known
       // reference rather than assuming which one the page lists first
-      const matchedReturnRow = (reference) => {
-        return page.locator('[data-test="matched-returns"] tr', { hasText: `${reference}` })
-      }
-
       // First matched return is over-abstracted: 38 ML submitted but only the element's 32 ML allocates
       await expect(page.locator('.govuk-table__caption')).toContainText('Matched returns')
       await expect(
-        matchedReturnRow(firstReturnReference).locator('[data-test^="matched-return-status-"] > .govuk-tag')
+        tableRow(page, `${firstReturnReference}`).locator('[data-test^="matched-return-status-"] > .govuk-tag')
       ).toContainText('completed')
       await expect(
-        matchedReturnRow(firstReturnReference).locator('[data-test^="matched-return-total-"]')
+        tableRow(page, `${firstReturnReference}`).locator('[data-test^="matched-return-total-"]')
       ).toContainText('32 ML / 38 ML')
       await expect(
-        matchedReturnRow(firstReturnReference).locator('[data-test^="matched-return-total-"]')
+        tableRow(page, `${firstReturnReference}`).locator('[data-test^="matched-return-total-"]')
       ).toContainText('Over abstraction')
 
       // Second matched return is over-abstracted and abstracts outside its own abstraction period
       await expect(
-        matchedReturnRow(secondReturnReference).locator('[data-test^="matched-return-status-"] > .govuk-tag')
+        tableRow(page, `${secondReturnReference}`).locator('[data-test^="matched-return-status-"] > .govuk-tag')
       ).toContainText('completed')
       await expect(
-        matchedReturnRow(secondReturnReference).locator('[data-test^="matched-return-total-"]')
+        tableRow(page, `${secondReturnReference}`).locator('[data-test^="matched-return-total-"]')
       ).toContainText('30 ML / 36 ML')
       await expect(
-        matchedReturnRow(secondReturnReference).locator('[data-test^="matched-return-total-"]')
+        tableRow(page, `${secondReturnReference}`).locator('[data-test^="matched-return-total-"]')
       ).toContainText('Abstraction outside period')
       await expect(
-        matchedReturnRow(secondReturnReference).locator('[data-test^="matched-return-total-"]')
+        tableRow(page, `${secondReturnReference}`).locator('[data-test^="matched-return-total-"]')
       ).toContainText('Over abstraction')
 
       await expect(page.locator('[data-test="matched-return-action-2"] > .govuk-link')).toHaveCount(0)

@@ -13,9 +13,12 @@ export function summaryRow(page, label) {
 /**
  * Locates table row(s) containing the given text
  *
+ * `text` is required - Playwright's `hasText` filter only applies when it is given a value, so omitting it (or
+ * passing `undefined`) would match every row on the page instead of none.
+ *
  * When two rows share identical text (for example, an old return log made void by a correction and a new one
- * covering the exact same period), this returns both - narrow further with `.filter()` on a second, distinguishing
- * piece of text (such as the return reference) to isolate one of them.
+ * covering the exact same period), this returns both. Narrow further by chaining `.filter()` on the returned
+ * locator with a second, distinguishing piece of text (such as the return reference) to isolate one of them.
  *
  * @param {import('@playwright/test').Page} page - The page to search
  * @param {string} text - The text the row must contain
