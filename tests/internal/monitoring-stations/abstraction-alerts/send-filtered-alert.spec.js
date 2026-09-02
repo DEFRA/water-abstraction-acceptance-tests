@@ -4,17 +4,17 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Send an abstraction alert after applying a filter (internal)', () => {
   let firstLicence
-  let secondLicence
-  let monitoringStation
   let firstUser
+  let monitoringStation
+  let secondLicence
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
     firstLicence = scenario.licences[0]
-    secondLicence = scenario.licences[1]
-    monitoringStation = scenario.monitoringStation
     firstUser = scenario.users[0]
+    monitoringStation = scenario.monitoringStation
+    secondLicence = scenario.licences[1]
 
     await setup(scenario)
   })
