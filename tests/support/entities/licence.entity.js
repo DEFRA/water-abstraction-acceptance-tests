@@ -64,7 +64,7 @@ function _licence(company, address) {
 
   const licence = licenceData(startDate)
   const permitLicence = permitLicenceData(licence)
-  const licenceDocumentHeader = licenceDocumentHeaderData(licence)
+  const licenceDocumentHeader = licenceDocumentHeaderData(licence, company)
   const licenceDocument = licenceDocumentData(licence)
   const licenceDocumentRole = licenceDocumentRoleData(licenceDocument, company, address)
   const licenceVersion = licenceVersionData(licence, company, address)
