@@ -5,14 +5,12 @@ import { mergeByKey } from '../helpers/scenario.helpers.js'
 import monitoringStationData from '../data/monitoring-station.data.js'
 import registeredLicenceScenario from './registered-licence.scenario.js'
 
-export const title = 'Two registered licences with a monitoring station (tagged)'
+export const title = 'Registered licences with a monitoring station (tagged)'
 export const description =
   'Two registered licences both tagged to the same monitoring station, each with a different abstraction period so an alert can be filtered down to one of them'
 
 /**
  * Both tagged licences are linked to the same monitoring station via a licenceMonitoringStation.
- *
- * We seed a separate 'licenceVersionPurposeCondition' on each licence, available for a test to select when tagging.
  */
 export default function () {
   const monitoringStation = monitoringStationData()

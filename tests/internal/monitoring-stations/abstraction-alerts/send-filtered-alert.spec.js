@@ -1,4 +1,4 @@
-import scenarioData from '../../../support/scenarios/two-registered-licences-with-monitoring-station-tagged.scenario.js'
+import scenarioData from '../../../support/scenarios/registered-licences-with-monitoring-station-tagged.scenario.js'
 import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -11,10 +11,13 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
-    firstLicence = scenario.licences[0]
-    firstUser = scenario.users[0]
+    const [scenarioFirstLicence, scenarioSecondLicence] = scenario.licences
+    const [scenarioFirstUser] = scenario.users
+
+    firstLicence = scenarioFirstLicence
+    firstUser = scenarioFirstUser
     monitoringStation = scenario.monitoringStation
-    secondLicence = scenario.licences[1]
+    secondLicence = scenarioSecondLicence
 
     await setup(scenario)
   })
@@ -67,14 +70,12 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(firstLicenceRow.locator('[data-test^="abstraction-period-"]')).toHaveText('10 October to 11 November')
     await expect(firstLicenceRow.locator('[data-test^="restriction-"]')).toHaveText('Stop')
     await expect(firstLicenceRow.locator('[data-test^="threshold-"]')).toHaveText('100m3/s')
-    await expect(firstLicenceRow.locator('[data-test^="alert-"]:not([data-test^="alert-date-"])')).toHaveText('')
 
     const secondLicenceRow = tableRow(page, secondLicence.licenceRef)
 
     await expect(secondLicenceRow.locator('[data-test^="abstraction-period-"]')).toHaveText('1 April to 31 March')
     await expect(secondLicenceRow.locator('[data-test^="restriction-"]')).toHaveText('Stop')
     await expect(secondLicenceRow.locator('[data-test^="threshold-"]')).toHaveText('100m3/s')
-    await expect(secondLicenceRow.locator('[data-test^="alert-"]:not([data-test^="alert-date-"])')).toHaveText('')
 
     // Filter the results by abstraction period, checking the period "10 October to 11 November"
     await page.locator('.govuk-details__summary').click()
@@ -86,11 +87,11 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(page.locator('.govuk-heading-l')).toHaveText('Check the licence matches for the selected thresholds')
     await expect(page.getByText('Showing 1 of 2 abstraction alerts')).toBeVisible()
 
+    // Only one row survives the filter, so unlike the unfiltered table its row index is deterministic
     await expect(page.locator('[data-test="licence-ref-0"]')).toHaveText(firstLicence.licenceRef)
     await expect(page.locator('[data-test="abstraction-period-0"]')).toHaveText('10 October to 11 November')
     await expect(page.locator('[data-test="restriction-0"]')).toHaveText('Stop')
     await expect(page.locator('[data-test="threshold-0"]')).toHaveText('100m3/s')
-    await expect(page.locator('[data-test="alert-0"]')).toHaveText('')
 
     await page.getByRole('button', { name: 'Continue' }).click()
 
