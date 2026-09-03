@@ -32,7 +32,6 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
   }) => {
     await page.goto(`/system/monitoring-stations/${monitoringStation.id}`)
 
-    // Confirm we are on the monitoring station page
     await expect(page.locator('h1')).toHaveText(monitoringStation.label)
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.catchmentName)
     await expect(page.locator('[data-test="meta-data-grid-reference"]')).toHaveText(monitoringStation.gridReference)
@@ -44,21 +43,18 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(page.locator('h1')).toContainText('Select the type of alert you need to send')
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
 
-    // Select the warning alert type and continue
     await page.locator('input[type="radio"][value="warning"]').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Which thresholds do you need to send an alert for?')
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
 
-    // Select the threshold and continue
     await page.locator('#alertThresholds').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toHaveText('Check the licence matches for the selected thresholds')
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
 
-    // Confirm data on Check the licence matches for the selected thresholds page is correct
     await expect(page.getByText('Showing all 2 abstraction alerts')).toBeVisible()
 
     // The table is sorted by licence ref and our refs are randomly generated, so we anchor on the ref rather than row
@@ -75,7 +71,6 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(secondLicenceRow.locator('[data-test^="restriction-"]')).toHaveText('Stop')
     await expect(secondLicenceRow.locator('[data-test^="threshold-"]')).toHaveText('100m3/s')
 
-    // Filter the results by abstraction period, checking the period "10 October to 11 November"
     await page.locator('.govuk-details__summary').click()
     await page.getByRole('checkbox', { name: '10 October to 11 November' }).check()
     await page.getByRole('button', { name: 'Apply filters' }).click()
@@ -83,7 +78,6 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(page.locator('h1')).toHaveText('Check the licence matches for the selected thresholds')
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
 
-    // Confirm data on Check the licence matches page has been correctly filtered
     await expect(page.getByText('Showing 1 of 2 abstraction alerts')).toBeVisible()
 
     // Only one row survives the filter, so unlike the unfiltered table its row index is deterministic
@@ -98,14 +92,12 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
     await expect(page.locator('.govuk-radios')).toContainText(users.environmentOfficer)
 
-    // Select the current users email address and continue
     await page.locator('input[type="radio"][value="username"]').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Check the recipients')
     await expect(page.locator('.govuk-caption-l')).toContainText('Notice WAA-')
 
-    // Confirm data on Check the recipients page is correct and send the alert
     await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 recipients')
     await expect(page.locator('.govuk-table__body')).toContainText(firstUser.username)
     await expect(page.locator('.govuk-table__body')).toContainText(firstLicence.licenceRef)
@@ -113,7 +105,6 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(page.locator('.govuk-table__body')).toContainText('Preview')
     await page.getByRole('button', { name: 'Send' }).click()
 
-    // Confirm we are on the Alert sent confirmation page
     await expect(page.locator('.govuk-panel__title')).toContainText('Water abstraction alerts sent')
     await expect(page.locator('.govuk-panel__body')).toContainText('Your reference number is WAA-')
     await page.getByRole('link', { name: 'View notice' }).click()
