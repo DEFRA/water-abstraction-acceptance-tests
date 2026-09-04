@@ -1,10 +1,4 @@
 /**
- * When a scenario or data file needs a company name, we use Big Farm Co Ltd as our default.
- * @type {string}
- */
-export const companyName = 'Big Farm Co Ltd'
-
-/**
  * When a scenario or data file needs a password, we use P@55word as our default.
  * @type {string}
  */

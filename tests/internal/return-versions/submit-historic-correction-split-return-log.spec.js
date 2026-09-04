@@ -5,6 +5,7 @@ import { tableRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction that results in a split-log (internal)', () => {
+  let company
   let licence
   let oldReference
   let startYear
@@ -20,6 +21,7 @@ test.describe('Submit historic correction that results in a split-log (internal)
 
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
     oldReference = `${scenario.returnRequirement.reference}`
 
@@ -95,7 +97,7 @@ test.describe('Submit historic correction that results in a split-log (internal)
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // choose the approve return requirement button
     await page.getByText('Approve returns requirement').click()

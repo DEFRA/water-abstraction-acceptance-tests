@@ -4,6 +4,7 @@ import scenarioData from '../../support/scenarios/licence-with-two-return-requir
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction using abstraction data for licence with two purposes (internal)', () => {
+  let company
   let licence
   let startYear
   let purpose400Current
@@ -18,6 +19,7 @@ test.describe('Submit historic correction using abstraction data for licence wit
 
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
 
     const [purpose400CurrentLog, purpose400PreviousLog, purpose420CurrentLog, purpose420PreviousLog] =
@@ -103,7 +105,7 @@ test.describe('Submit historic correction using abstraction data for licence wit
     await page.locator('#useAbstractionData').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await page.getByText('Approve returns requirement').click()
 
     await expect(page.locator('.govuk-panel__title')).toContainText('Requirements for returns approved')

@@ -3,12 +3,16 @@ import scenarioData from '../../support/scenarios/licence-with-two-purposes.scen
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit return version using abstraction data (internal)', () => {
+  let company
   let licence
+  let points
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
+    points = scenario.points
 
     await setup(scenario)
   })
@@ -45,7 +49,7 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see the start data and reason options selected previously
     await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(licence.startDate))
@@ -53,27 +57,27 @@ test.describe('Submit return version using abstraction data (internal)', () => {
 
     // confirm we see return requirements generated from abstraction data
     // Return requirement 1
-    await expect(page.locator('#requirement-0').getByRole('heading', { level: 2 })).toContainText('Example point 1')
+    await expect(page.locator('#requirement-0').getByRole('heading', { level: 2 })).toContainText(points[0].description)
     await expect(page.locator('[data-test="purposes-0"]')).toContainText('Spray Irrigation - Direct')
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TQ 1234 5678 (Example point 1)'
+      `At National Grid Reference ${points[0].ngr1} (${points[0].description})`
     )
     await expect(page.locator('[data-test="abstraction-period-0"]')).toContainText('From 1 April to 31 March')
     await expect(page.locator('[data-test="returns-cycle-0"]')).toContainText('Winter and all year')
-    await expect(page.locator('[data-test="site-description-0"]')).toContainText('Example point 1')
+    await expect(page.locator('[data-test="site-description-0"]')).toContainText(points[0].description)
     await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('Two-part tariff')
 
     // Return requirement 2
-    await expect(page.locator('#requirement-1').getByRole('heading', { level: 2 })).toContainText('Example point 2')
+    await expect(page.locator('#requirement-1').getByRole('heading', { level: 2 })).toContainText(points[1].description)
     await expect(page.locator('[data-test="purposes-1"]')).toContainText('Make-Up Or Top Up Water')
     await expect(page.locator('[data-test="points-1"]')).toContainText(
-      'At National Grid Reference TT 9876 5432 (Example point 2)'
+      `At National Grid Reference ${points[1].ngr1} (${points[1].description})`
     )
     await expect(page.locator('[data-test="abstraction-period-1"]')).toContainText('From 1 April to 31 March')
     await expect(page.locator('[data-test="returns-cycle-1"]')).toContainText('Winter and all year')
-    await expect(page.locator('[data-test="site-description-1"]')).toContainText('Example point 2')
+    await expect(page.locator('[data-test="site-description-1"]')).toContainText(points[1].description)
     await expect(page.locator('[data-test="frequency-collected-1"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="frequency-reported-1"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="agreements-exceptions-1"]')).toContainText('None')
@@ -102,27 +106,27 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     await expect(page.locator('.govuk-body-l')).toContainText('by billing.data@wrls.gov.uk')
 
     // Return requirement 1
-    await expect(page.locator('#requirement-0').getByRole('heading', { level: 2 })).toContainText('Example point 1')
+    await expect(page.locator('#requirement-0').getByRole('heading', { level: 2 })).toContainText(points[0].description)
     await expect(page.locator('[data-test="purposes-0"]')).toContainText('Spray Irrigation - Direct')
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TQ 1234 5678 (Example point 1)'
+      `At National Grid Reference ${points[0].ngr1} (${points[0].description})`
     )
     await expect(page.locator('[data-test="abstraction-period-0"]')).toContainText('1 April to 31 March')
     await expect(page.locator('[data-test="returns-cycle-0"]')).toContainText('Winter and all year')
-    await expect(page.locator('[data-test="site-description-0"]')).toContainText('Example point 1')
+    await expect(page.locator('[data-test="site-description-0"]')).toContainText(points[0].description)
     await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText('Two-part tariff')
 
     // Return requirement 2
-    await expect(page.locator('#requirement-1').getByRole('heading', { level: 2 })).toContainText('Example point 2')
+    await expect(page.locator('#requirement-1').getByRole('heading', { level: 2 })).toContainText(points[1].description)
     await expect(page.locator('[data-test="purposes-1"]')).toContainText('Make-Up Or Top Up Water')
     await expect(page.locator('[data-test="points-1"]')).toContainText(
-      'At National Grid Reference TT 9876 5432 (Example point 2)'
+      `At National Grid Reference ${points[1].ngr1} (${points[1].description})`
     )
     await expect(page.locator('[data-test="abstraction-period-1"]')).toContainText('1 April to 31 March')
     await expect(page.locator('[data-test="returns-cycle-1"]')).toContainText('Winter and all year')
-    await expect(page.locator('[data-test="site-description-1"]')).toContainText('Example point 2')
+    await expect(page.locator('[data-test="site-description-1"]')).toContainText(points[1].description)
     await expect(page.locator('[data-test="frequency-collected-1"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="frequency-reported-1"]')).toContainText('Monthly')
     await expect(page.locator('[data-test="agreements-exceptions-1"]')).toContainText('None')

@@ -5,6 +5,8 @@ import { formatLongDate, relativeToToday } from '../../../support/helpers/date.h
 
 test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
   let returnLog
+  let address
+  let company
   let licence
 
   test.beforeAll(async ({ setup }) => {
@@ -15,6 +17,8 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     } = scenario
 
     returnLog = scenarioReturnLog
+    address = scenario.address
+    company = scenario.company
     licence = scenario.licence
 
     await setup(scenario)
@@ -95,11 +99,11 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
 
     await page.locator('[data-test="notice-date-created-0"] > .govuk-link').click()
 
-    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText('Big Farm Co Ltd')
-    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText('HORIZON HOUSE')
-    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText('DEANERY ROAD')
-    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText('BRISTOL')
-    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText('BS1 5AH')
+    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText(company.name)
+    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText(address.address2)
+    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText(address.address3)
+    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText(address.address4)
+    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText(address.postcode)
 
     // Trigger the notification status job and then wait for Notify to confirm the letter was successful
     await triggerJob('notification-status')
