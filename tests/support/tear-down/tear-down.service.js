@@ -1,19 +1,13 @@
 /**
- * Removes all data created for acceptance tests
+ * Removes all data from the database and re seeds
  * @module TearDownService
  */
 
-import CrmSchemaService from './crm-schema.service.js'
-import IdmSchemaService from './idm-schema.service.js'
-import PermitSchemaService from './permit-schema.service.js'
-import ReturnsSchemaService from './returns-schema.service.js'
-import WaterSchemaService from './water-schema.service.js'
+import { clean } from 'water-abstraction-engine/test/database.js'
 
 /**
- * Removes all data created for acceptance tests
+ * Removes all data from the database and re seeds
  */
 export default async function tearDownService() {
-  await Promise.all([CrmSchemaService(), IdmSchemaService(), PermitSchemaService(), ReturnsSchemaService()])
-
-  await WaterSchemaService()
+  await clean()
 }
