@@ -4,6 +4,7 @@ import scenarioData from '../../support/scenarios/licence-with-winter-and-summer
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction for licence with both a winter and summer return requirement (internal)', () => {
+  let company
   let licence
   let startYear
   let winterCurrent
@@ -18,6 +19,7 @@ test.describe('Submit historic correction for licence with both a winter and sum
 
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
 
     const [winterCurrentLog, winterPreviousLog, summerCurrentLog, summerPreviousLog] = scenario.returnLogs
@@ -97,7 +99,7 @@ test.describe('Submit historic correction for licence with both a winter and sum
     await page.locator('#existing').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await page.getByText('Approve returns requirement').click()
 
     await expect(page.locator('.govuk-panel__title')).toContainText('Requirements for returns approved')

@@ -1,3 +1,4 @@
+import { fakerEN_GB as faker } from '@faker-js/faker'
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function () {
@@ -5,11 +6,11 @@ export default function () {
 
   return {
     id: addressId,
-    address1: 'ENVIRONMENT AGENCY',
-    address2: 'HORIZON HOUSE',
-    address3: 'DEANERY ROAD',
-    address4: 'BRISTOL',
-    postcode: 'BS1 5AH',
+    address1: faker.location.buildingNumber(),
+    address2: faker.location.street(),
+    address3: faker.location.county(),
+    address4: faker.location.city(),
+    postcode: faker.location.zipCode(),
     country: 'United Kingdom',
     dataSource: 'wrls'
   }

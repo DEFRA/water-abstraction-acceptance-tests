@@ -3,11 +3,13 @@ import { expect, test } from '../../support/fixtures.js'
 import { formatLongDate, yesterday } from '../../support/helpers/date.helpers.js'
 
 test.describe('Create, replace then add a charge version (internal)', { tag: '@supplementary-billing' }, () => {
+  let company
   let licence
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
 
     await setup(scenario)
@@ -44,7 +46,7 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
       await expect(page.locator('h1')).toContainText('Who should the bills go to?')
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Select an existing address for Big Farm Co Ltd')
+      await expect(page.locator('h1')).toContainText(`Select an existing address for ${company.name}`)
       await page.locator('#selectedAddress').nth(1).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
@@ -146,7 +148,7 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
       await page.getByRole('radio', { name: 'Licence version start date' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Select an existing billing account for Big Farm Co Ltd')
+      await expect(page.locator('h1')).toContainText(`Select an existing billing account for ${company.name}`)
       await page.locator('#billingAccountId').nth(1).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
@@ -208,7 +210,7 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
       await page.getByRole('radio', { description: formatLongDate(new Date()), exact: true }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Select an existing billing account for Big Farm Co Ltd')
+      await expect(page.locator('h1')).toContainText(`Select an existing billing account for ${company.name}`)
       await page.locator('#billingAccountId').nth(1).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 

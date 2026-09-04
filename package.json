@@ -25,16 +25,17 @@
     "water-abstraction-engine": "github:DEFRA/water-abstraction-engine#main"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
     "@inquirer/prompts": "^8.2.0",
     "@playwright/test": "1.61.0",
     "@types/node": "26.0.0",
     "eslint": "^9.14.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsdoc": "^63.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^14.0.0",
     "neostandard": "^0.12.0",
-    "prettier": "3.3.3",
-    "eslint-plugin-jsdoc": "^63.1.0"
+    "prettier": "3.3.3"
   },
   "allowScripts": {
     "fsevents@2.3.2": true,

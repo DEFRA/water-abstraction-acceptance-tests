@@ -5,6 +5,7 @@ import { sortReturnLogsByDisplayOrder } from '../../support/helpers/return-log.h
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction changing to quarterly on new return version (internal)', () => {
+  let company
   let licence
   let returnLogs
   let startYear
@@ -17,6 +18,7 @@ test.describe('Submit historic correction changing to quarterly on new return ve
 
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
     returnLogs = scenario.returnLogs
 
@@ -107,7 +109,7 @@ test.describe('Submit historic correction changing to quarterly on new return ve
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // click on the change link for additional submission options
     await page.locator('[data-test="change-additional-submission-options"]').click()
