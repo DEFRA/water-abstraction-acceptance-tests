@@ -1,8 +1,8 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import scenarioData from '../../support/scenarios/company-contact.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
+import { generateCompanyContact, generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 
 test.describe('Licence holder contacts (internal)', () => {
   let company
@@ -11,6 +11,9 @@ test.describe('Licence holder contacts (internal)', () => {
   let editContact
   let removeContact
   let restoreContact
+  let contactWithoutALicence
+  let contactWithAllLicences
+  let contactWithSomeLicences
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
@@ -25,6 +28,10 @@ test.describe('Licence holder contacts (internal)', () => {
     restoreContact = scenarioRestoreContact
 
     await setup(scenario)
+
+    contactWithoutALicence = generateCompanyContact(company.name)
+    contactWithAllLicences = generateCompanyContact(company.name)
+    contactWithSomeLicences = generateCompanyContact(company.name)
   })
 
   test.beforeEach(async ({ login, users }) => {
@@ -52,16 +59,16 @@ test.describe('Licence holder contacts (internal)', () => {
     // Set up a contact with no abstraction alerts (an additional contact)
     await page.locator('.govuk-button', { hasText: 'Set up a new contact' }).click()
 
-    await page.locator('#name').fill('Test Contact No Licences')
+    await page.locator('#name').fill(contactWithoutALicence.department)
     await page.locator('button.govuk-button').click()
 
-    await page.locator('#email').fill(generateExternalEmailAddress())
+    await page.locator('#email').fill(contactWithoutALicence.email)
     await page.locator('button.govuk-button').click()
 
     await page.locator('input[name="abstractionAlerts"][value="no"]').check()
     await page.locator('.govuk-button', { hasText: 'Continue' }).click()
 
-    await expect(_summaryValue(page, 'Name')).toContainText('Test Contact No Licences')
+    await expect(_summaryValue(page, 'Name')).toContainText(contactWithoutALicence.department)
     await expect(_summaryValue(page, 'Water abstraction alerts')).toContainText('No')
 
     await page.locator('.govuk-button', { hasText: 'Confirm' }).click()
@@ -69,13 +76,13 @@ test.describe('Licence holder contacts (internal)', () => {
     const banner = page.locator('.govuk-notification-banner')
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact added')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
-      'Test Contact No Licences was added to this company'
+      `${contactWithoutALicence.department} was added to this company`
     )
 
     // Confirm the contacts table contains the expected records
     await expect(_contactRow(page, company.name)).toContainText('Licence holder')
     await expect(_contactRow(page, contact.department)).toContainText('Additional contact')
-    await expect(_contactRow(page, 'Test Contact No Licences')).toContainText('Additional contact')
+    await expect(_contactRow(page, contactWithoutALicence.department)).toContainText('Additional contact')
   })
 
   test('can create a contact with abstraction alerts for all licences', async ({ page }) => {
@@ -88,7 +95,7 @@ test.describe('Licence holder contacts (internal)', () => {
     // Set up a contact with abstraction alerts for all licences
     await page.locator('.govuk-button', { hasText: 'Set up a new contact' }).click()
 
-    await page.locator('#name').fill('Test Contact All Licences')
+    await page.locator('#name').fill(contactWithAllLicences.department)
     await page.locator('button.govuk-button').click()
 
     await page.locator('#email').fill(generateExternalEmailAddress())
@@ -97,7 +104,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('input[name="abstractionAlerts"][value="yes"]').check()
     await page.locator('.govuk-button', { hasText: 'Continue' }).click()
 
-    await expect(_summaryValue(page, 'Name')).toContainText('Test Contact All Licences')
+    await expect(_summaryValue(page, 'Name')).toContainText(contactWithAllLicences.department)
     await expect(_summaryValue(page, 'Water abstraction alerts')).toContainText('Yes, for all licences')
 
     await page.locator('.govuk-button', { hasText: 'Confirm' }).click()
@@ -105,13 +112,13 @@ test.describe('Licence holder contacts (internal)', () => {
     const banner = page.locator('.govuk-notification-banner')
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact added')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
-      'Test Contact All Licences was added to this company'
+      `${contactWithAllLicences.department} was added to this company`
     )
 
     // Confirm the contacts table contains the expected records
     await expect(_contactRow(page, company.name)).toContainText('Licence holder')
     await expect(_contactRow(page, contact.department)).toContainText('Additional contact')
-    await expect(_contactRow(page, 'Test Contact All Licences')).toContainText('Abstraction alerts')
+    await expect(_contactRow(page, contactWithAllLicences.department)).toContainText('Abstraction alerts')
   })
 
   test('can create a contact with abstraction alerts for some licences', async ({ page }) => {
@@ -124,7 +131,7 @@ test.describe('Licence holder contacts (internal)', () => {
     // Set up a contact with abstraction alerts for some licences
     await page.locator('.govuk-button', { hasText: 'Set up a new contact' }).click()
 
-    await page.locator('#name').fill('Test Contact Some Licences')
+    await page.locator('#name').fill(contactWithSomeLicences.department)
     await page.locator('button.govuk-button').click()
 
     await page.locator('#email').fill(generateExternalEmailAddress())
@@ -137,7 +144,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('input[type="checkbox"]').first().check()
     await page.locator('.govuk-button', { hasText: 'Continue' }).click()
 
-    await expect(_summaryValue(page, 'Name')).toContainText('Test Contact Some Licences')
+    await expect(_summaryValue(page, 'Name')).toContainText(contactWithSomeLicences.department)
 
     const someLicencesAlertsValue = _summaryValue(page, 'Water abstraction alerts')
     await expect(someLicencesAlertsValue).toContainText('Yes, for some licences')
@@ -148,13 +155,13 @@ test.describe('Licence holder contacts (internal)', () => {
     const banner = page.locator('.govuk-notification-banner')
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact added')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
-      'Test Contact Some Licences was added to this company'
+      `${contactWithSomeLicences.department} was added to this company`
     )
 
     // Confirm the contacts table contains the expected records
     await expect(_contactRow(page, company.name)).toContainText('Licence holder')
     await expect(_contactRow(page, contact.department)).toContainText('Additional contact')
-    await expect(_contactRow(page, 'Test Contact Some Licences')).toContainText('Abstraction alerts')
+    await expect(_contactRow(page, contactWithSomeLicences.department)).toContainText('Abstraction alerts')
   })
 
   test('can edit a contact to change its abstraction alerts', async ({ page }) => {

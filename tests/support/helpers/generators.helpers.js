@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { generateRandomInteger } from 'water-abstraction-engine/test/generators.js'
 
 import { regionCode } from '../default-values.js'
@@ -43,7 +44,7 @@ export function generatePointExternalId() {
  * @returns {string} - A gov uk email
  */
 export function generateGovUKEmail() {
-  return `${Date.now()}-${_additionalRandomness()}@acceptance.test.gov.uk`
+  return faker.internet.email({ provider: '@gov.uk' }).toLowerCase()
 }
 
 /**
@@ -56,18 +57,50 @@ export function generateGovUKEmail() {
  * @returns {string} - An email address
  */
 export function generateExternalEmailAddress() {
-  return `${Date.now()}-${_additionalRandomness()}@acceptance.test.com`
+  return faker.internet.email().toLowerCase()
 }
 
 /**
- * We need some additional randomness
+ * Generate a company email address
  *
- * We have seen timestamp collisions when we create multiple emails fro the same scenario
+ * Regex Explanation:
+ * 1. /[^a-z0-9]+/g     - Replaces any sequence of non-alphanumeric characters (spaces, symbols) with a single hyphen.
+ * 2. /^[-_]+|[-_]+$/g  - Strips any leftover hyphens or underscores from the start (^) or end ($) of the domain string.
  *
- * We use this instead of a UUID to avoid confusion.
- *
- * @private
+ * @param {string} companyName - The name of the company (e.g., "Hamill & Jones")
+ * @returns {string} An email address (e.g., "daryl.denesik34@hamill-jones.com")
  */
-function _additionalRandomness() {
-  return Math.random().toString(36).slice(2, 10)
+export function generateCompanyEmailAddress(companyName) {
+  const provider = companyName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^[-_]+|[-_]+$/g, '')
+
+  return faker.internet.email({ provider: `${provider}.com` }).toLowerCase()
+}
+
+/**
+ * Generates a company contact
+ *
+ * @param {string} companyName - The name of the company
+ *
+ * @returns {object} A company contact object
+ */
+export function generateCompanyContact(companyName) {
+  const firstName = faker.person.firstName()
+  const lastName = faker.person.lastName()
+
+  const provider = companyName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^[-_]+|[-_]+$/g, '')
+
+  const email = faker.internet.email({ firstName, lastName, provider: `${provider}.com` }).toLowerCase()
+
+  return {
+    department: `${firstName} ${lastName}`,
+    firstName,
+    lastName,
+    email
+  }
 }
