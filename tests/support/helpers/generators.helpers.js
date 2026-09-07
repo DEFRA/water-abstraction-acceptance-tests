@@ -88,7 +88,7 @@ export function generateExternalEmailAddress() {
  *
  * We use 'Date.now()' to ensure all email are unique.
  *
- * @returns {string} - A gov uk email
+ * @returns {string} - A defra.gov.uk email address
  */
 export function generateGovUKEmail() {
   return faker.internet.email({ provider: 'defra.gov.uk' }).toLowerCase()
