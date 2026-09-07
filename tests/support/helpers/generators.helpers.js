@@ -85,7 +85,6 @@ export function generateExternalEmailAddress() {
 /**
  * Generate a unique GOV UK email address (internal)
  *
- * We use 'acceptance.test.' to delete all relevant test email address.
  *
  * We use 'Date.now()' to ensure all email are unique.
  *
