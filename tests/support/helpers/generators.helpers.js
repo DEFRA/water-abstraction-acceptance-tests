@@ -86,7 +86,6 @@ export function generateExternalEmailAddress() {
  * Generate a unique GOV UK email address (internal)
  *
  *
- * We use 'Date.now()' to ensure all email are unique.
  *
  * @returns {string} - A defra.gov.uk email address
  */
