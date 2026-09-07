@@ -1,13 +1,14 @@
 import buildLicenceEntity from '../entities/licence.entity.js'
 import companyContactData from '../data/company-contact.data.js'
 import contactData from '../data/contact.data.js'
+import { defaultRegion } from '../default-values.js'
 import notificationData from '../data/notification.data.js'
 
 export const title = 'Company contact'
 export const description = 'A licence, licence holder, company, a contact and notification data'
 
 export default function () {
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(defaultRegion)
 
   const { company } = licenceEntity
 

@@ -3,7 +3,7 @@ import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 import { convertCubicMetresToMegalitres } from '../helpers/conversion.helpers.js'
 import { isTwoPartTariffPurpose } from '../helpers/purpose.helpers.js'
 
-export default function (chargeVersion, licenceVersionPurposes) {
+export default function (chargeVersion, licenceVersionPurposes, region) {
   let annualQuantity = 0
   let twoPartTariff = false
 
@@ -41,7 +41,7 @@ export default function (chargeVersion, licenceVersionPurposes) {
     restrictedSource: false,
     waterModel: 'no model',
     volume: convertCubicMetresToMegalitres(annualQuantity),
-    eiucRegion: 'Southern',
+    eiucRegion: region.displayName,
     section127Agreement: twoPartTariff
   }
 }

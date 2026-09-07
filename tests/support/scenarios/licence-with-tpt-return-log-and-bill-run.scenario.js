@@ -2,6 +2,7 @@ import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { defaultRegion } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a two-part tariff return log and bill run'
@@ -12,8 +13,8 @@ export default function () {
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
-  const licenceEntity = buildLicenceEntity()
-  const billRunEntity = buildBillRunEntity(licenceEntity, periods[0])
+  const licenceEntity = buildLicenceEntity(defaultRegion)
+  const billRunEntity = buildBillRunEntity(licenceEntity, periods[0], defaultRegion)
 
   billRunEntity.billRun.batchType = 'two_part_tariff'
 
@@ -34,7 +35,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     licenceEntity.point,
-    periods
+    periods,
+    defaultRegion
   )
 
   returnLog.status = 'completed'

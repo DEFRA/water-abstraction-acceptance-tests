@@ -5,6 +5,7 @@ import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { twoPartTariffRegion as region } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -31,8 +32,8 @@ export default function () {
   // distinct lets each return match its own element.
   secondLicenceVersionPurpose.purposeId.value = '420'
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
-  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
+  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
 
   const { chargeReferences, chargeElements } = _chargeReferences(
     chargeVersion,
@@ -51,7 +52,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     firstPoint,
-    periods
+    periods,
+    region
   )
 
   const secondReturnRequirement = _returnRequirement(
@@ -65,7 +67,8 @@ export default function () {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    periods
+    periods,
+    region
   )
 
   return {
@@ -95,13 +98,13 @@ export default function () {
  * @private
  */
 function _chargeReferences(chargeVersion, firstLicenceVersionPurpose, secondLicenceVersionPurpose) {
-  const firstChargeReference = chargeReferenceData(chargeVersion, [firstLicenceVersionPurpose])
+  const firstChargeReference = chargeReferenceData(chargeVersion, [firstLicenceVersionPurpose], region)
   firstChargeReference.volume = 22
 
   const firstChargeElement = chargeElementData(firstChargeReference, firstLicenceVersionPurpose)
   firstChargeElement.authorisedAnnualQuantity = 42
 
-  const secondChargeReference = chargeReferenceData(chargeVersion, [secondLicenceVersionPurpose])
+  const secondChargeReference = chargeReferenceData(chargeVersion, [secondLicenceVersionPurpose], region)
   secondChargeReference.volume = 42
 
   const secondChargeElement = chargeElementData(secondChargeReference, secondLicenceVersionPurpose)

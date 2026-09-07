@@ -2,6 +2,7 @@ import { calculatedDates } from '../../../../support/helpers/calculated-dates.he
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-return-split-over-refs.scenario.js'
+import { twoPartTariffRegion } from '../../../../support/default-values.js'
 import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence with a Return Split Over Charge References (internal)', () => {
@@ -56,7 +57,7 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: twoPartTariffRegion.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the financial year')
@@ -69,14 +70,14 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
       await expect(page.locator('h1')).toContainText('Bill runs')
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'review')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-0"]')).toContainText(twoPartTariffRegion.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Two-part tariff')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText('Review licences')
       await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(twoPartTariffRegion.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
@@ -104,7 +105,7 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
       await expect(page.locator('[data-test="licence-holder"]')).toContainText(company.name)
       await expect(page.locator('div > .govuk-tag')).toContainText('review')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
-        'Test Region two-part tariff'
+        `${twoPartTariffRegion.displayName} two-part tariff`
       )
 
       // A single matched return, flagged as split over charge references, that still fully allocates (24 ML of 24 ML)

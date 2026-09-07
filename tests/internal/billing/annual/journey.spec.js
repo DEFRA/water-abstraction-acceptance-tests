@@ -1,3 +1,4 @@
+import { defaultRegion } from '../../../support/default-values.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licence-with-charge-version.scenario.js'
@@ -28,7 +29,7 @@ test.describe('Create and send annual bill run (internal)', () => {
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the region')
-    await page.getByRole('radio', { name: 'Test Region' }).check()
+    await page.getByRole('radio', { name: defaultRegion.displayName }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -37,21 +38,21 @@ test.describe('Create and send annual bill run (internal)', () => {
     await expect(page.locator('h1')).toContainText('Bill runs')
 
     const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: 'Test Region' })
+    const billRunRow = billRunsTable.getByRole('row', { name: defaultRegion.displayName })
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: defaultRegion.displayName, exact: true })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
-    await expect(page.locator('h1')).toContainText('Test Region annual')
+    await expect(page.locator('h1')).toContainText(`${defaultRegion.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
     await page.getByRole('button', { name: 'Send bill run' }).click()
 
     await expect(page.locator('h1')).toContainText("You're about to send this bill run")
     await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-    await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
+    await expect(_summaryValue(page, 'Region')).toContainText(defaultRegion.displayName)
     await expect(_summaryValue(page, 'Bill run type')).toContainText('Annual')
     await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
     await page.getByRole('button', { name: 'Send bill run' }).click()
@@ -59,14 +60,14 @@ test.describe('Create and send annual bill run (internal)', () => {
     await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
     await page.locator('#main-content > div > div > p:nth-child(4) > a').click()
 
-    await expect(page.locator('h1')).toContainText('Test Region annual')
+    await expect(page.locator('h1')).toContainText(`${defaultRegion.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
 
     await page.getByRole('link', { name: 'Go back to bill runs' }).click()
 
     await expect(page.locator('h1')).toContainText('Bill runs')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: defaultRegion.displayName, exact: true })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
     await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('1')
     await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')

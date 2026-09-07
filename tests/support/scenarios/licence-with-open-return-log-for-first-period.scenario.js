@@ -2,6 +2,7 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { compareDates } from '../helpers/date.helpers.js'
+import { defaultRegion } from '../default-values.js'
 import returnLogData from '../data/return-log.data.js'
 
 export const title = 'Licence with an open return log (first period)'
@@ -19,7 +20,7 @@ export default function () {
     quarterly: firstReturnPeriod.quarterly
   }
 
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(defaultRegion)
 
   // We want the return logs for the licence to match with the first quarter shown in the journey. This is dynamically
   // calculated based on the current date, so could be a quarterly period, or the winter or summer cycle.
@@ -39,7 +40,8 @@ export default function () {
       returnVersionEntity.returnRequirement,
       [returnVersionEntity.returnRequirementPurpose],
       [licenceEntity.point],
-      period
+      period,
+      defaultRegion
     )
   })
 

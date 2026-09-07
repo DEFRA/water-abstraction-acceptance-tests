@@ -1,4 +1,5 @@
 import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
+import { defaultRegion } from '../default-values.js'
 import presrocLicenceScenario from './presroc-licence.scenario.js'
 
 export const title = 'Presroc licence with a charge version'
@@ -12,7 +13,8 @@ export default function () {
     licence.company,
     licence.address,
     licence.licence,
-    licence.licenceVersionPurpose
+    licence.licenceVersionPurpose,
+    defaultRegion
   )
 
   return {

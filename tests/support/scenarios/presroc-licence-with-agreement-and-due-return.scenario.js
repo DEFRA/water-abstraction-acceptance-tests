@@ -2,6 +2,7 @@ import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import licenceAgreementData from '../data/licence-agreement.data.js'
 import presrocLicenceScenario from './presroc-licence.scenario.js'
+import { twoPartTariffRegion as region } from '../default-values.js'
 
 export const title = 'Presroc licence with an agreement and a due return'
 export const description =
@@ -14,7 +15,8 @@ export default function () {
     licence.company,
     licence.address,
     licence.licence,
-    licence.licenceVersionPurpose
+    licence.licenceVersionPurpose,
+    region
   )
 
   const licenceAgreement = licenceAgreementData(licence.licence)

@@ -12,11 +12,12 @@ import chargeVersionData from '../data/charge-version.data.js'
  * @param {object} address - the address linked to the charge version's billing account
  * @param {object} licence - the licence the charge version is for
  * @param {object} licenceVersionPurpose - the licence version purpose the charge reference is for
+ * @param {object} region - the region the charge version's billing account belongs to
  */
-export default function (company, address, licence, licenceVersionPurpose) {
-  const billingAccountEntity = buildBillingAccountEntity(company, address)
-  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence)
-  const chargeReference = chargeReferenceData(chargeVersion, [licenceVersionPurpose])
+export default function (company, address, licence, licenceVersionPurpose, region) {
+  const billingAccountEntity = buildBillingAccountEntity(company, address, region)
+  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence, region)
+  const chargeReference = chargeReferenceData(chargeVersion, [licenceVersionPurpose], region)
   const chargeElement = chargeElementData(chargeReference, licenceVersionPurpose)
 
   return {

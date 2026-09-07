@@ -1,6 +1,7 @@
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { defaultRegion } from '../default-values.js'
 import workflowData from '../data/workflow.data.js'
 import { yesterday } from '../helpers/date.helpers.js'
 
@@ -20,8 +21,8 @@ export default function () {
     }
   } = calculatedDates()
 
-  const licenceEntity = buildLicenceEntity()
-  const billRunEntity = buildBillRunEntity(licenceEntity, annualDates)
+  const licenceEntity = buildLicenceEntity(defaultRegion)
+  const billRunEntity = buildBillRunEntity(licenceEntity, annualDates, defaultRegion)
 
   const workflow = workflowData(licenceEntity.licence)
 

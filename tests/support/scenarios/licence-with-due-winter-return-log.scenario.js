@@ -1,6 +1,7 @@
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { defaultRegion } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a due return log (winter cycle)'
@@ -11,7 +12,7 @@ export default function () {
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle, currentWinterReturnCycle.dueDate)
 
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(defaultRegion)
 
   const returnVersionEntity = buildReturnVersionEntity(
     licenceEntity.licence,
@@ -28,7 +29,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     licenceEntity.point,
-    periods
+    periods,
+    defaultRegion
   )
 
   return {

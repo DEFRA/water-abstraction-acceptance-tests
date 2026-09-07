@@ -4,6 +4,7 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import { buildPreviousAndCurrentReturnLogs } from '../helpers/return-log.helpers.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { defaultRegion } from '../default-values.js'
 import { generatePointExternalId } from '../helpers/generators.helpers.js'
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
 import licenceVersionPurposePointData from '../data/licence-version-purpose-point.data.js'
@@ -38,14 +39,16 @@ export default function () {
       winterRequirement,
       winterRequirementPurpose,
       winterPoint,
-      currentWinterReturnCycle
+      currentWinterReturnCycle,
+      defaultRegion
     ),
     ...buildPreviousAndCurrentReturnLogs(
       licenceWithTwoReturnRequirements.licence,
       summerRequirement,
       summerRequirementPurpose,
       summerPoint,
-      currentSummerReturnCycle
+      currentSummerReturnCycle,
+      defaultRegion
     )
   ]
 
@@ -61,12 +64,12 @@ export default function () {
  * @private
  */
 function _licenceWithTwoReturnRequirements() {
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(defaultRegion)
 
-  const secondPoint = pointData()
+  const secondPoint = pointData(defaultRegion)
   secondPoint.description = 'Example point 2'
   secondPoint.ngr1 = 'TQ 1234 5679'
-  secondPoint.externalId = generatePointExternalId()
+  secondPoint.externalId = generatePointExternalId(defaultRegion)
 
   const secondLicenceVersionPurpose = licenceVersionPurposeData(licenceEntity.licenceVersion)
   secondLicenceVersionPurpose.purposeId.value = '420'

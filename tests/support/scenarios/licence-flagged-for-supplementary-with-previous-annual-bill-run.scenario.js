@@ -2,7 +2,7 @@ import billRunData from '../data/bill-run.data.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { srocStartDate } from '../default-values.js'
+import { supplementaryRegion as region, srocStartDate } from '../default-values.js'
 
 export const title = 'Licence flagged for supplementary billing with previous annual bill run'
 export const description =
@@ -13,7 +13,7 @@ export default function () {
 
   const currentEndYear = new Date(currentFinancialYear.endDate).getUTCFullYear()
 
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(region)
 
   licenceEntity.licence.startDate = srocStartDate
   licenceEntity.licenceVersion.startDate = srocStartDate
@@ -28,10 +28,11 @@ export default function () {
     licenceEntity.company,
     licenceEntity.address,
     licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
+    licenceEntity.licenceVersionPurpose,
+    region
   )
 
-  const billRun = billRunData()
+  const billRun = billRunData(region)
 
   billRun.fromFinancialYearEnding = currentEndYear - 1
   billRun.toFinancialYearEnding = currentEndYear - 1

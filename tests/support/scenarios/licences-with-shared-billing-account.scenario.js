@@ -9,6 +9,7 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
+import { defaultRegion } from '../default-values.js'
 import { generatePointExternalId } from '../helpers/generators.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 
@@ -29,12 +30,13 @@ export default function () {
  * @private
  */
 function _licenceWithChargeVersion() {
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(defaultRegion)
   const chargeVersionEntity = buildChargeVersionEntity(
     licenceEntity.company,
     licenceEntity.address,
     licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
+    licenceEntity.licenceVersionPurpose,
+    defaultRegion
   )
 
   return { ...licenceEntity, ...chargeVersionEntity }
@@ -53,9 +55,9 @@ function _licenceWithChargeVersion() {
 function _secondLicenceSharingBillingAccount(firstLicence) {
   const { billingAccount, company } = firstLicence
 
-  const licenceEntity = buildLicenceEntity()
-  const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence)
-  const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose])
+  const licenceEntity = buildLicenceEntity(defaultRegion)
+  const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence, defaultRegion)
+  const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose], defaultRegion)
   const chargeElement = chargeElementData(chargeReference, licenceEntity.licenceVersionPurpose)
 
   // The licence's own company and companyAddress (built by buildLicenceEntity) are discarded rather than reused,
@@ -67,7 +69,7 @@ function _secondLicenceSharingBillingAccount(firstLicence) {
   licenceEntity.licenceDocumentRole.companyId = company.id
   licenceEntity.licenceVersion.companyId = company.id
 
-  licenceEntity.point.externalId = generatePointExternalId()
+  licenceEntity.point.externalId = generatePointExternalId(defaultRegion)
   licenceEntity.licenceVersion.externalId = generateLicenceVersionExternalId()
   licenceEntity.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
 

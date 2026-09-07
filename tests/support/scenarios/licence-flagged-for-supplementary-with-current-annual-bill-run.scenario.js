@@ -1,6 +1,7 @@
 import billRunData from '../data/bill-run.data.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
+import { supplementaryRegion as region } from '../default-values.js'
 
 export const title = 'Licence flagged for supplementary billing, and a sent annual bill run for the current year'
 export const description =
@@ -17,7 +18,7 @@ export default function () {
   // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
   licence.licence.includeInSrocBilling = true
 
-  const billRun = billRunData()
+  const billRun = billRunData(region)
 
   billRun.fromFinancialYearEnding = currentEndYear
   billRun.toFinancialYearEnding = currentEndYear

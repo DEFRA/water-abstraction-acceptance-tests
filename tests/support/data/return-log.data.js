@@ -1,10 +1,9 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 import { purposeDescription } from '../helpers/purpose.helpers.js'
-import { regionCode } from '../default-values.js'
 import { determineReturnCycleStartDate, formatDateToIso } from '../helpers/date.helpers.js'
 
-export default function (licence, returnRequirement, returnRequirementPurposes, points, period) {
+export default function (licence, returnRequirement, returnRequirementPurposes, points, period, region) {
   const returnLogId = generateUUID()
 
   const startDate = new Date(period.startDate)
@@ -18,14 +17,14 @@ export default function (licence, returnRequirement, returnRequirementPurposes, 
 
   return {
     id: returnLogId,
-    returnId: `v1:${regionCode}:${licence.licenceRef}:${returnRequirement.reference}:${startDateString}:${endDateString}`,
+    returnId: `v1:${region.naldRegionId}:${licence.licenceRef}:${returnRequirement.reference}:${startDateString}:${endDateString}`,
     returnReference: returnRequirement.reference,
     licenceRef: licence.licenceRef,
     metadata: {
       nald: {
         areaCode: 'AREA',
         formatId: returnRequirement.reference,
-        regionCode,
+        regionCode: region.naldRegionId,
         periodEndDay: returnRequirement.abstractionPeriodEndDay,
         periodEndMonth: returnRequirement.abstractionPeriodEndMonth,
         periodStartDay: returnRequirement.abstractionPeriodStartDay,

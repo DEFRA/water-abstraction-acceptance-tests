@@ -1,3 +1,4 @@
+import { defaultRegion } from '../../../support/default-values.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licence-and-water-company-licence.scenario.js'
@@ -32,7 +33,7 @@ test.describe('Create an annual bill run with a licence and a water company lice
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the region')
-    await page.getByRole('radio', { name: 'Test Region' }).check()
+    await page.getByRole('radio', { name: defaultRegion.displayName }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -41,15 +42,15 @@ test.describe('Create an annual bill run with a licence and a water company lice
     await expect(page.locator('h1')).toContainText('Bill runs')
 
     const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: 'Test Region' })
+    const billRunRow = billRunsTable.getByRole('row', { name: defaultRegion.displayName })
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: defaultRegion.displayName, exact: true })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
-    await expect(page.locator('h1')).toContainText('Test Region annual')
+    await expect(page.locator('h1')).toContainText(`${defaultRegion.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
     const waterCompaniesTable = page.locator('[data-test="water-companies"]')

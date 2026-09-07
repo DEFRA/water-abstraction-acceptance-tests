@@ -2,6 +2,7 @@ import { generateReference } from 'water-abstraction-engine/test/generators.js'
 
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { defaultRegion } from '../default-values.js'
 import { relativeToToday } from '../helpers/date.helpers.js'
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
@@ -16,7 +17,7 @@ export default function () {
   const currentPeriod = _currentPeriod(calculatedDates())
   const previousPeriod = _previousPeriod(currentPeriod)
 
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(defaultRegion)
   const returnVersion = returnVersionData(licenceEntity.licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
@@ -212,7 +213,8 @@ function _returnLog(licenceEntity, returnVersion, period, reference) {
     returnRequirement,
     [returnRequirementPurpose],
     [licenceEntity.point],
-    period
+    period,
+    defaultRegion
   )
 
   returnLog.status = period.status

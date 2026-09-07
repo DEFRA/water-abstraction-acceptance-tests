@@ -7,6 +7,7 @@ import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { twoPartTariffRegion as region } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -34,13 +35,13 @@ export default function () {
   firstLicenceVersionPurpose.annualQuantity = 32000
   secondLicenceVersionPurpose.annualQuantity = 30000
 
-  const billingAccount = billingAccountData(licence.company)
+  const billingAccount = billingAccountData(licence.company, region)
   const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
+  const chargeVersion = chargeVersionData(billingAccount, licence.licence, region)
 
   // One charge reference with two charge elements. The reference volume derives to 62 (32 + 30); we bump it to 64 so it
   // comfortably covers both elements and each allocates its full authorised volume.
-  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes)
+  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes, region)
   chargeReference.volume = 64
 
   const firstChargeElement = chargeElementData(chargeReference, firstLicenceVersionPurpose)
@@ -57,7 +58,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     firstPoint,
-    periods
+    periods,
+    region
   )
 
   previousFirstReturnLog.status = 'completed'
@@ -77,7 +79,8 @@ export default function () {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    periods
+    periods,
+    region
   )
 
   previousSecondReturnLog.status = 'completed'

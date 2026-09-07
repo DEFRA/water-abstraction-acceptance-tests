@@ -11,6 +11,7 @@ import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { twoPartTariffSupplementaryRegion as region } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -41,9 +42,9 @@ export default function () {
 
   const [firstPoint, secondPoint] = licence.points
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
-  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
-  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes)
+  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
+  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes, region)
 
   const firstChargeElement = chargeElementData(chargeReference, firstLicenceVersionPurpose)
   const secondChargeElement = chargeElementData(chargeReference, secondLicenceVersionPurpose)
@@ -61,7 +62,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     firstPoint,
-    [currentPeriodDetails]
+    [currentPeriodDetails],
+    region
   )
 
   // The return needs an actual submitted volume, not just a due return log, or the two-part tariff engine has
@@ -79,7 +81,8 @@ export default function () {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    [currentPeriodDetails]
+    [currentPeriodDetails],
+    region
   )
 
   secondReturnLog.status = 'completed'
@@ -154,7 +157,7 @@ function _returnRequirement(returnVersion, licenceVersionPurpose, point) {
  * @private
  */
 function _billRun(licence, billingAccount, chargeReference, dates) {
-  const billRun = billRunData()
+  const billRun = billRunData(region)
 
   billRun.createdAt = today()
   billRun.batchType = 'two_part_tariff'

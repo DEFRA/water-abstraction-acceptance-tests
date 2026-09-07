@@ -4,7 +4,7 @@ import { formatDateToIso } from '../helpers/date.helpers.js'
 import { generateAccountNumber } from '../helpers/generators.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import presrocLicenceWithChargeVersionScenario from './presroc-licence-with-charge-version.scenario.js'
-import { srocStartDate } from '../default-values.js'
+import { supplementaryRegion as region, srocStartDate } from '../default-values.js'
 
 export const title = 'Presroc and sroc licence flagged for presroc and sroc supplementary billing'
 export const description =
@@ -42,9 +42,9 @@ export default function () {
  * @private
  */
 function _srocChargeVersion(company, address, licence, licenceVersionPurpose) {
-  const chargeVersionEntity = buildChargeVersionEntity(company, address, licence, licenceVersionPurpose)
+  const chargeVersionEntity = buildChargeVersionEntity(company, address, licence, licenceVersionPurpose, region)
 
-  chargeVersionEntity.billingAccount.accountNumber = generateAccountNumber()
+  chargeVersionEntity.billingAccount.accountNumber = generateAccountNumber(region)
 
   // Starts on the sroc scheme's first day rather than inheriting the licence's own (pre-sroc) start date, and uses
   // the change reason a real presroc-to-sroc transition would have, rather than the "New licence" default

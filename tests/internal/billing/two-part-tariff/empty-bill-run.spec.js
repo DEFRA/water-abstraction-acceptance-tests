@@ -1,6 +1,7 @@
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
+import { twoPartTariffRegion } from '../../../support/default-values.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Create a empty two-part tariff bill run (internal)', () => {
@@ -35,7 +36,7 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the region')
-    await page.getByRole('radio', { name: 'Test Region' }).check()
+    await page.getByRole('radio', { name: twoPartTariffRegion.displayName }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the financial year')
@@ -48,15 +49,15 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
     await expect(page.locator('h1')).toContainText('Bill runs')
 
     const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: 'Test Region' })
+    const billRunRow = billRunsTable.getByRole('row', { name: twoPartTariffRegion.displayName })
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'empty')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: twoPartTariffRegion.displayName, exact: true })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff', exact: true })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
-    await expect(page.locator('h1')).toContainText('Test Region two-part tariff')
+    await expect(page.locator('h1')).toContainText(`${twoPartTariffRegion.displayName} two-part tariff`)
     await expect(page.locator('#main-content .govuk-tag')).toContainText('empty')
     await expect(page.getByRole('alert')).toContainText('There are no licences ready for this bill run')
   })

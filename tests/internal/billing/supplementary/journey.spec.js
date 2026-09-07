@@ -1,6 +1,7 @@
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/presroc-licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { supplementaryRegion } from '../../../support/default-values.js'
 import {
   PRESROC_LAST_FINANCIAL_YEAR,
   billingPeriodCounts,
@@ -65,7 +66,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: supplementaryRegion.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -75,11 +76,11 @@ test.describe(
 
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-0"]')).toContainText(supplementaryRegion.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${supplementaryRegion.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
       const expectedPresrocBillsText =
@@ -105,7 +106,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText("You're about to send this bill run")
       await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-      await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
+      await expect(_summaryValue(page, 'Region')).toContainText(supplementaryRegion.displayName)
       await expect(_summaryValue(page, 'Bill run type')).toContainText('Supplementary')
       await expect(_summaryValue(page, 'Charge scheme')).toContainText('Old')
       await page.getByRole('button', { name: 'Send bill run' }).click()
@@ -113,7 +114,7 @@ test.describe(
       await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
       await page.getByRole('link', { name: 'Go to bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${supplementaryRegion.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
 
       const sentPresrocAbstractorsTable = page.locator('[data-test="other-abstractors"]')
@@ -134,14 +135,14 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-0"]')).toContainText(supplementaryRegion.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
       await expect(page.locator('[data-test="number-of-bills-0"]')).toContainText(String(billingPeriodCount.presroc))
       await expect(page.locator('[data-test="bill-run-status-0"] > .govuk-tag')).toContainText('sent')
 
       await page.locator('[data-test="date-created-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${supplementaryRegion.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
       const expectedSrocBillsText =
@@ -167,7 +168,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText("You're about to send this bill run")
       await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-      await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
+      await expect(_summaryValue(page, 'Region')).toContainText(supplementaryRegion.displayName)
       await expect(_summaryValue(page, 'Bill run type')).toContainText('Supplementary')
       await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
       await page.getByRole('button', { name: 'Send bill run' }).click()
@@ -175,7 +176,7 @@ test.describe(
       await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 30000 })
       await page.getByRole('link', { name: 'Go to bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${supplementaryRegion.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
 
       const sentSrocAbstractorsTable = page.locator('[data-test="other-abstractors"]')
@@ -196,7 +197,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
       await expect(page.locator('[data-test="date-created-1"] > .govuk-link')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-1"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-1"]')).toContainText(supplementaryRegion.displayName)
       await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
       await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc))
       await expect(page.locator('[data-test="bill-run-status-1"] > .govuk-tag')).toContainText('sent')

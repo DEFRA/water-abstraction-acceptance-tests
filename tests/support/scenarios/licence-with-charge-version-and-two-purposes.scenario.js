@@ -3,6 +3,7 @@ import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { twoPartTariffRegion as region } from '../default-values.js'
 
 export const title = 'Licence with a charge version and two purposes'
 export const description =
@@ -11,9 +12,9 @@ export const description =
 export default function () {
   const licence = licenceWithTwoPurposesScenario()
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
-  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
-  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes)
+  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
+  const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes, region)
 
   const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
   const firstChargeElement = chargeElementData(chargeReference, firstLicenceVersionPurpose)

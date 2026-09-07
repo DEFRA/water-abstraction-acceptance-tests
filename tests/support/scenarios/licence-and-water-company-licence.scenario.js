@@ -4,6 +4,7 @@ import {
 } from 'water-abstraction-engine/test/generators.js'
 
 import { asArrays } from '../helpers/wire-format.helpers.js'
+import { defaultRegion } from '../default-values.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { generateAccountNumber, generatePointExternalId } from '../helpers/generators.helpers.js'
@@ -34,10 +35,10 @@ function _waterCompanyLicenceWithChargeVersion() {
   result.licence.waterUndertaker = true
   result.company.name = `${result.company.name} 02`
 
-  result.point.externalId = generatePointExternalId()
+  result.point.externalId = generatePointExternalId(defaultRegion)
   result.licenceVersion.externalId = generateLicenceVersionExternalId()
   result.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
-  result.billingAccount.accountNumber = generateAccountNumber()
+  result.billingAccount.accountNumber = generateAccountNumber(defaultRegion)
 
   return result
 }

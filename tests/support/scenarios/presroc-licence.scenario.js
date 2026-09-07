@@ -1,11 +1,11 @@
 import buildLicenceEntity from '../entities/licence.entity.js'
-import { presrocStartDate } from '../default-values.js'
+import { defaultRegion, presrocStartDate } from '../default-values.js'
 
 export const title = 'Presroc licence'
 export const description = 'Licence with a start date before 2022-04-01'
 
 export default function () {
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(defaultRegion)
 
   licenceEntity.licence.startDate = presrocStartDate
   licenceEntity.licenceVersion.startDate = presrocStartDate

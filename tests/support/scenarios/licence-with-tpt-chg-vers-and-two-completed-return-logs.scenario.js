@@ -2,6 +2,7 @@ import buildReturnSubmissionEntity from '../entities/return-submission.entity.js
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
+import { twoPartTariffRegion as region } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -31,7 +32,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     firstPoint,
-    periods
+    periods,
+    region
   )
 
   previousFirstReturnLog.status = 'completed'
@@ -47,7 +49,8 @@ export default function () {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    periods
+    periods,
+    region
   )
 
   previousSecondReturnLog.status = 'completed'

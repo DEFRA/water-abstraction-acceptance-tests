@@ -2,6 +2,7 @@ import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/presroc-licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { supplementaryRegion } from '../../../support/default-values.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
@@ -31,7 +32,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: supplementaryRegion.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -41,21 +42,21 @@ test.describe(
 
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-0"]')).toContainText(supplementaryRegion.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${supplementaryRegion.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(supplementaryRegion.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Supplementary')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Old')
       await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
       await expect(page.locator('h1')).toContainText("You're about to cancel this bill run")
       await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-      await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
+      await expect(_summaryValue(page, 'Region')).toContainText(supplementaryRegion.displayName)
       await expect(_summaryValue(page, 'Bill run type')).toContainText('Supplementary')
       await expect(_summaryValue(page, 'Charge scheme')).toContainText('Old')
       await page.getByRole('button', { name: 'Cancel bill run' }).click()
@@ -66,17 +67,17 @@ test.describe(
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${supplementaryRegion.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(supplementaryRegion.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Supplementary')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
       await expect(page.locator('h1')).toContainText("You're about to cancel this bill run")
       await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-      await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
+      await expect(_summaryValue(page, 'Region')).toContainText(supplementaryRegion.displayName)
       await expect(_summaryValue(page, 'Bill run type')).toContainText('Supplementary')
       await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
       await page.getByRole('button', { name: 'Cancel bill run' }).click()

@@ -19,16 +19,18 @@ const netAmount = 6600
  *
  * @param {object} licenceEntity - the licence entity the bill run's charge version and bill are for
  * @param {object} dates - the billing period dates; `dates.endDate` sets the bill run's financial year ending
+ * @param {object} region - the region the bill run and its charge version's billing account belong to
  */
-export default function (licenceEntity, dates) {
+export default function (licenceEntity, dates, region) {
   const chargeVersionEntity = buildChargeVersionEntity(
     licenceEntity.company,
     licenceEntity.address,
     licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
+    licenceEntity.licenceVersionPurpose,
+    region
   )
 
-  const billRun = billRunData()
+  const billRun = billRunData(region)
 
   billRun.createdAt = today()
   billRun.fromFinancialYearEnding = new Date(dates.endDate).getUTCFullYear()
