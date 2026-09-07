@@ -66,126 +66,125 @@ import { db } from 'water-abstraction-engine/db/db.js'
 import { asArrays } from '../helpers/wire-format.helpers.js'
 
 // The entities defined in the scenarioData need to match the properties of this object else you'll get an error. The loader
-// uses the matched value to determine which helper to use to 'load' the entity instance, and whether we can flag it
-// as `is_test`.
+// uses the matched value to determine which helper to use to 'load' the entity instance
 const LOAD_HELPERS = {
-  addresses: { helper: AddressHelper, test: true, legacy: { schema: 'crm_v2', table: 'addresses', id: 'address_id' } },
-  billLicences: { helper: BillLicenceHelper, test: false },
-  billRunChargeVersionYears: { helper: BillRunChargeVersionYearHelper, test: false },
-  billRunVolumes: { helper: BillRunVolumeHelper, test: false },
-  billRuns: { helper: BillRunHelper, test: false },
-  bills: { helper: BillHelper, test: false },
+  addresses: { helper: AddressHelper, legacy: { schema: 'crm_v2', table: 'addresses', id: 'address_id' } },
+  billLicences: { helper: BillLicenceHelper },
+  billRunChargeVersionYears: { helper: BillRunChargeVersionYearHelper },
+  billRunVolumes: { helper: BillRunVolumeHelper },
+  billRuns: { helper: BillRunHelper },
+  bills: { helper: BillHelper },
   billingAccountAddresses: {
     helper: BillingAccountAddressHelper,
-    test: true,
+
     legacy: { schema: 'crm_v2', table: 'invoice_account_addresses', id: 'invoice_account_address_id' }
   },
   billingAccounts: {
     helper: BillingAccountHelper,
-    test: true,
+
     legacy: { schema: 'crm_v2', table: 'invoice_accounts', id: 'invoice_account_id' }
   },
-  changeReasons: { helper: ChangeReasonHelper, test: false },
+  changeReasons: { helper: ChangeReasonHelper },
   chargeElements: {
     helper: ChargeElementHelper,
-    test: true,
+
     legacy: { schema: 'water', table: 'charge_purposes', id: 'charge_purpose_id' }
   },
   chargeReferences: {
     helper: ChargeReferenceHelper,
-    test: true,
+
     legacy: { schema: 'water', table: 'charge_elements', id: 'charge_element_id' }
   },
   chargeVersions: {
     helper: ChargeVersionHelper,
-    test: true,
+
     legacy: { schema: 'water', table: 'charge_versions', id: 'charge_version_id' }
   },
   companyAddresses: {
     helper: CompanyAddressHelper,
-    test: true,
+
     legacy: { schema: 'crm_v2', table: 'company_addresses', id: 'company_address_id' }
   },
   companyContacts: {
     helper: CompanyContactHelper,
-    test: true,
+
     legacy: { schema: 'crm_v2', table: 'company_contacts', id: 'company_contact_id' }
   },
-  companies: { helper: CompanyHelper, test: true, legacy: { schema: 'crm_v2', table: 'companies', id: 'company_id' } },
-  contacts: { helper: ContactHelper, test: true, legacy: { schema: 'crm_v2', table: 'contacts', id: 'contact_id' } },
-  events: { helper: EventHelper, test: false },
+  companies: { helper: CompanyHelper, legacy: { schema: 'crm_v2', table: 'companies', id: 'company_id' } },
+  contacts: { helper: ContactHelper, legacy: { schema: 'crm_v2', table: 'contacts', id: 'contact_id' } },
+  events: { helper: EventHelper },
   licenceAgreements: {
     helper: LicenceAgreementHelper,
-    test: true,
+
     legacy: { schema: 'water', table: 'licence_agreements', id: 'licence_agreement_id' }
   },
-  licenceDocumentHeaders: { helper: LicenceDocumentHeaderHelper, test: false },
+  licenceDocumentHeaders: { helper: LicenceDocumentHeaderHelper },
   licenceDocumentRoles: {
     helper: LicenceDocumentRoleHelper,
-    test: true,
+
     legacy: { schema: 'crm_v2', table: 'document_roles', id: 'document_role_id' }
   },
   licenceDocuments: {
     helper: LicenceDocumentHelper,
-    test: true,
+
     legacy: { schema: 'crm_v2', table: 'documents', id: 'document_id' }
   },
-  licenceEndDateChanges: { helper: LicenceEndDateChangeHelper, test: false },
-  licenceEntityRoles: { helper: LicenceEntityRoleHelper, test: false },
-  licenceEntities: { helper: LicenceEntityHelper, test: false },
+  licenceEndDateChanges: { helper: LicenceEndDateChangeHelper },
+  licenceEntityRoles: { helper: LicenceEntityRoleHelper },
+  licenceEntities: { helper: LicenceEntityHelper },
   licenceMonitoringStations: {
     helper: LicenceMonitoringStationHelper,
-    test: true,
+
     legacy: { schema: 'water', table: 'licence_gauging_stations', id: 'licence_gauging_station_id' }
   },
-  licenceRoles: { helper: LicenceRoleHelper, test: false },
-  licenceSupplementaryYears: { helper: LicenceSupplementaryYearHelper, test: false },
-  licenceVersionPurposeConditions: { helper: LicenceVersionPurposeConditionHelper, test: false },
+  licenceRoles: { helper: LicenceRoleHelper },
+  licenceSupplementaryYears: { helper: LicenceSupplementaryYearHelper },
+  licenceVersionPurposeConditions: { helper: LicenceVersionPurposeConditionHelper },
   licenceVersionPurposes: {
     helper: LicenceVersionPurposeHelper,
-    test: true,
+
     legacy: { schema: 'water', table: 'licence_version_purposes', id: 'licence_version_purpose_id' }
   },
-  licenceVersionPurposePoints: { helper: LicenceVersionPurposePointHelper, test: false },
+  licenceVersionPurposePoints: { helper: LicenceVersionPurposePointHelper },
   licenceVersions: {
     helper: LicenceVersionHelper,
-    test: true,
+
     legacy: { schema: 'water', table: 'licence_versions', id: 'licence_version_id' }
   },
-  licences: { helper: LicenceHelper, test: true, legacy: { schema: 'water', table: 'licences', id: 'licence_id' } },
-  modLogs: { helper: ModLogHelper, test: false },
+  licences: { helper: LicenceHelper, legacy: { schema: 'water', table: 'licences', id: 'licence_id' } },
+  modLogs: { helper: ModLogHelper },
   monitoringStations: {
     helper: MonitoringStationHelper,
-    test: true,
+
     legacy: { schema: 'water', table: 'gauging_stations', id: 'gauging_station_id' }
   },
   notifications: { helper: NotificationHelper },
-  points: { helper: PointHelper, test: false },
-  permitLicences: { helper: PermitLicenceHelper, test: false },
+  points: { helper: PointHelper },
+  permitLicences: { helper: PermitLicenceHelper },
   returnCycles: {
     helper: ReturnCycleHelper,
-    test: true,
+
     legacy: { schema: 'returns', table: 'return_cycles', id: 'return_cycle_id' }
   },
-  returnLogs: { helper: ReturnLogHelper, test: true, legacy: { schema: 'returns', table: 'returns', id: 'id' } },
-  returnRequirementPoints: { helper: ReturnRequirementPointHelper, test: false },
-  returnRequirementPurposes: { helper: ReturnRequirementPurposeHelper, test: false },
-  returnRequirements: { helper: ReturnRequirementHelper, test: false },
-  returnSubmissionLines: { helper: ReturnSubmissionLineHelper, test: false },
-  returnSubmissions: { helper: ReturnSubmissionHelper, test: false },
-  returnVersions: { helper: ReturnVersionHelper, test: false },
-  reviewChargeElementReturns: { helper: ReviewChargeElementReturnHelper, test: false },
-  reviewChargeElements: { helper: ReviewChargeElementHelper, test: false },
-  reviewChargeReferences: { helper: ReviewChargeReferenceHelper, test: false },
-  reviewChargeVersions: { helper: ReviewChargeVersionHelper, test: false },
-  reviewLicences: { helper: ReviewLicenceHelper, test: false },
-  reviewReturns: { helper: ReviewReturnHelper, test: false },
-  sessions: { helper: SessionHelper, test: false },
-  transactions: { helper: TransactionHelper, test: false },
-  userGroups: { helper: UserGroupHelper, test: false },
-  userRoles: { helper: UserRoleHelper, test: false },
-  users: { helper: UserHelper, test: false },
-  workflows: { helper: WorkflowHelper, test: false }
+  returnLogs: { helper: ReturnLogHelper, legacy: { schema: 'returns', table: 'returns', id: 'id' } },
+  returnRequirementPoints: { helper: ReturnRequirementPointHelper },
+  returnRequirementPurposes: { helper: ReturnRequirementPurposeHelper },
+  returnRequirements: { helper: ReturnRequirementHelper },
+  returnSubmissionLines: { helper: ReturnSubmissionLineHelper },
+  returnSubmissions: { helper: ReturnSubmissionHelper },
+  returnVersions: { helper: ReturnVersionHelper },
+  reviewChargeElementReturns: { helper: ReviewChargeElementReturnHelper },
+  reviewChargeElements: { helper: ReviewChargeElementHelper },
+  reviewChargeReferences: { helper: ReviewChargeReferenceHelper },
+  reviewChargeVersions: { helper: ReviewChargeVersionHelper },
+  reviewLicences: { helper: ReviewLicenceHelper },
+  reviewReturns: { helper: ReviewReturnHelper },
+  sessions: { helper: SessionHelper },
+  transactions: { helper: TransactionHelper },
+  userGroups: { helper: UserGroupHelper },
+  userRoles: { helper: UserRoleHelper },
+  users: { helper: UserHelper },
+  workflows: { helper: WorkflowHelper }
 }
 
 /**
@@ -298,11 +297,6 @@ export default async function loadService(scenarioData) {
       // Then create (load) the instance into the DB
       const { id } = await loadHelper.helper.add(instance)
 
-      // Check if we need to apply our 'fudge' solution for setting `is_test` flags
-      if (loadHelper.test) {
-        await _applyTestFlag(loadHelper.legacy, id)
-      }
-
       // Finally record the ID either generated or used in the result
       result[entityKey].push(id)
     }
@@ -349,30 +343,6 @@ async function _applyLookups(instance) {
       instance[key] = await _selector(schema, table, select, lookup, value)
     }
   }
-}
-
-/**
- * Set the `is_test` flag on a record post-insert
- *
- * We don't believe in the idea of an `is_test` flag. All data in a non-prod environment can be considered test data. It
- * is easier to create unit tests and build stuff if you know that everything can be wiped and re-seeded.
- *
- * So, when we created our views of the legacy tables we purposefully commented out the `is_test` field from all of
- * them. We optimistically hoped to have a solution for test data that wouldn't depend on them.
- *
- * We'll we now have this solution to load test data. What we don't have yet is sufficient data to load. Meantime, our
- * tests depend on using the `/data/tear-down` to wipe stuff and it depends on `is_test` flags.
- *
- * So, this is a 'fudge' to avoid having to go back and re-create loads of views just to include the flag. The constant
- * `LOAD_HELPERS` identifies those entities that have a `is_test` field. When we load one that does we trigger this
- * function to update the flag on the source table. Then when `/data/tear-down` runs it will know to clear it.
- *
- * @private
- */
-async function _applyTestFlag(legacy, id) {
-  const { schema, table, id: tableId } = legacy
-
-  return db(table).withSchema(schema).update('is_test', true).where(tableId, id)
 }
 
 function _helper(entityKey) {
