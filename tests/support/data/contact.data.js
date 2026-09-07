@@ -1,14 +1,16 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-import { generateExternalEmailAddress } from '../helpers/generators.helpers.js'
+import { generateCompanyContact } from '../helpers/generators.helpers.js'
 
-export default function () {
+export default function (company) {
   const contactId = generateUUID()
+
+  const { department, email } = generateCompanyContact(company.name)
 
   return {
     id: contactId,
-    department: 'Test Contact',
-    email: generateExternalEmailAddress(),
+    department,
+    email,
     contactType: 'department'
   }
 }

@@ -3,11 +3,13 @@ import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit no returns requirement (internal)', () => {
+  let company
   let licence
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
 
     await setup(scenario)
@@ -41,7 +43,7 @@ test.describe('Submit no returns requirement (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see text about no returns required
     await expect(page.getByText('Returns are not required for this licence')).toBeVisible()
@@ -61,7 +63,7 @@ test.describe('Submit no returns requirement (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on check page and see the reason changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="reason"]')).toContainText('Returns exception')
 
     // confirm we see the option to add note
@@ -81,7 +83,7 @@ test.describe('Submit no returns requirement (internal)', () => {
     await page.getByText('Confirm').click()
 
     // confirm we are back on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see pop up notification confirming changes have been made
     await expect(page.locator('.govuk-notification-banner')).toContainText('Note added')
@@ -98,7 +100,7 @@ test.describe('Submit no returns requirement (internal)', () => {
     await page.getByText('Confirm').click()
 
     // confirm we are back on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see pop up notification confirming changes have been made
     await expect(page.locator('.govuk-notification-banner')).toContainText('Note updated')

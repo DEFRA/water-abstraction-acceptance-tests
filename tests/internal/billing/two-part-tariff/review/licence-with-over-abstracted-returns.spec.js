@@ -6,6 +6,7 @@ import { tableRow } from '../../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence with Over-abstracted Returns (internal)', () => {
+  let company
   let endYear
   let startYear
   let licence
@@ -24,6 +25,7 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
 
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
     // returnLogs is [previousFirst, currentFirst, previousSecond, currentSecond] - the two purposes' return
     // requirements are seeded with independent random references, so we can't assume which sorts first on the page
@@ -101,14 +103,14 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
 
       await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
-      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText(company.name)
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Multiple Issues')
       await expect(page.locator('[data-test="licence-progress-1"]')).toContainText('')
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
-      await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-holder"]')).toContainText(company.name)
       await expect(page.locator('div > .govuk-tag')).toContainText('ready')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
         'Test Region two-part tariff'

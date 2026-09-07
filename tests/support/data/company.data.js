@@ -1,6 +1,5 @@
+import { faker } from '@faker-js/faker'
 import { generateCompanyExternalId, generateUUID } from 'water-abstraction-engine/test/generators.js'
-
-import { companyName } from '../default-values.js'
 
 export default function () {
   const companyId = generateUUID()
@@ -9,7 +8,7 @@ export default function () {
   return {
     id: companyId,
     externalId: companyExternalId,
-    name: companyName,
+    name: faker.company.name(),
     type: 'organisation'
   }
 }

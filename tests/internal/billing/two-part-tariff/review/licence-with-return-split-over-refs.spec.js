@@ -5,6 +5,7 @@ import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-ver
 import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence with a Return Split Over Charge References (internal)', () => {
+  let company
   let endYear
   let startYear
   let licence
@@ -21,6 +22,7 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
 
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
     await setup(scenario)
   })
@@ -92,14 +94,14 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
 
       await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
-      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText(company.name)
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Return split over charge references')
       await expect(page.locator('[data-test="licence-progress-1"]')).toContainText('')
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('review')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
-      await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-holder"]')).toContainText(company.name)
       await expect(page.locator('div > .govuk-tag')).toContainText('review')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
         'Test Region two-part tariff'

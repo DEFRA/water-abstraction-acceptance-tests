@@ -3,13 +3,17 @@ import scenarioData from '../../support/scenarios/licence-with-two-purposes-and-
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Update the purpose and points of a copied return requirement and add another manually (internal)', () => {
+  let company
   let licence
+  let points
   let returnRequirementPurpose
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
+    points = scenario.points
     returnRequirementPurpose = scenario.returnRequirementPurpose
 
     await setup(scenario)
@@ -54,7 +58,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see the start date and reason selected
     await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(licence.startDate))
@@ -74,17 +78,17 @@ test.describe('Update the purpose and points of a copied return requirement and 
     await page.locator('form > .govuk-button').click()
 
     // confirm we see the purpose changes on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="purposes-0"]')).toContainText(
       'Spray Irrigation - Direct (This is another purpose description)'
     )
 
     // confirm we see the points for the requirement copied from existing
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TQ 1234 5678 (Example point 1)'
+      `At National Grid Reference ${points[0].ngr1} (${points[0].description})`
     )
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TT 9876 5432 (Example point 2)'
+      `At National Grid Reference ${points[1].ngr1} (${points[1].description})`
     )
 
     // choose the change link for the points and confirm we are on the points page
@@ -96,9 +100,9 @@ test.describe('Update the purpose and points of a copied return requirement and 
     await page.locator('form > .govuk-button').click()
 
     // confirm we see the points changes on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TT 9876 5432 (Example point 2)'
+      `At National Grid Reference ${points[1].ngr1} (${points[1].description})`
     )
 
     // choose add another requirement
@@ -165,7 +169,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see the new requirement added message
     await expect(page.locator('.govuk-notification-banner')).toContainText('New requirement added')
@@ -173,7 +177,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
     // confirm we see the new added requirement and details selected
     await expect(page.locator('[data-test="purposes-1"]')).toContainText('Make-Up Or Top Up Water')
     await expect(page.locator('[data-test="points-1"]')).toContainText(
-      'At National Grid Reference TQ 1234 5678 (Example point 1)'
+      `At National Grid Reference ${points[0].ngr1} (${points[0].description})`
     )
     await expect(page.locator('[data-test="abstraction-period-1"]')).toContainText('From 1 December to 3 November')
     await expect(page.locator('[data-test="returns-cycle-1"]')).toContainText('Summer')
