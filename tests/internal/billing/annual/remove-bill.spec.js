@@ -1,5 +1,5 @@
-import { defaultRegion } from '../../../support/default-values.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
+import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licences-with-different-billing-accounts.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
@@ -39,7 +39,7 @@ test.describe('Remove a bill from an annual bill run that has not been sent (int
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the region')
-    await page.getByRole('radio', { name: defaultRegion.displayName }).check()
+    await page.getByRole('radio', { name: regions.ANGLIAN.displayName }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -48,15 +48,15 @@ test.describe('Remove a bill from an annual bill run that has not been sent (int
     await expect(page.locator('h1')).toContainText('Bill runs')
 
     const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: defaultRegion.displayName })
+    const billRunRow = billRunsTable.getByRole('row', { name: regions.ANGLIAN.displayName })
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: defaultRegion.displayName, exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: regions.ANGLIAN.displayName, exact: true })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
-    await expect(page.locator('h1')).toContainText(`${defaultRegion.displayName} annual`)
+    await expect(page.locator('h1')).toContainText(`${regions.ANGLIAN.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
     const otherAbstractorsTable = page.locator('[data-test="other-abstractors"]')
@@ -70,12 +70,12 @@ test.describe('Remove a bill from an annual bill run that has not been sent (int
       `You're about to remove the bill for ${billingAccountToRemove.accountNumber} from the bill run`
     )
     await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-    await expect(_summaryValue(page, 'Region')).toContainText(defaultRegion.displayName)
+    await expect(_summaryValue(page, 'Region')).toContainText(regions.ANGLIAN.displayName)
     await expect(_summaryValue(page, 'Bill run type')).toContainText('Annual')
     await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
     await page.getByRole('button', { name: 'Remove this bill' }).click()
 
-    await expect(page.locator('h1')).toContainText(`${defaultRegion.displayName} annual`)
+    await expect(page.locator('h1')).toContainText(`${regions.ANGLIAN.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
     await expect(otherAbstractorsTable.locator('tbody > tr')).toHaveCount(1)
 

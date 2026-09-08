@@ -20,10 +20,10 @@ import { determineReturnCycleStartDate, formatDateToIso, previousPeriod, today }
  * @param {object} region - the region the licence belongs to
  */
 export default function (region) {
-  const company = _company()
+  const company = _company(region)
   const point = pointData(region)
   const licence = _licence(company.company, company.address, region)
-  const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion)
+  const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion, region)
   const licenceVersionPurposePoint = licenceVersionPurposePointData(licenceVersionPurpose, point)
 
   return {
@@ -40,8 +40,8 @@ export default function (region) {
  *
  * @private
  */
-function _company() {
-  const company = companyData()
+function _company(region) {
+  const company = companyData(region)
   const address = addressData()
   const companyAddress = companyAddressData(company, address)
 
@@ -68,7 +68,7 @@ function _licence(company, address, region) {
   const licenceDocumentHeader = licenceDocumentHeaderData(licence, company)
   const licenceDocument = licenceDocumentData(licence)
   const licenceDocumentRole = licenceDocumentRoleData(licenceDocument, company, address)
-  const licenceVersion = licenceVersionData(licence, company, address)
+  const licenceVersion = licenceVersionData(licence, company, address, region)
 
   return {
     permitLicence,

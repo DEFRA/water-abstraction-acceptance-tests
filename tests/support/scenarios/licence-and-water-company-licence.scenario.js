@@ -4,17 +4,18 @@ import {
 } from 'water-abstraction-engine/test/generators.js'
 
 import { asArrays } from '../helpers/wire-format.helpers.js'
-import { defaultRegion } from '../default-values.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { regions } from '../default-values.js'
 import { generateAccountNumber, generatePointExternalId } from '../helpers/generators.helpers.js'
 
 export const title = 'A licence and a water company licence'
 export const description = 'A licence and a water company licence, each with a charge version and billing account'
 
 export default function () {
-  const firstLicence = licenceWithChargeVersionScenario()
-  const secondLicence = _waterCompanyLicenceWithChargeVersion()
+  const region = regions.NORTH_WEST
+  const firstLicence = licenceWithChargeVersionScenario(region)
+  const secondLicence = _waterCompanyLicenceWithChargeVersion(region)
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
@@ -29,16 +30,16 @@ export default function () {
  *
  * @private
  */
-function _waterCompanyLicenceWithChargeVersion() {
-  const result = licenceWithChargeVersionScenario()
+function _waterCompanyLicenceWithChargeVersion(region) {
+  const result = licenceWithChargeVersionScenario(region)
 
   result.licence.waterUndertaker = true
   result.company.name = `${result.company.name} 02`
 
-  result.point.externalId = generatePointExternalId(defaultRegion)
-  result.licenceVersion.externalId = generateLicenceVersionExternalId()
-  result.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
-  result.billingAccount.accountNumber = generateAccountNumber(defaultRegion)
+  result.point.externalId = generatePointExternalId(region)
+  result.licenceVersion.externalId = generateLicenceVersionExternalId(region)
+  result.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId(region)
+  result.billingAccount.accountNumber = generateAccountNumber(region)
 
   return result
 }

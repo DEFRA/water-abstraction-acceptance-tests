@@ -9,17 +9,19 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
-import { defaultRegion } from '../default-values.js'
 import { generatePointExternalId } from '../helpers/generators.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Two licences on the same billing account'
 export const description =
   'Two separate licences, both billed to the same billing account, so an annual bill run creates a single bill covering both'
 
 export default function () {
-  const firstLicence = _licenceWithChargeVersion()
-  const secondLicence = _secondLicenceSharingBillingAccount(firstLicence)
+  const region = regions.MIDLANDS
+
+  const firstLicence = _licenceWithChargeVersion(region)
+  const secondLicence = _secondLicenceSharingBillingAccount(firstLicence, region)
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
 }
@@ -29,14 +31,14 @@ export default function () {
  *
  * @private
  */
-function _licenceWithChargeVersion() {
-  const licenceEntity = buildLicenceEntity(defaultRegion)
+function _licenceWithChargeVersion(region) {
+  const licenceEntity = buildLicenceEntity(region)
   const chargeVersionEntity = buildChargeVersionEntity(
     licenceEntity.company,
     licenceEntity.address,
     licenceEntity.licence,
     licenceEntity.licenceVersionPurpose,
-    defaultRegion
+    region
   )
 
   return { ...licenceEntity, ...chargeVersionEntity }
@@ -52,12 +54,12 @@ function _licenceWithChargeVersion() {
  *
  * @private
  */
-function _secondLicenceSharingBillingAccount(firstLicence) {
+function _secondLicenceSharingBillingAccount(firstLicence, region) {
   const { billingAccount, company } = firstLicence
 
-  const licenceEntity = buildLicenceEntity(defaultRegion)
-  const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence, defaultRegion)
-  const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose], defaultRegion)
+  const licenceEntity = buildLicenceEntity(region)
+  const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence, region)
+  const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose], region)
   const chargeElement = chargeElementData(chargeReference, licenceEntity.licenceVersionPurpose)
 
   // The licence's own company and companyAddress (built by buildLicenceEntity) are discarded rather than reused,
@@ -69,9 +71,9 @@ function _secondLicenceSharingBillingAccount(firstLicence) {
   licenceEntity.licenceDocumentRole.companyId = company.id
   licenceEntity.licenceVersion.companyId = company.id
 
-  licenceEntity.point.externalId = generatePointExternalId(defaultRegion)
-  licenceEntity.licenceVersion.externalId = generateLicenceVersionExternalId()
-  licenceEntity.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
+  licenceEntity.point.externalId = generatePointExternalId(region)
+  licenceEntity.licenceVersion.externalId = generateLicenceVersionExternalId(region)
+  licenceEntity.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId(region)
 
   return { ...licenceEntity, chargeVersion, chargeReference, chargeElement }
 }
