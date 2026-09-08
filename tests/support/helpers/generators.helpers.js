@@ -1,7 +1,6 @@
+import RegionHelper from 'water-abstraction-engine/test/helpers/region.helper.js'
 import { faker } from '@faker-js/faker'
 import { generateRandomInteger } from 'water-abstraction-engine/test/generators.js'
-
-import { regionCode } from '../default-values.js'
 
 /**
  * Generates an address
@@ -32,10 +31,15 @@ export function generateAccountNumber() {
 /**
  * Generates a Bill run number
  *
+ * @param region
  * @returns {number} - A bill run number
  */
-export function generateBillRunNumber() {
-  return Number(`${regionCode}${generateRandomInteger(10000, 99999)}`)
+export function generateBillRunNumber(region = null) {
+  if (!region) {
+    region = RegionHelper.select(RegionHelper.TEST_REGION_INDEX)
+  }
+
+  return Number(`${region.naldRegionId}${generateRandomInteger(10000, 99999)}`)
 }
 
 /**
@@ -96,10 +100,15 @@ export function generateGovUKEmail() {
 /**
  * Generates a Point external id
  *
+ * @param region
  * @returns {string} - A point external id
  */
-export function generatePointExternalId() {
-  return `${regionCode}:${regionCode}${generateRandomInteger(100000, 999999)}`
+export function generatePointExternalId(region = null) {
+  if (!region) {
+    region = RegionHelper.select(RegionHelper.TEST_REGION_INDEX)
+  }
+
+  return `${region.naldRegionId}:${region.naldRegionId}${generateRandomInteger(100000, 999999)}`
 }
 
 /**

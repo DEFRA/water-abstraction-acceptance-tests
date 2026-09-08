@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker'
 import { generateCompanyExternalId, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-export default function () {
+export default function (region) {
   const companyId = generateUUID()
-  const companyExternalId = generateCompanyExternalId()
+  const companyExternalId = generateCompanyExternalId(region)
 
   return {
     id: companyId,

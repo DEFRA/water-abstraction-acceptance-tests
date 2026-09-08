@@ -11,6 +11,19 @@ export function summaryRow(page, label) {
 }
 
 /**
+ * Locates the value cell of a govuk-summary-list row identified by its label
+ *
+ * @param {import('@playwright/test').Page} page - The page to search
+ * @param {string} label - The text the row's label must match
+ *
+ * @returns {import('@playwright/test').Locator} The matching `.govuk-summary-list__value`
+ *
+ */
+export function summaryValue(page, label) {
+  return summaryRow(page, label).locator('.govuk-summary-list__value')
+}
+
+/**
  * Locates table row(s) containing the given text
  *
  * `text` is required - Playwright's `hasText` filter only applies when it is given a value, so omitting it (or
