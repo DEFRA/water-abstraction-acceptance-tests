@@ -65,11 +65,11 @@ test.describe(
       // sroc-only scenario and shows as an empty bill run at index 0
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
       await expect(page.locator('[data-test="date-created-1"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-1"]')).toContainText(regions.NORTH_EAST.displayNam)
+      await expect(page.locator('[data-test="region-1"]')).toContainText(regions.NORTH_EAST.displayName)
       await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
       await page.locator('[data-test="date-created-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayNam} supplementary`)
+      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
       const expectedBillsText =
@@ -85,7 +85,7 @@ test.describe(
       await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
       await page.getByRole('link', { name: 'Go to bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayNam} supplementary`)
+      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
 
       await page.getByRole('link', { name: 'Go back to bill runs' }).click()
@@ -174,7 +174,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: regions.NORTH_EAST.displayNam }).check()
+      await page.getByRole('radio', { name: regions.NORTH_EAST.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -185,7 +185,7 @@ test.describe(
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
       await page.locator('[data-test="date-created-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayNam} supplementary`)
+      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="bills-count"]')).toContainText('2 Supplementary bills')
       await expect(page.locator('[data-test="credits-count"]')).toContainText('1 credit note')

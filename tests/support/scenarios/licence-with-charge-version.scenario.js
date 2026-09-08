@@ -15,7 +15,8 @@ export default function (region = null) {
     licenceEntity.company,
     licenceEntity.address,
     licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
+    licenceEntity.licenceVersionPurpose,
+    region
   )
 
   return {

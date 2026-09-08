@@ -17,11 +17,11 @@ import { determineReturnCycleStartDate, formatDateToIso, previousPeriod, today }
  * licence document, licence document header, licence document role, licence version, and a licence version purpose
  * and point — the minimum valid data a licence needs to exist.
  *
- * @param region
+ * @param {object} region - the region
  */
 export default function (region) {
   const company = _company(region)
-  const point = pointData()
+  const point = pointData(region)
   const licence = _licence(company.company, company.address, region)
   const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion, region)
   const licenceVersionPurposePoint = licenceVersionPurposePointData(licenceVersionPurpose, point)

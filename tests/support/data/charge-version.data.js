@@ -1,16 +1,20 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-import { regionCode } from '../default-values.js'
-
-export default function (billingAccount, licence) {
+export default function (billingAccount, licence, region) {
   const chargeVersionId = generateUUID()
+
+  if (!region) {
+    region = {
+      naldRegionId: 9
+    }
+  }
 
   return {
     id: chargeVersionId,
     licenceId: licence.id,
     licenceRef: licence.licenceRef,
     billingAccountId: billingAccount.id,
-    regionCode,
+    regionCode: region.naldRegionId,
     scheme: 'sroc',
     versionNumber: 100,
     startDate: licence.startDate,

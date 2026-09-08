@@ -18,20 +18,28 @@ export function generateAddress() {
 /**
  * Generates an account number
  *
- * The account number is in the format 'S########A'. The leading 'S' matches the charge region id of our seeded
- * Test Region (region 9), which the app relies on to recognise a billing account as belonging to that region -
- * the engine's own `generateAccountNumber()` always uses 'T', which doesn't match.
+ * The account number is in the format '[charge region id]########A'. The leading letter must match the region's
+ * charge region id - the app filters a company's existing billing accounts by whether the account number starts
+ * with the selected region's code, so a mismatched prefix makes the app treat the company as having none. Falls
+ * back to 'S' (our seeded Test Region) when no region is passed, since the engine's own `generateAccountNumber()`
+ * always uses 'T', which doesn't match Test Region either.
+ *
+ * @param {object} region - the region the account number's charge region id prefix is generated for
  *
  * @returns {string} - An account number
  */
-export function generateAccountNumber() {
-  return `S${generateRandomInteger(10000000, 99999999)}A`
+export function generateAccountNumber(region) {
+  const chargeRegionId = region
+    ? region.chargeRegionId
+    : RegionHelper.select(RegionHelper.TEST_REGION_INDEX).chargeRegionId
+
+  return `${chargeRegionId}${generateRandomInteger(10000000, 99999999)}A`
 }
 
 /**
  * Generates a Bill run number
  *
- * @param region
+ * @param {object} region - the region
  * @returns {number} - A bill run number
  */
 export function generateBillRunNumber(region = null) {
@@ -100,7 +108,7 @@ export function generateGovUKEmail() {
 /**
  * Generates a Point external id
  *
- * @param region
+ * @param {object} region - the region
  * @returns {string} - A point external id
  */
 export function generatePointExternalId(region = null) {
