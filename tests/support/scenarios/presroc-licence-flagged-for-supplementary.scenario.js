@@ -4,14 +4,18 @@ import { formatDateToIso } from '../helpers/date.helpers.js'
 import { generateAccountNumber } from '../helpers/generators.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import presrocLicenceWithChargeVersionScenario from './presroc-licence-with-charge-version.scenario.js'
-import { srocStartDate } from '../default-values.js'
+import { regions, srocStartDate } from '../default-values.js'
 
 export const title = 'Presroc and sroc licence flagged for presroc and sroc supplementary billing'
 export const description =
   'A presroc and sroc licence with both an alcs charge version and a second, ongoing sroc charge version, flagged for both the next presroc and sroc supplementary bill runs'
 
-export default function () {
-  const scenario = presrocLicenceWithChargeVersionScenario()
+export default function (region = null) {
+  if (!region) {
+    region = regions.SOUTH_WEST
+  }
+
+  const scenario = presrocLicenceWithChargeVersionScenario(region)
 
   // This is what flags the licence for the next presroc and sroc supplementary bill runs — without it, each
   // engine's charge version query excludes the licence entirely
@@ -30,7 +34,8 @@ export default function () {
     scenario.company,
     scenario.address,
     scenario.licence,
-    scenario.licenceVersionPurpose
+    scenario.licenceVersionPurpose,
+    region
   )
 
   return mergeByKey(asArrays(scenario), asArrays(srocChargeVersionEntity))
@@ -41,10 +46,10 @@ export default function () {
  *
  * @private
  */
-function _srocChargeVersion(company, address, licence, licenceVersionPurpose) {
-  const chargeVersionEntity = buildChargeVersionEntity(company, address, licence, licenceVersionPurpose)
+function _srocChargeVersion(company, address, licence, licenceVersionPurpose, region) {
+  const chargeVersionEntity = buildChargeVersionEntity(company, address, licence, licenceVersionPurpose, region)
 
-  chargeVersionEntity.billingAccount.accountNumber = generateAccountNumber()
+  chargeVersionEntity.billingAccount.accountNumber = generateAccountNumber(region)
 
   // Starts on the sroc scheme's first day rather than inheriting the licence's own (pre-sroc) start date, and uses
   // the change reason a real presroc-to-sroc transition would have, rather than the "New licence" default

@@ -10,19 +10,19 @@ export const title = 'Licence with two purposes'
 export const description =
   'A licence with two points and two licence version purposes, and no existing return requirements'
 
-export default function () {
-  const licenceEntity = buildLicenceEntity()
+export default function (region = null) {
+  const licenceEntity = buildLicenceEntity(region)
 
-  const secondPoint = pointData()
+  const secondPoint = pointData(region)
 
   secondPoint.description = 'Example point 2'
   secondPoint.ngr1 = 'TT 9876 5432'
-  secondPoint.externalId = generatePointExternalId()
+  secondPoint.externalId = generatePointExternalId(region)
 
-  const secondPurpose = licenceVersionPurposeData(licenceEntity.licenceVersion)
+  const secondPurpose = licenceVersionPurposeData(licenceEntity.licenceVersion, region)
 
   secondPurpose.purposeId.value = '280'
-  secondPurpose.externalId = generateLicenceVersionPurposeExternalId()
+  secondPurpose.externalId = generateLicenceVersionPurposeExternalId(region)
 
   const secondPurposePoint = licenceVersionPurposePointData(secondPurpose, secondPoint)
 
