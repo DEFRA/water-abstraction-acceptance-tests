@@ -1,13 +1,18 @@
 import licenceWithDueWinterReturnLog from './licence-with-due-winter-return-log.scenario.js'
 import primaryUserData from '../data/primary-user.data.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Registered licence with a due return log (winter cycle)'
 export const description =
   'Registered licence with one return requirement and a due winter return log for the previous winter cycle'
 
-export default function () {
+export default function (region = null) {
+  if (!region) {
+    region = regions.NORTH_EAST
+  }
+
   // We load in the unregistered open scenario because it has 99% of the data we need
-  const licence = licenceWithDueWinterReturnLog()
+  const licence = licenceWithDueWinterReturnLog(region)
 
   // We then add the primary user, which is what makes the licence 'registered'
   const primaryUser = primaryUserData(licence.company)

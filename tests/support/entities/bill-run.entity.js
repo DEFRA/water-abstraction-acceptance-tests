@@ -30,7 +30,7 @@ export default function (licenceEntity, dates, region) {
     region
   )
 
-  const billRun = billRunData()
+  const billRun = billRunData(region)
 
   billRun.createdAt = today()
   billRun.fromFinancialYearEnding = new Date(dates.endDate).getUTCFullYear()

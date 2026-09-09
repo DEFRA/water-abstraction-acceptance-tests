@@ -2,12 +2,17 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import companyContactData from '../data/company-contact.data.js'
 import contactData from '../data/contact.data.js'
 import notificationData from '../data/notification.data.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Company contact'
 export const description = 'A licence, licence holder, company, a contact and notification data'
 
-export default function () {
-  const licenceEntity = buildLicenceEntity()
+export default function (region = null) {
+  if (!region) {
+    region = regions.NORTH_WEST
+  }
+
+  const licenceEntity = buildLicenceEntity(region)
 
   const { company } = licenceEntity
 

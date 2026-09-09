@@ -3,12 +3,6 @@ import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 export default function (billingAccount, licence, region) {
   const chargeVersionId = generateUUID()
 
-  if (!region) {
-    region = {
-      naldRegionId: 9
-    }
-  }
-
   return {
     id: chargeVersionId,
     licenceId: licence.id,

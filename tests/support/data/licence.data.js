@@ -4,13 +4,6 @@ export default function (startDate, region) {
   const licenceId = generateUUID()
   const licenceRef = generateLicenceRef()
 
-  // TODO: this is a temporary change to enable us to gradually migrate away from the test region.
-  if (!region) {
-    region = {
-      naldRegionId: 9
-    }
-  }
-
   return {
     id: licenceId,
     licenceRef,

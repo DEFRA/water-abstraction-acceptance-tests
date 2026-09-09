@@ -41,7 +41,7 @@ export default function () {
  */
 function _secondLicenceSharingBillingAccount(billingAccount, company, region) {
   const licenceEntity = buildLicenceEntity(region)
-  const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence)
+  const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence, region)
   const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose])
   const chargeElement = chargeElementData(chargeReference, licenceEntity.licenceVersionPurpose)
 
