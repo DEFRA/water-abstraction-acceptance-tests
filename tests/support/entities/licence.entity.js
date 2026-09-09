@@ -17,12 +17,13 @@ import { determineReturnCycleStartDate, formatDateToIso, previousPeriod, today }
  * licence document, licence document header, licence document role, licence version, and a licence version purpose
  * and point — the minimum valid data a licence needs to exist.
  *
+ * @param {object} region - the region
  */
-export default function () {
-  const company = _company()
-  const point = pointData()
-  const licence = _licence(company.company, company.address)
-  const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion)
+export default function (region) {
+  const company = _company(region)
+  const point = pointData(region)
+  const licence = _licence(company.company, company.address, region)
+  const licenceVersionPurpose = licenceVersionPurposeData(licence.licenceVersion, region)
   const licenceVersionPurposePoint = licenceVersionPurposePointData(licenceVersionPurpose, point)
 
   return {
@@ -39,8 +40,8 @@ export default function () {
  *
  * @private
  */
-function _company() {
-  const company = companyData()
+function _company(region) {
+  const company = companyData(region)
   const address = addressData()
   const companyAddress = companyAddressData(company, address)
 
@@ -57,17 +58,17 @@ function _company() {
  *
  * @private
  */
-function _licence(company, address) {
+function _licence(company, address, region) {
   const currentCycleStartDate = determineReturnCycleStartDate(today(), false)
   const { startDate: previousCycleStartDate } = previousPeriod({ startDate: currentCycleStartDate, quarterly: false })
   const startDate = formatDateToIso(previousCycleStartDate)
 
-  const licence = licenceData(startDate)
+  const licence = licenceData(startDate, region)
   const permitLicence = permitLicenceData(licence)
   const licenceDocumentHeader = licenceDocumentHeaderData(licence, company)
   const licenceDocument = licenceDocumentData(licence)
   const licenceDocumentRole = licenceDocumentRoleData(licenceDocument, company, address)
-  const licenceVersion = licenceVersionData(licence, company, address)
+  const licenceVersion = licenceVersionData(licence, company, address, region)
 
   return {
     permitLicence,

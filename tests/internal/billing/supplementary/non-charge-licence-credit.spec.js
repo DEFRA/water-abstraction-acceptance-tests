@@ -1,7 +1,8 @@
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
+import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
@@ -37,7 +38,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: regions.SOUTH_WEST.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -49,23 +50,23 @@ test.describe(
       // this sroc-only scenario and shows as an empty bill run at index 0
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
       await expect(page.locator('[data-test="date-created-1"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-1"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-1"]')).toContainText(regions.SOUTH_WEST.displayName)
       await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
       await page.locator('[data-test="date-created-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${regions.SOUTH_WEST.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.SOUTH_WEST.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Supplementary')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await page.getByRole('button', { name: 'Send bill run' }).click()
 
       await expect(page.locator('h1')).toContainText("You're about to send this bill run")
-      await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-      await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
-      await expect(_summaryValue(page, 'Bill run type')).toContainText('Supplementary')
-      await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
+      await expect(summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
+      await expect(summaryValue(page, 'Region')).toContainText(regions.SOUTH_WEST.displayName)
+      await expect(summaryValue(page, 'Bill run type')).toContainText('Supplementary')
+      await expect(summaryValue(page, 'Charge scheme')).toContainText('Current')
       await page.getByRole('button', { name: 'Send bill run' }).click()
 
       await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
@@ -94,7 +95,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check charge information')
-      await expect(_summaryValue(page, 'Reason')).toContainText('Abatement (S126)')
+      await expect(summaryValue(page, 'Reason')).toContainText('Abatement (S126)')
       await page.getByRole('button', { name: 'Confirm' }).click()
 
       await expect(page.locator('h1').last()).toContainText('Charge information complete')
@@ -120,7 +121,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: regions.SOUTH_WEST.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -130,14 +131,14 @@ test.describe(
 
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
       await expect(page.locator('[data-test="date-created-1"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-1"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-1"]')).toContainText(regions.SOUTH_WEST.displayName)
       await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
       await page.locator('[data-test="date-created-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${regions.SOUTH_WEST.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.SOUTH_WEST.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Supplementary')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await expect(page.locator('[data-test="credits-count"]')).toContainText('1 credit note')
@@ -145,7 +146,3 @@ test.describe(
     })
   }
 )
-
-function _summaryValue(page, label) {
-  return summaryRow(page, label).locator('.govuk-summary-list__value')
-}

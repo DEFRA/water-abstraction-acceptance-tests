@@ -1,6 +1,6 @@
 import { generateLicenceVersionExternalId, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-export default function (licence, company, address) {
+export default function (licence, company, address, region) {
   const licenceVersionId = generateUUID()
 
   return {
@@ -11,7 +11,7 @@ export default function (licence, company, address) {
     status: 'current',
     startDate: licence.startDate,
 
-    externalId: generateLicenceVersionExternalId(),
+    externalId: generateLicenceVersionExternalId(region),
     companyId: company.id,
     addressId: address.id
   }

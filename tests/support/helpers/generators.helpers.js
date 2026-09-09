@@ -1,7 +1,6 @@
+import RegionHelper from 'water-abstraction-engine/test/helpers/region.helper.js'
 import { faker } from '@faker-js/faker'
 import { generateRandomInteger } from 'water-abstraction-engine/test/generators.js'
-
-import { regionCode } from '../default-values.js'
 
 /**
  * Generates an address
@@ -19,23 +18,36 @@ export function generateAddress() {
 /**
  * Generates an account number
  *
- * The account number is in the format 'S########A'. The leading 'S' matches the charge region id of our seeded
- * Test Region (region 9), which the app relies on to recognise a billing account as belonging to that region -
- * the engine's own `generateAccountNumber()` always uses 'T', which doesn't match.
+ * The account number is in the format '[charge region id]########A'. The leading letter must match the region's
+ * charge region id - the app filters a company's existing billing accounts by whether the account number starts
+ * with the selected region's code, so a mismatched prefix makes the app treat the company as having none. Falls
+ * back to 'S' (our seeded Test Region) when no region is passed, since the engine's own `generateAccountNumber()`
+ * always uses 'T', which doesn't match Test Region either.
+ *
+ * @param {object} region - the region the account number's charge region id prefix is generated for
  *
  * @returns {string} - An account number
  */
-export function generateAccountNumber() {
-  return `S${generateRandomInteger(10000000, 99999999)}A`
+export function generateAccountNumber(region) {
+  const chargeRegionId = region
+    ? region.chargeRegionId
+    : RegionHelper.select(RegionHelper.TEST_REGION_INDEX).chargeRegionId
+
+  return `${chargeRegionId}${generateRandomInteger(10000000, 99999999)}A`
 }
 
 /**
  * Generates a Bill run number
  *
+ * @param {object} region - the region
  * @returns {number} - A bill run number
  */
-export function generateBillRunNumber() {
-  return Number(`${regionCode}${generateRandomInteger(10000, 99999)}`)
+export function generateBillRunNumber(region = null) {
+  if (!region) {
+    region = RegionHelper.select(RegionHelper.TEST_REGION_INDEX)
+  }
+
+  return Number(`${region.naldRegionId}${generateRandomInteger(10000, 99999)}`)
 }
 
 /**
@@ -96,10 +108,15 @@ export function generateGovUKEmail() {
 /**
  * Generates a Point external id
  *
+ * @param {object} region - the region
  * @returns {string} - A point external id
  */
-export function generatePointExternalId() {
-  return `${regionCode}:${regionCode}${generateRandomInteger(100000, 999999)}`
+export function generatePointExternalId(region = null) {
+  if (!region) {
+    region = RegionHelper.select(RegionHelper.TEST_REGION_INDEX)
+  }
+
+  return `${region.naldRegionId}:${region.naldRegionId}${generateRandomInteger(100000, 999999)}`
 }
 
 /**
