@@ -1,4 +1,5 @@
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
+import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/presroc-licence-with-agreement-and-due-return.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
@@ -36,7 +37,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: regions.NORTH_EAST.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the financial year')
@@ -53,11 +54,11 @@ test.describe(
       await expect(page.locator('h1')).toContainText('Bill runs')
 
       const billRunsTable = page.locator('table.govuk-table')
-      const billRunRow = billRunsTable.getByRole('row', { name: 'Test Region' })
+      const billRunRow = billRunsTable.getByRole('row', { name: regions.NORTH_EAST.displayName })
 
       await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-      await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+      await expect(billRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })).toBeVisible()
       await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
       await billRunRow.getByRole('link').click()
 
@@ -89,12 +90,12 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText("You're about to generate the two-part tariff bills")
       await expect(_definitionValue(page, 'Date created')).toContainText(formattedCurrentDate)
-      await expect(_definitionValue(page, 'Region')).toContainText('Test Region')
+      await expect(_definitionValue(page, 'Region')).toContainText(regions.NORTH_EAST.displayName)
       await expect(_definitionValue(page, 'Bill run type')).toContainText('Two-part tariff winter and all year')
       await expect(_definitionValue(page, 'Status')).toContainText('Review')
       await page.getByRole('button', { name: 'Confirm' }).click()
 
-      await expect(page.locator('h1')).toContainText('Test Region two-part tariff')
+      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} two-part tariff`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
       await expect(page.locator('[data-test="bill-total"]')).toContainText('£14.94')
       await expect(page.locator('[data-test="bills-count"]')).toContainText(
@@ -104,7 +105,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText("You're about to send this bill run")
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.NORTH_EAST.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff winter and all year')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Old')
       await page.getByRole('button', { name: 'Send bill run' }).click()
@@ -112,14 +113,14 @@ test.describe(
       await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
       await page.getByRole('link', { name: 'Go to bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText('Test Region two-part tariff')
+      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} two-part tariff`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
 
       await page.getByRole('link', { name: 'Go back to bill runs' }).click()
 
       await expect(page.locator('h1')).toContainText('Bill runs')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toContainText('Old charge scheme')
-      await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+      await expect(billRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })).toBeVisible()
       await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
       await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('1')
       await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')
