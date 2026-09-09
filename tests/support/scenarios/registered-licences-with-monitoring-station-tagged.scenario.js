@@ -3,6 +3,7 @@ import licenceMonitoringStationData from '../data/licence-monitoring-station.dat
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import monitoringStationData from '../data/monitoring-station.data.js'
+import { regions } from '../default-values.js'
 import registeredLicenceScenario from './registered-licence.scenario.js'
 
 export const title = 'Registered licences with a monitoring station (tagged)'
@@ -14,11 +15,15 @@ export const description =
  *
  * We seed a separate 'licenceVersionPurposeCondition' on the licence, available for a test to select when tagging.
  */
-export default function () {
+export default function (region = null) {
+  if (!region) {
+    region = regions.ANGLIAN
+  }
+
   const monitoringStation = monitoringStationData()
 
-  const firstLicence = _taggedLicence(monitoringStation)
-  const secondLicence = _taggedLicence(monitoringStation)
+  const firstLicence = _taggedLicence(monitoringStation, region)
+  const secondLicence = _taggedLicence(monitoringStation, region)
 
   secondLicence.licenceMonitoringStation.abstractionPeriodStartDay = 1
   secondLicence.licenceMonitoringStation.abstractionPeriodStartMonth = 4
@@ -36,8 +41,8 @@ export default function () {
  *
  * @private
  */
-function _taggedLicence(monitoringStation) {
-  const registeredLicence = registeredLicenceScenario()
+function _taggedLicence(monitoringStation, region) {
+  const registeredLicence = registeredLicenceScenario(region)
 
   const licenceVersionPurposeCondition = licenceVersionPurposeConditionData(registeredLicence.licenceVersionPurpose)
   const licenceMonitoringStation = licenceMonitoringStationData(registeredLicence.licence, monitoringStation)

@@ -14,12 +14,6 @@ export const password = 'P@55word'
  */
 export const presrocStartDate = '2018-04-01'
 
-/**
- * All tests use the region code 9, the teardown uses this region code to delete test data
- * @type {number}
- */
-export const regionCode = 9
-
 export const regions = {
   ANGLIAN: regionHelper.select(0),
   MIDLANDS: regionHelper.select(1),

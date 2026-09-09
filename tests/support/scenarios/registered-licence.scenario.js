@@ -1,11 +1,16 @@
 import buildLicenceEntity from '../entities/licence.entity.js'
 import primaryUserData from '../data/primary-user.data.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Registered licence'
 export const description = 'A licence that has been registered (primary user), licence holder and a company'
 
-export default function () {
-  const licenceEntity = buildLicenceEntity()
+export default function (region = null) {
+  if (!region) {
+    region = regions.WALES
+  }
+
+  const licenceEntity = buildLicenceEntity(region)
 
   const primaryUser = primaryUserData(licenceEntity.company)
 

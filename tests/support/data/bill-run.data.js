@@ -3,13 +3,6 @@ import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 import { generateBillRunNumber } from '../helpers/generators.helpers.js'
 
 export default function (region) {
-  // TODO: this is a temporary change to enable us to gradually migrate away from the test region.
-  if (!region) {
-    region = {
-      naldRegionId: 9
-    }
-  }
-
   return {
     id: generateUUID(),
     regionId: { schema: 'public', table: 'regions', lookup: 'naldRegionId', value: region.naldRegionId, select: 'id' },

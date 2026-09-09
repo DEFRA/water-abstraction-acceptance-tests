@@ -44,8 +44,8 @@ export default function () {
 
   const [firstPoint, secondPoint] = licence.points
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
-  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
+  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
   const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes)
 
   const firstChargeElement = chargeElementData(chargeReference, firstLicenceVersionPurpose)
@@ -64,7 +64,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     firstPoint,
-    [currentPeriodDetails]
+    [currentPeriodDetails],
+    region
   )
 
   // The return needs an actual submitted volume, not just a due return log, or the two-part tariff engine has
@@ -82,7 +83,8 @@ export default function () {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    [currentPeriodDetails]
+    [currentPeriodDetails],
+    region
   )
 
   secondReturnLog.status = 'completed'

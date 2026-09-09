@@ -4,13 +4,6 @@ import { purposeDescription } from '../helpers/purpose.helpers.js'
 import { determineReturnCycleStartDate, formatDateToIso } from '../helpers/date.helpers.js'
 
 export default function (licence, returnRequirement, returnRequirementPurposes, points, period, region) {
-  // TODO: this is a temporary change to enable us to gradually migrate away from the test region.
-  if (!region) {
-    region = {
-      naldRegionId: 9
-    }
-  }
-
   const returnLogId = generateUUID()
 
   const startDate = new Date(period.startDate)
