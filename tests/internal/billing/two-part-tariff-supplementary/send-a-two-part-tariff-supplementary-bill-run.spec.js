@@ -1,8 +1,9 @@
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
+import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary.scenario.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Send a two-part tariff supplementary bill run (internal)', { tag: '@supplementary-billing' }, () => {
@@ -53,7 +54,7 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: regions.SOUTHERN.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the financial year')
@@ -72,14 +73,14 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
       // created
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'review')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.SOUTHERN.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Two-part tariff')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText('Review licences')
       await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.SOUTHERN.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff supplementary')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
@@ -91,15 +92,15 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region two-part tariff')
+      await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} two-part tariff`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await page.getByRole('button', { name: 'Send bill run' }).click()
 
       await expect(page.locator('h1')).toContainText("You're about to send this bill run")
-      await expect(_summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
-      await expect(_summaryValue(page, 'Region')).toContainText('Test Region')
-      await expect(_summaryValue(page, 'Bill run type')).toContainText('Two-part tariff supplementary')
-      await expect(_summaryValue(page, 'Charge scheme')).toContainText('Current')
+      await expect(summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
+      await expect(summaryValue(page, 'Region')).toContainText(regions.SOUTHERN.displayName)
+      await expect(summaryValue(page, 'Bill run type')).toContainText('Two-part tariff supplementary')
+      await expect(summaryValue(page, 'Charge scheme')).toContainText('Current')
       await page.getByRole('button', { name: 'Send bill run' }).click()
 
       // Displayed whilst the bill run is 'sending'. We don't confirm we're on it because in some environments this
@@ -108,17 +109,8 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
       await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
       await page.getByRole('link', { name: 'Go to bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText('Test Region two-part tariff')
+      await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} two-part tariff`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
     }
   )
 })
-
-/**
- * Locates the value cell of a govuk-summary-list row identified by its label
- *
- * @private
- */
-function _summaryValue(page, label) {
-  return summaryRow(page, label).locator('.govuk-summary-list__value')
-}

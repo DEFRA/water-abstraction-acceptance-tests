@@ -11,6 +11,7 @@ import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { regions } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -25,13 +26,15 @@ export const description =
 const netAmount = 6600
 
 export default function () {
+  const region = regions.SOUTHERN
+
   const {
     billingPeriods: {
       twoPartTariff: [twoPartTariffPeriod]
     }
   } = calculatedDates()
 
-  const licence = licenceWithTwoPurposesScenario()
+  const licence = licenceWithTwoPurposesScenario(region)
 
   const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
 
@@ -97,7 +100,8 @@ export default function () {
     licence.licence,
     billingAccountEntity.billingAccount,
     chargeReference,
-    twoPartTariffPeriod
+    twoPartTariffPeriod,
+    region
   )
 
   const licenceSupplementaryYear = {
@@ -153,8 +157,8 @@ function _returnRequirement(returnVersion, licenceVersionPurpose, point) {
  *
  * @private
  */
-function _billRun(licence, billingAccount, chargeReference, dates) {
-  const billRun = billRunData()
+function _billRun(licence, billingAccount, chargeReference, dates, region) {
+  const billRun = billRunData(region)
 
   billRun.createdAt = today()
   billRun.batchType = 'two_part_tariff'
