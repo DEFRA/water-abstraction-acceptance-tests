@@ -17,7 +17,6 @@ export function summaryRow(page, label) {
  * @param {string} label - The text the row's label must match
  *
  * @returns {import('@playwright/test').Locator} The matching `.govuk-summary-list__value`
- *
  */
 export function summaryValue(page, label) {
   return summaryRow(page, label).locator('.govuk-summary-list__value')
