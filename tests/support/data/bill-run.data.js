@@ -1,12 +1,18 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 import { generateBillRunNumber } from '../helpers/generators.helpers.js'
-import { regionCode } from '../default-values.js'
 
-export default function () {
+export default function (region) {
+  // TODO: this is a temporary change to enable us to gradually migrate away from the test region.
+  if (!region) {
+    region = {
+      naldRegionId: 9
+    }
+  }
+
   return {
     id: generateUUID(),
-    regionId: { schema: 'public', table: 'regions', lookup: 'naldRegionId', value: regionCode, select: 'id' },
+    regionId: { schema: 'public', table: 'regions', lookup: 'naldRegionId', value: region.naldRegionId, select: 'id' },
     batchType: 'annual',
     fromFinancialYearEnding: '2024',
     toFinancialYearEnding: '2024',
@@ -14,6 +20,6 @@ export default function () {
     // In a real bill run this is returned by the Charging Module when the bill run is created there — we don't call
     // that service, so we generate our own to satisfy the column's uniqueness constraint.
     externalId: generateUUID(),
-    billRunNumber: generateBillRunNumber()
+    billRunNumber: generateBillRunNumber(region)
   }
 }

@@ -4,40 +4,29 @@ import {
 } from 'water-abstraction-engine/test/generators.js'
 
 import { asArrays } from '../helpers/wire-format.helpers.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import { generatePointExternalId } from '../helpers/generators.helpers.js'
+import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Two licences on the same billing account'
 export const description =
   'Two separate licences, both billed to the same billing account, so an annual bill run creates a single bill covering both'
 
 export default function () {
-  const firstLicence = _licenceWithChargeVersion()
-  const secondLicence = _secondLicenceSharingBillingAccount(firstLicence)
+  const region = regions.THAMES
+
+  const firstLicence = licenceWithChargeVersionScenario(region)
+
+  const { billingAccount, company } = firstLicence
+
+  const secondLicence = _secondLicenceSharingBillingAccount(billingAccount, company, region)
 
   return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
-}
-
-/**
- * Builds a licence and its charge version
- *
- * @private
- */
-function _licenceWithChargeVersion() {
-  const licenceEntity = buildLicenceEntity()
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
-  )
-
-  return { ...licenceEntity, ...chargeVersionEntity }
 }
 
 /**
@@ -50,10 +39,8 @@ function _licenceWithChargeVersion() {
  *
  * @private
  */
-function _secondLicenceSharingBillingAccount(firstLicence) {
-  const { billingAccount, company } = firstLicence
-
-  const licenceEntity = buildLicenceEntity()
+function _secondLicenceSharingBillingAccount(billingAccount, company, region) {
+  const licenceEntity = buildLicenceEntity(region)
   const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence)
   const chargeReference = chargeReferenceData(chargeVersion, [licenceEntity.licenceVersionPurpose])
   const chargeElement = chargeElementData(chargeReference, licenceEntity.licenceVersionPurpose)
@@ -67,9 +54,9 @@ function _secondLicenceSharingBillingAccount(firstLicence) {
   licenceEntity.licenceDocumentRole.companyId = company.id
   licenceEntity.licenceVersion.companyId = company.id
 
-  licenceEntity.point.externalId = generatePointExternalId()
-  licenceEntity.licenceVersion.externalId = generateLicenceVersionExternalId()
-  licenceEntity.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
+  licenceEntity.point.externalId = generatePointExternalId(region)
+  licenceEntity.licenceVersion.externalId = generateLicenceVersionExternalId(region)
+  licenceEntity.licenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId(region)
 
   return { ...licenceEntity, chargeVersion, chargeReference, chargeElement }
 }
