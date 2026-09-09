@@ -35,9 +35,9 @@ export function returnLogPeriods(cycle, dueDate = null, quarterly = false) {
  * @param {object} returnRequirement - the return requirement the return logs are for
  * @param {object} returnRequirementPurpose - the return requirement purpose the return logs are for
  * @param {object} point - the point the return logs are for
- * @param {object[]} periods - the periods to build a return log for, for example the result of `returnLogPeriods(cycle)`
- *
- * @param region
+* @param {object[]} periods - the periods to build a return log for, for example the result of `returnLogPeriods(cycle)`
+* @param region - the region
+* 
  * @returns {object[]} A return log for each of the given periods
  */
 export function buildReturnLogs(licence, returnRequirement, returnRequirementPurpose, point, periods, region) {
