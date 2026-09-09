@@ -6,6 +6,7 @@ import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
+import { regions } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 import { convertCubicMetresToMegalitres, splitTotalVolume } from '../helpers/conversion.helpers.js'
 
@@ -17,15 +18,17 @@ export const description =
 const FIRST_ELEMENT_MONTHS = 7
 
 export default function () {
+  const region = regions.SOUTHERN
+
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
-  const licence = buildLicenceEntity()
+  const licence = buildLicenceEntity(region)
 
   const { licenceVersionPurpose, point } = licence
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address)
-  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence)
+  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
 
   const { chargeReference, chargeElements } = _chargeReference(chargeVersion, licenceVersionPurpose)
 
@@ -40,7 +43,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     point,
-    periods
+    periods,
+    region
   )
 
   previousReturnLog.status = 'completed'

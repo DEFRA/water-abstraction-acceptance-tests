@@ -2,22 +2,28 @@ import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { regions } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a two-part tariff charge version and a due return log'
 export const description =
   'Licence with a return version and TPT charge version based on the licence data, plus a due return log for the previous winter cycle'
 
-export default function () {
+export default function (region = null) {
+  if (!region) {
+    region = regions.MIDLANDS
+  }
+
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(region)
   const chargeVersionEntity = buildChargeVersionEntity(
     licenceEntity.company,
     licenceEntity.address,
     licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose
+    licenceEntity.licenceVersionPurpose,
+    region
   )
 
   const returnVersionEntity = buildReturnVersionEntity(
@@ -35,7 +41,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     licenceEntity.point,
-    periods
+    periods,
+    region
   )
 
   return {

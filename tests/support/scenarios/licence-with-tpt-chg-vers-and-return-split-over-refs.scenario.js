@@ -7,6 +7,7 @@ import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceScenario from './licence.scenario.js'
+import { regions } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a two-part tariff charge version and a return split over two charge references'
@@ -14,18 +15,20 @@ export const description =
   'Licence with a return version and a TPT charge version of two charge references, each with one charge element sharing the same purpose but a different abstraction period, plus one completed return that matches and is split across both references'
 
 export default function () {
+  const region = regions.MIDLANDS
+
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
-  const licence = licenceScenario()
+  const licence = licenceScenario(region)
 
   // The single licence version purpose (400, Spray Irrigation - Direct) feeds both charge references, and its annual
   // quantity gives each reference a 32 ML volume.
   licence.licenceVersionPurpose.annualQuantity = 32000
 
-  const billingAccount = billingAccountData(licence.company)
+  const billingAccount = billingAccountData(licence.company, region)
   const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
+  const chargeVersion = chargeVersionData(billingAccount, licence.licence, region)
 
   // Two charge references, each with one element on the same purpose but a different abstraction period, so the single
   // return matches (and is split across) both references. The reference volumes (32) leave the elements' authorised
@@ -60,7 +63,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     licence.point,
-    periods
+    periods,
+    region
   )
 
   previousReturnLog.status = 'completed'
