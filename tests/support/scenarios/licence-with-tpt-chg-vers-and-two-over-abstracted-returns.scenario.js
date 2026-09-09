@@ -7,6 +7,7 @@ import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { regions } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -17,10 +18,12 @@ export const description =
   'Licence with a return version and a TPT charge version of one charge reference and two charge elements, plus two completed returns for the previous winter cycle that are both over-abstracted, the second also abstracting outside its own abstraction period'
 
 export default function () {
+  const region = regions.WALES
+
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
-  const licence = licenceWithTwoPurposesScenario()
+  const licence = licenceWithTwoPurposesScenario(region)
 
   const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
   const [firstPoint, secondPoint] = licence.points
@@ -34,9 +37,9 @@ export default function () {
   firstLicenceVersionPurpose.annualQuantity = 32000
   secondLicenceVersionPurpose.annualQuantity = 30000
 
-  const billingAccount = billingAccountData(licence.company)
+  const billingAccount = billingAccountData(licence.company, region)
   const billingAccountAddress = billingAccountAddressData(billingAccount, licence.address)
-  const chargeVersion = chargeVersionData(billingAccount, licence.licence)
+  const chargeVersion = chargeVersionData(billingAccount, licence.licence, region)
 
   // One charge reference with two charge elements. The reference volume derives to 62 (32 + 30); we bump it to 64 so it
   // comfortably covers both elements and each allocates its full authorised volume.
@@ -57,7 +60,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     firstPoint,
-    periods
+    periods,
+    region
   )
 
   previousFirstReturnLog.status = 'completed'
@@ -77,7 +81,8 @@ export default function () {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    periods
+    periods,
+    region
   )
 
   previousSecondReturnLog.status = 'completed'

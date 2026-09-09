@@ -2,6 +2,7 @@ import buildReturnSubmissionEntity from '../entities/return-submission.entity.js
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
+import { regions } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -12,10 +13,12 @@ export const description =
   'Licence with a return version and TPT charge version based on the licence data, plus two completed return logs for the previous winter cycle, one TPT and one not'
 
 export default function () {
+  const region = regions.WALES
+
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
-  const licence = licenceWithChargeVersionAndTwoPurposesScenario()
+  const licence = licenceWithChargeVersionAndTwoPurposesScenario(region)
 
   const [firstLicenceVersionPurpose, secondLicenceVersionPurpose] = licence.licenceVersionPurposes
   const [firstPoint, secondPoint] = licence.points
@@ -31,7 +34,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     firstPoint,
-    periods
+    periods,
+    region
   )
 
   previousFirstReturnLog.status = 'completed'
@@ -47,7 +51,8 @@ export default function () {
     secondReturnRequirement.returnRequirement,
     secondReturnRequirement.returnRequirementPurpose,
     secondPoint,
-    periods
+    periods,
+    region
   )
 
   previousSecondReturnLog.status = 'completed'
