@@ -3,6 +3,7 @@ import buildReturnSubmissionEntity from '../entities/return-submission.entity.js
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { regions } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a two-part tariff charge version and an unmatched return'
@@ -10,10 +11,12 @@ export const description =
   'Licence with a return version and a TPT charge version whose charge element and completed return have different two-part tariff purposes, so the return cannot match the element'
 
 export default function () {
+  const region = regions.NORTH_EAST
+
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
-  const licence = licenceWithTwoPurposesScenario()
+  const licence = licenceWithTwoPurposesScenario(region)
 
   const [elementPurpose, returnPurpose] = licence.licenceVersionPurposes
   const [, returnPoint] = licence.points
@@ -26,7 +29,8 @@ export default function () {
     licence.company,
     licence.address,
     licence.licence,
-    elementPurpose
+    elementPurpose,
+    region
   )
 
   const returnVersionEntity = buildReturnVersionEntity(licence.licence, returnPurpose, returnPoint)
@@ -40,7 +44,8 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     returnPoint,
-    periods
+    periods,
+    region
   )
 
   previousReturnLog.status = 'completed'

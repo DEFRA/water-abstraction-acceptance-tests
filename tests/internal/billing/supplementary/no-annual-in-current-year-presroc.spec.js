@@ -1,3 +1,4 @@
+import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/presroc-licence-flagged-for-supplementary-with-previous-annual-bill-run.scenario.js'
 import {
@@ -59,7 +60,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: regions.ANGLIAN.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -70,14 +71,14 @@ test.describe(
       // The presroc engine's bill run is the first ('0') row, ahead of the modern sroc engine's ('1')
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.ANGLIAN.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${regions.ANGLIAN.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.ANGLIAN.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Supplementary')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Old')
       await expect(page.locator('[data-test="meta-data-year"]')).toContainText(
@@ -110,11 +111,11 @@ test.describe(
       await expect(page.locator('h1')).toContainText('Bill runs')
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
       await expect(page.locator('[data-test="date-created-1"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-1"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-1"]')).toContainText(regions.ANGLIAN.displayName)
       await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
       await page.locator('[data-test="date-created-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText('Test Region supplementary')
+      await expect(page.locator('h1')).toContainText(`${regions.ANGLIAN.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
 

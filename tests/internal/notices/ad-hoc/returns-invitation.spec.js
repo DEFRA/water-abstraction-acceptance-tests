@@ -75,21 +75,21 @@ test.describe('Ad-hoc returns invitation journey (internal)', () => {
     // Additional recipient is shown in the list
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
 
-    await expect(page.locator('[data-test="recipient-contact-0"]')).toContainText(user.username)
-    await expect(page.locator('[data-test="recipient-licence-numbers-0"]')).toContainText(licence.licenceRef)
-    await expect(page.locator('[data-test="recipient-method-0"]')).toContainText('Email - primary user')
-    await expect(page.locator('[data-test="recipient-action-0"]')).toContainText('Preview')
+    const userRow = page.getByRole('row').filter({ hasText: user.username })
+    await expect(userRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
+    await expect(userRow.locator('[data-test^="recipient-method"]')).toContainText('Email - primary user')
+    await expect(userRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')
 
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Lookup recipient')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('ENVIRONMENT AGENCY')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('HORIZON HOUSE DEANERY ROAD')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('BRISTOL')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('BS1 5AH')
-    await expect(page.locator('[data-test="recipient-licence-numbers-1"]')).toContainText(licence.licenceRef)
-    await expect(page.locator('[data-test="recipient-method-1"]')).toContainText('Letter - single use')
-    await expect(page.locator('[data-test="recipient-action-1"]')).toContainText('Preview')
+    const lookupRow = page.getByRole('row').filter({ hasText: 'Lookup recipient' })
+    await expect(lookupRow).toContainText('ENVIRONMENT AGENCY')
+    await expect(lookupRow).toContainText('HORIZON HOUSE DEANERY ROAD')
+    await expect(lookupRow).toContainText('BRISTOL')
+    await expect(lookupRow).toContainText('BS1 5AH')
+    await expect(lookupRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
+    await expect(lookupRow.locator('[data-test^="recipient-method"]')).toContainText('Letter - single use')
+    await expect(lookupRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')
 
-    await page.locator('[data-test="recipient-action-1"]').getByText('Preview').click()
+    await lookupRow.getByText('Preview').click()
 
     // Preview contains the contact name and address
     await expect(page.getByText('Returns invitation ad-hoc')).toBeVisible()
@@ -109,11 +109,12 @@ test.describe('Ad-hoc returns invitation journey (internal)', () => {
     await expect(page.getByText('Showing all 2 notifications')).toBeVisible()
 
     await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(2)
-    await expect(page.locator('[data-test="notification-recipient0"]')).toContainText(user.username)
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('Lookup recipient')
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('ENVIRONMENT AGENCY')
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('HORIZON HOUSE DEANERY ROAD')
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('BRISTOL')
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('BS1 5AH')
+    await expect(page.locator('[data-test^="notification-recipient"]', { hasText: user.username })).toBeVisible()
+
+    const lookupNotification = page.locator('[data-test^="notification-recipient"]', { hasText: 'Lookup recipient' })
+    await expect(lookupNotification).toContainText('ENVIRONMENT AGENCY')
+    await expect(lookupNotification).toContainText('HORIZON HOUSE DEANERY ROAD')
+    await expect(lookupNotification).toContainText('BRISTOL')
+    await expect(lookupNotification).toContainText('BS1 5AH')
   })
 })

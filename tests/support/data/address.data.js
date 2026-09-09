@@ -1,15 +1,19 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
+import { generateAddress } from '../helpers/generators.helpers.js'
+
 export default function () {
   const addressId = generateUUID()
 
+  const { address1, address2, address3, address4, postcode } = generateAddress()
+
   return {
     id: addressId,
-    address1: 'ENVIRONMENT AGENCY',
-    address2: 'HORIZON HOUSE',
-    address3: 'DEANERY ROAD',
-    address4: 'BRISTOL',
-    postcode: 'BS1 5AH',
+    address1,
+    address2,
+    address3,
+    address4,
+    postcode,
     country: 'United Kingdom',
     dataSource: 'wrls'
   }

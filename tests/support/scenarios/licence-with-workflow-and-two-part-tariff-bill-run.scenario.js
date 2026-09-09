@@ -1,6 +1,7 @@
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { regions } from '../default-values.js'
 import workflowData from '../data/workflow.data.js'
 import { yesterday } from '../helpers/date.helpers.js'
 
@@ -13,8 +14,12 @@ export const description =
  *
  * This is omitted from the scenario name and description to keep them concise, but is still part of the scenario.
  */
-export default function () {
-  const licenceEntity = buildLicenceEntity()
+export default function (region = null) {
+  if (!region) {
+    region = regions.NORTH_WEST
+  }
+
+  const licenceEntity = buildLicenceEntity(region)
 
   const {
     billingPeriods: {
@@ -22,7 +27,7 @@ export default function () {
     }
   } = calculatedDates()
 
-  const billRunEntity = buildBillRunEntity(licenceEntity, twoPartTariffDates)
+  const billRunEntity = buildBillRunEntity(licenceEntity, twoPartTariffDates, region)
 
   billRunEntity.billRun.batchType = 'two_part_tariff'
 

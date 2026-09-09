@@ -3,13 +3,17 @@ import scenarioData from '../../support/scenarios/licence-with-two-purposes.scen
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit return version manually (internal)', () => {
+  let company
   let licence
+  let points
   let customStartDateYear
 
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
+    points = scenario.points
 
     // Must be a date after the licence's own start date, which defaults to a recent date
     customStartDateYear = new Date(licence.startDate).getUTCFullYear() + 1
@@ -109,7 +113,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see the start date information we expect
     await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(licence.startDate))
@@ -125,7 +129,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on check page and see the start date changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(customStartDateYear + '-08-02'))
 
     // confirm we see the reason we selected
@@ -139,7 +143,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the reason changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="reason"]')).toContainText('Minor change')
 
     // confirm we see the purposes selected
@@ -157,14 +161,14 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the purpose changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="purposes-0"]')).toContainText(
       'Spray Irrigation - Direct (This is another purpose description)'
     )
 
     // confirm we see the points selected
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TQ 1234 5678 (Example point 1)'
+      `At National Grid Reference ${points[0].ngr1} (${points[0].description})`
     )
 
     // choose the change option for points
@@ -176,9 +180,9 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the points changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TT 9876 5432 (Example point 2)'
+      `At National Grid Reference ${points[1].ngr1} (${points[1].description})`
     )
 
     // confirm we see the abstraction period selected
@@ -200,7 +204,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the abstraction period changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="abstraction-period-0"]')).toContainText('From 2 October to 5 December')
 
     // confirm we see the returns cycle selected
@@ -214,7 +218,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the returns cycle changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="returns-cycle-0"]')).toContainText('Winter')
 
     // confirm we see the site description we selected
@@ -229,7 +233,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the site description changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="site-description-0"]')).toContainText(
       'This is another valid site description'
     )
@@ -245,7 +249,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the collection frequency changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="frequency-collected-0"]')).toContainText('Weekly')
 
     // confirm we see the reporting frequency we selected
@@ -259,7 +263,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the reporting frequency changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="frequency-reported-0"]')).toContainText('Monthly')
 
     // confirm we see the agreements and exceptions we selected
@@ -275,7 +279,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page and see the agreements exceptions changes
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await expect(page.locator('[data-test="agreements-exceptions-0"]')).toContainText(
       'Transfer re-abstraction scheme and Two-part tariff'
     )
@@ -343,7 +347,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see the new requirement
     await expect(page.locator('[data-test="requirement-1"]')).toContainText(
@@ -367,7 +371,7 @@ test.describe('Submit return version manually (internal)', () => {
     await page.getByRole('button', { name: 'Remove' }).click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we receive a notification pop up confirming the removed requirement
     await expect(page.locator('.govuk-notification-banner')).toContainText('Requirement removed')
@@ -406,7 +410,7 @@ test.describe('Submit return version manually (internal)', () => {
       'Spray Irrigation - Direct (This is another purpose description)'
     )
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TT 9876 5432 (Example point 2)'
+      `At National Grid Reference ${points[1].ngr1} (${points[1].description})`
     )
     await expect(page.locator('[data-test="abstraction-period-0"]')).toContainText('2 October to 5 December')
     await expect(page.locator('[data-test="returns-cycle-0"]')).toContainText('Winter and all year')

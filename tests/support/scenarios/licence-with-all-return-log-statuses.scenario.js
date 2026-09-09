@@ -2,6 +2,7 @@ import { generateReference } from 'water-abstraction-engine/test/generators.js'
 
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { regions } from '../default-values.js'
 import { relativeToToday } from '../helpers/date.helpers.js'
 import returnLogData from '../data/return-log.data.js'
 import returnRequirementData from '../data/return-requirement.data.js'
@@ -12,11 +13,15 @@ import returnVersionData from '../data/return-version.data.js'
 export const title = 'Licence with all return log statuses'
 export const description = 'Licence with return logs covering all possible statuses'
 
-export default function () {
+export default function (region = null) {
+  if (!region) {
+    region = regions.ANGLIAN
+  }
+
   const currentPeriod = _currentPeriod(calculatedDates())
   const previousPeriod = _previousPeriod(currentPeriod)
 
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(region)
   const returnVersion = returnVersionData(licenceEntity.licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
@@ -38,7 +43,7 @@ export default function () {
   const referenceBase = generateReference()
 
   const results = periods.map((period, index) => {
-    return _returnLog(licenceEntity, returnVersion, period, referenceBase - index)
+    return _returnLog(licenceEntity, returnVersion, period, referenceBase - index, region)
   })
 
   return {
@@ -198,7 +203,7 @@ function _previousPeriod(currentPeriod) {
  *
  * @private
  */
-function _returnLog(licenceEntity, returnVersion, period, reference) {
+function _returnLog(licenceEntity, returnVersion, period, reference, region) {
   const returnRequirement = returnRequirementData(returnVersion, licenceEntity.licenceVersionPurpose)
 
   returnRequirement.legacyId = reference
@@ -212,7 +217,8 @@ function _returnLog(licenceEntity, returnVersion, period, reference) {
     returnRequirement,
     [returnRequirementPurpose],
     [licenceEntity.point],
-    period
+    period,
+    region
   )
 
   returnLog.status = period.status

@@ -1,4 +1,5 @@
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
+import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -24,7 +25,7 @@ test.describe('Cancel an existing two-part tariff bill run (internal)', () => {
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the region')
-    await page.getByRole('radio', { name: 'Test Region' }).check()
+    await page.getByRole('radio', { name: regions.SOUTHERN.displayName }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the financial year')
@@ -41,24 +42,24 @@ test.describe('Cancel an existing two-part tariff bill run (internal)', () => {
     await expect(page.locator('h1')).toContainText('Bill runs')
 
     const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: 'Test Region' })
+    const billRunRow = billRunsTable.getByRole('row', { name: regions.SOUTHERN.displayName })
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'empty')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: regions.SOUTHERN.displayName, exact: true })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
-    await expect(page.locator('h1')).toContainText('Test Region two-part tariff')
+    await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} two-part tariff`)
     await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-    await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+    await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.SOUTHERN.displayName)
     await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff winter and all year')
     await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Old')
     await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
     await expect(page.locator('h1')).toContainText("You're about to cancel this bill run")
     await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-    await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+    await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.SOUTHERN.displayName)
     await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff winter and all year')
     await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Old')
     await page.getByRole('button', { name: 'Cancel bill run' }).click()

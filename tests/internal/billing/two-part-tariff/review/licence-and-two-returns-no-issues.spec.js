@@ -1,11 +1,13 @@
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
+import { regions } from '../../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-two-completed-return-logs.scenario.js'
 import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence and Two Returns with No Issues (internal)', () => {
   let billingAccount
+  let company
   let endYear
   let licence
   let returnReference
@@ -24,6 +26,7 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
     const scenario = scenarioData()
 
     billingAccount = scenario.billingAccount
+    company = scenario.company
     licence = scenario.licence
     returnReference = scenario.returnLogs[0].returnReference
 
@@ -63,7 +66,7 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: regions.WALES.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // The most recent year is the one the scenario seed data is set up for
@@ -79,7 +82,7 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
       // try again. We then select it using the link on the date created
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'review')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.WALES.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Two-part tariff')
       await expect(page.locator('[data-test="bill-run-total-0"]')).toContainText('')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
@@ -87,24 +90,24 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
       await expect(page.locator('h1')).toContainText('Review licences')
       await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.WALES.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
 
       await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
-      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText(company.name)
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('')
       await expect(page.locator('[data-test="licence-progress-1"]')).toContainText('')
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
-      await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-holder"]')).toContainText(company.name)
       await expect(page.locator('div > .govuk-tag')).toContainText('ready')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
-        'Test Region two-part tariff'
+        `${regions.WALES.displayName} two-part tariff`
       )
       await expect(page.locator('.govuk-list > li > .govuk-link')).toContainText(
         `1 April ${startYear} to 31 March ${endYear}`
@@ -141,11 +144,11 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
         '1 charge reference with 1 two-part tariff charge element'
       )
       await expect(page.locator('.govuk-details__summary-text')).toContainText(
-        'Big Farm Co Ltd billing account details'
+        `${company.name} billing account details`
       )
       await page.locator('.govuk-details__summary').click()
       await expect(page.locator('[data-test="billing-account"]')).toContainText(billingAccount.accountNumber)
-      await expect(page.locator('[data-test="account-name"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="account-name"]')).toContainText(company.name)
       await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.6.1')
       await expect(page.locator('[data-test="charge-version-0-charge-description-0"]')).toContainText(
         'High loss, non-tidal, up to and including 15 ML/yr'

@@ -7,9 +7,10 @@ import billingAccountData from '../data/billing-account.data.js'
  *
  * @param {object} company - the company the billing account belongs to
  * @param {object} address - the address linked to the billing account
+ * @param {object} region - the region the billing account's account number is generated for
  */
-export default function (company, address) {
-  const billingAccount = billingAccountData(company)
+export default function (company, address, region) {
+  const billingAccount = billingAccountData(company, region)
   const billingAccountAddress = billingAccountAddressData(billingAccount, address)
 
   return {

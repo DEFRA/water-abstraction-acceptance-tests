@@ -1,4 +1,5 @@
 import licenceWithTptChgVersAndDueReturnLogScenario from './licence-with-tpt-chg-vers-and-due-return-log.scenario.js'
+import { regions } from '../default-values.js'
 import returnSubmissionData from '../data/return-submission.data.js'
 
 export const title = 'Licence with a two-part tariff charge version and a nil return'
@@ -6,7 +7,9 @@ export const description =
   'Licence with a return version and TPT charge version based on the licence data, plus a completed return log for the previous winter cycle that is a nil return'
 
 export default function () {
-  const licence = licenceWithTptChgVersAndDueReturnLogScenario()
+  const region = regions.NORTH_EAST
+
+  const licence = licenceWithTptChgVersAndDueReturnLogScenario(region)
 
   const {
     returnLogs: [previousReturnLog]

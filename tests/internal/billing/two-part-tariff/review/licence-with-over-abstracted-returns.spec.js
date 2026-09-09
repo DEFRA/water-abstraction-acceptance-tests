@@ -1,11 +1,13 @@
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
+import { regions } from '../../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-two-over-abstracted-returns.scenario.js'
 import { tableRow } from '../../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../../support/fixtures.js'
 
 test.describe('Licence with Over-abstracted Returns (internal)', () => {
+  let company
   let endYear
   let startYear
   let licence
@@ -24,6 +26,7 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
 
     const scenario = scenarioData()
 
+    company = scenario.company
     licence = scenario.licence
     // returnLogs is [previousFirst, currentFirst, previousSecond, currentSecond] - the two purposes' return
     // requirements are seeded with independent random references, so we can't assume which sorts first on the page
@@ -62,7 +65,7 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: 'Test Region' }).check()
+      await page.getByRole('radio', { name: regions.WALES.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the financial year')
@@ -75,14 +78,14 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
       await expect(page.locator('h1')).toContainText('Bill runs')
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'review')
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.WALES.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Two-part tariff')
       await page.locator('[data-test="date-created-0"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText('Review licences')
       await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
       await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText('Test Region')
+      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.WALES.displayName)
       await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff')
       await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
       await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
@@ -101,17 +104,17 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
 
       await expect(page.locator('[data-test="licence-1"]')).toContainText(licence.licenceRef)
       await expect(page.locator('[data-test="licence-2"]')).toHaveCount(0)
-      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-holder-1"]')).toContainText(company.name)
       await expect(page.locator('[data-test="licence-issue-1"]')).toContainText('Multiple Issues')
       await expect(page.locator('[data-test="licence-progress-1"]')).toContainText('')
       await expect(page.locator('[data-test="licence-status-1"] > .govuk-tag')).toContainText('ready')
       await page.locator('[data-test="licence-1"] > .govuk-link').click()
 
       await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
-      await expect(page.locator('[data-test="licence-holder"]')).toContainText('Big Farm Co Ltd')
+      await expect(page.locator('[data-test="licence-holder"]')).toContainText(company.name)
       await expect(page.locator('div > .govuk-tag')).toContainText('ready')
       await expect(page.locator(':nth-child(1) > .govuk-grid-column-full > .govuk-caption-l')).toContainText(
-        'Test Region two-part tariff'
+        `${regions.WALES.displayName} two-part tariff`
       )
 
       // The two purposes' returns are seeded with independent random references, so look each row up by its known

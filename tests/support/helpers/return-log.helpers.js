@@ -36,12 +36,13 @@ export function returnLogPeriods(cycle, dueDate = null, quarterly = false) {
  * @param {object} returnRequirementPurpose - the return requirement purpose the return logs are for
  * @param {object} point - the point the return logs are for
  * @param {object[]} periods - the periods to build a return log for, for example the result of `returnLogPeriods(cycle)`
+ * @param {object} region - the region
  *
  * @returns {object[]} A return log for each of the given periods
  */
-export function buildReturnLogs(licence, returnRequirement, returnRequirementPurpose, point, periods) {
+export function buildReturnLogs(licence, returnRequirement, returnRequirementPurpose, point, periods, region) {
   return periods.map((period) => {
-    return returnLogData(licence, returnRequirement, [returnRequirementPurpose], [point], period)
+    return returnLogData(licence, returnRequirement, [returnRequirementPurpose], [point], period, region)
   })
 }
 
@@ -53,10 +54,18 @@ export function buildReturnLogs(licence, returnRequirement, returnRequirementPur
  * @param {object} returnRequirementPurpose - the return requirement purpose the return logs are for
  * @param {object} point - the point the return logs are for
  * @param {object} cycle - the return cycle (start, end and due date) the return logs cover
+ * @param {object} region - the region
  *
  * @returns {object[]} The due return log for the current cycle and the previous cycle
  */
-export function buildPreviousAndCurrentReturnLogs(licence, returnRequirement, returnRequirementPurpose, point, cycle) {
+export function buildPreviousAndCurrentReturnLogs(
+  licence,
+  returnRequirement,
+  returnRequirementPurpose,
+  point,
+  cycle,
+  region
+) {
   const currentPeriod = {
     startDate: new Date(cycle.startDate),
     endDate: new Date(cycle.endDate),
@@ -70,7 +79,8 @@ export function buildPreviousAndCurrentReturnLogs(licence, returnRequirement, re
     returnRequirement,
     returnRequirementPurpose,
     point,
-    [currentPeriod, previousPeriodDetails]
+    [currentPeriod, previousPeriodDetails],
+    region
   )
 
   return [currentReturnLog, previousReturnLog]
