@@ -48,11 +48,18 @@ export default function (licenceEntity, dates, region) {
   const billLicence = billLicenceData(bill, licenceEntity.licence)
   const transaction = transactionData(billLicence, chargeVersionEntity.chargeReference, dates, netAmount)
 
+  const transaction2 = transactionData(billLicence, chargeVersionEntity.chargeReference, dates, netAmount)
+
+  transaction2.chargeType = 'compensation'
+  transaction2.netAmount = 0
+  transaction2.description =
+    'Compensation charge: calculated from the charge reference, activity description and regional environmental improvement charge; excludes any supported source additional charge and two-part tariff charge agreement'
+
   return {
     ...chargeVersionEntity,
     billRun,
     bill,
     billLicence,
-    transaction
+    transactions: [transaction, transaction2]
   }
 }

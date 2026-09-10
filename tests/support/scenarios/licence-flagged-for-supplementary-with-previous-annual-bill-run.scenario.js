@@ -1,5 +1,4 @@
-import billRunData from '../data/bill-run.data.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { regions, srocStartDate } from '../default-values.js'
@@ -13,8 +12,6 @@ export default function () {
 
   const { currentFinancialYear } = calculatedDates()
 
-  const currentEndYear = new Date(currentFinancialYear.endDate).getUTCFullYear()
-
   const licenceEntity = buildLicenceEntity(region)
 
   licenceEntity.licence.startDate = srocStartDate
@@ -26,22 +23,23 @@ export default function () {
   // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
   licenceEntity.licence.includeInSrocBilling = true
 
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    region
-  )
+  const previousFinancialYear = {
+    startDate: _previousYear(currentFinancialYear.startDate),
+    endDate: _previousYear(currentFinancialYear.endDate)
+  }
 
-  const billRun = billRunData(region)
-
-  billRun.fromFinancialYearEnding = currentEndYear - 1
-  billRun.toFinancialYearEnding = currentEndYear - 1
+  const billRunEntity = buildBillRunEntity(licenceEntity, previousFinancialYear, region)
 
   return {
     ...licenceEntity,
-    ...chargeVersionEntity,
-    billRun
+    ...billRunEntity
   }
+}
+
+function _previousYear(currentFinancialYearDate) {
+  const date = new Date(currentFinancialYearDate)
+
+  date.setUTCFullYear(date.getUTCFullYear() - 1)
+
+  return date
 }

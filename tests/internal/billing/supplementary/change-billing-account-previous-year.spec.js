@@ -5,6 +5,8 @@ import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { billingPeriodCounts, formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
+// TODO: this is change billing account
+// should be
 test.describe(
   'Change billing account in a previous financial year (internal)',
   { tag: '@supplementary-billing' },
@@ -26,7 +28,7 @@ test.describe(
       secondCompany = secondCompanyFromScenario
       licence = scenario.licences[0]
 
-      toFinancialYearEnding = scenario.billRun.toFinancialYearEnding
+      toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
 
       await setup(scenario)

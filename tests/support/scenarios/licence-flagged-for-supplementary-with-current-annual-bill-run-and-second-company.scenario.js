@@ -14,7 +14,7 @@ export const description =
 export default function () {
   const region = regions.NORTH_EAST
 
-  const { billRun, ...licence } = licenceWithCurrentAnnualBillRunScenario(region)
+  const licence = licenceWithCurrentAnnualBillRunScenario(region)
   const secondCompany = _secondCompany(region)
 
   // Without this, both the licence and its charge version only cover the last year or so (their default start
@@ -26,8 +26,7 @@ export default function () {
   licence.chargeVersion.startDate = srocStartDate
 
   return {
-    ...mergeByKey(asArrays(licence), asArrays(secondCompany)),
-    billRun
+    ...mergeByKey(asArrays(licence), asArrays(secondCompany))
   }
 }
 
