@@ -25,15 +25,13 @@ export default function () {
   // Spray Irrigation - Storage), so the return cannot match the element and is left unmatched.
   returnPurpose.purposeId.value = '420'
 
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licence.company,
-    licence.address,
-    licence.licence,
-    elementPurpose,
-    region
-  )
+  const chargeVersionEntity = buildChargeVersionEntity({ ...licence, licenceVersionPurpose: elementPurpose }, region)
 
-  const returnVersionEntity = buildReturnVersionEntity(licence.licence, returnPurpose, returnPoint)
+  const returnVersionEntity = buildReturnVersionEntity({
+    ...licence,
+    licenceVersionPurpose: returnPurpose,
+    point: returnPoint
+  })
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.

@@ -80,11 +80,7 @@ function _licenceWithTwoReturnRequirements(region) {
   secondLicenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId(region)
   const secondLicenceVersionPurposePoint = licenceVersionPurposePointData(secondLicenceVersionPurpose, secondPoint)
 
-  const returnVersionEntity = buildReturnVersionEntity(
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    licenceEntity.point
-  )
+  const returnVersionEntity = buildReturnVersionEntity(licenceEntity)
 
   const secondReturnRequirement = returnRequirementData(returnVersionEntity.returnVersion, secondLicenceVersionPurpose)
   const secondReturnRequirementPoint = returnRequirementPointData(secondReturnRequirement, secondPoint)

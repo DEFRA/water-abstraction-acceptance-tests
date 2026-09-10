@@ -13,13 +13,12 @@ import chargeVersionData from '../data/charge-version.data.js'
  * The modern billing engine also only processes charge versions on the sroc scheme, so there's no
  * charge-element-dependent transaction generation this data needs to satisfy either.
  *
- * @param {object} company - the company the charge version's billing account belongs to
- * @param {object} address - the address linked to the charge version's billing account
- * @param {object} licence - the licence the charge version is for
- * @param {object} licenceVersionPurpose - the licence version purpose the charge reference is for
+ * @param {object} licenceEntity - the licence entity the charge version is for
  * @param {object} region - the region
  */
-export default function (company, address, licence, licenceVersionPurpose, region) {
+export default function (licenceEntity, region) {
+  const { company, address, licence, licenceVersionPurpose } = licenceEntity
+
   const billingAccountEntity = buildBillingAccountEntity(company, address, region)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence, region)
 

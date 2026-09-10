@@ -26,13 +26,7 @@ export default function () {
   // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
   licenceEntity.licence.includeInSrocBilling = true
 
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    region
-  )
+  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, region)
 
   const billRun = billRunData(region)
 

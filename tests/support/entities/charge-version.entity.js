@@ -8,13 +8,12 @@ import chargeVersionData from '../data/charge-version.data.js'
  * reference for the given licence version purpose, and a charge element — the minimum valid data a charge version
  * needs to exist against a licence.
  *
- * @param {object} company - the company the charge version's billing account belongs to
- * @param {object} address - the address linked to the charge version's billing account
- * @param {object} licence - the licence the charge version is for
- * @param {object} licenceVersionPurpose - the licence version purpose the charge reference is for
+ * @param {object} licenceEntity - the licence entity the charge version is for
  * @param {object} region - the region the charge version and its billing account are for
  */
-export default function (company, address, licence, licenceVersionPurpose, region) {
+export default function (licenceEntity, region) {
+  const { company, address, licence, licenceVersionPurpose } = licenceEntity
+
   const billingAccountEntity = buildBillingAccountEntity(company, address, region)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence, region)
   const chargeReference = chargeReferenceData(chargeVersion, [licenceVersionPurpose])

@@ -13,17 +13,11 @@ export default function () {
 
   const licence = presrocLicenceScenario(region)
 
-  const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(
-    licence.company,
-    licence.address,
-    licence.licence,
-    licence.licenceVersionPurpose,
-    region
-  )
+  const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(licence, region)
 
   const licenceAgreement = licenceAgreementData(licence.licence)
 
-  const returnVersionEntity = buildReturnVersionEntity(licence.licence, licence.licenceVersionPurpose, licence.point)
+  const returnVersionEntity = buildReturnVersionEntity(licence)
 
   return {
     ...licence,

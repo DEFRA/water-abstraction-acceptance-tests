@@ -1,4 +1,5 @@
 import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
@@ -18,15 +19,14 @@ export default function (region = null) {
   const periods = returnLogPeriods(currentWinterReturnCycle)
 
   const licenceEntity = buildLicenceEntity(region)
-  const billRunEntity = buildBillRunEntity(licenceEntity, periods[0], region)
+
+  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, region)
+
+  const billRunEntity = buildBillRunEntity(licenceEntity, chargeVersionEntity, periods[0], region)
 
   billRunEntity.billRun.batchType = 'two_part_tariff'
 
-  const returnVersionEntity = buildReturnVersionEntity(
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    licenceEntity.point
-  )
+  const returnVersionEntity = buildReturnVersionEntity(licenceEntity)
 
   returnVersionEntity.returnRequirement.twoPartTariff = true
 
@@ -47,6 +47,7 @@ export default function (region = null) {
 
   return {
     ...licenceEntity,
+    ...chargeVersionEntity,
     ...billRunEntity,
     ...returnVersionEntity,
     returnLog

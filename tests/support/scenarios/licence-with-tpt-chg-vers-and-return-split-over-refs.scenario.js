@@ -52,7 +52,7 @@ export default function () {
   secondChargeElement.abstractionPeriodStartMonth = 11
   secondChargeElement.abstractionPeriodEndMonth = 3
 
-  const returnVersionEntity = buildReturnVersionEntity(licence.licence, licence.licenceVersionPurpose, licence.point)
+  const returnVersionEntity = buildReturnVersionEntity(licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.

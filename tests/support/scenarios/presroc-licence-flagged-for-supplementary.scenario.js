@@ -15,12 +15,12 @@ export default function (region = null) {
     region = regions.SOUTH_WEST
   }
 
-  const scenario = presrocLicenceWithChargeVersionScenario(region)
+  const licence = presrocLicenceWithChargeVersionScenario(region)
 
   // This is what flags the licence for the next presroc and sroc supplementary bill runs — without it, each
   // engine's charge version query excludes the licence entirely
-  scenario.licence.includeInPresrocBilling = 'yes'
-  scenario.licence.includeInSrocBilling = true
+  licence.licence.includeInPresrocBilling = 'yes'
+  licence.licence.includeInSrocBilling = true
 
   // The presroc charge version ends the day before the sroc one below begins, reflecting a licence that was
   // properly superseded at the scheme boundary rather than one left open-ended
@@ -28,17 +28,11 @@ export default function (region = null) {
 
   presrocChargeVersionEndDate.setUTCDate(presrocChargeVersionEndDate.getUTCDate() - 1)
 
-  scenario.chargeVersion.endDate = formatDateToIso(presrocChargeVersionEndDate)
+  licence.chargeVersion.endDate = formatDateToIso(presrocChargeVersionEndDate)
 
-  const srocChargeVersionEntity = _srocChargeVersion(
-    scenario.company,
-    scenario.address,
-    scenario.licence,
-    scenario.licenceVersionPurpose,
-    region
-  )
+  const srocChargeVersionEntity = _srocChargeVersion(licence, region)
 
-  return mergeByKey(asArrays(scenario), asArrays(srocChargeVersionEntity))
+  return mergeByKey(asArrays(licence), asArrays(srocChargeVersionEntity))
 }
 
 /**
@@ -46,8 +40,8 @@ export default function (region = null) {
  *
  * @private
  */
-function _srocChargeVersion(company, address, licence, licenceVersionPurpose, region) {
-  const chargeVersionEntity = buildChargeVersionEntity(company, address, licence, licenceVersionPurpose, region)
+function _srocChargeVersion(licence, region) {
+  const chargeVersionEntity = buildChargeVersionEntity(licence, region)
 
   chargeVersionEntity.billingAccount.accountNumber = generateAccountNumber(region)
 

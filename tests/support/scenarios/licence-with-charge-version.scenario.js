@@ -11,13 +11,7 @@ export default function (region = null) {
   }
 
   const licenceEntity = buildLicenceEntity(region)
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity.company,
-    licenceEntity.address,
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    region
-  )
+  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, region)
 
   return {
     ...licenceEntity,
