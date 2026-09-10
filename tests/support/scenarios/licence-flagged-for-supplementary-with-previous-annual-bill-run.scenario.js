@@ -1,4 +1,5 @@
 import billRunData from '../data/bill-run.data.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
@@ -26,7 +27,8 @@ export default function () {
   // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
   licenceEntity.licence.includeInSrocBilling = true
 
-  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, region)
+  const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
+  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
 
   const billRun = billRunData(region)
 
@@ -35,6 +37,7 @@ export default function () {
 
   return {
     ...licenceEntity,
+    ...billingAccountEntity,
     ...chargeVersionEntity,
     billRun
   }

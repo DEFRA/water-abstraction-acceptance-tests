@@ -27,7 +27,7 @@ export default function () {
 
   const { licenceVersionPurpose, point } = licence
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
 
   const { chargeReference, chargeElements } = _chargeReference(chargeVersion, licenceVersionPurpose)

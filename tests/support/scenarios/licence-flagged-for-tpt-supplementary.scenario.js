@@ -44,7 +44,7 @@ export default function () {
 
   const [firstPoint, secondPoint] = licence.points
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
   const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes)
 

@@ -1,3 +1,4 @@
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
@@ -25,7 +26,12 @@ export default function () {
   // Spray Irrigation - Storage), so the return cannot match the element and is left unmatched.
   returnPurpose.purposeId.value = '420'
 
-  const chargeVersionEntity = buildChargeVersionEntity({ ...licence, licenceVersionPurpose: elementPurpose }, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
+  const chargeVersionEntity = buildChargeVersionEntity(
+    { ...licence, licenceVersionPurpose: elementPurpose },
+    billingAccountEntity,
+    region
+  )
 
   const returnVersionEntity = buildReturnVersionEntity({
     ...licence,
@@ -53,6 +59,7 @@ export default function () {
 
   return {
     ...licence,
+    ...billingAccountEntity,
     ...chargeVersionEntity,
     ...returnVersionEntity,
     returnLogs: [previousReturnLog, currentReturnLog],

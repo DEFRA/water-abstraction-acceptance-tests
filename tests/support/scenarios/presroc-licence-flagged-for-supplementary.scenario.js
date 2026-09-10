@@ -1,4 +1,5 @@
 import { asArrays } from '../helpers/wire-format.helpers.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
 import { generateAccountNumber } from '../helpers/generators.helpers.js'
@@ -30,9 +31,13 @@ export default function (region = null) {
 
   licence.chargeVersion.endDate = formatDateToIso(presrocChargeVersionEndDate)
 
-  const srocChargeVersionEntity = _srocChargeVersion(licence, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
+  billingAccountEntity.billingAccount.accountNumber = generateAccountNumber(region)
 
-  return mergeByKey(asArrays(licence), asArrays(srocChargeVersionEntity))
+  const chargeVersionEntity = buildChargeVersionEntity(licence, billingAccountEntity, region)
+  const srocChargeVersionEntity = _srocChargeVersion(chargeVersionEntity)
+
+  return mergeByKey(asArrays(licence), asArrays(billingAccountEntity), asArrays(srocChargeVersionEntity))
 }
 
 /**
@@ -40,11 +45,7 @@ export default function (region = null) {
  *
  * @private
  */
-function _srocChargeVersion(licence, region) {
-  const chargeVersionEntity = buildChargeVersionEntity(licence, region)
-
-  chargeVersionEntity.billingAccount.accountNumber = generateAccountNumber(region)
-
+function _srocChargeVersion(chargeVersionEntity) {
   // Starts on the sroc scheme's first day rather than inheriting the licence's own (pre-sroc) start date, and uses
   // the change reason a real presroc-to-sroc transition would have, rather than the "New licence" default
   chargeVersionEntity.chargeVersion.startDate = srocStartDate

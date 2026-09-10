@@ -34,7 +34,7 @@ export default function () {
   // distinct lets each return match its own element.
   secondLicenceVersionPurpose.purposeId.value = '420'
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
 
   const { chargeReferences, chargeElements } = _chargeReferences(

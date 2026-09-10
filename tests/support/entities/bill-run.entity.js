@@ -17,11 +17,16 @@ const netAmount = 6600
  * must set `billRun.batchType` themselves.
  *
  * @param {object} licenceEntity - the licence entity the bill licence is for
+ * @param {object} billingAccountEntity - the billing account for the bill
  * @param {object} chargeVersionEntity - the charge version the bill and transaction are for
  * @param {object} dates - the billing period dates; `dates.endDate` sets the bill run's financial year ending
  * @param {object} region - the region
  */
-export default function (licenceEntity, chargeVersionEntity, dates, region) {
+export default function (licenceEntity, billingAccountEntity, chargeVersionEntity, dates, region) {
+  const { licence } = licenceEntity
+  const { billingAccount } = billingAccountEntity
+  const { chargeReference } = chargeVersionEntity
+
   const billRun = billRunData(region)
 
   billRun.createdAt = today()
@@ -36,9 +41,9 @@ export default function (licenceEntity, chargeVersionEntity, dates, region) {
   billRun.creditNoteValue = 0
   billRun.netTotal = netAmount
 
-  const bill = billData(chargeVersionEntity.billingAccount, billRun, netAmount)
-  const billLicence = billLicenceData(bill, licenceEntity.licence)
-  const transaction = transactionData(billLicence, chargeVersionEntity.chargeReference, dates, netAmount)
+  const bill = billData(billingAccount, billRun, netAmount)
+  const billLicence = billLicenceData(bill, licence)
+  const transaction = transactionData(billLicence, chargeReference, dates, netAmount)
 
   return {
     billRun,
