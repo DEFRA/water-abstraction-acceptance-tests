@@ -1,12 +1,12 @@
+import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { regions } from '../default-values.js'
 import { includeInSrocBilling } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { asArrays } from '../helpers/wire-format.helpers.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Licence flagged for supplementary billing, and a sent annual bill run for the current year'
 export const description =

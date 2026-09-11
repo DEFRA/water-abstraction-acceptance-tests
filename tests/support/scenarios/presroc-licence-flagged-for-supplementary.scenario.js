@@ -3,10 +3,10 @@ import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { formatDateToIso } from '../helpers/date.helpers.js'
 import { generateAccountNumber } from '../helpers/generators.helpers.js'
+import { includeInSrocBilling } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import presrocLicenceWithChargeVersionScenario from './presroc-licence-with-charge-version.scenario.js'
 import { regions, srocStartDate } from '../default-values.js'
-import { includeInSrocBilling } from '../helpers/billing.helpers.js'
 
 export const title = 'Presroc and sroc licence flagged for presroc and sroc supplementary billing'
 export const description =
