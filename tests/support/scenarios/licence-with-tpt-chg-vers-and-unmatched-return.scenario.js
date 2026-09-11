@@ -1,3 +1,4 @@
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
@@ -25,15 +26,18 @@ export default function () {
   // Spray Irrigation - Storage), so the return cannot match the element and is left unmatched.
   returnPurpose.purposeId.value = '420'
 
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
   const chargeVersionEntity = buildChargeVersionEntity(
-    licence.company,
-    licence.address,
-    licence.licence,
-    elementPurpose,
+    { ...licence, licenceVersionPurpose: elementPurpose },
+    billingAccountEntity,
     region
   )
 
-  const returnVersionEntity = buildReturnVersionEntity(licence.licence, returnPurpose, returnPoint)
+  const returnVersionEntity = buildReturnVersionEntity({
+    ...licence,
+    licenceVersionPurpose: returnPurpose,
+    point: returnPoint
+  })
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.
@@ -55,6 +59,7 @@ export default function () {
 
   return {
     ...licence,
+    ...billingAccountEntity,
     ...chargeVersionEntity,
     ...returnVersionEntity,
     returnLogs: [previousReturnLog, currentReturnLog],

@@ -1,3 +1,4 @@
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import licenceAgreementData from '../data/licence-agreement.data.js'
@@ -13,20 +14,15 @@ export default function () {
 
   const licence = presrocLicenceScenario(region)
 
-  const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(
-    licence.company,
-    licence.address,
-    licence.licence,
-    licence.licenceVersionPurpose,
-    region
-  )
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
+  const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(licence, billingAccountEntity, region)
+  const returnVersionEntity = buildReturnVersionEntity(licence)
 
   const licenceAgreement = licenceAgreementData(licence.licence)
 
-  const returnVersionEntity = buildReturnVersionEntity(licence.licence, licence.licenceVersionPurpose, licence.point)
-
   return {
     ...licence,
+    ...billingAccountEntity,
     ...presrocChargeVersionEntity,
     licenceAgreement,
     ...returnVersionEntity

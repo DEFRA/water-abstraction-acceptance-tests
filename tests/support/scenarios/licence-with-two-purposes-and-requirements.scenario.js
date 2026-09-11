@@ -14,14 +14,7 @@ export default function (region = null) {
 
   const licence = licenceWithTwoPurposesScenario(region)
 
-  const [licenceVersionPurpose] = licence.licenceVersionPurposes
-  const [firstPoint] = licence.points
-
-  const { returnVersion, returnRequirement, returnRequirementPurpose } = buildReturnVersionEntity(
-    licence.licence,
-    licenceVersionPurpose,
-    firstPoint
-  )
+  const { returnVersion, returnRequirement, returnRequirementPurpose } = buildReturnVersionEntity(licence)
 
   const returnRequirementPoints = licence.points.map((point) => {
     return returnRequirementPointData(returnRequirement, point)

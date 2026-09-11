@@ -44,14 +44,14 @@ export default function () {
 
   const [firstPoint, secondPoint] = licence.points
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
   const chargeReference = chargeReferenceData(chargeVersion, licence.licenceVersionPurposes)
 
   const firstChargeElement = chargeElementData(chargeReference, firstLicenceVersionPurpose)
   const secondChargeElement = chargeElementData(chargeReference, secondLicenceVersionPurpose)
 
-  const returnVersionEntity = buildReturnVersionEntity(licence.licence, firstLicenceVersionPurpose, firstPoint)
+  const returnVersionEntity = buildReturnVersionEntity(licence)
 
   // In the service return logs cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return logs we're seeding.

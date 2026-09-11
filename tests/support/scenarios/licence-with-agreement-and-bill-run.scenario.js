@@ -1,4 +1,6 @@
 import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithAgreementScenario from './licence-with-agreement.scenario.js'
 import { regions } from '../default-values.js'
@@ -24,12 +26,22 @@ export default function (region = null) {
   } = calculatedDates()
 
   const licence = licenceWithAgreementScenario(region)
-  const billRunEntity = buildBillRunEntity(licence, twoPartTariffDates, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
+  const chargeVersionEntity = buildChargeVersionEntity(licence, billingAccountEntity, region)
+  const billRunEntity = buildBillRunEntity(
+    licence,
+    billingAccountEntity,
+    chargeVersionEntity,
+    twoPartTariffDates,
+    region
+  )
 
   billRunEntity.billRun.batchType = 'two_part_tariff'
 
   return {
     ...licence,
+    ...billingAccountEntity,
+    ...chargeVersionEntity,
     ...billRunEntity
   }
 }

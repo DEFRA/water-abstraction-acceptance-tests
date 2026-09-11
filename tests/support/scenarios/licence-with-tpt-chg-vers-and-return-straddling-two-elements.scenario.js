@@ -27,12 +27,12 @@ export default function () {
 
   const { licenceVersionPurpose, point } = licence
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
 
   const { chargeReference, chargeElements } = _chargeReference(chargeVersion, licenceVersionPurpose)
 
-  const returnVersionEntity = buildReturnVersionEntity(licence.licence, licenceVersionPurpose, point)
+  const returnVersionEntity = buildReturnVersionEntity(licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return log we're seeding.

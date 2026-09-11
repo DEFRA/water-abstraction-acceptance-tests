@@ -31,11 +31,7 @@ export default function (region = null) {
   // Only licences flagged as water undertakers are eligible for quarterly returns, so we ensure the licence aligns.
   licenceEntity.licence.waterUndertaker = firstPeriod.quarterly
 
-  const returnVersionEntity = buildReturnVersionEntity(
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    licenceEntity.point
-  )
+  const returnVersionEntity = buildReturnVersionEntity(licenceEntity)
 
   const periods = _periods(firstPeriod, dates)
   const returnLogs = periods.map((period) => {

@@ -34,7 +34,7 @@ export default function () {
   // distinct lets each return match its own element.
   secondLicenceVersionPurpose.purposeId.value = '420'
 
-  const billingAccountEntity = buildBillingAccountEntity(licence.company, licence.address, region)
+  const billingAccountEntity = buildBillingAccountEntity(licence, region)
   const chargeVersion = chargeVersionData(billingAccountEntity.billingAccount, licence.licence, region)
 
   const { chargeReferences, chargeElements } = _chargeReferences(
@@ -43,7 +43,7 @@ export default function () {
     secondLicenceVersionPurpose
   )
 
-  const returnVersionEntity = buildReturnVersionEntity(licence.licence, firstLicenceVersionPurpose, firstPoint)
+  const returnVersionEntity = buildReturnVersionEntity(licence)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the return logs we're seeding.
