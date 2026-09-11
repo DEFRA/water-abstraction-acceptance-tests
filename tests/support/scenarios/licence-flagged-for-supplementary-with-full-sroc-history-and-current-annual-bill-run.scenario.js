@@ -4,7 +4,7 @@ import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { includeInSrocBilling } from '../helpers/billing.helpers.js'
+import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions, srocStartDate } from '../default-values.js'
 
@@ -37,7 +37,12 @@ export default function () {
     region
   )
 
-  const additionalChargeEntity = includeInSrocBilling(licenceEntity, billingAccountEntity, chargeVersionEntity, region)
+  const additionalChargeEntity = includeInSrocSupplementaryBilling(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    region
+  )
 
   return {
     ...licenceEntity,

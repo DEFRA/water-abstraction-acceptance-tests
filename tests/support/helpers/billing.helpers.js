@@ -7,7 +7,7 @@ import { convertCubicMetresToMegalitres } from './conversion.helpers.js'
  *
  * @private
  */
-export function includeInSrocBilling(licenceEntity, billingAccountEntity, chargeVersionEntity, region) {
+export function includeInSrocSupplementaryBilling(licenceEntity, billingAccountEntity, chargeVersionEntity, region) {
   // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
   // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
   licenceEntity.licence.includeInSrocBilling = true
