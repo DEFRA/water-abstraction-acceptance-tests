@@ -1,6 +1,8 @@
-import billRunData from '../data/bill-run.data.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { regions } from '../default-values.js'
 
 export const title = 'Licence flagged for supplementary billing, and a sent annual bill run for the current year'
@@ -13,21 +15,25 @@ export default function (region = null) {
   }
   const { currentFinancialYear } = calculatedDates()
 
-  const currentEndYear = new Date(currentFinancialYear.endDate).getUTCFullYear()
-
-  const licence = licenceWithChargeVersionScenario(region)
+  const licenceEntity = buildLicenceEntity(region)
+  const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
+  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
+  const billRunEntity = buildBillRunEntity(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
 
   // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
   // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
-  licence.licence.includeInSrocBilling = true
-
-  const billRun = billRunData(region)
-
-  billRun.fromFinancialYearEnding = currentEndYear
-  billRun.toFinancialYearEnding = currentEndYear
+  licenceEntity.licence.includeInSrocBilling = true
 
   return {
-    ...licence,
-    billRun
+    ...licenceEntity,
+    ...billingAccountEntity,
+    ...chargeVersionEntity,
+    ...billRunEntity
   }
 }

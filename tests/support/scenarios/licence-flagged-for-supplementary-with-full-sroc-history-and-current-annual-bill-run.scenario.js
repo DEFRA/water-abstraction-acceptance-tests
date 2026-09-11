@@ -1,4 +1,8 @@
-import licenceWithCurrentAnnualBillRunScenario from './licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { regions, srocStartDate } from '../default-values.js'
 
 export const title =
@@ -9,15 +13,35 @@ export const description =
 export default function () {
   const region = regions.NORTH_WEST
 
-  const licence = licenceWithCurrentAnnualBillRunScenario(region)
+  const { currentFinancialYear } = calculatedDates()
+
+  const licenceEntity = buildLicenceEntity(region)
 
   // Without this, both the licence and its charge version only cover the last year or so (their default start
   // dates), so there's nothing for a supplementary bill run to pick up in earlier sroc periods
-  licence.licence.startDate = srocStartDate
-  licence.licenceVersion.startDate = srocStartDate
-  licence.licenceDocument.startDate = srocStartDate
-  licence.licenceDocumentRole.startDate = srocStartDate
-  licence.chargeVersion.startDate = srocStartDate
+  licenceEntity.licence.startDate = srocStartDate
+  licenceEntity.licenceVersion.startDate = srocStartDate
+  licenceEntity.licenceDocument.startDate = srocStartDate
+  licenceEntity.licenceDocumentRole.startDate = srocStartDate
 
-  return licence
+  const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
+  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
+  const billRunEntity = buildBillRunEntity(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
+
+  // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
+  // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
+  licenceEntity.licence.includeInSrocBilling = true
+
+  return {
+    ...licenceEntity,
+    ...billingAccountEntity,
+    ...chargeVersionEntity,
+    ...billRunEntity
+  }
 }

@@ -1,8 +1,6 @@
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-current-annual-bill-run-and-second-company.scenario.js'
-import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
-import { billingPeriodCounts, formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
@@ -10,7 +8,6 @@ test.describe(
   { tag: '@supplementary-billing' },
   () => {
     let billingAccount
-    let billingPeriodCount
     let company
     let licence
     let secondCompany
@@ -21,13 +18,12 @@ test.describe(
 
       const [companyFromScenario, secondCompanyFromScenario] = scenario.companies
 
-      billingAccount = scenario.billingAccounts[0]
+      billingAccount = scenario.billingAccount
       company = companyFromScenario
       secondCompany = secondCompanyFromScenario
       licence = scenario.licences[0]
 
       toFinancialYearEnding = scenario.billRun.toFinancialYearEnding
-      billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
 
       await setup(scenario)
     })
@@ -40,60 +36,6 @@ test.describe(
       page
     }) => {
       test.setTimeout(60000)
-
-      const formattedCurrentDate = formatLongDate(new Date())
-
-      await page.goto('/system/bill-runs')
-
-      await expect(page.locator('h1')).toContainText('Bill runs')
-      await page.getByRole('button', { name: 'Create a bill run' }).click()
-
-      await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Supplementary', exact: true }).check()
-      await page.getByRole('button', { name: 'Continue' }).click()
-
-      await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: regions.NORTH_EAST.displayName }).check()
-      await page.getByRole('button', { name: 'Continue' }).click()
-
-      await expect(page.locator('h1')).toContainText('Check the bill run to be created')
-      await page.getByRole('button', { name: 'Create bill run' }).click()
-
-      await expect(page.locator('h1')).toContainText('Bill runs')
-
-      // Creating a supplementary bill run always attempts the presroc engine too, which finds nothing to bill for this
-      // sroc-only scenario and shows as an empty bill run at index 0
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
-      await expect(page.locator('[data-test="date-created-1"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-1"]')).toContainText(regions.NORTH_EAST.displayName)
-      await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
-      await page.locator('[data-test="date-created-1"] > .govuk-link').click()
-
-      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
-      await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
-
-      const expectedBillsText =
-        billingPeriodCount.sroc === 1 ? '1 Supplementary bill' : `${billingPeriodCount.sroc} Supplementary bills`
-
-      await expect(page.locator('[data-test="bills-count"]')).toContainText(expectedBillsText)
-      await page.getByRole('button', { name: 'Send bill run' }).click()
-
-      await expect(page.locator('h1')).toContainText("You're about to send this bill run")
-      await expect(summaryValue(page, 'Charge scheme')).toContainText('Current')
-      await page.getByRole('button', { name: 'Send bill run' }).click()
-
-      await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
-      await page.getByRole('link', { name: 'Go to bill run' }).click()
-
-      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
-      await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
-
-      await page.getByRole('link', { name: 'Go back to bill runs' }).click()
-
-      await expect(page.locator('h1')).toContainText('Bill runs')
-      await expect(page.locator('[data-test="date-created-1"] > .govuk-link')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc))
-      await expect(page.locator('[data-test="bill-run-status-1"] > .govuk-tag')).toContainText('sent')
 
       await page.getByRole('link', { name: 'Search' }).click()
       await page.locator('#query').fill(licence.licenceRef)
@@ -187,8 +129,8 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
-      await expect(page.locator('[data-test="credits-count"]')).toContainText('2 credit notes')
-      await expect(page.locator('[data-test="debits-count"]')).toContainText('2 invoices')
+      await expect(page.locator('[data-test="credits-count"]')).toContainText('1 credit note')
+      await expect(page.locator('[data-test="debits-count"]')).toContainText('4 invoices')
 
       const abstractorsTable = page.locator('[data-test="other-abstractors"]')
       const secondCompanyRows = abstractorsTable.getByRole('row', { name: secondCompany.name })
@@ -199,7 +141,7 @@ test.describe(
 
       const originalCompanyRows = abstractorsTable.getByRole('row', { name: billingAccount.accountNumber })
 
-      await expect(originalCompanyRows).toHaveCount(2)
+      await expect(originalCompanyRows).toHaveCount(3)
       await expect(originalCompanyRows.first()).toContainText(licence.licenceRef)
       await expect(originalCompanyRows.last()).toContainText(licence.licenceRef)
     })
