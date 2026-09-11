@@ -6,7 +6,7 @@ import transactionData from '../data/transaction.data.js'
 
 // A bill can never be for £0 — a sent bill run always has a non-zero total, so the seeded bill and its transaction
 // must share a real net amount (in pence) rather than being left null.
-const netAmount = 6600
+const netAmount = 5335
 
 /**
  * Builds a bill run in its entirety: a sent bill run for the financial year ending taken from the given billing
@@ -43,12 +43,28 @@ export default function (licenceEntity, billingAccountEntity, chargeVersionEntit
 
   const bill = billData(billingAccount, billRun, netAmount)
   const billLicence = billLicenceData(bill, licence)
-  const transaction = transactionData(billLicence, chargeReference, dates, netAmount)
+
+  const transactions = [transactionData(billLicence, chargeReference, dates, netAmount)]
+
+  _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions)
 
   return {
     billRun,
     bill,
     billLicence,
-    transaction
+    transactions
+  }
+}
+
+function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions) {
+  if (!licenceEntity.licence.waterUndertaker) {
+    const transaction2 = transactionData(billLicence, chargeVersionEntity.chargeReference, dates, netAmount)
+
+    transaction2.chargeType = 'compensation'
+    transaction2.netAmount = 0
+    transaction2.description =
+      'Compensation charge: calculated from the charge reference, activity description and regional environmental improvement charge; excludes any supported source additional charge and two-part tariff charge agreement'
+
+    transactions.push(transaction2)
   }
 }

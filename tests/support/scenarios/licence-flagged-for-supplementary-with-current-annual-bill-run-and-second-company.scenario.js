@@ -1,10 +1,16 @@
 import addressData from '../data/address.data.js'
 import { asArrays } from '../helpers/wire-format.helpers.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
-import licenceWithCurrentAnnualBillRunScenario from './licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
+import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { regions, srocStartDate } from '../default-values.js'
+import { previousYears } from '../helpers/date.helpers.js'
+import { regions } from '../default-values.js'
 
 export const title =
   'Licence flagged for supplementary billing with a sent annual bill run for the current year, plus a second company'
@@ -14,20 +20,43 @@ export const description =
 export default function () {
   const region = regions.NORTH_EAST
 
-  const { billRun, ...licence } = licenceWithCurrentAnnualBillRunScenario(region)
-  const secondCompany = _secondCompany(region)
+  const { currentFinancialYear } = calculatedDates()
+
+  const licenceStartDate = previousYears(currentFinancialYear.startDate, 2)
+
+  const licenceEntity = buildLicenceEntity(region)
 
   // Without this, both the licence and its charge version only cover the last year or so (their default start
   // dates), so there's nothing for a supplementary bill run to pick up in earlier sroc periods
-  licence.licence.startDate = srocStartDate
-  licence.licenceVersion.startDate = srocStartDate
-  licence.licenceDocument.startDate = srocStartDate
-  licence.licenceDocumentRole.startDate = srocStartDate
-  licence.chargeVersion.startDate = srocStartDate
+  licenceEntity.licence.startDate = licenceStartDate
+  licenceEntity.licenceVersion.startDate = licenceStartDate
+  licenceEntity.licenceDocument.startDate = licenceStartDate
+  licenceEntity.licenceDocumentRole.startDate = licenceStartDate
+
+  const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
+  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
+  const billRunEntity = buildBillRunEntity(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
+
+  const additionalChargeEntity = includeInSrocSupplementaryBilling(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    region
+  )
+
+  const secondCompany = _secondCompany(region)
 
   return {
-    ...mergeByKey(asArrays(licence), asArrays(secondCompany)),
-    billRun
+    ...mergeByKey(asArrays(licenceEntity), asArrays(secondCompany)),
+    ...billingAccountEntity,
+    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
+    ...billRunEntity
   }
 }
 

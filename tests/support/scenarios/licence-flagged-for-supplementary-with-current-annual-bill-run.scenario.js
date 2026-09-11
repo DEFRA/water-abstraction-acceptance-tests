@@ -1,6 +1,11 @@
-import billRunData from '../data/bill-run.data.js'
+import { asArrays } from '../helpers/wire-format.helpers.js'
+import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
+import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
+import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
 
 export const title = 'Licence flagged for supplementary billing, and a sent annual bill run for the current year'
@@ -13,21 +18,28 @@ export default function (region = null) {
   }
   const { currentFinancialYear } = calculatedDates()
 
-  const currentEndYear = new Date(currentFinancialYear.endDate).getUTCFullYear()
+  const licenceEntity = buildLicenceEntity(region)
+  const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
+  const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
+  const billRunEntity = buildBillRunEntity(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
 
-  const licence = licenceWithChargeVersionScenario(region)
-
-  // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
-  // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
-  licence.licence.includeInSrocBilling = true
-
-  const billRun = billRunData(region)
-
-  billRun.fromFinancialYearEnding = currentEndYear
-  billRun.toFinancialYearEnding = currentEndYear
+  const additionalChargeEntity = includeInSrocSupplementaryBilling(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    region
+  )
 
   return {
-    ...licence,
-    billRun
+    ...licenceEntity,
+    ...billingAccountEntity,
+    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
+    ...billRunEntity
   }
 }

@@ -1,9 +1,9 @@
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-full-sroc-history-and-current-annual-bill-run.scenario.js'
-import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { billingPeriodCounts, formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { summaryValue, tableRow } from '../../../support/helpers/govuk.helpers.js'
 
 test.describe(
   'Replace charge version in the current financial year, changing the charge reference and adding adjustments and additional charges (internal)',
@@ -71,7 +71,7 @@ test.describe(
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
       const expectedBillsText =
-        billingPeriodCount.sroc === 1 ? '1 Supplementary bill' : `${billingPeriodCount.sroc} Supplementary bills`
+        billingPeriodCount.sroc === 1 ? '1 Supplementary bill' : `${billingPeriodCount.sroc - 1} Supplementary bills`
 
       await expect(page.locator('[data-test="bills-count"]')).toContainText(expectedBillsText)
       await page.getByRole('button', { name: 'Send bill run' }).click()
@@ -90,7 +90,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
       await expect(page.locator('[data-test="date-created-1"] > .govuk-link')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc))
+      await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc - 1))
       await expect(page.locator('[data-test="bill-run-status-1"] > .govuk-tag')).toContainText('sent')
 
       await page.getByRole('link', { name: 'Search' }).click()
@@ -226,10 +226,11 @@ test.describe(
       await billRow.getByRole('link', { name: 'View' }).click()
 
       await expect(page.locator('h1')).toContainText(`Billing account ${billingAccount.accountNumber}`)
-      await expect(page.locator('[data-test="additional-charges-0"]')).toContainText(
+      const chargeReferenceRow = tableRow(page, 'Supported source Earl Soham - Deben')
+      await expect(chargeReferenceRow.locator('[data-test^="additional-charges-"]')).toContainText(
         'Supported source Earl Soham - Deben'
       )
-      await expect(page.locator('[data-test="adjustments-0"]')).toContainText('Winter discount')
+      await expect(chargeReferenceRow.locator('[data-test^="adjustments-"]')).toContainText('Winter discount')
     })
   }
 )
