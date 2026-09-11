@@ -8,6 +8,7 @@ import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { previousYears } from '../helpers/date.helpers.js'
 import { regions } from '../default-values.js'
 
 export const title =
@@ -20,7 +21,7 @@ export default function () {
 
   const { currentFinancialYear } = calculatedDates()
 
-  const licenceStartDate = _timeTravel(currentFinancialYear.startDate, 2)
+  const licenceStartDate = previousYears(currentFinancialYear.startDate, 2)
 
   const licenceEntity = buildLicenceEntity(region)
 
@@ -70,12 +71,4 @@ function _secondCompany(region) {
   company.name = `${company.name}`
 
   return { company, address, companyAddress }
-}
-
-function _timeTravel(currentFinancialYearDate, years = 1) {
-  const date = new Date(currentFinancialYearDate)
-
-  date.setUTCFullYear(date.getUTCFullYear() - years)
-
-  return date
 }

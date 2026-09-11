@@ -228,6 +228,21 @@ export function previousPeriod(period) {
 }
 
 /**
+ * Subtracts a specified number of years from a given date.
+ *
+ * @param {string | number | Date} date - The starting date as an ISO string, timestamp, or Date object.
+ * @param {number} [years=1] - The number of years to subtract.
+ * @returns {Date} A new Date object offset by the specified years.
+ */
+export function previousYears(date, years = 1) {
+  const result = new Date(date)
+
+  result.setUTCFullYear(result.getUTCFullYear() - years)
+
+  return result
+}
+
+/**
  * Returns a date relative to today by the specified number of days.
  *
  * If the number of days is positive, it will add that number of days to today. If it is negative, it will subtract that
