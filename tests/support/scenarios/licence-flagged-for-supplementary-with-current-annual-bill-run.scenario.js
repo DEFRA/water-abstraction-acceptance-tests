@@ -4,6 +4,9 @@ import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { regions } from '../default-values.js'
+import { includeInSrocBilling } from '../helpers/billing.helpers.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { asArrays } from '../helpers/wire-format.helpers.js'
 
 export const title = 'Licence flagged for supplementary billing, and a sent annual bill run for the current year'
 export const description =
@@ -26,14 +29,12 @@ export default function (region = null) {
     region
   )
 
-  // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
-  // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
-  licenceEntity.licence.includeInSrocBilling = true
+  const additionalChargeEntity = includeInSrocBilling(licenceEntity, billingAccountEntity, chargeVersionEntity, region)
 
   return {
     ...licenceEntity,
     ...billingAccountEntity,
-    ...chargeVersionEntity,
+    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
     ...billRunEntity
   }
 }

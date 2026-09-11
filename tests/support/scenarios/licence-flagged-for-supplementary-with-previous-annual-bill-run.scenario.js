@@ -1,13 +1,13 @@
+import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { previousYears } from '../helpers/date.helpers.js'
-import { regions, srocStartDate } from '../default-values.js'
-import { convertCubicMetresToMegalitres } from '../helpers/conversion.helpers.js'
+import { includeInSrocBilling } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { asArrays } from '../helpers/wire-format.helpers.js'
+import { previousYears } from '../helpers/date.helpers.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Licence flagged for supplementary billing with previous annual bill run'
 export const description =
@@ -27,10 +27,6 @@ export default function () {
   licenceEntity.licenceDocument.startDate = licenceStartDate
   licenceEntity.licenceDocumentRole.startDate = licenceStartDate
 
-  // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
-  // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
-  licenceEntity.licence.includeInSrocBilling = true
-
   const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
   const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
 
@@ -45,30 +41,12 @@ export default function () {
     region
   )
 
-  chargeVersionEntity.chargeVersion.status = 'superseded'
-
-  const chargeVersionEntity2 = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
-
-  chargeVersionEntity2.chargeReference.volume = convertCubicMetresToMegalitres(2000)
-
-  chargeVersionEntity2.chargeElement.authorisedAnnualQuantity = convertCubicMetresToMegalitres(2000)
-
-  chargeVersionEntity2.chargeVersion.versionNumber = 101
-  chargeVersionEntity2.chargeVersion.changeReasonId = {
-    schema: 'public',
-    table: 'changeReasons',
-    lookup: 'description',
-    value: 'Error correction',
-    select: 'id'
-  }
+  const additionalChargeEntity = includeInSrocBilling(licenceEntity, billingAccountEntity, chargeVersionEntity, region)
 
   return {
     ...licenceEntity,
     ...billingAccountEntity,
-    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(chargeVersionEntity2)),
+    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
     ...billRunEntity
   }
 }
-
-// todo: this can resue across other scnearios
-function _reasonForSrocBilling() {}

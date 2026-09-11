@@ -1,8 +1,11 @@
+import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildBillRunEntity from '../entities/bill-run.entity.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { includeInSrocBilling } from '../helpers/billing.helpers.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions, srocStartDate } from '../default-values.js'
 
 export const title =
@@ -34,14 +37,12 @@ export default function () {
     region
   )
 
-  // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
-  // (the query the supplementary engine uses to find what to bill) excludes the licence entirely
-  licenceEntity.licence.includeInSrocBilling = true
+  const additionalChargeEntity = includeInSrocBilling(licenceEntity, billingAccountEntity, chargeVersionEntity, region)
 
   return {
     ...licenceEntity,
     ...billingAccountEntity,
-    ...chargeVersionEntity,
+    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
     ...billRunEntity
   }
 }

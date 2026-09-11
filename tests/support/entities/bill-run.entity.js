@@ -46,7 +46,17 @@ export default function (licenceEntity, billingAccountEntity, chargeVersionEntit
 
   const transactions = [transactionData(billLicence, chargeReference, dates, netAmount)]
 
-  // this will add a compensatuioin charge
+  _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions)
+
+  return {
+    billRun,
+    bill,
+    billLicence,
+    transactions
+  }
+}
+
+function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions) {
   if (!licenceEntity.licence.waterUndertaker) {
     const transaction2 = transactionData(billLicence, chargeVersionEntity.chargeReference, dates, netAmount)
 
@@ -56,12 +66,5 @@ export default function (licenceEntity, billingAccountEntity, chargeVersionEntit
       'Compensation charge: calculated from the charge reference, activity description and regional environmental improvement charge; excludes any supported source additional charge and two-part tariff charge agreement'
 
     transactions.push(transaction2)
-  }
-
-  return {
-    billRun,
-    bill,
-    billLicence,
-    transactions
   }
 }
