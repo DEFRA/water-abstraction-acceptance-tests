@@ -32,7 +32,6 @@ test.describe(
 
     test('creates the supplementary bill run covering every year since the last annual', async ({ page }) => {
       const formattedCurrentDate = formatLongDate(new Date())
-      const currentYear = new Date().getFullYear() // comes from ther billing financyl year toFinancialYearEnding
 
       await page.goto('/system/bill-runs')
 
@@ -79,12 +78,7 @@ test.describe(
 
       await expect(otherAbstractorsTable).toBeVisible()
 
-      // Derived from today's calendar year rather than toFinancialYearEnding or the presroc/sroc period-count formula:
-      // 4 explicit rows for the current year and the 3 before it. This drifts for a few months each year (Jan-Mar,
-      // before the financial year has rolled over to match the calendar year) and will need updating once enough time
-      // has passed to change the count — that's expected, not a bug, and keeps this test decoupled from having to
-      // re-derive the presroc/sroc period-count formula itself
-      const billRowMostRecentYear = otherAbstractorsTable.getByRole('row', { name: String(currentYear) })
+      const billRowMostRecentYear = otherAbstractorsTable.getByRole('row', { name: String(toFinancialYearEnding) })
 
       await expect(billRowMostRecentYear).toContainText(billingAccount.accountNumber)
       await expect(billRowMostRecentYear).toContainText(company.name)

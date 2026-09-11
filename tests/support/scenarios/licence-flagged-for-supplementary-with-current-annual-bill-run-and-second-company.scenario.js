@@ -67,7 +67,7 @@ function _secondCompany(region) {
   const companyAddress = companyAddressData(company, address)
 
   // Not required by the database, but makes the two companies easy to tell apart in the seeded data and the UI
-  company.name = `${company.name}`
+  company.name = `${company.name} 02`
 
   return { company, address, companyAddress }
 }
