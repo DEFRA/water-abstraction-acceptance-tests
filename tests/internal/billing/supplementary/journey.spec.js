@@ -16,24 +16,16 @@ test.describe(
     let billingPeriodCount
     let company
     let licence
-    let presrocBillingAccount
+    let billingAccount
     let presrocToFinancialYearEnding
-    let srocBillingAccount
     let toFinancialYearEnding
 
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData()
 
-      const {
-        companies: [companyFromScenario],
-        licences: [licenceFromScenario]
-      } = scenario
-      const [presrocBillingAccountFromScenario, srocBillingAccountFromScenario] = scenario.billingAccounts
-
-      company = companyFromScenario
-      licence = licenceFromScenario
-      presrocBillingAccount = presrocBillingAccountFromScenario
-      srocBillingAccount = srocBillingAccountFromScenario
+      company = scenario.company
+      licence = scenario.licence
+      billingAccount = scenario.billingAccount
 
       toFinancialYearEnding = scenario.billRun.toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
@@ -96,7 +88,7 @@ test.describe(
         const billedFinancialYear = presrocToFinancialYearEnding - index
         const billRow = presrocAbstractorsTable.getByRole('row', { name: String(billedFinancialYear) })
 
-        await expect(billRow).toContainText(presrocBillingAccount.accountNumber)
+        await expect(billRow).toContainText(billingAccount.accountNumber)
         await expect(billRow).toContainText(company.name)
         await expect(billRow).toContainText(licence.licenceRef)
         await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()
@@ -125,7 +117,7 @@ test.describe(
         const billedFinancialYear = presrocToFinancialYearEnding - index
         const billRow = sentPresrocAbstractorsTable.getByRole('row', { name: String(billedFinancialYear) })
 
-        await expect(billRow).toContainText(presrocBillingAccount.accountNumber)
+        await expect(billRow).toContainText(billingAccount.accountNumber)
         await expect(billRow).toContainText(company.name)
         await expect(billRow).toContainText(licence.licenceRef)
         await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()
@@ -158,7 +150,7 @@ test.describe(
         const billedFinancialYear = toFinancialYearEnding - index
         const billRow = srocAbstractorsTable.getByRole('row', { name: String(billedFinancialYear) })
 
-        await expect(billRow).toContainText(srocBillingAccount.accountNumber)
+        await expect(billRow).toContainText(billingAccount.accountNumber)
         await expect(billRow).toContainText(company.name)
         await expect(billRow).toContainText(licence.licenceRef)
         await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()
@@ -187,7 +179,7 @@ test.describe(
         const billedFinancialYear = toFinancialYearEnding - index
         const billRow = sentSrocAbstractorsTable.getByRole('row', { name: String(billedFinancialYear) })
 
-        await expect(billRow).toContainText(srocBillingAccount.accountNumber)
+        await expect(billRow).toContainText(billingAccount.accountNumber)
         await expect(billRow).toContainText(company.name)
         await expect(billRow).toContainText(licence.licenceRef)
         await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()

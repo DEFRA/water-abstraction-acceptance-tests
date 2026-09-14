@@ -15,24 +15,16 @@ test.describe(
     let billingPeriodCount
     let company
     let licence
-    let presrocBillingAccount
+    let billingAccount
     let presrocToFinancialYearEnding
-    let srocBillingAccount
     let toFinancialYearEnding
 
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData()
 
-      const [presrocBillingAccountFromScenario, srocBillingAccountFromScenario] = scenario.billingAccounts
-      const {
-        companies: [companyFromScenario],
-        licences: [licenceFromScenario]
-      } = scenario
-
-      company = companyFromScenario
-      licence = licenceFromScenario
-      presrocBillingAccount = presrocBillingAccountFromScenario
-      srocBillingAccount = srocBillingAccountFromScenario
+      company = scenario.company
+      licence = scenario.licence
+      billingAccount = scenario.billingAccount
 
       // The supplementary engine bases its calculation on the seeded annual bill run's own year, not the current one.
       // The presroc engine then caps that at 2022, the last presroc financial year
@@ -98,7 +90,7 @@ test.describe(
         const billedFinancialYear = presrocToFinancialYearEnding - index
         const billRow = presrocAbstractorsTable.getByRole('row', { name: String(billedFinancialYear) })
 
-        await expect(billRow).toContainText(presrocBillingAccount.accountNumber)
+        await expect(billRow).toContainText(billingAccount.accountNumber)
         await expect(billRow).toContainText(company.name)
         await expect(billRow).toContainText(licence.licenceRef)
         await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()
@@ -132,7 +124,7 @@ test.describe(
         const billedFinancialYear = toFinancialYearEnding - index
         const billRow = srocAbstractorsTable.getByRole('row', { name: String(billedFinancialYear) })
 
-        await expect(billRow).toContainText(srocBillingAccount.accountNumber)
+        await expect(billRow).toContainText(billingAccount.accountNumber)
         await expect(billRow).toContainText(company.name)
         await expect(billRow).toContainText(licence.licenceRef)
         await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()

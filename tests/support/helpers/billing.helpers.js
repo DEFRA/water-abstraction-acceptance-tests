@@ -1,5 +1,9 @@
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { convertCubicMetresToMegalitres } from './conversion.helpers.js'
+import { mergeByKey } from './scenario.helpers.js'
+import { asArrays } from './wire-format.helpers.js'
+import { srocStartDate } from '../default-values.js'
+import { formatDateToIso } from './date.helpers.js'
 
 /**
  * Flags a licence for supplementary billing, supersedes the current
@@ -30,4 +34,23 @@ export function includeInSrocSupplementaryBilling(licenceEntity, billingAccountE
   }
 
   return additionalChargeEntity
+}
+
+/**
+ *
+ * @param presrocLicenceEntity
+ * @param presrocChargeVersionEntity
+ */
+export function includeInPresrocBilling(presrocLicenceEntity, presrocChargeVersionEntity) {
+  // This is what flags the licence for the next presroc and sroc supplementary bill runs — without it, each
+  // engine's charge version query excludes the licence entirely
+  presrocLicenceEntity.licence.includeInPresrocBilling = 'yes'
+
+  // The presroc charge version ends the day before the sroc one below begins, reflecting a licence that was
+  // properly superseded at the scheme boundary rather than one left open-ended
+  const presrocChargeVersionEndDate = new Date(srocStartDate)
+
+  presrocChargeVersionEndDate.setUTCDate(presrocChargeVersionEndDate.getUTCDate() - 1)
+
+  presrocChargeVersionEntity.chargeVersion.endDate = formatDateToIso(presrocChargeVersionEndDate)
 }

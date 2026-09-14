@@ -1,6 +1,6 @@
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
-import presrocLicenceScenario from './presroc-licence.scenario.js'
+import buildPresrocLicenceEntity from '../entities/presroc-licence.entity.js'
 import { regions } from '../default-values.js'
 
 export const title = 'Presroc licence with a charge version'
@@ -12,13 +12,13 @@ export default function (region = null) {
     region = regions.MIDLANDS
   }
 
-  const licence = presrocLicenceScenario(region)
+  const presrocLicenceEntity = buildPresrocLicenceEntity(region)
 
-  const billingAccountEntity = buildBillingAccountEntity(licence, region)
-  const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(licence, billingAccountEntity, region)
+  const billingAccountEntity = buildBillingAccountEntity(presrocLicenceEntity, region)
+  const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(presrocLicenceEntity, billingAccountEntity, region)
 
   return {
-    ...licence,
+    ...presrocLicenceEntity,
     ...billingAccountEntity,
     ...presrocChargeVersionEntity
   }
