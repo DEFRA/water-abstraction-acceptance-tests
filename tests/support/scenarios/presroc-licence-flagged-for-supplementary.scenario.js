@@ -27,6 +27,8 @@ export default function () {
 
   // Sroc
   const chargeVersionEntity = buildChargeVersionEntity(presrocLicenceEntity, billingAccountEntity, region)
+  chargeVersionEntity.chargeVersion.versionNumber = presrocChargeVersionEntity.chargeVersion.versionNumber + 1
+
   const additionalChargeEntity = includeInSrocSupplementaryBilling(
     presrocLicenceEntity,
     billingAccountEntity,

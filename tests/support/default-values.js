@@ -6,14 +6,6 @@ import regionHelper from 'water-abstraction-engine/test/helpers/region.helper.js
  */
 export const password = 'P@55word'
 
-/**
- * When a scenario or data file needs a date safely before the sroc charging scheme came into force, we use
- * 2018-04-01 as our default — comfortably before the earliest financial year presroc supplementary billing could
- * ever need to look back to.
- * @type {string}
- */
-export const presrocStartDate = '2018-04-01'
-
 export const regions = {
   ANGLIAN: regionHelper.select(0),
   MIDLANDS: regionHelper.select(1),
