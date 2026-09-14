@@ -21,7 +21,7 @@ test.describe(
       licence = scenario.licence
 
       // The supplementary engine bases its calculation on the seeded annual bill run's own year, not the current one
-      toFinancialYearEnding = scenario.billRun.toFinancialYearEnding
+      toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
 
       await setup(scenario)
     })

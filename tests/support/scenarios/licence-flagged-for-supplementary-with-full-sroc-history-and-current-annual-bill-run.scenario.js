@@ -1,4 +1,3 @@
-import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
@@ -47,7 +46,7 @@ export default function () {
   return {
     ...licenceEntity,
     ...billingAccountEntity,
-    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
+    ...mergeByKey(chargeVersionEntity, additionalChargeEntity),
     ...mergeByKey(...billRunEntities)
   }
 }

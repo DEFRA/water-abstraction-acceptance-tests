@@ -1,9 +1,8 @@
 import billData from '../data/bill.data.js'
 import billLicenceData from '../data/bill-licence.data.js'
 import billRunData from '../data/bill-run.data.js'
-import { previousYears, today } from '../helpers/date.helpers.js'
 import transactionData from '../data/transaction.data.js'
-import { asArrays } from '../helpers/wire-format.helpers.js'
+import { previousYears, today } from '../helpers/date.helpers.js'
 
 // A bill can never be for £0 — a sent bill run always has a non-zero total, so the seeded bill and its transaction
 // must share a real net amount (in pence) rather than being left null.
@@ -15,7 +14,11 @@ const netAmount = 5335
  * valid data a bill run needs to exist against a licence.
  *
  * The bill run's batch type is left at the data file's default (annual). Scenarios needing a different batch type
- * must set `billRun.batchType` themselves.
+ * must set it themselves on every entry in the returned array, e.g. `billRunEntities[0].billRun.batchType`.
+ *
+ * The array is returned with each entry's fields under their singular entity names (`billRun`, `bill`, ...), like
+ * any other entity file — pass it straight to `mergeByKey(...billRunEntities)`, which normalizes each entry to the
+ * seed endpoint's pluralized wire format itself.
  *
  * @param {object} licenceEntity - the licence entity the bill licence is for
  * @param {object} billingAccountEntity - the billing account for the bill
@@ -45,7 +48,7 @@ export default function (licenceEntity, billingAccountEntity, chargeVersionEntit
       billRunEntity.billRun.createdAt = previousYears(today(), offset)
     }
 
-    billRunEntities.push(asArrays(billRunEntity))
+    billRunEntities.push(billRunEntity)
   }
 
   return billRunEntities

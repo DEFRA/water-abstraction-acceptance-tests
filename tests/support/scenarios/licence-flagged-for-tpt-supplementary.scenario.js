@@ -8,6 +8,7 @@ import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import chargeElementData from '../data/charge-element.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
@@ -99,7 +100,9 @@ function _returnRequirement(returnVersion, licenceVersionPurpose, point) {
 }
 
 function _twoPartTariffBillRun(billRunEntities) {
-  billRunEntities.billRun.batchType = 'two_part_tariff'
+  for (const billRunEntity of billRunEntities) {
+    billRunEntity.billRun.batchType = 'two_part_tariff'
+  }
 }
 
 function _returns(licence, twoPartTariffPeriod, region, secondLicenceVersionPurpose, firstLicenceVersionPurpose) {

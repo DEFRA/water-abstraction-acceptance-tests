@@ -3,6 +3,7 @@ import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithAgreementScenario from './licence-with-agreement.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
 
 export const title = 'Licence with an agreement and a bill run'
@@ -36,7 +37,9 @@ export default function (region = null) {
     region
   )
 
-  billRunEntities.billRun.batchType = 'two_part_tariff'
+  for (const billRunEntity of billRunEntities) {
+    billRunEntity.billRun.batchType = 'two_part_tariff'
+  }
 
   return {
     ...licence,

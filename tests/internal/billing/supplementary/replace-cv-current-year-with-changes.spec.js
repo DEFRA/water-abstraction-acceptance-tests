@@ -24,7 +24,7 @@ test.describe(
       licence = scenario.licence
       licenceVersionPurpose = scenario.licenceVersionPurpose
 
-      toFinancialYearEnding = scenario.billRun.toFinancialYearEnding
+      toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
 
       await setup(scenario)

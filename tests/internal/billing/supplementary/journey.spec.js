@@ -27,7 +27,7 @@ test.describe(
       licence = scenario.licence
       billingAccount = scenario.billingAccount
 
-      toFinancialYearEnding = scenario.billRun.toFinancialYearEnding
+      toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
       presrocToFinancialYearEnding = Math.min(toFinancialYearEnding, PRESROC_LAST_FINANCIAL_YEAR)
 

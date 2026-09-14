@@ -3,7 +3,6 @@ import {
   generateLicenceVersionPurposeExternalId
 } from 'water-abstraction-engine/test/generators.js'
 
-import { asArrays } from '../helpers/wire-format.helpers.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
@@ -26,7 +25,7 @@ export default function () {
 
   const secondLicence = _secondLicenceSharingBillingAccount(billingAccount, company, region)
 
-  return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
+  return mergeByKey(firstLicence, secondLicence)
 }
 
 /**

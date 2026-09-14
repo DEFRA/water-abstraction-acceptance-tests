@@ -3,7 +3,6 @@ import {
   generateLicenceVersionPurposeExternalId
 } from 'water-abstraction-engine/test/generators.js'
 
-import { asArrays } from '../helpers/wire-format.helpers.js'
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
@@ -18,7 +17,7 @@ export default function () {
   const firstLicence = licenceWithChargeVersionScenario(region)
   const secondLicence = _waterCompanyLicenceWithChargeVersion(region)
 
-  return mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
+  return mergeByKey(firstLicence, secondLicence)
 }
 
 /**
