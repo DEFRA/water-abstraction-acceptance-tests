@@ -70,10 +70,6 @@ test.describe(
         `${toFinancialYearEnding - 1} to ${toFinancialYearEnding}`
       )
 
-      await expect(page.locator('[data-test="bills-count"]')).toContainText(
-        '0 Supplementary bills and 1 zero value bill'
-      )
-
       const otherAbstractorsTable = page.locator('[data-test="other-abstractors"]')
 
       await expect(otherAbstractorsTable).toBeVisible()
@@ -83,6 +79,7 @@ test.describe(
       await expect(billRowMostRecentYear).toContainText(billingAccount.accountNumber)
       await expect(billRowMostRecentYear).toContainText(company.name)
       await expect(billRowMostRecentYear).toContainText(licence.licenceRef)
+      await expect(billRowMostRecentYear).not.toContainText('£0.00')
       await expect(billRowMostRecentYear).toContainText(String(toFinancialYearEnding))
       await expect(billRowMostRecentYear.getByRole('link', { name: 'View' })).toBeVisible()
 

@@ -1,5 +1,4 @@
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
-import { convertCubicMetresToMegalitres } from './conversion.helpers.js'
 import { formatDateToIso } from './date.helpers.js'
 import { srocStartDate } from '../default-values.js'
 
@@ -23,18 +22,12 @@ export function includeInSrocSupplementaryBilling(licenceEntity, billingAccountE
 
   const additionalChargeEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
 
-  additionalChargeEntity.chargeReference.volume = convertCubicMetresToMegalitres(2000)
+  additionalChargeEntity.chargeReference.waterModel = 'tier 1'
 
-  additionalChargeEntity.chargeElement.authorisedAnnualQuantity = convertCubicMetresToMegalitres(2000)
+  additionalChargeEntity.chargeReference.chargeCategoryId.value = '4.6.2'
 
   additionalChargeEntity.chargeVersion.versionNumber = chargeVersionEntity.chargeVersion.versionNumber + 1
-  additionalChargeEntity.chargeVersion.changeReasonId = {
-    schema: 'public',
-    table: 'changeReasons',
-    lookup: 'description',
-    value: 'Error correction',
-    select: 'id'
-  }
+  additionalChargeEntity.chargeVersion.changeReasonId.value = 'Error correction'
 
   return additionalChargeEntity
 }

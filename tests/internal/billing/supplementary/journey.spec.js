@@ -177,6 +177,7 @@ test.describe(
         await expect(billRow).toContainText(billingAccount.accountNumber)
         await expect(billRow).toContainText(company.name)
         await expect(billRow).toContainText(licence.licenceRef)
+        await expect(billRow).not.toContainText('£0.00')
         await expect(billRow.getByRole('link', { name: 'View' })).toBeVisible()
       }
 
@@ -186,7 +187,7 @@ test.describe(
       await expect(page.locator('[data-test="date-created-1"] > .govuk-link')).toContainText(formattedCurrentDate)
       await expect(page.locator('[data-test="region-1"]')).toContainText(regions.SOUTHERN.displayName)
       await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
-      await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc - 1))
+      await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc))
       await expect(page.locator('[data-test="bill-run-status-1"] > .govuk-tag')).toContainText('sent')
 
       await page.getByRole('link', { name: 'Search' }).click()

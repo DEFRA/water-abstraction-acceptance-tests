@@ -71,7 +71,7 @@ test.describe(
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
       const expectedBillsText =
-        billingPeriodCount.sroc === 1 ? '1 Supplementary bill' : `${billingPeriodCount.sroc - 1} Supplementary bills`
+        billingPeriodCount.sroc === 1 ? '1 Supplementary bill' : `${billingPeriodCount.sroc} Supplementary bills`
 
       await expect(page.locator('[data-test="bills-count"]')).toContainText(expectedBillsText)
       await page.getByRole('button', { name: 'Send bill run' }).click()
