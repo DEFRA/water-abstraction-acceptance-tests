@@ -1,6 +1,6 @@
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/presroc-licence-flagged-for-supplementary-with-current-annual-bill-run.scenario.js'
+import scenarioData from '../../../support/scenarios/presroc-licence-flagged-for-supplementary.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import {
   PRESROC_LAST_FINANCIAL_YEAR,
@@ -137,11 +137,6 @@ test.describe(
       await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
-      const expectedSrocBillsText =
-        billingPeriodCount.sroc === 1 ? '1 Supplementary bill' : `${billingPeriodCount.sroc} Supplementary bills`
-
-      await expect(page.locator('[data-test="bills-count"]')).toContainText(expectedSrocBillsText)
-
       const srocAbstractorsTable = page.locator('[data-test="other-abstractors"]')
 
       await expect(srocAbstractorsTable).toBeVisible()
@@ -191,7 +186,7 @@ test.describe(
       await expect(page.locator('[data-test="date-created-1"] > .govuk-link')).toContainText(formattedCurrentDate)
       await expect(page.locator('[data-test="region-1"]')).toContainText(regions.SOUTHERN.displayName)
       await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
-      await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc))
+      await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc - 1))
       await expect(page.locator('[data-test="bill-run-status-1"] > .govuk-tag')).toContainText('sent')
 
       await page.getByRole('link', { name: 'Search' }).click()

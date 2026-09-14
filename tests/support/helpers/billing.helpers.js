@@ -1,15 +1,18 @@
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { convertCubicMetresToMegalitres } from './conversion.helpers.js'
-import { mergeByKey } from './scenario.helpers.js'
-import { asArrays } from './wire-format.helpers.js'
-import { srocStartDate } from '../default-values.js'
 import { formatDateToIso } from './date.helpers.js'
+import { srocStartDate } from '../default-values.js'
 
 /**
- * Flags a licence for supplementary billing, supersedes the current
- * charge version by reference, and creates a new revised version.
+ * Flags a licence for supplementary billing, supersedes the current charge version by reference, and creates a new
+ * revised version.
  *
- * @private
+ * @param {object} licenceEntity - the licence entity
+ * @param {object} billingAccountEntity - the billing account entity
+ * @param {object} chargeVersionEntity - the charge version entity
+ * @param {object} region - the region the additional charge version is for
+ *
+ * @returns {object} An additional charge version that would be the reason for the 'includeInSrocBilling' flag being set
  */
 export function includeInSrocSupplementaryBilling(licenceEntity, billingAccountEntity, chargeVersionEntity, region) {
   // This is what flags the licence for the next sroc supplementary bill run — without it, fetch-charge-versions
@@ -37,11 +40,12 @@ export function includeInSrocSupplementaryBilling(licenceEntity, billingAccountE
 }
 
 /**
+ * Sets the Pre-SROC billing flag on a licence entity and sets the end date on the associated charge version.
  *
- * @param presrocLicenceEntity
- * @param presrocChargeVersionEntity
+ * @param {object} presrocLicenceEntity - the licence entity to mark for presroc billing
+ * @param {object} presrocChargeVersionEntity - the billing account entity
  */
-export function includeInPresrocBilling(presrocLicenceEntity, presrocChargeVersionEntity) {
+export function includeInPresrocSupplementaryBilling(presrocLicenceEntity, presrocChargeVersionEntity) {
   // This is what flags the licence for the next presroc and sroc supplementary bill runs — without it, each
   // engine's charge version query excludes the licence entirely
   presrocLicenceEntity.licence.includeInPresrocBilling = 'yes'
