@@ -129,8 +129,8 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
-      await expect(page.locator('[data-test="credits-count"]')).toContainText('1 credit note')
-      await expect(page.locator('[data-test="debits-count"]')).toContainText('4 invoices')
+      await expect(page.locator('[data-test="credits-count"]')).toContainText('2 credit notes')
+      await expect(page.locator('[data-test="debits-count"]')).toContainText('3 invoices')
 
       const abstractorsTable = page.locator('[data-test="other-abstractors"]')
       const secondCompanyRows = abstractorsTable.getByRole('row', { name: secondCompany.name })
