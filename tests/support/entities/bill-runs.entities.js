@@ -1,8 +1,9 @@
 import billData from '../data/bill.data.js'
 import billLicenceData from '../data/bill-licence.data.js'
 import billRunData from '../data/bill-run.data.js'
-import { today } from '../helpers/date.helpers.js'
+import { previousYears, today } from '../helpers/date.helpers.js'
 import transactionData from '../data/transaction.data.js'
+import { asArrays } from '../helpers/wire-format.helpers.js'
 
 // A bill can never be for £0 — a sent bill run always has a non-zero total, so the seeded bill and its transaction
 // must share a real net amount (in pence) rather than being left null.
@@ -23,6 +24,34 @@ const netAmount = 5335
  * @param {object} region - the region
  */
 export default function (licenceEntity, billingAccountEntity, chargeVersionEntity, dates, region) {
+  const billRunEntities = []
+
+  // Determine how many years back the charge version goes relative to current financial year
+  const chargeVersionStartDate = new Date(chargeVersionEntity.chargeVersion.startDate)
+  const currentFYStartDate = new Date(dates.startDate)
+  const yearsBack = Math.max(0, currentFYStartDate.getFullYear() - chargeVersionStartDate.getFullYear())
+
+  for (let offset = 0; offset <= yearsBack; offset++) {
+    const fyPeriod = {
+      startDate: previousYears(dates.startDate, offset),
+      endDate: previousYears(dates.endDate, offset)
+    }
+
+    // net amount + invoice - need to use a lookup for the year for chargering bulling -= e.g £48.50 for x
+
+    const billRunEntity = _billRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity, fyPeriod, region)
+
+    if (offset > 0) {
+      billRunEntity.billRun.createdAt = previousYears(today(), offset)
+    }
+
+    billRunEntities.push(asArrays(billRunEntity))
+  }
+
+  return billRunEntities
+}
+
+function _billRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity, dates, region) {
   const { licence } = licenceEntity
   const { billingAccount } = billingAccountEntity
   const { chargeReference } = chargeVersionEntity

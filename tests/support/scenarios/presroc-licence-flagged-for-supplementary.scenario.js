@@ -1,5 +1,5 @@
 import { asArrays } from '../helpers/wire-format.helpers.js'
-import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
@@ -40,7 +40,7 @@ export default function () {
   _srocChargeVersionDate(additionalChargeEntity)
   _srocChargeVersion(chargeVersionEntity)
 
-  const billRunEntity = buildBillRunEntity(
+  const billRunEntities = buildBillRunEntities(
     presrocLicenceEntity,
     billingAccountEntity,
     chargeVersionEntity,
@@ -56,7 +56,7 @@ export default function () {
       asArrays(additionalChargeEntity),
       asArrays(presrocChargeVersionEntity)
     ),
-    ...billRunEntity
+    ...mergeByKey(...billRunEntities)
   }
 }
 

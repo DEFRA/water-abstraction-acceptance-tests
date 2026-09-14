@@ -1,6 +1,6 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
@@ -49,7 +49,7 @@ export default function () {
 
   const secondChargeElement = chargeElementData(chargeVersionEntity.chargeReference, secondLicenceVersionPurpose)
 
-  const billRunEntity = buildBillRunEntity(
+  const billRunEntities = buildBillRunEntities(
     licence,
     billingAccountEntity,
     chargeVersionEntity,
@@ -57,7 +57,7 @@ export default function () {
     region
   )
 
-  _twoPartTariffBillRun(billRunEntity)
+  _twoPartTariffBillRun(billRunEntities)
 
   const licenceSupplementaryYear = {
     id: generateUUID(),
@@ -78,7 +78,7 @@ export default function () {
     ...licence,
     ...chargeVersionEntity,
     ...billingAccountEntity,
-    ...billRunEntity,
+    ...mergeByKey(...billRunEntities),
     chargeElements: [chargeVersionEntity.chargeElement, secondChargeElement],
     licenceSupplementaryYears: [licenceSupplementaryYear],
     ...returns
@@ -98,8 +98,8 @@ function _returnRequirement(returnVersion, licenceVersionPurpose, point) {
   return { returnRequirement, returnRequirementPoint, returnRequirementPurpose }
 }
 
-function _twoPartTariffBillRun(billRunEntity) {
-  billRunEntity.billRun.batchType = 'two_part_tariff'
+function _twoPartTariffBillRun(billRunEntities) {
+  billRunEntities.billRun.batchType = 'two_part_tariff'
 }
 
 function _returns(licence, twoPartTariffPeriod, region, secondLicenceVersionPurpose, firstLicenceVersionPurpose) {

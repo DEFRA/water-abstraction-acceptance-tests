@@ -1,6 +1,6 @@
 import addressData from '../data/address.data.js'
 import { asArrays } from '../helpers/wire-format.helpers.js'
-import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
@@ -9,7 +9,7 @@ import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
 import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { previousYears } from '../helpers/date.helpers.js'
+import { previousYears, today } from '../helpers/date.helpers.js'
 import { regions } from '../default-values.js'
 
 export const title =
@@ -35,14 +35,6 @@ export default function () {
 
   const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
   const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
-  const billRunEntity = buildBillRunEntity(
-    licenceEntity,
-    billingAccountEntity,
-    chargeVersionEntity,
-    currentFinancialYear,
-    region
-  )
-
   const additionalChargeEntity = includeInSrocSupplementaryBilling(
     licenceEntity,
     billingAccountEntity,
@@ -52,11 +44,19 @@ export default function () {
 
   const secondCompany = _secondCompany(region)
 
+  const billRunEntities = buildBillRunEntities(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
+
   return {
     ...mergeByKey(asArrays(licenceEntity), asArrays(secondCompany)),
     ...billingAccountEntity,
     ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
-    ...billRunEntity
+    ...mergeByKey(...billRunEntities)
   }
 }
 
@@ -70,9 +70,6 @@ function _secondCompany(region) {
   const company = companyData(region)
   const address = addressData()
   const companyAddress = companyAddressData(company, address)
-
-  // Not required by the database, but makes the two companies easy to tell apart in the seeded data and the UI
-  company.name = `${company.name} 02`
 
   return { company, address, companyAddress }
 }

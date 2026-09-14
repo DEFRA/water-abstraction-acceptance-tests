@@ -1,6 +1,6 @@
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-current-annual-bill-run-and-second-company.scenario.js'
+import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-second-company.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
@@ -16,6 +16,8 @@ test.describe(
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData()
 
+      await setup(scenario)
+
       const [companyFromScenario, secondCompanyFromScenario] = scenario.companies
 
       billingAccount = scenario.billingAccount
@@ -23,9 +25,7 @@ test.describe(
       secondCompany = secondCompanyFromScenario
       licence = scenario.licences[0]
 
-      toFinancialYearEnding = scenario.billRun.toFinancialYearEnding
-
-      await setup(scenario)
+      toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
     })
 
     test.beforeEach(async ({ login, users }) => {
