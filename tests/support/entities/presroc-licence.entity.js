@@ -1,6 +1,6 @@
 import buildLicenceEntity from './licence.entity.js'
-import { previousYears } from '../helpers/date.helpers.js'
 import { srocStartDate } from '../default-values.js'
+import { formatDateToIso, previousYears } from '../helpers/date.helpers.js'
 
 /**
  * Builds a pre sroc licence in its entirety: the licence itself, its licence holder (company and address), permit licence,
@@ -12,7 +12,7 @@ import { srocStartDate } from '../default-values.js'
 export default function (region) {
   const licenceEntity = buildLicenceEntity(region)
 
-  const presrocStartDate = previousYears(srocStartDate, 1)
+  const presrocStartDate = formatDateToIso(previousYears(srocStartDate, 1))
 
   licenceEntity.licence.startDate = presrocStartDate
   licenceEntity.licenceVersion.startDate = presrocStartDate
