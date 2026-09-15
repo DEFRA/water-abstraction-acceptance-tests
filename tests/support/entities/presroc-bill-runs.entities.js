@@ -98,6 +98,28 @@ function _billRunEntity(licenceEntity, billingAccountEntity, presrocChargeVersio
   }
 }
 
+function _compensationCharge(licenceEntity, billLicence, presrocChargeVersionEntity, dates, transactions) {
+  if (!licenceEntity.licence.waterUndertaker) {
+    const compensationTransaction = transactionData(billLicence, presrocChargeVersionEntity.chargeReference, dates, 0)
+
+    compensationTransaction.chargeType = 'compensation'
+    compensationTransaction.description =
+      'Compensation Charge calculated from all factors except Standard Unit Charge and Source (replaced by factors below) and excluding S127 Charge Element'
+
+    transactions.push(compensationTransaction)
+  }
+}
+
+function _minimumChargeAmount(chargeYear) {
+  // Only FY2022 has been verified against real engine output (see the presroc-licence-flagged-for-supplementary
+  // journey test) — extend as further presroc years are exercised against the real engine
+  const chargeYearAmounts = {
+    2022: 1006
+  }
+
+  return chargeYearAmounts[chargeYear]
+}
+
 function _minimumChargeTransaction(billLicence, netAmount) {
   return {
     id: generateUUID(),
@@ -116,22 +138,9 @@ function _minimumChargeTransaction(billLicence, netAmount) {
   }
 }
 
-function _compensationCharge(licenceEntity, billLicence, presrocChargeVersionEntity, dates, transactions) {
-  if (!licenceEntity.licence.waterUndertaker) {
-    const compensationTransaction = transactionData(billLicence, presrocChargeVersionEntity.chargeReference, dates, 0)
-
-    compensationTransaction.chargeType = 'compensation'
-    compensationTransaction.description =
-      'Compensation Charge calculated from all factors except Standard Unit Charge and Source (replaced by factors below) and excluding S127 Charge Element'
-
-    transactions.push(compensationTransaction)
-  }
-}
-
-// Only FY2022 has been verified against real engine output (see the presroc-licence-flagged-for-supplementary
-// journey test). Extend these as further presroc years are exercised against the real engine.
-
 function _netAmount(chargeYear, twoPartTariff) {
+  // Only FY2022 has been verified against real engine output (see the presroc-licence-flagged-for-supplementary
+  // journey test) — extend as further presroc years are exercised against the real engine
   const chargeYearAmounts = {
     2022: 2988
   }
@@ -143,12 +152,4 @@ function _netAmount(chargeYear, twoPartTariff) {
   }
 
   return amount
-}
-
-function _minimumChargeAmount(chargeYear) {
-  const chargeYearAmounts = {
-    2022: 1006
-  }
-
-  return chargeYearAmounts[chargeYear]
 }
