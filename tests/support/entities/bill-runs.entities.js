@@ -1,12 +1,8 @@
 import billData from '../data/bill.data.js'
 import billLicenceData from '../data/bill-licence.data.js'
 import billRunData from '../data/bill-run.data.js'
-import { today } from '../helpers/date.helpers.js'
 import transactionData from '../data/transaction.data.js'
-
-// A bill can never be for £0 — a sent bill run always has a non-zero total, so the seeded bill and its transaction
-// must share a real net amount (in pence) rather than being left null.
-const netAmount = 5335
+import { previousYears, today } from '../helpers/date.helpers.js'
 
 /**
  * Builds a bill run in its entirety: a sent bill run for the financial year ending taken from the given billing
@@ -14,7 +10,11 @@ const netAmount = 5335
  * valid data a bill run needs to exist against a licence.
  *
  * The bill run's batch type is left at the data file's default (annual). Scenarios needing a different batch type
- * must set `billRun.batchType` themselves.
+ * must set it themselves on every entry in the returned array, e.g. `billRunEntities[0].billRun.batchType`.
+ *
+ * The array is returned with each entry's fields under their singular entity names (`billRun`, `bill`, ...), like
+ * any other entity file — pass it straight to `mergeByKey(...billRunEntities)`, which normalizes each entry to the
+ * seed endpoint's pluralized wire format itself.
  *
  * @param {object} licenceEntity - the licence entity the bill licence is for
  * @param {object} billingAccountEntity - the billing account for the bill
@@ -23,6 +23,32 @@ const netAmount = 5335
  * @param {object} region - the region
  */
 export default function (licenceEntity, billingAccountEntity, chargeVersionEntity, dates, region) {
+  const billRunEntities = []
+
+  // Determine how many years back the charge version goes relative to current financial year
+  const chargeVersionStartDate = new Date(chargeVersionEntity.chargeVersion.startDate)
+  const currentFYStartDate = new Date(dates.startDate)
+  const yearsBack = Math.max(0, currentFYStartDate.getFullYear() - chargeVersionStartDate.getFullYear())
+
+  for (let offset = 0; offset <= yearsBack; offset++) {
+    const fyPeriod = {
+      startDate: previousYears(dates.startDate, offset),
+      endDate: previousYears(dates.endDate, offset)
+    }
+
+    const billRunEntity = _billRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity, fyPeriod, region)
+
+    if (offset > 0) {
+      billRunEntity.billRun.createdAt = previousYears(today(), offset)
+    }
+
+    billRunEntities.push(billRunEntity)
+  }
+
+  return billRunEntities
+}
+
+function _billRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity, dates, region) {
   const { licence } = licenceEntity
   const { billingAccount } = billingAccountEntity
   const { chargeReference } = chargeVersionEntity
@@ -33,8 +59,8 @@ export default function (licenceEntity, billingAccountEntity, chargeVersionEntit
   billRun.fromFinancialYearEnding = new Date(dates.endDate).getUTCFullYear()
   billRun.toFinancialYearEnding = new Date(dates.endDate).getUTCFullYear()
 
-  // The bill run page reads its totals straight off these columns rather than summing the bills linked to it, so
-  // they must reflect the single non-credit bill this entity seeds or the page shows blank/NaN totals.
+  const netAmount = _netAmount(billRun.toFinancialYearEnding, chargeReference.section127Agreement)
+
   billRun.invoiceCount = 1
   billRun.creditNoteCount = 0
   billRun.invoiceValue = netAmount
@@ -46,7 +72,7 @@ export default function (licenceEntity, billingAccountEntity, chargeVersionEntit
 
   const transactions = [transactionData(billLicence, chargeReference, dates, netAmount)]
 
-  _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions)
+  _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions, netAmount)
 
   return {
     billRun,
@@ -56,7 +82,7 @@ export default function (licenceEntity, billingAccountEntity, chargeVersionEntit
   }
 }
 
-function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions) {
+function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions, netAmount) {
   if (!licenceEntity.licence.waterUndertaker) {
     const transaction2 = transactionData(billLicence, chargeVersionEntity.chargeReference, dates, netAmount)
 
@@ -67,4 +93,21 @@ function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, da
 
     transactions.push(transaction2)
   }
+}
+
+function _netAmount(chargeYear, twoPartTariff) {
+  const chargeYearAmounts = {
+    2027: '10676',
+    2026: '10676',
+    2025: '9700',
+    2024: '9700',
+    2023: '9700'
+  }
+
+  // Two part tariff splits the bill in half
+  if (twoPartTariff) {
+    return chargeYearAmounts[chargeYear] / 2
+  }
+
+  return chargeYearAmounts[chargeYear]
 }

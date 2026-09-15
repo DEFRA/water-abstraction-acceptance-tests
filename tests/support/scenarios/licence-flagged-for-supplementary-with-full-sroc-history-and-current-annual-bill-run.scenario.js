@@ -1,5 +1,4 @@
-import { asArrays } from '../helpers/wire-format.helpers.js'
-import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
@@ -29,7 +28,7 @@ export default function () {
 
   const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
   const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
-  const billRunEntity = buildBillRunEntity(
+  const billRunEntities = buildBillRunEntities(
     licenceEntity,
     billingAccountEntity,
     chargeVersionEntity,
@@ -47,7 +46,7 @@ export default function () {
   return {
     ...licenceEntity,
     ...billingAccountEntity,
-    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
-    ...billRunEntity
+    ...mergeByKey(chargeVersionEntity, additionalChargeEntity),
+    ...mergeByKey(...billRunEntities)
   }
 }

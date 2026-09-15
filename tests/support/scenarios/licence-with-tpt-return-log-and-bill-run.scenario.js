@@ -1,9 +1,10 @@
-import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
@@ -22,9 +23,17 @@ export default function (region = null) {
   const licenceEntity = buildLicenceEntity(region)
   const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
   const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
-  const billRunEntity = buildBillRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity, periods[0], region)
+  const billRunEntities = buildBillRunEntities(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    periods[0],
+    region
+  )
 
-  billRunEntity.billRun.batchType = 'two_part_tariff'
+  for (const billRunEntity of billRunEntities) {
+    billRunEntity.billRun.batchType = 'two_part_tariff'
+  }
 
   const returnVersionEntity = buildReturnVersionEntity(licenceEntity)
 
@@ -49,7 +58,7 @@ export default function (region = null) {
     ...licenceEntity,
     ...billingAccountEntity,
     ...chargeVersionEntity,
-    ...billRunEntity,
+    ...mergeByKey(...billRunEntities),
     ...returnVersionEntity,
     returnLog
   }

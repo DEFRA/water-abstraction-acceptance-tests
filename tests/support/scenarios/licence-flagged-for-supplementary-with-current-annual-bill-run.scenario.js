@@ -1,5 +1,4 @@
-import { asArrays } from '../helpers/wire-format.helpers.js'
-import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
@@ -8,9 +7,10 @@ import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
 
-export const title = 'Licence flagged for supplementary billing, and a sent annual bill run for the current year'
+export const title =
+  'Licence flagged for supplementary billing, and sent annual bill runs from the charge version start date to the current year'
 export const description =
-  'A licence with a charge version flagged for the next supplementary bill run, plus a sent annual bill run for the current year, so a supplementary bill run picks up the one outstanding sroc period'
+  "A licence with a charge version flagged for the next supplementary bill run, plus sent annual bill runs for every financial year from the charge version's start date to the current one, so a supplementary bill run picks up the outstanding periods"
 
 export default function (region = null) {
   if (!region) {
@@ -21,7 +21,7 @@ export default function (region = null) {
   const licenceEntity = buildLicenceEntity(region)
   const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
   const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
-  const billRunEntity = buildBillRunEntity(
+  const billRunEntities = buildBillRunEntities(
     licenceEntity,
     billingAccountEntity,
     chargeVersionEntity,
@@ -39,7 +39,7 @@ export default function (region = null) {
   return {
     ...licenceEntity,
     ...billingAccountEntity,
-    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
-    ...billRunEntity
+    ...mergeByKey(chargeVersionEntity, additionalChargeEntity),
+    ...mergeByKey(...billRunEntities)
   }
 }

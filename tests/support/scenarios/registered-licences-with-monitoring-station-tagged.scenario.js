@@ -1,4 +1,3 @@
-import { asArrays } from '../helpers/wire-format.helpers.js'
 import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
@@ -32,7 +31,7 @@ export default function (region = null) {
 
   return {
     monitoringStation,
-    ...mergeByKey(asArrays(firstLicence), asArrays(secondLicence))
+    ...mergeByKey(firstLicence, secondLicence)
   }
 }
 

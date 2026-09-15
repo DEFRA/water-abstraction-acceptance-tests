@@ -19,7 +19,7 @@ test.describe(
       const scenario = scenarioData()
 
       licence = scenario.licence
-      billRun = scenario.billRun
+      billRun = scenario.billRuns[0]
 
       await setup(scenario)
     })

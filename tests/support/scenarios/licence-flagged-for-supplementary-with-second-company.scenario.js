@@ -1,6 +1,5 @@
 import addressData from '../data/address.data.js'
-import { asArrays } from '../helpers/wire-format.helpers.js'
-import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
@@ -13,9 +12,9 @@ import { previousYears } from '../helpers/date.helpers.js'
 import { regions } from '../default-values.js'
 
 export const title =
-  'Licence flagged for supplementary billing with a sent annual bill run for the current year, plus a second company'
+  'Licence flagged for supplementary billing with sent annual bill runs from the charge version start date to the current year, plus a second company'
 export const description =
-  'The current-year annual bill run scenario, with its charge version starting on the sroc scheme start date so every outstanding sroc period has something to bill, plus a second company and address so a new charge version can move the billing account to it'
+  "Sent annual bill runs for every financial year from the charge version's start date (backdated two years) to the current one, so every outstanding period has something to bill, plus a second company and address so a new charge version can move the billing account to it"
 
 export default function () {
   const region = regions.NORTH_EAST
@@ -35,14 +34,6 @@ export default function () {
 
   const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
   const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
-  const billRunEntity = buildBillRunEntity(
-    licenceEntity,
-    billingAccountEntity,
-    chargeVersionEntity,
-    currentFinancialYear,
-    region
-  )
-
   const additionalChargeEntity = includeInSrocSupplementaryBilling(
     licenceEntity,
     billingAccountEntity,
@@ -52,11 +43,19 @@ export default function () {
 
   const secondCompany = _secondCompany(region)
 
+  const billRunEntities = buildBillRunEntities(
+    licenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
+
   return {
-    ...mergeByKey(asArrays(licenceEntity), asArrays(secondCompany)),
+    ...mergeByKey(licenceEntity, secondCompany),
     ...billingAccountEntity,
-    ...mergeByKey(asArrays(chargeVersionEntity), asArrays(additionalChargeEntity)),
-    ...billRunEntity
+    ...mergeByKey(chargeVersionEntity, additionalChargeEntity),
+    ...mergeByKey(...billRunEntities)
   }
 }
 
@@ -70,9 +69,6 @@ function _secondCompany(region) {
   const company = companyData(region)
   const address = addressData()
   const companyAddress = companyAddressData(company, address)
-
-  // Not required by the database, but makes the two companies easy to tell apart in the seeded data and the UI
-  company.name = `${company.name} 02`
 
   return { company, address, companyAddress }
 }

@@ -1,7 +1,7 @@
-import { asArrays } from '../helpers/wire-format.helpers.js'
-import buildBillRunEntity from '../entities/bill-run.entity.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildPresrocBillRunEntities from '../entities/presroc-bill-runs.entities.js'
 import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
 import buildPresrocLicenceEntity from '../entities/presroc-licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
@@ -10,9 +10,9 @@ import { includeInPresrocSupplementaryBilling, includeInSrocSupplementaryBilling
 import { regions, srocStartDate } from '../default-values.js'
 
 export const title =
-  'Presroc licence flagged for presroc and sroc supplementary billing, and a sent annual bill run for the current year'
+  'Presroc licence flagged for presroc and sroc supplementary billing, and sent annual bill runs from the charge version start date to the current year'
 export const description =
-  'A presroc licence flagged for both the next presroc and sroc supplementary bill runs, plus a sent annual bill run for the current year, so a supplementary bill run picks up every outstanding presroc and sroc period'
+  "A presroc licence flagged for both the next presroc and sroc supplementary bill runs, plus sent annual bill runs for every financial year from the charge version's start date to the current one, so a supplementary bill run picks up every outstanding presroc and sroc period"
 
 export default function () {
   const region = regions.SOUTHERN
@@ -24,6 +24,14 @@ export default function () {
   const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(presrocLicenceEntity, billingAccountEntity, region)
 
   includeInPresrocSupplementaryBilling(presrocLicenceEntity, presrocChargeVersionEntity)
+
+  const presrocBillRunEntities = buildPresrocBillRunEntities(
+    presrocLicenceEntity,
+    billingAccountEntity,
+    presrocChargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
 
   // Sroc
   const chargeVersionEntity = buildChargeVersionEntity(presrocLicenceEntity, billingAccountEntity, region)
@@ -40,7 +48,7 @@ export default function () {
   _srocChargeVersionDate(additionalChargeEntity)
   _srocChargeVersion(chargeVersionEntity)
 
-  const billRunEntity = buildBillRunEntity(
+  const billRunEntities = buildBillRunEntities(
     presrocLicenceEntity,
     billingAccountEntity,
     chargeVersionEntity,
@@ -51,12 +59,8 @@ export default function () {
   return {
     ...presrocLicenceEntity,
     ...billingAccountEntity,
-    ...mergeByKey(
-      asArrays(chargeVersionEntity),
-      asArrays(additionalChargeEntity),
-      asArrays(presrocChargeVersionEntity)
-    ),
-    ...billRunEntity
+    ...mergeByKey(chargeVersionEntity, additionalChargeEntity, presrocChargeVersionEntity),
+    ...mergeByKey(...billRunEntities, ...presrocBillRunEntities)
   }
 }
 
