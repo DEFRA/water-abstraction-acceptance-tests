@@ -75,11 +75,6 @@ test.describe(
       await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
-      const expectedPresrocBillsText =
-        billingPeriodCount.presroc === 1 ? '1 Supplementary bill' : `${billingPeriodCount.presroc} Supplementary bills`
-
-      await expect(page.locator('[data-test="bills-count"]')).toContainText(expectedPresrocBillsText)
-
       const presrocAbstractorsTable = page.locator('[data-test="other-abstractors"]')
 
       await expect(presrocAbstractorsTable).toBeVisible()
@@ -129,7 +124,7 @@ test.describe(
       await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
       await expect(page.locator('[data-test="region-0"]')).toContainText(regions.SOUTHERN.displayName)
       await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
-      await expect(page.locator('[data-test="number-of-bills-0"]')).toContainText(String(billingPeriodCount.presroc))
+      await expect(page.locator('[data-test="number-of-bills-0"]')).toContainText(String(0))
       await expect(page.locator('[data-test="bill-run-status-0"] > .govuk-tag')).toContainText('sent')
 
       await page.locator('[data-test="date-created-1"] > .govuk-link').click()

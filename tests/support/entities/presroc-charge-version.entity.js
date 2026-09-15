@@ -1,5 +1,6 @@
 import chargeReferenceData from '../data/charge-reference-presroc.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
+import licenceAgreementData from '../data/licence-agreement.data.js'
 
 /**
  * Builds a presroc (alcs scheme) charge version in its entirety: the charge version itself and a charge
@@ -26,8 +27,14 @@ export default function (licenceEntity, billingAccountEntity, region) {
 
   const chargeReference = chargeReferenceData(chargeVersion, licenceVersionPurpose)
 
+  let licenceAgreement = {}
+  if (chargeReference.section127Agreement) {
+    licenceAgreement = licenceAgreementData(licence)
+  }
+
   return {
     chargeVersion,
-    chargeReference
+    chargeReference,
+    licenceAgreement
   }
 }

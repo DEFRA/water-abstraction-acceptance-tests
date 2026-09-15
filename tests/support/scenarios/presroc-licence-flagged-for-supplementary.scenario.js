@@ -1,6 +1,7 @@
 import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildPresrocBillRunEntities from '../entities/presroc-bill-runs.entities.js'
 import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
 import buildPresrocLicenceEntity from '../entities/presroc-licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
@@ -24,6 +25,14 @@ export default function () {
 
   includeInPresrocSupplementaryBilling(presrocLicenceEntity, presrocChargeVersionEntity)
 
+  const presrocBillRunEntities = buildPresrocBillRunEntities(
+    presrocLicenceEntity,
+    billingAccountEntity,
+    presrocChargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
+
   // Sroc
   const chargeVersionEntity = buildChargeVersionEntity(presrocLicenceEntity, billingAccountEntity, region)
   chargeVersionEntity.chargeVersion.versionNumber = presrocChargeVersionEntity.chargeVersion.versionNumber + 1
@@ -39,7 +48,6 @@ export default function () {
   _srocChargeVersionDate(additionalChargeEntity)
   _srocChargeVersion(chargeVersionEntity)
 
-  // TODO: can we use this for th pre src bil run ?
   const billRunEntities = buildBillRunEntities(
     presrocLicenceEntity,
     billingAccountEntity,
@@ -52,7 +60,7 @@ export default function () {
     ...presrocLicenceEntity,
     ...billingAccountEntity,
     ...mergeByKey(chargeVersionEntity, additionalChargeEntity, presrocChargeVersionEntity),
-    ...mergeByKey(...billRunEntities)
+    ...mergeByKey(...billRunEntities, ...presrocBillRunEntities)
   }
 }
 
