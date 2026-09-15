@@ -8,13 +8,13 @@ import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
 import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { previousYears, today } from '../helpers/date.helpers.js'
+import { previousYears } from '../helpers/date.helpers.js'
 import { regions } from '../default-values.js'
 
 export const title =
-  'Licence flagged for supplementary billing with a sent annual bill run for the current year, plus a second company'
+  'Licence flagged for supplementary billing with sent annual bill runs from the charge version start date to the current year, plus a second company'
 export const description =
-  'The current-year annual bill run scenario, with its charge version starting on the sroc scheme start date so every outstanding sroc period has something to bill, plus a second company and address so a new charge version can move the billing account to it'
+  "Sent annual bill runs for every financial year from the charge version's start date (backdated two years) to the current one, so every outstanding period has something to bill, plus a second company and address so a new charge version can move the billing account to it"
 
 export default function () {
   const region = regions.NORTH_EAST

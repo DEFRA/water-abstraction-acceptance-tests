@@ -8,9 +8,10 @@ import { regions } from '../default-values.js'
 import workflowData from '../data/workflow.data.js'
 import { yesterday } from '../helpers/date.helpers.js'
 
-export const title = 'Licence in workflow, and an annual bill run'
+export const title =
+  'Licence in workflow, and sent annual bill runs from the charge version start date to the current year'
 export const description =
-  'Licence in workflow, and a sent annual bill run, with the workflow entry created before the bill run so it can test supp. flagging behaviour'
+  "Licence in workflow, and sent annual bill runs for every financial year from the charge version's start date to the current one, with the workflow entry created before the bill runs so it can test supp. flagging behaviour"
 
 /**
  * For a bill run to exist, there needs to be a charge version.
