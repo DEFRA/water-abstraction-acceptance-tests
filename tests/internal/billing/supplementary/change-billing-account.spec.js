@@ -116,7 +116,7 @@ test.describe(
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: regions.NORTH_EAST.displayName }).check()
+      await page.getByRole('radio', { name: regions.THAMES.displayName }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -127,7 +127,7 @@ test.describe(
       await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
       await page.locator('[data-test="date-created-1"] > .govuk-link').click()
 
-      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
+      await expect(page.locator('h1')).toContainText(`${regions.THAMES.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
       await expect(page.locator('[data-test="credits-count"]')).toContainText('2 credit notes')
       await expect(page.locator('[data-test="debits-count"]')).toContainText('3 invoices')

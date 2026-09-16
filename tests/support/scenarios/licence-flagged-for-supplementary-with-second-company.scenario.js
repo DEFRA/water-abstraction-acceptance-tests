@@ -17,7 +17,7 @@ export const description =
   "Sent annual bill runs for every financial year from the charge version's start date (backdated two years) to the current one, so every outstanding period has something to bill, plus a second company and address so a new charge version can move the billing account to it"
 
 export default function () {
-  const region = regions.NORTH_EAST
+  const region = regions.THAMES
 
   const { currentFinancialYear } = calculatedDates()
 
