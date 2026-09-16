@@ -17,6 +17,10 @@ export default function (region = null) {
   const billingAccountEntity = buildBillingAccountEntity(presrocLicenceEntity, region)
   const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(presrocLicenceEntity, billingAccountEntity, region)
 
+  // Other scenarios expect the licenceAgreement in the case of 'twoPartTariff'
+  // This scenario (and associated specs) add a new licence agreement as part of the test so we need to delete it here
+  delete presrocChargeVersionEntity.licenceAgreement
+
   return {
     ...presrocLicenceEntity,
     ...billingAccountEntity,

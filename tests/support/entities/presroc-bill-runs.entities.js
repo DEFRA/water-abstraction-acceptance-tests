@@ -3,7 +3,7 @@ import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 import billData from '../data/bill.data.js'
 import billLicenceData from '../data/bill-licence.data.js'
 import billRunData from '../data/bill-run.data.js'
-import transactionData from '../data/transaction-presroc.data.js'
+import presrocTransactionData from '../data/transaction-presroc.data.js'
 import { PRESROC_LAST_FINANCIAL_YEAR, previousYears, today } from '../helpers/date.helpers.js'
 
 /**
@@ -24,8 +24,8 @@ import { PRESROC_LAST_FINANCIAL_YEAR, previousYears, today } from '../helpers/da
 export default function (licenceEntity, billingAccountEntity, presrocChargeVersionEntity, dates, region) {
   const presrocBillRunEntities = []
 
-  const currentFYEndYear = new Date(dates.endDate).getUTCFullYear()
-  const yearsBackToPresrocCap = Math.max(0, currentFYEndYear - PRESROC_LAST_FINANCIAL_YEAR)
+  const currentPeriodEndYear = new Date(dates.endDate).getUTCFullYear()
+  const yearsBackToPresrocCap = Math.max(0, currentPeriodEndYear - PRESROC_LAST_FINANCIAL_YEAR)
 
   const presrocDates = {
     startDate: previousYears(dates.startDate, yearsBackToPresrocCap),
@@ -33,11 +33,11 @@ export default function (licenceEntity, billingAccountEntity, presrocChargeVersi
   }
 
   const chargeVersionStartDate = new Date(presrocChargeVersionEntity.chargeVersion.startDate)
-  const presrocCapStartDate = new Date(presrocDates.startDate)
-  const yearsBack = Math.max(0, presrocCapStartDate.getFullYear() - chargeVersionStartDate.getFullYear())
+  const presrocStartDate = new Date(presrocDates.startDate)
+  const yearsBack = Math.max(0, presrocStartDate.getFullYear() - chargeVersionStartDate.getFullYear())
 
   for (let offset = 0; offset <= yearsBack; offset++) {
-    const fyPeriod = {
+    const period = {
       startDate: previousYears(presrocDates.startDate, offset),
       endDate: previousYears(presrocDates.endDate, offset)
     }
@@ -46,7 +46,7 @@ export default function (licenceEntity, billingAccountEntity, presrocChargeVersi
       licenceEntity,
       billingAccountEntity,
       presrocChargeVersionEntity,
-      fyPeriod,
+      period,
       region
     )
 
@@ -100,7 +100,12 @@ function _billRunEntity(licenceEntity, billingAccountEntity, presrocChargeVersio
 
 function _compensationCharge(licenceEntity, billLicence, presrocChargeVersionEntity, dates, transactions) {
   if (!licenceEntity.licence.waterUndertaker) {
-    const compensationTransaction = transactionData(billLicence, presrocChargeVersionEntity.chargeReference, dates, 0)
+    const compensationTransaction = presrocTransactionData(
+      billLicence,
+      presrocChargeVersionEntity.chargeReference,
+      dates,
+      0
+    )
 
     compensationTransaction.chargeType = 'compensation'
     compensationTransaction.description =
@@ -139,8 +144,6 @@ function _minimumChargeTransaction(billLicence, netAmount) {
 }
 
 function _netAmount(chargeYear, twoPartTariff) {
-  // Only FY2022 has been verified against real engine output (see the presroc-licence-flagged-for-supplementary
-  // journey test) — extend as further presroc years are exercised against the real engine
   const chargeYearAmounts = {
     2022: 2988
   }

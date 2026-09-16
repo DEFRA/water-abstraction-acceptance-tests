@@ -9,13 +9,6 @@ import { previousYears, today } from '../helpers/date.helpers.js'
  * period dates, and a bill, bill licence, and transaction for the given charge version's licence — the minimum
  * valid data a bill run needs to exist against a licence.
  *
- * The bill run's batch type is left at the data file's default (annual). Scenarios needing a different batch type
- * must set it themselves on every entry in the returned array, e.g. `billRunEntities[0].billRun.batchType`.
- *
- * The array is returned with each entry's fields under their singular entity names (`billRun`, `bill`, ...), like
- * any other entity file — pass it straight to `mergeByKey(...billRunEntities)`, which normalizes each entry to the
- * seed endpoint's pluralized wire format itself.
- *
  * @param {object} licenceEntity - the licence entity the bill licence is for
  * @param {object} billingAccountEntity - the billing account for the bill
  * @param {object} chargeVersionEntity - the charge version the bill and transaction are for
@@ -25,18 +18,17 @@ import { previousYears, today } from '../helpers/date.helpers.js'
 export default function (licenceEntity, billingAccountEntity, chargeVersionEntity, dates, region) {
   const billRunEntities = []
 
-  // Determine how many years back the charge version goes relative to current financial year
   const chargeVersionStartDate = new Date(chargeVersionEntity.chargeVersion.startDate)
-  const currentFYStartDate = new Date(dates.startDate)
-  const yearsBack = Math.max(0, currentFYStartDate.getFullYear() - chargeVersionStartDate.getFullYear())
+  const currentPeriodStartDate = new Date(dates.startDate)
+  const yearsBack = Math.max(0, currentPeriodStartDate.getFullYear() - chargeVersionStartDate.getFullYear())
 
   for (let offset = 0; offset <= yearsBack; offset++) {
-    const fyPeriod = {
+    const period = {
       startDate: previousYears(dates.startDate, offset),
       endDate: previousYears(dates.endDate, offset)
     }
 
-    const billRunEntity = _billRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity, fyPeriod, region)
+    const billRunEntity = _billRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity, period, region)
 
     if (offset > 0) {
       billRunEntity.billRun.createdAt = previousYears(today(), offset)
@@ -97,11 +89,11 @@ function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, da
 
 function _netAmount(chargeYear, twoPartTariff) {
   const chargeYearAmounts = {
-    2027: '10676',
-    2026: '10676',
-    2025: '9700',
-    2024: '9700',
-    2023: '9700'
+    2027: 10676,
+    2026: 10676,
+    2025: 9700,
+    2024: 9700,
+    2023: 9700
   }
 
   // Two part tariff splits the bill in half
