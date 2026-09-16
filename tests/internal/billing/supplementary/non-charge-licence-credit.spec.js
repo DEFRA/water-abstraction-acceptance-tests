@@ -12,7 +12,7 @@ test.describe(
     let licence
 
     test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+      const scenario = scenarioData(regions.SOUTH_WEST)
 
       licence = scenario.licence
 
