@@ -84,7 +84,7 @@ function _billRunEntity(licenceEntity, billingAccountEntity, presrocChargeVersio
   const billLicence = billLicenceData(bill, licence)
 
   const transactions = [
-    transactionData(billLicence, chargeReference, dates, netAmount),
+    presrocTransactionData(billLicence, chargeReference, dates, netAmount),
     _minimumChargeTransaction(billLicence, minimumChargeAmount)
   ]
 
