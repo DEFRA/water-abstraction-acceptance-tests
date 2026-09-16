@@ -10,7 +10,7 @@ import { includeInPresrocSupplementaryBilling, includeInSrocSupplementaryBilling
 import { regions, srocStartDate } from '../default-values.js'
 
 export const title =
-  'Presroc licence flagged for presroc and sroc supplementary billing, and sent annual bill runs from the charge version start date to the current year'
+  'Presroc licence flagged for supplementary billing'
 export const description =
   "A presroc licence flagged for both the next presroc and sroc supplementary bill runs, plus sent annual bill runs for every financial year from the charge version's start date to the current one, so a supplementary bill run picks up every outstanding presroc and sroc period"
 
