@@ -9,7 +9,7 @@ import workflowData from '../data/workflow.data.js'
 import { yesterday } from '../helpers/date.helpers.js'
 
 export const title =
-  'Licence in workflow, and sent annual bill runs from the charge version start date to the current year'
+  'Licence in workflow, and an annual bill run'
 export const description =
   "Licence in workflow, and sent annual bill runs for every financial year from the charge version's start date to the current one, with the workflow entry created before the bill runs so it can test supp. flagging behaviour"
 
