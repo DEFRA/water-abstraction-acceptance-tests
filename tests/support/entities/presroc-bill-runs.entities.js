@@ -147,17 +147,3 @@ function _minimumChargeTransaction(billLicence, netAmount) {
     credit: false
   }
 }
-
-function _netAmount(chargeYear, twoPartTariff) {
-  const chargeYearAmounts = {
-    2022: 2988
-  }
-
-  const amount = chargeYearAmounts[chargeYear]
-
-  if (twoPartTariff) {
-    return amount / 2
-  }
-
-  return amount
-}
