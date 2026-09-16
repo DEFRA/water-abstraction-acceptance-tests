@@ -108,10 +108,10 @@ function _compensationCharge(licenceEntity, billLicence, presrocChargeVersionEnt
     const compensationTransaction = presrocTransactionData(
       billLicence,
       presrocChargeVersionEntity.chargeReference,
-      dates,
-      0
+      dates
     )
 
+    compensationTransaction.netAmount = 0
     compensationTransaction.chargeType = 'compensation'
     compensationTransaction.description =
       'Compensation Charge calculated from all factors except Standard Unit Charge and Source (replaced by factors below) and excluding S127 Charge Element'

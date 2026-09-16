@@ -79,15 +79,15 @@ function _billRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity
   }
 }
 
-function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions, netAmount) {
+function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions) {
   if (!licenceEntity.licence.waterUndertaker) {
-    const transaction2 = transactionData(billLicence, chargeVersionEntity.chargeReference, dates, netAmount)
+    const compensationTransaction = transactionData(billLicence, chargeVersionEntity.chargeReference, dates)
 
-    transaction2.chargeType = 'compensation'
-    transaction2.netAmount = 0
-    transaction2.description =
+    compensationTransaction.chargeType = 'compensation'
+    compensationTransaction.netAmount = 0
+    compensationTransaction.description =
       'Compensation charge: calculated from the charge reference, activity description and regional environmental improvement charge; excludes any supported source additional charge and two-part tariff charge agreement'
 
-    transactions.push(transaction2)
+    transactions.push(compensationTransaction)
   }
 }
