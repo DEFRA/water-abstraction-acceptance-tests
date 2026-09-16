@@ -64,8 +64,11 @@ export function markAsTwoPartTariff(billRunEntities) {
 }
 
 /**
+ * Sums a list of transactions into invoice, credit note, and net totals
  *
- * @param transactions
+ * @param {object[]} transactions - the transactions to total
+ *
+ * @returns {object} The summed `creditNoteValue`, `invoiceValue`, and `netAmount` (invoice minus credit note)
  */
 export function transactionTotals(transactions) {
   let invoiceValue = 0
@@ -87,9 +90,12 @@ export function transactionTotals(transactions) {
 }
 
 /**
+ * Looks up the standard charge amount for a financial year, halved when the charge is two-part tariff
  *
- * @param chargeYear
- * @param twoPartTariff
+ * @param {number} chargeYear - the financial year ending to look up the charge amount for
+ * @param {boolean} twoPartTariff - whether to halve the amount for a two-part tariff charge
+ *
+ * @returns {number} The charge amount for the year, halved if `twoPartTariff` is true
  */
 export function chargeYearAmount(chargeYear, twoPartTariff) {
   const chargeYearAmounts = {
