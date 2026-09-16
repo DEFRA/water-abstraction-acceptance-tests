@@ -5,6 +5,7 @@ import billLicenceData from '../data/bill-licence.data.js'
 import billRunData from '../data/bill-run.data.js'
 import presrocTransactionData from '../data/transaction-presroc.data.js'
 import { PRESROC_LAST_FINANCIAL_YEAR, previousYears, today } from '../helpers/date.helpers.js'
+import { transactionTotals } from '../helpers/billing.helpers.js'
 
 /**
  * Builds a presroc (alcs scheme) bill run in its entirety: a sent annual bill run for every financial year from
@@ -70,25 +71,29 @@ function _billRunEntity(licenceEntity, billingAccountEntity, presrocChargeVersio
   billRun.fromFinancialYearEnding = new Date(dates.endDate).getUTCFullYear()
   billRun.toFinancialYearEnding = new Date(dates.endDate).getUTCFullYear()
 
-  const netAmount = _netAmount(billRun.toFinancialYearEnding, chargeReference.section127Agreement)
-  const minimumChargeAmount = _minimumChargeAmount(billRun.toFinancialYearEnding)
-  const totalNetAmount = netAmount + minimumChargeAmount
-
-  billRun.invoiceCount = 1
-  billRun.creditNoteCount = 0
-  billRun.invoiceValue = totalNetAmount
-  billRun.creditNoteValue = 0
-  billRun.netTotal = totalNetAmount
-
-  const bill = billData(billingAccount, billRun, totalNetAmount)
+  const bill = billData(billingAccount, billRun)
   const billLicence = billLicenceData(bill, licence)
 
+  const minimumChargeAmount = _minimumChargeAmount(billRun.toFinancialYearEnding)
+
   const transactions = [
-    presrocTransactionData(billLicence, chargeReference, dates, netAmount),
+    presrocTransactionData(billLicence, chargeReference, dates),
     _minimumChargeTransaction(billLicence, minimumChargeAmount)
   ]
 
   _compensationCharge(licenceEntity, billLicence, presrocChargeVersionEntity, dates, transactions)
+
+  const { creditNoteValue, invoiceValue, netAmount } = transactionTotals(transactions)
+
+  bill.netAmount = netAmount
+  bill.creditNoteValue = creditNoteValue
+  bill.invoiceValue = invoiceValue
+
+  billRun.invoiceCount = 1
+  billRun.creditNoteCount = 0
+  billRun.invoiceValue = invoiceValue
+  billRun.creditNoteValue = creditNoteValue
+  billRun.netTotal = netAmount
 
   return {
     billRun,

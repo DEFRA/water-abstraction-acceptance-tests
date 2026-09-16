@@ -51,3 +51,69 @@ export function includeInPresrocSupplementaryBilling(presrocLicenceEntity, presr
 
   presrocChargeVersionEntity.chargeVersion.endDate = formatDateToIso(presrocChargeVersionEndDate)
 }
+
+/**
+ *
+ * @param transactions
+ */
+export function transactionTotals(transactions) {
+  let invoiceValue = 0
+  let creditNoteValue = 0
+
+  for (const transaction of transactions) {
+    if (transaction.credit) {
+      creditNoteValue += transaction.netAmount
+    } else {
+      invoiceValue += transaction.netAmount
+    }
+  }
+
+  return {
+    creditNoteValue,
+    invoiceValue,
+    netAmount: invoiceValue - creditNoteValue
+  }
+}
+
+/**
+ *
+ * @param chargeYear
+ * @param twoPartTariff
+ */
+export function chargeYearAmount(chargeYear, twoPartTariff) {
+  const chargeYearAmounts = {
+    2027: {
+      scheme: 'sroc',
+      amount: 10676
+    },
+    2026: {
+      scheme: 'sroc',
+      amount: 10676
+    },
+
+    2025: {
+      scheme: 'sroc',
+      amount: 9700
+    },
+    2024: {
+      scheme: 'sroc',
+      amount: 9700
+    },
+    2023: {
+      scheme: 'sroc',
+      amount: 9700
+    },
+    2022: {
+      scheme: 'presroc',
+      amount: 2988
+    }
+  }
+
+  const amount = chargeYearAmounts[chargeYear].amount
+
+  if (twoPartTariff) {
+    return amount / 2
+  }
+
+  return amount
+}

@@ -2,6 +2,7 @@ import billData from '../data/bill.data.js'
 import billLicenceData from '../data/bill-licence.data.js'
 import billRunData from '../data/bill-run.data.js'
 import transactionData from '../data/transaction.data.js'
+import { transactionTotals } from '../helpers/billing.helpers.js'
 import { previousYears, today } from '../helpers/date.helpers.js'
 
 /**
@@ -51,20 +52,24 @@ function _billRunEntity(licenceEntity, billingAccountEntity, chargeVersionEntity
   billRun.fromFinancialYearEnding = new Date(dates.endDate).getUTCFullYear()
   billRun.toFinancialYearEnding = new Date(dates.endDate).getUTCFullYear()
 
-  const netAmount = _netAmount(billRun.toFinancialYearEnding, chargeReference.section127Agreement)
+  const bill = billData(billingAccount, billRun)
+  const billLicence = billLicenceData(bill, licence)
+
+  const transactions = [transactionData(billLicence, chargeReference, dates)]
+
+  _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions)
+
+  const { creditNoteValue, invoiceValue, netAmount } = transactionTotals(transactions)
+
+  bill.netAmount = netAmount
+  bill.creditNoteValue = creditNoteValue
+  bill.invoiceValue = invoiceValue
 
   billRun.invoiceCount = 1
   billRun.creditNoteCount = 0
-  billRun.invoiceValue = netAmount
-  billRun.creditNoteValue = 0
+  billRun.invoiceValue = invoiceValue
+  billRun.creditNoteValue = creditNoteValue
   billRun.netTotal = netAmount
-
-  const bill = billData(billingAccount, billRun, netAmount)
-  const billLicence = billLicenceData(bill, licence)
-
-  const transactions = [transactionData(billLicence, chargeReference, dates, netAmount)]
-
-  _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, dates, transactions, netAmount)
 
   return {
     billRun,
@@ -85,21 +90,4 @@ function _compensationCharge(licenceEntity, billLicence, chargeVersionEntity, da
 
     transactions.push(transaction2)
   }
-}
-
-function _netAmount(chargeYear, twoPartTariff) {
-  const chargeYearAmounts = {
-    2027: 10676,
-    2026: 10676,
-    2025: 9700,
-    2024: 9700,
-    2023: 9700
-  }
-
-  // Two part tariff splits the bill in half
-  if (twoPartTariff) {
-    return chargeYearAmounts[chargeYear] / 2
-  }
-
-  return chargeYearAmounts[chargeYear]
 }
