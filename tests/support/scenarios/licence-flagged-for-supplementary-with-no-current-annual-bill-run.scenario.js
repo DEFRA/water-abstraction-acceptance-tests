@@ -8,7 +8,7 @@ import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { previousYears } from '../helpers/date.helpers.js'
 import { regions } from '../default-values.js'
 
-export const title = 'Licence flagged for supplementary billing with previous annual bill run'
+export const title = 'Licence flagged for supplementary billing with no current annual bill run'
 export const description =
   'A licence starting on the day the sroc scheme began, with a charge version flagged for the next supplementary bill run, plus a sent annual bill run for the year before the current one, so a supplementary bill run has no annual in the current year to pick up from'
 

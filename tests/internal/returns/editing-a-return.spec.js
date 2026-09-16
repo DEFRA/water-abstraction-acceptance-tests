@@ -1,4 +1,4 @@
-import scenarioData from '../../support/scenarios/licence-with-tpt-return-log-and-bill-run.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-tpt-return-log-and-bill-runs.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Editing a return (internal)', { tag: '@supplementaryBilling' }, () => {

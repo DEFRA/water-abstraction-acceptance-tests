@@ -1,5 +1,5 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-workflow-and-two-part-tariff-bill-run.scenario.js'
+import scenarioData from '../../support/scenarios/licence-with-workflow-and-two-part-tariff-bill-runs.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(

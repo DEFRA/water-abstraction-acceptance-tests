@@ -8,6 +8,7 @@ import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import chargeElementData from '../data/charge-element.data.js'
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
+import { markAsTwoPartTariff } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
@@ -58,7 +59,7 @@ export default function () {
     region
   )
 
-  _twoPartTariffBillRun(billRunEntities)
+  markAsTwoPartTariff(billRunEntities)
 
   const licenceSupplementaryYear = {
     id: generateUUID(),
@@ -97,12 +98,6 @@ function _returnRequirement(returnVersion, licenceVersionPurpose, point) {
   const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
 
   return { returnRequirement, returnRequirementPoint, returnRequirementPurpose }
-}
-
-function _twoPartTariffBillRun(billRunEntities) {
-  for (const billRunEntity of billRunEntities) {
-    billRunEntity.billRun.batchType = 'two_part_tariff'
-  }
 }
 
 function _returns(licence, twoPartTariffPeriod, region, secondLicenceVersionPurpose, firstLicenceVersionPurpose) {

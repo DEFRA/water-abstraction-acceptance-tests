@@ -53,6 +53,17 @@ export function includeInPresrocSupplementaryBilling(presrocLicenceEntity, presr
 }
 
 /**
+ * Sets a bill run's type to two-part tariff on every entity in the array
+ *
+ * @param {object[]} billRunEntities - the bill run entities returned by buildBillRunEntities
+ */
+export function markAsTwoPartTariff(billRunEntities) {
+  for (const billRunEntity of billRunEntities) {
+    billRunEntity.billRun.batchType = 'two_part_tariff'
+  }
+}
+
+/**
  *
  * @param transactions
  */

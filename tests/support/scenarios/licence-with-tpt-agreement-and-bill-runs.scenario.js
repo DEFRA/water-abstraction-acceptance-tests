@@ -3,12 +3,13 @@ import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithAgreementScenario from './licence-with-agreement.scenario.js'
+import { markAsTwoPartTariff } from '../helpers/billing.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
 
-export const title = 'Licence with an agreement and a bill run'
+export const title = 'Licence with a TPT agreement and bill runs'
 export const description =
-  'A licence, licence holder (company), section 127 two-part tariff agreement, and a sent two-part tariff bill run.'
+  'A licence, licence holder (company), section 127 two-part tariff agreement, and sent two-part tariff bill runs.'
 
 /**
  * For a bill run to exist, there needs to be a charge version.
@@ -37,9 +38,7 @@ export default function (region = null) {
     region
   )
 
-  for (const billRunEntity of billRunEntities) {
-    billRunEntity.billRun.batchType = 'two_part_tariff'
-  }
+  markAsTwoPartTariff(billRunEntities)
 
   return {
     ...licence,

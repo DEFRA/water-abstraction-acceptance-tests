@@ -1,5 +1,5 @@
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-full-sroc-history-and-current-annual-bill-run.scenario.js'
+import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { SROC_FIRST_FINANCIAL_YEAR, formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
