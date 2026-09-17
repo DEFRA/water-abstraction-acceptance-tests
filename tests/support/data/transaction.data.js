@@ -17,6 +17,7 @@ export default function (billLicence, chargeReference, dates) {
     volume: chargeReference.volume,
     scheme: chargeReference.scheme,
     section127Agreement: chargeReference.section127Agreement,
+    section130Agreement: 'false',
     description: chargeReference.description,
     chargeCategoryCode: chargeReference.chargeCategoryId.value,
     chargeCategoryDescription: 'Test charge category',

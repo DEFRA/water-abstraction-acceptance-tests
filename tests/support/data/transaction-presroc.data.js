@@ -24,10 +24,6 @@ export default function (billLicence, chargeReference, dates) {
     loss: chargeReference.loss,
     scheme: chargeReference.scheme,
     section127Agreement: chargeReference.section127Agreement,
-    // TransactionHelper defaults section130Agreement to the string 'false', which the legacy engine that
-    // processes alcs-scheme transactions treats as a truthy agreement code and rejects — must be null
-    section126Factor: null,
-    section130Agreement: null,
     description: chargeReference.description,
     purposes: [{}],
     netAmount,

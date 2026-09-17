@@ -136,11 +136,8 @@ function _minimumChargeTransaction(billLicence, netAmount) {
     billLicenceId: billLicence.id,
     // TransactionHelper defaults chargeReferenceId to a random UUID and scheme to 'sroc' for any field we don't
     // set ourselves — both must be overridden here or the insert fails/mismatches the real alcs minimum charge row.
-    // section126Factor/section130Agreement also need forcing to null — see transaction-presroc.data.js
     chargeReferenceId: null,
     scheme: 'alcs',
-    section126Factor: null,
-    section130Agreement: null,
     chargeType: 'minimum_charge',
     description: 'Minimum Charge Calculation - raised under Schedule 23 of the Environment Act 1995',
     netAmount,
