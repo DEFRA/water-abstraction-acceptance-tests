@@ -12,9 +12,9 @@ import { previousYears } from '../helpers/date.helpers.js'
 import { regions } from '../default-values.js'
 
 export const title =
-  'Licence flagged for supplementary billing with sent annual bill runs from the charge version start date to the current year, plus a second company'
+  'Licence flagged for supplementary with second company'
 export const description =
-  "Sent annual bill runs for every financial year from the charge version's start date (backdated two years) to the current one, so every outstanding period has something to bill, plus a second company and address so a new charge version can move the billing account to it"
+  "Licence flagged for supplementary billing with sent annual bill runs for every financial year from the charge version's start date (backdated two years) to the current one, so every outstanding period has something to bill, plus a second company and address so a new charge version can move the billing account to it"
 
 export default function () {
   const region = regions.THAMES

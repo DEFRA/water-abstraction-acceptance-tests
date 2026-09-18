@@ -7,7 +7,7 @@ import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions, srocStartDate } from '../default-values.js'
 
-export const title = 'Licence flagged for supplementary billing'
+export const title = 'Licence flagged for supplementary'
 export const description =
   'A licence and charge version that starts on the sroc scheme start date, flagged for the next sroc supplementary bill run, plus sent annual bill runs for every sroc financial year.'
 

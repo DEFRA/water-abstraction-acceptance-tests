@@ -107,7 +107,6 @@ export function chargeYearAmount(chargeYear, twoPartTariff) {
       scheme: 'sroc',
       amount: 10676
     },
-
     2025: {
       scheme: 'sroc',
       amount: 9700
