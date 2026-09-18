@@ -6,7 +6,6 @@ export default function (billingAccount, billRun) {
     billingAccountId: billingAccount.id,
     address: {},
     accountNumber: billingAccount.accountNumber,
-    invoiceNumber: 'fella',
     billRunId: billRun.id,
     financialYearEnding: billRun.toFinancialYearEnding,
     netAmount: 0,
