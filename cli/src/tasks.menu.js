@@ -1,8 +1,8 @@
 import destroyWorld from './world/destroy.world.js'
 import { exit } from './cli.lib.js'
+import resetWorld from './world/reset.world.js'
 import selectTaskPrompt from './select-task.prompt.js'
 import { logError, printBanner, withSpinner } from './log.lib.js'
-import resetWorld from './world/reset.world.js'
 
 /**
  * Show the CLI's task menu and run whichever entry the user selects

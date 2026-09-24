@@ -3,8 +3,10 @@ import fs from 'node:fs/promises'
 import path from 'path'
 
 /**
+ * Write the world's scenario data to `world.json` next to this file, so the data it created can be looked up
+ * later
  *
- * @param scenarios
+ * @param {object} scenarios - the generated data for each scenario, keyed by scenario name
  */
 export default async function saveWorld(scenarios) {
   const __dirname = path.dirname(fileURLToPath(import.meta.url))

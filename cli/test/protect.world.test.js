@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 
-import protectWorld from '../src/world/protect.world.js'
 import dataWorld from '../src/world/data.world.js'
+import protectWorld from '../src/world/protect.world.js'
 
 describe('protectWorld', () => {
   describe('when given the real scenarios', () => {

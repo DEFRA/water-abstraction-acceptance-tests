@@ -1,6 +1,12 @@
 /**
+ * Check no scenarios in the world create a bill run for the same batch type, region and financial year
  *
- * @param scenarios
+ * Seeding clashing bill runs together would be incorrect data, so we fail before anything is loaded and list every
+ * clash found.
+ *
+ * @param {object} scenarios - the generated data for each scenario, keyed by scenario name
+ *
+ * @throws {Error} when one or more duplicate bill run combinations are found
  */
 export default function protectWorld(scenarios) {
   const seenCombos = new Map()
