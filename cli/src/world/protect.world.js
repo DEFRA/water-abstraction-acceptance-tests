@@ -13,7 +13,7 @@ export default function protectWorld(scenarios) {
   const errors = []
 
   for (const [key, scenarioData] of Object.entries(scenarios)) {
-    if (Array.isArray(scenarioData.billRuns)) {
+    if (scenarioData.billRuns) {
       for (const billRun of scenarioData.billRuns) {
         const region = billRun.regionId?.value
         const year = billRun.toFinancialYearEnding
