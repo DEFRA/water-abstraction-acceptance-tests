@@ -9,7 +9,7 @@
  * @throws {Error} when one or more duplicate bill run combinations are found
  */
 export default function protectWorld(scenarios) {
-  const seenCombos = new Map()
+  const billRunKeys = new Map()
   const errors = []
 
   for (const [key, scenarioData] of Object.entries(scenarios)) {
@@ -19,16 +19,16 @@ export default function protectWorld(scenarios) {
         const year = billRun.toFinancialYearEnding
         const batchType = billRun.batchType
 
-        const combo = `${batchType}-${region}-${year}`
+        const billRunKey = `${batchType}-${region}-${year}`
 
-        if (seenCombos.has(combo)) {
-          const originalScenario = seenCombos.get(combo)
+        if (billRunKeys.has(billRunKey)) {
+          const originalScenario = billRunKeys.get(billRunKey)
           errors.push(
             `• [Batch Type: ${batchType} | Region: ${region} | Year: ${year}] ` +
               `found in scenario '${key}' (already used in '${originalScenario}')`
           )
         } else {
-          seenCombos.set(combo, key)
+          billRunKeys.set(billRunKey, key)
         }
       }
     }
