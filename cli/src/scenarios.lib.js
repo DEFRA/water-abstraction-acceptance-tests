@@ -56,13 +56,22 @@ export async function loadScenario(selectedScenario) {
 
   const body = await getBody()
 
+  _removeBillRuns(body)
+
+  await loadService(body)
+}
+
+/**
+ * Remove any bill runs, and the bills, bill licences and transactions that belong to them, so loading a scenario on
+ * top of the world cannot create a clashing bill run
+ *
+ * @private
+ */
+function _removeBillRuns(body) {
   if (body.billRuns) {
-    // Do not allow adding additional bill runs
     delete body.billRuns
     delete body.bills
     delete body.billLicences
     delete body.transactions
   }
-
-  await loadService(body)
 }

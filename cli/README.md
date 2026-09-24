@@ -10,4 +10,4 @@ npm run cli
 
 Type to search, Enter to select, Escape to exit. Pick another scenario to reload; the picker remembers your last choice.
 
-Press Tab for the menu: seed all (loads a curated set of scenarios, no tear down) or tear down only.
+Press Tab for the menu: reset world (destroys then seeds every scenario together as one world) or destroy world (cleans the database and removes the saved `world.json`).

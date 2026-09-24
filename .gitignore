@@ -40,5 +40,4 @@ node_modules/
 .env
 .env.local
 
-
 cli/src/world/world.json

@@ -17,7 +17,7 @@ export default async function dataWorld() {
   })
 
   for (const filename of filenames) {
-    const scenarioPath = path.resolve(SCENARIOS_DIR, `${filename}`)
+    const scenarioPath = path.resolve(SCENARIOS_DIR, filename)
     const { default: data } = await import(`file://${scenarioPath}`)
 
     // Use the scenario file name without the 'scenario.js'

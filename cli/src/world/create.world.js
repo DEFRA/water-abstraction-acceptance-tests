@@ -4,7 +4,7 @@ import protectWorld from './protect.world.js'
 import saveWorld from './save.world.js'
 
 /**
- * Seed a curated set of scenarios, one after another. Does not tear down first
+ * Seed every scenario together as one world, after checking none of them clash, then save the data it created
  */
 export default async function createWorld() {
   const scenarios = await dataWorld()

@@ -9,7 +9,6 @@ import { logError, printBanner, withSpinner } from './log.lib.js'
  *
  * Tab returns quietly to the search prompt. Escape and Ctrl+C both exit the CLI.
  *
- * @param {object[]} scenarios - the full list of available scenarios, as returned by listScenarios()
  * @param {AbortSignal} escapeSignal - aborted when Escape is pressed; exits the CLI
  * @param {AbortSignal} tabSignal - aborted when Tab is pressed; switches to the scenarios menu
  */
@@ -41,9 +40,7 @@ export default async function tasksMenu(escapeSignal, tabSignal) {
 
 async function _processTask(selectedTask) {
   if (selectedTask === 'reset-world') {
-    await withSpinner('Resetting the world...', async () => {
-      return resetWorld()
-    })
+    await withSpinner('Resetting the world...', resetWorld)
   } else if (selectedTask === 'destroy-world') {
     await withSpinner('Destroying world...', destroyWorld)
   }
