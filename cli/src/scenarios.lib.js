@@ -56,5 +56,13 @@ export async function loadScenario(selectedScenario) {
 
   const body = await getBody()
 
+  if (body.billRuns) {
+    // Do not allow adding additional bill runs
+    delete body.billRuns
+    delete body.bills
+    delete body.billLicences
+    delete body.transactions
+  }
+
   await loadService(body)
 }
