@@ -9,6 +9,7 @@
     "cli": "node cli/cli.js",
     "open": "playwright test --ui",
     "test": "playwright test",
+    "test:cli": "node --test 'cli/test/**/*.test.js'",
     "report": "playwright show-report",
     "lint": "eslint .",
     "failed": "playwright test --last-failed",

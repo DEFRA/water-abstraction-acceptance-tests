@@ -1,29 +1,29 @@
+import destroyWorld from './world/destroy.world.js'
 import { exit } from './cli.lib.js'
+import resetWorld from './world/reset.world.js'
 import selectTaskPrompt from './select-task.prompt.js'
 import { logError, printBanner, withSpinner } from './log.lib.js'
-import { seedAll, tearDown } from './tasks.lib.js'
 
 /**
  * Show the CLI's task menu and run whichever entry the user selects
  *
  * Tab returns quietly to the search prompt. Escape and Ctrl+C both exit the CLI.
  *
- * @param {object[]} scenarios - the full list of available scenarios, as returned by listScenarios()
  * @param {AbortSignal} escapeSignal - aborted when Escape is pressed; exits the CLI
  * @param {AbortSignal} tabSignal - aborted when Tab is pressed; switches to the scenarios menu
  */
-export default async function tasksMenu(scenarios, escapeSignal, tabSignal) {
+export default async function tasksMenu(escapeSignal, tabSignal) {
   printBanner('Select a task')
 
   try {
     const choices = [
-      { name: 'Seed all scenarios', value: 'seed-all' },
-      { name: 'Tear down', value: 'tear-down' }
+      { name: 'Reset world', value: 'reset-world' },
+      { name: 'Destroy world', value: 'destroy-world' }
     ]
 
     const selected = await selectTaskPrompt(choices, escapeSignal, tabSignal)
 
-    await _processTask(selected, scenarios)
+    await _processTask(selected)
   } catch (err) {
     if (tabSignal.aborted) {
       return
@@ -38,12 +38,10 @@ export default async function tasksMenu(scenarios, escapeSignal, tabSignal) {
   }
 }
 
-async function _processTask(selectedTask, scenarios) {
-  if (selectedTask === 'seed-all') {
-    await withSpinner('Seeding all scenarios...', async () => {
-      return seedAll(scenarios)
-    })
-  } else if (selectedTask === 'tear-down') {
-    await withSpinner('Tearing down...', tearDown)
+async function _processTask(selectedTask) {
+  if (selectedTask === 'reset-world') {
+    await withSpinner('Resetting the world...', resetWorld)
+  } else if (selectedTask === 'destroy-world') {
+    await withSpinner('Destroying world...', destroyWorld)
   }
 }

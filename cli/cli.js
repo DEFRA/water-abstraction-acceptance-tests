@@ -30,7 +30,7 @@ async function run() {
       // Tab just fired to open the tasks menu; reset so it can also be pressed to exit tasksMenu
       tabAbortController = new AbortController()
 
-      await tasksMenu(scenarios, escapeAbortController.signal, tabAbortController.signal)
+      await tasksMenu(escapeAbortController.signal, tabAbortController.signal)
 
       // tasksMenu may have aborted the signal i.e. switched back to scenarios; reset so Tab is detectable again in the
       // next scenariosMenu call

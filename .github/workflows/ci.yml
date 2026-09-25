@@ -52,8 +52,13 @@ jobs:
         run: |
           npm run lint
 
-      # We don't have unit tests in this project. We also can't access the service as its hidden behind a VPN. Instead
-      # we run a smoke test to confirm we haven't broken being able to run the project
-      - name: Run unit tests
+      # We can't access the service as its hidden behind a VPN. Instead we run a smoke test to confirm we haven't
+      # broken being able to run the project
+      - name: Run smoke test
         run: |
           npx playwright test tests/ci.spec.js
+
+      # Checks the real scenarios can be seeded together into one world without clashing
+      - name: Run CLI unit tests
+        run: |
+          npm run test:cli
