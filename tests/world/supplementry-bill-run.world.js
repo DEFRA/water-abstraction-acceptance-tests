@@ -4,6 +4,7 @@ import buildBillingAccountEntity from '../support/entities/billing-account.entit
 import buildChargeVersionEntity from '../support/entities/charge-version.entity.js'
 import buildLicenceEntity from '../support/entities/licence.entity.js'
 import { calculatedDates } from '../support/helpers/calculated-dates.helpers.js'
+import { includeInSrocSupplementaryBilling } from '../support/helpers/billing.helpers.js'
 import { mergeByKey } from '../support/helpers/scenario.helpers.js'
 import { previousYears, today } from '../support/helpers/date.helpers.js'
 import { regions, srocStartDate } from '../support/default-values.js'
@@ -11,12 +12,15 @@ import { regions, srocStartDate } from '../support/default-values.js'
 /**
  * Builds a sent annual bill run for every sroc financial year, and licences with a bill in each of them
  *
+ * @param region
  * @param {number} [many=10] - the number of licences to build
  *
  * @returns {object} the world data, keyed by table name
  */
-export default function (many = 10) {
-  const region = regions.NORTH_WEST
+export default function (region, many = 10) {
+  if (!region) {
+    region = regions.NORTH_WEST
+  }
 
   const { currentFinancialYear } = calculatedDates()
 
@@ -84,7 +88,16 @@ function _supplementaryLicences(many, region, billRunPeriods) {
       return buildBillEntity(billRun, licenceEntity, billingAccountEntity, chargeVersionEntity, period, region)
     })
 
-    licences.push(mergeByKey(licenceEntity, billingAccountEntity, chargeVersionEntity, ...billEntities))
+    const additionalChargeEntity = includeInSrocSupplementaryBilling(
+      licenceEntity,
+      billingAccountEntity,
+      chargeVersionEntity,
+      region
+    )
+
+    licences.push(
+      mergeByKey(licenceEntity, billingAccountEntity, chargeVersionEntity, additionalChargeEntity, ...billEntities)
+    )
   }
 
   return licences
