@@ -21,7 +21,7 @@ const YELLOW = '\x1b[33m'
  * @param {string} subtitle - the line shown under the title
  */
 export function printBanner(subtitle) {
-  console.clear()
+  // console.clear()
 
   logInfo(styleBold('Acceptance test CLI'))
   logInfo(`${subtitle}\n`)

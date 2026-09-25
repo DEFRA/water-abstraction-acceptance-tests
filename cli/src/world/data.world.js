@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url'
 import fs from 'node:fs/promises'
 import path from 'path'
 
-const SCENARIOS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../tests/support/scenarios')
+const SCENARIOS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../tests/world')
 
 /**
  * Load every scenario file and generate its data, keyed by the scenario file name
@@ -13,7 +13,7 @@ export default async function dataWorld() {
   const scenarios = {}
   const files = await fs.readdir(SCENARIOS_DIR)
   const filenames = files.filter((file) => {
-    return file.endsWith('.scenario.js')
+    return file.endsWith('.world.js')
   })
 
   for (const filename of filenames) {

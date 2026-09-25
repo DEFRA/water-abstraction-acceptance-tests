@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "cli": "node cli/cli.js",
+    "cli:reset": "node cli/cli.js --reset",
     "open": "playwright test --ui",
     "test": "playwright test",
     "test:cli": "node --test 'cli/test/**/*.test.js'",
