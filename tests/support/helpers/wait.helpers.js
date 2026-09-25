@@ -12,7 +12,7 @@
  *
  * @returns {Promise<void>}
  */
-export async function reloadUntilTextFound(page, locator, textToMatch, retries = 10, retryWait = 2000) {
+export async function reloadUntilTextFound(page, locator, textToMatch, retries = 10, retryWait = 3000) {
   if (retries === 0) {
     throw new Error(`Exhausted retries looking for ${textToMatch}.`)
   }
