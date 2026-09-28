@@ -1,4 +1,3 @@
-import scenarioData from '../../support/scenarios/licence-with-agreement.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -16,12 +15,10 @@ test.describe(
 
     // The scenario's agreement isn't used by the flagging logic under test — it's needed so the "Recalculate bills"
     // button renders on the licence set-up page at all.
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-with-agreement')
 
       licence = scenario.licence
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {

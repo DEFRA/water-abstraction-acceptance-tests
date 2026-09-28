@@ -1,6 +1,5 @@
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/presroc-licence-flagged-for-supplementary.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import {
   PRESROC_LAST_FINANCIAL_YEAR,
@@ -20,8 +19,8 @@ test.describe(
     let presrocToFinancialYearEnding
     let toFinancialYearEnding
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('presroc-licence-flagged-for-supplementary')
 
       company = scenario.company
       licence = scenario.licence
@@ -30,8 +29,6 @@ test.describe(
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
       presrocToFinancialYearEnding = Math.min(toFinancialYearEnding, PRESROC_LAST_FINANCIAL_YEAR)
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {

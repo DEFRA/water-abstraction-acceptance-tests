@@ -1,6 +1,5 @@
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-second-company.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
@@ -13,10 +12,8 @@ test.describe(
     let secondCompany
     let toFinancialYearEnding
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
-
-      await setup(scenario)
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-flagged-for-supplementary-with-second-company')
 
       const [companyFromScenario, secondCompanyFromScenario] = scenario.companies
 

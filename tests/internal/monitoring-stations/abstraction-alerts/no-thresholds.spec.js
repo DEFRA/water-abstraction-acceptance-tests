@@ -1,15 +1,12 @@
-import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Attempt set up of abstraction alert with no thresholds (internal)', () => {
   let monitoringStation
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence-with-monitoring-station-tagged')
 
     monitoringStation = scenario.monitoringStation
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

@@ -1,6 +1,5 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { tableRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
@@ -14,12 +13,12 @@ test.describe('Submit historic correction that results in a split-log (internal)
   let currentCyclePeriod
   let previousCyclePeriod
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(async ({ world }) => {
     const { currentFinancialYear } = calculatedDates()
 
     startYear = new Date(currentFinancialYear.startDate).getFullYear()
 
-    const scenario = scenarioData()
+    const scenario = world('licence-with-open-winter-return-log')
 
     company = scenario.company
     licence = scenario.licence
@@ -39,8 +38,6 @@ test.describe('Submit historic correction that results in a split-log (internal)
     newFromSplitPeriod = returnLogDateDetails({ startDate: splitDate, endDate: scenario.returnLogs[0].endDate })
     currentCyclePeriod = returnLogDateDetails(scenario.returnLogs[1])
     previousCyclePeriod = returnLogDateDetails(scenario.returnLogs[0])
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

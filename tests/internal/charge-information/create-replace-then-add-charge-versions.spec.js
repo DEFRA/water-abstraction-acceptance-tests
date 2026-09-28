@@ -1,4 +1,3 @@
-import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 import { formatLongDate, yesterday } from '../../support/helpers/date.helpers.js'
 
@@ -6,13 +5,11 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
   let company
   let licence
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence')
 
     company = scenario.company
     licence = scenario.licence
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

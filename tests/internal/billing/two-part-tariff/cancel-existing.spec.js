@@ -4,10 +4,6 @@ import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Cancel an existing two-part tariff bill run (internal)', () => {
-  test.beforeAll(async ({ tearDown }) => {
-    await tearDown()
-  })
-
   test.beforeEach(async ({ login, users }) => {
     await login(users.billingAndData)
   })

@@ -1,6 +1,5 @@
 import { convertCubicMetresToMegalitres } from '../../support/helpers/conversion.helpers.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/presroc-licence-with-charge-version.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplementary-billing', '@presroc'] }, () => {
@@ -10,16 +9,14 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
   let licence
   let licenceVersionPurpose
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('presroc-licence-with-charge-version')
 
     address = scenario.address
     chargeVersion = scenario.chargeVersion
     company = scenario.company
     licence = scenario.licence
     licenceVersionPurpose = scenario.licenceVersionPurpose
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

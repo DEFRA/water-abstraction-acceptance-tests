@@ -1,15 +1,12 @@
-import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('User permissions (internal)', () => {
   let licence
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence')
 
     licence = scenario.licence
-
-    await setup(scenario)
   })
 
   test("confirms the Billing & Data user can access bill runs and a licence's bills tab", async ({

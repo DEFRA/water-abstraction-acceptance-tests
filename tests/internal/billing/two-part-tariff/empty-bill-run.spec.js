@@ -7,7 +7,7 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Create a empty two-part tariff bill run (internal)', () => {
   let endYear
 
-  test.beforeAll(async ({ tearDown }) => {
+  test.beforeAll(() => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -15,8 +15,6 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
     } = calculatedDates()
 
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
-
-    await tearDown()
   })
 
   test.beforeEach(async ({ login, users }) => {

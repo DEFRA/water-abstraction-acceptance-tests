@@ -1,17 +1,14 @@
-import scenarioData from '../../support/scenarios/licence-with-all-return-log-statuses.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('View returns and their status (internal)', () => {
   let licence
   let returnLogs
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-all-return-log-statuses')
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

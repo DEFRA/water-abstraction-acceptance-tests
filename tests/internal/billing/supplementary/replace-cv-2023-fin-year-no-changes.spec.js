@@ -1,5 +1,4 @@
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { SROC_FIRST_FINANCIAL_YEAR, formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
@@ -13,14 +12,12 @@ test.describe(
     let company
     let licence
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-flagged-for-supplementary')
 
       billingAccount = scenario.billingAccount
       company = scenario.company
       licence = scenario.licence
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {

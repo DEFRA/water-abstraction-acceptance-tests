@@ -1,6 +1,5 @@
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary.scenario.js'
 import { billingPeriodCounts, formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 import { summaryValue, tableRow } from '../../../support/helpers/govuk.helpers.js'
@@ -16,8 +15,8 @@ test.describe(
     let licenceVersionPurpose
     let toFinancialYearEnding
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-flagged-for-supplementary')
 
       billingAccount = scenario.billingAccount
       company = scenario.company
@@ -26,8 +25,6 @@ test.describe(
 
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {

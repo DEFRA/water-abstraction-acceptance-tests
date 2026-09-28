@@ -1,15 +1,12 @@
-import scenarioData from '../../support/scenarios/external-user.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Login and log out (external)', () => {
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('external-user')
 
     user = scenario.user
-
-    await setup(scenario)
   })
 
   test('can log in and out as an external user', async ({ page, externalUrl, defaultPassword, users }) => {

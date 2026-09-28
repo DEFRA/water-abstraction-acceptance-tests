@@ -2,7 +2,6 @@ import { calculatedDates } from '../../../support/helpers/calculated-dates.helpe
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -10,7 +9,7 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
   let endYear
   let startYear
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(() => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -19,10 +18,6 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
 
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
-
-    const scenario = scenarioData()
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

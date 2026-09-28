@@ -1,4 +1,3 @@
-import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Send an abstraction alert (internal)', () => {
@@ -6,14 +5,12 @@ test.describe('Send an abstraction alert (internal)', () => {
   let monitoringStation
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence-with-monitoring-station-tagged')
 
     licence = scenario.licence
     monitoringStation = scenario.monitoringStation
     user = scenario.user
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

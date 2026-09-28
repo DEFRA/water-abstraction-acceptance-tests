@@ -1,17 +1,14 @@
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licences-with-shared-billing-account.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Remove a licence from an annual bill run that has not been sent (internal)', () => {
   let scenario
 
-  test.beforeAll(async ({ setup }) => {
-    scenario = scenarioData()
-
-    await setup(scenario)
+  test.beforeAll(async ({ world }) => {
+    scenario = world('licences-with-shared-billing-account')
   })
 
   test.beforeEach(async ({ login, users }) => {

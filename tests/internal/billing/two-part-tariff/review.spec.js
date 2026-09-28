@@ -2,7 +2,6 @@ import { calculatedDates } from '../../../support/helpers/calculated-dates.helpe
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licences-for-tpt-review.scenario.js'
 import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -17,7 +16,7 @@ test.describe('Two-part tariff review (internal)', () => {
   let sessionCookies
   let startYear
 
-  test.beforeAll(async ({ loginCookies, setup, users }) => {
+  test.beforeAll(async ({ loginCookies, users, world }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -27,9 +26,7 @@ test.describe('Two-part tariff review (internal)', () => {
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-    scenario = scenarioData()
-
-    await setup(scenario)
+    scenario = world('licences-for-tpt-review')
 
     sessionCookies = await loginCookies(users.billingAndData)
   })

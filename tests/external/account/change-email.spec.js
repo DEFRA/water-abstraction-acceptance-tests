@@ -1,16 +1,13 @@
 import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
-import scenarioData from '../../support/scenarios/external-user.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Change user email address (external)', () => {
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('external-user')
 
     user = scenario.user
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ loginExternal }) => {

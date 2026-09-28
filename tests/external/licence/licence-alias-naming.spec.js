@@ -1,17 +1,14 @@
-import scenarioData from '../../support/scenarios/registered-licence.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Licence alias naming (external)', () => {
   let licenceDocumentHeader
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence')
 
     licenceDocumentHeader = scenario.licenceDocumentHeader
     user = scenario.user
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ loginExternal }) => {

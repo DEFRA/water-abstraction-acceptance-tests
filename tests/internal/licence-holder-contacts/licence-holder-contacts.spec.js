@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/company-contact.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 import { generateCompanyContact, generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
@@ -15,8 +14,8 @@ test.describe('Licence holder contacts (internal)', () => {
   let contactWithAllLicences
   let contactWithSomeLicences
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('company-contact')
 
     const [scenarioContact, scenarioEditContact, scenarioRemoveContact, scenarioRestoreContact] = scenario.contacts
 
@@ -26,8 +25,6 @@ test.describe('Licence holder contacts (internal)', () => {
     editContact = scenarioEditContact
     removeContact = scenarioRemoveContact
     restoreContact = scenarioRestoreContact
-
-    await setup(scenario)
 
     contactWithoutALicence = generateCompanyContact(company.name)
     contactWithAllLicences = generateCompanyContact(company.name)

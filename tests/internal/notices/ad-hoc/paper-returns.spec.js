@@ -1,14 +1,11 @@
-import scenarioData from '../../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc Paper returns journey (internal)', () => {
   let licence
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-open-winter-return-log')
 
     licence = scenario.licence
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

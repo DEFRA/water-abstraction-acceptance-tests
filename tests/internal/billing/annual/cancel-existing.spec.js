@@ -1,17 +1,10 @@
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import scenarioData from '../../../support/scenarios/licence-with-charge-version.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Cancel an existing annual bill run (internal)', () => {
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
-
-    await setup(scenario)
-  })
-
   test.beforeEach(async ({ login, users }) => {
     await login(users.billingAndData)
   })

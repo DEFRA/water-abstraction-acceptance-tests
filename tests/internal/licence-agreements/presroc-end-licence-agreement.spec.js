@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/presroc-licence-with-agreement.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -17,8 +16,8 @@ test.describe(
     let invalidEndDateYear
     let validEndDateYear
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('presroc-licence-with-agreement')
 
       licence = scenario.licence
 
@@ -30,8 +29,6 @@ test.describe(
       invalidEndDateYear = startDateYear - 1
 
       validEndDateYear = startDateYear + 1
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {

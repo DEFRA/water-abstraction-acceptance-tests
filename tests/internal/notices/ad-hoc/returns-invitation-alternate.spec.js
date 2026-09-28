@@ -1,5 +1,4 @@
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/registered-licence-with-open-winter-return-log-bad-email.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 import { formatLongDate, relativeToToday } from '../../../support/helpers/date.helpers.js'
 
@@ -9,8 +8,8 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
   let company
   let licence
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence-with-open-winter-return-log-bad-email')
 
     const {
       returnLogs: [scenarioReturnLog]
@@ -20,8 +19,6 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     address = scenario.address
     company = scenario.company
     licence = scenario.licence
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

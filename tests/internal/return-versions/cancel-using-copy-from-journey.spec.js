@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-two-purposes-and-requirements.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Cancel a return version using copy from existing (internal)', () => {
@@ -9,16 +8,14 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
   let returnRequirement
   let returnRequirementPurpose
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-two-purposes-and-requirements')
 
     company = scenario.company
     licence = scenario.licence
     point = scenario.points[0]
     returnRequirement = scenario.returnRequirement
     returnRequirementPurpose = scenario.returnRequirementPurpose
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

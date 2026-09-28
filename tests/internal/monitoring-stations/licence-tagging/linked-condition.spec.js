@@ -1,4 +1,3 @@
-import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -7,14 +6,12 @@ test.describe('Tag a licence linked to a condition. The abstraction period is de
   let licenceVersionPurposeCondition
   let monitoringStation
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence-with-monitoring-station-tagged')
 
     licence = scenario.licence
     licenceVersionPurposeCondition = scenario.licenceVersionPurposeCondition
     monitoringStation = scenario.monitoringStation
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

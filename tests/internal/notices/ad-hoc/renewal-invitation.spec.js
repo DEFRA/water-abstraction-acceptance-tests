@@ -1,17 +1,14 @@
-import scenarioData from '../../../support/scenarios/registered-licence-for-renewal-invitation.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc renewal invitation journey (internal)', () => {
   let licence
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence-for-renewal-invitation')
 
     licence = scenario.licence
     user = scenario.user
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

@@ -1,4 +1,3 @@
-import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { determineReturnCycleStartDate, formatLongDate, today } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
@@ -16,8 +15,8 @@ test.describe(
     let licence
     let startDateYear
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence')
 
       licence = scenario.licence
 
@@ -25,8 +24,6 @@ test.describe(
       // information or is 1 April of the current financial year, so we use that year for the agreement's custom start
       // date.
       startDateYear = determineReturnCycleStartDate(today(), false).getUTCFullYear()
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {
