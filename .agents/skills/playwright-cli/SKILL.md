@@ -16,8 +16,9 @@ npx playwright test tests/path/to/file.spec.js --reporter=list
 ```
 
 - Add `-g "test name"` to run a single test within a file
-- Every run starts with global setup resetting the world (clean DB, seed a separate copy of its scenario for each spec, write `cli/src/world/world.json`), so don't tear down or seed by hand first
-- Spec files run in parallel, each against its own copy of its scenario; tests inside one file run in order because they share that copy
+- Every run starts with the `world` setup project (`tests/world.setup.js`) resetting the world: clean DB, seed a separate copy of its scenario for each spec, write `cli/src/world/world.json`. Don't tear down or seed by hand first
+- Specs run in the `parallel` project, each file against its own copy of its scenario; tests inside one file run in order because they share that copy
+- Specs tagged `@sequential` run in the `sequential` project: one at a time, after `parallel` has finished. Tag a spec `@sequential` if it's external, if its journey uses legacy (non-`/system`) internal pages that call water-api, or if it does a postcode lookup (the address facade rate limits them). The legacy UIs can't handle concurrent sessions (see the comment on the `sequential` project in `playwright.config.js`). If a `parallel` test fails, Playwright skips `sequential`; run it on its own with `--project=sequential`
 - `tests/internal/billing` is ignored for now (`testIgnore` in `playwright.config.js`) and isn't seeded
 
 ## Reading a failure

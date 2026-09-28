@@ -1,6 +1,6 @@
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Sharing licence access with another user (external)', () => {
+test.describe('Sharing licence access with another user (external)', { tag: '@sequential' }, () => {
   let firstUser
   let licence
   let secondUser

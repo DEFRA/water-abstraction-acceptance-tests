@@ -1,6 +1,6 @@
 import { expect, test } from '../../../support/fixtures.js'
 
-test.describe('Ad-hoc Paper returns journey (internal)', () => {
+test.describe('Ad-hoc Paper returns journey (internal)', { tag: '@sequential' }, () => {
   let licence
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-open-winter-return-log')
@@ -79,14 +79,15 @@ test.describe('Ad-hoc Paper returns journey (internal)', () => {
 
     // Additional recipient is shown in the list
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Manual Recipient')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('4 Privet drive')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Little Whinging')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Surrey')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('WD25 7LR')
-    await expect(page.locator('[data-test="recipient-licence-numbers-1"]')).toContainText(licence.licenceRef)
-    await expect(page.locator('[data-test="recipient-method-1"]')).toContainText('Letter - single use')
-    await expect(page.locator('[data-test="recipient-action-1"]')).toContainText('Preview')
+
+    const manualRow = page.getByRole('row').filter({ hasText: 'Manual Recipient' })
+    await expect(manualRow).toContainText('4 Privet drive')
+    await expect(manualRow).toContainText('Little Whinging')
+    await expect(manualRow).toContainText('Surrey')
+    await expect(manualRow).toContainText('WD25 7LR')
+    await expect(manualRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
+    await expect(manualRow.locator('[data-test^="recipient-method"]')).toContainText('Letter - single use')
+    await expect(manualRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')
 
     // Check the recipients
     await page.getByRole('button', { name: 'Send' }).click()

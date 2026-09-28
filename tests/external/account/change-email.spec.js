@@ -1,7 +1,7 @@
 import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Change user email address (external)', () => {
+test.describe('Change user email address (external)', { tag: '@sequential' }, () => {
   let user
 
   test.beforeAll(async ({ world }) => {

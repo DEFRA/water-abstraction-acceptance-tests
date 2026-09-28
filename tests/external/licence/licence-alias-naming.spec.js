@@ -1,6 +1,6 @@
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Licence alias naming (external)', () => {
+test.describe('Licence alias naming (external)', { tag: '@sequential' }, () => {
   let licenceDocumentHeader
   let user
 

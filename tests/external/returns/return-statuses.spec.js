@@ -1,6 +1,6 @@
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('View return statuses (external)', () => {
+test.describe('View return statuses (external)', { tag: '@sequential' }, () => {
   let licence
   let returnLogs
   let user

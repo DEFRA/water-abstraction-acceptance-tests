@@ -2,7 +2,7 @@ import { extractNotificationLink } from '../../support/helpers/notification.help
 import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('User registration (external)', () => {
+test.describe('User registration (external)', { tag: '@sequential' }, () => {
   test('can register a new user', async ({ page, externalUrl, defaultPassword, lastNotification }) => {
     const userEmail = generateExternalEmailAddress()
 

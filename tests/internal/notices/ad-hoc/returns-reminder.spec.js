@@ -1,6 +1,6 @@
 import { expect, test } from '../../../support/fixtures.js'
 
-test.describe('Ad-hoc returns reminder journey (internal)', () => {
+test.describe('Ad-hoc returns reminder journey (internal)', { tag: '@sequential' }, () => {
   let licence
   let user
 
