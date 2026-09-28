@@ -3,8 +3,10 @@
  */
 
 import { listScenarios } from './src/scenarios.lib.js'
+import resetWorld from './src/world/reset.world.js'
 import scenariosMenu from './src/scenarios.menu.js'
 import tasksMenu from './src/tasks.menu.js'
+import { logSuccess, withSpinner } from './src/log.lib.js'
 
 const escapeAbortController = new AbortController()
 
@@ -37,6 +39,22 @@ async function run() {
       tabAbortController = new AbortController()
     }
   }
+}
+
+async function reset() {
+  try {
+    await withSpinner('Resetting the world...', resetWorld)
+    logSuccess('World reset')
+    process.exit(0)
+  } catch (err) {
+    console.error(`Error: ${err.message}`)
+    process.exit(1)
+  }
+}
+
+// `--reset` skips the menus, resets the world and exits
+if (process.argv.includes('--reset')) {
+  await reset()
 }
 
 // Escape quits; Tab opens the tasks menu

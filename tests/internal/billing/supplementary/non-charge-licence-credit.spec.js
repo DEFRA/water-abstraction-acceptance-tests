@@ -1,7 +1,7 @@
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary.scenario.js'
+import scenarioData from '../../../world/supplementry-bill-run.world.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -14,7 +14,7 @@ test.describe(
     test.beforeAll(async ({ setup }) => {
       const scenario = scenarioData(regions.SOUTH_WEST)
 
-      licence = scenario.licence
+      licence = scenario.licences[0]
 
       await setup(scenario)
     })

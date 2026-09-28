@@ -1,7 +1,7 @@
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-no-current-annual-bill-run.scenario.js'
+import scenarioData from '../../../world/supplementry-bill-run-no-current.world.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
@@ -14,11 +14,11 @@ test.describe(
     let toFinancialYearEnding
 
     test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+      const scenario = scenarioData(1)
 
-      billingAccount = scenario.billingAccount
-      company = scenario.company
-      licence = scenario.licence
+      billingAccount = scenario.billingAccounts[0]
+      company = scenario.companies[0]
+      licence = scenario.licences[0]
 
       // The supplementary engine bases its calculation on the seeded annual bill run's own year, not the current one
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
@@ -74,7 +74,9 @@ test.describe(
 
       await expect(otherAbstractorsTable).toBeVisible()
 
-      const billRowMostRecentYear = otherAbstractorsTable.getByRole('row', { name: String(toFinancialYearEnding) })
+      const billRowMostRecentYear = otherAbstractorsTable
+        .getByRole('row', { name: String(toFinancialYearEnding) })
+        .filter({ hasText: licence.licenceRef })
 
       await expect(billRowMostRecentYear).toContainText(billingAccount.accountNumber)
       await expect(billRowMostRecentYear).toContainText(company.name)
