@@ -42,6 +42,45 @@ export const test = base.extend({
     })
   },
 
+  // Signs in within its own browser context and returns the session cookies, so a spec can sign in once in beforeAll
+  // and add them to each test's context rather than signing in again before every test
+  loginCookies: async ({ browser, defaultPassword }, use) => {
+    await use(async (email) => {
+      const context = await browser.newContext()
+      const page = await context.newPage()
+
+      await page.goto('/signin')
+      await page.fill('input#email', email)
+      await page.fill('input#password', defaultPassword)
+      await page.click('.govuk-button.govuk-button--start')
+      await page.waitForURL((url) => {
+        return !url.pathname.startsWith('/signin')
+      })
+
+      const cookies = await context.cookies()
+
+      await context.close()
+
+      return cookies
+    })
+  },
+
+  // Signs out the session held by cookies from loginCookies, so a spec that signed in once in beforeAll can sign out
+  // once in afterAll
+  logoutCookies: async ({ browser }, use) => {
+    await use(async (cookies) => {
+      const context = await browser.newContext()
+      const page = await context.newPage()
+
+      await context.addCookies(cookies)
+      await page.goto('/system/bill-runs')
+      await page.locator('a', { hasText: 'Sign out' }).click()
+      await page.getByText("You're signed out").waitFor()
+
+      await context.close()
+    })
+  },
+
   loginExternal: async ({ page, defaultPassword, externalUrl }, use) => {
     await use(async (email) => {
       await page.goto(`${externalUrl}/signin`)

@@ -14,9 +14,10 @@ test.describe('Two-part tariff review (internal)', () => {
   let billRunUrl
   let endYear
   let scenario
+  let sessionCookies
   let startYear
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(async ({ loginCookies, setup, users }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -29,10 +30,16 @@ test.describe('Two-part tariff review (internal)', () => {
     scenario = scenarioData()
 
     await setup(scenario)
+
+    sessionCookies = await loginCookies(users.billingAndData)
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ context }) => {
+    await context.addCookies(sessionCookies)
+  })
+
+  test.afterAll(async ({ logoutCookies }) => {
+    await logoutCookies(sessionCookies)
   })
 
   test('creates a SROC two-part tariff bill run covering every review licence', async ({ page }) => {
