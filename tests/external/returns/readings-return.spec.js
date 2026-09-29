@@ -1,7 +1,7 @@
 import { monthlyReturnPeriods } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Submit a readings return (external)', { tag: '@sequential' }, () => {
+test.describe('Submit a readings return (external)', () => {
   let returnLog
   let user
 

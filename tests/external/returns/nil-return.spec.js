@@ -1,6 +1,6 @@
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Submit a nil return (external)', { tag: '@sequential' }, () => {
+test.describe('Submit a nil return (external)', () => {
   let returnLog
   let user
 

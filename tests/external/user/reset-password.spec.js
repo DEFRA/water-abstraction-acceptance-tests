@@ -1,7 +1,7 @@
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Reset password journey (external)', { tag: '@sequential' }, () => {
+test.describe('Reset password journey (external)', () => {
   let user
 
   test.beforeAll(async ({ world }) => {

@@ -4,7 +4,7 @@ import { expect, test } from '../../support/fixtures.js'
 test.describe(
   'End licence agreement journey (presroc) (internal)',
   {
-    tag: ['@supplementary-billing', '@presroc', '@sequential'],
+    tag: ['@supplementary-billing', '@presroc'],
     annotation: {
       type: 'description',
       description:

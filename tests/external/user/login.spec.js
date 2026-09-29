@@ -1,6 +1,6 @@
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Login and log out (external)', { tag: '@sequential' }, () => {
+test.describe('Login and log out (external)', () => {
   let user
 
   test.beforeAll(async ({ world }) => {

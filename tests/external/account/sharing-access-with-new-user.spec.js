@@ -2,7 +2,7 @@ import { extractNotificationLink } from '../../support/helpers/notification.help
 import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Sharing licence access with a new user (external)', { tag: '@sequential' }, () => {
+test.describe('Sharing licence access with a new user (external)', () => {
   let firstUser
   let licence
 
