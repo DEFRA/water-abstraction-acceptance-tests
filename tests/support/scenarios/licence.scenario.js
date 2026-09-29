@@ -6,7 +6,7 @@ export const description = 'Just the licence, licence version, and licence holde
 
 export default function (region = null) {
   if (!region) {
-    region = regions.SOUTH_WEST
+    region = regions.WALES
   }
 
   return buildLicenceEntity(region)
