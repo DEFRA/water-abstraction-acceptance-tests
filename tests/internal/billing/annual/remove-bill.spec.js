@@ -4,7 +4,7 @@ import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
-test.describe('Remove a bill from an annual bill run that has not been sent (internal)', () => {
+test.describe('Remove a bill from an annual bill run that has not been sent (internal)', { tag: '@sequential' }, () => {
   let scenario
 
   test.beforeAll(async ({ world }) => {

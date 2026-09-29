@@ -7,7 +7,7 @@ import { expect, test } from '../../../support/fixtures.js'
 
 const region = regions.SOUTH_WEST
 
-test.describe('Two-part tariff review (internal)', () => {
+test.describe('Two-part tariff review (internal)', { tag: '@sequential' }, () => {
   test.describe.configure({ mode: 'serial' })
 
   let billRunUrl

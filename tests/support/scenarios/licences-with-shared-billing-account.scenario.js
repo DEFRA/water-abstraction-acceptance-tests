@@ -17,7 +17,7 @@ export const description =
   'Two separate licences, both billed to the same billing account, so an annual bill run creates a single bill covering both'
 
 export default function () {
-  const region = regions.THAMES
+  const region = regions.NORTH_EAST
 
   const firstLicence = licenceWithChargeVersionScenario(region)
 

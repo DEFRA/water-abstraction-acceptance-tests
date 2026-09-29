@@ -5,7 +5,7 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Create and send PRESROC two-part tariff bill run (internal)',
-  { tag: ['@presroc', '@supplementary-billing'] },
+  { tag: ['@presroc', '@supplementary-billing', '@sequential'] },
   () => {
     let company
     let licence
@@ -51,7 +51,7 @@ test.describe(
       await expect(page.locator('h1')).toContainText('Bill runs')
 
       const billRunsTable = page.locator('table.govuk-table')
-      const billRunRow = billRunsTable.getByRole('row', { name: regions.NORTH_EAST.displayName })
+      const billRunRow = billRunsTable.getByRole('row').filter({ has: page.locator('[data-test="bill-run-status-0"]') })
 
       await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()

@@ -4,7 +4,7 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Change billing account in a previous financial year (internal)',
-  { tag: '@supplementary-billing' },
+  { tag: ['@supplementary-billing', '@sequential'] },
   () => {
     let billingAccount
     let company

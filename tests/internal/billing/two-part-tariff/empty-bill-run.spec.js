@@ -4,7 +4,8 @@ import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
-test.describe('Create a empty two-part tariff bill run (internal)', () => {
+// Skipped until it has a region with no two-part tariff licences in the world; it used to clean the database first
+test.describe.skip('Create a empty two-part tariff bill run (internal)', { tag: '@sequential' }, () => {
   let endYear
 
   test.beforeAll(() => {

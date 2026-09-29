@@ -7,9 +7,9 @@ import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions, srocStartDate } from '../default-values.js'
 
-export const title = 'Licence flagged for supplementary'
+export const title = 'Licences flagged for supplementary'
 export const description =
-  'A licence and charge version that starts on the sroc scheme start date, flagged for the next sroc supplementary bill run, plus sent annual bill runs for every sroc financial year.'
+  'Three licences, each with a charge version that starts on the sroc scheme start date and its own billing account, flagged for the next sroc supplementary bill run, plus sent annual bill runs for every sroc financial year billing all three.'
 
 export default function (region = null) {
   if (!region) {
@@ -18,6 +18,37 @@ export default function (region = null) {
 
   const { currentFinancialYear } = calculatedDates()
 
+  const firstLicence = _flaggedLicence(region, currentFinancialYear)
+  const secondLicence = _flaggedLicence(region, currentFinancialYear)
+  const thirdLicence = _flaggedLicence(region, currentFinancialYear)
+
+  _billInSameBillRuns(firstLicence.billRunEntities, secondLicence.billRunEntities)
+  _billInSameBillRuns(firstLicence.billRunEntities, thirdLicence.billRunEntities)
+
+  return mergeByKey(_scenarioData(firstLicence), _scenarioData(secondLicence), _scenarioData(thirdLicence))
+}
+
+/**
+ * Moves a licence's bills into the matching year's bill run already built for another licence, and drops its own
+ * bill runs, so each financial year has a single annual bill run billing every licence
+ *
+ * @private
+ */
+function _billInSameBillRuns(sharedBillRunEntities, billRunEntities) {
+  billRunEntities.forEach((billRunEntity, index) => {
+    const { billRun } = sharedBillRunEntities[index]
+
+    billRunEntity.bill.billRunId = billRun.id
+
+    billRun.invoiceCount += billRunEntity.billRun.invoiceCount
+    billRun.invoiceValue += billRunEntity.billRun.invoiceValue
+    billRun.netTotal += billRunEntity.billRun.netTotal
+
+    delete billRunEntity.billRun
+  })
+}
+
+function _flaggedLicence(region, currentFinancialYear) {
   const licenceEntity = buildLicenceEntity(region)
 
   // Without this, both the licence and its charge version only cover the last year or so (their default start
@@ -43,6 +74,13 @@ export default function (region = null) {
     chargeVersionEntity,
     region
   )
+
+  return { licenceEntity, billingAccountEntity, chargeVersionEntity, additionalChargeEntity, billRunEntities }
+}
+
+function _scenarioData(flaggedLicence) {
+  const { licenceEntity, billingAccountEntity, chargeVersionEntity, additionalChargeEntity, billRunEntities } =
+    flaggedLicence
 
   return {
     ...licenceEntity,

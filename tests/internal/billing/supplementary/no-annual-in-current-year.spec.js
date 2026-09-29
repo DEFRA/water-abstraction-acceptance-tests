@@ -5,7 +5,7 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Create an supplementary bill run with no annual in the current year (internal)',
-  { tag: '@supplementary-billing' },
+  { tag: ['@supplementary-billing', '@sequential'] },
   () => {
     let billingAccount
     let company

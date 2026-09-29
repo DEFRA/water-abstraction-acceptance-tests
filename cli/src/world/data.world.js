@@ -8,9 +8,6 @@ const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../
 const SCENARIOS_DIR = path.resolve(ROOT_DIR, 'tests/support/scenarios')
 const TEST_DIRS = ['tests/internal', 'tests/external']
 
-// Billing is left out of the world for now
-const IGNORED_DIR = path.resolve(ROOT_DIR, 'tests/internal/billing')
-
 /**
  * Generate a separate copy of scenario data for every spec that calls the `world` fixture, keyed by spec then scenario
  * name
@@ -52,7 +49,7 @@ async function _specs() {
     for (const entry of entries) {
       const specFile = path.resolve(baseDir, entry)
 
-      if (!entry.endsWith('.spec.js') || specFile.startsWith(IGNORED_DIR)) {
+      if (!entry.endsWith('.spec.js')) {
         continue
       }
 

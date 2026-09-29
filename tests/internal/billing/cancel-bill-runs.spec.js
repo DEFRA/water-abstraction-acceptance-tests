@@ -1,9 +1,9 @@
-import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import { expect, test } from '../../../support/fixtures.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { regions } from '../../support/default-values.js'
+import { reloadUntilTextFound } from '../../support/helpers/wait.helpers.js'
+import { expect, test } from '../../support/fixtures.js'
 
-test.describe('Cancel an existing two-part tariff bill run (internal)', () => {
+test.describe('Cancel existing bill runs (internal)', { tag: '@sequential' }, () => {
   test.beforeEach(async ({ login, users }) => {
     await login(users.billingAndData)
   })
@@ -38,12 +38,12 @@ test.describe('Cancel an existing two-part tariff bill run (internal)', () => {
     await expect(page.locator('h1')).toContainText('Bill runs')
 
     const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: regions.SOUTHERN.displayName })
+    const billRunRow = billRunsTable.getByRole('row').filter({ has: page.locator('[data-test="bill-run-status-0"]') })
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'empty')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: regions.SOUTHERN.displayName, exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff' })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} two-part tariff`)
