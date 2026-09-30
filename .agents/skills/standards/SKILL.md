@@ -31,35 +31,16 @@ This document defines the standards an agent must apply when reviewing or writin
 - No error handling for scenarios that cannot happen
 - No abstractions for a single use case
 - Private functions must be ordered alphabetically by name
-- In spec files and data files still on the legacy array-returning shape, destructure entities out of scenario/data-file results with array patterns rather than indexing directly, e.g. prefer `const { companies: [company], licences: [licence] } = scenario` over `const company = scenario.companies[0]`, and prefer `const { companies: [company], addresses: [address] } = companyData` over `const company = companyData.companies[0]`. This doesn't apply to scenarios/data files migrated to the single-object shape (see `.agents/skills/scenarios/SKILL.md`) — there's no array to destructure or index into, so a plain property access is used instead (see "Spec file structure" below for the spec-file pattern)
 
 ## Spec file structure (Playwright)
 
 - Every spec file must have a single `test.describe` block containing everything: entity variables declared with `let`, then `test.beforeAll`, then `test.beforeEach`, then the `test`s. Nothing scenario-related lives at module scope above the `describe`.
-- Scenarios are not loaded per spec. Playwright's `globalSetup` (`tests/world.setup.js`) resets the world once before the specs run: it cleans the DB, finds every spec that calls `world('<scenario>')`, seeds a separate copy of that scenario for each spec, and saves what it created to `cli/src/world/world.json` keyed by spec then scenario name (e.g. `search-licence`). `test.beforeAll` looks up its own copy with the `world` fixture, passing the scenario filename without `.scenario.js` (e.g. `world('licence')` for `licence.scenario.js`), then pulls out the entities the tests need and assigns them to the outer `let` variables. The `world('<scenario>')` call is also what tells the world setup to seed that scenario for the spec, so keep it even if the spec reads none of the data. Specs never tear down the DB, because spec files run in parallel against the same world. When a scenario needs calculated dates (current financial year, return cycles, billing periods), the scenario file imports `calculatedDates` from `tests/support/helpers/calculated-dates.helpers.js` and calls it itself — it's a plain function, not a fixture, so the spec file doesn't need to fetch it or pass it in. If the spec itself also needs a calculated date for its own assertions (e.g. an expected year), it imports and calls `calculatedDates` directly too, independently of the scenario.
-  - On a scenario still on the legacy array shape, pull an entity out with a destructure using temporary `scenario`-prefixed names to avoid shadowing the outer `let`, e.g. `const { licences: [scenarioLicence] } = scenario` then `licence = scenarioLicence`.
-  - On a scenario migrated to the single-object shape (see `.agents/skills/scenarios/SKILL.md`), the scenario's key is already the singular entity name, so a plain property assignment replaces the destructure entirely — no temp name needed since there's no `const`/`let` to collide with the outer one: `licence = scenario.licence`.
+- Specs never build, load or tear down data. Playwright's `globalSetup` (`tests/world.setup.js`) resets the world once before any spec runs: it cleans the DB, finds every spec that calls `world('<scenario>')`, seeds a separate copy of that scenario for each spec, and saves what it created to `cli/src/world/world.json` keyed by spec then scenario name (e.g. `search-licence`). Spec files run in parallel against that one world, each on its own copy.
+- `test.beforeAll` looks up the spec's copy with the `world` fixture, passing the scenario filename without `.scenario.js` (e.g. `world('licence')` for `licence.scenario.js`), then assigns the entities the tests need to the outer `let` variables. A spec calls `world()` once, with one scenario. The call is also what tells `globalSetup` to seed that scenario for the spec, so keep it even if the spec reads none of the data.
+- Read entities straight off the scenario by property. A single entity sits under its singular key (`licence = scenario.licence`). A key holding several rows is an array, so index it (`returnLog = scenario.returnLogs[0]`).
+- When a scenario needs calculated dates (current financial year, return cycles, billing periods), the scenario file imports `calculatedDates` from `tests/support/helpers/calculated-dates.helpers.js` and calls it itself. It's a plain function, not a fixture, so the spec doesn't pass anything in. If the spec also needs a calculated date for its own assertions (e.g. an expected year), it imports and calls `calculatedDates` directly too, independently of the scenario.
 
 ```js
-// Bad — scenario built and loaded by the spec, which tears down the world every other spec is using
-test.describe('Delete licence agreement journey (internal)', () => {
-  let licence
-
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
-
-    licence = scenario.licence
-
-    await setup(scenario)
-  })
-
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
-  })
-
-  test('deletes a licence agreement', async ({ page }) => { ... })
-})
-
 // Good — entities declared with let inside the describe, scenario looked up from the world inside beforeAll
 test.describe('Delete licence agreement journey (internal)', () => {
   let licence
@@ -67,11 +48,7 @@ test.describe('Delete licence agreement journey (internal)', () => {
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-agreement')
 
-    const {
-      licences: [scenarioLicence]
-    } = scenario
-
-    licence = scenarioLicence
+    licence = scenario.licence
   })
 
   test.beforeEach(async ({ login, users }) => {
@@ -81,19 +58,14 @@ test.describe('Delete licence agreement journey (internal)', () => {
   test('deletes a licence agreement', async ({ page }) => { ... })
 })
 
-// Good — the scenario needs calculated dates, so it imports and calls calculatedDates itself; the spec just looks
-// the scenario up as normal
+// Good — the scenario calls calculatedDates itself, so the spec just looks it up as normal; returnLogs is an array key
 test.describe('Submit a return with no meter readings (internal)', () => {
   let returnLog
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-open-winter-return-log')
 
-    const {
-      returnLogs: [scenarioReturnLog]
-    } = scenario
-
-    returnLog = scenarioReturnLog
+    returnLog = scenario.returnLogs[0]
   })
 
   test.beforeEach(async ({ login, users }) => {
@@ -101,23 +73,6 @@ test.describe('Submit a return with no meter readings (internal)', () => {
   })
 
   test('attempt to submit a return without entering any readings', async ({ page }) => { ... })
-})
-
-// Good — scenario is on the migrated single-object shape, so no destructure/array-pattern is needed at all
-test.describe('Search for a licence (internal)', () => {
-  let licence
-
-  test.beforeAll(async ({ world }) => {
-    const scenario = world('licence')
-
-    licence = scenario.licence
-  })
-
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.super)
-  })
-
-  test('can find a licence by exact licence reference', async ({ page }) => { ... })
 })
 ```
 
