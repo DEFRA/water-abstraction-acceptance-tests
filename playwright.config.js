@@ -2,43 +2,12 @@ import { defineConfig } from '@playwright/test'
 
 import config from './tests/config.js'
 
-const browser = {
-  // Remove ...devices['Desktop Chrome'] here
-  viewport: null,
-  launchOptions: {
-    args: ['--start-maximized']
-  }
-}
-
 export default defineConfig({
   forbidOnly: !!process.env.CI,
   fullyParallel: false,
-  // Seeds every spec's own copy of its scenario once before any spec runs, whichever projects or files are selected. The
-  // CI smoke test has no database, so it is skipped there
+  // Seeds every spec's own copy of its scenario once before any spec runs, whichever files are selected. The CI smoke
+  // test has no database, so it is skipped there
   globalSetup: process.env.CI ? undefined : './tests/world.setup.js',
-  projects: [
-    {
-      name: 'parallel',
-      grepInvert: /@sequential/,
-      testMatch: ['internal/**/*.spec.js', 'external/**/*.spec.js'],
-      use: browser
-    },
-    // Specs tagged @sequential run one at a time once the parallel project has finished. The address facade rate limits
-    // postcode lookups, so specs that look one up are rejected when several run at the same time
-    {
-      name: 'sequential',
-      dependencies: ['parallel'],
-      grep: /@sequential/,
-      testMatch: ['internal/**/*.spec.js', 'external/**/*.spec.js'],
-      use: browser,
-      workers: 1
-    },
-    {
-      name: 'ci',
-      testMatch: 'ci.spec.js',
-      use: browser
-    }
-  ],
   reporter: [['html'], ['list']],
   retries: process.env.CI ? 2 : 0,
   testDir: './tests',
@@ -48,6 +17,11 @@ export default defineConfig({
   timeout: 60 * 1000,
   use: {
     baseURL: config.baseUrl,
+    // Remove ...devices['Desktop Chrome'] here
+    viewport: null,
+    launchOptions: {
+      args: ['--start-maximized']
+    },
     trace: 'on-first-retry'
   }
 })

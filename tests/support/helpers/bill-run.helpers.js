@@ -16,7 +16,7 @@
  *
  * @returns {import('@playwright/test').Locator} The matching bill runs table row
  */
-export function billRunRow(page, region, type, { oldChargeScheme, sent } = {}) {
+export function findBillRunRow(page, region, type, { oldChargeScheme, sent } = {}) {
   let row = page
     .locator('table.govuk-table')
     .getByRole('row')
@@ -49,7 +49,7 @@ export function billRunRow(page, region, type, { oldChargeScheme, sent } = {}) {
  *
  * @returns {import('@playwright/test').Locator} The matching bill runs table row
  */
-export function billRunRowByLink(page, billRunUrl) {
+export function findBillRunRowByLink(page, billRunUrl) {
   const { pathname } = new URL(billRunUrl)
 
   return page

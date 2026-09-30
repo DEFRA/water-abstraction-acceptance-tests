@@ -1,6 +1,6 @@
 import { expect, test } from '../../../support/fixtures.js'
 
-test.describe('Ad-hoc Paper returns journey (internal)', { tag: '@sequential' }, () => {
+test.describe('Ad-hoc Paper returns journey (internal)', () => {
   let licence
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-open-winter-return-log')

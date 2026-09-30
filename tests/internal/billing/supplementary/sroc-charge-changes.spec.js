@@ -4,8 +4,8 @@ import {
   billingPeriodCounts,
   formatLongDate
 } from '../../../support/helpers/date.helpers.js'
-import { billRunRowByLink, billRunRow as findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { findBillRunRow, findBillRunRowByLink } from '../../../support/helpers/bill-run.helpers.js'
 import { regions, srocStartDate } from '../../../support/default-values.js'
 import { summaryValue, tableRow } from '../../../support/helpers/govuk.helpers.js'
 
@@ -100,7 +100,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      const sentBillRunRow = billRunRowByLink(page, billRunUrl)
+      const sentBillRunRow = findBillRunRowByLink(page, billRunUrl)
 
       await expect(sentBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
       await expect(sentBillRunRow.locator('[data-test^="number-of-bills-"]')).toContainText(String(billCount))
@@ -325,7 +325,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      const sentBillRunRow = billRunRowByLink(page, billRunUrl)
+      const sentBillRunRow = findBillRunRowByLink(page, billRunUrl)
 
       await expect(sentBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
       await expect(sentBillRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('0')

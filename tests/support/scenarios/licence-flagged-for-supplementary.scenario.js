@@ -32,6 +32,9 @@ export default function (region = null) {
  * Moves a licence's bills into the matching year's bill run already built for another licence, and drops its own
  * bill runs, so each financial year has a single annual bill run billing every licence
  *
+ * The bill runs are matched by position, which works because every licence's charge version starts on the sroc start
+ * date, so each licence's bill runs cover the same financial years in the same order.
+ *
  * @private
  */
 function _billInSameBillRuns(sharedBillRunEntities, billRunEntities) {
@@ -48,6 +51,12 @@ function _billInSameBillRuns(sharedBillRunEntities, billRunEntities) {
   })
 }
 
+/**
+ * Builds a licence with its own billing account, a charge version from the sroc start date, sent annual bill runs for
+ * every sroc financial year, and the additional charge that flags it for the next sroc supplementary bill run
+ *
+ * @private
+ */
 function _flaggedLicence(region, currentFinancialYear) {
   const licenceEntity = buildLicenceEntity(region)
 
@@ -78,6 +87,11 @@ function _flaggedLicence(region, currentFinancialYear) {
   return { licenceEntity, billingAccountEntity, chargeVersionEntity, additionalChargeEntity, billRunEntities }
 }
 
+/**
+ * Flattens a licence built by `_flaggedLicence()` into scenario data, merging its charge versions and bill runs by key
+ *
+ * @private
+ */
 function _scenarioData(flaggedLicence) {
   const { licenceEntity, billingAccountEntity, chargeVersionEntity, additionalChargeEntity, billRunEntities } =
     flaggedLicence

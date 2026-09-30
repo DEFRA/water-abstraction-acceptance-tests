@@ -4,12 +4,12 @@ Billing specs run in parallel against one shared world, seeded once before any s
 region, and the service only allows one bill run of a type per region and financial year, so each spec that creates a
 bill run has its own region.
 
-We can find rows on the bill runs page with `billRunRow()` from `tests/support/helpers/bill-run.helpers.js` rather than
+We can find rows on the bill runs page with `findBillRunRow()` from `tests/support/helpers/bill-run.helpers.js` rather than
 by position, because other specs' bill runs appear in the same list.
 
 Every region has an annual bill run created today.
 - 5 are seeded by scenarios (South West, Thames, Southern, North
-East and North West)
+East and North West). North East's is for the previous financial year, not the current one
 - 3 are created by specs (Anglian, Midlands and Wales).
 
 Anything the service decides from region-wide bill runs will see them, for example cancelling a workflow flags the

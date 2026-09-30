@@ -1,6 +1,6 @@
 import { expect, test } from '../../../support/fixtures.js'
 
-test.describe('Ad-hoc notice single-use recipient journey (internal)', { tag: '@sequential' }, () => {
+test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
   let licence
   let user
 

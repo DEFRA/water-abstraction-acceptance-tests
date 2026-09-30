@@ -54,10 +54,14 @@ async function _specs() {
       }
 
       const content = await fs.readFile(specFile, 'utf-8')
-      const match = content.match(/world\('([a-z0-9-]+)'\)/)
+      const matches = [...content.matchAll(/world\('([a-z0-9-]+)'\)/g)]
 
-      if (match) {
-        specs.push({ specFile, scenarioName: match[1] })
+      if (matches.length > 1) {
+        throw new Error(`Spec '${entry}' calls world() more than once; a spec can only use one scenario`)
+      }
+
+      if (matches.length === 1) {
+        specs.push({ specFile, scenarioName: matches[0][1] })
       }
     }
   }

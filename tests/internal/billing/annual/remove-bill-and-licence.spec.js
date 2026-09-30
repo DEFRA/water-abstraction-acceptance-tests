@@ -1,4 +1,4 @@
-import { billRunRow as findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
+import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
