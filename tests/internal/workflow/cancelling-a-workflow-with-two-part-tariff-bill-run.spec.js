@@ -1,7 +1,7 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe.skip(
+test.describe(
   'Cancelling a licence in workflow  with a two-part tariff bill run (internal)',
   {
     tag: ['@presroc', '@supplementary-billing'],
@@ -58,7 +58,7 @@ test.describe.skip(
       await page.getByRole('link', { name: 'Licence summary' }).click()
 
       await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-        'This licence has been marked for the next two-part tariff supplementary bill run.'
+        'This licence has been marked for the next two-part tariff supplementary bill run'
       )
     })
   }
