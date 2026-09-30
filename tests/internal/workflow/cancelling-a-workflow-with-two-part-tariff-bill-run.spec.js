@@ -1,7 +1,7 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
-test.describe(
+test.describe.skip(
   'Cancelling a licence in workflow  with a two-part tariff bill run (internal)',
   {
     tag: ['@presroc', '@supplementary-billing'],

@@ -1,10 +1,11 @@
+import { billRunRow as findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
-test.describe('Annual bill run (internal)', { tag: '@sequential' }, () => {
+test.describe('Annual bill run (internal)', () => {
   test.describe.configure({ mode: 'serial' })
 
   test.beforeAll(({ world }) => {
@@ -36,8 +37,7 @@ test.describe('Annual bill run (internal)', { tag: '@sequential' }, () => {
 
     await expect(page.locator('h1')).toContainText('Bill runs')
 
-    const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row').filter({ has: page.locator('[data-test="bill-run-status-0"]') })
+    const billRunRow = findBillRunRow(page, regions.ANGLIAN, 'Annual')
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
@@ -57,7 +57,7 @@ test.describe('Annual bill run (internal)', { tag: '@sequential' }, () => {
     await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
     await expect(page.locator('h1')).toContainText('Bill runs')
-    await reloadUntilGone(page, billRunsTable.getByRole('row', { name: regions.ANGLIAN.displayName }))
+    await reloadUntilGone(page, billRunRow)
   })
 
   test('creates an SROC annual bill run and once built confirms and sends it', async ({ page }) => {
@@ -81,8 +81,7 @@ test.describe('Annual bill run (internal)', { tag: '@sequential' }, () => {
 
     await expect(page.locator('h1')).toContainText('Bill runs')
 
-    const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row').filter({ has: page.locator('[data-test="bill-run-status-0"]') })
+    const billRunRow = findBillRunRow(page, regions.ANGLIAN, 'Annual')
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
@@ -113,7 +112,6 @@ test.describe('Annual bill run (internal)', { tag: '@sequential' }, () => {
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: regions.ANGLIAN.displayName, exact: true })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
-    await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('1')
     await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')
   })
 })

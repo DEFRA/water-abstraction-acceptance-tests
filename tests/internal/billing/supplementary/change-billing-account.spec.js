@@ -1,10 +1,11 @@
+import { billRunRow as findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Change billing account in a previous financial year (internal)',
-  { tag: ['@supplementary-billing', '@sequential'] },
+  { tag: ['@supplementary-billing'] },
   () => {
     let billingAccount
     let company
@@ -121,8 +122,10 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
-      await page.locator('[data-test="date-created-1"] > .govuk-link').click()
+      const billRunRow = findBillRunRow(page, regions.THAMES, 'Supplementary', { oldChargeScheme: false })
+
+      await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
+      await billRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.THAMES.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')

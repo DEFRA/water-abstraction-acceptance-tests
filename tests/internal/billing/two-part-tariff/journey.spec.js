@@ -1,3 +1,4 @@
+import { billRunRow as findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
@@ -5,7 +6,7 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Create and send PRESROC two-part tariff bill run (internal)',
-  { tag: ['@presroc', '@supplementary-billing', '@sequential'] },
+  { tag: ['@presroc', '@supplementary-billing'] },
   () => {
     let company
     let licence
@@ -50,8 +51,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      const billRunsTable = page.locator('table.govuk-table')
-      const billRunRow = billRunsTable.getByRole('row').filter({ has: page.locator('[data-test="bill-run-status-0"]') })
+      const billRunRow = findBillRunRow(page, regions.NORTH_EAST, 'Two-part tariff winter and all year')
 
       await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()

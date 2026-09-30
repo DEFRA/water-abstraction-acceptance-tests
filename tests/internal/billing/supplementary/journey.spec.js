@@ -1,5 +1,5 @@
+import { billRunRow as findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import {
   PRESROC_LAST_FINANCIAL_YEAR,
@@ -7,10 +7,11 @@ import {
   formatLongDate
 } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe(
   'Presroc and sroc supplementary bill runs (internal)',
-  { tag: ['@presroc', '@supplementary-billing', '@sequential'] },
+  { tag: ['@presroc', '@supplementary-billing'] },
   () => {
     test.describe.configure({ mode: 'serial' })
 
@@ -58,11 +59,15 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
-      await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.SOUTHERN.displayName)
-      await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
-      await page.locator('[data-test="date-created-0"] > .govuk-link').click()
+      const presrocBillRunRow = findBillRunRow(page, regions.SOUTHERN, 'Supplementary', { oldChargeScheme: true })
+      const srocBillRunRow = findBillRunRow(page, regions.SOUTHERN, 'Supplementary', { oldChargeScheme: false })
+
+      await reloadUntilTextFound(page, presrocBillRunRow.locator('.govuk-tag'), 'ready')
+      await expect(presrocBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+      await expect(
+        presrocBillRunRow.getByRole('cell', { name: regions.SOUTHERN.displayName, exact: true })
+      ).toBeVisible()
+      await presrocBillRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
@@ -81,9 +86,8 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      // The presroc bill run is now cancelled and gone, so the sroc one takes its place at the top of the list
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
-      await page.locator('[data-test="date-created-0"] > .govuk-link').click()
+      await reloadUntilTextFound(page, srocBillRunRow.locator('.govuk-tag'), 'ready')
+      await srocBillRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
@@ -101,6 +105,7 @@ test.describe(
       await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Bill runs')
+      await reloadUntilGone(page, findBillRunRow(page, regions.SOUTHERN, 'Supplementary'))
     })
 
     test('creates both the presroc and sroc supplementary bill runs and once built sends them', async ({ page }) => {
@@ -131,11 +136,15 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
-      await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.SOUTHERN.displayName)
-      await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
-      await page.locator('[data-test="date-created-0"] > .govuk-link').click()
+      const presrocBillRunRow = findBillRunRow(page, regions.SOUTHERN, 'Supplementary', { oldChargeScheme: true })
+      const srocBillRunRow = findBillRunRow(page, regions.SOUTHERN, 'Supplementary', { oldChargeScheme: false })
+
+      await reloadUntilTextFound(page, presrocBillRunRow.locator('.govuk-tag'), 'ready')
+      await expect(presrocBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+      await expect(
+        presrocBillRunRow.getByRole('cell', { name: regions.SOUTHERN.displayName, exact: true })
+      ).toBeVisible()
+      await presrocBillRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
@@ -186,13 +195,14 @@ test.describe(
       await page.getByRole('link', { name: 'Go back to bill runs' }).click()
 
       await expect(page.locator('h1')).toContainText('Bill runs')
-      await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.SOUTHERN.displayName)
-      await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
-      await expect(page.locator('[data-test="number-of-bills-0"]')).toContainText(String(0))
-      await expect(page.locator('[data-test="bill-run-status-0"] > .govuk-tag')).toContainText('sent')
+      await expect(presrocBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+      await expect(
+        presrocBillRunRow.getByRole('cell', { name: regions.SOUTHERN.displayName, exact: true })
+      ).toBeVisible()
+      await expect(presrocBillRunRow.locator('[data-test^="number-of-bills-"]')).toContainText(String(0))
+      await expect(presrocBillRunRow.locator('.govuk-tag')).toContainText('sent')
 
-      await page.locator('[data-test="date-created-1"] > .govuk-link').click()
+      await srocBillRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
@@ -244,11 +254,12 @@ test.describe(
       await page.getByRole('link', { name: 'Go back to bill runs' }).click()
 
       await expect(page.locator('h1')).toContainText('Bill runs')
-      await expect(page.locator('[data-test="date-created-1"] > .govuk-link')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-1"]')).toContainText(regions.SOUTHERN.displayName)
-      await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
-      await expect(page.locator('[data-test="number-of-bills-1"]')).toContainText(String(billingPeriodCount.sroc))
-      await expect(page.locator('[data-test="bill-run-status-1"] > .govuk-tag')).toContainText('sent')
+      await expect(srocBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+      await expect(srocBillRunRow.getByRole('cell', { name: regions.SOUTHERN.displayName, exact: true })).toBeVisible()
+      await expect(srocBillRunRow.locator('[data-test^="number-of-bills-"]')).toContainText(
+        String(billingPeriodCount.sroc)
+      )
+      await expect(srocBillRunRow.locator('.govuk-tag')).toContainText('sent')
 
       await page.getByRole('link', { name: 'Search' }).click()
       await page.locator('#query').fill(licence.licenceRef)
