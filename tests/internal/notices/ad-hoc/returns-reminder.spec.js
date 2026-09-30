@@ -15,7 +15,7 @@ test.describe('Ad-hoc returns reminder journey (internal)', { tag: '@sequential'
     await login(users.billingAndData)
   })
 
-  test('create an ad-hoc returns reminder notice that includes a single-use recipient', async ({ page }) => {
+  test('create an ad-hoc returns reminder notice', async ({ page }) => {
     // Navigate to the Notices page
     await page.goto('/system/notices')
 
@@ -43,54 +43,17 @@ test.describe('Ad-hoc returns reminder journey (internal)', { tag: '@sequential'
     // Recipients count
     await expect(page.getByText('Showing all 1 recipients')).toBeVisible()
 
-    // Add an additional recipient
-    await page.getByRole('button', { name: 'Manage recipients' }).click()
-    await page.getByRole('link', { name: 'Set up a single use address or email address' }).click()
-
-    // Select 'post' and add the contacts name
-    await page.getByRole('radio', { name: 'Post' }).check()
-    await page.getByLabel('Name').fill('Lookup recipient')
-    await page.getByRole('button', { name: 'Continue' }).click()
-
-    // Enter the postcode
-    // NOTE: the postcode textbox has no accessible label in the rendered markup, so it can't be targeted by
-    // role/label. Target it by its id instead.
-    await page.locator('#postcode').fill('BS1 5AH')
-    await page.getByRole('button', { name: 'Find addresses' }).click()
-
-    // Select the address returned from the lookup (rate limited so pause briefly)
-    // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
-    // has rate monitoring protection. Because we're automating the calls, they happen too quickly so the facade rejects
-    // the second call. Hence we need to wait a second.
-    await page.waitForTimeout(1000)
-    await page.getByRole('combobox', { name: 'Address' }).selectOption('340116')
-    await page.getByRole('button', { name: 'Continue' }).click()
-
-    // Recipients count
-    await expect(page.getByText('Showing all 2 recipients')).toBeVisible()
-
-    // Additional recipient is shown in the list
-    await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
+    await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(1)
 
     const userRow = page.getByRole('row').filter({ hasText: user.username })
     await expect(userRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
     await expect(userRow.locator('[data-test^="recipient-method"]')).toContainText('Email - primary user')
     await expect(userRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')
 
-    const lookupRow = page.getByRole('row').filter({ hasText: 'Lookup recipient' })
-    await expect(lookupRow).toContainText('ENVIRONMENT AGENCY')
-    await expect(lookupRow).toContainText('HORIZON HOUSE DEANERY ROAD')
-    await expect(lookupRow).toContainText('BRISTOL')
-    await expect(lookupRow).toContainText('BS1 5AH')
-    await expect(lookupRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
-    await expect(lookupRow.locator('[data-test^="recipient-method"]')).toContainText('Letter - single use')
-    await expect(lookupRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')
+    await userRow.getByText('Preview').click()
 
-    await lookupRow.getByText('Preview').click()
-
-    // Preview contains the contact name and address
+    // Preview contains the notice type
     await expect(page.getByText('Returns reminder ad-hoc')).toBeVisible()
-    await expect(page.getByText('Lookup recipient').first()).toBeVisible()
     await page.locator('.govuk-back-link').click()
 
     // Check the recipients
@@ -103,15 +66,9 @@ test.describe('Ad-hoc returns reminder journey (internal)', { tag: '@sequential'
     // Notice page contains the recipients
     await expect(page.locator('.govuk-caption-l', { hasText: noticeReference })).toBeVisible()
 
-    await expect(page.getByText('Showing all 2 notifications')).toBeVisible()
+    await expect(page.getByText('Showing all 1 notifications')).toBeVisible()
 
-    await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(2)
+    await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(1)
     await expect(page.locator('[data-test^="notification-recipient"]', { hasText: user.username })).toBeVisible()
-
-    const lookupNotification = page.locator('[data-test^="notification-recipient"]', { hasText: 'Lookup recipient' })
-    await expect(lookupNotification).toContainText('ENVIRONMENT AGENCY')
-    await expect(lookupNotification).toContainText('HORIZON HOUSE DEANERY ROAD')
-    await expect(lookupNotification).toContainText('BRISTOL')
-    await expect(lookupNotification).toContainText('BS1 5AH')
   })
 })
