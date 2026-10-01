@@ -22,7 +22,7 @@ test.describe(
     let licenceVersionPurposes
     let toFinancialYearEnding
 
-    test.beforeAll(({ world }) => {
+    test.beforeAll(async ({ browser, loginCookies, logoutCookies, users, world }) => {
       const scenario = world('licence-flagged-for-supplementary')
 
       billingAccounts = scenario.billingAccounts
@@ -32,13 +32,13 @@ test.describe(
 
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
-    })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
-    })
+      const sessionCookies = await loginCookies(users.billingAndData)
+      const context = await browser.newContext()
 
-    test('creates and sends the sroc supplementary bill run for every flagged licence', async ({ page }) => {
+      await context.addCookies(sessionCookies)
+
+      const page = await context.newPage()
       const formattedCurrentDate = formatLongDate(new Date())
       const billCount = billingPeriodCount.sroc * licences.length
 
@@ -105,6 +105,13 @@ test.describe(
       await expect(sentBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
       await expect(sentBillRunRow.locator('[data-test^="number-of-bills-"]')).toContainText(String(billCount))
       await expect(sentBillRunRow.locator('.govuk-tag')).toContainText('sent')
+
+      await context.close()
+      await logoutCookies(sessionCookies)
+    })
+
+    test.beforeEach(async ({ login, users }) => {
+      await login(users.billingAndData)
     })
 
     test('makes a licence non-chargeable, then confirms a credit is raised in the next supplementary bill run', async ({

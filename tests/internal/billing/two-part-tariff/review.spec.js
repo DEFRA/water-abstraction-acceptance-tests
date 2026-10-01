@@ -17,7 +17,7 @@ test.describe('Two-part tariff review (internal)', () => {
   let sessionCookies
   let startYear
 
-  test.beforeAll(async ({ loginCookies, users, world }) => {
+  test.beforeAll(async ({ browser, loginCookies, users, world }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -30,17 +30,13 @@ test.describe('Two-part tariff review (internal)', () => {
     scenario = world('licences-for-tpt-review')
 
     sessionCookies = await loginCookies(users.billingAndData)
-  })
 
-  test.beforeEach(async ({ context }) => {
+    const context = await browser.newContext()
+
     await context.addCookies(sessionCookies)
-  })
 
-  test.afterAll(async ({ logoutCookies }) => {
-    await logoutCookies(sessionCookies)
-  })
+    const page = await context.newPage()
 
-  test('creates a SROC two-part tariff bill run covering every review licence', async ({ page }) => {
     const { licence } = _reviewLicence(scenario, 13)
     const formattedCurrentDate = formatLongDate(new Date())
 
@@ -89,6 +85,16 @@ test.describe('Two-part tariff review (internal)', () => {
     await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
 
     billRunUrl = page.url()
+
+    await context.close()
+  })
+
+  test.beforeEach(async ({ context }) => {
+    await context.addCookies(sessionCookies)
+  })
+
+  test.afterAll(async ({ logoutCookies }) => {
+    await logoutCookies(sessionCookies)
   })
 
   test(

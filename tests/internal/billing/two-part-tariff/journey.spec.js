@@ -1,129 +1,176 @@
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
-test.describe(
-  'Create and send PRESROC two-part tariff bill run (internal)',
-  { tag: ['@presroc', '@supplementary-billing'] },
-  () => {
-    let company
-    let licence
+test.describe('PRESROC two-part tariff bill run (internal)', { tag: ['@presroc', '@supplementary-billing'] }, () => {
+  test.describe.configure({ mode: 'serial' })
 
-    test.beforeAll(async ({ world }) => {
-      const scenario = world('presroc-licence-with-agreement-and-due-return')
+  let company
+  let licence
 
-      company = scenario.company
-      licence = scenario.licence
-    })
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('presroc-licence-with-agreement-and-due-return')
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
-    })
+    company = scenario.company
+    licence = scenario.licence
+  })
 
-    test('creates a PRESROC two-part tariff bill run and once built confirms and sends it', async ({ page }) => {
-      const formattedCurrentDate = formatLongDate(new Date())
+  test.beforeEach(async ({ login, users }) => {
+    await login(users.billingAndData)
+  })
 
-      await page.goto('/system/bill-runs')
+  test('cancels a PRESROC two-part tariff bill run that has already finished building', async ({ page }) => {
+    const formattedCurrentDate = formatLongDate(new Date())
 
-      await expect(page.locator('h1')).toContainText('Bill runs')
-      await page.getByRole('button', { name: 'Create a bill run' }).click()
+    await page.goto('/system/bill-runs')
 
-      await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
-      await page.getByRole('button', { name: 'Continue' }).click()
+    await expect(page.locator('h1')).toContainText('Bill runs')
+    await page.getByRole('button', { name: 'Create a bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText('Select the region')
-      await page.getByRole('radio', { name: regions.NORTH_EAST.displayName }).check()
-      await page.getByRole('button', { name: 'Continue' }).click()
+    await expect(page.locator('h1')).toContainText('Select the bill run type')
+    await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Select the financial year')
-      await page.getByRole('radio', { name: '2021 to 2022' }).check()
-      await page.getByRole('button', { name: 'Continue' }).click()
+    await expect(page.locator('h1')).toContainText('Select the region')
+    await page.getByRole('radio', { name: regions.NORTH_EAST.displayName }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Select the season')
-      await page.getByRole('radio', { name: 'Winter and all year' }).check()
-      await page.getByRole('button', { name: 'Continue' }).click()
+    await expect(page.locator('h1')).toContainText('Select the financial year')
+    await page.getByRole('radio', { name: '2021 to 2022' }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Check the bill run to be created')
-      await page.getByRole('button', { name: 'Create bill run' }).click()
+    await expect(page.locator('h1')).toContainText('Select the season')
+    await page.getByRole('radio', { name: 'Winter and all year' }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Bill runs')
+    await expect(page.locator('h1')).toContainText('Check the bill run to be created')
+    await page.getByRole('button', { name: 'Create bill run' }).click()
 
-      const billRunRow = findBillRunRow(page, regions.NORTH_EAST, 'Two-part tariff winter and all year')
+    await expect(page.locator('h1')).toContainText('Bill runs')
 
-      await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
-      await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-      await expect(billRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })).toBeVisible()
-      await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
-      await billRunRow.getByRole('link').click()
+    const billRunRow = findBillRunRow(page, regions.NORTH_EAST, 'Two-part tariff winter and all year')
 
-      await expect(page.locator('h1')).toContainText('Review data issues')
-      await expect(page.locator('#main-content')).toContainText(
-        'You need to review 1 licence with returns data issues before you can continue'
-      )
+    await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
+    await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
+    await billRunRow.getByRole('link').click()
 
-      const dataIssuesTable = page.locator('#dataIssues')
+    await expect(page.locator('h1')).toContainText('Review data issues')
+    await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
-      await expect(dataIssuesTable.getByRole('cell', { name: licence.licenceRef })).toBeVisible()
-      await expect(dataIssuesTable.getByRole('cell', { name: company.name })).toBeVisible()
-      await expect(dataIssuesTable.getByRole('cell', { name: 'No returns received' })).toBeVisible()
-      await dataIssuesTable.getByRole('link', { name: 'Review' }).click()
+    await expect(page.locator('h1')).toContainText("You're about to cancel this bill run")
+    await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
+    await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.NORTH_EAST.displayName)
+    await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff winter and all year')
+    await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Old')
+    await page.getByRole('button', { name: 'Cancel bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText(`Review data issues for ${licence.licenceRef}`)
-      await expect(page.locator('tbody')).toContainText('0Ml')
-      await page.getByRole('link', { name: 'Change element' }).click()
+    await expect(page.locator('h1')).toContainText('Bill runs')
+    await reloadUntilGone(page, billRunRow)
+  })
 
-      await expect(page.locator('h1')).toContainText('Set the billable returns quantity for this bill run')
-      await page.locator('input#quantity').check()
-      await page.getByRole('button', { name: 'Confirm' }).click()
+  test('creates a PRESROC two-part tariff bill run and once built confirms and sends it', async ({ page }) => {
+    const formattedCurrentDate = formatLongDate(new Date())
 
-      await expect(page.locator('h1')).toContainText('Review data issues')
-      await expect(page.locator('#main-content')).toContainText(
-        'You have resolved all returns data issues. Continue to generate bills.'
-      )
-      await page.getByRole('button', { name: 'Continue' }).click()
+    await page.goto('/system/bill-runs')
 
-      await expect(page.locator('h1')).toContainText("You're about to generate the two-part tariff bills")
-      await expect(_definitionValue(page, 'Date created')).toContainText(formattedCurrentDate)
-      await expect(_definitionValue(page, 'Region')).toContainText(regions.NORTH_EAST.displayName)
-      await expect(_definitionValue(page, 'Bill run type')).toContainText('Two-part tariff winter and all year')
-      await expect(_definitionValue(page, 'Status')).toContainText('Review')
-      await page.getByRole('button', { name: 'Confirm' }).click()
+    await expect(page.locator('h1')).toContainText('Bill runs')
+    await page.getByRole('button', { name: 'Create a bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} two-part tariff`)
-      await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
-      await expect(page.locator('[data-test="bill-total"]')).toContainText('£14.94')
-      await expect(page.locator('[data-test="bills-count"]')).toContainText(
-        '1 Two-part tariff winter and all year bill'
-      )
-      await page.getByRole('button', { name: 'Send bill run' }).click()
+    await expect(page.locator('h1')).toContainText('Select the bill run type')
+    await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText("You're about to send this bill run")
-      await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.NORTH_EAST.displayName)
-      await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff winter and all year')
-      await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Old')
-      await page.getByRole('button', { name: 'Send bill run' }).click()
+    await expect(page.locator('h1')).toContainText('Select the region')
+    await page.getByRole('radio', { name: regions.NORTH_EAST.displayName }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
-      await page.getByRole('link', { name: 'Go to bill run' }).click()
+    await expect(page.locator('h1')).toContainText('Select the financial year')
+    await page.getByRole('radio', { name: '2021 to 2022' }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} two-part tariff`)
-      await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
+    await expect(page.locator('h1')).toContainText('Select the season')
+    await page.getByRole('radio', { name: 'Winter and all year' }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
 
-      await page.getByRole('link', { name: 'Go back to bill runs' }).click()
+    await expect(page.locator('h1')).toContainText('Check the bill run to be created')
+    await page.getByRole('button', { name: 'Create bill run' }).click()
 
-      await expect(page.locator('h1')).toContainText('Bill runs')
-      await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toContainText('Old charge scheme')
-      await expect(billRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })).toBeVisible()
-      await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
-      await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('1')
-      await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')
-    })
-  }
-)
+    await expect(page.locator('h1')).toContainText('Bill runs')
+
+    const billRunRow = findBillRunRow(page, regions.NORTH_EAST, 'Two-part tariff winter and all year')
+
+    await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
+    await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
+    await billRunRow.getByRole('link').click()
+
+    await expect(page.locator('h1')).toContainText('Review data issues')
+    await expect(page.locator('#main-content')).toContainText(
+      'You need to review 1 licence with returns data issues before you can continue'
+    )
+
+    const dataIssuesTable = page.locator('#dataIssues')
+
+    await expect(dataIssuesTable.getByRole('cell', { name: licence.licenceRef })).toBeVisible()
+    await expect(dataIssuesTable.getByRole('cell', { name: company.name })).toBeVisible()
+    await expect(dataIssuesTable.getByRole('cell', { name: 'No returns received' })).toBeVisible()
+    await dataIssuesTable.getByRole('link', { name: 'Review' }).click()
+
+    await expect(page.locator('h1')).toContainText(`Review data issues for ${licence.licenceRef}`)
+    await expect(page.locator('tbody')).toContainText('0Ml')
+    await page.getByRole('link', { name: 'Change element' }).click()
+
+    await expect(page.locator('h1')).toContainText('Set the billable returns quantity for this bill run')
+    await page.locator('input#quantity').check()
+    await page.getByRole('button', { name: 'Confirm' }).click()
+
+    await expect(page.locator('h1')).toContainText('Review data issues')
+    await expect(page.locator('#main-content')).toContainText(
+      'You have resolved all returns data issues. Continue to generate bills.'
+    )
+    await page.getByRole('button', { name: 'Continue' }).click()
+
+    await expect(page.locator('h1')).toContainText("You're about to generate the two-part tariff bills")
+    await expect(_definitionValue(page, 'Date created')).toContainText(formattedCurrentDate)
+    await expect(_definitionValue(page, 'Region')).toContainText(regions.NORTH_EAST.displayName)
+    await expect(_definitionValue(page, 'Bill run type')).toContainText('Two-part tariff winter and all year')
+    await expect(_definitionValue(page, 'Status')).toContainText('Review')
+    await page.getByRole('button', { name: 'Confirm' }).click()
+
+    await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} two-part tariff`)
+    await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
+    await expect(page.locator('[data-test="bill-total"]')).toContainText('£14.94')
+    await expect(page.locator('[data-test="bills-count"]')).toContainText('1 Two-part tariff winter and all year bill')
+    await page.getByRole('button', { name: 'Send bill run' }).click()
+
+    await expect(page.locator('h1')).toContainText("You're about to send this bill run")
+    await expect(page.locator('[data-test="meta-data-created"]')).toContainText(formattedCurrentDate)
+    await expect(page.locator('[data-test="meta-data-region"]')).toContainText(regions.NORTH_EAST.displayName)
+    await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff winter and all year')
+    await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Old')
+    await page.getByRole('button', { name: 'Send bill run' }).click()
+
+    await expect(page.locator('.govuk-panel__title')).toContainText('Bill run sent', { timeout: 20000 })
+    await page.getByRole('link', { name: 'Go to bill run' }).click()
+
+    await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} two-part tariff`)
+    await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
+
+    await page.getByRole('link', { name: 'Go back to bill runs' }).click()
+
+    await expect(page.locator('h1')).toContainText('Bill runs')
+    await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toContainText('Old charge scheme')
+    await expect(billRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
+    await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('1')
+    await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')
+  })
+})
 
 /**
  * Locates the `dd` value following the `dt` term matching the given label

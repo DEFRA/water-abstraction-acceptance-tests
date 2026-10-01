@@ -8,7 +8,6 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Remove a bill and a licence from an annual bill run (internal)', () => {
   test.describe.configure({ mode: 'serial' })
 
-  let billRunUrl
   let scenario
 
   test.beforeAll(({ world }) => {
@@ -19,12 +18,15 @@ test.describe('Remove a bill and a licence from an annual bill run (internal)', 
     await login(users.billingAndData)
   })
 
-  test('creates an annual bill run then removes a bill from it and confirms it is not included', async ({ page }) => {
+  test('creates an annual bill run, removes a bill and a licence from it, then sends it and confirms they are not included', async ({
+    page
+  }) => {
     const formattedCurrentDate = formatLongDate(new Date())
-    const [licenceToKeep, licenceToRemove] = scenario.licences
-    const [, billingAccountToRemove] = scenario.billingAccounts
+    const [licenceToKeep, removedBillLicence, removedLicence, remainingLicenceOnSharedAccount] = scenario.licences
+    const [, billingAccountToRemove, sharedBillingAccount] = scenario.billingAccounts
+    const [, , companyOnSharedBillingAccount] = scenario.companies
 
-    await page.goto(`/system/licences/${licenceToRemove.id}/summary`)
+    await page.goto(`/system/licences/${removedBillLicence.id}/summary`)
 
     await expect(page.locator('.govuk-notification-banner__content')).toHaveCount(0)
 
@@ -57,13 +59,15 @@ test.describe('Remove a bill and a licence from an annual bill run (internal)', 
     await expect(page.locator('h1')).toContainText(`${regions.WALES.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
 
-    billRunUrl = page.url()
-
+    const billRunUrl = page.url()
     const otherAbstractorsTable = page.locator('[data-test="other-abstractors"]')
+    const sharedBillingAccountRow = otherAbstractorsTable.getByRole('row', {
+      name: sharedBillingAccount.accountNumber
+    })
 
-    await otherAbstractorsTable.getByRole('row', { name: licenceToRemove.licenceRef }).getByRole('link').click()
+    await otherAbstractorsTable.getByRole('row', { name: removedBillLicence.licenceRef }).getByRole('link').click()
 
-    await expect(page.locator('h1')).toContainText(`Transactions for ${licenceToRemove.licenceRef}`)
+    await expect(page.locator('h1')).toContainText(`Transactions for ${removedBillLicence.licenceRef}`)
     await page.getByRole('button', { name: 'Remove bill' }).click()
 
     await expect(page.locator('h1')).toContainText(
@@ -77,36 +81,23 @@ test.describe('Remove a bill and a licence from an annual bill run (internal)', 
 
     await expect(page.locator('h1')).toContainText(`${regions.WALES.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
-    await expect(otherAbstractorsTable.getByRole('row', { name: licenceToRemove.licenceRef })).toHaveCount(0)
+    await expect(otherAbstractorsTable.getByRole('row', { name: removedBillLicence.licenceRef })).toHaveCount(0)
     await expect(otherAbstractorsTable.getByRole('row', { name: licenceToKeep.licenceRef })).toBeVisible()
 
     await page.getByRole('link', { name: 'Search' }).click()
-    await page.locator('#query').fill(licenceToRemove.licenceRef)
+    await page.locator('#query').fill(removedBillLicence.licenceRef)
     await page.getByRole('button', { name: 'Search' }).click()
-    await page.locator('.searchresult-row', { hasText: licenceToRemove.licenceRef }).getByRole('link').click()
+    await page.locator('.searchresult-row', { hasText: removedBillLicence.licenceRef }).getByRole('link').click()
 
     await expect(page.locator('.govuk-notification-banner__content')).toContainText(
       'This licence has been marked for the next supplementary bill run.'
     )
-  })
-
-  test('removes a licence from a shared bill and confirms it is not included', async ({ page }) => {
-    const formattedCurrentDate = formatLongDate(new Date())
-    const [, , licenceToRemove, remainingLicenceOnSharedAccount] = scenario.licences
-    const [, , sharedBillingAccount] = scenario.billingAccounts
-    const [, , companyOnSharedBillingAccount] = scenario.companies
 
     await page.goto(billRunUrl)
 
     await expect(page.locator('h1')).toContainText(`${regions.WALES.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
-
-    const otherAbstractorsTable = page.locator('[data-test="other-abstractors"]')
-    const sharedBillingAccountRow = otherAbstractorsTable.getByRole('row', {
-      name: sharedBillingAccount.accountNumber
-    })
-
-    await expect(sharedBillingAccountRow).toContainText(licenceToRemove.licenceRef)
+    await expect(sharedBillingAccountRow).toContainText(removedLicence.licenceRef)
     await expect(sharedBillingAccountRow).toContainText(remainingLicenceOnSharedAccount.licenceRef)
 
     await sharedBillingAccountRow.getByRole('link', { name: 'View' }).click()
@@ -116,15 +107,15 @@ test.describe('Remove a bill and a licence from an annual bill run (internal)', 
     const billLicencesTable = page.locator('[data-test="licences"]')
 
     await billLicencesTable
-      .getByRole('row', { name: licenceToRemove.licenceRef })
+      .getByRole('row', { name: removedLicence.licenceRef })
       .getByRole('link', { name: 'View transactions' })
       .click()
 
-    await expect(page.locator('h1')).toContainText(`Transactions for ${licenceToRemove.licenceRef}`)
+    await expect(page.locator('h1')).toContainText(`Transactions for ${removedLicence.licenceRef}`)
     await page.getByRole('button', { name: 'Remove licence' }).click()
 
     await expect(page.locator('h1')).toContainText(
-      `You're about to remove ${licenceToRemove.licenceRef} from the bill run`
+      `You're about to remove ${removedLicence.licenceRef} from the bill run`
     )
     await expect(summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
     await expect(summaryValue(page, 'Region')).toContainText(regions.WALES.displayName)
@@ -140,18 +131,8 @@ test.describe('Remove a bill and a licence from an annual bill run (internal)', 
 
     await expect(page.locator('h1')).toContainText(`${regions.WALES.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
-    await expect(sharedBillingAccountRow).not.toContainText(licenceToRemove.licenceRef)
+    await expect(sharedBillingAccountRow).not.toContainText(removedLicence.licenceRef)
     await expect(sharedBillingAccountRow).toContainText(remainingLicenceOnSharedAccount.licenceRef)
-  })
-
-  test('sends the bill run and confirms the removed bill and licence are not included', async ({ page }) => {
-    const [licenceToKeep, removedBillLicence, removedLicence, remainingLicenceOnSharedAccount] = scenario.licences
-    const [, , sharedBillingAccount] = scenario.billingAccounts
-
-    await page.goto(billRunUrl)
-
-    await expect(page.locator('h1')).toContainText(`${regions.WALES.displayName} annual`)
-    await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
     await page.getByRole('button', { name: 'Send bill run' }).click()
 
     await expect(page.locator('h1')).toContainText("You're about to send this bill run")
@@ -162,12 +143,6 @@ test.describe('Remove a bill and a licence from an annual bill run (internal)', 
 
     await expect(page.locator('h1')).toContainText(`${regions.WALES.displayName} annual`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('sent')
-
-    const otherAbstractorsTable = page.locator('[data-test="other-abstractors"]')
-    const sharedBillingAccountRow = otherAbstractorsTable.getByRole('row', {
-      name: sharedBillingAccount.accountNumber
-    })
-
     await expect(otherAbstractorsTable.getByRole('row', { name: licenceToKeep.licenceRef })).toBeVisible()
     await expect(otherAbstractorsTable.getByRole('row', { name: removedBillLicence.licenceRef })).toHaveCount(0)
     await expect(sharedBillingAccountRow).not.toContainText(removedLicence.licenceRef)
