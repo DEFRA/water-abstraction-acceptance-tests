@@ -23,7 +23,7 @@ test.describe(
     let toFinancialYearEnding
 
     test.beforeAll(async ({ browser, loginCookies, logoutCookies, users, world }) => {
-      const scenario = world('licence-flagged-for-supplementary')
+      const scenario = world('licences-flagged-for-supplementary')
 
       billingAccounts = scenario.billingAccounts
       companies = scenario.companies

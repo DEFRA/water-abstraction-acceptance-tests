@@ -4,9 +4,9 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
 
-export const title = 'Licences for removing a bill and a licence from an annual bill run'
+export const title = 'Licences for annual bill run removals'
 export const description =
-  'Two licences each on their own billing account, and two licences sharing one billing account, all in one region, so a single annual bill run can have a bill removed and a licence removed from a shared bill'
+  'Two licences, each with its own billing account, and two licences sharing one billing account, all in one region, to allow testing of removing a bill and a licence from a bill run'
 
 export default function () {
   const region = regions.WALES
