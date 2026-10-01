@@ -1,12 +1,11 @@
-import scenarioData from '../../support/scenarios/registered-licence-with-open-winter-return-log.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a nil return (external)', () => {
   let returnLog
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence-with-open-winter-return-log')
 
     const {
       returnLogs: [scenarioReturnLog]
@@ -14,8 +13,6 @@ test.describe('Submit a nil return (external)', () => {
 
     returnLog = scenarioReturnLog
     user = scenario.user
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ loginExternal }) => {

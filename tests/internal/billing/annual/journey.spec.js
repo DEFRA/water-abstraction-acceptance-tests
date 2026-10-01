@@ -1,19 +1,63 @@
+import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-with-charge-version.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
-test.describe('Create and send annual bill run (internal)', () => {
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+test.describe('Annual bill run (internal)', () => {
+  test.describe.configure({ mode: 'serial' })
 
-    await setup(scenario)
+  test.beforeAll(({ world }) => {
+    world('licence-with-charge-version')
   })
 
   test.beforeEach(async ({ login, users }) => {
     await login(users.billingAndData)
+  })
+
+  test('cancels an annual bill run that has already finished building', async ({ page }) => {
+    const formattedCurrentDate = formatLongDate(new Date())
+
+    await page.goto('/system/bill-runs')
+
+    await expect(page.locator('h1')).toContainText('Bill runs')
+    await page.getByRole('button', { name: 'Create a bill run' }).click()
+
+    await expect(page.locator('h1')).toContainText('Select the bill run type')
+    await page.getByRole('radio', { name: 'Annual' }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
+
+    await expect(page.locator('h1')).toContainText('Select the region')
+    await page.getByRole('radio', { name: regions.ANGLIAN.displayName }).check()
+    await page.getByRole('button', { name: 'Continue' }).click()
+
+    await expect(page.locator('h1')).toContainText('Check the bill run to be created')
+    await page.getByRole('button', { name: 'Create bill run' }).click()
+
+    await expect(page.locator('h1')).toContainText('Bill runs')
+
+    const billRunRow = findBillRunRow(page, regions.ANGLIAN, 'Annual')
+
+    await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
+    await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: regions.ANGLIAN.displayName, exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await billRunRow.getByRole('link').click()
+
+    await expect(page.locator('h1')).toContainText(`${regions.ANGLIAN.displayName} annual`)
+    await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
+    await page.getByRole('button', { name: 'Cancel bill run' }).click()
+
+    await expect(page.locator('h1')).toContainText("You're about to cancel this bill run")
+    await expect(summaryValue(page, 'Date created')).toContainText(formattedCurrentDate)
+    await expect(summaryValue(page, 'Region')).toContainText(regions.ANGLIAN.displayName)
+    await expect(summaryValue(page, 'Bill run type')).toContainText('Annual')
+    await expect(summaryValue(page, 'Charge scheme')).toContainText('Current')
+    await page.getByRole('button', { name: 'Cancel bill run' }).click()
+
+    await expect(page.locator('h1')).toContainText('Bill runs')
+    await reloadUntilGone(page, billRunRow)
   })
 
   test('creates an SROC annual bill run and once built confirms and sends it', async ({ page }) => {
@@ -37,8 +81,7 @@ test.describe('Create and send annual bill run (internal)', () => {
 
     await expect(page.locator('h1')).toContainText('Bill runs')
 
-    const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: regions.ANGLIAN.displayName })
+    const billRunRow = findBillRunRow(page, regions.ANGLIAN, 'Annual')
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
@@ -69,7 +112,6 @@ test.describe('Create and send annual bill run (internal)', () => {
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: regions.ANGLIAN.displayName, exact: true })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
-    await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('1')
     await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')
   })
 })

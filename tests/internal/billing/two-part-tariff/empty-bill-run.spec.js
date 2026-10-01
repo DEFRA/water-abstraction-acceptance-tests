@@ -1,4 +1,5 @@
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
+import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
@@ -7,16 +8,11 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Create a empty two-part tariff bill run (internal)', () => {
   let endYear
 
-  test.beforeAll(async ({ tearDown }) => {
-    const {
-      billingPeriods: {
-        twoPartTariff: [twoPartTariffPeriod]
-      }
-    } = calculatedDates()
+  test.beforeAll(() => {
+    const { currentFinancialYear } = calculatedDates()
 
-    endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
-
-    await tearDown()
+    // The year before the current two-part tariff year ends before any seeded Midlands licence starts, so it is empty
+    endYear = currentFinancialYear.endDate.getFullYear() - 2
   })
 
   test.beforeEach(async ({ login, users }) => {
@@ -40,7 +36,7 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the financial year')
-    await page.locator(`input[value="${endYear}"]`).check()
+    await page.getByRole('radio', { name: `${endYear - 1} to ${endYear}` }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Check the bill run to be created')
@@ -48,8 +44,7 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
 
     await expect(page.locator('h1')).toContainText('Bill runs')
 
-    const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: regions.MIDLANDS.displayName })
+    const billRunRow = findBillRunRow(page, regions.MIDLANDS, 'Two-part tariff', { sent: false })
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'empty')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()

@@ -1,16 +1,14 @@
+import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-and-water-company-licence.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Create an annual bill run with a licence and a water company licence (internal)', () => {
   let scenario
 
-  test.beforeAll(async ({ setup }) => {
-    scenario = scenarioData()
-
-    await setup(scenario)
+  test.beforeAll(async ({ world }) => {
+    scenario = world('licence-and-water-company-licence')
   })
 
   test.beforeEach(async ({ login, users }) => {
@@ -41,8 +39,7 @@ test.describe('Create an annual bill run with a licence and a water company lice
 
     await expect(page.locator('h1')).toContainText('Bill runs')
 
-    const billRunsTable = page.locator('table.govuk-table')
-    const billRunRow = billRunsTable.getByRole('row', { name: regions.MIDLANDS.displayName })
+    const billRunRow = findBillRunRow(page, regions.MIDLANDS, 'Annual')
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()

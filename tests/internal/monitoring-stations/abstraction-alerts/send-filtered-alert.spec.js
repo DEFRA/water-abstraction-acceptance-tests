@@ -1,4 +1,3 @@
-import scenarioData from '../../../support/scenarios/registered-licences-with-monitoring-station-tagged.scenario.js'
 import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -8,8 +7,8 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
   let monitoringStation
   let secondLicence
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licences-with-monitoring-station-tagged')
 
     const [scenarioFirstLicence, scenarioSecondLicence] = scenario.licences
     const [scenarioFirstUser] = scenario.users
@@ -18,8 +17,6 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     firstUser = scenarioFirstUser
     monitoringStation = scenario.monitoringStation
     secondLicence = scenarioSecondLicence
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

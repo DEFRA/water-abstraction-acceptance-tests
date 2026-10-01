@@ -1,4 +1,3 @@
-import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-untagged.scenario.js'
 import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -6,13 +5,11 @@ test.describe('Tag a licence but attempt to change the tag type during the journ
   let licence
   let monitoringStation
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence-with-monitoring-station-untagged')
 
     licence = scenario.licence
     monitoringStation = scenario.monitoringStation
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

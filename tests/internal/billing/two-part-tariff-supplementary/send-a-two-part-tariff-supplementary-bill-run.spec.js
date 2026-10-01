@@ -1,16 +1,16 @@
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
+import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary.scenario.js'
 import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
-test.describe('Send a two-part tariff supplementary bill run (internal)', { tag: '@supplementary-billing' }, () => {
+test.describe('Send a two-part tariff supplementary bill run (internal)', { tag: ['@supplementary-billing'] }, () => {
   let endYear
   let startYear
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(async ({ world }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -20,9 +20,7 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-    const scenario = scenarioData()
-
-    await setup(scenario)
+    world('licence-flagged-for-tpt-supplementary')
   })
 
   test.beforeEach(async ({ login, users }) => {
@@ -66,16 +64,14 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      // We already have one sent two-part tariff bill run seeded (that's what flags the licence for supplementary
-      // billing), so the one we just created is identified by position: it will be the top result. We expect its
-      // status to be BUILDING. Building might take a few seconds though so to avoid the test failing we look for the
-      // status REVIEW, and if not found reload the page and try again. We then select it using the link on the date
-      // created
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'review')
-      await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.SOUTHERN.displayName)
-      await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Two-part tariff')
-      await page.locator('[data-test="date-created-0"] > .govuk-link').click()
+      // Building might take a few seconds, so to avoid the test failing we look for the status REVIEW, and if not
+      // found reload the page and try again
+      const billRunRow = findBillRunRow(page, regions.SOUTHERN, 'Two-part tariff supplementary')
+
+      await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
+      await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+      await expect(billRunRow.getByRole('cell', { name: regions.SOUTHERN.displayName, exact: true })).toBeVisible()
+      await billRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText('Review licences')
       await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
@@ -89,8 +85,8 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
       await page.getByRole('button', { name: 'Continue bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Bill runs')
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'ready')
-      await page.locator('[data-test="date-created-0"] > .govuk-link').click()
+      await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
+      await billRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.SOUTHERN.displayName} two-part tariff`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')

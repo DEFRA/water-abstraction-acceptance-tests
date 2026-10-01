@@ -1,11 +1,11 @@
+import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-second-company.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Change billing account in a previous financial year (internal)',
-  { tag: '@supplementary-billing' },
+  { tag: ['@supplementary-billing'] },
   () => {
     let billingAccount
     let company
@@ -13,10 +13,8 @@ test.describe(
     let secondCompany
     let toFinancialYearEnding
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
-
-      await setup(scenario)
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-flagged-for-supplementary-with-second-company')
 
       const [companyFromScenario, secondCompanyFromScenario] = scenario.companies
 
@@ -124,8 +122,10 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
 
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
-      await page.locator('[data-test="date-created-1"] > .govuk-link').click()
+      const billRunRow = findBillRunRow(page, regions.THAMES, 'Supplementary', { oldChargeScheme: false })
+
+      await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
+      await billRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.THAMES.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')

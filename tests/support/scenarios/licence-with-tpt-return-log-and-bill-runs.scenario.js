@@ -15,7 +15,7 @@ export const description =
 
 export default function (region = null) {
   if (!region) {
-    region = regions.SOUTH_WEST
+    region = regions.NORTH_EAST
   }
 
   const { currentWinterReturnCycle } = calculatedDates()

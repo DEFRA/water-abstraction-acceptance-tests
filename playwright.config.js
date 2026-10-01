@@ -5,18 +5,9 @@ import config from './tests/config.js'
 export default defineConfig({
   forbidOnly: !!process.env.CI,
   fullyParallel: false,
-  projects: [
-    {
-      name: 'chromium',
-      use: {
-        // Remove ...devices['Desktop Chrome'] here
-        viewport: null,
-        launchOptions: {
-          args: ['--start-maximized']
-        }
-      }
-    }
-  ],
+  // Seeds every spec's own copy of its scenario once before any spec runs, whichever files are selected. The CI smoke
+  // test has no database, so it is skipped there
+  globalSetup: process.env.CI ? undefined : './tests/world.setup.js',
   reporter: [['html'], ['list']],
   retries: process.env.CI ? 2 : 0,
   testDir: './tests',
@@ -26,9 +17,10 @@ export default defineConfig({
   timeout: 60 * 1000,
   use: {
     baseURL: config.baseUrl,
+    viewport: null,
+    launchOptions: {
+      args: ['--start-maximized']
+    },
     trace: 'on-first-retry'
-  },
-  // Must be 1: each spec's beforeAll calls /system/data/tear-down, which wipes all test data in the
-  // DB. Running specs in parallel would cause workers to tear down each other's data mid-test.
-  workers: 1
+  }
 })

@@ -1,4 +1,3 @@
-import scenarioData from '../../support/scenarios/external-sharing-access.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Sharing licence access with another user (external)', () => {
@@ -6,16 +5,14 @@ test.describe('Sharing licence access with another user (external)', () => {
   let licence
   let secondUser
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('external-sharing-access')
 
     const [scenarioFirstUser, scenarioSecondUser] = scenario.users
 
     licence = scenario.licence
     firstUser = scenarioFirstUser
     secondUser = scenarioSecondUser
-
-    await setup(scenario)
   })
 
   test('allows a user to grant access to a licence to another user', async ({

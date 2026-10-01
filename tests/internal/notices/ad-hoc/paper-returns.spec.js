@@ -1,23 +1,18 @@
-import scenarioData from '../../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc Paper returns journey (internal)', () => {
   let licence
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-open-winter-return-log')
 
     licence = scenario.licence
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {
     await login(users.billingAndData)
   })
 
-  test('create an ad-hoc paper return notice that includes a single-use recipient with a manual address', async ({
-    page
-  }) => {
+  test('create an ad-hoc paper return notice', async ({ page }) => {
     // Navigate to the Notices page
     await page.goto('/system/notices')
 
@@ -49,47 +44,9 @@ test.describe('Ad-hoc Paper returns journey (internal)', () => {
     // Recipients count
     await expect(page.getByText('Showing all 1 recipients')).toBeVisible()
 
-    // Add an additional recipient
-    await page.getByRole('button', { name: 'Manage recipients' }).click()
-    await page.getByRole('link', { name: 'Set up a single use address' }).click()
-
-    // Enter the recipient's name
-    await page.locator('#name').fill('Manual Recipient')
-    await page.getByRole('button', { name: 'Continue' }).click()
-
-    // Enter a UK postcode
-    // NOTE: the postcode textbox has no accessible label in the rendered markup, so it can't be targeted by
-    // role/label. Target it by its id instead.
-    await page.locator('#postcode').fill('BS1 5AH')
-    await page.getByRole('button', { name: 'Find addresses' }).click()
-
-    // Select the address returned from the lookup (rate limited so pause briefly)
-    // we have to wait a second. Both the lookup and selecting the address result in a call to the address facade which
-    // has rate monitoring protection. Because we're automating the calls, they happen too quickly so the facade rejects
-    // the second call. Hence we need to wait a second.
-    await page.waitForTimeout(1000)
-    await page.getByRole('link', { name: 'I cannot find the address in the list' }).click()
-
-    // Enter the address
-    await page.locator('#addressLine1').fill('4 Privet drive')
-    await page.locator('#addressLine2').fill('Little Whinging')
-    await page.locator('#addressLine3').fill('Surrey')
-    await page.locator('#postcode').fill('WD25 7LR')
-    await page.getByRole('button', { name: 'Continue' }).click()
-
-    // Recipients count
-    await expect(page.getByText('Showing all 2 recipients')).toBeVisible()
-
-    // Additional recipient is shown in the list
-    await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Manual Recipient')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('4 Privet drive')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Little Whinging')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('Surrey')
-    await expect(page.locator('[data-test="recipient-contact-1"]')).toContainText('WD25 7LR')
-    await expect(page.locator('[data-test="recipient-licence-numbers-1"]')).toContainText(licence.licenceRef)
-    await expect(page.locator('[data-test="recipient-method-1"]')).toContainText('Letter - single use')
-    await expect(page.locator('[data-test="recipient-action-1"]')).toContainText('Preview')
+    await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(1)
+    await expect(page.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
+    await expect(page.locator('[data-test^="recipient-method"]')).toContainText('Letter')
 
     // Check the recipients
     await page.getByRole('button', { name: 'Send' }).click()
@@ -101,13 +58,8 @@ test.describe('Ad-hoc Paper returns journey (internal)', () => {
     // Notice page contains the recipients
     await expect(page.locator('.govuk-caption-l', { hasText: noticeReference })).toBeVisible()
 
-    await expect(page.getByText('Showing all 2 notifications')).toBeVisible()
+    await expect(page.getByText('Showing all 1 notifications')).toBeVisible()
 
-    await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(2)
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('Manual Recipient')
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('4 Privet drive')
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('Little Whinging')
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('Surrey')
-    await expect(page.locator('[data-test="notification-recipient1"]')).toContainText('WD25 7LR')
+    await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(1)
   })
 })

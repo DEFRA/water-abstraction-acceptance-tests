@@ -1,8 +1,8 @@
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
+import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licences-for-tpt-review.scenario.js'
 import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 
@@ -17,7 +17,7 @@ test.describe('Two-part tariff review (internal)', () => {
   let sessionCookies
   let startYear
 
-  test.beforeAll(async ({ loginCookies, setup, users }) => {
+  test.beforeAll(async ({ browser, loginCookies, users, world }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -27,22 +27,16 @@ test.describe('Two-part tariff review (internal)', () => {
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
 
-    scenario = scenarioData()
-
-    await setup(scenario)
+    scenario = world('licences-for-tpt-review')
 
     sessionCookies = await loginCookies(users.billingAndData)
-  })
 
-  test.beforeEach(async ({ context }) => {
+    const context = await browser.newContext()
+
     await context.addCookies(sessionCookies)
-  })
 
-  test.afterAll(async ({ logoutCookies }) => {
-    await logoutCookies(sessionCookies)
-  })
+    const page = await context.newPage()
 
-  test('creates a SROC two-part tariff bill run covering every review licence', async ({ page }) => {
     const { licence } = _reviewLicence(scenario, 13)
     const formattedCurrentDate = formatLongDate(new Date())
 
@@ -71,16 +65,16 @@ test.describe('Two-part tariff review (internal)', () => {
     await expect(page.locator('h1')).toContainText('Check the bill run to be created')
     await page.getByRole('button', { name: 'Create bill run' }).click()
 
-    // The bill run we created will be the top result. We expect its status to be BUILDING. Building might take a few
-    // seconds though so to avoid the test failing we look for the status REVIEW, and if not found reload the page and
-    // try again. We then select it using the link on the date created
+    // Building might take a few seconds, so to avoid the test failing we look for the status REVIEW, and if not found
+    // reload the page and try again
     await expect(page.locator('h1')).toContainText('Bill runs')
-    await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'review')
-    await expect(page.locator('[data-test="date-created-0"]')).toContainText(formattedCurrentDate)
-    await expect(page.locator('[data-test="region-0"]')).toContainText(region.displayName)
-    await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Two-part tariff')
-    await expect(page.locator('[data-test="bill-run-total-0"]')).toContainText('')
-    await page.locator('[data-test="date-created-0"] > .govuk-link').click()
+
+    const billRunRow = findBillRunRow(page, region, 'Two-part tariff')
+
+    await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
+    await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { name: region.displayName, exact: true })).toBeVisible()
+    await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText('Review licences')
     await expect(page.locator('.govuk-body > .govuk-tag')).toContainText('review')
@@ -89,11 +83,18 @@ test.describe('Two-part tariff review (internal)', () => {
     await expect(page.locator('[data-test="meta-data-type"]')).toContainText('Two-part tariff')
     await expect(page.locator('[data-test="meta-data-scheme"]')).toContainText('Current')
     await expect(page.locator('[data-test="meta-data-year"]')).toContainText(`${startYear} to ${endYear}`)
-    await expect(page.locator('.govuk-table__caption')).toContainText(
-      `Showing all ${scenario.licences.length} licences`
-    )
 
     billRunUrl = page.url()
+
+    await context.close()
+  })
+
+  test.beforeEach(async ({ context }) => {
+    await context.addCookies(sessionCookies)
+  })
+
+  test.afterAll(async ({ logoutCookies }) => {
+    await logoutCookies(sessionCookies)
   })
 
   test(

@@ -19,7 +19,7 @@ export const description =
  */
 export default function (region = null) {
   if (!region) {
-    region = regions.ANGLIAN
+    region = regions.SOUTH_WEST
   }
 
   const {

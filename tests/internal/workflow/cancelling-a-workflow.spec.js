@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-workflow.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -16,13 +15,11 @@ test.describe(
     let company
     let licence
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-with-workflow')
 
       licence = scenario.licence
       company = scenario.company
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {

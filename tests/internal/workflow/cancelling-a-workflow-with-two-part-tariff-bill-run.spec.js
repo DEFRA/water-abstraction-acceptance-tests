@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-workflow-and-two-part-tariff-bill-runs.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -17,13 +16,11 @@ test.describe(
     let company
     let licence
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-with-workflow-and-two-part-tariff-bill-runs')
 
       licence = scenario.licence
       company = scenario.company
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {
@@ -61,7 +58,7 @@ test.describe(
       await page.getByRole('link', { name: 'Licence summary' }).click()
 
       await expect(page.locator('.govuk-notification-banner__content')).toContainText(
-        'This licence has been marked for the next two-part tariff supplementary bill run.'
+        'This licence has been marked for the next two-part tariff supplementary bill run'
       )
     })
   }

@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-two-purposes-and-requirements.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Update the purpose and points of a copied return requirement and add another manually (internal)', () => {
@@ -8,15 +7,13 @@ test.describe('Update the purpose and points of a copied return requirement and 
   let points
   let returnRequirementPurpose
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-two-purposes-and-requirements')
 
     company = scenario.company
     licence = scenario.licence
     points = scenario.points
     returnRequirementPurpose = scenario.returnRequirementPurpose
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

@@ -1,15 +1,12 @@
-import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a return with no quantities - validation errors (internal)', () => {
   let returnLog
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-open-winter-return-log')
 
     returnLog = scenario.returnLogs[0]
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {

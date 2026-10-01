@@ -1,20 +1,20 @@
+import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-supplementary-with-no-current-annual-bill-run.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe(
   'Create an supplementary bill run with no annual in the current year (internal)',
-  { tag: '@supplementary-billing' },
+  { tag: ['@supplementary-billing'] },
   () => {
     let billingAccount
     let company
     let licence
     let toFinancialYearEnding
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-flagged-for-supplementary-with-no-current-annual-bill-run')
 
       billingAccount = scenario.billingAccount
       company = scenario.company
@@ -22,8 +22,6 @@ test.describe(
 
       // The supplementary engine bases its calculation on the seeded annual bill run's own year, not the current one
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {
@@ -52,13 +50,16 @@ test.describe(
       await expect(page.locator('h1')).toContainText('Bill runs')
 
       // With no annual bill run in the current year, creating a supplementary bill run also triggers the legacy
-      // presroc engine, even though no licence here is flagged for it. That run stays empty, so the sroc one is the
-      // second ('1') row, behind it
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-1"] > .govuk-tag'), 'ready')
-      await expect(page.locator('[data-test="date-created-1"]')).toContainText(formattedCurrentDate)
-      await expect(page.locator('[data-test="region-1"]')).toContainText(regions.NORTH_EAST.displayName)
-      await expect(page.locator('[data-test="bill-run-type-1"]')).toContainText('Supplementary')
-      await page.locator('[data-test="date-created-1"] > .govuk-link').click()
+      // presroc engine, even though no licence here is flagged for it. So there is an old charge scheme run as well as
+      // the current one we want
+      const srocBillRunRow = findBillRunRow(page, regions.NORTH_EAST, 'Supplementary', { oldChargeScheme: false })
+
+      await reloadUntilTextFound(page, srocBillRunRow.locator('.govuk-tag'), 'ready')
+      await expect(srocBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
+      await expect(
+        srocBillRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })
+      ).toBeVisible()
+      await srocBillRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
       await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready')
@@ -84,14 +85,18 @@ test.describe(
       await expect(billRowMostRecentYear.getByRole('link', { name: 'View' })).toBeVisible()
 
       // The presroc engine also gets triggered (see the comment above), but no licence here is flagged for it, so its
-      // bill run (row '0') ends up empty
+      // bill run ends up empty
       await page.goto('/system/bill-runs')
 
       await expect(page.locator('h1')).toContainText('Bill runs')
-      await reloadUntilTextFound(page, page.locator('[data-test="bill-run-status-0"] > .govuk-tag'), 'empty')
-      await expect(page.locator('[data-test="region-0"]')).toContainText(regions.NORTH_EAST.displayName)
-      await expect(page.locator('[data-test="bill-run-type-0"]')).toContainText('Supplementary')
-      await page.locator('[data-test="date-created-0"] > .govuk-link').click()
+
+      const presrocBillRunRow = findBillRunRow(page, regions.NORTH_EAST, 'Supplementary', { oldChargeScheme: true })
+
+      await reloadUntilTextFound(page, presrocBillRunRow.locator('.govuk-tag'), 'empty')
+      await expect(
+        presrocBillRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })
+      ).toBeVisible()
+      await presrocBillRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} supplementary`)
       await expect(page.locator('#main-content .govuk-tag')).toContainText('empty')

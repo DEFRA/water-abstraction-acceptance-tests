@@ -334,9 +334,9 @@ export function returnLogStatusLabel(endDate, dueDate = null) {
   const endDateValue = new Date(endDate)
   const dueDateValue = dueDate ? new Date(dueDate) : null
 
-  const afterEndDate = compareDates(endDateValue, todayValue) === 1
+  const onOrBeforeEndDate = compareDates(endDateValue, todayValue) !== -1
 
-  if (afterEndDate) {
+  if (onOrBeforeEndDate) {
     return 'not due yet'
   }
 

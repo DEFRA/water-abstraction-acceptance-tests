@@ -16,7 +16,8 @@ npx playwright test tests/path/to/file.spec.js --reporter=list
 ```
 
 - Add `-g "test name"` to run a single test within a file
-- The suite runs with `workers: 1` (see `playwright.config.js`) because every spec's `beforeAll` calls the data `tear-down` endpoint, which wipes all test data — never invoke with more workers or in parallel
+- Every run starts with Playwright's `globalSetup` (`tests/world.setup.js`) resetting the world: clean DB, seed a separate copy of its scenario for each spec, write `cli/src/world/world.json`. Don't tear down or seed by hand first
+- Spec files run in parallel, each against its own copy of its scenario; tests inside one file run in order because they share that copy
 
 ## Reading a failure
 

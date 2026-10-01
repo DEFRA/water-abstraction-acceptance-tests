@@ -1,4 +1,3 @@
-import scenarioData from '../../support/scenarios/licence-with-tpt-agreement-and-bill-runs.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -15,13 +14,11 @@ test.describe(
     let licence
     let billRun
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-with-tpt-agreement-and-bill-runs')
 
       licence = scenario.licence
       billRun = scenario.billRuns[0]
-
-      await setup(scenario)
     })
 
     test.beforeEach(async ({ login, users }) => {

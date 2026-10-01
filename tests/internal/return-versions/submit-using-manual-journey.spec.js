@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-two-purposes.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit return version manually (internal)', () => {
@@ -8,8 +7,8 @@ test.describe('Submit return version manually (internal)', () => {
   let points
   let customStartDateYear
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-two-purposes')
 
     company = scenario.company
     licence = scenario.licence
@@ -17,8 +16,6 @@ test.describe('Submit return version manually (internal)', () => {
 
     // Must be a date after the licence's own start date, which defaults to a recent date
     customStartDateYear = new Date(licence.startDate).getUTCFullYear() + 1
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ login, users }) => {
