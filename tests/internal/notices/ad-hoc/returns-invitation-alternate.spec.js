@@ -87,12 +87,24 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     // and then checking the email's status
     await reloadUntilTextFound(page, page.locator('#main-content > :nth-child(3) > .govuk-tag'), 'error')
 
-    // Go back to the Notices page and wait for the alternate notice to appear as pending
-    await page.locator('.govuk-back-link').click()
-    await reloadUntilTextFound(page, page.locator('[data-test="notice-status-0"] > .govuk-tag'), 'pending')
+    // Other specs create notices in parallel, so we can't assume the alternate notice is at the top of the Notices page.
+    // Instead, get its reference from the licence's own communications and filter the Notices page by it.
+    await page.goto(`/system/licences/${licence.id}/communications`)
+    await expect(page.locator('h1')).toContainText('Communications')
+    await reloadUntilTextFound(page, page.locator('[data-test="notification-method-0"]'), 'Letter')
 
-    // Confirm it _is_ the alternate and not the notice we created!
-    await expect(page.locator('[data-test="notice-reference-0"]')).not.toContainText(noticeReference)
+    await page.locator('[data-test="notification-type-0"] > .govuk-link').click()
+    const alternateReference = (await page.locator('[data-test="meta-data-reference"]').innerText()).trim()
+
+    expect(alternateReference).not.toEqual(noticeReference)
+
+    await page.goto('/system/notices')
+    await page.getByText('Filters', { exact: true }).click()
+    await page.getByLabel('Reference').fill(alternateReference)
+    await page.getByRole('button', { name: 'Apply filters' }).click()
+
+    await expect(page.locator('[data-test="notice-reference-0"]')).toContainText(alternateReference)
+    await expect(page.locator('[data-test="notice-status-0"]')).toContainText('pending')
 
     await page.locator('[data-test="notice-date-created-0"] > .govuk-link').click()
 
