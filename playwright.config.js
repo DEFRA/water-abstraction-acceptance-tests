@@ -17,7 +17,6 @@ export default defineConfig({
   timeout: 60 * 1000,
   use: {
     baseURL: config.baseUrl,
-    // Remove ...devices['Desktop Chrome'] here
     viewport: null,
     launchOptions: {
       args: ['--start-maximized']
