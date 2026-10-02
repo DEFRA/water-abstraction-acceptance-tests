@@ -1,9 +1,11 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
+import buildLicenceEntity from '../entities/licence.entity.js'
 import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import monitoringStationData from '../data/monitoring-station.data.js'
-import { regions } from '../default-values.js'
-import registeredLicenceScenario from './registered-licence.scenario.js'
+import primaryUserData from '../data/primary-user.data.js'
+import { groups, regions } from '../default-values.js'
 
 export const title = 'Registered licences with a monitoring station (tagged)'
 export const description =
@@ -41,13 +43,22 @@ export default function (region = null) {
  * @private
  */
 function _taggedLicence(monitoringStation, region) {
-  const registeredLicence = registeredLicenceScenario(region)
+  const licenceEntity = buildLicenceEntity(region)
 
-  const licenceVersionPurposeCondition = licenceVersionPurposeConditionData(registeredLicence.licenceVersionPurpose)
-  const licenceMonitoringStation = licenceMonitoringStationData(registeredLicence.licence, monitoringStation)
+  const primaryUser = primaryUserData(licenceEntity.company)
+
+  // Linking a primary user's company entity to the licence's licence document header is the only way we can link a
+  // registered licence to a licence holder.
+  licenceEntity.licenceDocumentHeader.companyEntityId = primaryUser.licenceEntityRole.companyEntityId
+
+  const internalUserEntity = buildInternalUserEntity(groups.ENVIRONMENT_OFFICER)
+
+  const licenceVersionPurposeCondition = licenceVersionPurposeConditionData(licenceEntity.licenceVersionPurpose)
+  const licenceMonitoringStation = licenceMonitoringStationData(licenceEntity.licence, monitoringStation)
 
   return {
-    ...registeredLicence,
+    ...licenceEntity,
+    ...mergeByKey(internalUserEntity, primaryUser),
     licenceVersionPurposeCondition,
     licenceMonitoringStation
   }
