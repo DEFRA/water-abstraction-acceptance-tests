@@ -127,25 +127,6 @@ export function generateGovUKEmail() {
 }
 
 /**
- * Generate a password
- *
- * The service requires a password to be at least 8 characters and contain an uppercase letter and a symbol. Faker's
- * password does not guarantee the last two, so we add one of each. The symbol is picked from ones the service accepts, as
- * it does not count all those `faker.string.symbol()` can return (for example `~`).
- *
- * @returns {string} - A password
- */
-export function generatePassword() {
-  return faker.helpers
-    .shuffle([
-      faker.internet.password({ length: 8 }),
-      faker.string.alpha({ casing: 'upper', length: 1 }),
-      faker.string.fromCharacters('!@#$%^&*')
-    ])
-    .join('')
-}
-
-/**
  * Generates a Point external id
  *
  * @param {object} region - the region

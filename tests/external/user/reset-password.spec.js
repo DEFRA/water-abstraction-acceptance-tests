@@ -1,5 +1,5 @@
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
-import { generatePassword } from '../../support/helpers/generators.helpers.js'
+import { password } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Reset password journey (external)', () => {
@@ -16,7 +16,7 @@ test.describe('Reset password journey (external)', () => {
     externalUrl,
     lastNotification
   }) => {
-    const newPassword = generatePassword()
+    const newPassword = `${password}1234`
 
     // Navigate to the reset your password page
     await page.goto(`${externalUrl}/reset_password`)
