@@ -24,7 +24,7 @@ test.describe(
     })
 
     test.beforeEach(async ({ login }) => {
-      await login(user.username)
+      await login(user)
     })
 
     test('flags the licence for the next supplementary bill run for the old charge scheme', async ({ page }) => {

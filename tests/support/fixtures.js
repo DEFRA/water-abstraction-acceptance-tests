@@ -33,11 +33,11 @@ export const test = base.extend({
     })
   },
 
-  login: async ({ page, defaultPassword }, use) => {
-    await use(async (email) => {
+  login: async ({ page }, use) => {
+    await use(async (user) => {
       await page.goto('/signin')
-      await page.fill('input#email', email)
-      await page.fill('input#password', defaultPassword)
+      await page.fill('input#email', user.username)
+      await page.fill('input#password', user.password)
       await page.click('.govuk-button.govuk-button--start')
       await page.waitForURL((url) => {
         return !url.pathname.startsWith('/signin')
@@ -47,14 +47,14 @@ export const test = base.extend({
 
   // Signs in within its own browser context and returns the session cookies, so a spec can sign in once in beforeAll
   // and add them to each test's context rather than signing in again before every test
-  loginCookies: async ({ browser, defaultPassword }, use) => {
-    await use(async (email) => {
+  loginCookies: async ({ browser }, use) => {
+    await use(async (user) => {
       const context = await browser.newContext()
       const page = await context.newPage()
 
       await page.goto('/signin')
-      await page.fill('input#email', email)
-      await page.fill('input#password', defaultPassword)
+      await page.fill('input#email', user.username)
+      await page.fill('input#password', user.password)
       await page.click('.govuk-button.govuk-button--start')
       await page.waitForURL((url) => {
         return !url.pathname.startsWith('/signin')
@@ -84,11 +84,11 @@ export const test = base.extend({
     })
   },
 
-  loginExternal: async ({ page, defaultPassword, externalUrl }, use) => {
-    await use(async (email) => {
+  loginExternal: async ({ page, externalUrl }, use) => {
+    await use(async (user) => {
       await page.goto(`${externalUrl}/signin`)
-      await page.fill('input#email', email)
-      await page.fill('input#password', defaultPassword)
+      await page.fill('input#email', user.username)
+      await page.fill('input#password', user.password)
       await page.click('.govuk-button.govuk-button--start')
       await page.waitForURL((url) => {
         return !url.pathname.startsWith('/signin')

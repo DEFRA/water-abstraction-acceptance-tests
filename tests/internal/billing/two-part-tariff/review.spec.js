@@ -29,7 +29,7 @@ test.describe('Two-part tariff review (internal)', () => {
 
     scenario = world('licences-for-tpt-review')
 
-    sessionCookies = await loginCookies(scenario.users[0].username)
+    sessionCookies = await loginCookies(scenario.users[0])
 
     const context = await browser.newContext()
 

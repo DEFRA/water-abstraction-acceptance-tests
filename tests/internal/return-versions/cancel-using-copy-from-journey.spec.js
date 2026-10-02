@@ -21,7 +21,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('creates but then cancels a return version using copy from existing journey (internal)', async ({ page }) => {

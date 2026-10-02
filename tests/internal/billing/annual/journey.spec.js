@@ -17,7 +17,7 @@ test.describe('Annual bill run (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('cancels an annual bill run that has already finished building', async ({ page }) => {

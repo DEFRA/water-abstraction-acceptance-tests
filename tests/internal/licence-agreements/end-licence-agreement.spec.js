@@ -34,7 +34,7 @@ test.describe(
     })
 
     test.beforeEach(async ({ login }) => {
-      await login(user.username)
+      await login(user)
     })
 
     test('ends a licence agreement using a valid date and check it does not flag the licence for supplementary billing', async ({

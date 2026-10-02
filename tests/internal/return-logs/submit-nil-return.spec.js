@@ -13,7 +13,7 @@ test.describe('Submit a nil return (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('submit a nil return', async ({ page }) => {

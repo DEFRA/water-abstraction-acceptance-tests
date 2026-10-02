@@ -17,7 +17,7 @@ test.describe('Submit a readings return (external)', () => {
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('login as an existing user and submit a readings return', async ({ page, externalUrl }) => {

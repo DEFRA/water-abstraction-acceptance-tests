@@ -35,7 +35,7 @@ test.describe(
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
 
-      const sessionCookies = await loginCookies(user.username)
+      const sessionCookies = await loginCookies(user)
       const context = await browser.newContext()
 
       await context.addCookies(sessionCookies)
@@ -113,7 +113,7 @@ test.describe(
     })
 
     test.beforeEach(async ({ login }) => {
-      await login(user.username)
+      await login(user)
     })
 
     test('makes a licence non-chargeable, then confirms a credit is raised in the next supplementary bill run', async ({

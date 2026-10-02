@@ -10,8 +10,8 @@ test.describe('Change user permissions (internal)', () => {
     user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login, users, defaultPassword }) => {
+    await login({ username: users.billingAndData, password: defaultPassword })
   })
 
   test('allows a billing & data user to change the permissions of another user', async ({ page }) => {

@@ -15,7 +15,7 @@ test.describe('Licence holder (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('can navigate between pages using the sub-navigation', async ({ page }) => {

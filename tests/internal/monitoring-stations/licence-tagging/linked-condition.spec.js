@@ -17,7 +17,7 @@ test.describe('Tag a licence linked to a condition. The abstraction period is de
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('tags a licence linked to a condition, the user selects the condition which pre-populates the abs period', async ({

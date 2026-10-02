@@ -12,7 +12,7 @@ test.describe('Submit then edit a meter readings return with zero reading (inter
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('submit a return and check that the zero values recorded are correctly carried over when editing', async ({

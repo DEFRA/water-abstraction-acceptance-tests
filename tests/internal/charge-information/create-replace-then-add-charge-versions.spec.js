@@ -15,7 +15,7 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test(

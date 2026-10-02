@@ -12,7 +12,7 @@ test.describe('Standard returns reminder journey (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('creates a standard returns reminder notice', async ({ page }) => {

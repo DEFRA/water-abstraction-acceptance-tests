@@ -29,7 +29,7 @@ test.describe(
     })
 
     test.beforeEach(async ({ login }) => {
-      await login(user.username)
+      await login(user)
     })
 
     test('sends the sroc supplementary bill run, changes the billing account within a previous financial year, then confirms the credits and new bills', async ({

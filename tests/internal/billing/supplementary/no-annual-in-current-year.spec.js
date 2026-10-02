@@ -27,7 +27,7 @@ test.describe(
     })
 
     test.beforeEach(async ({ login }) => {
-      await login(user.username)
+      await login(user)
     })
 
     test('creates the supplementary bill run covering every year since the last annual', async ({ page }) => {

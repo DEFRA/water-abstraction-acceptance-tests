@@ -22,7 +22,7 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('creates and sends an abstraction alert for the tagged licence returned by the filter', async ({ page }) => {

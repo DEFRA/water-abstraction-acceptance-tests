@@ -34,7 +34,7 @@ test.describe('Licence holder contacts (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('shows the licence holder in the contacts list', async ({ page }) => {

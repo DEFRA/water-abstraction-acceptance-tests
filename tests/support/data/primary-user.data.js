@@ -1,6 +1,6 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-import { generateCompanyEmailAddress } from '../helpers/generators.helpers.js'
+import { generateCompanyEmailAddress, generatePassword } from '../helpers/generators.helpers.js'
 
 export default function (company) {
   const licenceEntityRoleId = generateUUID()
@@ -31,7 +31,7 @@ export default function (company) {
 
   const user = {
     username: email,
-    password: 'P@55word',
+    password: generatePassword(),
     resetRequired: 0,
     application: 'water_vml',
     badLogins: 0,

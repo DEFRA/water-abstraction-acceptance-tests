@@ -12,7 +12,7 @@ test.describe('Submit a return with no meter readings - validation errors (inter
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('attempt to submit a return without entering any readings', async ({ page }) => {

@@ -32,7 +32,7 @@ test.describe('Submit historic correction for licence with both a winter and sum
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('adds a new return version using copy existing for a licence with existing winter and summer return requirement', async ({

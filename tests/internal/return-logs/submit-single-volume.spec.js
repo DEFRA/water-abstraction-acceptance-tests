@@ -12,7 +12,7 @@ test.describe('Submit a single volume return (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('submit a return by entering a single abstraction volume', async ({ page }) => {

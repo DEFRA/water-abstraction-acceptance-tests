@@ -11,7 +11,7 @@ test.describe('Standard returns invitation journey (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('creates a standard returns invitation notice', async ({ page }) => {

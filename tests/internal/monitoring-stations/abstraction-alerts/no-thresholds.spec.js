@@ -12,7 +12,7 @@ test.describe('Attempt set up of abstraction alert with no thresholds (internal)
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('will not create a Reduce alert as there are no thresholds with the reduce restriction type', async ({

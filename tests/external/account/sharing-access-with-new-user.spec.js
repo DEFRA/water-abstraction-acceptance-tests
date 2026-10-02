@@ -14,7 +14,7 @@ test.describe('Sharing licence access with a new user (external)', () => {
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(firstUser.username)
+    await loginExternal(firstUser)
   })
 
   test('allows a user to grant access to a licence to a new user', async ({

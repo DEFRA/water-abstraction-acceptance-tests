@@ -15,8 +15,8 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
     endYear = currentFinancialYear.endDate.getFullYear() - 2
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login, users, defaultPassword }) => {
+    await login({ username: users.billingAndData, password: defaultPassword })
   })
 
   test('creates an empty two-part tariff bill run', async ({ page }) => {

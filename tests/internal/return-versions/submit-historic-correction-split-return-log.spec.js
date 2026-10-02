@@ -43,7 +43,7 @@ test.describe('Submit historic correction that results in a split-log (internal)
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('adds a return version to a licence part way through the previous winter cycle resulting in a split-log', async ({

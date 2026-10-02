@@ -17,7 +17,7 @@ test.describe('Submit a volumes return (external)', () => {
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('login as an existing user and submit a volumes return', async ({ page, externalUrl }) => {

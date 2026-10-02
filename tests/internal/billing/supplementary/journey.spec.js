@@ -37,7 +37,7 @@ test.describe(
     })
 
     test.beforeEach(async ({ login }) => {
-      await login(user.username)
+      await login(user)
     })
 
     test('cancels both the presroc and sroc supplementary bill runs once built', async ({ page }) => {

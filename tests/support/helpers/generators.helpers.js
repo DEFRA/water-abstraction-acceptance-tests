@@ -127,6 +127,15 @@ export function generateGovUKEmail() {
 }
 
 /**
+ * Generate a password
+ *
+ * @returns {string} - A password
+ */
+export function generatePassword() {
+  return faker.internet.password()
+}
+
+/**
  * Generates a Point external id
  *
  * @param {object} region - the region

@@ -12,7 +12,7 @@ test.describe('Licence alias naming (external)', () => {
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('creates the alias name for the licence the user is holding', async ({ page, externalUrl }) => {

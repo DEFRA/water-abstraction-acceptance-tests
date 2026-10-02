@@ -12,7 +12,7 @@ test.describe('Submit a return with no quantities - validation errors (internal)
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('attempt to submit a return without entering any quantities', async ({ page }) => {

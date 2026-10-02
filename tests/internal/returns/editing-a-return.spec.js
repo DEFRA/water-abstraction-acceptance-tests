@@ -14,7 +14,7 @@ test.describe('Editing a return (internal)', { tag: '@supplementaryBilling' }, (
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('Edit a return and mark the licence for two-part tariff supplementary billing', async ({ page }) => {

@@ -9,8 +9,8 @@ test.describe('Creating internal user with existing external account (internal)'
     user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.super)
+  test.beforeEach(async ({ login, users, defaultPassword }) => {
+    await login({ username: users.super, password: defaultPassword })
   })
 
   test(

@@ -15,7 +15,7 @@ test.describe('Tag a licence linked to a condition but manually enter the abstra
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('tags a licence linked to a condition, but the user chooses to enter the abstraction period manually', async ({

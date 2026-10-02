@@ -20,7 +20,7 @@ test.describe('PRESROC two-part tariff bill run (internal)', { tag: ['@presroc',
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('cancels a PRESROC two-part tariff bill run that has already finished building', async ({ page }) => {

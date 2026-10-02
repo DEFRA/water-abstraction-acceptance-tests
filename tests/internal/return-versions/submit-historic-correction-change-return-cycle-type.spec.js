@@ -47,7 +47,7 @@ test.describe('Submit historic correction changing return cycle type on new retu
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('adds a new summer return version to a licence part way through the previous winter cycle resulting in both a split-log and new summer return logs', async ({

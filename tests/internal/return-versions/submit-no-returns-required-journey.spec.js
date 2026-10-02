@@ -15,7 +15,7 @@ test.describe('Submit no returns requirement (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('creates a no return requirement and approves the requirement', async ({ page }) => {

@@ -19,7 +19,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('copies an existing requirement, updates its purpose and points, adds another requirement manually, and approves both', async ({

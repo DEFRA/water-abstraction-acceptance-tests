@@ -62,7 +62,7 @@ test.describe('Submit historic correction changing to quarterly on new return ve
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('adds a new quarterly return version to a licence part way through the previous winter cycle resulting in both split-logs and new quarterly return logs', async ({

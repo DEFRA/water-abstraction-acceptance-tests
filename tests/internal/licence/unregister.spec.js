@@ -16,7 +16,7 @@ test.describe('Unregister a licence (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('can unregister a licence from its primary user', async ({ page }) => {

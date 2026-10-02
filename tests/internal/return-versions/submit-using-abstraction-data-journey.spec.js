@@ -17,7 +17,7 @@ test.describe('Submit return version using abstraction data (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('creates and confirms a return version using the abstraction data journey', async ({ page }) => {

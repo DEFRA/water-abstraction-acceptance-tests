@@ -26,7 +26,7 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test(

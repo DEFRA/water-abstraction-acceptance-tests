@@ -24,7 +24,7 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('sends a return invite to a "bad" primary user, triggering the alternate notification to the licence, which when confirmed will set the "due date" on the OPEN return log', async ({

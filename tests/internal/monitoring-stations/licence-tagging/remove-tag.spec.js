@@ -14,7 +14,7 @@ test.describe('Attempt to remove a tag from a monitoring station (internal)', ()
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('removes the tagged licence from the monitoring station', async ({ page }) => {

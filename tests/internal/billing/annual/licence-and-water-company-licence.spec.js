@@ -12,7 +12,7 @@ test.describe('Create an annual bill run with a licence and a water company lice
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(scenario.users[0].username)
+    await login(scenario.users[0])
   })
 
   test('creates an annual bill run and bills a licence and a water company licence', async ({ page }) => {

@@ -14,7 +14,7 @@ test.describe('View returns and their status (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('lists the returns for a licence and their status', async ({ page }) => {

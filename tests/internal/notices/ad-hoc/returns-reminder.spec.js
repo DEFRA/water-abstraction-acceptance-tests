@@ -14,7 +14,7 @@ test.describe('Ad-hoc returns reminder journey (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('create an ad-hoc returns reminder notice', async ({ page }) => {

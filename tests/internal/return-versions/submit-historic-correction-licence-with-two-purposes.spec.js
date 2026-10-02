@@ -45,7 +45,7 @@ test.describe('Submit historic correction using abstraction data for licence wit
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('adds a new return version using abstraction data for a licence with two purposes', async ({ page }) => {

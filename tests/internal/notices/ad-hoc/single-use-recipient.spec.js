@@ -14,7 +14,7 @@ test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
   })
 
   test.beforeEach(async ({ login, page }) => {
-    await login(user.username)
+    await login(user)
 
     await page.goto('/system/notices')
     await page.getByRole('button', { name: 'Create an ad-hoc notice' }).click()

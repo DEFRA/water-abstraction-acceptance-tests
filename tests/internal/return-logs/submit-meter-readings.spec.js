@@ -12,7 +12,7 @@ test.describe('Submit a meter readings return (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('submit a return and check the values', async ({ page }) => {

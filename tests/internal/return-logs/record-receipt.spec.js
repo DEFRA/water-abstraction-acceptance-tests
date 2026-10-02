@@ -12,7 +12,7 @@ test.describe('Record receipt for return (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('record the receipt for an overdue return for a licence from its returns tab', async ({ page }) => {

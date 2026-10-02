@@ -12,7 +12,7 @@ test.describe('Submit then edit an abstraction volumes return with zero quantiti
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('submit a return and check that the zero values recorded are correctly carried over when editing', async ({

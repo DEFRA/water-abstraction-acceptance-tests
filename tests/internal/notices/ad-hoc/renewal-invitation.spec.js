@@ -14,7 +14,7 @@ test.describe('Ad-hoc renewal invitation journey (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('invites a customer to submit a renewal invitation', async ({ page }) => {

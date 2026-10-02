@@ -21,7 +21,7 @@ test.describe('Submit return version manually (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('creates and confirms a return version using the manual journey', async ({ page }) => {

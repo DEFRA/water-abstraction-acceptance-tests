@@ -11,7 +11,7 @@ test.describe('Ad-hoc Paper returns journey (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('create an ad-hoc paper return notice', async ({ page }) => {

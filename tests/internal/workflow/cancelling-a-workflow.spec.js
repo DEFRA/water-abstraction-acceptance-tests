@@ -25,7 +25,7 @@ test.describe(
     })
 
     test.beforeEach(async ({ login }) => {
-      await login(user.username)
+      await login(user)
     })
 
     test('does not flag the licence for supplementary billing', async ({ page, users }) => {

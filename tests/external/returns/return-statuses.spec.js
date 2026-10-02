@@ -14,7 +14,7 @@ test.describe('View return statuses (external)', () => {
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('login as an existing user and view returns', async ({ page, externalUrl }) => {

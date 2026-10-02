@@ -16,7 +16,7 @@ test.describe('Submit a nil return (external)', () => {
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('login as an existing user and submit a nil return', async ({ page, externalUrl }) => {

@@ -15,7 +15,7 @@ test.describe('Tag a licence but attempt to change the tag type during the journ
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('tags a licence then changes the type from "Stop" to "Reduce"', async ({ page }) => {

@@ -12,7 +12,7 @@ test.describe('Search for a licence (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('can find a licence by exact licence reference', async ({ page }) => {

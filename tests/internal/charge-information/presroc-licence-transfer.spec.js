@@ -22,7 +22,7 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test(

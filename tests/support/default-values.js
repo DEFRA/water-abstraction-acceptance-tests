@@ -14,12 +14,6 @@ export const groups = {
   WIRS: 'wirs'
 }
 
-/**
- * When a scenario or data file needs a password, we use P@55word as our default.
- * @type {string}
- */
-export const password = 'P@55word'
-
 export const regions = {
   ANGLIAN: regionHelper.select(0),
   MIDLANDS: regionHelper.select(1),

@@ -12,9 +12,10 @@ test.describe('User permissions (internal)', () => {
   test("confirms the Billing & Data user can access bill runs and a licence's bills tab", async ({
     page,
     login,
-    users
+    users,
+    defaultPassword
   }) => {
-    await login(users.billingAndData)
+    await login({ username: users.billingAndData, password: defaultPassword })
     await page.goto(`/system/licences/${licence.id}/summary`)
 
     // Confirm we are on the licence page
@@ -34,8 +35,13 @@ test.describe('User permissions (internal)', () => {
     await expect(page.locator('#nav > ul')).toContainText('Bill runs')
   })
 
-  test("confirms the PSC user cannot access bill runs and a licence's bills tab", async ({ page, login, users }) => {
-    await login(users.psc)
+  test("confirms the PSC user cannot access bill runs and a licence's bills tab", async ({
+    page,
+    login,
+    users,
+    defaultPassword
+  }) => {
+    await login({ username: users.psc, password: defaultPassword })
     await page.goto(`/system/licences/${licence.id}/summary`)
 
     // Confirm we are on the licence page

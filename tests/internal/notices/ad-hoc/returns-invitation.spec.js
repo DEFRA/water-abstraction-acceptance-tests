@@ -14,7 +14,7 @@ test.describe('Ad-hoc returns invitation journey (internal)', () => {
   })
 
   test.beforeEach(async ({ login }) => {
-    await login(user.username)
+    await login(user)
   })
 
   test('create an ad-hoc returns invitation notice', async ({ page }) => {

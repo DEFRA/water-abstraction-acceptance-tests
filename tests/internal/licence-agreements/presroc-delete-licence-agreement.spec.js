@@ -23,7 +23,7 @@ test.describe(
     })
 
     test.beforeEach(async ({ login }) => {
-      await login(user.username)
+      await login(user)
     })
 
     test('deletes a licence agreement and check it flags the licence for supplementary billing', async ({ page }) => {

@@ -15,14 +15,9 @@ test.describe('Sharing licence access with another user (external)', () => {
     secondUser = scenarioSecondUser
   })
 
-  test('allows a user to grant access to a licence to another user', async ({
-    page,
-    externalUrl,
-    defaultPassword,
-    loginExternal
-  }) => {
+  test('allows a user to grant access to a licence to another user', async ({ page, externalUrl, loginExternal }) => {
     // First user logs in
-    await loginExternal(firstUser.username)
+    await loginExternal(firstUser)
     await page.goto(`${externalUrl}/manage_licences`)
 
     await page.getByRole('link', { name: 'Give or remove access to your licence information' }).click()
@@ -38,7 +33,7 @@ test.describe('Sharing licence access with another user (external)', () => {
     await page.goto(externalUrl)
     await page.locator('a[href*="/signin"]').click()
     await page.locator('input#email').fill(secondUser.username)
-    await page.locator('input#password').fill(defaultPassword)
+    await page.locator('input#password').fill(secondUser.password)
     await page.locator('.govuk-button.govuk-button--start').click()
 
     // Assert they can see the same licence
