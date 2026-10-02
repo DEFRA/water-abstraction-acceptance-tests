@@ -1,4 +1,5 @@
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Change user permissions (internal)', () => {
@@ -10,8 +11,8 @@ test.describe('Change user permissions (internal)', () => {
     user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users, defaultPassword }) => {
-    await login({ username: users.billingAndData, password: defaultPassword })
+  test.beforeEach(async ({ login }) => {
+    await login(users.BILLING_AND_DATA)
   })
 
   test('allows a billing & data user to change the permissions of another user', async ({ page }) => {

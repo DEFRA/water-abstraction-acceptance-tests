@@ -1,9 +1,9 @@
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { regions, users } from '../../../support/default-values.js'
 
 test.describe('Create a empty two-part tariff bill run (internal)', () => {
   let endYear
@@ -15,8 +15,8 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
     endYear = currentFinancialYear.endDate.getFullYear() - 2
   })
 
-  test.beforeEach(async ({ login, users, defaultPassword }) => {
-    await login({ username: users.billingAndData, password: defaultPassword })
+  test.beforeEach(async ({ login }) => {
+    await login(users.BILLING_AND_DATA)
   })
 
   test('creates an empty two-part tariff bill run', async ({ page }) => {

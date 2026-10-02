@@ -1,4 +1,5 @@
 import regionHelper from 'water-abstraction-engine/test/helpers/region.helper.js'
+import userHelper from 'water-abstraction-engine/test/helpers/user.helper.js'
 
 export const applications = {
   EXTERNAL: 'water_vml',
@@ -31,3 +32,9 @@ export const regions = {
  * @type {string}
  */
 export const srocStartDate = '2022-04-01'
+
+export const users = {
+  BASIC: userHelper.select(10),
+  BILLING_AND_DATA: userHelper.select(4),
+  PSC: userHelper.select(5)
+}

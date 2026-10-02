@@ -1,6 +1,6 @@
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
-import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
+import { generateExternalEmailAddress, generatePassword } from '../../support/helpers/generators.helpers.js'
 
 test.describe('Sharing licence access with a new user (external)', () => {
   let firstUser
@@ -17,12 +17,8 @@ test.describe('Sharing licence access with a new user (external)', () => {
     await loginExternal(firstUser)
   })
 
-  test('allows a user to grant access to a licence to a new user', async ({
-    page,
-    externalUrl,
-    defaultPassword,
-    lastNotification
-  }) => {
+  test('allows a user to grant access to a licence to a new user', async ({ page, externalUrl, lastNotification }) => {
+    const newPassword = generatePassword()
     const newUserEmail = generateExternalEmailAddress()
 
     await page.goto(`${externalUrl}/manage_licences`)
@@ -43,13 +39,13 @@ test.describe('Sharing licence access with a new user (external)', () => {
 
     await page.goto(link)
 
-    await page.locator('input#password').fill(defaultPassword)
-    await page.locator('input#confirmPassword').fill(defaultPassword)
+    await page.locator('input#password').fill(newPassword)
+    await page.locator('input#confirmPassword').fill(newPassword)
     await page.locator('button.govuk-button').click()
 
     // Second user logs in using the new account to confirm the registration was successful
     await page.locator('#email').fill(newUserEmail)
-    await page.locator('#password').fill(defaultPassword)
+    await page.locator('#password').fill(newPassword)
     await page.locator('button.govuk-button').click()
 
     // Assert they can see the same licence

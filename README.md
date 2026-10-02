@@ -36,7 +36,7 @@ npm ci
 
 > Important! Do not add your `.env` file to source control
 
-The tests run against your local instance of the service, so most configuration (base URLs, the default test password) is fixed in [tests/config.js](/tests/config.js).
+The tests run against your local instance of the service, so most configuration (base URLs) is fixed in [tests/config.js](/tests/config.js).
 
 The only things that vary are a couple of secrets the tests need but which shouldn't be committed: a JWT token and the Notify callback token. These are read from environment variables loaded from a `.env` file at the root of the project using [dotenv](https://www.npmjs.com/package/dotenv).
 

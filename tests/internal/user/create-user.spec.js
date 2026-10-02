@@ -1,9 +1,10 @@
 import { generateGovUKEmail } from '../../support/helpers/generators.helpers.js'
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Creating a user (internal)', () => {
-  test.beforeEach(async ({ login, users, defaultPassword }) => {
-    await login({ username: users.super, password: defaultPassword })
+  test.beforeEach(async ({ login }) => {
+    await login(users.BILLING_AND_DATA)
   })
 
   test('can create an internal user', async ({ page }) => {

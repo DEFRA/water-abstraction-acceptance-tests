@@ -5,7 +5,6 @@ import path from 'path'
 
 import buildWorldKey from '../../cli/src/world/key.world.js'
 import config from '../config.js'
-import usersData from './data/users.data.js'
 
 export { expect } from '@playwright/test'
 
@@ -15,11 +14,6 @@ const WORLD_FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.
 let cachedWorld = null
 
 export const test = base.extend({
-  // eslint-disable-next-line no-empty-pattern
-  defaultPassword: async ({}, use) => {
-    await use(config.defaultPassword)
-  },
-
   // eslint-disable-next-line no-empty-pattern
   externalUrl: async ({}, use) => {
     await use(config.externalUrl)
@@ -100,11 +94,6 @@ export const test = base.extend({
     await use((job) => {
       return request.post(`/system/jobs/${job}`, { timeout: 60000 })
     })
-  },
-
-  // eslint-disable-next-line no-empty-pattern
-  users: async ({}, use) => {
-    await use(usersData)
   },
 
   // Looks up this spec's own copy of the scenario global setup seeded, e.g. world('licence') for licence.scenario.js

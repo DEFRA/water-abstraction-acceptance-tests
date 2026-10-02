@@ -1,4 +1,5 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -29,7 +30,7 @@ test.describe(
       await login(user)
     })
 
-    test('flags the licence for supplementary billing', async ({ page, users }) => {
+    test('flags the licence for supplementary billing', async ({ page }) => {
       await page.goto(`/system/licences/${licence.id}/summary`)
 
       await expect(page.locator('h1')).toContainText(`Licence summary ${licence.licenceRef}`)
@@ -44,7 +45,7 @@ test.describe(
       await expect(reviewChargeInformationRow.getByRole('cell')).toHaveText([
         licence.licenceRef,
         company.name,
-        users.billingAndData,
+        users.BILLING_AND_DATA.username,
         formatLongDate(licence.startDate),
         'Review'
       ])

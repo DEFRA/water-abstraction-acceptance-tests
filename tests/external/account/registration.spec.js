@@ -1,9 +1,10 @@
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
-import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
+import { generateExternalEmailAddress, generatePassword } from '../../support/helpers/generators.helpers.js'
 
 test.describe('User registration (external)', () => {
-  test('can register a new user', async ({ page, externalUrl, defaultPassword, lastNotification }) => {
+  test('can register a new user', async ({ page, externalUrl, lastNotification }) => {
+    const newPassword = generatePassword()
     const userEmail = generateExternalEmailAddress()
 
     await page.goto(externalUrl)
@@ -31,13 +32,13 @@ test.describe('User registration (external)', () => {
     await page.goto(link)
 
     // Set a password
-    await page.locator('input#password').fill(defaultPassword)
-    await page.locator('input#confirmPassword').fill(defaultPassword)
+    await page.locator('input#password').fill(newPassword)
+    await page.locator('input#confirmPassword').fill(newPassword)
     await page.locator('button.govuk-button').click()
 
     // Log in using the new account to confirm the registration was successful
     await page.locator('#email').fill(userEmail)
-    await page.locator('#password').fill(defaultPassword)
+    await page.locator('#password').fill(newPassword)
     await page.locator('button.govuk-button').click()
 
     // Confirm the user signed in

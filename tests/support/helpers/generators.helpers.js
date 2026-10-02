@@ -129,10 +129,13 @@ export function generateGovUKEmail() {
 /**
  * Generate a password
  *
+ * The service requires a password to be at least 8 characters and contain an uppercase letter and a symbol. Faker's
+ * password does not guarantee the last two, so we prefix them.
+ *
  * @returns {string} - A password
  */
 export function generatePassword() {
-  return faker.internet.password()
+  return faker.internet.password({ prefix: 'A!' })
 }
 
 /**
