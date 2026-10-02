@@ -12,6 +12,7 @@ test.describe(
   },
   () => {
     let licence
+    let user
 
     // The scenario's agreement isn't used by the flagging logic under test — it's needed so the "Recalculate bills"
     // button renders on the licence set-up page at all.
@@ -19,10 +20,11 @@ test.describe(
       const scenario = world('licence-with-agreement')
 
       licence = scenario.licence
+      user = scenario.user
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user.username)
     })
 
     test('flags the licence for the next supplementary bill run for the old charge scheme', async ({ page }) => {

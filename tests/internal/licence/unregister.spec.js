@@ -3,6 +3,7 @@ import { expect, test } from '../../support/fixtures.js'
 test.describe('Unregister a licence (internal)', () => {
   let company
   let licence
+  let primaryUser
   let user
 
   test.beforeAll(async ({ world }) => {
@@ -10,20 +11,21 @@ test.describe('Unregister a licence (internal)', () => {
 
     company = scenario.company
     licence = scenario.licence
-    user = scenario.user
+    primaryUser = scenario.users[1]
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.super)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('can unregister a licence from its primary user', async ({ page }) => {
     await page.goto('/')
 
     // Search for the user and then select them
-    await page.locator('#query').fill(user.username)
+    await page.locator('#query').fill(primaryUser.username)
     await page.locator('#search-button').click()
-    await expect(page.locator('.searchresult-row')).toContainText(user.username)
+    await expect(page.locator('.searchresult-row')).toContainText(primaryUser.username)
     await page.locator('.searchresult-link').click()
 
     // Select the external user's licences page

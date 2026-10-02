@@ -10,7 +10,7 @@ test.describe('Sharing licence access with a new user (external)', () => {
     const scenario = world('registered-licence')
 
     licence = scenario.licence
-    firstUser = scenario.user
+    firstUser = scenario.users[1]
   })
 
   test.beforeEach(async ({ loginExternal }) => {

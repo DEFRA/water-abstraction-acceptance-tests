@@ -10,7 +10,7 @@ test.describe('View return statuses (external)', () => {
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs
-    user = scenario.user
+    user = scenario.users[1]
   })
 
   test.beforeEach(async ({ loginExternal }) => {

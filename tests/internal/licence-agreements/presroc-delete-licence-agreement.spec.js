@@ -13,15 +13,17 @@ test.describe(
   },
   () => {
     let licence
+    let user
 
     test.beforeAll(async ({ world }) => {
       const scenario = world('presroc-licence-with-agreement')
 
       licence = scenario.licence
+      user = scenario.user
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user.username)
     })
 
     test('deletes a licence agreement and check it flags the licence for supplementary billing', async ({ page }) => {

@@ -12,6 +12,7 @@ test.describe('Submit historic correction that results in a split-log (internal)
   let newFromSplitPeriod
   let currentCyclePeriod
   let previousCyclePeriod
+  let user
 
   test.beforeAll(async ({ world }) => {
     const { currentFinancialYear } = calculatedDates()
@@ -38,10 +39,11 @@ test.describe('Submit historic correction that results in a split-log (internal)
     newFromSplitPeriod = returnLogDateDetails({ startDate: splitDate, endDate: scenario.returnLogs[0].endDate })
     currentCyclePeriod = returnLogDateDetails(scenario.returnLogs[1])
     previousCyclePeriod = returnLogDateDetails(scenario.returnLogs[0])
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('adds a return version to a licence part way through the previous winter cycle resulting in a split-log', async ({

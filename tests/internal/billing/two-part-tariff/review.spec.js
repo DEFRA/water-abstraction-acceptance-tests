@@ -17,7 +17,7 @@ test.describe('Two-part tariff review (internal)', () => {
   let sessionCookies
   let startYear
 
-  test.beforeAll(async ({ browser, loginCookies, users, world }) => {
+  test.beforeAll(async ({ browser, loginCookies, world }) => {
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -29,7 +29,7 @@ test.describe('Two-part tariff review (internal)', () => {
 
     scenario = world('licences-for-tpt-review')
 
-    sessionCookies = await loginCookies(users.billingAndData)
+    sessionCookies = await loginCookies(scenario.users[0].username)
 
     const context = await browser.newContext()
 

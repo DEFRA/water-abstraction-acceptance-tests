@@ -9,6 +9,7 @@ test.describe('Submit historic correction changing to quarterly on new return ve
   let returnLogs
   let startYear
   let expectedReturnLogs
+  let user
 
   test.beforeAll(async ({ world }) => {
     const { currentFinancialYear } = calculatedDates()
@@ -20,6 +21,7 @@ test.describe('Submit historic correction changing to quarterly on new return ve
     company = scenario.company
     licence = scenario.licence
     returnLogs = scenario.returnLogs
+    user = scenario.user
 
     expectedReturnLogs = {
       currentFourthPeriod: returnLogDateDetails({
@@ -59,8 +61,8 @@ test.describe('Submit historic correction changing to quarterly on new return ve
     }
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('adds a new quarterly return version to a licence part way through the previous winter cycle resulting in both split-logs and new quarterly return logs', async ({

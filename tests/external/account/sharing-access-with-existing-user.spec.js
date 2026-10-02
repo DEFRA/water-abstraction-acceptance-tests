@@ -8,7 +8,7 @@ test.describe('Sharing licence access with another user (external)', () => {
   test.beforeAll(async ({ world }) => {
     const scenario = world('external-sharing-access')
 
-    const [scenarioFirstUser, scenarioSecondUser] = scenario.users
+    const [, scenarioFirstUser, scenarioSecondUser] = scenario.users
 
     licence = scenario.licence
     firstUser = scenarioFirstUser

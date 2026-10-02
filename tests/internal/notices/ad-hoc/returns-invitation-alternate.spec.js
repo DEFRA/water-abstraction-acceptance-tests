@@ -7,6 +7,7 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
   let address
   let company
   let licence
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licence-with-open-winter-return-log-bad-email')
@@ -19,10 +20,11 @@ test.describe('Ad-hoc returns invitation alternate journey (internal)', () => {
     address = scenario.address
     company = scenario.company
     licence = scenario.licence
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('sends a return invite to a "bad" primary user, triggering the alternate notification to the licence, which when confirmed will set the "due date" on the OPEN return log', async ({

@@ -6,6 +6,7 @@ test.describe('Submit return version manually (internal)', () => {
   let licence
   let points
   let customStartDateYear
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-two-purposes')
@@ -13,13 +14,14 @@ test.describe('Submit return version manually (internal)', () => {
     company = scenario.company
     licence = scenario.licence
     points = scenario.points
+    user = scenario.user
 
     // Must be a date after the licence's own start date, which defaults to a recent date
     customStartDateYear = new Date(licence.startDate).getUTCFullYear() + 1
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('creates and confirms a return version using the manual journey', async ({ page }) => {
@@ -397,7 +399,7 @@ test.describe('Submit return version manually (internal)', () => {
 
     await expect(page.getByText('approved', { exact: true })).toBeVisible()
     await expect(page.locator('.govuk-body-l')).toContainText('Minor change created on')
-    await expect(page.locator('.govuk-body-l')).toContainText('by billing.data@wrls.gov.uk')
+    await expect(page.locator('.govuk-body-l')).toContainText(`by ${user.username}`)
 
     // Return requirement 1
     await expect(page.locator('#requirement-0').getByRole('heading', { level: 2 })).toContainText(

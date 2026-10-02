@@ -1,3 +1,4 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { regions } from '../default-values.js'
 import workflowData from '../data/workflow.data.js'
@@ -13,8 +14,11 @@ export default function (region = null) {
   const licenceEntity = buildLicenceEntity(region)
   const workflow = workflowData(licenceEntity.licence)
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
-    workflow
+    workflow,
+    ...internalUserEntity
   }
 }

@@ -2,15 +2,17 @@ import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Search for a licence (internal)', () => {
   let licence
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence')
 
     licence = scenario.licence
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.super)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('can find a licence by exact licence reference', async ({ page }) => {

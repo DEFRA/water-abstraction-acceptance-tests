@@ -14,8 +14,8 @@ test.describe('Remove a bill and a licence from an annual bill run (internal)', 
     scenario = world('licences-for-annual-bill-run-removals')
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(scenario.user.username)
   })
 
   test('creates an annual bill run, removes a bill and a licence from it, then sends it and confirms they are not included', async ({

@@ -1,4 +1,5 @@
 import licenceWithDueWinterReturnLog from './licence-with-due-winter-return-log.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { regions } from '../default-values.js'
 
@@ -21,8 +22,10 @@ export default function (region = null) {
   // registered licence to a licence holder.
   licence.licenceDocumentHeader.companyEntityId = primaryUser.licenceEntityRole.companyEntityId
 
+  const { user, userGroup, ...rest } = licence
+
   return {
-    ...licence,
-    ...primaryUser
+    ...rest,
+    ...mergeByKey({ user, userGroup }, primaryUser)
   }
 }

@@ -3,16 +3,18 @@ import { expect, test } from '../../support/fixtures.js'
 test.describe('View returns and their status (internal)', () => {
   let licence
   let returnLogs
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-all-return-log-statuses')
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('lists the returns for a licence and their status', async ({ page }) => {

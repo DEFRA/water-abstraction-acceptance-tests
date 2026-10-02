@@ -1,4 +1,6 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { regions } from '../default-values.js'
 
@@ -18,8 +20,10 @@ export default function (region = null) {
   // registered licence to a licence holder.
   licenceEntity.licenceDocumentHeader.companyEntityId = primaryUser.licenceEntityRole.companyEntityId
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
-    ...primaryUser
+    ...mergeByKey(internalUserEntity, primaryUser)
   }
 }

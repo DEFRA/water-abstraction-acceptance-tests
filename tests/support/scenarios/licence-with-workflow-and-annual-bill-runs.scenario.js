@@ -1,6 +1,7 @@
 import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
@@ -45,11 +46,14 @@ export default function (region = null) {
   workflow.createdAt = yesterday()
   workflow.updatedAt = yesterday()
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     ...billingAccountEntity,
     ...chargeVersionEntity,
     ...mergeByKey(...billRunEntities),
-    workflow
+    workflow,
+    ...internalUserEntity
   }
 }

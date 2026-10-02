@@ -8,6 +8,7 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
   let company
   let licence
   let licenceVersionPurpose
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('presroc-licence-with-charge-version')
@@ -17,10 +18,11 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
     company = scenario.company
     licence = scenario.licence
     licenceVersionPurpose = scenario.licenceVersionPurpose
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test(

@@ -10,6 +10,7 @@ test.describe('Submit historic correction using abstraction data for licence wit
   let purpose400Previous
   let purpose420Current
   let purpose420Previous
+  let user
 
   test.beforeAll(async ({ world }) => {
     const { currentWinterReturnCycle } = calculatedDates()
@@ -23,6 +24,7 @@ test.describe('Submit historic correction using abstraction data for licence wit
 
     const [purpose400CurrentLog, purpose400PreviousLog, purpose420CurrentLog, purpose420PreviousLog] =
       scenario.returnLogs
+    user = scenario.user
 
     purpose400Current = {
       ...returnLogDateDetails(purpose400CurrentLog),
@@ -42,8 +44,8 @@ test.describe('Submit historic correction using abstraction data for licence wit
     }
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('adds a new return version using abstraction data for a licence with two purposes', async ({ page }) => {

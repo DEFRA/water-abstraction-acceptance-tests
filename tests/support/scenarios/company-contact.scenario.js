@@ -1,3 +1,4 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import companyContactData from '../data/company-contact.data.js'
 import contactData from '../data/contact.data.js'
@@ -33,10 +34,13 @@ export default function (region = null) {
 
   const notification = notificationData(licenceEntity.licence.licenceRef, restoreContact)
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     contacts: [contact, editContact, removeContact, restoreContact],
     companyContacts: [companyContact, editCompanyContact, removeCompanyContact, restoreCompanyContact],
-    ...notification
+    ...notification,
+    ...internalUserEntity
   }
 }

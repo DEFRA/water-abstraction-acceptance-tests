@@ -6,6 +6,7 @@ test.describe('Update the purpose and points of a copied return requirement and 
   let licence
   let points
   let returnRequirementPurpose
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-two-purposes-and-requirements')
@@ -14,10 +15,11 @@ test.describe('Update the purpose and points of a copied return requirement and 
     licence = scenario.licence
     points = scenario.points
     returnRequirementPurpose = scenario.returnRequirementPurpose
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('copies an existing requirement, updates its purpose and points, adds another requirement manually, and approves both', async ({

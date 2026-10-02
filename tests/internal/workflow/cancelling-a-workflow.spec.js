@@ -14,16 +14,18 @@ test.describe(
   () => {
     let company
     let licence
+    let user
 
     test.beforeAll(async ({ world }) => {
       const scenario = world('licence-with-workflow')
 
       licence = scenario.licence
       company = scenario.company
+      user = scenario.user
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user.username)
     })
 
     test('does not flag the licence for supplementary billing', async ({ page, users }) => {

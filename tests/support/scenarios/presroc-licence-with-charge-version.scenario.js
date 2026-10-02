@@ -1,4 +1,5 @@
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
 import buildPresrocLicenceEntity from '../entities/presroc-licence.entity.js'
 import { regions } from '../default-values.js'
@@ -21,9 +22,12 @@ export default function (region = null) {
   // This scenario (and associated specs) add a new licence agreement as part of the test so we need to delete it here
   delete presrocChargeVersionEntity.licenceAgreement
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...presrocLicenceEntity,
     ...billingAccountEntity,
-    ...presrocChargeVersionEntity
+    ...presrocChargeVersionEntity,
+    ...internalUserEntity
   }
 }

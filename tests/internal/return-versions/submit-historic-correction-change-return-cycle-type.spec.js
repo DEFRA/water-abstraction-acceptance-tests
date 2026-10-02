@@ -8,6 +8,7 @@ test.describe('Submit historic correction changing return cycle type on new retu
   let returnLogs
   let startYear
   let expectedReturnLogs
+  let user
 
   test.beforeAll(async ({ world }) => {
     const { currentFinancialYear } = calculatedDates()
@@ -19,6 +20,7 @@ test.describe('Submit historic correction changing return cycle type on new retu
     company = scenario.company
     licence = scenario.licence
     returnLogs = scenario.returnLogs
+    user = scenario.user
 
     expectedReturnLogs = {
       newSummer: returnLogDateDetails({
@@ -44,8 +46,8 @@ test.describe('Submit historic correction changing return cycle type on new retu
     }
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('adds a new summer return version to a licence part way through the previous winter cycle resulting in both a split-log and new summer return logs', async ({

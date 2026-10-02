@@ -9,8 +9,11 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Send a two-part tariff supplementary bill run (internal)', { tag: ['@supplementary-billing'] }, () => {
   let endYear
   let startYear
+  let user
 
   test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-flagged-for-tpt-supplementary')
+
     const {
       billingPeriods: {
         twoPartTariff: [twoPartTariffPeriod]
@@ -19,12 +22,11 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
 
     endYear = new Date(twoPartTariffPeriod.endDate).getFullYear()
     startYear = new Date(twoPartTariffPeriod.startDate).getFullYear()
-
-    world('licence-flagged-for-tpt-supplementary')
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test(

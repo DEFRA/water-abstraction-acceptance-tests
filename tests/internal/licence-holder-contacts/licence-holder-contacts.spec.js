@@ -13,6 +13,7 @@ test.describe('Licence holder contacts (internal)', () => {
   let contactWithoutALicence
   let contactWithAllLicences
   let contactWithSomeLicences
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('company-contact')
@@ -25,14 +26,15 @@ test.describe('Licence holder contacts (internal)', () => {
     editContact = scenarioEditContact
     removeContact = scenarioRemoveContact
     restoreContact = scenarioRestoreContact
+    user = scenario.user
 
     contactWithoutALicence = generateCompanyContact(company.name)
     contactWithAllLicences = generateCompanyContact(company.name)
     contactWithSomeLicences = generateCompanyContact(company.name)
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.super)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('shows the licence holder in the contacts list', async ({ page }) => {

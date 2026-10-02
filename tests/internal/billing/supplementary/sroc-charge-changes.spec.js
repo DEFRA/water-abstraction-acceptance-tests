@@ -21,19 +21,21 @@ test.describe(
     let licences
     let licenceVersionPurposes
     let toFinancialYearEnding
+    let user
 
-    test.beforeAll(async ({ browser, loginCookies, logoutCookies, users, world }) => {
+    test.beforeAll(async ({ browser, loginCookies, logoutCookies, world }) => {
       const scenario = world('licences-flagged-for-supplementary')
 
       billingAccounts = scenario.billingAccounts
       companies = scenario.companies
       licences = scenario.licences
       licenceVersionPurposes = scenario.licenceVersionPurposes
+      user = scenario.user
 
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
 
-      const sessionCookies = await loginCookies(users.billingAndData)
+      const sessionCookies = await loginCookies(user.username)
       const context = await browser.newContext()
 
       await context.addCookies(sessionCookies)
@@ -110,8 +112,8 @@ test.describe(
       await logoutCookies(sessionCookies)
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user.username)
     })
 
     test('makes a licence non-chargeable, then confirms a credit is raised in the next supplementary bill run', async ({

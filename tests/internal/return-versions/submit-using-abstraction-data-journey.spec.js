@@ -5,6 +5,7 @@ test.describe('Submit return version using abstraction data (internal)', () => {
   let company
   let licence
   let points
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-two-purposes')
@@ -12,10 +13,11 @@ test.describe('Submit return version using abstraction data (internal)', () => {
     company = scenario.company
     licence = scenario.licence
     points = scenario.points
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('creates and confirms a return version using the abstraction data journey', async ({ page }) => {
@@ -100,7 +102,7 @@ test.describe('Submit return version using abstraction data (internal)', () => {
 
     await expect(page.getByText('approved', { exact: true })).toBeVisible()
     await expect(page.locator('.govuk-body-l')).toContainText('New licence created on')
-    await expect(page.locator('.govuk-body-l')).toContainText('by billing.data@wrls.gov.uk')
+    await expect(page.locator('.govuk-body-l')).toContainText(`by ${user.username}`)
 
     // Return requirement 1
     await expect(page.locator('#requirement-0').getByRole('heading', { level: 2 })).toContainText(points[0].description)

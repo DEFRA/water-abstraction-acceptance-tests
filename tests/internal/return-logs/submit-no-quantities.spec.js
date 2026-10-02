@@ -2,15 +2,17 @@ import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a return with no quantities - validation errors (internal)', () => {
   let returnLog
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-open-winter-return-log')
 
     returnLog = scenario.returnLogs[0]
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user.username)
   })
 
   test('attempt to submit a return without entering any quantities', async ({ page }) => {

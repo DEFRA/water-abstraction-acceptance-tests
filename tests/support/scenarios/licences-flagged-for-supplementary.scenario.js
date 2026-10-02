@@ -1,6 +1,7 @@
 import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
@@ -25,7 +26,12 @@ export default function (region = null) {
   _billInSameBillRuns(firstLicence.billRunEntities, secondLicence.billRunEntities)
   _billInSameBillRuns(firstLicence.billRunEntities, thirdLicence.billRunEntities)
 
-  return mergeByKey(_scenarioData(firstLicence), _scenarioData(secondLicence), _scenarioData(thirdLicence))
+  const internalUserEntity = buildInternalUserEntity()
+
+  return {
+    ...mergeByKey(_scenarioData(firstLicence), _scenarioData(secondLicence), _scenarioData(thirdLicence)),
+    ...internalUserEntity
+  }
 }
 
 /**

@@ -1,6 +1,6 @@
-import externalUserData from '../data/external-user.data.js'
-import { regions } from '../default-values.js'
 import registeredLicenceScenario from './registered-licence.scenario.js'
+import userData from '../data/user.data.js'
+import { applications, regions } from '../default-values.js'
 
 export const title = 'External sharing access'
 export const description =
@@ -12,10 +12,10 @@ export default function (region = null) {
   }
 
   const registeredLicence = registeredLicenceScenario(region)
-  const sharingUser = externalUserData()
+  const user = userData(applications.EXTERNAL)
 
   return {
     ...registeredLicence,
-    users: [registeredLicence.user, sharingUser]
+    users: [...registeredLicence.users, user]
   }
 }

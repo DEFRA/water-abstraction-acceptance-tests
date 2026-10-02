@@ -1,5 +1,19 @@
 import regionHelper from 'water-abstraction-engine/test/helpers/region.helper.js'
 
+export const applications = {
+  EXTERNAL: 'water_vml',
+  INTERNAL: 'water_admin'
+}
+
+export const groups = {
+  BILLING_AND_DATA: 'billing_and_data',
+  ENVIRONMENT_OFFICER: 'environment_officer',
+  NPS: 'nps',
+  PSC: 'psc',
+  SUPER: 'super',
+  WIRS: 'wirs'
+}
+
 /**
  * When a scenario or data file needs a password, we use P@55word as our default.
  * @type {string}
