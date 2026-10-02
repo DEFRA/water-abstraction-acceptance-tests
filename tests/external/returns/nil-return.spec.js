@@ -12,11 +12,11 @@ test.describe('Submit a nil return (external)', () => {
     } = scenario
 
     returnLog = scenarioReturnLog
-    user = scenario.user
+    user = scenario.users[1]
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('login as an existing user and submit a nil return', async ({ page, externalUrl }) => {

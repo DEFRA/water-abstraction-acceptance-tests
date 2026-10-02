@@ -10,6 +10,7 @@ test.describe('Submit historic correction for licence with both a winter and sum
   let summerCurrent
   let winterPrevious
   let summerPrevious
+  let user
 
   test.beforeAll(async ({ world }) => {
     const { currentWinterReturnCycle } = calculatedDates()
@@ -22,6 +23,7 @@ test.describe('Submit historic correction for licence with both a winter and sum
     licence = scenario.licence
 
     const [winterCurrentLog, winterPreviousLog, summerCurrentLog, summerPreviousLog] = scenario.returnLogs
+    user = scenario.user
 
     winterCurrent = { ...returnLogDateDetails(winterCurrentLog), returnReference: winterCurrentLog.returnReference }
     summerCurrent = { ...returnLogDateDetails(summerCurrentLog), returnReference: summerCurrentLog.returnReference }
@@ -29,8 +31,8 @@ test.describe('Submit historic correction for licence with both a winter and sum
     summerPrevious = { ...returnLogDateDetails(summerPreviousLog), returnReference: summerPreviousLog.returnReference }
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('adds a new return version using copy existing for a licence with existing winter and summer return requirement', async ({

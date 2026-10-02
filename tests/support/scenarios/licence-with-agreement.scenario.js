@@ -1,3 +1,4 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import licenceAgreementData from '../data/licence-agreement.data.js'
 import { regions } from '../default-values.js'
@@ -13,8 +14,11 @@ export default function (region = null) {
   const licenceEntity = buildLicenceEntity(region)
   const licenceAgreement = licenceAgreementData(licenceEntity.licence)
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
-    licenceAgreement
+    licenceAgreement,
+    ...internalUserEntity
   }
 }

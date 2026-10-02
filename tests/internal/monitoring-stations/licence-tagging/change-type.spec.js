@@ -4,16 +4,18 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Tag a licence but attempt to change the tag type during the journey (internal)', () => {
   let licence
   let monitoringStation
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licence-with-monitoring-station-untagged')
 
     licence = scenario.licence
     monitoringStation = scenario.monitoringStation
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.environmentOfficer)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('tags a licence then changes the type from "Stop" to "Reduce"', async ({ page }) => {

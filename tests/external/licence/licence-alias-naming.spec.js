@@ -8,11 +8,11 @@ test.describe('Licence alias naming (external)', () => {
     const scenario = world('registered-licence')
 
     licenceDocumentHeader = scenario.licenceDocumentHeader
-    user = scenario.user
+    user = scenario.users[1]
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('creates the alias name for the licence the user is holding', async ({ page, externalUrl }) => {

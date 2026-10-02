@@ -1,5 +1,6 @@
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { regions } from '../default-values.js'
 
@@ -15,9 +16,12 @@ export default function (region = null) {
   const billingAccountEntity = buildBillingAccountEntity(licenceEntity, region)
   const chargeVersionEntity = buildChargeVersionEntity(licenceEntity, billingAccountEntity, region)
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     ...billingAccountEntity,
-    ...chargeVersionEntity
+    ...chargeVersionEntity,
+    ...internalUserEntity
   }
 }

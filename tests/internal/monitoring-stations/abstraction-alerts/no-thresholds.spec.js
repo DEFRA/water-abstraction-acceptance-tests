@@ -2,15 +2,17 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Attempt set up of abstraction alert with no thresholds (internal)', () => {
   let monitoringStation
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licence-with-monitoring-station-tagged')
 
     monitoringStation = scenario.monitoringStation
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.environmentOfficer)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('will not create a Reduce alert as there are no thresholds with the reduce restriction type', async ({

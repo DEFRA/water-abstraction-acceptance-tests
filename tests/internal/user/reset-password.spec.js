@@ -1,15 +1,15 @@
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Reset password journey (internal)', () => {
   test('displays the change password page when the link in the email is clicked and automatically logs in when the password is changed', async ({
     page,
-    users,
     lastNotification,
-    defaultPassword,
     baseURL
   }) => {
-    const userEmail = users.basic
+    const newPassword = users.BASIC.password
+    const userEmail = users.BASIC.username
 
     // Navigate to the reset your password page
     await page.goto('/')
@@ -31,13 +31,13 @@ test.describe('Reset password journey (internal)', () => {
     await expect(page.getByLabel('Confirm your password')).toBeVisible()
 
     // Enter a password and confirm
-    await page.locator('#password').fill(defaultPassword)
-    await page.locator('#confirmPassword').fill(defaultPassword)
+    await page.locator('#password').fill(newPassword)
+    await page.locator('#confirmPassword').fill(newPassword)
     await page.locator('button.govuk-button').click()
 
     // Log in using the updated credentials to confirm the password has been updated
     await page.locator('#email').fill(userEmail)
-    await page.locator('#password').fill(defaultPassword)
+    await page.locator('#password').fill(newPassword)
     await page.locator('button.govuk-button').click()
 
     // Check we are signed in by confirming we are on the search page

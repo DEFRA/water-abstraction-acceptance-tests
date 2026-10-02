@@ -1,6 +1,7 @@
 import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
@@ -47,10 +48,13 @@ export default function () {
     region
   )
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     ...billingAccountEntity,
     ...mergeByKey(chargeVersionEntity, additionalChargeEntity),
-    ...mergeByKey(...billRunEntities)
+    ...mergeByKey(...billRunEntities),
+    ...internalUserEntity
   }
 }

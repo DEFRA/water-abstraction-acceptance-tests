@@ -9,16 +9,18 @@ test.describe('PRESROC two-part tariff bill run (internal)', { tag: ['@presroc',
 
   let company
   let licence
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('presroc-licence-with-agreement-and-due-return')
 
     company = scenario.company
     licence = scenario.licence
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('cancels a PRESROC two-part tariff bill run that has already finished building', async ({ page }) => {

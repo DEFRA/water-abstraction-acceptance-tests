@@ -1,8 +1,9 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import companyContactData from '../data/company-contact.data.js'
 import contactData from '../data/contact.data.js'
 import notificationData from '../data/notification.data.js'
-import { regions } from '../default-values.js'
+import { groups, regions } from '../default-values.js'
 
 export const title = 'Company contact'
 export const description = 'A licence, licence holder, company, a contact and notification data'
@@ -33,10 +34,13 @@ export default function (region = null) {
 
   const notification = notificationData(licenceEntity.licence.licenceRef, restoreContact)
 
+  const internalUserEntity = buildInternalUserEntity(groups.SUPER)
+
   return {
     ...licenceEntity,
     contacts: [contact, editContact, removeContact, restoreContact],
     companyContacts: [companyContact, editCompanyContact, removeCompanyContact, restoreCompanyContact],
-    ...notification
+    ...notification,
+    ...internalUserEntity
   }
 }

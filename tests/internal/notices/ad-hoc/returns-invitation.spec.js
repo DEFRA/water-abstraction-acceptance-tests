@@ -2,17 +2,19 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc returns invitation journey (internal)', () => {
   let licence
+  let primaryUser
   let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licence-with-open-winter-return-log')
 
     licence = scenario.licence
-    user = scenario.user
+    primaryUser = scenario.users[1]
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('create an ad-hoc returns invitation notice', async ({ page }) => {
@@ -45,7 +47,7 @@ test.describe('Ad-hoc returns invitation journey (internal)', () => {
 
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(1)
 
-    const userRow = page.getByRole('row').filter({ hasText: user.username })
+    const userRow = page.getByRole('row').filter({ hasText: primaryUser.username })
     await expect(userRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
     await expect(userRow.locator('[data-test^="recipient-method"]')).toContainText('Email - primary user')
     await expect(userRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')
@@ -69,6 +71,6 @@ test.describe('Ad-hoc returns invitation journey (internal)', () => {
     await expect(page.getByText('Showing all 1 notifications')).toBeVisible()
 
     await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(1)
-    await expect(page.locator('[data-test^="notification-recipient"]', { hasText: user.username })).toBeVisible()
+    await expect(page.locator('[data-test^="notification-recipient"]', { hasText: primaryUser.username })).toBeVisible()
   })
 })

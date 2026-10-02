@@ -1,6 +1,7 @@
 import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildPresrocBillRunEntities from '../entities/presroc-bill-runs.entities.js'
 import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
 import buildPresrocLicenceEntity from '../entities/presroc-licence.entity.js'
@@ -55,11 +56,14 @@ export default function () {
     region
   )
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...presrocLicenceEntity,
     ...billingAccountEntity,
     ...mergeByKey(chargeVersionEntity, additionalChargeEntity, presrocChargeVersionEntity),
-    ...mergeByKey(...billRunEntities, ...presrocBillRunEntities)
+    ...mergeByKey(...billRunEntities, ...presrocBillRunEntities),
+    ...internalUserEntity
   }
 }
 

@@ -1,4 +1,5 @@
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
+import { password } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Reset password journey (external)', () => {
@@ -13,10 +14,9 @@ test.describe('Reset password journey (external)', () => {
   test('displays the change password page when the link in the email is clicked and automatically logs in when the password is changed', async ({
     page,
     externalUrl,
-    defaultPassword,
     lastNotification
   }) => {
-    const newPassword = `${defaultPassword}1234`
+    const newPassword = `${password}1234`
 
     // Navigate to the reset your password page
     await page.goto(`${externalUrl}/reset_password`)

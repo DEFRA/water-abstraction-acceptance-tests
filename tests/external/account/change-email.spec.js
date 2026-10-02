@@ -11,13 +11,12 @@ test.describe('Change user email address (external)', () => {
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('can allow authenticated users to change their email address including verification by them with a code', async ({
     page,
-    externalUrl,
-    defaultPassword
+    externalUrl
   }) => {
     const newEmail = generateExternalEmailAddress()
 
@@ -30,7 +29,7 @@ test.describe('Change user email address (external)', () => {
 
     // For security, confirm your password first
     // Enter password and continue
-    await page.locator('input#password').fill(defaultPassword)
+    await page.locator('input#password').fill(user.password)
     await page.locator('button.govuk-button', { hasText: 'Continue' }).click()
 
     // Change your email address

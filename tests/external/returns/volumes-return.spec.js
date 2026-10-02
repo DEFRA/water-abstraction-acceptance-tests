@@ -13,11 +13,11 @@ test.describe('Submit a volumes return (external)', () => {
     } = scenario
 
     returnLog = scenarioReturnLog
-    user = scenario.user
+    user = scenario.users[1]
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('login as an existing user and submit a volumes return', async ({ page, externalUrl }) => {

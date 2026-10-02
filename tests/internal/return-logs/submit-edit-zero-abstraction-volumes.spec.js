@@ -2,15 +2,17 @@ import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit then edit an abstraction volumes return with zero quantities (internal)', () => {
   let returnLog
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-open-winter-return-log')
 
     returnLog = scenario.returnLogs[0]
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('submit a return and check that the zero values recorded are correctly carried over when editing', async ({

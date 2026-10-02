@@ -1,5 +1,6 @@
 import { generateLicenceVersionPurposeExternalId } from 'water-abstraction-engine/test/generators.js'
 
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { buildPreviousAndCurrentReturnLogs } from '../helpers/return-log.helpers.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
@@ -56,9 +57,12 @@ export default function (region = null) {
     )
   ]
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceWithTwoReturnRequirements,
-    returnLogs
+    returnLogs,
+    ...internalUserEntity
   }
 }
 

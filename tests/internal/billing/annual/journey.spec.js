@@ -8,12 +8,16 @@ import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/
 test.describe('Annual bill run (internal)', () => {
   test.describe.configure({ mode: 'serial' })
 
+  let user
+
   test.beforeAll(({ world }) => {
-    world('licence-with-charge-version')
+    const scenario = world('licence-with-charge-version')
+
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('cancels an annual bill run that has already finished building', async ({ page }) => {

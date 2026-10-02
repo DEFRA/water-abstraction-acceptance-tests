@@ -12,6 +12,7 @@ test.describe(
     let licence
     let secondCompany
     let toFinancialYearEnding
+    let user
 
     test.beforeAll(async ({ world }) => {
       const scenario = world('licence-flagged-for-supplementary-with-second-company')
@@ -24,10 +25,11 @@ test.describe(
       licence = scenario.licences[0]
 
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
+      user = scenario.user
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user)
     })
 
     test('sends the sroc supplementary bill run, changes the billing account within a previous financial year, then confirms the credits and new bills', async ({
