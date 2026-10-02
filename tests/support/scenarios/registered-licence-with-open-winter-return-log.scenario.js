@@ -22,10 +22,10 @@ export default function (region = null) {
   // registered licence to a licence holder.
   licence.licenceDocumentHeader.companyEntityId = primaryUser.licenceEntityRole.companyEntityId
 
-  const { user, userGroup, ...rest } = licence
+  const { user, userGroup } = licence
 
   return {
-    ...rest,
+    ...licence,
     ...mergeByKey({ user, userGroup }, primaryUser)
   }
 }
