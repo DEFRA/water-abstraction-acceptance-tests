@@ -34,7 +34,7 @@ export default function (region = null) {
 
   const notification = notificationData(licenceEntity.licence.licenceRef, restoreContact)
 
-  const internalUserEntity = buildInternalUserEntity(groups.SUPER)
+  const internalUserEntity = buildInternalUserEntity(groups.ENVIRONMENT_OFFICER)
 
   return {
     ...licenceEntity,
