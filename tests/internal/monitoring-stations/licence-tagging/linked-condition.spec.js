@@ -5,6 +5,7 @@ test.describe('Tag a licence linked to a condition. The abstraction period is de
   let licence
   let licenceVersionPurposeCondition
   let monitoringStation
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licence-with-monitoring-station-tagged')
@@ -12,10 +13,11 @@ test.describe('Tag a licence linked to a condition. The abstraction period is de
     licence = scenario.licence
     licenceVersionPurposeCondition = scenario.licenceVersionPurposeCondition
     monitoringStation = scenario.monitoringStation
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.environmentOfficer)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('tags a licence linked to a condition, the user selects the condition which pre-populates the abs period', async ({

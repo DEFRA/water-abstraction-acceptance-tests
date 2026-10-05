@@ -2,14 +2,16 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc Paper returns journey (internal)', () => {
   let licence
+  let user
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-open-winter-return-log')
 
     licence = scenario.licence
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('create an ad-hoc paper return notice', async ({ page }) => {

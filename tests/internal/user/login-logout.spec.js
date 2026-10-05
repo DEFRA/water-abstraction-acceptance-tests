@@ -1,8 +1,9 @@
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Login and log out (internal)', () => {
-  test('can log in and out as an internal user', async ({ page, login, users }) => {
-    await login(users.billingAndData)
+  test('can log in and out as an internal user', async ({ page, login }) => {
+    await login(users.BILLING_AND_DATA)
 
     // Confirm the user signed in
     await expect(page.locator('body')).toContainText('Enter a licence number, licence holder name, returns ID')

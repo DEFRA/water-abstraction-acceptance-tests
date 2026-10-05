@@ -1,5 +1,6 @@
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
@@ -16,7 +17,12 @@ export default function () {
   const thirdLicence = _licenceWithOwnBillingAccount(region)
   const fourthLicence = _licenceSharingBillingAccount(thirdLicence, region)
 
-  return mergeByKey(firstLicence, secondLicence, thirdLicence, fourthLicence)
+  const internalUserEntity = buildInternalUserEntity()
+
+  return {
+    ...mergeByKey(firstLicence, secondLicence, thirdLicence, fourthLicence),
+    ...internalUserEntity
+  }
 }
 
 function _licenceWithOwnBillingAccount(region) {

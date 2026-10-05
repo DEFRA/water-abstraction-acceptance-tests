@@ -1,5 +1,6 @@
 import { generateReference } from 'water-abstraction-engine/test/generators.js'
 
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { regions } from '../default-values.js'
@@ -46,6 +47,8 @@ export default function (region = null) {
     return _returnLog(licenceEntity, returnVersion, period, referenceBase - index, region)
   })
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     returnVersion,
@@ -60,7 +63,8 @@ export default function (region = null) {
     }),
     returnLogs: results.map((result) => {
       return result.returnLog
-    })
+    }),
+    ...internalUserEntity
   }
 }
 

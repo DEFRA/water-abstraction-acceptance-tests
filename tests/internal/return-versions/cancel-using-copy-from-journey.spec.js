@@ -7,6 +7,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
   let point
   let returnRequirement
   let returnRequirementPurpose
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-two-purposes-and-requirements')
@@ -16,10 +17,11 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
     point = scenario.points[0]
     returnRequirement = scenario.returnRequirement
     returnRequirementPurpose = scenario.returnRequirementPurpose
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('creates but then cancels a return version using copy from existing journey (internal)', async ({ page }) => {

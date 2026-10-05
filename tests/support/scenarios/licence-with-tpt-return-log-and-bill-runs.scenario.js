@@ -1,6 +1,7 @@
 import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
@@ -53,12 +54,15 @@ export default function (region = null) {
 
   returnLog.status = 'completed'
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     ...billingAccountEntity,
     ...chargeVersionEntity,
     ...mergeByKey(...billRunEntities),
     ...returnVersionEntity,
-    returnLog
+    returnLog,
+    ...internalUserEntity
   }
 }

@@ -10,11 +10,11 @@ test.describe('View return statuses (external)', () => {
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs
-    user = scenario.user
+    user = scenario.users[1]
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('login as an existing user and view returns', async ({ page, externalUrl }) => {

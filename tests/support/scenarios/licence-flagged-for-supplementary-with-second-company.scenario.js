@@ -2,6 +2,7 @@ import addressData from '../data/address.data.js'
 import buildBillRunEntities from '../entities/bill-runs.entities.js'
 import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import companyAddressData from '../data/company-address.data.js'
@@ -50,11 +51,14 @@ export default function () {
     region
   )
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...mergeByKey(licenceEntity, secondCompany),
     ...billingAccountEntity,
     ...mergeByKey(chargeVersionEntity, additionalChargeEntity),
-    ...mergeByKey(...billRunEntities)
+    ...mergeByKey(...billRunEntities),
+    ...internalUserEntity
   }
 }
 

@@ -4,16 +4,18 @@ import { expect, test } from '../../support/fixtures.js'
 test.describe('Submit no returns requirement (internal)', () => {
   let company
   let licence
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence')
 
     company = scenario.company
     licence = scenario.licence
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('creates a no return requirement and approves the requirement', async ({ page }) => {
@@ -135,7 +137,7 @@ test.describe('Submit no returns requirement (internal)', () => {
 
     await expect(page.getByText('approved', { exact: true })).toBeVisible()
     await expect(page.locator('.govuk-body-l')).toContainText('Returns exception created on')
-    await expect(page.locator('.govuk-body-l')).toContainText('by billing.data@wrls.gov.uk')
+    await expect(page.locator('.govuk-body-l')).toContainText(`by ${user.username}`)
     await expect(page.locator('h3')).toContainText('Returns are not required for this licence')
   })
 })

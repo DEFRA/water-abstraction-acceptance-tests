@@ -1,3 +1,4 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildPresrocLicenceEntity from '../entities/presroc-licence.entity.js'
 import { regions } from '../default-values.js'
 
@@ -11,5 +12,10 @@ export default function (region = null) {
 
   const presrocLicenceEntity = buildPresrocLicenceEntity(region)
 
-  return presrocLicenceEntity
+  const internalUserEntity = buildInternalUserEntity()
+
+  return {
+    ...presrocLicenceEntity,
+    ...internalUserEntity
+  }
 }

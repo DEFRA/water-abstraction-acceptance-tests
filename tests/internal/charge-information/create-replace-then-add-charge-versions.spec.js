@@ -4,16 +4,18 @@ import { formatLongDate, yesterday } from '../../support/helpers/date.helpers.js
 test.describe('Create, replace then add a charge version (internal)', { tag: '@supplementary-billing' }, () => {
   let company
   let licence
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence')
 
     company = scenario.company
     licence = scenario.licence
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test(

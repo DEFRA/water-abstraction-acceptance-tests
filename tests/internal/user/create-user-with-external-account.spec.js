@@ -1,3 +1,4 @@
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Creating internal user with existing external account (internal)', () => {
@@ -9,8 +10,8 @@ test.describe('Creating internal user with existing external account (internal)'
     user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.super)
+  test.beforeEach(async ({ login }) => {
+    await login(users.BILLING_AND_DATA)
   })
 
   test(

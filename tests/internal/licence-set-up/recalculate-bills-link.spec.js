@@ -13,16 +13,18 @@ test.describe(
   () => {
     let licence
     let billRun
+    let user
 
     test.beforeAll(async ({ world }) => {
       const scenario = world('licence-with-tpt-agreement-and-bill-runs')
 
       licence = scenario.licence
       billRun = scenario.billRuns[0]
+      user = scenario.user
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user)
     })
 
     test('flags the licence for the next two-part tariff supplementary bill run', async ({ page }) => {

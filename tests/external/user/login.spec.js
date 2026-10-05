@@ -9,7 +9,7 @@ test.describe('Login and log out (external)', () => {
     user = scenario.user
   })
 
-  test('can log in and out as an external user', async ({ page, externalUrl, defaultPassword, users }) => {
+  test('can log in and out as an external user', async ({ page, externalUrl }) => {
     await page.goto(externalUrl)
 
     // Tap the sign in button on the welcome page

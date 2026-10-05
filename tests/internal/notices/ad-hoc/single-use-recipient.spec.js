@@ -2,17 +2,19 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
   let licence
+  let primaryUser
   let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licence-for-single-use-recipient')
 
     licence = scenario.licence
-    user = scenario.user
+    primaryUser = scenario.users[1]
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users, page }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login, page }) => {
+    await login(user)
 
     await page.goto('/system/notices')
     await page.getByRole('button', { name: 'Create an ad-hoc notice' }).click()
@@ -56,7 +58,7 @@ test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
     await expect(page.getByText('Showing all 2 recipients')).toBeVisible()
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
 
-    const userRow = page.getByRole('row').filter({ hasText: user.username })
+    const userRow = page.getByRole('row').filter({ hasText: primaryUser.username })
     await expect(userRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
     await expect(userRow.locator('[data-test^="recipient-method"]')).toContainText('Email - primary user')
     await expect(userRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')
@@ -85,7 +87,7 @@ test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
     await expect(page.getByText('Showing all 2 notifications')).toBeVisible()
 
     await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(2)
-    await expect(page.locator('[data-test^="notification-recipient"]', { hasText: user.username })).toBeVisible()
+    await expect(page.locator('[data-test^="notification-recipient"]', { hasText: primaryUser.username })).toBeVisible()
 
     const lookupNotification = page.locator('[data-test^="notification-recipient"]', { hasText: 'Lookup recipient' })
     await expect(lookupNotification).toContainText('ENVIRONMENT AGENCY')

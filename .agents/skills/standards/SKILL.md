@@ -38,21 +38,24 @@ This document defines the standards an agent must apply when reviewing or writin
 - Specs never build, load or tear down data. Playwright's `globalSetup` (`tests/world.setup.js`) resets the world once before any spec runs: it cleans the DB, finds every spec that calls `world('<scenario>')`, seeds a separate copy of that scenario for each spec, and saves what it created to `cli/src/world/world.json` keyed by spec then scenario name (e.g. `search-licence`). Spec files run in parallel against that one world, each on its own copy.
 - `test.beforeAll` looks up the spec's copy with the `world` fixture, passing the scenario filename without `.scenario.js` (e.g. `world('licence')` for `licence.scenario.js`), then assigns the entities the tests need to the outer `let` variables. A spec calls `world()` once, with one scenario. The call is also what tells `globalSetup` to seed that scenario for the spec, so keep it even if the spec reads none of the data.
 - Read entities straight off the scenario by property. A single entity sits under its singular key (`licence = scenario.licence`). A key holding several rows is an array, so index it (`returnLog = scenario.returnLogs[0]`).
+- Sign in by passing a whole user object to the `login` fixture (`loginExternal` for the external service); it fills in that user's `username` and `password`. Normally this is the user the scenario seeded (`user = scenario.user`, then `login(user)`). A spec that needs a user seeded by the engine instead imports `users` from `tests/support/default-values.js` (e.g. `login(users.PSC)`).
 - When a scenario needs calculated dates (current financial year, return cycles, billing periods), the scenario file imports `calculatedDates` from `tests/support/helpers/calculated-dates.helpers.js` and calls it itself. It's a plain function, not a fixture, so the spec doesn't pass anything in. If the spec also needs a calculated date for its own assertions (e.g. an expected year), it imports and calls `calculatedDates` directly too, independently of the scenario.
 
 ```js
 // Good — entities declared with let inside the describe, scenario looked up from the world inside beforeAll
 test.describe('Delete licence agreement journey (internal)', () => {
   let licence
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-agreement')
 
     licence = scenario.licence
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('deletes a licence agreement', async ({ page }) => { ... })
@@ -61,15 +64,17 @@ test.describe('Delete licence agreement journey (internal)', () => {
 // Good — the scenario calls calculatedDates itself, so the spec just looks it up as normal; returnLogs is an array key
 test.describe('Submit a return with no meter readings (internal)', () => {
   let returnLog
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-open-winter-return-log')
 
     returnLog = scenario.returnLogs[0]
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('attempt to submit a return without entering any readings', async ({ page }) => { ... })

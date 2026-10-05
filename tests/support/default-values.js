@@ -1,10 +1,28 @@
 import regionHelper from 'water-abstraction-engine/test/helpers/region.helper.js'
+import userHelper from 'water-abstraction-engine/test/helpers/user.helper.js'
+
+import config from '../config.js'
+
+export const applications = {
+  EXTERNAL: 'water_vml',
+  INTERNAL: 'water_admin'
+}
+
+export const groups = {
+  BILLING_AND_DATA: 'billing_and_data',
+  ENVIRONMENT_OFFICER: 'environment_officer',
+  NPS: 'nps',
+  PSC: 'psc',
+  SUPER: 'super',
+  WIRS: 'wirs'
+}
 
 /**
- * When a scenario or data file needs a password, we use P@55word as our default.
+ * When a scenario or data file needs a password, we use the one set in the DEFAULT_USER_PASSWORD environment variable
+ * as our default.
  * @type {string}
  */
-export const password = 'P@55word'
+export const password = config.defaultPassword
 
 export const regions = {
   ANGLIAN: regionHelper.select(0),
@@ -23,3 +41,9 @@ export const regions = {
  * @type {string}
  */
 export const srocStartDate = '2022-04-01'
+
+export const users = {
+  BASIC: userHelper.select(10),
+  BILLING_AND_DATA: userHelper.select(4),
+  PSC: userHelper.select(5)
+}

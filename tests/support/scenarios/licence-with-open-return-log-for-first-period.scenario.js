@@ -1,3 +1,4 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
@@ -49,10 +50,13 @@ export default function (region = null) {
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
   returnVersionEntity.returnVersion.startDate = returnLogs[0].startDate
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     ...returnVersionEntity,
-    returnLogs
+    returnLogs,
+    ...internalUserEntity
   }
 }
 

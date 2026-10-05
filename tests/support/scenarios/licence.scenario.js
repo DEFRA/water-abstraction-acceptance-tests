@@ -1,3 +1,4 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { regions } from '../default-values.js'
 
@@ -9,5 +10,11 @@ export default function (region = null) {
     region = regions.WALES
   }
 
-  return buildLicenceEntity(region)
+  const licenceEntity = buildLicenceEntity(region)
+  const internalUserEntity = buildInternalUserEntity()
+
+  return {
+    ...licenceEntity,
+    ...internalUserEntity
+  }
 }

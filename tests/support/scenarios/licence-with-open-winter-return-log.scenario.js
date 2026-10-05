@@ -1,3 +1,4 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
@@ -33,9 +34,12 @@ export default function (region = null) {
     region
   )
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     ...returnVersionEntity,
-    returnLogs
+    returnLogs,
+    ...internalUserEntity
   }
 }

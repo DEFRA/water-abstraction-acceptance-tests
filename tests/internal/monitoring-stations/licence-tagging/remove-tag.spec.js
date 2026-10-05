@@ -3,16 +3,18 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Attempt to remove a tag from a monitoring station (internal)', () => {
   let licence
   let monitoringStation
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licence-with-monitoring-station-tagged')
 
     licence = scenario.licence
     monitoringStation = scenario.monitoringStation
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.environmentOfficer)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('removes the tagged licence from the monitoring station', async ({ page }) => {

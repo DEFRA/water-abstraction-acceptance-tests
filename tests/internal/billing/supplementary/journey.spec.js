@@ -21,6 +21,7 @@ test.describe(
     let billingAccount
     let presrocToFinancialYearEnding
     let toFinancialYearEnding
+    let user
 
     test.beforeAll(({ world }) => {
       const scenario = world('presroc-licence-flagged-for-supplementary')
@@ -30,12 +31,13 @@ test.describe(
       billingAccount = scenario.billingAccount
 
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
+      user = scenario.user
       billingPeriodCount = billingPeriodCounts(toFinancialYearEnding)
       presrocToFinancialYearEnding = Math.min(toFinancialYearEnding, PRESROC_LAST_FINANCIAL_YEAR)
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user)
     })
 
     test('cancels both the presroc and sroc supplementary bill runs once built', async ({ page }) => {

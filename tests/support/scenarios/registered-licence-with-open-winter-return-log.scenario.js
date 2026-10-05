@@ -1,4 +1,5 @@
 import licenceWithOpenWinterReturnLog from './licence-with-open-winter-return-log.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { regions } from '../default-values.js'
 
@@ -21,8 +22,10 @@ export default function (region = null) {
   // registered licence to a licence holder.
   licence.licenceDocumentHeader.companyEntityId = primaryUser.licenceEntityRole.companyEntityId
 
+  const { user, userGroup } = licence
+
   return {
     ...licence,
-    ...primaryUser
+    ...mergeByKey({ user, userGroup }, primaryUser)
   }
 }

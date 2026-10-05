@@ -6,27 +6,26 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
   let firstUser
   let monitoringStation
   let secondLicence
+  let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licences-with-monitoring-station-tagged')
 
     const [scenarioFirstLicence, scenarioSecondLicence] = scenario.licences
-    const [scenarioFirstUser] = scenario.users
+    const [scenarioUser, scenarioFirstUser] = scenario.users
 
     firstLicence = scenarioFirstLicence
     firstUser = scenarioFirstUser
     monitoringStation = scenario.monitoringStation
     secondLicence = scenarioSecondLicence
+    user = scenarioUser
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.environmentOfficer)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
-  test('creates and sends an abstraction alert for the tagged licence returned by the filter', async ({
-    page,
-    users
-  }) => {
+  test('creates and sends an abstraction alert for the tagged licence returned by the filter', async ({ page }) => {
     await page.goto(`/system/monitoring-stations/${monitoringStation.id}`)
 
     await expect(page.locator('h1')).toHaveText(monitoringStation.label)
@@ -75,7 +74,7 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
 
     await expect(page.locator('h1')).toContainText('Select an email address to include in the alerts')
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
-    await expect(page.locator('.govuk-radios')).toContainText(users.environmentOfficer)
+    await expect(page.locator('.govuk-radios')).toContainText(user.username)
     await page.locator('input[type="radio"][value="username"]').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 

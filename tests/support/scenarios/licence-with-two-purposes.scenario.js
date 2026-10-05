@@ -1,5 +1,6 @@
 import { generateLicenceVersionPurposeExternalId } from 'water-abstraction-engine/test/generators.js'
 
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { generatePointExternalId } from '../helpers/generators.helpers.js'
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
@@ -31,10 +32,13 @@ export default function (region = null) {
 
   const secondPurposePoint = licenceVersionPurposePointData(secondPurpose, secondPoint)
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     points: [licenceEntity.point, secondPoint],
     licenceVersionPurposes: [licenceEntity.licenceVersionPurpose, secondPurpose],
-    licenceVersionPurposePoints: [licenceEntity.licenceVersionPurposePoint, secondPurposePoint]
+    licenceVersionPurposePoints: [licenceEntity.licenceVersionPurposePoint, secondPurposePoint],
+    ...internalUserEntity
   }
 }

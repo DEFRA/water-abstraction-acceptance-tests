@@ -12,6 +12,7 @@ test.describe(
     let company
     let licence
     let toFinancialYearEnding
+    let user
 
     test.beforeAll(async ({ world }) => {
       const scenario = world('licence-flagged-for-supplementary-with-no-current-annual-bill-run')
@@ -22,10 +23,11 @@ test.describe(
 
       // The supplementary engine bases its calculation on the seeded annual bill run's own year, not the current one
       toFinancialYearEnding = scenario.billRuns[0].toFinancialYearEnding
+      user = scenario.user
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user)
     })
 
     test('creates the supplementary bill run covering every year since the last annual', async ({ page }) => {

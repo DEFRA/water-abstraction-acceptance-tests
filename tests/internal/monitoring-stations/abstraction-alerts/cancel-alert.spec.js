@@ -5,6 +5,7 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Set up but then cancel an abstraction alert (internal)', () => {
   let licence
   let monitoringStation
+  let primaryUser
   let user
 
   test.beforeAll(async ({ world }) => {
@@ -12,17 +13,15 @@ test.describe('Set up but then cancel an abstraction alert (internal)', () => {
 
     licence = scenario.licence
     monitoringStation = scenario.monitoringStation
-    user = scenario.user
+    primaryUser = scenario.users[1]
+    user = scenario.users[0]
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.environmentOfficer)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
-  test('creates and then cancels an abstraction alert prior to sending for the tagged licence', async ({
-    page,
-    users
-  }) => {
+  test('creates and then cancels an abstraction alert prior to sending for the tagged licence', async ({ page }) => {
     await page.goto(`/system/monitoring-stations/${monitoringStation.id}`)
 
     // Confirm we are on the monitoring station page
@@ -64,7 +63,7 @@ test.describe('Set up but then cancel an abstraction alert (internal)', () => {
     // Confirm we are on the Select an email address to include in the alerts page
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
     await expect(page.locator('.govuk-heading-l')).toContainText('Select an email address to include in the alerts')
-    await expect(page.locator('.govuk-radios')).toContainText(users.environmentOfficer)
+    await expect(page.locator('.govuk-radios')).toContainText(user.username)
 
     // Select Use another email address, enter an email address and continue
     await page.locator('input[type="radio"][value="other"]').check()
@@ -75,7 +74,7 @@ test.describe('Set up but then cancel an abstraction alert (internal)', () => {
     await expect(page.locator('.govuk-caption-l')).toContainText('Notice WAA-')
     await expect(page.locator('.govuk-heading-l')).toContainText('Check the recipients')
     await expect(page.locator('.govuk-table__caption')).toContainText('Showing all 1 recipients')
-    await expect(page.locator('.govuk-table__body')).toContainText(user.username)
+    await expect(page.locator('.govuk-table__body')).toContainText(primaryUser.username)
     await expect(page.locator('.govuk-table__body')).toContainText(licence.licenceRef)
     await expect(page.locator('.govuk-table__body')).toContainText('Email - primary user')
     await expect(page.locator('.govuk-table__body')).toContainText('Preview')
