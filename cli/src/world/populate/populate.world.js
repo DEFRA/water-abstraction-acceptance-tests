@@ -1,184 +1,146 @@
+import { REGIONS } from './regions.populate.js'
+import { addLicenceVersion } from './licence-versions.populate.js'
 import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
 import { mergeByKey } from '../../../../tests/support/helpers/scenario.helpers.js'
-import { regions } from '../../../../tests/support/default-values.js'
 import { expire, expireInFuture, lapse, revoke } from './end-dates.populate.js'
 
 /**
- * How many licences to add for each region, by how the licence has ended
- *
- * Out of every 1,000 licences added the spread across the regions is: Anglian 274, Midlands 216, South West 158,
- * North East 126, North West 84, Thames 67, Southern 46 and Wales 29
- */
-const REGIONS = [
-  {
-    region: regions.ANGLIAN,
-    none: 39,
-    revoked: 154,
-    expired: 51,
-    expiresInFuture: 26,
-    lapsed: 6,
-    expiredAndRevoked: 13,
-    revokedWithFutureExpiry: 2,
-    expiredAndLapsed: 1,
-    lapsedWithFutureExpiry: 1,
-    lapsedAndRevoked: 1,
-    expiredLapsedAndRevoked: 1
-  },
-  {
-    region: regions.MIDLANDS,
-    none: 35,
-    revoked: 122,
-    expired: 19,
-    expiresInFuture: 12,
-    lapsed: 32,
-    expiredAndRevoked: 8,
-    revokedWithFutureExpiry: 1,
-    expiredAndLapsed: 1,
-    lapsedWithFutureExpiry: 1,
-    lapsedAndRevoked: 1,
-    expiredLapsedAndRevoked: 0
-  },
-  {
-    region: regions.SOUTH_WEST,
-    none: 22,
-    revoked: 120,
-    expired: 7,
-    expiresInFuture: 7,
-    lapsed: 8,
-    expiredAndRevoked: 3,
-    revokedWithFutureExpiry: 1,
-    expiredAndLapsed: 1,
-    lapsedWithFutureExpiry: 1,
-    lapsedAndRevoked: 0,
-    expiredLapsedAndRevoked: 0
-  },
-  {
-    region: regions.NORTH_EAST,
-    none: 16,
-    revoked: 63,
-    expired: 26,
-    expiresInFuture: 15,
-    lapsed: 8,
-    expiredAndRevoked: 4,
-    revokedWithFutureExpiry: 1,
-    expiredAndLapsed: 1,
-    lapsedWithFutureExpiry: 1,
-    lapsedAndRevoked: 1,
-    expiredLapsedAndRevoked: 0
-  },
-  {
-    region: regions.NORTH_WEST,
-    none: 15,
-    revoked: 48,
-    expired: 9,
-    expiresInFuture: 7,
-    lapsed: 4,
-    expiredAndRevoked: 3,
-    revokedWithFutureExpiry: 1,
-    expiredAndLapsed: 1,
-    lapsedWithFutureExpiry: 1,
-    lapsedAndRevoked: 1,
-    expiredLapsedAndRevoked: 0
-  },
-  {
-    region: regions.THAMES,
-    none: 14,
-    revoked: 23,
-    expired: 17,
-    expiresInFuture: 10,
-    lapsed: 2,
-    expiredAndRevoked: 3,
-    revokedWithFutureExpiry: 1,
-    expiredAndLapsed: 1,
-    lapsedWithFutureExpiry: 1,
-    lapsedAndRevoked: 0,
-    expiredLapsedAndRevoked: 0
-  },
-  {
-    region: regions.SOUTHERN,
-    none: 18,
-    revoked: 17,
-    expired: 4,
-    expiresInFuture: 6,
-    lapsed: 1,
-    expiredAndRevoked: 1,
-    revokedWithFutureExpiry: 1,
-    expiredAndLapsed: 1,
-    lapsedWithFutureExpiry: 1,
-    lapsedAndRevoked: 0,
-    expiredLapsedAndRevoked: 0
-  },
-  {
-    region: regions.WALES,
-    none: 4,
-    revoked: 18,
-    expired: 2,
-    expiresInFuture: 2,
-    lapsed: 1,
-    expiredAndRevoked: 1,
-    revokedWithFutureExpiry: 1,
-    expiredAndLapsed: 1,
-    lapsedWithFutureExpiry: 1,
-    lapsedAndRevoked: 0,
-    expiredLapsedAndRevoked: 0
-  }
-]
-
-/**
  * Generate the data that populates the world when it is created from the CLI, on top of what the specs ask for
+ *
+ * For each region its live and ended licences are built, then some of them are given more, for example more licence
+ * versions. How many is set in `REGIONS`.
  *
  * @returns {object} the data, keyed by database table name
  */
 export default function populateWorld() {
   const licenceEntities = []
 
-  for (const counts of REGIONS) {
-    const { region } = counts
+  for (const regionData of REGIONS) {
+    const { region } = regionData
 
-    for (let i = 0; i < counts.none; i++) {
-      licenceEntities.push(buildLicenceEntity(region))
-    }
+    const live = _live(region, regionData.live)
+    const ended = _ended(region, regionData.ended)
 
-    for (let i = 0; i < counts.revoked; i++) {
-      licenceEntities.push(revoke(buildLicenceEntity(region)))
-    }
+    _addLicenceVersions(live, region, regionData.live)
+    _addLicenceVersions(ended, region, regionData.ended)
 
-    for (let i = 0; i < counts.expired; i++) {
-      licenceEntities.push(expire(buildLicenceEntity(region)))
-    }
-
-    for (let i = 0; i < counts.expiresInFuture; i++) {
-      licenceEntities.push(expireInFuture(buildLicenceEntity(region)))
-    }
-
-    for (let i = 0; i < counts.lapsed; i++) {
-      licenceEntities.push(lapse(buildLicenceEntity(region)))
-    }
-
-    for (let i = 0; i < counts.expiredAndRevoked; i++) {
-      licenceEntities.push(revoke(expire(buildLicenceEntity(region))))
-    }
-
-    for (let i = 0; i < counts.revokedWithFutureExpiry; i++) {
-      licenceEntities.push(revoke(expireInFuture(buildLicenceEntity(region))))
-    }
-
-    for (let i = 0; i < counts.expiredAndLapsed; i++) {
-      licenceEntities.push(lapse(expire(buildLicenceEntity(region))))
-    }
-
-    for (let i = 0; i < counts.lapsedWithFutureExpiry; i++) {
-      licenceEntities.push(lapse(expireInFuture(buildLicenceEntity(region))))
-    }
-
-    for (let i = 0; i < counts.lapsedAndRevoked; i++) {
-      licenceEntities.push(revoke(lapse(buildLicenceEntity(region))))
-    }
-
-    for (let i = 0; i < counts.expiredLapsedAndRevoked; i++) {
-      licenceEntities.push(revoke(lapse(expire(buildLicenceEntity(region)))))
-    }
+    licenceEntities.push(...live, ...ended)
   }
 
   return mergeByKey(...licenceEntities)
+}
+
+/**
+ * Give some of the licences a second, third or fourth licence version
+ *
+ * @private
+ */
+function _addLicenceVersions(licenceEntities, region, counts) {
+  const { twoVersions, threeVersions, fourVersions } = counts
+
+  // Everything that gets more licence versions, then which of those get four, and which of the rest get three
+  const all = _spread(licenceEntities, twoVersions + threeVersions + fourVersions, 0)
+  const four = _spread(all, fourVersions, 0)
+  const twoAndThree = all.filter((licenceEntity) => {
+    return !four.includes(licenceEntity)
+  })
+  const three = _spread(twoAndThree, threeVersions, 0)
+
+  for (const licenceEntity of all) {
+    addLicenceVersion(licenceEntity, region)
+  }
+
+  for (const licenceEntity of [...three, ...four]) {
+    addLicenceVersion(licenceEntity, region)
+  }
+
+  for (const licenceEntity of four) {
+    addLicenceVersion(licenceEntity, region)
+  }
+}
+
+/**
+ * Build a region's licences that have ended: those that are revoked, expired or lapsed, and the combinations of them
+ *
+ * @private
+ */
+function _ended(region, ended) {
+  const licenceEntities = []
+
+  for (let i = 0; i < ended.revoked; i++) {
+    licenceEntities.push(revoke(buildLicenceEntity(region)))
+  }
+
+  for (let i = 0; i < ended.expired; i++) {
+    licenceEntities.push(expire(buildLicenceEntity(region)))
+  }
+
+  for (let i = 0; i < ended.lapsed; i++) {
+    licenceEntities.push(lapse(buildLicenceEntity(region)))
+  }
+
+  for (let i = 0; i < ended.expiredAndRevoked; i++) {
+    licenceEntities.push(revoke(expire(buildLicenceEntity(region))))
+  }
+
+  for (let i = 0; i < ended.revokedWithFutureExpiry; i++) {
+    licenceEntities.push(revoke(expireInFuture(buildLicenceEntity(region))))
+  }
+
+  for (let i = 0; i < ended.expiredAndLapsed; i++) {
+    licenceEntities.push(lapse(expire(buildLicenceEntity(region))))
+  }
+
+  for (let i = 0; i < ended.lapsedWithFutureExpiry; i++) {
+    licenceEntities.push(lapse(expireInFuture(buildLicenceEntity(region))))
+  }
+
+  for (let i = 0; i < ended.lapsedAndRevoked; i++) {
+    licenceEntities.push(revoke(lapse(buildLicenceEntity(region))))
+  }
+
+  for (let i = 0; i < ended.expiredLapsedAndRevoked; i++) {
+    licenceEntities.push(revoke(lapse(expire(buildLicenceEntity(region)))))
+  }
+
+  return licenceEntities
+}
+
+/**
+ * Build a region's licences that are live: those with no end date, and those that expire in the future
+ *
+ * @private
+ */
+function _live(region, live) {
+  const licenceEntities = []
+
+  for (let i = 0; i < live.none; i++) {
+    licenceEntities.push(buildLicenceEntity(region))
+  }
+
+  for (let i = 0; i < live.expiresInFuture; i++) {
+    licenceEntities.push(expireInFuture(buildLicenceEntity(region)))
+  }
+
+  return licenceEntities
+}
+
+/**
+ * Pick `count` licences, evenly spaced through the list
+ *
+ * The lists are built one kind of licence after another, so picking evenly gives each kind its share. `start` is which
+ * licence to begin at. Each thing we add uses a different one, so they do not all land on the same licences.
+ *
+ * @private
+ */
+function _spread(licenceEntities, count, start) {
+  const spread = []
+
+  for (let i = 0; i < count; i++) {
+    const index = (start + Math.floor((i * licenceEntities.length) / count)) % licenceEntities.length
+
+    spread.push(licenceEntities[index])
+  }
+
+  return spread
 }
