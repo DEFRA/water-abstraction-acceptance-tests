@@ -1,4 +1,4 @@
-import { formatDateToIso, relativeToToday } from '../../../../tests/support/helpers/date.helpers.js'
+import { formatDateToIso, relativeToToday } from '../../../../../../tests/support/helpers/date.helpers.js'
 
 /**
  * Revoke a licence 30 days ago

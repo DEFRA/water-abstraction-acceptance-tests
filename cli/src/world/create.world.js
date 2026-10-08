@@ -1,6 +1,6 @@
 import dataWorld from './data.world.js'
 import loadService from '../../../tests/support/load/load.service.js'
-import populateWorld from './populate/populate.world.js'
+import populateWorld from './populate.world.js'
 import protectWorld from './protect.world.js'
 import saveWorld from './save.world.js'
 
