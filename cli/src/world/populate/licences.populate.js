@@ -119,6 +119,51 @@ export default function populateLicences() {
   return mergeByKey(...licenceEntities)
 }
 
+/**
+ * Add licence versions, purposes, points and conditions to a licence
+ *
+ * `amounts` says how many the licence ends up with. Any that are left out stay as the licence was built: one licence
+ * version, one purpose, one point and no conditions.
+ *
+ * Purposes, points and conditions are added first, so that every licence version has them. Then the licence versions
+ * are added, each for a reason: a transfer to a new licence holder, then a correction, then another transfer. Where the
+ * licence has more than one version and more than one purpose, the last version is there because a purpose was added.
+ *
+ * @private
+ */
+function _add(licenceEntity, region, amounts) {
+  const { versions = 1, purposes = 1, points = 1, conditions = 0 } = amounts
+
+  const purposeAddedInLastVersion = versions > 1 && purposes > 1
+  const purposesToAddNow = purposeAddedInLastVersion ? purposes - 2 : purposes - 1
+
+  for (let i = 0; i < purposesToAddNow; i++) {
+    addPurpose(licenceEntity, region)
+  }
+
+  for (let i = 1; i < points; i++) {
+    addPoint(licenceEntity, region)
+  }
+
+  for (let i = 0; i < conditions; i++) {
+    addCondition(licenceEntity)
+  }
+
+  const reasons = [transfer, correct, transfer]
+
+  for (let i = 0; i < versions - 1; i++) {
+    const lastVersion = i === versions - 2
+
+    if (lastVersion && purposeAddedInLastVersion) {
+      addPurposeToNewVersion(licenceEntity, region)
+    } else {
+      reasons[i](licenceEntity, region)
+    }
+  }
+
+  return licenceEntity
+}
+
 function _expired(region) {
   return expire(buildLicenceEntity(region))
 }
@@ -166,353 +211,131 @@ function _revokedWithFutureExpiry(region) {
 // A licence with one of the combinations of licence versions, purposes, points and conditions that are really seen.
 // Live has no end date and expiring is live with an expiry date in the future. The ended ones are revoked, expired or
 // lapsed.
-//
-// Each licence version change has a reason: a transfer to a new licence holder, a correction, or a purpose being added.
-// Purposes, points and conditions are added first, so that every licence version has them
 
 function _revokedWithOneCondition(region) {
-  const licenceEntity = revoke(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(revoke(buildLicenceEntity(region)), region, { conditions: 1 })
 }
 
 function _revokedWithTwoVersions(region) {
-  const licenceEntity = revoke(buildLicenceEntity(region))
-
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(revoke(buildLicenceEntity(region)), region, { versions: 2 })
 }
 
 function _expiredWithTwoPoints(region) {
-  const licenceEntity = expire(buildLicenceEntity(region))
-
-  addPoint(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expire(buildLicenceEntity(region)), region, { points: 2 })
 }
 
 function _expiredWithTwoVersionsAndOneCondition(region) {
-  const licenceEntity = expire(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expire(buildLicenceEntity(region)), region, { versions: 2, conditions: 1 })
 }
 
 function _lapsedWithTwoPurposesAndTwoPoints(region) {
-  const licenceEntity = lapse(buildLicenceEntity(region))
-
-  addPurpose(licenceEntity, region)
-  addPoint(licenceEntity, region)
-
-  return licenceEntity
+  return _add(lapse(buildLicenceEntity(region)), region, { purposes: 2, points: 2 })
 }
 
 function _revokedWithTwoConditions(region) {
-  const licenceEntity = revoke(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(revoke(buildLicenceEntity(region)), region, { conditions: 2 })
 }
 
 function _revokedWithTwoPurposes(region) {
-  const licenceEntity = revoke(buildLicenceEntity(region))
-
-  addPurpose(licenceEntity, region)
-
-  return licenceEntity
+  return _add(revoke(buildLicenceEntity(region)), region, { purposes: 2 })
 }
 
 function _revokedWithTwoPurposesAndFourConditions(region) {
-  const licenceEntity = revoke(buildLicenceEntity(region))
-
-  addPurpose(licenceEntity, region)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(revoke(buildLicenceEntity(region)), region, { purposes: 2, conditions: 4 })
 }
 
 function _revokedWithThreeVersions(region) {
-  const licenceEntity = revoke(buildLicenceEntity(region))
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-
-  return licenceEntity
+  return _add(revoke(buildLicenceEntity(region)), region, { versions: 3 })
 }
 
 function _revokedWithThreeConditions(region) {
-  const licenceEntity = revoke(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(revoke(buildLicenceEntity(region)), region, { conditions: 3 })
 }
 
 function _liveWithTwoVersions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 2 })
 }
 
 function _liveWithOneCondition(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { conditions: 1 })
 }
 
 function _expiringWithThreeVersions(region) {
-  const licenceEntity = expireInFuture(buildLicenceEntity(region))
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 3 })
 }
 
 function _liveWithFourVersions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 4 })
 }
 
 function _expiringWithTwoVersionsAndOneCondition(region) {
-  const licenceEntity = expireInFuture(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 2, conditions: 1 })
 }
 
 function _liveWithFourConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { conditions: 4 })
 }
 
 function _expiringWithFourVersionsAndOneCondition(region) {
-  const licenceEntity = expireInFuture(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 4, conditions: 1 })
 }
 
 function _liveWithThreeVersionsAndOneCondition(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 3, conditions: 1 })
 }
 
 function _expiringWithTwoConditions(region) {
-  const licenceEntity = expireInFuture(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(expireInFuture(buildLicenceEntity(region)), region, { conditions: 2 })
 }
 
 function _liveWithTwoVersionsAndFourConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 2, conditions: 4 })
 }
 
 function _liveWithFourVersionsTwoPurposesAndFourConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-  addPurposeToNewVersion(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 4, purposes: 2, conditions: 4 })
 }
 
 function _expiringWithTwoVersionsAndTwoConditions(region) {
-  const licenceEntity = expireInFuture(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 2, conditions: 2 })
 }
 
 function _liveWithFourVersionsAndTwoConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 4, conditions: 2 })
 }
 
 function _expiringWithFourVersionsAndFourConditions(region) {
-  const licenceEntity = expireInFuture(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 4, conditions: 4 })
 }
 
 function _liveWithTwoPurposesAndFourConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addPurpose(licenceEntity, region)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { purposes: 2, conditions: 4 })
 }
 
 function _liveWithThreeConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { conditions: 3 })
 }
 
 function _liveWithTwoVersionsTwoPurposesAndFourConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  addPurposeToNewVersion(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 2, purposes: 2, conditions: 4 })
 }
 
 function _expiringWithThreeVersionsAndTwoConditions(region) {
-  const licenceEntity = expireInFuture(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 3, conditions: 2 })
 }
 
 function _liveWithThreeVersionsAndFourConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 3, conditions: 4 })
 }
 
 function _liveWithFourVersionsAndThreeConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  correct(licenceEntity, region)
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 4, conditions: 3 })
 }
 
 function _liveWithThreeVersionsTwoPurposesAndFourConditions(region) {
-  const licenceEntity = buildLicenceEntity(region)
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-  addPurposeToNewVersion(licenceEntity, region)
-
-  return licenceEntity
+  return _add(buildLicenceEntity(region), region, { versions: 3, purposes: 2, conditions: 4 })
 }
 
 function _expiringWithTwoVersionsAndThreeConditions(region) {
-  const licenceEntity = expireInFuture(buildLicenceEntity(region))
-
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-  addCondition(licenceEntity)
-
-  transfer(licenceEntity, region)
-
-  return licenceEntity
+  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 2, conditions: 3 })
 }
