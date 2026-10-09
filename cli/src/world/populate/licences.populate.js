@@ -6,6 +6,7 @@ import { mergeByKey } from '../../../../tests/support/helpers/scenario.helpers.j
 import { regions } from '../../../../tests/support/default-values.js'
 import { addPurposeToNewVersion, correct, transfer } from './helpers/licence/licence-versions.helpers.js'
 import { expire, expireInFuture, lapse, revoke } from './helpers/licence/end-dates.helpers.js'
+import { startOn } from './helpers/licence/start-dates.helpers.js'
 
 /**
  * How many licences of each group to add for each region
@@ -22,6 +23,38 @@ const REGIONS = [
   { region: regions.THAMES, common: 64, fairlyCommon: 22, uncommon: 30, rare: 14, veryRare: 1 },
   { region: regions.SOUTHERN, common: 44, fairlyCommon: 15, uncommon: 21, rare: 10, veryRare: 1 },
   { region: regions.WALES, common: 27, fairlyCommon: 9, uncommon: 12, rare: 6, veryRare: 1 }
+]
+
+// The dates the licences start on. Each licence takes the next one, going back to the start of the list when it runs
+// out.
+//
+// About half of all licences started in the 1960s, so about half of the dates are. The rest are shared between the
+// decades since in proportion. The list is a different length to any of the groups below, so a kind of licence is not
+// always given the same start dates.
+const START_DATES = [
+  '1965-04-01',
+  '1972-04-01',
+  '1966-04-01',
+  '1994-04-01',
+  '1963-04-01',
+  '1985-04-01',
+  '1967-04-01',
+  '2004-04-01',
+  '1961-04-01',
+  '2013-04-01',
+  '1968-04-01',
+  '1991-04-01',
+  '1964-04-01',
+  '1978-04-01',
+  '1969-04-01',
+  '2022-04-01',
+  '1962-04-01',
+  '1988-04-01',
+  '1960-04-01',
+  '2008-04-01',
+  '1965-04-01',
+  '1997-04-01',
+  '2017-04-01'
 ]
 
 // The licences in each group. Each entry is a function that builds one licence for a region.
@@ -87,7 +120,7 @@ const VERY_RARE = [_lapsedWithFutureExpiry, _lapsedAndRevoked, _expiredLapsedAnd
  * Generate the licences that populate the world
  *
  * Each region gets its number of licences from each group. For each one the next function in that group's list builds
- * it, going back to the start of the list when it runs out.
+ * it, going back to the start of the list when it runs out. Each licence is given the next start date in the same way.
  *
  * @returns {object} the data, keyed by database table name
  */
@@ -96,27 +129,45 @@ export default function populateLicences() {
 
   for (const { region, common, fairlyCommon, uncommon, rare, veryRare } of REGIONS) {
     for (let i = 0; i < common; i++) {
-      licenceEntities.push(COMMON[i % COMMON.length](region))
+      licenceEntities.push(COMMON[i % COMMON.length](region, _startDate(licenceEntities)))
     }
 
     for (let i = 0; i < fairlyCommon; i++) {
-      licenceEntities.push(FAIRLY_COMMON[i % FAIRLY_COMMON.length](region))
+      licenceEntities.push(FAIRLY_COMMON[i % FAIRLY_COMMON.length](region, _startDate(licenceEntities)))
     }
 
     for (let i = 0; i < uncommon; i++) {
-      licenceEntities.push(UNCOMMON[i % UNCOMMON.length](region))
+      licenceEntities.push(UNCOMMON[i % UNCOMMON.length](region, _startDate(licenceEntities)))
     }
 
     for (let i = 0; i < rare; i++) {
-      licenceEntities.push(RARE[i % RARE.length](region))
+      licenceEntities.push(RARE[i % RARE.length](region, _startDate(licenceEntities)))
     }
 
     for (let i = 0; i < veryRare; i++) {
-      licenceEntities.push(VERY_RARE[i % VERY_RARE.length](region))
+      licenceEntities.push(VERY_RARE[i % VERY_RARE.length](region, _startDate(licenceEntities)))
     }
   }
 
   return mergeByKey(...licenceEntities)
+}
+
+/**
+ * Build a licence that starts on the given date
+ *
+ * @private
+ */
+function _build(region, startDate) {
+  return startOn(buildLicenceEntity(region), startDate)
+}
+
+/**
+ * The start date for the next licence, which is the next in the list after the one the last licence was given
+ *
+ * @private
+ */
+function _startDate(licenceEntities) {
+  return START_DATES[licenceEntities.length % START_DATES.length]
 }
 
 /**
@@ -164,178 +215,178 @@ function _add(licenceEntity, region, amounts) {
   return licenceEntity
 }
 
-function _expired(region) {
-  return expire(buildLicenceEntity(region))
+function _expired(region, startDate) {
+  return expire(_build(region, startDate))
 }
 
-function _expiredAndLapsed(region) {
-  return lapse(expire(buildLicenceEntity(region)))
+function _expiredAndLapsed(region, startDate) {
+  return lapse(expire(_build(region, startDate)))
 }
 
-function _expiredAndRevoked(region) {
-  return revoke(expire(buildLicenceEntity(region)))
+function _expiredAndRevoked(region, startDate) {
+  return revoke(expire(_build(region, startDate)))
 }
 
-function _expiredLapsedAndRevoked(region) {
-  return revoke(lapse(expire(buildLicenceEntity(region))))
+function _expiredLapsedAndRevoked(region, startDate) {
+  return revoke(lapse(expire(_build(region, startDate))))
 }
 
-function _expiresInFuture(region) {
-  return expireInFuture(buildLicenceEntity(region))
+function _expiresInFuture(region, startDate) {
+  return expireInFuture(_build(region, startDate))
 }
 
-function _lapsed(region) {
-  return lapse(buildLicenceEntity(region))
+function _lapsed(region, startDate) {
+  return lapse(_build(region, startDate))
 }
 
-function _lapsedAndRevoked(region) {
-  return revoke(lapse(buildLicenceEntity(region)))
+function _lapsedAndRevoked(region, startDate) {
+  return revoke(lapse(_build(region, startDate)))
 }
 
-function _lapsedWithFutureExpiry(region) {
-  return lapse(expireInFuture(buildLicenceEntity(region)))
+function _lapsedWithFutureExpiry(region, startDate) {
+  return lapse(expireInFuture(_build(region, startDate)))
 }
 
-function _noEndDate(region) {
-  return buildLicenceEntity(region)
+function _noEndDate(region, startDate) {
+  return _build(region, startDate)
 }
 
-function _revoked(region) {
-  return revoke(buildLicenceEntity(region))
+function _revoked(region, startDate) {
+  return revoke(_build(region, startDate))
 }
 
-function _revokedWithFutureExpiry(region) {
-  return revoke(expireInFuture(buildLicenceEntity(region)))
+function _revokedWithFutureExpiry(region, startDate) {
+  return revoke(expireInFuture(_build(region, startDate)))
 }
 
 // A licence with one of the combinations of licence versions, purposes, points and conditions that are really seen.
 // Live has no end date and expiring is live with an expiry date in the future. The ended ones are revoked, expired or
 // lapsed.
 
-function _revokedWithOneCondition(region) {
-  return _add(revoke(buildLicenceEntity(region)), region, { conditions: 1 })
+function _revokedWithOneCondition(region, startDate) {
+  return _add(revoke(_build(region, startDate)), region, { conditions: 1 })
 }
 
-function _revokedWithTwoVersions(region) {
-  return _add(revoke(buildLicenceEntity(region)), region, { versions: 2 })
+function _revokedWithTwoVersions(region, startDate) {
+  return _add(revoke(_build(region, startDate)), region, { versions: 2 })
 }
 
-function _expiredWithTwoPoints(region) {
-  return _add(expire(buildLicenceEntity(region)), region, { points: 2 })
+function _expiredWithTwoPoints(region, startDate) {
+  return _add(expire(_build(region, startDate)), region, { points: 2 })
 }
 
-function _expiredWithTwoVersionsAndOneCondition(region) {
-  return _add(expire(buildLicenceEntity(region)), region, { versions: 2, conditions: 1 })
+function _expiredWithTwoVersionsAndOneCondition(region, startDate) {
+  return _add(expire(_build(region, startDate)), region, { versions: 2, conditions: 1 })
 }
 
-function _lapsedWithTwoPurposesAndTwoPoints(region) {
-  return _add(lapse(buildLicenceEntity(region)), region, { purposes: 2, points: 2 })
+function _lapsedWithTwoPurposesAndTwoPoints(region, startDate) {
+  return _add(lapse(_build(region, startDate)), region, { purposes: 2, points: 2 })
 }
 
-function _revokedWithTwoConditions(region) {
-  return _add(revoke(buildLicenceEntity(region)), region, { conditions: 2 })
+function _revokedWithTwoConditions(region, startDate) {
+  return _add(revoke(_build(region, startDate)), region, { conditions: 2 })
 }
 
-function _revokedWithTwoPurposes(region) {
-  return _add(revoke(buildLicenceEntity(region)), region, { purposes: 2 })
+function _revokedWithTwoPurposes(region, startDate) {
+  return _add(revoke(_build(region, startDate)), region, { purposes: 2 })
 }
 
-function _revokedWithTwoPurposesAndFourConditions(region) {
-  return _add(revoke(buildLicenceEntity(region)), region, { purposes: 2, conditions: 4 })
+function _revokedWithTwoPurposesAndFourConditions(region, startDate) {
+  return _add(revoke(_build(region, startDate)), region, { purposes: 2, conditions: 4 })
 }
 
-function _revokedWithThreeVersions(region) {
-  return _add(revoke(buildLicenceEntity(region)), region, { versions: 3 })
+function _revokedWithThreeVersions(region, startDate) {
+  return _add(revoke(_build(region, startDate)), region, { versions: 3 })
 }
 
-function _revokedWithThreeConditions(region) {
-  return _add(revoke(buildLicenceEntity(region)), region, { conditions: 3 })
+function _revokedWithThreeConditions(region, startDate) {
+  return _add(revoke(_build(region, startDate)), region, { conditions: 3 })
 }
 
-function _liveWithTwoVersions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 2 })
+function _liveWithTwoVersions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 2 })
 }
 
-function _liveWithOneCondition(region) {
-  return _add(buildLicenceEntity(region), region, { conditions: 1 })
+function _liveWithOneCondition(region, startDate) {
+  return _add(_build(region, startDate), region, { conditions: 1 })
 }
 
-function _expiringWithThreeVersions(region) {
-  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 3 })
+function _expiringWithThreeVersions(region, startDate) {
+  return _add(expireInFuture(_build(region, startDate)), region, { versions: 3 })
 }
 
-function _liveWithFourVersions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 4 })
+function _liveWithFourVersions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 4 })
 }
 
-function _expiringWithTwoVersionsAndOneCondition(region) {
-  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 2, conditions: 1 })
+function _expiringWithTwoVersionsAndOneCondition(region, startDate) {
+  return _add(expireInFuture(_build(region, startDate)), region, { versions: 2, conditions: 1 })
 }
 
-function _liveWithFourConditions(region) {
-  return _add(buildLicenceEntity(region), region, { conditions: 4 })
+function _liveWithFourConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { conditions: 4 })
 }
 
-function _expiringWithFourVersionsAndOneCondition(region) {
-  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 4, conditions: 1 })
+function _expiringWithFourVersionsAndOneCondition(region, startDate) {
+  return _add(expireInFuture(_build(region, startDate)), region, { versions: 4, conditions: 1 })
 }
 
-function _liveWithThreeVersionsAndOneCondition(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 3, conditions: 1 })
+function _liveWithThreeVersionsAndOneCondition(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 3, conditions: 1 })
 }
 
-function _expiringWithTwoConditions(region) {
-  return _add(expireInFuture(buildLicenceEntity(region)), region, { conditions: 2 })
+function _expiringWithTwoConditions(region, startDate) {
+  return _add(expireInFuture(_build(region, startDate)), region, { conditions: 2 })
 }
 
-function _liveWithTwoVersionsAndFourConditions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 2, conditions: 4 })
+function _liveWithTwoVersionsAndFourConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 2, conditions: 4 })
 }
 
-function _liveWithFourVersionsTwoPurposesAndFourConditions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 4, purposes: 2, conditions: 4 })
+function _liveWithFourVersionsTwoPurposesAndFourConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 4, purposes: 2, conditions: 4 })
 }
 
-function _expiringWithTwoVersionsAndTwoConditions(region) {
-  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 2, conditions: 2 })
+function _expiringWithTwoVersionsAndTwoConditions(region, startDate) {
+  return _add(expireInFuture(_build(region, startDate)), region, { versions: 2, conditions: 2 })
 }
 
-function _liveWithFourVersionsAndTwoConditions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 4, conditions: 2 })
+function _liveWithFourVersionsAndTwoConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 4, conditions: 2 })
 }
 
-function _expiringWithFourVersionsAndFourConditions(region) {
-  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 4, conditions: 4 })
+function _expiringWithFourVersionsAndFourConditions(region, startDate) {
+  return _add(expireInFuture(_build(region, startDate)), region, { versions: 4, conditions: 4 })
 }
 
-function _liveWithTwoPurposesAndFourConditions(region) {
-  return _add(buildLicenceEntity(region), region, { purposes: 2, conditions: 4 })
+function _liveWithTwoPurposesAndFourConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { purposes: 2, conditions: 4 })
 }
 
-function _liveWithThreeConditions(region) {
-  return _add(buildLicenceEntity(region), region, { conditions: 3 })
+function _liveWithThreeConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { conditions: 3 })
 }
 
-function _liveWithTwoVersionsTwoPurposesAndFourConditions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 2, purposes: 2, conditions: 4 })
+function _liveWithTwoVersionsTwoPurposesAndFourConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 2, purposes: 2, conditions: 4 })
 }
 
-function _expiringWithThreeVersionsAndTwoConditions(region) {
-  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 3, conditions: 2 })
+function _expiringWithThreeVersionsAndTwoConditions(region, startDate) {
+  return _add(expireInFuture(_build(region, startDate)), region, { versions: 3, conditions: 2 })
 }
 
-function _liveWithThreeVersionsAndFourConditions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 3, conditions: 4 })
+function _liveWithThreeVersionsAndFourConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 3, conditions: 4 })
 }
 
-function _liveWithFourVersionsAndThreeConditions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 4, conditions: 3 })
+function _liveWithFourVersionsAndThreeConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 4, conditions: 3 })
 }
 
-function _liveWithThreeVersionsTwoPurposesAndFourConditions(region) {
-  return _add(buildLicenceEntity(region), region, { versions: 3, purposes: 2, conditions: 4 })
+function _liveWithThreeVersionsTwoPurposesAndFourConditions(region, startDate) {
+  return _add(_build(region, startDate), region, { versions: 3, purposes: 2, conditions: 4 })
 }
 
-function _expiringWithTwoVersionsAndThreeConditions(region) {
-  return _add(expireInFuture(buildLicenceEntity(region)), region, { versions: 2, conditions: 3 })
+function _expiringWithTwoVersionsAndThreeConditions(region, startDate) {
+  return _add(expireInFuture(_build(region, startDate)), region, { versions: 2, conditions: 3 })
 }
