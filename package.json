@@ -6,7 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "cli": "node cli/cli.js",
+    "cli": "CLI_MODE=true node cli/cli.js",
     "open": "playwright test --ui",
     "test": "playwright test",
     "test:cli": "node --test 'cli/test/**/*.test.js'",
