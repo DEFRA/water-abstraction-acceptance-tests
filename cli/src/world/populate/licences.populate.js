@@ -1,6 +1,6 @@
 import { addCondition } from './helpers/licence/conditions.helpers.js'
 import { addPoint } from './helpers/licence/points.helpers.js'
-import { addPurpose } from './helpers/licence/purposes.helpers.js'
+import { addPurpose, usedFor } from './helpers/licence/purposes.helpers.js'
 import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
 import { mergeByKey } from '../../../../tests/support/helpers/scenario.helpers.js'
 import { regions } from '../../../../tests/support/default-values.js'
@@ -60,6 +60,14 @@ const START_DATES = [
   '1997-04-01',
   '2017-04-01'
 ]
+
+// The purposes the licences are used for. Each licence takes the next one, going back to the start of the list when it
+// runs out.
+//
+// About two thirds of licences are not two-part tariff, so about two thirds of the purposes are make-up or top up water
+// (280), which is not. The rest are spray irrigation direct (400), which is. The list is a different length to the
+// start dates and to any of the groups below, so a kind of licence is not always given the same purpose.
+const PURPOSES = ['280', '280', '400', '280', '280', '400', '280', '400', '280', '280', '400']
 
 // The licences in each group. Each entry is a function that builds one licence for a region.
 //
@@ -124,7 +132,8 @@ const VERY_RARE = [_lapsedWithFutureExpiry, _lapsedAndRevoked, _expiredLapsedAnd
  * Generate the licences that populate the world
  *
  * Each region gets its number of licences from each group. For each one the next function in that group's list builds
- * it, going back to the start of the list when it runs out. Each licence is given the next start date in the same way.
+ * it, going back to the start of the list when it runs out. Each licence is given the next start date and the next
+ * purpose in the same way.
  *
  * Then every 24th licence in the region is made a water company licence, and they are all given the same company.
  *
@@ -137,23 +146,29 @@ export default function populateLicences() {
     const regionStart = licenceEntities.length
 
     for (let i = 0; i < common; i++) {
-      licenceEntities.push(COMMON[i % COMMON.length](region, _startDate(licenceEntities)))
+      licenceEntities.push(COMMON[i % COMMON.length](region, _startDate(licenceEntities), _purpose(licenceEntities)))
     }
 
     for (let i = 0; i < fairlyCommon; i++) {
-      licenceEntities.push(FAIRLY_COMMON[i % FAIRLY_COMMON.length](region, _startDate(licenceEntities)))
+      licenceEntities.push(
+        FAIRLY_COMMON[i % FAIRLY_COMMON.length](region, _startDate(licenceEntities), _purpose(licenceEntities))
+      )
     }
 
     for (let i = 0; i < uncommon; i++) {
-      licenceEntities.push(UNCOMMON[i % UNCOMMON.length](region, _startDate(licenceEntities)))
+      licenceEntities.push(
+        UNCOMMON[i % UNCOMMON.length](region, _startDate(licenceEntities), _purpose(licenceEntities))
+      )
     }
 
     for (let i = 0; i < rare; i++) {
-      licenceEntities.push(RARE[i % RARE.length](region, _startDate(licenceEntities)))
+      licenceEntities.push(RARE[i % RARE.length](region, _startDate(licenceEntities), _purpose(licenceEntities)))
     }
 
     for (let i = 0; i < veryRare; i++) {
-      licenceEntities.push(VERY_RARE[i % VERY_RARE.length](region, _startDate(licenceEntities)))
+      licenceEntities.push(
+        VERY_RARE[i % VERY_RARE.length](region, _startDate(licenceEntities), _purpose(licenceEntities))
+      )
     }
 
     const waterCompanyLicenceEntities = []
@@ -169,12 +184,21 @@ export default function populateLicences() {
 }
 
 /**
- * Build a licence that starts on the given date
+ * Build a licence that starts on the given date and is used for the given purpose
  *
  * @private
  */
-function _build(region, startDate) {
-  return startOn(buildLicenceEntity(region), startDate)
+function _build(region, startDate, purpose) {
+  return usedFor(startOn(buildLicenceEntity(region), startDate), purpose)
+}
+
+/**
+ * The purpose for the next licence, which is the next in the list after the one the last licence was given
+ *
+ * @private
+ */
+function _purpose(licenceEntities) {
+  return PURPOSES[licenceEntities.length % PURPOSES.length]
 }
 
 /**
@@ -231,178 +255,178 @@ function _add(licenceEntity, region, amounts) {
   return licenceEntity
 }
 
-function _expired(region, startDate) {
-  return expire(_build(region, startDate))
+function _expired(region, startDate, purpose) {
+  return expire(_build(region, startDate, purpose))
 }
 
-function _expiredAndLapsed(region, startDate) {
-  return lapse(expire(_build(region, startDate)))
+function _expiredAndLapsed(region, startDate, purpose) {
+  return lapse(expire(_build(region, startDate, purpose)))
 }
 
-function _expiredAndRevoked(region, startDate) {
-  return revoke(expire(_build(region, startDate)))
+function _expiredAndRevoked(region, startDate, purpose) {
+  return revoke(expire(_build(region, startDate, purpose)))
 }
 
-function _expiredLapsedAndRevoked(region, startDate) {
-  return revoke(lapse(expire(_build(region, startDate))))
+function _expiredLapsedAndRevoked(region, startDate, purpose) {
+  return revoke(lapse(expire(_build(region, startDate, purpose))))
 }
 
-function _expiresInFuture(region, startDate) {
-  return expireInFuture(_build(region, startDate))
+function _expiresInFuture(region, startDate, purpose) {
+  return expireInFuture(_build(region, startDate, purpose))
 }
 
-function _lapsed(region, startDate) {
-  return lapse(_build(region, startDate))
+function _lapsed(region, startDate, purpose) {
+  return lapse(_build(region, startDate, purpose))
 }
 
-function _lapsedAndRevoked(region, startDate) {
-  return revoke(lapse(_build(region, startDate)))
+function _lapsedAndRevoked(region, startDate, purpose) {
+  return revoke(lapse(_build(region, startDate, purpose)))
 }
 
-function _lapsedWithFutureExpiry(region, startDate) {
-  return lapse(expireInFuture(_build(region, startDate)))
+function _lapsedWithFutureExpiry(region, startDate, purpose) {
+  return lapse(expireInFuture(_build(region, startDate, purpose)))
 }
 
-function _noEndDate(region, startDate) {
-  return _build(region, startDate)
+function _noEndDate(region, startDate, purpose) {
+  return _build(region, startDate, purpose)
 }
 
-function _revoked(region, startDate) {
-  return revoke(_build(region, startDate))
+function _revoked(region, startDate, purpose) {
+  return revoke(_build(region, startDate, purpose))
 }
 
-function _revokedWithFutureExpiry(region, startDate) {
-  return revoke(expireInFuture(_build(region, startDate)))
+function _revokedWithFutureExpiry(region, startDate, purpose) {
+  return revoke(expireInFuture(_build(region, startDate, purpose)))
 }
 
 // A licence with one of the combinations of licence versions, purposes, points and conditions that are really seen.
 // Live has no end date and expiring is live with an expiry date in the future. The ended ones are revoked, expired or
 // lapsed.
 
-function _revokedWithOneCondition(region, startDate) {
-  return _add(revoke(_build(region, startDate)), region, { conditions: 1 })
+function _revokedWithOneCondition(region, startDate, purpose) {
+  return _add(revoke(_build(region, startDate, purpose)), region, { conditions: 1 })
 }
 
-function _revokedWithTwoVersions(region, startDate) {
-  return _add(revoke(_build(region, startDate)), region, { versions: 2 })
+function _revokedWithTwoVersions(region, startDate, purpose) {
+  return _add(revoke(_build(region, startDate, purpose)), region, { versions: 2 })
 }
 
-function _expiredWithTwoPoints(region, startDate) {
-  return _add(expire(_build(region, startDate)), region, { points: 2 })
+function _expiredWithTwoPoints(region, startDate, purpose) {
+  return _add(expire(_build(region, startDate, purpose)), region, { points: 2 })
 }
 
-function _expiredWithTwoVersionsAndOneCondition(region, startDate) {
-  return _add(expire(_build(region, startDate)), region, { versions: 2, conditions: 1 })
+function _expiredWithTwoVersionsAndOneCondition(region, startDate, purpose) {
+  return _add(expire(_build(region, startDate, purpose)), region, { versions: 2, conditions: 1 })
 }
 
-function _lapsedWithTwoPurposesAndTwoPoints(region, startDate) {
-  return _add(lapse(_build(region, startDate)), region, { purposes: 2, points: 2 })
+function _lapsedWithTwoPurposesAndTwoPoints(region, startDate, purpose) {
+  return _add(lapse(_build(region, startDate, purpose)), region, { purposes: 2, points: 2 })
 }
 
-function _revokedWithTwoConditions(region, startDate) {
-  return _add(revoke(_build(region, startDate)), region, { conditions: 2 })
+function _revokedWithTwoConditions(region, startDate, purpose) {
+  return _add(revoke(_build(region, startDate, purpose)), region, { conditions: 2 })
 }
 
-function _revokedWithTwoPurposes(region, startDate) {
-  return _add(revoke(_build(region, startDate)), region, { purposes: 2 })
+function _revokedWithTwoPurposes(region, startDate, purpose) {
+  return _add(revoke(_build(region, startDate, purpose)), region, { purposes: 2 })
 }
 
-function _revokedWithTwoPurposesAndFourConditions(region, startDate) {
-  return _add(revoke(_build(region, startDate)), region, { purposes: 2, conditions: 4 })
+function _revokedWithTwoPurposesAndFourConditions(region, startDate, purpose) {
+  return _add(revoke(_build(region, startDate, purpose)), region, { purposes: 2, conditions: 4 })
 }
 
-function _revokedWithThreeVersions(region, startDate) {
-  return _add(revoke(_build(region, startDate)), region, { versions: 3 })
+function _revokedWithThreeVersions(region, startDate, purpose) {
+  return _add(revoke(_build(region, startDate, purpose)), region, { versions: 3 })
 }
 
-function _revokedWithThreeConditions(region, startDate) {
-  return _add(revoke(_build(region, startDate)), region, { conditions: 3 })
+function _revokedWithThreeConditions(region, startDate, purpose) {
+  return _add(revoke(_build(region, startDate, purpose)), region, { conditions: 3 })
 }
 
-function _liveWithTwoVersions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 2 })
+function _liveWithTwoVersions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 2 })
 }
 
-function _liveWithOneCondition(region, startDate) {
-  return _add(_build(region, startDate), region, { conditions: 1 })
+function _liveWithOneCondition(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { conditions: 1 })
 }
 
-function _expiringWithThreeVersions(region, startDate) {
-  return _add(expireInFuture(_build(region, startDate)), region, { versions: 3 })
+function _expiringWithThreeVersions(region, startDate, purpose) {
+  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 3 })
 }
 
-function _liveWithFourVersions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 4 })
+function _liveWithFourVersions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 4 })
 }
 
-function _expiringWithTwoVersionsAndOneCondition(region, startDate) {
-  return _add(expireInFuture(_build(region, startDate)), region, { versions: 2, conditions: 1 })
+function _expiringWithTwoVersionsAndOneCondition(region, startDate, purpose) {
+  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 2, conditions: 1 })
 }
 
-function _liveWithFourConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { conditions: 4 })
+function _liveWithFourConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { conditions: 4 })
 }
 
-function _expiringWithFourVersionsAndOneCondition(region, startDate) {
-  return _add(expireInFuture(_build(region, startDate)), region, { versions: 4, conditions: 1 })
+function _expiringWithFourVersionsAndOneCondition(region, startDate, purpose) {
+  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 4, conditions: 1 })
 }
 
-function _liveWithThreeVersionsAndOneCondition(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 3, conditions: 1 })
+function _liveWithThreeVersionsAndOneCondition(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 3, conditions: 1 })
 }
 
-function _expiringWithTwoConditions(region, startDate) {
-  return _add(expireInFuture(_build(region, startDate)), region, { conditions: 2 })
+function _expiringWithTwoConditions(region, startDate, purpose) {
+  return _add(expireInFuture(_build(region, startDate, purpose)), region, { conditions: 2 })
 }
 
-function _liveWithTwoVersionsAndFourConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 2, conditions: 4 })
+function _liveWithTwoVersionsAndFourConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 2, conditions: 4 })
 }
 
-function _liveWithFourVersionsTwoPurposesAndFourConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 4, purposes: 2, conditions: 4 })
+function _liveWithFourVersionsTwoPurposesAndFourConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 4, purposes: 2, conditions: 4 })
 }
 
-function _expiringWithTwoVersionsAndTwoConditions(region, startDate) {
-  return _add(expireInFuture(_build(region, startDate)), region, { versions: 2, conditions: 2 })
+function _expiringWithTwoVersionsAndTwoConditions(region, startDate, purpose) {
+  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 2, conditions: 2 })
 }
 
-function _liveWithFourVersionsAndTwoConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 4, conditions: 2 })
+function _liveWithFourVersionsAndTwoConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 4, conditions: 2 })
 }
 
-function _expiringWithFourVersionsAndFourConditions(region, startDate) {
-  return _add(expireInFuture(_build(region, startDate)), region, { versions: 4, conditions: 4 })
+function _expiringWithFourVersionsAndFourConditions(region, startDate, purpose) {
+  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 4, conditions: 4 })
 }
 
-function _liveWithTwoPurposesAndFourConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { purposes: 2, conditions: 4 })
+function _liveWithTwoPurposesAndFourConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { purposes: 2, conditions: 4 })
 }
 
-function _liveWithThreeConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { conditions: 3 })
+function _liveWithThreeConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { conditions: 3 })
 }
 
-function _liveWithTwoVersionsTwoPurposesAndFourConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 2, purposes: 2, conditions: 4 })
+function _liveWithTwoVersionsTwoPurposesAndFourConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 2, purposes: 2, conditions: 4 })
 }
 
-function _expiringWithThreeVersionsAndTwoConditions(region, startDate) {
-  return _add(expireInFuture(_build(region, startDate)), region, { versions: 3, conditions: 2 })
+function _expiringWithThreeVersionsAndTwoConditions(region, startDate, purpose) {
+  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 3, conditions: 2 })
 }
 
-function _liveWithThreeVersionsAndFourConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 3, conditions: 4 })
+function _liveWithThreeVersionsAndFourConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 3, conditions: 4 })
 }
 
-function _liveWithFourVersionsAndThreeConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 4, conditions: 3 })
+function _liveWithFourVersionsAndThreeConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 4, conditions: 3 })
 }
 
-function _liveWithThreeVersionsTwoPurposesAndFourConditions(region, startDate) {
-  return _add(_build(region, startDate), region, { versions: 3, purposes: 2, conditions: 4 })
+function _liveWithThreeVersionsTwoPurposesAndFourConditions(region, startDate, purpose) {
+  return _add(_build(region, startDate, purpose), region, { versions: 3, purposes: 2, conditions: 4 })
 }
 
-function _expiringWithTwoVersionsAndThreeConditions(region, startDate) {
-  return _add(expireInFuture(_build(region, startDate)), region, { versions: 2, conditions: 3 })
+function _expiringWithTwoVersionsAndThreeConditions(region, startDate, purpose) {
+  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 2, conditions: 3 })
 }
