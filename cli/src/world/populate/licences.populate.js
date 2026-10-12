@@ -7,6 +7,7 @@ import { regions } from '../../../../tests/support/default-values.js'
 import { addPurposeToNewVersion, correct, transfer } from './helpers/licence/licence-versions.helpers.js'
 import { expire, expireInFuture, lapse, revoke } from './helpers/licence/end-dates.helpers.js'
 import { startOn } from './helpers/licence/start-dates.helpers.js'
+import { heldByWaterCompany, holdBySameCompany } from './helpers/licence/water-company.helpers.js'
 
 /**
  * How many licences of each group to add for each region
@@ -24,6 +25,9 @@ const REGIONS = [
   { region: regions.SOUTHERN, common: 44, fairlyCommon: 15, uncommon: 21, rare: 10, veryRare: 1 },
   { region: regions.WALES, common: 27, fairlyCommon: 9, uncommon: 12, rare: 6, veryRare: 1 }
 ]
+
+// How often a licence is held by a water company. Every 24th licence in a region is, starting with its first.
+const WATER_COMPANY_EVERY = 24
 
 // The dates the licences start on. Each licence takes the next one, going back to the start of the list when it runs
 // out.
@@ -122,12 +126,16 @@ const VERY_RARE = [_lapsedWithFutureExpiry, _lapsedAndRevoked, _expiredLapsedAnd
  * Each region gets its number of licences from each group. For each one the next function in that group's list builds
  * it, going back to the start of the list when it runs out. Each licence is given the next start date in the same way.
  *
+ * Then every 24th licence in the region is made a water company licence, and they are all given the same company.
+ *
  * @returns {object} the data, keyed by database table name
  */
 export default function populateLicences() {
   const licenceEntities = []
 
   for (const { region, common, fairlyCommon, uncommon, rare, veryRare } of REGIONS) {
+    const regionStart = licenceEntities.length
+
     for (let i = 0; i < common; i++) {
       licenceEntities.push(COMMON[i % COMMON.length](region, _startDate(licenceEntities)))
     }
@@ -147,6 +155,14 @@ export default function populateLicences() {
     for (let i = 0; i < veryRare; i++) {
       licenceEntities.push(VERY_RARE[i % VERY_RARE.length](region, _startDate(licenceEntities)))
     }
+
+    const waterCompanyLicenceEntities = []
+
+    for (let i = regionStart; i < licenceEntities.length; i += WATER_COMPANY_EVERY) {
+      waterCompanyLicenceEntities.push(heldByWaterCompany(licenceEntities[i]))
+    }
+
+    holdBySameCompany(waterCompanyLicenceEntities)
   }
 
   return mergeByKey(...licenceEntities)

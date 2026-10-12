@@ -25,8 +25,7 @@ export default function () {
  *
  * The point, licence version, licence version purpose and billing account each carry a fixed NALD-derived
  * identifier that's unique per record in the database, so building a second licence means giving each its own
- * value to avoid colliding with the first. The company name is also suffixed so that anyone reading the seeded
- * data or the app's UI can tell the two licences apart at a glance, though this isn't required by the database.
+ * value to avoid colliding with the first.
  *
  * @private
  */
@@ -34,7 +33,6 @@ function _waterCompanyLicenceWithChargeVersion(region) {
   const result = licenceWithChargeVersionScenario(region)
 
   result.licence.waterUndertaker = true
-  result.company.name = `${result.company.name} 02`
 
   result.point.externalId = generatePointExternalId(region)
   result.licenceVersion.externalId = generateLicenceVersionExternalId(region)
