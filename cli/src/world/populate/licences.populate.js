@@ -1,3 +1,9 @@
+import { abstractDuring } from './helpers/licence/abstraction-periods.helpers.js'
+import { abstractUpTo } from './helpers/licence/quantities.helpers.js'
+import { addCondition } from './helpers/licence/conditions.helpers.js'
+import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
+import { mergeByKey } from '../../../../tests/support/helpers/scenario.helpers.js'
+import { startOn } from './helpers/licence/start-dates.helpers.js'
 import {
   ABSTRACTION_PERIODS,
   ISSUE_100_BEFORE,
@@ -10,16 +16,10 @@ import {
   WATER_COMPANY_EVERY,
   YEARS_HELD
 } from './licences.constants.js'
-import { abstractDuring } from './helpers/licence/abstraction-periods.helpers.js'
-import { abstractUpTo } from './helpers/licence/quantities.helpers.js'
-import { addCondition } from './helpers/licence/conditions.helpers.js'
 import { abstractFrom, addPoint } from './helpers/licence/points.helpers.js'
 import { addPurpose, usedFor } from './helpers/licence/purposes.helpers.js'
-import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
-import { mergeByKey } from '../../../../tests/support/helpers/scenario.helpers.js'
 import { addPurposeToNewVersion, correct, firstIssue, transfer } from './helpers/licence/licence-versions.helpers.js'
 import { endAfter, expire, expireInFuture, lapse, revoke, revokeOn } from './helpers/licence/end-dates.helpers.js'
-import { startOn } from './helpers/licence/start-dates.helpers.js'
 import { heldByWaterCompany, holdBySameCompany } from './helpers/licence/water-company.helpers.js'
 
 // The licences in each group. Each entry is a function that builds one licence for a region.

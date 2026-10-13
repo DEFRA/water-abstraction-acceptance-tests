@@ -1,14 +1,14 @@
+import { addPurpose } from './purposes.helpers.js'
 import addressData from '../../../../../../tests/support/data/address.data.js'
 import companyAddressData from '../../../../../../tests/support/data/company-address.data.js'
 import companyData from '../../../../../../tests/support/data/company.data.js'
+import { conditionExternalId } from './conditions.helpers.js'
 import { formatDateToIso } from '../../../../../../tests/support/helpers/date.helpers.js'
 import licenceDocumentRoleData from '../../../../../../tests/support/data/licence-document-role.data.js'
-import licenceVersionPurposeConditionData from '../../../../../../tests/support/data/licence-version-purpose-condition.data.js'
 import licenceVersionData from '../../../../../../tests/support/data/licence-version.data.js'
+import licenceVersionPurposeConditionData from '../../../../../../tests/support/data/licence-version-purpose-condition.data.js'
 import licenceVersionPurposeData from '../../../../../../tests/support/data/licence-version-purpose.data.js'
 import licenceVersionPurposePointData from '../../../../../../tests/support/data/licence-version-purpose-point.data.js'
-import { addPurpose } from './purposes.helpers.js'
-import { conditionExternalId } from './conditions.helpers.js'
 
 /**
  * Give a licence a new licence version because a purpose was added
