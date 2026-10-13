@@ -50,6 +50,24 @@ export function correct(licenceEntity, region) {
 }
 
 /**
+ * Change the issue of a licence's first licence version
+ *
+ * A licence is built with a licence version of issue 1. This gives it another, for example 100.
+ *
+ * Call this before any licence versions are added to the licence, as a new one is numbered from the one before.
+ *
+ * @param {object} licenceEntity - the licence entity to change
+ * @param {number} issue - the issue of the first licence version, for example 100
+ *
+ * @returns {object} the same licence entity
+ */
+export function firstIssue(licenceEntity, issue) {
+  licenceEntity.licenceVersion.issue = issue
+
+  return licenceEntity
+}
+
+/**
  * Give a licence a new licence version because it was transferred to a new licence holder
  *
  * The new version is the next issue, and is for a different company at a different address. The previous licence

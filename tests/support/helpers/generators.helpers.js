@@ -137,7 +137,7 @@ export function generatePointExternalId(region = null) {
     region = RegionHelper.select(RegionHelper.TEST_REGION_INDEX)
   }
 
-  return `${region.naldRegionId}:${region.naldRegionId}${generateRandomInteger(100000, 999999)}`
+  return `${region.naldRegionId}:${region.naldRegionId}${generateRandomInteger(100000, 99999999)}`
 }
 
 /**

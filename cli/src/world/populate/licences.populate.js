@@ -1,73 +1,26 @@
+import {
+  ABSTRACTION_PERIODS,
+  ISSUE_100_BEFORE,
+  POINTS,
+  PURPOSES,
+  QUANTITIES,
+  REGIONS,
+  REVOKED_ON,
+  START_DATES,
+  WATER_COMPANY_EVERY,
+  YEARS_HELD
+} from './licences.constants.js'
+import { abstractDuring } from './helpers/licence/abstraction-periods.helpers.js'
+import { abstractUpTo } from './helpers/licence/quantities.helpers.js'
 import { addCondition } from './helpers/licence/conditions.helpers.js'
-import { addPoint } from './helpers/licence/points.helpers.js'
+import { abstractFrom, addPoint } from './helpers/licence/points.helpers.js'
 import { addPurpose, usedFor } from './helpers/licence/purposes.helpers.js'
 import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
 import { mergeByKey } from '../../../../tests/support/helpers/scenario.helpers.js'
-import { regions } from '../../../../tests/support/default-values.js'
-import { addPurposeToNewVersion, correct, transfer } from './helpers/licence/licence-versions.helpers.js'
-import { expire, expireInFuture, lapse, revoke } from './helpers/licence/end-dates.helpers.js'
+import { addPurposeToNewVersion, correct, firstIssue, transfer } from './helpers/licence/licence-versions.helpers.js'
+import { endAfter, expire, expireInFuture, lapse, revoke, revokeOn } from './helpers/licence/end-dates.helpers.js'
 import { startOn } from './helpers/licence/start-dates.helpers.js'
 import { heldByWaterCompany, holdBySameCompany } from './helpers/licence/water-company.helpers.js'
-
-/**
- * How many licences of each group to add for each region
- *
- * The groups are by how often a kind of licence is seen. A region's total is in proportion to its size, and is split
- * between the groups the same way in every region.
- */
-const REGIONS = [
-  { region: regions.ANGLIAN, common: 273, fairlyCommon: 92, uncommon: 128, rare: 61, veryRare: 3 },
-  { region: regions.MIDLANDS, common: 215, fairlyCommon: 72, uncommon: 101, rare: 48, veryRare: 2 },
-  { region: regions.SOUTH_WEST, common: 156, fairlyCommon: 53, uncommon: 73, rare: 35, veryRare: 1 },
-  { region: regions.NORTH_EAST, common: 124, fairlyCommon: 42, uncommon: 58, rare: 28, veryRare: 2 },
-  { region: regions.NORTH_WEST, common: 81, fairlyCommon: 27, uncommon: 38, rare: 18, veryRare: 2 },
-  { region: regions.THAMES, common: 64, fairlyCommon: 22, uncommon: 30, rare: 14, veryRare: 1 },
-  { region: regions.SOUTHERN, common: 44, fairlyCommon: 15, uncommon: 21, rare: 10, veryRare: 1 },
-  { region: regions.WALES, common: 27, fairlyCommon: 9, uncommon: 12, rare: 6, veryRare: 1 }
-]
-
-// How often a licence is held by a water company. Every 24th licence in a region is, starting with its first.
-const WATER_COMPANY_EVERY = 24
-
-// The dates the licences start on. Each licence takes the next one, going back to the start of the list when it runs
-// out.
-//
-// About half of all licences started in the 1960s, so about half of the dates are. The rest are shared between the
-// decades since in proportion. The list is a different length to any of the groups below, so a kind of licence is not
-// always given the same start dates.
-const START_DATES = [
-  '1965-04-01',
-  '1972-04-01',
-  '1966-04-01',
-  '1994-04-01',
-  '1963-04-01',
-  '1985-04-01',
-  '1967-04-01',
-  '2004-04-01',
-  '1961-04-01',
-  '2013-04-01',
-  '1968-04-01',
-  '1991-04-01',
-  '1964-04-01',
-  '1978-04-01',
-  '1969-04-01',
-  '2022-04-01',
-  '1962-04-01',
-  '1988-04-01',
-  '1960-04-01',
-  '2008-04-01',
-  '1965-04-01',
-  '1997-04-01',
-  '2017-04-01'
-]
-
-// The purposes the licences are used for. Each licence takes the next one, going back to the start of the list when it
-// runs out.
-//
-// About two thirds of licences are not two-part tariff, so about two thirds of the purposes are make-up or top up water
-// (280), which is not. The rest are spray irrigation direct (400), which is. The list is a different length to the
-// start dates and to any of the groups below, so a kind of licence is not always given the same purpose.
-const PURPOSES = ['280', '280', '400', '280', '280', '400', '280', '400', '280', '280', '400']
 
 // The licences in each group. Each entry is a function that builds one licence for a region.
 //
@@ -136,6 +89,11 @@ const VERY_RARE = [_lapsedWithFutureExpiry, _lapsedAndRevoked, _expiredLapsedAnd
  * purpose in the same way.
  *
  * Then every 24th licence in the region is made a water company licence, and they are all given the same company.
+ * Each licence in the region is given the next number of points in its list.
+ *
+ * Once every licence is built, each is given the next abstraction period and the next quantities in their lists. Each
+ * one that has ended is moved to end the next number of years after it started. Then two of every three are moved to
+ * the date many licences were revoked on, where they were revoked and started before it.
  *
  * @returns {object} the data, keyed by database table name
  */
@@ -178,6 +136,20 @@ export default function populateLicences() {
     }
 
     holdBySameCompany(waterCompanyLicenceEntities)
+
+    for (let i = regionStart; i < licenceEntities.length; i++) {
+      abstractFrom(licenceEntities[i], region, POINTS[i % POINTS.length])
+    }
+  }
+
+  for (let i = 0; i < licenceEntities.length; i++) {
+    abstractDuring(licenceEntities[i], ABSTRACTION_PERIODS[i % ABSTRACTION_PERIODS.length])
+    abstractUpTo(licenceEntities[i], QUANTITIES, i % QUANTITIES.length)
+    endAfter(licenceEntities[i], YEARS_HELD, i)
+
+    if (i % 3 !== 2) {
+      revokeOn(licenceEntities[i], REVOKED_ON)
+    }
   }
 
   return mergeByKey(...licenceEntities)
@@ -186,10 +158,18 @@ export default function populateLicences() {
 /**
  * Build a licence that starts on the given date and is used for the given purpose
  *
+ * Where the licence started before 2000 its first licence version is issue 100. Otherwise it is issue 1.
+ *
  * @private
  */
 function _build(region, startDate, purpose) {
-  return usedFor(startOn(buildLicenceEntity(region), startDate), purpose)
+  const licenceEntity = usedFor(startOn(buildLicenceEntity(region), startDate), purpose)
+
+  if (startDate < ISSUE_100_BEFORE) {
+    firstIssue(licenceEntity, 100)
+  }
+
+  return licenceEntity
 }
 
 /**
