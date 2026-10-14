@@ -1,13 +1,14 @@
+import { monitoringStations } from '../../../support/default-values.js'
 import { expect, test } from '../../../support/fixtures.js'
 
+const monitoringStation = monitoringStations.SECOND
+
 test.describe('Attempt set up of abstraction alert with no thresholds (internal)', () => {
-  let monitoringStation
   let user
 
   test.beforeAll(async ({ world }) => {
     const scenario = world('registered-licence-with-monitoring-station-tagged')
 
-    monitoringStation = scenario.monitoringStation
     user = scenario.users[0]
   })
 
@@ -20,25 +21,21 @@ test.describe('Attempt set up of abstraction alert with no thresholds (internal)
   }) => {
     await page.goto(`/system/monitoring-stations/${monitoringStation.id}`)
 
-    // Confirm we are on the monitoring station page
-    await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.catchmentName)
-    await expect(page.locator('.govuk-heading-l')).toHaveText(monitoringStation.label)
+    await expect(page.locator('h1')).toHaveText(monitoringStation.label)
     await expect(page.locator('[data-test="meta-data-grid-reference"]')).toHaveText(monitoringStation.gridReference)
-    await expect(page.locator('[data-test="meta-data-wiski-id"]')).toHaveText('')
-    await expect(page.locator('[data-test="meta-data-station-reference"]')).toHaveText('')
+    await expect(page.locator('[data-test="meta-data-wiski-id"]')).toHaveText(monitoringStation.wiskiId)
+    await expect(page.locator('[data-test="meta-data-station-reference"]')).toHaveText(
+      monitoringStation.stationReference
+    )
 
-    // Select Create a water abstraction alert
     await page.getByRole('button', { name: 'Create a water abstraction alert' }).click()
 
-    // Confirm we are on the Select the type of alert you need to send page
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
-    await expect(page.locator('.govuk-heading-l')).toContainText('Select the type of alert you need to send')
+    await expect(page.locator('h1')).toContainText('Select the type of alert you need to send')
 
-    // Select the reduce alert type and continue
     await page.locator('input[type="radio"][value="reduce"]').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
-    // Confirm that a validation error has been generated
     await expect(page.locator('.govuk-error-summary')).toContainText('There is a problem')
     await expect(page.locator('.govuk-error-summary')).toContainText(
       'There are no thresholds with the reduce restriction type, Select the type of alert you need to send'

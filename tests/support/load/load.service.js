@@ -37,7 +37,6 @@ import LicenceVersionPurposeConditionHelper from 'water-abstraction-engine/test/
 import LicenceVersionPurposeHelper from 'water-abstraction-engine/test/helpers/licence-version-purpose.helper.js'
 import LicenceVersionPurposePointHelper from 'water-abstraction-engine/test/helpers/licence-version-purpose-point.helper.js'
 import ModLogHelper from 'water-abstraction-engine/test/helpers/mod-log.helper.js'
-import MonitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
 import NotificationHelper from 'water-abstraction-engine/test/helpers/notification.helper.js'
 import PermitLicenceHelper from 'water-abstraction-engine/test/helpers/permit-licence.helper.js'
 import PointHelper from 'water-abstraction-engine/test/helpers/point.helper.js'
@@ -153,11 +152,6 @@ const LOAD_HELPERS = {
   },
   licences: { helper: LicenceHelper, legacy: { schema: 'water', table: 'licences', id: 'licence_id' } },
   modLogs: { helper: ModLogHelper },
-  monitoringStations: {
-    helper: MonitoringStationHelper,
-
-    legacy: { schema: 'water', table: 'gauging_stations', id: 'gauging_station_id' }
-  },
   notifications: { helper: NotificationHelper },
   points: { helper: PointHelper },
   permitLicences: { helper: PermitLicenceHelper },

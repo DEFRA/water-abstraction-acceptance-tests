@@ -3,16 +3,15 @@ import buildLicenceEntity from '../entities/licence.entity.js'
 import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import monitoringStationData from '../data/monitoring-station.data.js'
 import primaryUserData from '../data/primary-user.data.js'
-import { groups, regions } from '../default-values.js'
+import { groups, monitoringStations, regions } from '../default-values.js'
 
 export const title = 'Registered licences with a monitoring station (tagged)'
 export const description =
   'Two registered licences both tagged to the same monitoring station, each with a different abstraction period so an alert can be filtered down to one of them'
 
 /**
- * Both tagged licences are linked to the same monitoring station via a licenceMonitoringStation.
+ * Both tagged licences are linked to the same monitoring station, `monitoringStations.THIRD`, via a licenceMonitoringStation.
  *
  * We seed a separate 'licenceVersionPurposeCondition' on the licence, available for a test to select when tagging.
  */
@@ -21,20 +20,15 @@ export default function (region = null) {
     region = regions.ANGLIAN
   }
 
-  const monitoringStation = monitoringStationData()
-
-  const firstLicence = _taggedLicence(monitoringStation, region)
-  const secondLicence = _taggedLicence(monitoringStation, region)
+  const firstLicence = _taggedLicence(monitoringStations.THIRD, region)
+  const secondLicence = _taggedLicence(monitoringStations.THIRD, region)
 
   secondLicence.licenceMonitoringStation.abstractionPeriodStartDay = 1
   secondLicence.licenceMonitoringStation.abstractionPeriodStartMonth = 4
   secondLicence.licenceMonitoringStation.abstractionPeriodEndDay = 31
   secondLicence.licenceMonitoringStation.abstractionPeriodEndMonth = 3
 
-  return {
-    monitoringStation,
-    ...mergeByKey(firstLicence, secondLicence)
-  }
+  return mergeByKey(firstLicence, secondLicence)
 }
 
 /**

@@ -1,10 +1,12 @@
+import { monitoringStations } from '../../../support/default-values.js'
 import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+
+const monitoringStation = monitoringStations.THIRD
 
 test.describe('Send an abstraction alert after applying a filter (internal)', () => {
   let firstLicence
   let firstUser
-  let monitoringStation
   let secondLicence
   let user
 
@@ -16,7 +18,6 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
 
     firstLicence = scenarioFirstLicence
     firstUser = scenarioFirstUser
-    monitoringStation = scenario.monitoringStation
     secondLicence = scenarioSecondLicence
     user = scenarioUser
   })
@@ -29,10 +30,11 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await page.goto(`/system/monitoring-stations/${monitoringStation.id}`)
 
     await expect(page.locator('h1')).toHaveText(monitoringStation.label)
-    await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.catchmentName)
     await expect(page.locator('[data-test="meta-data-grid-reference"]')).toHaveText(monitoringStation.gridReference)
-    await expect(page.locator('[data-test="meta-data-wiski-id"]')).toHaveText('')
-    await expect(page.locator('[data-test="meta-data-station-reference"]')).toHaveText('')
+    await expect(page.locator('[data-test="meta-data-wiski-id"]')).toHaveText(monitoringStation.wiskiId)
+    await expect(page.locator('[data-test="meta-data-station-reference"]')).toHaveText(
+      monitoringStation.stationReference
+    )
     await page.getByRole('button', { name: 'Create a water abstraction alert' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the type of alert you need to send')
@@ -48,8 +50,6 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(page.locator('h1')).toHaveText('Check the licence matches for the selected thresholds')
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
     await expect(page.getByText('Showing all 2 abstraction alerts')).toBeVisible()
-    // The table is sorted by licence ref and our refs are randomly generated, so we anchor on the ref rather than row
-    // position
     const firstLicenceRow = tableRow(page, firstLicence.licenceRef)
     await expect(firstLicenceRow.locator('[data-test^="abstraction-period-"]')).toHaveText('10 October to 11 November')
     await expect(firstLicenceRow.locator('[data-test^="restriction-"]')).toHaveText('Stop')
@@ -65,7 +65,6 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(page.locator('h1')).toHaveText('Check the licence matches for the selected thresholds')
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
     await expect(page.getByText('Showing 1 of 2 abstraction alerts')).toBeVisible()
-    // Only one row survives the filter, so unlike the unfiltered table its row index is deterministic
     await expect(page.locator('[data-test="licence-ref-0"]')).toHaveText(firstLicence.licenceRef)
     await expect(page.locator('[data-test="abstraction-period-0"]')).toHaveText('10 October to 11 November')
     await expect(page.locator('[data-test="restriction-0"]')).toHaveText('Stop')

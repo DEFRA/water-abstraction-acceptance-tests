@@ -1,7 +1,7 @@
 import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
-import { regions } from '../default-values.js'
 import registeredLicenceWithMonitoringStationUntaggedScenario from './registered-licence-with-monitoring-station-untagged.scenario.js'
+import { monitoringStations, regions } from '../default-values.js'
 
 export const title = 'Registered licence with a monitoring station (tagged)'
 export const description = 'Registered licence with a licence linked to a monitoring station'
@@ -19,7 +19,7 @@ export default function (region = null) {
   const licence = registeredLicenceWithMonitoringStationUntaggedScenario(region)
 
   const licenceVersionPurposeCondition = licenceVersionPurposeConditionData(licence.licenceVersionPurpose)
-  const licenceMonitoringStation = licenceMonitoringStationData(licence.licence, licence.monitoringStation)
+  const licenceMonitoringStation = licenceMonitoringStationData(licence.licence, monitoringStations.SECOND)
 
   return {
     ...licence,

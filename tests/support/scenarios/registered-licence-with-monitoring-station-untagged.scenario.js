@@ -1,15 +1,14 @@
 import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import monitoringStationData from '../data/monitoring-station.data.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { groups, regions } from '../default-values.js'
 
 export const title = 'Registered licence with a monitoring station (untagged)'
-export const description = 'Registered licence and monitoring station created separately with no tag between them'
+export const description = 'Registered licence with no tag to a monitoring station'
 
 /**
- * The licence and monitoring station are seeded independently with no link between them.
+ * The licence is not tagged to a monitoring station.
  */
 export default function (region = null) {
   if (!region) {
@@ -26,11 +25,8 @@ export default function (region = null) {
 
   const internalUserEntity = buildInternalUserEntity(groups.ENVIRONMENT_OFFICER)
 
-  const monitoringStation = monitoringStationData()
-
   return {
     ...licenceEntity,
-    ...mergeByKey(internalUserEntity, primaryUser),
-    monitoringStation
+    ...mergeByKey(internalUserEntity, primaryUser)
   }
 }

@@ -1,3 +1,4 @@
+import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
 import regionHelper from 'water-abstraction-engine/test/helpers/region.helper.js'
 import userHelper from 'water-abstraction-engine/test/helpers/user.helper.js'
 
@@ -15,6 +16,12 @@ export const groups = {
   PSC: 'psc',
   SUPER: 'super',
   WIRS: 'wirs'
+}
+
+export const monitoringStations = {
+  FIRST: monitoringStationHelper.select(0),
+  SECOND: monitoringStationHelper.select(1),
+  THIRD: monitoringStationHelper.select(2)
 }
 
 /**
