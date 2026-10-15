@@ -60,10 +60,10 @@ export const START_DATES = [
 // The purposes the licences are used for. Each licence takes the next one, going back to the start of the list when it
 // runs out.
 //
-// About two thirds of licences are not two-part tariff, so about two thirds of the purposes are make-up or top up water
-// (280), which is not. The rest are spray irrigation direct (400), which is. The list is a different length to the
-// start dates and to any of the groups of licences, so a kind of licence is not always given the same purpose.
-export const PURPOSES = ['280', '280', '400', '280', '280', '400', '280', '400', '280', '280', '400']
+// About two thirds of licences are not two-part tariff, so about two thirds of the purposes are general farming and
+// domestic (140), which is not. The rest are spray irrigation direct (400), which is. The list is a different length to
+// the start dates and to any of the groups of licences, so a kind of licence is not always given the same purpose.
+export const PURPOSES = ['140', '140', '400', '140', '140', '400', '140', '400', '140', '140', '400']
 
 // How many years after they started the licences that have ended were held for, by how they ended. Each licence takes
 // the next one in the list for how it ended, going back to the start of the list when it runs out. A licence that has

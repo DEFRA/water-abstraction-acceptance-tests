@@ -1,20 +1,20 @@
 import licenceVersionPurposeData from '../../../../../../tests/support/data/licence-version-purpose.data.js'
 import licenceVersionPurposePointData from '../../../../../../tests/support/data/licence-version-purpose-point.data.js'
 
-// A licence is built with one purpose. These are the ones added after it, in order: general farming and domestic, spray
-// irrigation storage, and general use. All are for agriculture
-const PURPOSES_TO_ADD = ['140', '420', '160']
+// A licence is built with one purpose. These are the ones added after it, in order: spray irrigation storage, general
+// use, and trickle irrigation direct. All are for agriculture
+const PURPOSES_TO_ADD = ['420', '160', '600']
 
 /**
  * Change the purpose a licence is used for
  *
  * A licence is built with a purpose of spray irrigation direct (400), which is two-part tariff. This gives it another,
- * for example make-up or top up water (280), which is not.
+ * for example general farming and domestic (140), which is not.
  *
  * Call this before anything is added to the licence, as new licence versions copy the purposes of the one before.
  *
  * @param {object} licenceEntity - the licence entity to change
- * @param {string} purpose - the legacy id of the purpose, for example '280'
+ * @param {string} purpose - the legacy id of the purpose, for example '140'
  *
  * @returns {object} the same licence entity
  */
