@@ -1,4 +1,5 @@
 import abstraction from './populate/abstraction.populator.js'
+import charging from './populate/charging.populator.js'
 import endDates from './populate/end-dates.populator.js'
 import licences from './populate/licences.populator.js'
 import { mergeByKey } from '../../../tests/support/helpers/scenario.helpers.js'
@@ -20,6 +21,7 @@ export default function populateWorld() {
   abstraction(licenceEntities)
   endDates(licenceEntities)
   monitoringStations(licenceEntities)
+  charging(licenceEntities)
 
   return mergeByKey(...licenceEntities)
 }

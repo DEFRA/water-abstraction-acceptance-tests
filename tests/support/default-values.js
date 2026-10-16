@@ -1,4 +1,5 @@
 import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
+import { naldRegions } from 'water-abstraction-engine/lib/static-lookups.lib.js'
 import regionHelper from 'water-abstraction-engine/test/helpers/region.helper.js'
 import userHelper from 'water-abstraction-engine/test/helpers/user.helper.js'
 
@@ -40,6 +41,24 @@ export const regions = {
   SOUTHERN: regionHelper.select(5),
   THAMES: regionHelper.select(6),
   WALES: regionHelper.select(7)
+}
+
+/**
+ * When a licence or a sroc charge reference needs its EIUC region (a licence's regional charge area), we use the one
+ * for its region, keyed by the region's NALD id. The names are the engine's lookup of NALD EIUC codes. NALD gives each
+ * licence its own EIUC code, so pairing a region with one is our choice. North East covers both Yorkshire and
+ * Northumbria, so we use Yorkshire, the larger.
+ * @type {object}
+ */
+export const eiucRegions = {
+  [regions.ANGLIAN.naldRegionId]: naldRegions.AN,
+  [regions.MIDLANDS.naldRegionId]: naldRegions.MD,
+  [regions.NORTH_EAST.naldRegionId]: naldRegions.YO,
+  [regions.NORTH_WEST.naldRegionId]: naldRegions.NW,
+  [regions.SOUTH_WEST.naldRegionId]: naldRegions.SW,
+  [regions.SOUTHERN.naldRegionId]: naldRegions.SO,
+  [regions.THAMES.naldRegionId]: naldRegions.TH,
+  [regions.WALES.naldRegionId]: naldRegions.WL
 }
 
 /**
