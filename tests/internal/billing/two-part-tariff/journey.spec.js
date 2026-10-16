@@ -146,7 +146,7 @@ test.describe('PRESROC two-part tariff bill run (internal)', { tag: ['@presroc',
 
     await expect(page.locator('h1')).toContainText(`${regions.NORTH_EAST.displayName} two-part tariff`)
     await expect(page.locator('#main-content > p > .govuk-tag')).toContainText('ready', { timeout: 20000 })
-    await expect(page.locator('[data-test="bill-total"]')).toContainText('£14.94')
+    await expect(page.locator('[data-test="bill-total"]')).toContainText('£9.04')
     await expect(page.locator('[data-test="bills-count"]')).toContainText('1 Two-part tariff winter and all year bill')
     await page.getByRole('button', { name: 'Send bill run' }).click()
 
