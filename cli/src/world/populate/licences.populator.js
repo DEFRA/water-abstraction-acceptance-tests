@@ -1,34 +1,55 @@
-import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
-
-import { abstractDuring } from './helpers/licence/abstraction-periods.helpers.js'
-import { abstractUpTo } from './helpers/licence/quantities.helpers.js'
-import { addCondition } from './helpers/licence/conditions.helpers.js'
+import { addCondition } from './helpers/conditions.helpers.js'
 import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
-import { mergeByKey } from '../../../../tests/support/helpers/scenario.helpers.js'
-import { startOn } from './helpers/licence/start-dates.helpers.js'
-import { tagToMonitoringStation } from './helpers/licence/monitoring-stations.helpers.js'
-import {
-  ABSTRACTION_PERIODS,
-  ISSUE_100_BEFORE,
-  MONITORING_STATIONS,
-  MONITORING_STATION_EVERY,
-  POINTS,
-  PURPOSES,
-  QUANTITIES,
-  REGIONS,
-  REVOKED_ON,
-  START_DATES,
-  TAGS,
-  TAGS_PER_LICENCE,
-  WATER_COMPANY_EVERY,
-  YEARS_HELD
-} from './licences.constants.js'
-import { abstractFrom, addPoint } from './helpers/licence/points.helpers.js'
-import { addPurpose, usedFor } from './helpers/licence/purposes.helpers.js'
-import { addPurposeToNewVersion, correct, firstIssue, transfer } from './helpers/licence/licence-versions.helpers.js'
-import { endAfter, expire, expireInFuture, lapse, revoke, revokeOn } from './helpers/licence/end-dates.helpers.js'
-import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
-import { heldByWaterCompany, holdBySameCompany } from './helpers/licence/water-company.helpers.js'
+import { startOn } from './helpers/start-dates.helpers.js'
+import { REGIONS } from './helpers/regions.helpers.js'
+import { addPoint } from './helpers/points.helpers.js'
+import { addPurpose, usedFor } from './helpers/purposes.helpers.js'
+import { addPurposeToNewVersion, correct, firstIssue, transfer } from './helpers/licence-versions.helpers.js'
+import { expire, expireInFuture, lapse, revoke } from './helpers/end-dates.helpers.js'
+
+// Licences that started before this date have a first licence version with an issue of 100. Those that started on or
+// after it have one with an issue of 1.
+const ISSUE_100_BEFORE = '2000-01-01'
+
+// The dates the licences start on. Each licence takes the next one, going back to the start of the list when it runs
+// out.
+//
+// About half of all licences started in the 1960s, so about half of the dates are. The rest are shared between the
+// decades since in proportion. The list is a different length to any of the groups of licences, so a kind of licence
+// is not always given the same start dates.
+const START_DATES = [
+  '1965-04-01',
+  '1972-04-01',
+  '1966-04-01',
+  '1994-04-01',
+  '1963-04-01',
+  '1985-04-01',
+  '1967-04-01',
+  '2004-04-01',
+  '1961-04-01',
+  '2013-04-01',
+  '1968-04-01',
+  '1991-04-01',
+  '1964-04-01',
+  '1978-04-01',
+  '1969-04-01',
+  '2022-04-01',
+  '1962-04-01',
+  '1988-04-01',
+  '1960-04-01',
+  '2008-04-01',
+  '1965-04-01',
+  '1997-04-01',
+  '2017-04-01'
+]
+
+// The purposes the licences are used for. Each licence takes the next one, going back to the start of the list when it
+// runs out.
+//
+// About two thirds of licences are not two-part tariff, so about two thirds of the purposes are general farming and
+// domestic (140), which is not. The rest are spray irrigation direct (400), which is. The list is a different length to
+// the start dates and to any of the groups of licences, so a kind of licence is not always given the same purpose.
+const PURPOSES = ['140', '140', '400', '140', '140', '400', '140', '400', '140', '140', '400']
 
 // The licences in each group. Each entry is a function that builds one licence for a region.
 //
@@ -90,30 +111,18 @@ const RARE = [
 const VERY_RARE = [_lapsedWithFutureExpiry, _lapsedAndRevoked, _expiredLapsedAndRevoked]
 
 /**
- * Generate the licences that populate the world
+ * Build the licences that populate the world
  *
  * Each region gets its number of licences from each group. For each one the next function in that group's list builds
  * it, going back to the start of the list when it runs out. Each licence is given the next start date and the next
  * purpose in the same way.
  *
- * Then every 24th licence in the region is made a water company licence, and they are all given the same company.
- * Each licence in the region is given the next number of points in its list.
- *
- * Once every licence is built, each is given the next abstraction period and the next quantities in their lists. Each
- * one that has ended is moved to end the next number of years after it started. Then two of every three are moved to
- * the date many licences were revoked on, where they were revoked and started before it.
- *
- * Last, every 6th licence that is still live is tagged to the next monitoring station, the next number of times, with
- * the next tags in the list. Each monitoring station is used for its number of licences before moving on to the next.
- *
- * @returns {object} the data, keyed by database table name
+ * @returns {object[]} the licence entities
  */
-export default function populateLicences() {
+export default function licences() {
   const licenceEntities = []
 
   for (const { region, common, fairlyCommon, uncommon, rare, veryRare } of REGIONS) {
-    const regionStart = licenceEntities.length
-
     for (let i = 0; i < common; i++) {
       licenceEntities.push(COMMON[i % COMMON.length](region, _startDate(licenceEntities), _purpose(licenceEntities)))
     }
@@ -139,55 +148,9 @@ export default function populateLicences() {
         VERY_RARE[i % VERY_RARE.length](region, _startDate(licenceEntities), _purpose(licenceEntities))
       )
     }
-
-    const waterCompanyLicenceEntities = []
-
-    for (let i = regionStart; i < licenceEntities.length; i += WATER_COMPANY_EVERY) {
-      waterCompanyLicenceEntities.push(heldByWaterCompany(licenceEntities[i]))
-    }
-
-    holdBySameCompany(waterCompanyLicenceEntities)
-
-    for (let i = regionStart; i < licenceEntities.length; i++) {
-      abstractFrom(licenceEntities[i], region, POINTS[i % POINTS.length])
-    }
   }
 
-  for (let i = 0; i < licenceEntities.length; i++) {
-    abstractDuring(licenceEntities[i], ABSTRACTION_PERIODS[i % ABSTRACTION_PERIODS.length])
-    abstractUpTo(licenceEntities[i], QUANTITIES, i % QUANTITIES.length)
-    endAfter(licenceEntities[i], YEARS_HELD, i)
-
-    if (i % 3 !== 2) {
-      revokeOn(licenceEntities[i], REVOKED_ON)
-    }
-  }
-
-  const liveLicenceEntities = licenceEntities.filter((licenceEntity) => {
-    return _live(licenceEntity)
-  })
-
-  const stations = []
-
-  for (const { station, licences } of MONITORING_STATIONS) {
-    for (let i = 0; i < licences; i++) {
-      stations.push(station)
-    }
-  }
-
-  let tagCount = 0
-
-  for (let i = 0; i < liveLicenceEntities.length; i += MONITORING_STATION_EVERY) {
-    const taggedCount = i / MONITORING_STATION_EVERY
-    const monitoringStation = monitoringStationHelper.select(stations[taggedCount % stations.length])
-
-    for (let j = 0; j < TAGS_PER_LICENCE[taggedCount % TAGS_PER_LICENCE.length]; j++) {
-      tagToMonitoringStation(liveLicenceEntities[i], monitoringStation, TAGS[tagCount % TAGS.length])
-      tagCount++
-    }
-  }
-
-  return mergeByKey(...licenceEntities)
+  return licenceEntities
 }
 
 /**
@@ -205,22 +168,6 @@ function _build(region, startDate, purpose) {
   }
 
   return licenceEntity
-}
-
-/**
- * Whether a licence is still live, which is when it has not been revoked or lapsed, and has not expired or expires in
- * the future
- *
- * @private
- */
-function _live(licenceEntity) {
-  const { expiredDate, lapsedDate, revokedDate } = licenceEntity.licence
-
-  if (revokedDate || lapsedDate) {
-    return false
-  }
-
-  return !expiredDate || expiredDate > formatDateToIso(today())
 }
 
 /**

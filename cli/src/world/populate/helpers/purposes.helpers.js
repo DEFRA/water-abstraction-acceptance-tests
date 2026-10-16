@@ -1,5 +1,5 @@
-import licenceVersionPurposeData from '../../../../../../tests/support/data/licence-version-purpose.data.js'
-import licenceVersionPurposePointData from '../../../../../../tests/support/data/licence-version-purpose-point.data.js'
+import licenceVersionPurposeData from '../../../../../tests/support/data/licence-version-purpose.data.js'
+import licenceVersionPurposePointData from '../../../../../tests/support/data/licence-version-purpose-point.data.js'
 
 // A licence is built with one purpose. These are the ones added after it, in order: spray irrigation storage, general
 // use, and trickle irrigation direct. All are for agriculture

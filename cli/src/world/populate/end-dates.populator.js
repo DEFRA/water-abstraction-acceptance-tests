@@ -1,72 +1,41 @@
-import { formatDateToIso, relativeToToday, today } from '../../../../../../tests/support/helpers/date.helpers.js'
+import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
 
-/**
- * Revoke a licence 30 days ago
- *
- * The most common end date.
- *
- * @param {object} licenceEntity - the licence entity to change
- *
- * @returns {object} the same licence entity
- */
-export function revoke(licenceEntity) {
-  const revokedDate = formatDateToIso(relativeToToday(-30))
-
-  licenceEntity.licence.revokedDate = revokedDate
-  _endDocument(licenceEntity, revokedDate)
-
-  return licenceEntity
+// How many years after they started the licences that have ended were held for, by how they ended. Each licence takes
+// the next one in the list for how it ended, going back to the start of the list when it runs out. A licence that has
+// not ended does not use the one it takes.
+//
+// A licence that expired was mostly held for about ten years. One that lapsed or was revoked was often held for
+// decades. Where a licence started too recently to have been held for the number of years it takes, it uses the next
+// one in the list that fits. Each list is a different length to the start dates and any of the groups of licences, so a
+// kind of licence does not always end at the same time.
+const YEARS_HELD = {
+  expired: [9, 5, 11, 2, 15, 7, 10],
+  lapsed: [23, 10, 34, 3, 39, 16, 28],
+  revoked: [14, 5, 28, 2, 40, 9, 20]
 }
 
-/**
- * Expire a licence 90 days ago
- *
- * The second most common end date.
- *
- * @param {object} licenceEntity - the licence entity to change
- *
- * @returns {object} the same licence entity
- */
-export function expire(licenceEntity) {
-  const expiredDate = formatDateToIso(relativeToToday(-90))
-
-  licenceEntity.licence.expiredDate = expiredDate
-  _endDocument(licenceEntity, expiredDate)
-
-  return licenceEntity
-}
+// The date many licences were revoked on. Two of every three licences that were revoked, and that started long enough
+// before it, are revoked on this date rather than a number of years after they started.
+const REVOKED_ON = '2005-03-31'
 
 /**
- * Set a licence to expire a year from now
+ * Move when the licences that have ended did so
  *
- * Uncommon. The licence has not ended yet, so its licence document and document role are left open.
+ * Each one that has ended is moved to end the next number of years after it started. Then two of every three are moved
+ * to the date many licences were revoked on, where they were revoked and started before it.
  *
- * @param {object} licenceEntity - the licence entity to change
+ * Call this after everything has been added to the licences.
  *
- * @returns {object} the same licence entity
+ * @param {object[]} licenceEntities - the licence entities to change
  */
-export function expireInFuture(licenceEntity) {
-  licenceEntity.licence.expiredDate = formatDateToIso(relativeToToday(365))
+export default function endDates(licenceEntities) {
+  for (let i = 0; i < licenceEntities.length; i++) {
+    _endAfter(licenceEntities[i], YEARS_HELD, i)
 
-  return licenceEntity
-}
-
-/**
- * Lapse a licence 60 days ago
- *
- * Uncommon.
- *
- * @param {object} licenceEntity - the licence entity to change
- *
- * @returns {object} the same licence entity
- */
-export function lapse(licenceEntity) {
-  const lapsedDate = formatDateToIso(relativeToToday(-60))
-
-  licenceEntity.licence.lapsedDate = lapsedDate
-  _endDocument(licenceEntity, lapsedDate)
-
-  return licenceEntity
+    if (i % 3 !== 2) {
+      _revokeOn(licenceEntities[i], REVOKED_ON)
+    }
+  }
 }
 
 /**
@@ -85,16 +54,9 @@ export function lapse(licenceEntity) {
  *
  * A licence that has not ended is left alone, and so is an expiry date in the future.
  *
- * Call this after everything has been added to the licence.
- *
- * @param {object} licenceEntity - the licence entity to change
- * @param {object} yearsHeld - the lists of how many years after it started a licence ended, for example
- * `{ expired: [9, 5], lapsed: [23, 10], revoked: [14, 5] }`
- * @param {number} first - where in the list the number of years for this licence is
- *
- * @returns {object} the same licence entity
+ * @private
  */
-export function endAfter(licenceEntity, yearsHeld, first) {
+function _endAfter(licenceEntity, yearsHeld, first) {
   const { licence, licenceDocument } = licenceEntity
 
   if (!licenceDocument.endDate) {
@@ -126,14 +88,9 @@ export function endAfter(licenceEntity, yearsHeld, first) {
  * The licence is left alone unless being revoked is the only way it has ended, so one that has also lapsed or expired
  * is. So is one whose last licence version started on or after the date.
  *
- * Call this after everything has been added to the licence.
- *
- * @param {object} licenceEntity - the licence entity to change
- * @param {string} date - the date the licence was revoked, for example '2005-03-31'
- *
- * @returns {object} the same licence entity
+ * @private
  */
-export function revokeOn(licenceEntity, date) {
+function _revokeOn(licenceEntity, date) {
   const { licence } = licenceEntity
   const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
 
@@ -206,22 +163,4 @@ function _moveEnd(licenceEntity, endDate) {
       endDate.setUTCDate(endDate.getUTCDate() + 30)
     }
   }
-}
-
-/**
- * End the licence document and document role on the date the licence ended
- *
- * When a licence has more than one end date they end on the earliest.
- *
- * @private
- */
-function _endDocument(licenceEntity, endDate) {
-  const { licenceDocument, licenceDocumentRole } = licenceEntity
-
-  if (licenceDocument.endDate && licenceDocument.endDate < endDate) {
-    return
-  }
-
-  licenceDocument.endDate = endDate
-  licenceDocumentRole.endDate = endDate
 }
