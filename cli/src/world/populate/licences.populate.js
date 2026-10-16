@@ -1,18 +1,25 @@
+import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
+
 import { abstractDuring } from './helpers/licence/abstraction-periods.helpers.js'
 import { abstractUpTo } from './helpers/licence/quantities.helpers.js'
 import { addCondition } from './helpers/licence/conditions.helpers.js'
 import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
 import { mergeByKey } from '../../../../tests/support/helpers/scenario.helpers.js'
 import { startOn } from './helpers/licence/start-dates.helpers.js'
+import { tagToMonitoringStation } from './helpers/licence/monitoring-stations.helpers.js'
 import {
   ABSTRACTION_PERIODS,
   ISSUE_100_BEFORE,
+  MONITORING_STATIONS,
+  MONITORING_STATION_EVERY,
   POINTS,
   PURPOSES,
   QUANTITIES,
   REGIONS,
   REVOKED_ON,
   START_DATES,
+  TAGS,
+  TAGS_PER_LICENCE,
   WATER_COMPANY_EVERY,
   YEARS_HELD
 } from './licences.constants.js'
@@ -20,6 +27,7 @@ import { abstractFrom, addPoint } from './helpers/licence/points.helpers.js'
 import { addPurpose, usedFor } from './helpers/licence/purposes.helpers.js'
 import { addPurposeToNewVersion, correct, firstIssue, transfer } from './helpers/licence/licence-versions.helpers.js'
 import { endAfter, expire, expireInFuture, lapse, revoke, revokeOn } from './helpers/licence/end-dates.helpers.js'
+import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
 import { heldByWaterCompany, holdBySameCompany } from './helpers/licence/water-company.helpers.js'
 
 // The licences in each group. Each entry is a function that builds one licence for a region.
@@ -95,6 +103,9 @@ const VERY_RARE = [_lapsedWithFutureExpiry, _lapsedAndRevoked, _expiredLapsedAnd
  * one that has ended is moved to end the next number of years after it started. Then two of every three are moved to
  * the date many licences were revoked on, where they were revoked and started before it.
  *
+ * Last, every 6th licence that is still live is tagged to the next monitoring station, the next number of times, with
+ * the next tags in the list. Each monitoring station is used for its number of licences before moving on to the next.
+ *
  * @returns {object} the data, keyed by database table name
  */
 export default function populateLicences() {
@@ -152,6 +163,30 @@ export default function populateLicences() {
     }
   }
 
+  const liveLicenceEntities = licenceEntities.filter((licenceEntity) => {
+    return _live(licenceEntity)
+  })
+
+  const stations = []
+
+  for (const { station, licences } of MONITORING_STATIONS) {
+    for (let i = 0; i < licences; i++) {
+      stations.push(station)
+    }
+  }
+
+  let tagCount = 0
+
+  for (let i = 0; i < liveLicenceEntities.length; i += MONITORING_STATION_EVERY) {
+    const taggedCount = i / MONITORING_STATION_EVERY
+    const monitoringStation = monitoringStationHelper.select(stations[taggedCount % stations.length])
+
+    for (let j = 0; j < TAGS_PER_LICENCE[taggedCount % TAGS_PER_LICENCE.length]; j++) {
+      tagToMonitoringStation(liveLicenceEntities[i], monitoringStation, TAGS[tagCount % TAGS.length])
+      tagCount++
+    }
+  }
+
   return mergeByKey(...licenceEntities)
 }
 
@@ -170,6 +205,22 @@ function _build(region, startDate, purpose) {
   }
 
   return licenceEntity
+}
+
+/**
+ * Whether a licence is still live, which is when it has not been revoked or lapsed, and has not expired or expires in
+ * the future
+ *
+ * @private
+ */
+function _live(licenceEntity) {
+  const { expiredDate, lapsedDate, revokedDate } = licenceEntity.licence
+
+  if (revokedDate || lapsedDate) {
+    return false
+  }
+
+  return !expiredDate || expiredDate > formatDateToIso(today())
 }
 
 /**
