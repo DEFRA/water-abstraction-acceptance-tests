@@ -1,22 +1,21 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Licence holder (internal)', () => {
   let company
   let licence
+  let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence')
 
     company = scenario.company
     licence = scenario.licence
-
-    await setup(scenario)
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.super)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('can navigate between pages using the sub-navigation', async ({ page }) => {

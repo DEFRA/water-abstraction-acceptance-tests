@@ -1,37 +1,38 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-winter-and-summer-return-requirements.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction for licence with both a winter and summer return requirement (internal)', () => {
+  let company
   let licence
   let startYear
   let winterCurrent
   let summerCurrent
   let winterPrevious
   let summerPrevious
+  let user
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(async ({ world }) => {
     const { currentWinterReturnCycle } = calculatedDates()
 
     startYear = new Date(currentWinterReturnCycle.startDate).getFullYear()
 
-    const scenario = scenarioData()
+    const scenario = world('licence-with-winter-and-summer-return-requirements')
 
+    company = scenario.company
     licence = scenario.licence
 
     const [winterCurrentLog, winterPreviousLog, summerCurrentLog, summerPreviousLog] = scenario.returnLogs
+    user = scenario.user
 
     winterCurrent = { ...returnLogDateDetails(winterCurrentLog), returnReference: winterCurrentLog.returnReference }
     summerCurrent = { ...returnLogDateDetails(summerCurrentLog), returnReference: summerCurrentLog.returnReference }
     winterPrevious = { ...returnLogDateDetails(winterPreviousLog), returnReference: winterPreviousLog.returnReference }
     summerPrevious = { ...returnLogDateDetails(summerPreviousLog), returnReference: summerPreviousLog.returnReference }
-
-    await setup(scenario)
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('adds a new return version using copy existing for a licence with existing winter and summer return requirement', async ({
@@ -97,7 +98,7 @@ test.describe('Submit historic correction for licence with both a winter and sum
     await page.locator('#existing').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await page.getByText('Approve returns requirement').click()
 
     await expect(page.locator('.govuk-panel__title')).toContainText('Requirements for returns approved')

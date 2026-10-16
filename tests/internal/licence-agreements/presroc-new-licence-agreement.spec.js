@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/presroc-licence-with-charge-version.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -15,9 +14,10 @@ test.describe(
   () => {
     let licence
     let chargeVersionStartDate
+    let user
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('presroc-licence-with-charge-version')
 
       licence = scenario.licence
 
@@ -25,12 +25,11 @@ test.describe(
       // version's start date for the agreement's custom start date. It also pre-dates the SROC scheme, so setting up
       // the agreement against it flags the licence for the next old charge scheme supplementary bill run.
       chargeVersionStartDate = scenario.chargeVersion.startDate
-
-      await setup(scenario)
+      user = scenario.user
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user)
     })
 
     test('setup a new agreement for a license, view it, and confirm it flags the licence for supplementary billing', async ({

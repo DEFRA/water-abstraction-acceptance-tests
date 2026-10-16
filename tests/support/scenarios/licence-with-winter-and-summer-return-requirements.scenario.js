@@ -1,5 +1,6 @@
 import { generateLicenceVersionPurposeExternalId } from 'water-abstraction-engine/test/generators.js'
 
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { buildPreviousAndCurrentReturnLogs } from '../helpers/return-log.helpers.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
@@ -8,6 +9,7 @@ import { generatePointExternalId } from '../helpers/generators.helpers.js'
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
 import licenceVersionPurposePointData from '../data/licence-version-purpose-point.data.js'
 import pointData from '../data/point.data.js'
+import { regions } from '../default-values.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -17,13 +19,17 @@ export const description =
   'Licence with two return requirements, a winter and a summer cycle, each with a due return log for the current ' +
   'cycle and a completed return log for the previous cycle'
 
-export default function () {
+export default function (region = null) {
+  if (!region) {
+    region = regions.NORTH_EAST
+  }
+
   const { currentSummerReturnCycle, currentWinterReturnCycle } = calculatedDates()
 
   currentSummerReturnCycle.dueDate = null
   currentWinterReturnCycle.dueDate = null
 
-  const licenceWithTwoReturnRequirements = _licenceWithTwoReturnRequirements()
+  const licenceWithTwoReturnRequirements = _licenceWithTwoReturnRequirements(region)
 
   const [winterRequirement, summerRequirement] = licenceWithTwoReturnRequirements.returnRequirements
   const [winterPoint, summerPoint] = licenceWithTwoReturnRequirements.points
@@ -38,20 +44,25 @@ export default function () {
       winterRequirement,
       winterRequirementPurpose,
       winterPoint,
-      currentWinterReturnCycle
+      currentWinterReturnCycle,
+      region
     ),
     ...buildPreviousAndCurrentReturnLogs(
       licenceWithTwoReturnRequirements.licence,
       summerRequirement,
       summerRequirementPurpose,
       summerPoint,
-      currentSummerReturnCycle
+      currentSummerReturnCycle,
+      region
     )
   ]
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceWithTwoReturnRequirements,
-    returnLogs
+    returnLogs,
+    ...internalUserEntity
   }
 }
 
@@ -60,24 +71,20 @@ export default function () {
  *
  * @private
  */
-function _licenceWithTwoReturnRequirements() {
-  const licenceEntity = buildLicenceEntity()
+function _licenceWithTwoReturnRequirements(region) {
+  const licenceEntity = buildLicenceEntity(region)
 
-  const secondPoint = pointData()
+  const secondPoint = pointData(region)
   secondPoint.description = 'Example point 2'
   secondPoint.ngr1 = 'TQ 1234 5679'
-  secondPoint.externalId = generatePointExternalId()
+  secondPoint.externalId = generatePointExternalId(region)
 
-  const secondLicenceVersionPurpose = licenceVersionPurposeData(licenceEntity.licenceVersion)
+  const secondLicenceVersionPurpose = licenceVersionPurposeData(licenceEntity.licenceVersion, region)
   secondLicenceVersionPurpose.purposeId.value = '420'
-  secondLicenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId()
+  secondLicenceVersionPurpose.externalId = generateLicenceVersionPurposeExternalId(region)
   const secondLicenceVersionPurposePoint = licenceVersionPurposePointData(secondLicenceVersionPurpose, secondPoint)
 
-  const returnVersionEntity = buildReturnVersionEntity(
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    licenceEntity.point
-  )
+  const returnVersionEntity = buildReturnVersionEntity(licenceEntity)
 
   const secondReturnRequirement = returnRequirementData(returnVersionEntity.returnVersion, secondLicenceVersionPurpose)
   const secondReturnRequirementPoint = returnRequirementPointData(secondReturnRequirement, secondPoint)

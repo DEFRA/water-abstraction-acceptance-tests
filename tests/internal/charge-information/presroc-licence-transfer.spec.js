@@ -1,25 +1,28 @@
 import { convertCubicMetresToMegalitres } from '../../support/helpers/conversion.helpers.js'
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/presroc-licence-with-charge-version.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplementary-billing', '@presroc'] }, () => {
+  let address
   let chargeVersion
+  let company
   let licence
   let licenceVersionPurpose
+  let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('presroc-licence-with-charge-version')
 
+    address = scenario.address
     chargeVersion = scenario.chargeVersion
+    company = scenario.company
     licence = scenario.licence
     licenceVersionPurpose = scenario.licenceVersionPurpose
-
-    await setup(scenario)
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test(
@@ -45,7 +48,7 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
       await page.getByRole('radio', { description: formatLongDate(new Date()), exact: true }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Select an existing billing account for Big Farm Co Ltd')
+      await expect(page.locator('h1')).toContainText(`Select an existing billing account for ${company.name}`)
       await page.getByRole('radio', { name: 'Set up a new billing account' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
@@ -59,7 +62,7 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
       await page.getByLabel('Full name').fill('Test Farm Co Ltd')
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page.locator('h1')).toContainText('Select an existing address for Big Farm Co Ltd')
+      await expect(page.locator('h1')).toContainText(`Select an existing address for ${company.name}`)
       await page.getByRole('radio').first().check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
@@ -74,7 +77,7 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
 
       await expect(page.locator('h1')).toContainText('Check billing account details')
       await expect(page.locator('.govuk-summary-list__value', { hasText: 'Test Farm Co Ltd' })).toBeVisible()
-      await expect(page.locator('.govuk-summary-list__value', { hasText: 'Environment Agency' })).toBeVisible()
+      await expect(page.locator('.govuk-summary-list__value', { hasText: address.address1 })).toBeVisible()
       await expect(page.locator('.govuk-summary-list__value', { hasText: 'Test Farm Manager' })).toBeVisible()
       await page.getByRole('button', { name: 'Confirm' }).click()
 

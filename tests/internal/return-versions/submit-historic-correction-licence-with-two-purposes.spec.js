@@ -1,27 +1,30 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-two-return-requirements-and-historic-return-logs.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction using abstraction data for licence with two purposes (internal)', () => {
+  let company
   let licence
   let startYear
   let purpose400Current
   let purpose400Previous
   let purpose420Current
   let purpose420Previous
+  let user
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(async ({ world }) => {
     const { currentWinterReturnCycle } = calculatedDates()
 
     startYear = new Date(currentWinterReturnCycle.startDate).getFullYear()
 
-    const scenario = scenarioData()
+    const scenario = world('licence-with-two-return-requirements-and-historic-return-logs')
 
+    company = scenario.company
     licence = scenario.licence
 
     const [purpose400CurrentLog, purpose400PreviousLog, purpose420CurrentLog, purpose420PreviousLog] =
       scenario.returnLogs
+    user = scenario.user
 
     purpose400Current = {
       ...returnLogDateDetails(purpose400CurrentLog),
@@ -39,12 +42,10 @@ test.describe('Submit historic correction using abstraction data for licence wit
       ...returnLogDateDetails(purpose420PreviousLog),
       returnReference: purpose420PreviousLog.returnReference
     }
-
-    await setup(scenario)
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('adds a new return version using abstraction data for a licence with two purposes', async ({ page }) => {
@@ -103,7 +104,7 @@ test.describe('Submit historic correction using abstraction data for licence wit
     await page.locator('#useAbstractionData').check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
     await page.getByText('Approve returns requirement').click()
 
     await expect(page.locator('.govuk-panel__title')).toContainText('Requirements for returns approved')

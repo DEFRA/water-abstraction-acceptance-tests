@@ -1,4 +1,4 @@
-import usersData from './users.data.js'
+import { users } from '../default-values.js'
 
 export default function (licence) {
   return {
@@ -7,7 +7,7 @@ export default function (licence) {
     createdAt: new Date(),
     updatedAt: new Date(),
     createdBy: {
-      email: usersData.billingAndData
+      email: users.BILLING_AND_DATA.username
     },
     data: {
       chargeVersion: {

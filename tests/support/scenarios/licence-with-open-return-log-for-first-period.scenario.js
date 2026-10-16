@@ -1,13 +1,19 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { compareDates } from '../helpers/date.helpers.js'
+import { regions } from '../default-values.js'
 import returnLogData from '../data/return-log.data.js'
 
 export const title = 'Licence with an open return log (first period)'
 export const description = 'Licence with an open return log for the first return period with no due date set'
 
-export default function () {
+export default function (region = null) {
+  if (!region) {
+    region = regions.NORTH_WEST
+  }
+
   const dates = calculatedDates()
 
   const { firstReturnPeriod } = dates
@@ -19,18 +25,14 @@ export default function () {
     quarterly: firstReturnPeriod.quarterly
   }
 
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(region)
 
   // We want the return logs for the licence to match with the first quarter shown in the journey. This is dynamically
   // calculated based on the current date, so could be a quarterly period, or the winter or summer cycle.
   // Only licences flagged as water undertakers are eligible for quarterly returns, so we ensure the licence aligns.
   licenceEntity.licence.waterUndertaker = firstPeriod.quarterly
 
-  const returnVersionEntity = buildReturnVersionEntity(
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    licenceEntity.point
-  )
+  const returnVersionEntity = buildReturnVersionEntity(licenceEntity)
 
   const periods = _periods(firstPeriod, dates)
   const returnLogs = periods.map((period) => {
@@ -39,7 +41,8 @@ export default function () {
       returnVersionEntity.returnRequirement,
       [returnVersionEntity.returnRequirementPurpose],
       [licenceEntity.point],
-      period
+      period,
+      region
     )
   })
 
@@ -47,10 +50,13 @@ export default function () {
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
   returnVersionEntity.returnVersion.startDate = returnLogs[0].startDate
 
+  const internalUserEntity = buildInternalUserEntity()
+
   return {
     ...licenceEntity,
     ...returnVersionEntity,
-    returnLogs
+    returnLogs,
+    ...internalUserEntity
   }
 }
 

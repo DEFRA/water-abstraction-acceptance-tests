@@ -1,26 +1,22 @@
 import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
-import scenarioData from '../../support/scenarios/external-user.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Change user email address (external)', () => {
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('external-user')
 
     user = scenario.user
-
-    await setup(scenario)
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('can allow authenticated users to change their email address including verification by them with a code', async ({
     page,
-    externalUrl,
-    defaultPassword
+    externalUrl
   }) => {
     const newEmail = generateExternalEmailAddress()
 
@@ -33,7 +29,7 @@ test.describe('Change user email address (external)', () => {
 
     // For security, confirm your password first
     // Enter password and continue
-    await page.locator('input#password').fill(defaultPassword)
+    await page.locator('input#password').fill(user.password)
     await page.locator('button.govuk-button', { hasText: 'Continue' }).click()
 
     // Change your email address

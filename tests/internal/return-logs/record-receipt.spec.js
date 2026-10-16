@@ -1,19 +1,18 @@
-import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Record receipt for return (internal)', () => {
   let returnLog
+  let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-open-winter-return-log')
 
     returnLog = scenario.returnLogs[0]
-
-    await setup(scenario)
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('record the receipt for an overdue return for a licence from its returns tab', async ({ page }) => {

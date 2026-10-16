@@ -1,18 +1,17 @@
-import scenarioData from '../../../support/scenarios/licence-with-open-return-log-for-first-period.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Standard returns invitation journey (internal)', () => {
   let licence
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  let user
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-open-return-log-for-first-period')
 
     licence = scenario.licence
-
-    await setup(scenario)
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('creates a standard returns invitation notice', async ({ page }) => {

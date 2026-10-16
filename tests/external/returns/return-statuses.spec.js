@@ -1,4 +1,3 @@
-import scenarioData from '../../support/scenarios/registered-licence-with-all-return-log-statuses.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('View return statuses (external)', () => {
@@ -6,18 +5,16 @@ test.describe('View return statuses (external)', () => {
   let returnLogs
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('registered-licence-with-all-return-log-statuses')
 
     licence = scenario.licence
     returnLogs = scenario.returnLogs
-    user = scenario.user
-
-    await setup(scenario)
+    user = scenario.users[1]
   })
 
   test.beforeEach(async ({ loginExternal }) => {
-    await loginExternal(user.username)
+    await loginExternal(user)
   })
 
   test('login as an existing user and view returns', async ({ page, externalUrl }) => {

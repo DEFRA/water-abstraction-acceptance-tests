@@ -1,23 +1,26 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction changing return cycle type on new return version (internal)', () => {
+  let company
   let licence
   let returnLogs
   let startYear
   let expectedReturnLogs
+  let user
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(async ({ world }) => {
     const { currentFinancialYear } = calculatedDates()
 
     startYear = new Date(currentFinancialYear.startDate).getFullYear()
 
-    const scenario = scenarioData()
+    const scenario = world('licence-with-open-winter-return-log')
 
+    company = scenario.company
     licence = scenario.licence
     returnLogs = scenario.returnLogs
+    user = scenario.user
 
     expectedReturnLogs = {
       newSummer: returnLogDateDetails({
@@ -41,12 +44,10 @@ test.describe('Submit historic correction changing return cycle type on new retu
         endDate: returnLogs[0].endDate
       })
     }
-
-    await setup(scenario)
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('adds a new summer return version to a licence part way through the previous winter cycle resulting in both a split-log and new summer return logs', async ({
@@ -99,7 +100,7 @@ test.describe('Submit historic correction changing return cycle type on new retu
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // click the change link for the returns cycle
     await page.locator('[data-test="change-returns-cycle-0"]').click()
@@ -112,7 +113,7 @@ test.describe('Submit historic correction changing return cycle type on new retu
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see the returns cycle we changed to
     await expect(page.locator('[data-test="returns-cycle-0"]')).toContainText('Summer')

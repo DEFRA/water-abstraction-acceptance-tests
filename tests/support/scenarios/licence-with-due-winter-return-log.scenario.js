@@ -1,23 +1,25 @@
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import { regions } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a due return log (winter cycle)'
 export const description =
   'Licence with one return requirement and a due winter return log for the previous winter cycle'
 
-export default function () {
+export default function (region = null) {
+  if (!region) {
+    region = regions.WALES
+  }
+
   const { currentWinterReturnCycle } = calculatedDates()
   const periods = returnLogPeriods(currentWinterReturnCycle, currentWinterReturnCycle.dueDate)
 
-  const licenceEntity = buildLicenceEntity()
+  const licenceEntity = buildLicenceEntity(region)
 
-  const returnVersionEntity = buildReturnVersionEntity(
-    licenceEntity.licence,
-    licenceEntity.licenceVersionPurpose,
-    licenceEntity.point
-  )
+  const returnVersionEntity = buildReturnVersionEntity(licenceEntity)
 
   // In the service return logs will cover the whole period of their matching return version. To ensure our test data is
   // realistic, we alter the start date of the return version to match the first return log we're seeding.
@@ -28,12 +30,16 @@ export default function () {
     returnVersionEntity.returnRequirement,
     returnVersionEntity.returnRequirementPurpose,
     licenceEntity.point,
-    periods
+    periods,
+    region
   )
+
+  const internalUserEntity = buildInternalUserEntity()
 
   return {
     ...licenceEntity,
     ...returnVersionEntity,
-    returnLogs
+    returnLogs,
+    ...internalUserEntity
   }
 }

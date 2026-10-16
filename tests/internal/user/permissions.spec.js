@@ -1,23 +1,17 @@
-import scenarioData from '../../support/scenarios/licence.scenario.js'
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('User permissions (internal)', () => {
   let licence
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence')
 
     licence = scenario.licence
-
-    await setup(scenario)
   })
 
-  test("confirms the Billing & Data user can access bill runs and a licence's bills tab", async ({
-    page,
-    login,
-    users
-  }) => {
-    await login(users.billingAndData)
+  test("confirms the Billing & Data user can access bill runs and a licence's bills tab", async ({ page, login }) => {
+    await login(users.BILLING_AND_DATA)
     await page.goto(`/system/licences/${licence.id}/summary`)
 
     // Confirm we are on the licence page
@@ -37,8 +31,8 @@ test.describe('User permissions (internal)', () => {
     await expect(page.locator('#nav > ul')).toContainText('Bill runs')
   })
 
-  test("confirms the PSC user cannot access bill runs and a licence's bills tab", async ({ page, login, users }) => {
-    await login(users.psc)
+  test("confirms the PSC user cannot access bill runs and a licence's bills tab", async ({ page, login }) => {
+    await login(users.PSC)
     await page.goto(`/system/licences/${licence.id}/summary`)
 
     // Confirm we are on the licence page

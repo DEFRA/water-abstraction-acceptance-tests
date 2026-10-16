@@ -1,4 +1,3 @@
-import scenarioData from '../../support/scenarios/licence-with-agreement-and-bill-run.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -14,18 +13,18 @@ test.describe(
   () => {
     let licence
     let billRun
+    let user
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence-with-tpt-agreement-and-bill-runs')
 
       licence = scenario.licence
-      billRun = scenario.billRun
-
-      await setup(scenario)
+      billRun = scenario.billRuns[0]
+      user = scenario.user
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user)
     })
 
     test('flags the licence for the next two-part tariff supplementary bill run', async ({ page }) => {

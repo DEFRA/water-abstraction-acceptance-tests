@@ -1,8 +1,0 @@
-export default {
-  admin: 'admin-internal@wrls.gov.uk',
-  basic: 'basic.access@wrls.gov.uk',
-  super: 'super.user@wrls.gov.uk',
-  environmentOfficer: 'environment.officer@wrls.gov.uk',
-  billingAndData: 'billing.data@wrls.gov.uk',
-  psc: 'permitting.support.centre@wrls.gov.uk'
-}

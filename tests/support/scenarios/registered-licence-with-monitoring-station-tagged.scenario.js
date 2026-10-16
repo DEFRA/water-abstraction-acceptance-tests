@@ -1,6 +1,7 @@
 import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
 import registeredLicenceWithMonitoringStationUntaggedScenario from './registered-licence-with-monitoring-station-untagged.scenario.js'
+import { monitoringStations, regions } from '../default-values.js'
 
 export const title = 'Registered licence with a monitoring station (tagged)'
 export const description = 'Registered licence with a licence linked to a monitoring station'
@@ -10,11 +11,15 @@ export const description = 'Registered licence with a licence linked to a monito
  *
  * We seed a separate 'licenceVersionPurposeCondition' on the licence, available for a test to select when tagging.
  */
-export default function () {
-  const licence = registeredLicenceWithMonitoringStationUntaggedScenario()
+export default function (region = null) {
+  if (!region) {
+    region = regions.NORTH_WEST
+  }
+
+  const licence = registeredLicenceWithMonitoringStationUntaggedScenario(region)
 
   const licenceVersionPurposeCondition = licenceVersionPurposeConditionData(licence.licenceVersionPurpose)
-  const licenceMonitoringStation = licenceMonitoringStationData(licence.licence, licence.monitoringStation)
+  const licenceMonitoringStation = licenceMonitoringStationData(licence.licence, monitoringStations.SECOND)
 
   return {
     ...licence,

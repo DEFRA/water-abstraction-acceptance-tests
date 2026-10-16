@@ -1,4 +1,3 @@
-import scenarioData from '../../support/scenarios/licence.scenario.js'
 import { determineReturnCycleStartDate, formatLongDate, today } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
@@ -15,22 +14,22 @@ test.describe(
   () => {
     let licence
     let startDateYear
+    let user
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('licence')
 
       licence = scenario.licence
+      user = scenario.user
 
       // Without existing charge information, the app only accepts a date that either matches some existing charge
       // information or is 1 April of the current financial year, so we use that year for the agreement's custom start
       // date.
       startDateYear = determineReturnCycleStartDate(today(), false).getUTCFullYear()
-
-      await setup(scenario)
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user)
     })
 
     test('setup a new agreement for a license and then view it', async ({ page }) => {

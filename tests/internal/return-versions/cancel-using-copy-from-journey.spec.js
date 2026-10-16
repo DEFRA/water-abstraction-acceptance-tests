@@ -1,24 +1,27 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-two-purposes-and-requirements.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Cancel a return version using copy from existing (internal)', () => {
+  let company
   let licence
+  let point
   let returnRequirement
   let returnRequirementPurpose
+  let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('licence-with-two-purposes-and-requirements')
 
+    company = scenario.company
     licence = scenario.licence
+    point = scenario.points[0]
     returnRequirement = scenario.returnRequirement
     returnRequirementPurpose = scenario.returnRequirementPurpose
-
-    await setup(scenario)
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('creates but then cancels a return version using copy from existing journey (internal)', async ({ page }) => {
@@ -56,7 +59,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // confirm we see the start date information we expect
     await expect(page.locator('[data-test="start-date"]')).toContainText(formatLongDate(licence.startDate))
@@ -69,7 +72,7 @@ test.describe('Cancel a return version using copy from existing (internal)', () 
 
     // confirm we see the points copied from the existing requirement
     await expect(page.locator('[data-test="points-0"]')).toContainText(
-      'At National Grid Reference TQ 1234 5678 (Example point 1)'
+      `At National Grid Reference ${point.ngr1} (${point.description})`
     )
 
     // confirm we see the abstraction period copied from the existing requirement

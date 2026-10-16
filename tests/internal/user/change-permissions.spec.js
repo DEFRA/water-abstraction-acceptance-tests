@@ -1,20 +1,18 @@
-import scenarioData from '../../support/scenarios/internal-user.scenario.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Change user permissions (internal)', () => {
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('internal-user')
 
     user = scenario.user
-
-    await setup(scenario)
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(users.BILLING_AND_DATA)
   })
 
   test('allows a billing & data user to change the permissions of another user', async ({ page }) => {

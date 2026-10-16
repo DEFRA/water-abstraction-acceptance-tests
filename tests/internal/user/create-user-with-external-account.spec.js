@@ -1,19 +1,17 @@
-import scenarioData from '../../support/scenarios/external-gov-uk-user.scenario.js'
+import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Creating internal user with existing external account (internal)', () => {
   let user
 
-  test.beforeAll(async ({ setup }) => {
-    const scenario = scenarioData()
+  test.beforeAll(async ({ world }) => {
+    const scenario = world('external-gov-uk-user')
 
     user = scenario.user
-
-    await setup(scenario)
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.super)
+  test.beforeEach(async ({ login }) => {
+    await login(users.BILLING_AND_DATA)
   })
 
   test(

@@ -1,5 +1,4 @@
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/presroc-licence-with-agreement.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
@@ -16,11 +15,13 @@ test.describe(
     let licence
     let invalidEndDateYear
     let validEndDateYear
+    let user
 
-    test.beforeAll(async ({ setup }) => {
-      const scenario = scenarioData()
+    test.beforeAll(async ({ world }) => {
+      const scenario = world('presroc-licence-with-agreement')
 
       licence = scenario.licence
+      user = scenario.user
 
       // The agreement's start date matches the licence's start date, which is always 1 April. A valid end date must
       // either match existing charge information or be 31 March, and cannot be before the agreement start date, so we
@@ -30,12 +31,10 @@ test.describe(
       invalidEndDateYear = startDateYear - 1
 
       validEndDateYear = startDateYear + 1
-
-      await setup(scenario)
     })
 
-    test.beforeEach(async ({ login, users }) => {
-      await login(users.billingAndData)
+    test.beforeEach(async ({ login }) => {
+      await login(user)
     })
 
     test('ends a licence agreement using a valid date and check it flags the licence for supplementary billing', async ({

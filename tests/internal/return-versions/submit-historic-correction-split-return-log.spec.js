@@ -1,10 +1,10 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { tableRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction that results in a split-log (internal)', () => {
+  let company
   let licence
   let oldReference
   let startYear
@@ -12,14 +12,16 @@ test.describe('Submit historic correction that results in a split-log (internal)
   let newFromSplitPeriod
   let currentCyclePeriod
   let previousCyclePeriod
+  let user
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(async ({ world }) => {
     const { currentFinancialYear } = calculatedDates()
 
     startYear = new Date(currentFinancialYear.startDate).getFullYear()
 
-    const scenario = scenarioData()
+    const scenario = world('licence-with-open-winter-return-log')
 
+    company = scenario.company
     licence = scenario.licence
     oldReference = `${scenario.returnRequirement.reference}`
 
@@ -37,12 +39,11 @@ test.describe('Submit historic correction that results in a split-log (internal)
     newFromSplitPeriod = returnLogDateDetails({ startDate: splitDate, endDate: scenario.returnLogs[0].endDate })
     currentCyclePeriod = returnLogDateDetails(scenario.returnLogs[1])
     previousCyclePeriod = returnLogDateDetails(scenario.returnLogs[0])
-
-    await setup(scenario)
+    user = scenario.user
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('adds a return version to a licence part way through the previous winter cycle resulting in a split-log', async ({
@@ -95,7 +96,7 @@ test.describe('Submit historic correction that results in a split-log (internal)
     await page.locator('form > .govuk-button').click()
 
     // confirm we are on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // choose the approve return requirement button
     await page.getByText('Approve returns requirement').click()

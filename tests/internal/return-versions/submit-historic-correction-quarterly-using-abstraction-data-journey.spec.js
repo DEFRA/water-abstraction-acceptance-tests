@@ -1,24 +1,27 @@
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/water-company-licence-with-open-winter-return-log.scenario.js'
 import { sortReturnLogsByDisplayOrder } from '../../support/helpers/return-log.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction changing to quarterly on new return version (internal)', () => {
+  let company
   let licence
   let returnLogs
   let startYear
   let expectedReturnLogs
+  let user
 
-  test.beforeAll(async ({ setup }) => {
+  test.beforeAll(async ({ world }) => {
     const { currentFinancialYear } = calculatedDates()
 
     startYear = new Date(currentFinancialYear.startDate).getFullYear()
 
-    const scenario = scenarioData()
+    const scenario = world('water-company-licence-with-open-winter-return-log')
 
+    company = scenario.company
     licence = scenario.licence
     returnLogs = scenario.returnLogs
+    user = scenario.user
 
     expectedReturnLogs = {
       currentFourthPeriod: returnLogDateDetails({
@@ -56,12 +59,10 @@ test.describe('Submit historic correction changing to quarterly on new return ve
       existingCurrent: { ...returnLogDateDetails(returnLogs[1]), status: 'void' },
       existingPrevious: { ...returnLogDateDetails(returnLogs[0]), status: 'void' }
     }
-
-    await setup(scenario)
   })
 
-  test.beforeEach(async ({ login, users }) => {
-    await login(users.billingAndData)
+  test.beforeEach(async ({ login }) => {
+    await login(user)
   })
 
   test('adds a new quarterly return version to a licence part way through the previous winter cycle resulting in both split-logs and new quarterly return logs', async ({
@@ -107,7 +108,7 @@ test.describe('Submit historic correction changing to quarterly on new return ve
     await page.locator('form > .govuk-button').click()
 
     // confirm we are back on the check page
-    await expect(page.locator('h1')).toContainText('Check the requirements for returns for Big Farm Co Ltd')
+    await expect(page.locator('h1')).toContainText(`Check the requirements for returns for ${company.name}`)
 
     // click on the change link for additional submission options
     await page.locator('[data-test="change-additional-submission-options"]').click()

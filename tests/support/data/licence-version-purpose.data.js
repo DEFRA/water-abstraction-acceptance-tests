@@ -1,6 +1,6 @@
 import { generateLicenceVersionPurposeExternalId, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-export default function (licenceVersion) {
+export default function (licenceVersion, region) {
   const licenceVersionPurposeId = generateUUID()
 
   return {
@@ -32,6 +32,6 @@ export default function (licenceVersion) {
     abstractionPeriodEndDay: 31,
     abstractionPeriodEndMonth: 3,
     annualQuantity: 1554,
-    externalId: generateLicenceVersionPurposeExternalId()
+    externalId: generateLicenceVersionPurposeExternalId(region)
   }
 }

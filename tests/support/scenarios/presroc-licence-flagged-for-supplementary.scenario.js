@@ -1,55 +1,78 @@
-import { asArrays } from '../helpers/wire-format.helpers.js'
+import buildBillRunEntities from '../entities/bill-runs.entities.js'
+import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
-import { formatDateToIso } from '../helpers/date.helpers.js'
-import { generateAccountNumber } from '../helpers/generators.helpers.js'
+import buildInternalUserEntity from '../entities/internal-user.entity.js'
+import buildPresrocBillRunEntities from '../entities/presroc-bill-runs.entities.js'
+import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
+import buildPresrocLicenceEntity from '../entities/presroc-licence.entity.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { mergeByKey } from '../helpers/scenario.helpers.js'
-import presrocLicenceWithChargeVersionScenario from './presroc-licence-with-charge-version.scenario.js'
-import { srocStartDate } from '../default-values.js'
+import { includeInPresrocSupplementaryBilling, includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
+import { regions, srocStartDate } from '../default-values.js'
 
-export const title = 'Presroc and sroc licence flagged for presroc and sroc supplementary billing'
+export const title = 'Presroc licence flagged for supplementary billing'
 export const description =
-  'A presroc and sroc licence with both an alcs charge version and a second, ongoing sroc charge version, flagged for both the next presroc and sroc supplementary bill runs'
+  "A presroc licence flagged for both the next presroc and sroc supplementary bill runs, plus sent annual bill runs for every financial year from the charge version's start date to the current one, so a supplementary bill run picks up every outstanding presroc and sroc period"
 
 export default function () {
-  const scenario = presrocLicenceWithChargeVersionScenario()
+  const region = regions.SOUTHERN
 
-  // This is what flags the licence for the next presroc and sroc supplementary bill runs — without it, each
-  // engine's charge version query excludes the licence entirely
-  scenario.licence.includeInPresrocBilling = 'yes'
-  scenario.licence.includeInSrocBilling = true
+  const { currentFinancialYear } = calculatedDates()
 
-  // The presroc charge version ends the day before the sroc one below begins, reflecting a licence that was
-  // properly superseded at the scheme boundary rather than one left open-ended
-  const presrocChargeVersionEndDate = new Date(srocStartDate)
+  const presrocLicenceEntity = buildPresrocLicenceEntity(region)
+  const billingAccountEntity = buildBillingAccountEntity(presrocLicenceEntity, region)
+  const presrocChargeVersionEntity = buildPresrocChargeVersionEntity(presrocLicenceEntity, billingAccountEntity, region)
 
-  presrocChargeVersionEndDate.setUTCDate(presrocChargeVersionEndDate.getUTCDate() - 1)
+  includeInPresrocSupplementaryBilling(presrocLicenceEntity, presrocChargeVersionEntity)
 
-  scenario.chargeVersion.endDate = formatDateToIso(presrocChargeVersionEndDate)
-
-  const srocChargeVersionEntity = _srocChargeVersion(
-    scenario.company,
-    scenario.address,
-    scenario.licence,
-    scenario.licenceVersionPurpose
+  const presrocBillRunEntities = buildPresrocBillRunEntities(
+    presrocLicenceEntity,
+    billingAccountEntity,
+    presrocChargeVersionEntity,
+    currentFinancialYear,
+    region
   )
 
-  return mergeByKey(asArrays(scenario), asArrays(srocChargeVersionEntity))
+  // Sroc
+  const chargeVersionEntity = buildChargeVersionEntity(presrocLicenceEntity, billingAccountEntity, region)
+  chargeVersionEntity.chargeVersion.versionNumber = presrocChargeVersionEntity.chargeVersion.versionNumber + 1
+
+  const additionalChargeEntity = includeInSrocSupplementaryBilling(
+    presrocLicenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    region
+  )
+
+  _srocChargeVersionDate(chargeVersionEntity)
+  _srocChargeVersionDate(additionalChargeEntity)
+  _srocChargeVersion(chargeVersionEntity)
+
+  const billRunEntities = buildBillRunEntities(
+    presrocLicenceEntity,
+    billingAccountEntity,
+    chargeVersionEntity,
+    currentFinancialYear,
+    region
+  )
+
+  const internalUserEntity = buildInternalUserEntity()
+
+  return {
+    ...presrocLicenceEntity,
+    ...billingAccountEntity,
+    ...mergeByKey(chargeVersionEntity, additionalChargeEntity, presrocChargeVersionEntity),
+    ...mergeByKey(...billRunEntities, ...presrocBillRunEntities),
+    ...internalUserEntity
+  }
 }
 
-/**
- * Builds the sroc charge version that succeeds the presroc licence's alcs one
- *
- * @private
- */
-function _srocChargeVersion(company, address, licence, licenceVersionPurpose) {
-  const chargeVersionEntity = buildChargeVersionEntity(company, address, licence, licenceVersionPurpose)
-
-  chargeVersionEntity.billingAccount.accountNumber = generateAccountNumber()
-
-  // Starts on the sroc scheme's first day rather than inheriting the licence's own (pre-sroc) start date, and uses
+function _srocChargeVersion(chargeVersionEntity) {
   // the change reason a real presroc-to-sroc transition would have, rather than the "New licence" default
-  chargeVersionEntity.chargeVersion.startDate = srocStartDate
   chargeVersionEntity.chargeVersion.changeReasonId.value = 'Strategic review of charges (SRoC)'
+}
 
-  return chargeVersionEntity
+function _srocChargeVersionDate(chargeVersionEntity) {
+  // Starts on the sroc scheme's first day rather than inheriting the licence's own (pre-sroc) start date
+  chargeVersionEntity.chargeVersion.startDate = srocStartDate
 }

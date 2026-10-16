@@ -1,11 +1,17 @@
 import licenceWithAllReturnLogStatuses from './licence-with-all-return-log-statuses.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Registered licence with all return log statuses'
 export const description = 'Registered licence with return logs covering all possible statuses'
 
-export default function () {
-  const licence = licenceWithAllReturnLogStatuses()
+export default function (region = null) {
+  if (!region) {
+    region = regions.ANGLIAN
+  }
+
+  const licence = licenceWithAllReturnLogStatuses(region)
 
   const primaryUser = primaryUserData(licence.company)
 
@@ -13,8 +19,10 @@ export default function () {
   // registered licence to a licence holder.
   licence.licenceDocumentHeader.companyEntityId = primaryUser.licenceEntityRole.companyEntityId
 
+  const { user, userGroup } = licence
+
   return {
     ...licence,
-    ...primaryUser
+    ...mergeByKey({ user, userGroup }, primaryUser)
   }
 }
