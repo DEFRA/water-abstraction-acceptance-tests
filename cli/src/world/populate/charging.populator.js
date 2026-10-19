@@ -1,9 +1,12 @@
+import addressData from '../../../../tests/support/data/address.data.js'
+import billingAccountAddressData from '../../../../tests/support/data/billing-account-address.data.js'
 import buildBillingAccountEntity from '../../../../tests/support/entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../../../../tests/support/entities/charge-version.entity.js'
 import buildPresrocChargeVersionEntity from '../../../../tests/support/entities/presroc-charge-version.entity.js'
 import ChangeReasonHelper from 'water-abstraction-engine/test/helpers/change-reason.helper.js'
 import ChargeCategoryHelper from 'water-abstraction-engine/test/helpers/charge-category.helper.js'
 import chargeElementData from '../../../../tests/support/data/charge-element.data.js'
+import contactData from '../../../../tests/support/data/contact.data.js'
 import chargeReferenceData from '../../../../tests/support/data/charge-reference.data.js'
 import chargeReferencePresrocData from '../../../../tests/support/data/charge-reference-presroc.data.js'
 import licenceAgreementData from '../../../../tests/support/data/licence-agreement.data.js'
@@ -11,6 +14,7 @@ import { licenceModel } from './helpers/end-dates.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
 import { srocStartDate } from '../../../../tests/support/default-values.js'
 import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
+import { generateCompanyContact } from '../../../../tests/support/helpers/generators.helpers.js'
 import workflowData from '../../../../tests/support/data/workflow.data.js'
 
 /**
@@ -41,16 +45,23 @@ export default function charging(licenceEntities) {
 /**
  * The billing account for each licence holder, by the id of their company
  *
- * The billing account is for the company and address on the licence's current licence version. Most billing accounts
- * are for one licence and about a quarter are for a few, so every 5th licence is billed to the account of the licence
- * before it instead. A billing account is kept on the first licence billed to it, so it is loaded with it.
+ * Most billing accounts are for one licence and about a quarter are for a few, so every 5th licence is billed to the
+ * account of the licence before it instead. A billing account is kept on the first licence billed to it, so it is
+ * loaded with it.
+ *
+ * A few billing accounts have moved address, so every 28th one built moves to a new address. A few billing account
+ * addresses have a contact, so every 33rd one built has a contact on its current address.
  *
  * @private
  */
 function _billingAccounts(licenceEntities) {
+  const CONTACT_EVERY = 33
+  const SECOND_ADDRESS_EVERY = 28
   const SHARED_BILLING_ACCOUNT_EVERY = 5
 
   const billingAccountEntities = new Map()
+
+  let builtCount = 0
 
   for (let i = 0; i < licenceEntities.length; i++) {
     const licenceEntity = licenceEntities[i]
@@ -66,21 +77,89 @@ function _billingAccounts(licenceEntities) {
       continue
     }
 
-    // A water company licence gives up its own company for the water company's, so the entity is given the current
-    // licence holder's company and address rather than reading them from the licence
-    const { addressId, companyId } = _currentLicenceVersion(licenceEntity)
-    const billingAccountEntity = buildBillingAccountEntity(
-      { company: { id: companyId }, address: { id: addressId } },
-      regionOf(licenceEntity).region
-    )
+    const billingAccountEntity = _buildBillingAccount(licenceEntity)
+    const { billingAccount } = billingAccountEntity
+    const billingAccountAddresses = [billingAccountEntity.billingAccountAddress]
 
-    licenceEntity.billingAccount = billingAccountEntity.billingAccount
-    licenceEntity.billingAccountAddress = billingAccountEntity.billingAccountAddress
+    if (builtCount % SECOND_ADDRESS_EVERY === SECOND_ADDRESS_EVERY - 1) {
+      _moveBillingAccountAddress(licenceEntity, billingAccount, billingAccountAddresses)
+    }
+
+    if (builtCount % CONTACT_EVERY === CONTACT_EVERY - 1) {
+      _addBillingAccountContact(licenceEntity, billingAccountAddresses.at(-1))
+    }
+
+    licenceEntity.billingAccount = billingAccount
+    licenceEntity.billingAccountAddresses = billingAccountAddresses
 
     billingAccountEntities.set(holderId, billingAccountEntity)
+    builtCount++
   }
 
   return billingAccountEntities
+}
+
+/**
+ * Build the billing account for a licence's current licence holder
+ *
+ * It is for the company and address on the licence's current licence version. A water company licence gives up its own
+ * company for the water company's, so the entity is given those rather than reading them from the licence.
+ *
+ * @private
+ */
+function _buildBillingAccount(licenceEntity) {
+  const { addressId, companyId } = _currentLicenceVersion(licenceEntity)
+
+  return buildBillingAccountEntity(
+    { company: { id: companyId }, address: { id: addressId } },
+    regionOf(licenceEntity).region
+  )
+}
+
+/**
+ * Move a billing account to a new address
+ *
+ * Its first address ends on 31 March 2024, and a new address starts on 1 April 2024. The new address is added to the
+ * licence's addresses so it is loaded with it.
+ *
+ * @private
+ */
+function _moveBillingAccountAddress(licenceEntity, billingAccount, billingAccountAddresses) {
+  const address = addressData()
+  const secondBillingAccountAddress = billingAccountAddressData(billingAccount, address)
+
+  billingAccountAddresses[0].endDate = '2024-03-31'
+  secondBillingAccountAddress.startDate = '2024-04-01'
+  billingAccountAddresses.push(secondBillingAccountAddress)
+
+  if (!licenceEntity.addresses) {
+    licenceEntity.addresses = [licenceEntity.address]
+  }
+
+  licenceEntity.addresses.push(address)
+}
+
+/**
+ * Give a billing account address a contact
+ *
+ * The contact is a person, with just a first and last name, at the licence holder's company. It is put on the licence
+ * before the billing account addresses are, as the address refers to it.
+ *
+ * @private
+ */
+function _addBillingAccountContact(licenceEntity, billingAccountAddress) {
+  const company = _company(licenceEntity, _currentLicenceVersion(licenceEntity).companyId)
+  const contact = contactData(company)
+  const { firstName, lastName } = generateCompanyContact(company.name)
+
+  contact.contactType = 'person'
+  contact.firstName = firstName
+  contact.lastName = lastName
+  delete contact.department
+  delete contact.email
+
+  billingAccountAddress.contactId = contact.id
+  licenceEntity.contact = contact
 }
 
 /**
@@ -560,6 +639,27 @@ function _chargeCategory(chargeReference) {
   }
 
   return chargeCategory
+}
+
+/**
+ * The licence's company with the given id
+ *
+ * A licence has one company, or a list of them where it has been transferred. Where none has the id, it throws an error
+ * rather than returning nothing.
+ *
+ * @private
+ */
+function _company(licenceEntity, companyId) {
+  const companies = licenceEntity.companies ?? [licenceEntity.company]
+  const company = companies.find((licenceCompany) => {
+    return licenceCompany.id === companyId
+  })
+
+  if (!company) {
+    throw new Error(`Licence ${licenceEntity.licence.licenceRef} has no company ${companyId}`)
+  }
+
+  return company
 }
 
 /**

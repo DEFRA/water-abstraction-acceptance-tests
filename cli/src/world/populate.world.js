@@ -12,6 +12,10 @@ import waterCompanies from './populate/water-companies.populator.js'
  * The licences are built first. Then each populator changes or adds to them, in order, as later ones depend on what
  * earlier ones have set.
  *
+ * The load service loads each table in the order its key first appears. A few billing account addresses have a
+ * contact, but the first licence does not, so the contacts would be loaded after the addresses that refer to them. An
+ * empty list of contacts is merged first so they are loaded before anything else.
+ *
  * @returns {object} the data, keyed by database table name
  */
 export default function populateWorld() {
@@ -23,5 +27,5 @@ export default function populateWorld() {
   monitoringStations(licenceEntities)
   charging(licenceEntities)
 
-  return mergeByKey(...licenceEntities)
+  return mergeByKey({ contacts: [] }, ...licenceEntities)
 }
