@@ -1,13 +1,10 @@
 import buildBillingAccountEntity from '../../../../tests/support/entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../../../../tests/support/entities/charge-version.entity.js'
 import buildPresrocChargeVersionEntity from '../../../../tests/support/entities/presroc-charge-version.entity.js'
-import { isLive } from './helpers/end-dates.helpers.js'
+import { licenceModel } from './helpers/end-dates.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
 import { srocStartDate } from '../../../../tests/support/default-values.js'
 import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
-
-// The last day of the alcs scheme, the day before sroc started
-const ALCS_END_DATE = '2022-03-31'
 
 // Whether an alcs charge version has a charge reference. Each alcs charge version takes the next one, going back to
 // the start of the list when it runs out.
@@ -72,7 +69,7 @@ export default function charging(licenceEntities) {
   }
 
   const liveLicenceEntities = licenceEntities.filter((licenceEntity) => {
-    return isLive(licenceEntity)
+    return !licenceModel(licenceEntity).$ended()
   })
 
   for (let i = 0; i < liveLicenceEntities.length; i++) {
@@ -83,7 +80,7 @@ export default function charging(licenceEntities) {
 
   for (const licenceEntity of licenceEntities) {
     if (
-      !isLive(licenceEntity) &&
+      licenceModel(licenceEntity).$ended() &&
       (licenceEntity.licence.startDate >= srocStartDate || _expiredOnOrAfterSroc(licenceEntity))
     ) {
       _chargeFromSroc(licenceEntity, billingAccountEntities.get(_holderId(licenceEntity)))
@@ -170,9 +167,7 @@ function _chargeFromAlcs(licenceEntity, billingAccountEntity, referenced) {
     regionOf(licenceEntity).region
   )
 
-  const endDate = _endDate(licenceEntity)
-
-  chargeVersion.endDate = endDate && endDate < ALCS_END_DATE ? endDate : ALCS_END_DATE
+  chargeVersion.endDate = _alcsEndDate(licenceEntity)
 
   if (referenced) {
     _add(licenceEntity, { chargeVersion, chargeReference })
@@ -232,6 +227,26 @@ function _add(licenceEntity, chargeVersionEntity) {
 }
 
 /**
+ * The date a licence's alcs charge version ends, which is the day before sroc started, or when the licence ended where
+ * that was earlier
+ *
+ * @private
+ */
+function _alcsEndDate(licenceEntity) {
+  const endDate = _endDate(licenceEntity)
+
+  if (endDate && endDate < srocStartDate) {
+    return endDate
+  }
+
+  const alcsEndDate = new Date(srocStartDate)
+
+  alcsEndDate.setUTCDate(alcsEndDate.getUTCDate() - 1)
+
+  return formatDateToIso(alcsEndDate)
+}
+
+/**
  * The licence's current licence version, which is the last one where it has more than one
  *
  * @private
@@ -248,10 +263,9 @@ function _currentLicenceVersion(licenceEntity) {
  * @private
  */
 function _endDate(licenceEntity) {
-  const { expiredDate, lapsedDate, revokedDate } = licenceEntity.licence
-  const endDates = [expiredDate, lapsedDate, revokedDate].filter(Boolean).sort()
+  const ends = licenceModel(licenceEntity).$ends()
 
-  return endDates[0] ?? null
+  return ends ? formatDateToIso(ends.date) : null
 }
 
 /**

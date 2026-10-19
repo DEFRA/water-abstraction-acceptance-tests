@@ -3,7 +3,7 @@ import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monit
 
 import { addCondition } from './helpers/conditions.helpers.js'
 import { currentPurpose } from './helpers/purposes.helpers.js'
-import { isLive } from './helpers/end-dates.helpers.js'
+import { licenceModel } from './helpers/end-dates.helpers.js'
 import licenceMonitoringStationData from '../../../../tests/support/data/licence-monitoring-station.data.js'
 import { formatDateToIso, relativeToToday } from '../../../../tests/support/helpers/date.helpers.js'
 
@@ -248,7 +248,7 @@ const CONDITION_TYPES = {
  */
 export default function monitoringStations(licenceEntities) {
   const liveLicenceEntities = licenceEntities.filter((licenceEntity) => {
-    return isLive(licenceEntity)
+    return !licenceModel(licenceEntity).$ended()
   })
 
   const stations = []
