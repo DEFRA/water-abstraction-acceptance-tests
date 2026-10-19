@@ -1,6 +1,10 @@
 import buildBillingAccountEntity from '../../../../tests/support/entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../../../../tests/support/entities/charge-version.entity.js'
 import buildPresrocChargeVersionEntity from '../../../../tests/support/entities/presroc-charge-version.entity.js'
+import ChangeReasonHelper from 'water-abstraction-engine/test/helpers/change-reason.helper.js'
+import ChargeCategoryHelper from 'water-abstraction-engine/test/helpers/charge-category.helper.js'
+import chargeElementData from '../../../../tests/support/data/charge-element.data.js'
+import chargeReferenceData from '../../../../tests/support/data/charge-reference.data.js'
 import { licenceModel } from './helpers/end-dates.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
 import { srocStartDate } from '../../../../tests/support/default-values.js'
@@ -33,17 +37,24 @@ const NON_CHARGEABLE_EVERY = 24
 //
 // About half are because the licence is a transfer type licence, so every other reason is.
 const NON_CHARGEABLE_REASONS = [
-  'Transfer type licence',
-  'Held by Environment Agency',
-  'Transfer type licence',
-  'Power generation less than 5 megawatts (S125)',
-  'Transfer type licence',
-  'Held by Environment Agency',
-  'Transfer type licence',
-  'Temporary type licence',
-  'Transfer type licence',
-  'Abatement (S126)'
+  ChangeReasonHelper.select(20),
+  ChangeReasonHelper.select(13),
+  ChangeReasonHelper.select(20),
+  ChangeReasonHelper.select(17),
+  ChangeReasonHelper.select(20),
+  ChangeReasonHelper.select(21),
+  ChangeReasonHelper.select(20),
+  ChangeReasonHelper.select(19),
+  ChangeReasonHelper.select(20),
+  ChangeReasonHelper.select(16)
 ]
+
+// How a licence with two purposes has them charged on its sroc charge version. Each such licence takes the next one,
+// going back to the start of the list when it runs out.
+//
+// About half have one charge reference with a charge element for each purpose, a quarter have a charge reference for
+// each purpose, and a quarter have only their first purpose charged.
+const PURPOSE_CHARGING = ['elements', 'elements', 'references', 'first only']
 
 // Whether a sroc charge reference is for a restricted source. Each sroc charge reference takes the next one, going back
 // to the start of the list when it runs out.
@@ -95,10 +106,12 @@ const WINTER_DISCOUNT_EVERY = 12
  * licence started before the sroc start date, it was made because the licence moved onto sroc.
  *
  * The charge versions are built by the charge version entities, so each has the reference, and for sroc the element,
- * those build for the licence's purpose. Each sroc reference takes the next loss, water model and whether it is for a
- * restricted source from their lists. A water company licence's sroc references are for public water supply, and the
- * rest have no additional charges. Every 12th sroc reference has a winter discount and every 9th an aggregate factor
- * of a half.
+ * those build for the licence's purpose. Where a licence has two purposes its sroc charge version charges them in the
+ * next way from the list: one reference with an element each, a reference each, or only the first. Each sroc reference
+ * takes the next loss, water model and whether it is for a
+ * restricted source from their lists, and the charge category those and its volume fall in. A water company licence's
+ * sroc references are for public water supply, and the rest have no additional charges. Every 12th sroc reference has a
+ * winter discount and every 9th an aggregate factor of a half.
  *
  * Call this after everything else has been added to the licences.
  *
@@ -164,6 +177,27 @@ export default function charging(licenceEntities) {
     }
   }
 
+  let twoPurposeCount = 0
+
+  for (const licenceEntity of licenceEntities) {
+    const licenceVersionPurposes = _currentPurposes(licenceEntity)
+    const srocReference = (licenceEntity.chargeReferences ?? []).find((chargeReference) => {
+      return chargeReference.scheme === 'sroc'
+    })
+
+    if (licenceVersionPurposes.length !== 2 || !srocReference) {
+      continue
+    }
+
+    _chargeByPurpose(
+      licenceEntity,
+      srocReference,
+      licenceVersionPurposes,
+      PURPOSE_CHARGING[twoPurposeCount % PURPOSE_CHARGING.length]
+    )
+    twoPurposeCount++
+  }
+
   let srocReferenceCount = 0
 
   for (const licenceEntity of licenceEntities) {
@@ -176,6 +210,7 @@ export default function charging(licenceEntities) {
       chargeReference.loss = LOSSES[srocReferenceCount % LOSSES.length]
       chargeReference.restrictedSource = RESTRICTED_SOURCES[srocReferenceCount % RESTRICTED_SOURCES.length]
       chargeReference.waterModel = WATER_MODELS[srocReferenceCount % WATER_MODELS.length]
+      chargeReference.chargeCategoryId.value = _chargeCategory(chargeReference).reference
 
       if (srocReferenceCount % WINTER_DISCOUNT_EVERY === WINTER_DISCOUNT_EVERY - 1) {
         chargeReference.adjustments.winter = true
@@ -285,10 +320,60 @@ function _chargeAsNonChargeable(licenceEntity, billingAccountEntity, reason) {
     chargeVersion.startDate = srocStartDate
   }
 
-  chargeVersion.changeReasonId.value = reason
+  chargeVersion.changeReasonId.value = reason.description
   chargeVersion.billingAccountId = null
 
   _add(licenceEntity, { chargeVersion })
+}
+
+/**
+ * Charge both of a licence's purposes on its sroc charge version
+ *
+ * The charge version entity builds one charge reference and one charge element, for the licence's first purpose.
+ * Where `charging` is 'elements' they are replaced with one charge reference for both purposes, with a charge element
+ * for each. Where it is 'references' they are replaced with a charge reference and charge element for each purpose.
+ * Where it is 'first only' they are left as they are.
+ *
+ * @private
+ */
+function _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes, charging) {
+  if (charging === 'first only') {
+    return
+  }
+
+  const chargeVersion = licenceEntity.chargeVersions.find((srocChargeVersion) => {
+    return srocChargeVersion.id === chargeReference.chargeVersionId
+  })
+
+  licenceEntity.chargeReferences = licenceEntity.chargeReferences.filter((builtChargeReference) => {
+    return builtChargeReference !== chargeReference
+  })
+  licenceEntity.chargeElements = licenceEntity.chargeElements.filter((chargeElement) => {
+    return chargeElement.chargeReferenceId !== chargeReference.id
+  })
+
+  if (charging === 'elements') {
+    const purposesChargeReference = chargeReferenceData(chargeVersion, licenceVersionPurposes)
+
+    _add(licenceEntity, { chargeReference: purposesChargeReference })
+
+    for (const licenceVersionPurpose of licenceVersionPurposes) {
+      _add(licenceEntity, { chargeElement: chargeElementData(purposesChargeReference, licenceVersionPurpose) })
+    }
+
+    return
+  }
+
+  for (let i = 0; i < licenceVersionPurposes.length; i++) {
+    const purposeChargeReference = chargeReferenceData(chargeVersion, [licenceVersionPurposes[i]])
+
+    purposeChargeReference.description = `Test charge reference ${i + 1}`
+
+    _add(licenceEntity, {
+      chargeReference: purposeChargeReference,
+      chargeElement: chargeElementData(purposeChargeReference, licenceVersionPurposes[i])
+    })
+  }
 }
 
 /**
@@ -358,6 +443,27 @@ function _alcsEndDate(licenceEntity) {
 }
 
 /**
+ * The charge category for a sroc charge reference
+ *
+ * It is the one of the engine's charge categories for a non-tidal source with the reference's loss, water model and
+ * restricted source, whose volume band its volume falls in.
+ *
+ * @private
+ */
+function _chargeCategory(chargeReference) {
+  return ChargeCategoryHelper.data.find((chargeCategory) => {
+    return (
+      !chargeCategory.tidal &&
+      chargeCategory.lossFactor === chargeReference.loss &&
+      chargeCategory.modelTier === chargeReference.waterModel &&
+      chargeCategory.restrictedSource === chargeReference.restrictedSource &&
+      chargeReference.volume > chargeCategory.minVolume &&
+      chargeReference.volume <= chargeCategory.maxVolume
+    )
+  })
+}
+
+/**
  * The licence's current licence version, which is the last one where it has more than one
  *
  * @private
@@ -366,6 +472,20 @@ function _currentLicenceVersion(licenceEntity) {
   const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
 
   return licenceVersions.at(-1)
+}
+
+/**
+ * The purposes on the licence's current licence version
+ *
+ * @private
+ */
+function _currentPurposes(licenceEntity) {
+  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes ?? [licenceEntity.licenceVersionPurpose]
+  const currentLicenceVersion = _currentLicenceVersion(licenceEntity)
+
+  return licenceVersionPurposes.filter((licenceVersionPurpose) => {
+    return licenceVersionPurpose.licenceVersionId === currentLicenceVersion.id
+  })
 }
 
 /**
