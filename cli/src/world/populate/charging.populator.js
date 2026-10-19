@@ -49,6 +49,12 @@ const NON_CHARGEABLE_REASONS = [
   ChangeReasonHelper.select(16)
 ]
 
+// How often a licence that ended before the sroc start date has its alcs charge version left with no end date. Every
+// 3rd is, starting with the 3rd.
+//
+// NALD left about a third of the alcs charge versions on licences that ended before sroc with no end date.
+const OPEN_ALCS_EVERY = 3
+
 // How a licence with two purposes has them charged on its sroc charge version. Each such licence takes the next one,
 // going back to the start of the list when it runs out.
 //
@@ -96,7 +102,8 @@ const WINTER_DISCOUNT_EVERY = 12
  * billed to the same billing account.
  *
  * Every licence that started before the sroc start date is given an alcs charge version brought over from NALD, which
- * ends when the alcs scheme did or when the licence ended. 2 in every 5 have no charge reference or billing account.
+ * ends when the alcs scheme did or when the licence ended. Every 3rd licence that ended before the sroc start date has
+ * its alcs charge version left with no end date, as NALD did. 2 in every 5 have no charge reference or billing account.
  *
  * Every live licence, except every 18th, is given a sroc charge version, and every 24th of those is non-chargeable, made
  * for the next reason in the list with no charge reference or billing account. Every 7th of those left without one is
@@ -121,13 +128,23 @@ export default function charging(licenceEntities) {
   const billingAccountEntities = _billingAccounts(licenceEntities)
 
   let alcsCount = 0
+  let endedBeforeSrocCount = 0
 
   for (const licenceEntity of licenceEntities) {
     if (licenceEntity.licence.startDate < srocStartDate) {
+      const endDate = _endDate(licenceEntity)
+      let open = false
+
+      if (endDate && endDate < srocStartDate) {
+        open = endedBeforeSrocCount % OPEN_ALCS_EVERY === OPEN_ALCS_EVERY - 1
+        endedBeforeSrocCount++
+      }
+
       _chargeFromAlcs(
         licenceEntity,
         billingAccountEntities.get(_holderId(licenceEntity)),
-        ALCS_REFERENCED[alcsCount % ALCS_REFERENCED.length]
+        ALCS_REFERENCED[alcsCount % ALCS_REFERENCED.length],
+        open
       )
       alcsCount++
     }
@@ -272,20 +289,20 @@ function _billingAccounts(licenceEntities) {
  * Give a licence an alcs charge version
  *
  * It was brought over from NALD, and ends when the alcs scheme did, or when the licence ended where that was earlier.
- * Where it is not `referenced` the charge reference the entity builds is left out, and so is the billing account, as
+ * Where it is `open` it has no end date, as NALD left it. Where it is not `referenced` the charge reference the entity builds is left out, and so is the billing account, as
  * NALD has neither for it. Where the licence is for a two-part tariff purpose it also has the licence agreement the
  * entity builds for it.
  *
  * @private
  */
-function _chargeFromAlcs(licenceEntity, billingAccountEntity, referenced) {
+function _chargeFromAlcs(licenceEntity, billingAccountEntity, referenced, open) {
   const { chargeVersion, chargeReference, licenceAgreement } = buildPresrocChargeVersionEntity(
     licenceEntity,
     billingAccountEntity,
     regionOf(licenceEntity).region
   )
 
-  chargeVersion.endDate = _alcsEndDate(licenceEntity)
+  chargeVersion.endDate = open ? null : _alcsEndDate(licenceEntity)
   chargeVersion.source = 'nald'
 
   if (referenced) {
