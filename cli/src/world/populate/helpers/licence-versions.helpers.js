@@ -41,12 +41,22 @@ export function addPurposeToNewVersion(licenceEntity, region) {
  * @returns {object} the same licence entity
  */
 export function correct(licenceEntity, region) {
-  const { previous, current } = _newLicenceVersion(licenceEntity, region)
+  return _correct(licenceEntity, region, null)
+}
 
-  current.issue = previous.issue
-  current.increment = previous.increment + 1
-
-  return licenceEntity
+/**
+ * Give a licence a new licence version on a given date because a detail on the last one was wrong
+ *
+ * It is the same as `correct()`, but the new version starts on `startDate` rather than 60 days after the last.
+ *
+ * @param {object} licenceEntity - the licence entity to change
+ * @param {object} region - the region the licence is in
+ * @param {string} startDate - the date the new version starts, for example '2024-04-01'
+ *
+ * @returns {object} the same licence entity
+ */
+export function correctOn(licenceEntity, region, startDate) {
+  return _correct(licenceEntity, region, startDate)
 }
 
 /**
@@ -79,8 +89,48 @@ export function firstIssue(licenceEntity, issue) {
  * @returns {object} the same licence entity
  */
 export function transfer(licenceEntity, region) {
+  return _transfer(licenceEntity, region, null)
+}
+
+/**
+ * Give a licence a new licence version on a given date because it was transferred to a new licence holder
+ *
+ * It is the same as `transfer()`, but the new version starts on `startDate` rather than 60 days after the last.
+ *
+ * @param {object} licenceEntity - the licence entity to change
+ * @param {object} region - the region the licence is in
+ * @param {string} startDate - the date the new version starts, for example '2024-04-01'
+ *
+ * @returns {object} the same licence entity
+ */
+export function transferOn(licenceEntity, region, startDate) {
+  return _transfer(licenceEntity, region, startDate)
+}
+
+/**
+ * Give a licence a new licence version because a detail on the last one was wrong, starting on `startDate` where it is
+ * given one
+ *
+ * @private
+ */
+function _correct(licenceEntity, region, startDate) {
+  const { previous, current } = _newLicenceVersion(licenceEntity, region, startDate)
+
+  current.issue = previous.issue
+  current.increment = previous.increment + 1
+
+  return licenceEntity
+}
+
+/**
+ * Give a licence a new licence version because it was transferred to a new licence holder, starting on `startDate`
+ * where it is given one
+ *
+ * @private
+ */
+function _transfer(licenceEntity, region, startDate) {
   const { licenceDocument } = licenceEntity
-  const { previous, current } = _newLicenceVersion(licenceEntity, region)
+  const { previous, current } = _newLicenceVersion(licenceEntity, region, startDate)
 
   const company = companyData(region)
   const address = addressData()
@@ -125,7 +175,8 @@ function _addDays(date, days) {
 /**
  * Supersede a licence's latest licence version and add a new current one
  *
- * The new version starts 60 days after the one it replaces, which ends the day before. It is for the same licence
+ * The new version starts on `startDate` where it is given one, and otherwise 60 days after the one it replaces, which
+ * ends the day before. It is for the same licence
  * holder, and has a copy of every purpose the version it replaces had, each linked to the same points and with the same
  * conditions.
  *
@@ -133,7 +184,7 @@ function _addDays(date, days) {
  *
  * @private
  */
-function _newLicenceVersion(licenceEntity, region) {
+function _newLicenceVersion(licenceEntity, region, startDate) {
   const { address, company, licence } = licenceEntity
 
   // A licence is built with one of each. The first time this is called they are put into lists we can add to
@@ -144,7 +195,7 @@ function _newLicenceVersion(licenceEntity, region) {
   const previous = licenceEntity.licenceVersions.at(-1)
   const current = licenceVersionData(licence, company, address, region)
 
-  current.startDate = _addDays(previous.startDate, 60)
+  current.startDate = startDate ?? _addDays(previous.startDate, 60)
   current.companyId = previous.companyId
   current.addressId = previous.addressId
 

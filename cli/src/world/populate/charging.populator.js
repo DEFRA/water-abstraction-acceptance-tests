@@ -1,29 +1,30 @@
 import addressData from '../../../../tests/support/data/address.data.js'
 import billingAccountAddressData from '../../../../tests/support/data/billing-account-address.data.js'
 import buildBillingAccountEntity from '../../../../tests/support/entities/billing-account.entity.js'
-import buildChargeVersionEntity from '../../../../tests/support/entities/charge-version.entity.js'
-import buildPresrocChargeVersionEntity from '../../../../tests/support/entities/presroc-charge-version.entity.js'
 import ChangeReasonHelper from 'water-abstraction-engine/test/helpers/change-reason.helper.js'
 import ChargeCategoryHelper from 'water-abstraction-engine/test/helpers/charge-category.helper.js'
 import chargeElementData from '../../../../tests/support/data/charge-element.data.js'
-import contactData from '../../../../tests/support/data/contact.data.js'
+import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 import chargeReferenceData from '../../../../tests/support/data/charge-reference.data.js'
 import chargeReferencePresrocData from '../../../../tests/support/data/charge-reference-presroc.data.js'
+import chargeVersionData from '../../../../tests/support/data/charge-version.data.js'
 import licenceAgreementData from '../../../../tests/support/data/licence-agreement.data.js'
 import { licenceModel } from './helpers/end-dates.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
 import { srocStartDate } from '../../../../tests/support/default-values.js'
 import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
-import { generateCompanyContact } from '../../../../tests/support/helpers/generators.helpers.js'
 import workflowData from '../../../../tests/support/data/workflow.data.js'
 
 /**
  * Charge the licences
  *
- * Each licence holder is given a billing account. Licences that started before sroc are given an alcs charge version,
- * then live licences are given a sroc charge version, and so are licences that ended after sroc started. A licence with
- * two purposes then has both charged, and the sroc charge references are varied so they are not all alike. Last of all,
- * a few licences are given a section 130U agreement.
+ * Each licence holder, past and present, is given a billing account. A licence is charged for each of its licence
+ * versions, so its charge versions follow its licence versions: the part of a licence version before sroc started is
+ * alcs and the part after is sroc. Licences that started before sroc are given alcs charge versions, then live licences
+ * are given sroc ones, and so are licences that ended after sroc started. A licence version with two purposes then has
+ * both charged, the sroc charge references are varied so they are not all alike, and a few licences are given a
+ * superseded charge version. The charge versions are then numbered, and last of all a few licences are given a section
+ * 130U agreement.
  *
  * Where a step takes the next value from a list, it goes back to the start of the list when it runs out.
  *
@@ -39,23 +40,24 @@ export default function charging(licenceEntities) {
   _chargeEndedLicencesFromSroc(licenceEntities, billingAccountEntities)
   _chargeBothPurposes(licenceEntities)
   _varySrocReferences(licenceEntities)
+  _addSupersededVersions(licenceEntities)
+  _numberChargeVersions(licenceEntities)
   _addOtherAgreements(licenceEntities)
 }
 
 /**
- * The billing account for each licence holder, by the id of their company
+ * The billing account for each licence holder, past and present, by the id of their company
  *
- * Most billing accounts are for one licence and about a quarter are for a few, so every 5th licence is billed to the
- * account of the licence before it instead. A billing account is kept on the first licence billed to it, so it is
- * loaded with it.
+ * Each company that holds one of a licence's licence versions is given a billing account, for the company and address
+ * on that licence version. Most billing accounts are for one licence and about a quarter are for a few, so every 5th
+ * licence's current licence holder is billed to the account of the licence before it instead. A billing account is
+ * kept on the licence it was built for, so it is loaded with it.
  *
- * A few billing accounts have moved address, so every 28th one built moves to a new address. A few billing account
- * addresses have a contact, so every 33rd one built has a contact on its current address.
+ * A few billing accounts have moved address, so every 28th one built moves to a new address.
  *
  * @private
  */
 function _billingAccounts(licenceEntities) {
-  const CONTACT_EVERY = 33
   const SECOND_ADDRESS_EVERY = 28
   const SHARED_BILLING_ACCOUNT_EVERY = 5
 
@@ -65,50 +67,56 @@ function _billingAccounts(licenceEntities) {
 
   for (let i = 0; i < licenceEntities.length; i++) {
     const licenceEntity = licenceEntities[i]
-    const holderId = _holderId(licenceEntity)
+    const billingAccounts = []
+    const billingAccountAddresses = []
 
-    if (billingAccountEntities.has(holderId)) {
-      continue
+    for (const licenceVersion of _licenceVersions(licenceEntity)) {
+      const holderId = licenceVersion.companyId
+
+      if (billingAccountEntities.has(holderId)) {
+        continue
+      }
+
+      const currentHolder = licenceVersion === _currentLicenceVersion(licenceEntity)
+
+      if (currentHolder && i % SHARED_BILLING_ACCOUNT_EVERY === SHARED_BILLING_ACCOUNT_EVERY - 1) {
+        billingAccountEntities.set(holderId, billingAccountEntities.get(_holderId(licenceEntities[i - 1])))
+
+        continue
+      }
+
+      const billingAccountEntity = _buildBillingAccount(licenceEntity, licenceVersion)
+      const { billingAccount } = billingAccountEntity
+      const accountAddresses = [billingAccountEntity.billingAccountAddress]
+
+      if (builtCount % SECOND_ADDRESS_EVERY === SECOND_ADDRESS_EVERY - 1) {
+        _moveBillingAccountAddress(licenceEntity, billingAccount, accountAddresses)
+      }
+
+      billingAccounts.push(billingAccount)
+      billingAccountAddresses.push(...accountAddresses)
+
+      billingAccountEntities.set(holderId, billingAccountEntity)
+      builtCount++
     }
 
-    if (i % SHARED_BILLING_ACCOUNT_EVERY === SHARED_BILLING_ACCOUNT_EVERY - 1) {
-      billingAccountEntities.set(holderId, billingAccountEntities.get(_holderId(licenceEntities[i - 1])))
-
-      continue
-    }
-
-    const billingAccountEntity = _buildBillingAccount(licenceEntity)
-    const { billingAccount } = billingAccountEntity
-    const billingAccountAddresses = [billingAccountEntity.billingAccountAddress]
-
-    if (builtCount % SECOND_ADDRESS_EVERY === SECOND_ADDRESS_EVERY - 1) {
-      _moveBillingAccountAddress(licenceEntity, billingAccount, billingAccountAddresses)
-    }
-
-    if (builtCount % CONTACT_EVERY === CONTACT_EVERY - 1) {
-      _addBillingAccountContact(licenceEntity, billingAccountAddresses.at(-1))
-    }
-
-    licenceEntity.billingAccount = billingAccount
+    licenceEntity.billingAccounts = billingAccounts
     licenceEntity.billingAccountAddresses = billingAccountAddresses
-
-    billingAccountEntities.set(holderId, billingAccountEntity)
-    builtCount++
   }
 
   return billingAccountEntities
 }
 
 /**
- * Build the billing account for a licence's current licence holder
+ * Build the billing account for the holder of a licence version
  *
- * It is for the company and address on the licence's current licence version. A water company licence gives up its own
- * company for the water company's, so the entity is given those rather than reading them from the licence.
+ * It is for the company and address on the licence version. A water company licence gives up its own company for the
+ * water company's, so the entity is given those rather than reading them from the licence.
  *
  * @private
  */
-function _buildBillingAccount(licenceEntity) {
-  const { addressId, companyId } = _currentLicenceVersion(licenceEntity)
+function _buildBillingAccount(licenceEntity, licenceVersion) {
+  const { addressId, companyId } = licenceVersion
 
   return buildBillingAccountEntity(
     { company: { id: companyId }, address: { id: addressId } },
@@ -140,36 +148,13 @@ function _moveBillingAccountAddress(licenceEntity, billingAccount, billingAccoun
 }
 
 /**
- * Give a billing account address a contact
+ * Give every licence that started before the sroc start date its alcs charge versions
  *
- * The contact is a person, with just a first and last name, at the licence holder's company. It is put on the licence
- * before the billing account addresses are, as the address refers to it.
- *
- * @private
- */
-function _addBillingAccountContact(licenceEntity, billingAccountAddress) {
-  const company = _company(licenceEntity, _currentLicenceVersion(licenceEntity).companyId)
-  const contact = contactData(company)
-  const { firstName, lastName } = generateCompanyContact(company.name)
-
-  contact.contactType = 'person'
-  contact.firstName = firstName
-  contact.lastName = lastName
-  delete contact.department
-  delete contact.email
-
-  billingAccountAddress.contactId = contact.id
-  licenceEntity.contact = contact
-}
-
-/**
- * Give every licence that started before the sroc start date an alcs charge version
- *
- * It was brought over from NALD, and ends when the alcs scheme did or when the licence ended. Many brought over from
- * NALD have no charge reference, so 2 in every 5 have no charge reference or billing account. NALD left about a third
- * of the alcs charge versions on licences that ended before the sroc start date with no end date, so every 3rd of those
- * licences has its alcs charge version left open. About half of the alcs charge versions with a charge reference on a
- * licence with two purposes have one for each purpose, so every 2nd of those does.
+ * They were brought over from NALD. Many brought over from NALD have no charge reference, so 2 in every 5 licences have
+ * no charge reference or billing account on their alcs charge versions. NALD left about a third of the alcs charge
+ * versions on licences that ended before the sroc start date with no end date, so every 3rd of those licences has its
+ * last alcs charge version left open. About half of the alcs charge versions with a charge reference on a licence
+ * version with two purposes have one for each purpose, so every 2nd licence with such a version does.
  *
  * @private
  */
@@ -183,43 +168,38 @@ function _chargeLicencesFromAlcs(licenceEntities, billingAccountEntities) {
   let twoPurposeCount = 0
 
   for (const licenceEntity of licenceEntities) {
-    if (licenceEntity.licence.startDate < srocStartDate) {
-      const endDate = _endDate(licenceEntity)
-      let open = false
-
-      if (endDate && endDate < srocStartDate) {
-        open = endedBeforeSrocCount % OPEN_ALCS_EVERY === OPEN_ALCS_EVERY - 1
-        endedBeforeSrocCount++
-      }
-
-      const referenced = ALCS_REFERENCED[alcsCount % ALCS_REFERENCED.length]
-      const licenceVersionPurposes = _currentPurposes(licenceEntity)
-      let purposesToReference = null
-
-      if (referenced && licenceVersionPurposes.length === 2) {
-        if (twoPurposeCount % REFERENCE_EACH_PURPOSE_EVERY === REFERENCE_EACH_PURPOSE_EVERY - 1) {
-          purposesToReference = licenceVersionPurposes
-        }
-
-        twoPurposeCount++
-      }
-
-      _chargeFromAlcs(
-        licenceEntity,
-        billingAccountEntities.get(_holderId(licenceEntity)),
-        referenced,
-        open,
-        purposesToReference
-      )
-      alcsCount++
+    if (licenceEntity.licence.startDate >= srocStartDate) {
+      continue
     }
+
+    const endDate = _endDate(licenceEntity)
+    let open = false
+
+    if (endDate && endDate < srocStartDate) {
+      open = endedBeforeSrocCount % OPEN_ALCS_EVERY === OPEN_ALCS_EVERY - 1
+      endedBeforeSrocCount++
+    }
+
+    const referenced = ALCS_REFERENCED[alcsCount % ALCS_REFERENCED.length]
+    const hasTwoPurposes = _licenceVersions(licenceEntity).some((licenceVersion) => {
+      return _purposesOn(licenceEntity, licenceVersion).length === 2
+    })
+    let referenceEachPurpose = false
+
+    if (referenced && hasTwoPurposes) {
+      referenceEachPurpose = twoPurposeCount % REFERENCE_EACH_PURPOSE_EVERY === REFERENCE_EACH_PURPOSE_EVERY - 1
+      twoPurposeCount++
+    }
+
+    _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open, referenceEachPurpose)
+    alcsCount++
   }
 }
 
 /**
- * Give the live licences a sroc charge version
+ * Give the live licences their sroc charge versions
  *
- * Nearly every live licence has a sroc charge version, so every one except every 18th is given one. A few are
+ * Nearly every live licence has sroc charge versions, so every one except every 18th is given them. A few are
  * non-chargeable, so every 24th of those is made for the next non-chargeable reason in the list, about half of which
  * are transfer type licence. Most licences without a sroc charge version are not in the workflow, so only every 7th of
  * them is waiting for its charge information to be set up.
@@ -252,18 +232,15 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
   let unchargedCount = 0
 
   for (let i = 0; i < liveLicenceEntities.length; i++) {
-    const billingAccountEntity = billingAccountEntities.get(_holderId(liveLicenceEntities[i]))
-
     if (i % UNCHARGED_EVERY !== UNCHARGED_EVERY - 1) {
       if (chargedCount % NON_CHARGEABLE_EVERY === NON_CHARGEABLE_EVERY - 1) {
         _chargeAsNonChargeable(
           liveLicenceEntities[i],
-          billingAccountEntity,
           NON_CHARGEABLE_REASONS[nonChargeableCount % NON_CHARGEABLE_REASONS.length]
         )
         nonChargeableCount++
       } else {
-        _chargeFromSroc(liveLicenceEntities[i], billingAccountEntity)
+        _chargeFromSroc(liveLicenceEntities[i], billingAccountEntities)
       }
 
       chargedCount++
@@ -280,9 +257,9 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
 }
 
 /**
- * Give the licences that ended after sroc started a sroc charge version
+ * Give the licences that ended after sroc started their sroc charge versions
  *
- * A licence that has ended is given one where it started on or after the sroc start date, or expired on or after it.
+ * A licence that has ended is given them where it started on or after the sroc start date, or expired on or after it.
  *
  * @private
  */
@@ -292,18 +269,18 @@ function _chargeEndedLicencesFromSroc(licenceEntities, billingAccountEntities) {
       licenceModel(licenceEntity).$ended() &&
       (licenceEntity.licence.startDate >= srocStartDate || _expiredOnOrAfterSroc(licenceEntity))
     ) {
-      _chargeFromSroc(licenceEntity, billingAccountEntities.get(_holderId(licenceEntity)))
+      _chargeFromSroc(licenceEntity, billingAccountEntities)
     }
   }
 }
 
 /**
- * Charge both purposes of the licences with two
+ * Charge both purposes of the licence versions with two
  *
- * Each licence with two purposes on its current licence version, and a sroc charge reference, has them charged in the
- * next way from the list. About half have one reference with an element for each purpose, a quarter a reference for
- * each, and a quarter only the first purpose charged. At this point a licence has at most one sroc charge version, with
- * one charge reference, so that is the one charged by purpose.
+ * A sroc charge version is built with one charge reference and one charge element, for the first purpose on its licence
+ * version. Each licence with a sroc charge version for a licence version with two purposes has them charged in the next
+ * way from the list, the same way on each of those charge versions. About half have one reference with an element for
+ * each purpose, a quarter a reference for each, and a quarter only the first purpose charged.
  *
  * @private
  */
@@ -313,21 +290,29 @@ function _chargeBothPurposes(licenceEntities) {
   let twoPurposeCount = 0
 
   for (const licenceEntity of licenceEntities) {
-    const licenceVersionPurposes = _currentPurposes(licenceEntity)
-    const srocReference = (licenceEntity.chargeReferences ?? []).find((chargeReference) => {
-      return chargeReference.scheme === 'sroc'
+    const twoPurposeCharges = _srocChargeVersions(licenceEntity).flatMap((chargeVersion) => {
+      const licenceVersionPurposes = _purposesOn(licenceEntity, _licenceVersionFor(licenceEntity, chargeVersion))
+      const chargeReference = (licenceEntity.chargeReferences ?? []).find((srocChargeReference) => {
+        return srocChargeReference.chargeVersionId === chargeVersion.id
+      })
+
+      if (licenceVersionPurposes.length !== 2 || !chargeReference) {
+        return []
+      }
+
+      return [{ chargeReference, licenceVersionPurposes }]
     })
 
-    if (licenceVersionPurposes.length !== 2 || !srocReference) {
+    if (twoPurposeCharges.length === 0) {
       continue
     }
 
-    _chargeByPurpose(
-      licenceEntity,
-      srocReference,
-      licenceVersionPurposes,
-      PURPOSE_CHARGING[twoPurposeCount % PURPOSE_CHARGING.length]
-    )
+    const charging = PURPOSE_CHARGING[twoPurposeCount % PURPOSE_CHARGING.length]
+
+    for (const { chargeReference, licenceVersionPurposes } of twoPurposeCharges) {
+      _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes, charging)
+    }
+
     twoPurposeCount++
   }
 }
@@ -383,6 +368,69 @@ function _varySrocReferences(licenceEntities) {
 }
 
 /**
+ * Give a few live licences a superseded sroc charge version
+ *
+ * Only a live licence with a chargeable sroc charge version is given one. About one in seven have a superseded charge
+ * version, so every 7th is given one: a copy of its first sroc charge version, with its charge references and charge
+ * elements, that starts on the same date, has no end date and was replaced from the start.
+ *
+ * The licence's other charge versions follow its licence versions, so they are treated as already billed and the
+ * licence is not flagged for supplementary billing.
+ *
+ * @private
+ */
+function _addSupersededVersions(licenceEntities) {
+  const SUPERSEDED_EVERY = 7
+
+  let chargedCount = 0
+
+  for (const licenceEntity of licenceEntities) {
+    const firstSrocChargeVersion = _srocChargeVersions(licenceEntity)[0]
+
+    if (
+      licenceModel(licenceEntity).$ended() ||
+      !firstSrocChargeVersion ||
+      !_referenced(licenceEntity, firstSrocChargeVersion)
+    ) {
+      continue
+    }
+
+    if (chargedCount % SUPERSEDED_EVERY === SUPERSEDED_EVERY - 1) {
+      const superseded = _copyChargeVersion(licenceEntity, firstSrocChargeVersion)
+
+      superseded.status = 'superseded'
+      superseded.endDate = null
+    }
+
+    chargedCount++
+  }
+}
+
+/**
+ * Number each licence's charge versions in the order they were made
+ *
+ * They are numbered from 1 in order of their start date. A superseded charge version was made before the one that
+ * replaced it, so where two start on the same date the superseded one comes first.
+ *
+ * @private
+ */
+function _numberChargeVersions(licenceEntities) {
+  for (const licenceEntity of licenceEntities) {
+    const chargeVersions = [...(licenceEntity.chargeVersions ?? [])].sort((first, second) => {
+      if (first.startDate !== second.startDate) {
+        return first.startDate < second.startDate ? -1 : 1
+      }
+
+      return first.status === 'superseded' ? -1 : 1
+    })
+
+    for (let i = 0; i < chargeVersions.length; i++) {
+      chargeVersions[i].versionNumber = i + 1
+    }
+  }
+}
+
+/**
  * Give a few licences a section 130U agreement
  *
  * Besides two-part tariff, a few licences have another kind of agreement, most often section 130U, so every 180th
@@ -418,67 +466,95 @@ function _addOtherAgreements(licenceEntities) {
 }
 
 /**
- * Give a licence an alcs charge version
+ * Give a licence its alcs charge versions
  *
- * It was brought over from NALD, and ends when the alcs scheme did, or when the licence ended where that was earlier.
- * Where it is `open` it has no end date, as NALD left it. Where it is not `referenced` the charge reference the entity
- * builds is left out, and so is the billing account, as NALD has neither for it. Where it is given
- * `purposesToReference`, it has a charge reference for each of them in place of the one the entity builds. Where one of
- * the charge references it has is for two-part tariff, the licence is given a two-part tariff (S127) agreement.
+ * Each licence version that started before the sroc start date, and before the licence ended, has an alcs charge
+ * version for its holder. It starts when the licence version did and ends when it did, or when the alcs scheme did or
+ * the licence ended where that was earlier. The first was made for a new licence, and each one after for why its
+ * licence version changed. They were brought over from NALD.
+ *
+ * Where it is `open`, the last has no end date, as NALD left it. Where it is not `referenced` they have no charge
+ * reference or billing account, as NALD has neither for them. Otherwise each has a charge reference for the first
+ * purpose on its licence version, or one for each purpose where `referenceEachPurpose` and the licence version has two.
+ * Where one of the charge references is for two-part tariff, the licence is given a two-part tariff (S127) agreement,
+ * starting when the first charge version with one did, as that is when two-part tariff began.
  *
  * @private
  */
-function _chargeFromAlcs(licenceEntity, billingAccountEntity, referenced, open, purposesToReference) {
-  const { chargeVersion, chargeReference } = buildPresrocChargeVersionEntity(
-    licenceEntity,
-    billingAccountEntity,
-    regionOf(licenceEntity).region
-  )
-
-  chargeVersion.endDate = open ? null : _alcsEndDate(licenceEntity)
-  chargeVersion.source = 'nald'
-
-  let chargeReferences = []
-
-  if (referenced && purposesToReference) {
-    chargeReferences = purposesToReference.map((licenceVersionPurpose) => {
-      return chargeReferencePresrocData(chargeVersion, licenceVersionPurpose)
-    })
-  } else if (referenced) {
-    chargeReferences = [chargeReference]
-  } else {
-    chargeVersion.billingAccountId = null
-  }
-
-  _add(licenceEntity, { chargeVersion })
-
-  for (const addedChargeReference of chargeReferences) {
-    _add(licenceEntity, { chargeReference: addedChargeReference })
-  }
-
-  const twoPartTariff = chargeReferences.some((addedChargeReference) => {
-    return addedChargeReference.section127Agreement
+function _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open, referenceEachPurpose) {
+  const endDate = _endDate(licenceEntity)
+  const alcsEndDate = _alcsEndDate(licenceEntity)
+  const alcsLicenceVersions = _licenceVersions(licenceEntity).filter((licenceVersion) => {
+    return licenceVersion.startDate < srocStartDate && (!endDate || licenceVersion.startDate <= endDate)
   })
 
-  if (twoPartTariff) {
-    _add(licenceEntity, { licenceAgreement: licenceAgreementData(licenceEntity.licence) })
+  const chargeReferences = []
+
+  for (let i = 0; i < alcsLicenceVersions.length; i++) {
+    const licenceVersion = alcsLicenceVersions[i]
+    const chargeVersion = _chargeVersionFor(licenceEntity, licenceVersion, billingAccountEntities)
+
+    chargeVersion.scheme = 'alcs'
+    chargeVersion.source = 'nald'
+    chargeVersion.startDate = licenceVersion.startDate
+    chargeVersion.endDate =
+      licenceVersion.endDate && licenceVersion.endDate < alcsEndDate ? licenceVersion.endDate : alcsEndDate
+    chargeVersion.changeReasonId.value =
+      i === 0 ? ChangeReasonHelper.select(11).description : _changeReason(alcsLicenceVersions[i - 1], licenceVersion)
+
+    if (open && i === alcsLicenceVersions.length - 1) {
+      chargeVersion.endDate = null
+    }
+
+    _add(licenceEntity, { chargeVersion })
+
+    if (!referenced) {
+      chargeVersion.billingAccountId = null
+
+      continue
+    }
+
+    const licenceVersionPurposes = _purposesOn(licenceEntity, licenceVersion)
+    const purposesToReference =
+      referenceEachPurpose && licenceVersionPurposes.length === 2 ? licenceVersionPurposes : [licenceVersionPurposes[0]]
+
+    for (const licenceVersionPurpose of purposesToReference) {
+      const chargeReference = chargeReferencePresrocData(chargeVersion, licenceVersionPurpose)
+
+      chargeReferences.push(chargeReference)
+      _add(licenceEntity, { chargeReference })
+    }
   }
+
+  const firstTwoPartTariffReference = chargeReferences.find((chargeReference) => {
+    return chargeReference.section127Agreement
+  })
+
+  if (!firstTwoPartTariffReference) {
+    return
+  }
+
+  const firstTwoPartTariffChargeVersion = licenceEntity.chargeVersions.find((chargeVersion) => {
+    return chargeVersion.id === firstTwoPartTariffReference.chargeVersionId
+  })
+  const licenceAgreement = licenceAgreementData(licenceEntity.licence)
+
+  licenceAgreement.startDate = firstTwoPartTariffChargeVersion.startDate
+
+  _add(licenceEntity, { licenceAgreement })
 }
 
 /**
  * Give a licence a non-chargeable sroc charge version
  *
- * It starts on the sroc start date, or when the licence started where that was later. It is made for the given
- * non-chargeable `reason`, so it has no charge reference, charge element or billing account.
+ * It starts on the sroc start date, or when the licence started where that was later, and covers the whole of its time
+ * on sroc. It is made for the given non-chargeable `reason`, so it has no charge reference, charge element or billing
+ * account.
  *
  * @private
  */
-function _chargeAsNonChargeable(licenceEntity, billingAccountEntity, reason) {
-  const { chargeVersion } = buildChargeVersionEntity(
-    licenceEntity,
-    billingAccountEntity,
-    regionOf(licenceEntity).region
-  )
+function _chargeAsNonChargeable(licenceEntity, reason) {
+  const chargeVersion = chargeVersionData({ id: null }, licenceEntity.licence, regionOf(licenceEntity).region)
 
   if (licenceEntity.licence.startDate < srocStartDate) {
     chargeVersion.startDate = srocStartDate
@@ -541,33 +617,53 @@ function _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes
 }
 
 /**
- * Give a licence a sroc charge version
+ * Give a licence its sroc charge versions
  *
- * It starts on the sroc start date, or when the licence started where that was later. Where the licence started before
- * the sroc start date, it was made because the licence moved onto sroc. Where the licence has ended, it ends when the
- * licence did.
+ * Each licence version in force on or after the sroc start date, and before the licence ended, has a sroc charge
+ * version for its holder. It starts when the licence version did, or on the sroc start date where that was later, and
+ * ends when the licence version did, or when the licence ended where that was earlier and is in the past. The first was
+ * made because the licence moved onto sroc where it started before the sroc start date, or for a new licence where it
+ * did not. Each one after was made for why its licence version changed.
+ *
+ * Each has a charge reference and charge element for the first purpose on its licence version.
  *
  * @private
  */
-function _chargeFromSroc(licenceEntity, billingAccountEntity) {
-  const chargeVersionEntity = buildChargeVersionEntity(
-    licenceEntity,
-    billingAccountEntity,
-    regionOf(licenceEntity).region
-  )
-
-  if (licenceEntity.licence.startDate < srocStartDate) {
-    chargeVersionEntity.chargeVersion.startDate = srocStartDate
-    chargeVersionEntity.chargeVersion.changeReasonId.value = ChangeReasonHelper.select(24).description
-  }
-
+function _chargeFromSroc(licenceEntity, billingAccountEntities) {
   const endDate = _endDate(licenceEntity)
+  const ended = endDate && endDate <= formatDateToIso(today())
+  const srocLicenceVersions = _licenceVersions(licenceEntity).filter((licenceVersion) => {
+    const startsInTime = !ended || licenceVersion.startDate <= endDate
 
-  if (endDate && endDate <= formatDateToIso(today())) {
-    chargeVersionEntity.chargeVersion.endDate = endDate
+    return (!licenceVersion.endDate || licenceVersion.endDate >= srocStartDate) && startsInTime
+  })
+
+  for (let i = 0; i < srocLicenceVersions.length; i++) {
+    const licenceVersion = srocLicenceVersions[i]
+    const chargeVersion = _chargeVersionFor(licenceEntity, licenceVersion, billingAccountEntities)
+
+    chargeVersion.startDate = licenceVersion.startDate > srocStartDate ? licenceVersion.startDate : srocStartDate
+    chargeVersion.endDate = licenceVersion.endDate ?? null
+
+    if (ended && (!chargeVersion.endDate || chargeVersion.endDate > endDate)) {
+      chargeVersion.endDate = endDate
+    }
+
+    if (i > 0) {
+      chargeVersion.changeReasonId.value = _changeReason(srocLicenceVersions[i - 1], licenceVersion)
+    } else if (licenceEntity.licence.startDate < srocStartDate) {
+      chargeVersion.changeReasonId.value = ChangeReasonHelper.select(24).description
+    }
+
+    const firstPurpose = _purposesOn(licenceEntity, licenceVersion)[0]
+    const chargeReference = chargeReferenceData(chargeVersion, [firstPurpose])
+
+    _add(licenceEntity, {
+      chargeVersion,
+      chargeReference,
+      chargeElement: chargeElementData(chargeReference, firstPurpose)
+    })
   }
-
-  _add(licenceEntity, chargeVersionEntity)
 }
 
 /**
@@ -609,6 +705,75 @@ function _alcsEndDate(licenceEntity) {
 }
 
 /**
+ * Whether a charge version has a charge reference
+ *
+ * @private
+ */
+function _referenced(licenceEntity, chargeVersion) {
+  return (licenceEntity.chargeReferences ?? []).some((chargeReference) => {
+    return chargeReference.chargeVersionId === chargeVersion.id
+  })
+}
+
+/**
+ * A licence's sroc charge versions, in order of their start date
+ *
+ * @private
+ */
+function _srocChargeVersions(licenceEntity) {
+  const srocChargeVersions = (licenceEntity.chargeVersions ?? []).filter((chargeVersion) => {
+    return chargeVersion.scheme === 'sroc'
+  })
+
+  return srocChargeVersions.sort((first, second) => {
+    return first.startDate < second.startDate ? -1 : 1
+  })
+}
+
+/**
+ * Copy a charge version onto a licence, with its charge references and charge elements, and return the copy
+ *
+ * Every copy is given a new id, and its charge references and charge elements point at the copies they belong to.
+ *
+ * @private
+ */
+function _copyChargeVersion(licenceEntity, chargeVersion) {
+  const chargeVersionCopy = structuredClone(chargeVersion)
+
+  chargeVersionCopy.id = generateUUID()
+
+  _add(licenceEntity, { chargeVersion: chargeVersionCopy })
+
+  const chargeReferences = licenceEntity.chargeReferences.filter((chargeReference) => {
+    return chargeReference.chargeVersionId === chargeVersion.id
+  })
+
+  for (const chargeReference of chargeReferences) {
+    const chargeReferenceCopy = structuredClone(chargeReference)
+
+    chargeReferenceCopy.id = generateUUID()
+    chargeReferenceCopy.chargeVersionId = chargeVersionCopy.id
+
+    _add(licenceEntity, { chargeReference: chargeReferenceCopy })
+
+    const chargeElements = (licenceEntity.chargeElements ?? []).filter((chargeElement) => {
+      return chargeElement.chargeReferenceId === chargeReference.id
+    })
+
+    for (const chargeElement of chargeElements) {
+      const chargeElementCopy = structuredClone(chargeElement)
+
+      chargeElementCopy.id = generateUUID()
+      chargeElementCopy.chargeReferenceId = chargeReferenceCopy.id
+
+      _add(licenceEntity, { chargeElement: chargeElementCopy })
+    }
+  }
+
+  return chargeVersionCopy
+}
+
+/**
  * The charge category for a sroc charge reference
  *
  * It is the one of the engine's charge categories for a non-tidal source with the reference's loss, water model and
@@ -642,27 +807,6 @@ function _chargeCategory(chargeReference) {
 }
 
 /**
- * The licence's company with the given id
- *
- * A licence has one company, or a list of them where it has been transferred. Where none has the id, it throws an error
- * rather than returning nothing.
- *
- * @private
- */
-function _company(licenceEntity, companyId) {
-  const companies = licenceEntity.companies ?? [licenceEntity.company]
-  const company = companies.find((licenceCompany) => {
-    return licenceCompany.id === companyId
-  })
-
-  if (!company) {
-    throw new Error(`Licence ${licenceEntity.licence.licenceRef} has no company ${companyId}`)
-  }
-
-  return company
-}
-
-/**
  * The licence's current licence version, which is the last one where it has more than one
  *
  * @private
@@ -674,17 +818,69 @@ function _currentLicenceVersion(licenceEntity) {
 }
 
 /**
- * The purposes on the licence's current licence version
+ * A licence's licence versions, in the order they were made
  *
  * @private
  */
-function _currentPurposes(licenceEntity) {
+function _licenceVersions(licenceEntity) {
+  return licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
+}
+
+/**
+ * The licence version a charge version covers, which is the one in force when it starts
+ *
+ * @private
+ */
+function _licenceVersionFor(licenceEntity, chargeVersion) {
+  const startedBefore = _licenceVersions(licenceEntity).filter((licenceVersion) => {
+    return licenceVersion.startDate <= chargeVersion.startDate
+  })
+
+  return startedBefore.at(-1)
+}
+
+/**
+ * The purposes on a licence version
+ *
+ * @private
+ */
+function _purposesOn(licenceEntity, licenceVersion) {
   const licenceVersionPurposes = licenceEntity.licenceVersionPurposes ?? [licenceEntity.licenceVersionPurpose]
-  const currentLicenceVersion = _currentLicenceVersion(licenceEntity)
 
   return licenceVersionPurposes.filter((licenceVersionPurpose) => {
-    return licenceVersionPurpose.licenceVersionId === currentLicenceVersion.id
+    return licenceVersionPurpose.licenceVersionId === licenceVersion.id
   })
+}
+
+/**
+ * The change reason for a charge version, from why its licence version changed from the one before
+ *
+ * A licence version for a new licence holder is a transfer. One with the same issue is a correction, so a minor change.
+ * Any other is a new issue for the same licence holder, which is a purpose being added, so a major change.
+ *
+ * @private
+ */
+function _changeReason(previousLicenceVersion, licenceVersion) {
+  if (licenceVersion.companyId !== previousLicenceVersion.companyId) {
+    return ChangeReasonHelper.select(8).description
+  }
+
+  if (licenceVersion.issue === previousLicenceVersion.issue) {
+    return ChangeReasonHelper.select(1).description
+  }
+
+  return ChangeReasonHelper.select(0).description
+}
+
+/**
+ * A charge version for a licence version, billed to the account of that licence version's holder
+ *
+ * @private
+ */
+function _chargeVersionFor(licenceEntity, licenceVersion, billingAccountEntities) {
+  const { billingAccount } = billingAccountEntities.get(licenceVersion.companyId)
+
+  return chargeVersionData(billingAccount, licenceEntity.licence, regionOf(licenceEntity).region)
 }
 
 /**
