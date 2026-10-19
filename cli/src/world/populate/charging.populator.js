@@ -5,6 +5,7 @@ import { licenceModel } from './helpers/end-dates.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
 import { srocStartDate } from '../../../../tests/support/default-values.js'
 import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
+import workflowData from '../../../../tests/support/data/workflow.data.js'
 
 // Whether an alcs charge version has a charge reference. Each alcs charge version takes the next one, going back to
 // the start of the list when it runs out.
@@ -15,16 +16,63 @@ const ALCS_REFERENCED = [true, true, false, true, false]
 // How often a sroc charge reference has an aggregate factor of a half. Every 9th does, starting with the 9th.
 const AGGREGATE_EVERY = 9
 
+// How much of what a sroc charge reference abstracts is lost. Each sroc charge reference takes the next one, going back
+// to the start of the list when it runs out.
+//
+// Most are high loss, about a third are medium, and a few are low, so the list is weighted that way.
+const LOSSES = ['high', 'medium', 'high', 'low', 'high', 'medium', 'high']
+
+// How often a live licence that is charged is given a non-chargeable sroc charge version instead. Every 24th is,
+// starting with the 24th.
+//
+// A few sroc charge versions are non-chargeable, made for a reason the licence is not charged.
+const NON_CHARGEABLE_EVERY = 24
+
+// The reasons a sroc charge version is non-chargeable. Each non-chargeable charge version takes the next one, going
+// back to the start of the list when it runs out.
+//
+// About half are because the licence is a transfer type licence, so every other reason is.
+const NON_CHARGEABLE_REASONS = [
+  'Transfer type licence',
+  'Held by Environment Agency',
+  'Transfer type licence',
+  'Power generation less than 5 megawatts (S125)',
+  'Transfer type licence',
+  'Held by Environment Agency',
+  'Transfer type licence',
+  'Temporary type licence',
+  'Transfer type licence',
+  'Abatement (S126)'
+]
+
+// Whether a sroc charge reference is for a restricted source. Each sroc charge reference takes the next one, going back
+// to the start of the list when it runs out.
+//
+// A little over half are, so 3 in every 5 are.
+const RESTRICTED_SOURCES = [true, false, true, true, false]
+
 // How often a licence is billed to the billing account of the licence before it, rather than one of its own. Every 5th
 // licence is, starting with the 5th.
 //
 // Most billing accounts are for one licence, and about a quarter are for a few.
 const SHARED_BILLING_ACCOUNT_EVERY = 5
 
+// How often a live licence left without a sroc charge version is in the workflow waiting for it to be set up. Every 7th
+// is, starting with the 7th.
+//
+// Most licences without one are not in the workflow, so only a few are.
+const TO_SET_UP_EVERY = 7
+
 // How often a live licence is left without a sroc charge version. Every 18th live licence is, starting with its 18th.
 //
 // Nearly every live licence has a sroc charge version, but a few have not been given one yet.
 const UNCHARGED_EVERY = 18
+
+// The water resource model a sroc charge reference is in. Each sroc charge reference takes the next one, going back to
+// the start of the list when it runs out.
+//
+// They are spread about evenly between no model, tier 1 and tier 2.
+const WATER_MODELS = ['no model', 'tier 1', 'tier 2']
 
 // How often a sroc charge reference has a winter discount. Every 12th does, starting with the 12th.
 const WINTER_DISCOUNT_EVERY = 12
@@ -36,17 +84,21 @@ const WINTER_DISCOUNT_EVERY = 12
  * licence before it. Licences with the same current licence holder, such as a region's water company licences, are
  * billed to the same billing account.
  *
- * Every licence that started before the sroc start date is given an alcs charge version, which ends when the alcs
- * scheme did or when the licence ended. 2 in every 5 have no charge reference.
+ * Every licence that started before the sroc start date is given an alcs charge version brought over from NALD, which
+ * ends when the alcs scheme did or when the licence ended. 2 in every 5 have no charge reference or billing account.
  *
- * Every live licence, except every 18th, is given a sroc charge version, and so is a licence that has ended where it
- * started on or after the sroc start date, or expired on or after it. A sroc charge version starts on the sroc start
- * date, or when the licence started where that was later, and ends when the licence ended. Where the licence started
- * before the sroc start date, it was made because the licence moved onto sroc.
+ * Every live licence, except every 18th, is given a sroc charge version, and every 24th of those is non-chargeable, made
+ * for the next reason in the list with no charge reference or billing account. Every 7th of those left without one is
+ * in the workflow waiting for its charge information to be set up. A licence that has ended is also given a sroc charge
+ * version where it started on or after the sroc start date, or expired on or after it. A sroc charge version starts on
+ * the sroc start date, or when the licence started where that was later, and ends when the licence ended. Where the
+ * licence started before the sroc start date, it was made because the licence moved onto sroc.
  *
  * The charge versions are built by the charge version entities, so each has the reference, and for sroc the element,
- * those build for the licence's purpose. Every 12th sroc reference has a winter discount and every 9th an aggregate
- * factor of a half.
+ * those build for the licence's purpose. Each sroc reference takes the next loss, water model and whether it is for a
+ * restricted source from their lists. A water company licence's sroc references are for public water supply, and the
+ * rest have no additional charges. Every 12th sroc reference has a winter discount and every 9th an aggregate factor
+ * of a half.
  *
  * Call this after everything else has been added to the licences.
  *
@@ -72,10 +124,35 @@ export default function charging(licenceEntities) {
     return !licenceModel(licenceEntity).$ended()
   })
 
+  let chargedCount = 0
+  let nonChargeableCount = 0
+  let unchargedCount = 0
+
   for (let i = 0; i < liveLicenceEntities.length; i++) {
+    const billingAccountEntity = billingAccountEntities.get(_holderId(liveLicenceEntities[i]))
+
     if (i % UNCHARGED_EVERY !== UNCHARGED_EVERY - 1) {
-      _chargeFromSroc(liveLicenceEntities[i], billingAccountEntities.get(_holderId(liveLicenceEntities[i])))
+      if (chargedCount % NON_CHARGEABLE_EVERY === NON_CHARGEABLE_EVERY - 1) {
+        _chargeAsNonChargeable(
+          liveLicenceEntities[i],
+          billingAccountEntity,
+          NON_CHARGEABLE_REASONS[nonChargeableCount % NON_CHARGEABLE_REASONS.length]
+        )
+        nonChargeableCount++
+      } else {
+        _chargeFromSroc(liveLicenceEntities[i], billingAccountEntity)
+      }
+
+      chargedCount++
+
+      continue
     }
+
+    if (unchargedCount % TO_SET_UP_EVERY === TO_SET_UP_EVERY - 1) {
+      _toSetUp(liveLicenceEntities[i])
+    }
+
+    unchargedCount++
   }
 
   for (const licenceEntity of licenceEntities) {
@@ -95,6 +172,11 @@ export default function charging(licenceEntities) {
     })
 
     for (const chargeReference of srocReferences) {
+      chargeReference.additionalCharges = licenceEntity.licence.waterUndertaker ? { isSupplyPublicWater: true } : null
+      chargeReference.loss = LOSSES[srocReferenceCount % LOSSES.length]
+      chargeReference.restrictedSource = RESTRICTED_SOURCES[srocReferenceCount % RESTRICTED_SOURCES.length]
+      chargeReference.waterModel = WATER_MODELS[srocReferenceCount % WATER_MODELS.length]
+
       if (srocReferenceCount % WINTER_DISCOUNT_EVERY === WINTER_DISCOUNT_EVERY - 1) {
         chargeReference.adjustments.winter = true
       }
@@ -154,9 +236,10 @@ function _billingAccounts(licenceEntities) {
 /**
  * Give a licence an alcs charge version
  *
- * It ends when the alcs scheme did, or when the licence ended where that was earlier. Where it is not `referenced` the
- * charge reference the entity builds is left out. Where the licence is for a two-part tariff purpose it also has the
- * licence agreement the entity builds for it.
+ * It was brought over from NALD, and ends when the alcs scheme did, or when the licence ended where that was earlier.
+ * Where it is not `referenced` the charge reference the entity builds is left out, and so is the billing account, as
+ * NALD has neither for it. Where the licence is for a two-part tariff purpose it also has the licence agreement the
+ * entity builds for it.
  *
  * @private
  */
@@ -168,16 +251,44 @@ function _chargeFromAlcs(licenceEntity, billingAccountEntity, referenced) {
   )
 
   chargeVersion.endDate = _alcsEndDate(licenceEntity)
+  chargeVersion.source = 'nald'
 
   if (referenced) {
     _add(licenceEntity, { chargeVersion, chargeReference })
   } else {
+    chargeVersion.billingAccountId = null
+
     _add(licenceEntity, { chargeVersion })
   }
 
   if (licenceAgreement.licenceRef) {
     licenceEntity.licenceAgreement = licenceAgreement
   }
+}
+
+/**
+ * Give a licence a non-chargeable sroc charge version
+ *
+ * It starts on the sroc start date, or when the licence started where that was later. It is made for the given
+ * non-chargeable `reason`, so it has no charge reference, charge element or billing account.
+ *
+ * @private
+ */
+function _chargeAsNonChargeable(licenceEntity, billingAccountEntity, reason) {
+  const { chargeVersion } = buildChargeVersionEntity(
+    licenceEntity,
+    billingAccountEntity,
+    regionOf(licenceEntity).region
+  )
+
+  if (licenceEntity.licence.startDate < srocStartDate) {
+    chargeVersion.startDate = srocStartDate
+  }
+
+  chargeVersion.changeReasonId.value = reason
+  chargeVersion.billingAccountId = null
+
+  _add(licenceEntity, { chargeVersion })
 }
 
 /**
@@ -290,4 +401,23 @@ function _expiredOnOrAfterSroc(licenceEntity) {
  */
 function _holderId(licenceEntity) {
   return _currentLicenceVersion(licenceEntity).companyId
+}
+
+/**
+ * Put a licence in the workflow waiting for its charge information to be set up
+ *
+ * It is for the licence's current licence version. Nobody has started on it yet, so it has no charge version and was
+ * not created by anyone.
+ *
+ * @private
+ */
+function _toSetUp(licenceEntity) {
+  const workflow = workflowData(licenceEntity.licence)
+
+  workflow.status = 'to_setup'
+  workflow.licenceVersionId = _currentLicenceVersion(licenceEntity).id
+  workflow.createdBy = null
+  workflow.data = { chargeVersion: null, chargeVersionExists: false }
+
+  licenceEntity.workflow = workflow
 }
