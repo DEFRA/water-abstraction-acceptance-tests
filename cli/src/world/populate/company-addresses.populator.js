@@ -17,7 +17,7 @@ export default function companyAddresses(licenceEntities) {
   const heldVersions = _heldVersions(licenceEntities)
 
   for (const licenceEntity of licenceEntities) {
-    for (const companyAddress of _companyAddresses(licenceEntity)) {
+    for (const companyAddress of licenceEntity.companyAddresses) {
       const versions = heldVersions.get(_key(companyAddress))
       const startDates = versions.map((version) => version.startDate).sort()
       const endDates = versions.map((version) => version.endDate)
@@ -58,21 +58,6 @@ function _heldVersions(licenceEntities) {
   }
 
   return heldVersions
-}
-
-/**
- * The company addresses kept on a licence
- *
- * A licence is built with one. A transfer, or giving up its licence holder to share another's, puts them in a list.
- *
- * @private
- */
-function _companyAddresses(licenceEntity) {
-  if (licenceEntity.companyAddresses) {
-    return licenceEntity.companyAddresses
-  }
-
-  return [licenceEntity.companyAddress]
 }
 
 function _key({ companyId, addressId }) {

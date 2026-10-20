@@ -141,11 +141,6 @@ function _transfer(licenceEntity, region, startDate) {
   current.companyId = company.id
   current.addressId = address.id
 
-  // A licence is built with one of each. The first time this is called they are put into lists we can add to
-  licenceEntity.companies ??= [licenceEntity.company]
-  licenceEntity.addresses ??= [licenceEntity.address]
-  licenceEntity.companyAddresses ??= [licenceEntity.companyAddress]
-
   const previousRole = licenceEntity.licenceDocumentRoles.at(-1)
   const currentRole = licenceDocumentRoleData(licenceDocument, company, address)
 

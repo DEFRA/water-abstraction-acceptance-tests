@@ -101,9 +101,8 @@ function _billingAccounts(licenceEntities) {
 /**
  * Build the billing account for the holder of a licence version
  *
- * It is for the company and address on the licence version. A licence held by a water company, or by a company that
- * holds another licence, gives up its own company for that one, so the entity is given those rather than reading them
- * from the licence.
+ * It is for the company and address on the licence version. A licence that shares its holder with another gives up its
+ * own company for that one, so the entity is given those rather than reading them from the licence.
  *
  * @private
  */
@@ -131,10 +130,6 @@ function _moveBillingAccountAddress(licenceEntity, billingAccount, billingAccoun
   billingAccountAddresses[0].endDate = '2024-03-31'
   secondBillingAccountAddress.startDate = '2024-04-01'
   billingAccountAddresses.push(secondBillingAccountAddress)
-
-  if (!licenceEntity.addresses) {
-    licenceEntity.addresses = [licenceEntity.address]
-  }
 
   licenceEntity.addresses.push(address)
 }

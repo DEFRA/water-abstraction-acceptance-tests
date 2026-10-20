@@ -8,115 +8,21 @@ import { addPurposeToNewVersion, correct, firstIssue, transfer } from './helpers
 import { expire, expireInFuture, lapse, revoke } from './helpers/end-dates.helpers.js'
 import { asArrays } from '../../../../tests/support/helpers/wire-format.helpers.js'
 
-// Licences that started before this date have a first licence version with an issue of 100. Those that started on or
-// after it have one with an issue of 1.
-const ISSUE_100_BEFORE = '2000-01-01'
-
-// The dates the licences start on. Each licence takes the next one, going back to the start of the list when it runs
-// out.
-//
-// About half of all licences started in the 1960s, so about half of the dates are. The rest are shared between the
-// decades since in proportion. The list is a different length to any of the groups of licences, so a kind of licence
-// is not always given the same start dates.
-const START_DATES = [
-  '1965-04-01',
-  '1972-04-01',
-  '1966-04-01',
-  '1994-04-01',
-  '1963-04-01',
-  '1985-04-01',
-  '1967-04-01',
-  '2004-04-01',
-  '1961-04-01',
-  '2013-04-01',
-  '1968-04-01',
-  '1991-04-01',
-  '1964-04-01',
-  '1978-04-01',
-  '1969-04-01',
-  '2022-04-01',
-  '1962-04-01',
-  '1988-04-01',
-  '1960-04-01',
-  '2008-04-01',
-  '1965-04-01',
-  '1997-04-01',
-  '2017-04-01'
-]
-
-// The purposes the licences are used for. Each licence takes the next one, going back to the start of the list when it
-// runs out.
-//
-// About two thirds of licences are not two-part tariff, so about two thirds of the purposes are general farming and
-// domestic (140), which is not. The rest are spray irrigation direct (400), which is. The list is a different length to
-// the start dates and to any of the groups of licences, so a kind of licence is not always given the same purpose.
-const PURPOSES = ['140', '140', '400', '140', '140', '400', '140', '400', '140', '140', '400']
-
-// The licences in each group. Each entry is a function that builds one licence for a region.
-//
-// The kinds of licence in a group are seen about as often as each other, so a group's licences are shared equally
-// between its entries. Where one kind is seen more than the rest of its group it is in the list more than once. Each
-// list is most common first, so a small region that can not have them all gets the ones seen most.
-//
-// A live licence either has no end date or expires in the future. About a third of them expire in the future, so about
-// a third of the live combinations are built that way.
-//
-// An ended licence is mostly revoked, but some have expired or lapsed, so a few of the ended combinations are built
-// those ways.
-
-// Revoked is seen about four times as often as expired
-const COMMON = [_revoked, _revoked, _expired, _revoked, _revoked]
-
-const FAIRLY_COMMON = [_lapsed, _revokedWithOneCondition, _revokedWithTwoVersions, _expiredAndRevoked]
-
-const UNCOMMON = [
-  _liveWithTwoVersions,
-  _liveWithOneCondition,
-  _noEndDate,
-  _expiringWithThreeVersions,
-  _expiredWithTwoPoints,
-  _liveWithFourVersions,
-  _expiredWithTwoVersionsAndOneCondition,
-  _lapsedWithTwoPurposesAndTwoPoints,
-  _expiringWithTwoVersionsAndOneCondition,
-  _liveWithFourConditions,
-  _revokedWithTwoConditions,
-  _revokedWithTwoPurposes,
-  _revokedWithTwoPurposesAndFourConditions,
-  _expiringWithFourVersionsAndOneCondition,
-  _revokedWithThreeVersions
-]
-
-const RARE = [
-  _expiresInFuture,
-  _liveWithThreeVersionsAndOneCondition,
-  _expiringWithTwoConditions,
-  _liveWithTwoVersionsAndFourConditions,
-  _revokedWithThreeConditions,
-  _liveWithFourVersionsTwoPurposesAndFourConditions,
-  _expiringWithTwoVersionsAndTwoConditions,
-  _liveWithFourVersionsAndTwoConditions,
-  _expiringWithFourVersionsAndFourConditions,
-  _liveWithTwoPurposesAndFourConditions,
-  _revokedWithFutureExpiry,
-  _liveWithThreeConditions,
-  _liveWithTwoVersionsTwoPurposesAndFourConditions,
-  _expiringWithThreeVersionsAndTwoConditions,
-  _liveWithThreeVersionsAndFourConditions,
-  _liveWithFourVersionsAndThreeConditions,
-  _liveWithThreeVersionsTwoPurposesAndFourConditions,
-  _expiringWithTwoVersionsAndThreeConditions,
-  _expiredAndLapsed
-]
-
-const VERY_RARE = [_lapsedWithFutureExpiry, _lapsedAndRevoked, _expiredLapsedAndRevoked]
-
 /**
  * Build the licences that populate the world
  *
- * Each region gets its number of licences from each group. For each one the next function in that group's list builds
- * it, going back to the start of the list when it runs out. Each licence is given the next start date and the next
- * purpose in the same way.
+ * Each region gets its number of licences from each group: common, fairly common, uncommon, rare and very rare. Each
+ * group has its own list of licence types, and its own function that builds them.
+ *
+ * Each licence type says how the licence ends, in the order the ends are applied, and how many licence versions,
+ * purposes, points and conditions it has. Any left out stay as the licence was built. The licence types in a group are
+ * seen about as often as each other, so a group's licences are shared equally between its licence types. Where one
+ * licence type is seen more than the rest of its group it is in the list more than once. Each list is most common
+ * first, so a small region that can not have them all gets the ones seen most.
+ *
+ * A live licence either has no end date or expires in the future. About a third of them expire in the future, so about
+ * a third of the live licence types are built that way. An ended licence is mostly revoked, but some have expired or
+ * lapsed, so a few of the ended licence types are built those ways.
  *
  * @returns {object[]} the licence entities
  */
@@ -124,98 +30,257 @@ export default function licences() {
   const licenceEntities = []
 
   for (const { region, common, fairlyCommon, uncommon, rare, veryRare } of REGIONS) {
-    for (let i = 0; i < common; i++) {
-      licenceEntities.push(COMMON[i % COMMON.length](region, _startDate(licenceEntities), _purpose(licenceEntities)))
-    }
-
-    for (let i = 0; i < fairlyCommon; i++) {
-      licenceEntities.push(
-        FAIRLY_COMMON[i % FAIRLY_COMMON.length](region, _startDate(licenceEntities), _purpose(licenceEntities))
-      )
-    }
-
-    for (let i = 0; i < uncommon; i++) {
-      licenceEntities.push(
-        UNCOMMON[i % UNCOMMON.length](region, _startDate(licenceEntities), _purpose(licenceEntities))
-      )
-    }
-
-    for (let i = 0; i < rare; i++) {
-      licenceEntities.push(RARE[i % RARE.length](region, _startDate(licenceEntities), _purpose(licenceEntities)))
-    }
-
-    for (let i = 0; i < veryRare; i++) {
-      licenceEntities.push(
-        VERY_RARE[i % VERY_RARE.length](region, _startDate(licenceEntities), _purpose(licenceEntities))
-      )
-    }
+    _common(region, common, licenceEntities)
+    _fairlyCommon(region, fairlyCommon, licenceEntities)
+    _uncommon(region, uncommon, licenceEntities)
+    _rare(region, rare, licenceEntities)
+    _veryRare(region, veryRare, licenceEntities)
   }
 
   return licenceEntities
 }
 
 /**
- * Build a licence that starts on the given date and is used for the given purpose
+ * Build a region's common licences
  *
- * Where the licence started before 2000 its first licence version is issue 100. Otherwise it is issue 1.
+ * Revoked is seen about four times as often as expired.
  *
  * @private
  */
-function _build(region, startDate, purpose) {
+function _common(region, count, licenceEntities) {
+  const COMMON = [{ ends: [revoke] }, { ends: [revoke] }, { ends: [expire] }, { ends: [revoke] }, { ends: [revoke] }]
+
+  _buildLicences(region, count, COMMON, licenceEntities)
+}
+
+/**
+ * Build a region's fairly common licences
+ *
+ * @private
+ */
+function _fairlyCommon(region, count, licenceEntities) {
+  const FAIRLY_COMMON = [
+    { ends: [lapse] },
+    { ends: [revoke], conditions: 1 },
+    { ends: [revoke], versions: 2 },
+    { ends: [expire, revoke] }
+  ]
+
+  _buildLicences(region, count, FAIRLY_COMMON, licenceEntities)
+}
+
+/**
+ * Build a region's uncommon licences
+ *
+ * @private
+ */
+function _uncommon(region, count, licenceEntities) {
+  const UNCOMMON = [
+    { ends: [], versions: 2 },
+    { ends: [], conditions: 1 },
+    { ends: [] },
+    { ends: [expireInFuture], versions: 3 },
+    { ends: [expire], points: 2 },
+    { ends: [], versions: 4 },
+    { ends: [expire], versions: 2, conditions: 1 },
+    { ends: [lapse], purposes: 2, points: 2 },
+    { ends: [expireInFuture], versions: 2, conditions: 1 },
+    { ends: [], conditions: 4 },
+    { ends: [revoke], conditions: 2 },
+    { ends: [revoke], purposes: 2 },
+    { ends: [revoke], purposes: 2, conditions: 4 },
+    { ends: [expireInFuture], versions: 4, conditions: 1 },
+    { ends: [revoke], versions: 3 }
+  ]
+
+  _buildLicences(region, count, UNCOMMON, licenceEntities)
+}
+
+/**
+ * Build a region's rare licences
+ *
+ * @private
+ */
+function _rare(region, count, licenceEntities) {
+  const RARE = [
+    { ends: [expireInFuture] },
+    { ends: [], versions: 3, conditions: 1 },
+    { ends: [expireInFuture], conditions: 2 },
+    { ends: [], versions: 2, conditions: 4 },
+    { ends: [revoke], conditions: 3 },
+    { ends: [], versions: 4, purposes: 2, conditions: 4 },
+    { ends: [expireInFuture], versions: 2, conditions: 2 },
+    { ends: [], versions: 4, conditions: 2 },
+    { ends: [expireInFuture], versions: 4, conditions: 4 },
+    { ends: [], purposes: 2, conditions: 4 },
+    { ends: [expireInFuture, revoke] },
+    { ends: [], conditions: 3 },
+    { ends: [], versions: 2, purposes: 2, conditions: 4 },
+    { ends: [expireInFuture], versions: 3, conditions: 2 },
+    { ends: [], versions: 3, conditions: 4 },
+    { ends: [], versions: 4, conditions: 3 },
+    { ends: [], versions: 3, purposes: 2, conditions: 4 },
+    { ends: [expireInFuture], versions: 2, conditions: 3 },
+    { ends: [expire, lapse] }
+  ]
+
+  _buildLicences(region, count, RARE, licenceEntities)
+}
+
+/**
+ * Build a region's very rare licences
+ *
+ * @private
+ */
+function _veryRare(region, count, licenceEntities) {
+  const VERY_RARE = [{ ends: [expireInFuture, lapse] }, { ends: [lapse, revoke] }, { ends: [expire, lapse, revoke] }]
+
+  _buildLicences(region, count, VERY_RARE, licenceEntities)
+}
+
+/**
+ * Build the given number of licences in a region, each the next licence type in the list
+ *
+ * Each licence is given the next start date and the next purpose. The list of licence types goes back to the start
+ * when it runs out.
+ *
+ * @private
+ */
+function _buildLicences(region, count, licenceTypes, licenceEntities) {
+  for (let i = 0; i < count; i++) {
+    const startDate = _startDate(licenceEntities)
+    const purpose = _purpose(licenceEntities)
+    const licenceType = licenceTypes[i % licenceTypes.length]
+
+    licenceEntities.push(_build(region, startDate, purpose, licenceType))
+  }
+}
+
+/**
+ * Build a licence of the given licence type that starts on the given date and is used for the given purpose
+ *
+ * Where the licence started before 2000 its first licence version is issue 100. Otherwise it is issue 1. It is then
+ * ended the ways its licence type says, in order, and given its licence type's licence versions, purposes, points and
+ * conditions.
+ *
+ * @private
+ */
+function _build(region, startDate, purpose, licenceType) {
+  const ISSUE_100_BEFORE = '2000-01-01'
+
   const licenceEntity = usedFor(startOn(_asLists(buildLicenceEntity(region)), startDate), purpose)
 
   if (startDate < ISSUE_100_BEFORE) {
     firstIssue(licenceEntity, 100)
   }
 
-  return licenceEntity
+  for (const end of licenceType.ends) {
+    end(licenceEntity)
+  }
+
+  return _addVersionsPurposesPointsAndConditions(licenceEntity, region, licenceType)
 }
 
 /**
  * Turn the parts of a licence entity that a licence can have more than one of into lists
  *
- * The licence entity is built with one licence document role, licence version, licence version purpose, point and
- * licence version purpose point. `asArrays` puts each into a list of one, under the same name made plural, so the
- * populators can add to them and never have to check which they are. The rest of the entity is left as it is.
+ * The licence entity is built with one company, address, company address, licence document role, licence version,
+ * licence version purpose, point and licence version purpose point. `asArrays` puts each into a list of one, under the
+ * same name made plural, so the populators can add to them and never have to check which they are. The rest of the
+ * entity is left as it is.
  *
- * The lists go after the rest, in the order they are loaded in: a point before the licence version purpose points that
- * refer to it.
+ * The company, address and company address stay first, as everything else that refers to them is loaded after them.
+ * The other lists go after the rest, in the order they are loaded in: a point before the licence version purpose
+ * points that refer to it.
  *
  * @private
  */
 function _asLists(licenceEntity) {
-  const { licenceDocumentRole, licenceVersion, licenceVersionPurpose, point, licenceVersionPurposePoint, ...rest } =
-    licenceEntity
+  const {
+    company,
+    address,
+    companyAddress,
+    licenceDocumentRole,
+    licenceVersion,
+    licenceVersionPurpose,
+    point,
+    licenceVersionPurposePoint,
+    ...rest
+  } = licenceEntity
 
   return {
+    ...asArrays({ company, address, companyAddress }),
     ...rest,
     ...asArrays({ licenceDocumentRole, licenceVersion, licenceVersionPurpose, point, licenceVersionPurposePoint })
   }
 }
 
 /**
- * The purpose for the next licence, which is the next in the list after the one the last licence was given
+ * The purpose for the next licence
+ *
+ * About two thirds of licences are not two-part tariff. So every 3rd licence, starting with the 3rd, is used for spray
+ * irrigation direct (400), which is two-part tariff, and the rest are used for general farming and domestic (140),
+ * which is not.
+ *
+ * The uncommon and very rare lists are multiples of 3 long, so within a region each of their licence types is always
+ * given the same purpose. Each region starts at a different point, so across regions it varies.
  *
  * @private
  */
 function _purpose(licenceEntities) {
-  return PURPOSES[licenceEntities.length % PURPOSES.length]
+  const SPRAY_IRRIGATION_EVERY = 3
+
+  if (licenceEntities.length % SPRAY_IRRIGATION_EVERY === SPRAY_IRRIGATION_EVERY - 1) {
+    return '400'
+  }
+
+  return '140'
 }
 
 /**
  * The start date for the next licence, which is the next in the list after the one the last licence was given
  *
+ * About half of all licences started in the 1960s, so about half of the dates are. The rest are shared between the
+ * decades since in proportion. The list is a different length to any of the groups of licences, so a licence type is
+ * not always given the same start date.
+ *
  * @private
  */
 function _startDate(licenceEntities) {
+  const START_DATES = [
+    '1965-04-01',
+    '1972-04-01',
+    '1966-04-01',
+    '1994-04-01',
+    '1963-04-01',
+    '1985-04-01',
+    '1967-04-01',
+    '2004-04-01',
+    '1961-04-01',
+    '2013-04-01',
+    '1968-04-01',
+    '1991-04-01',
+    '1964-04-01',
+    '1978-04-01',
+    '1969-04-01',
+    '2022-04-01',
+    '1962-04-01',
+    '1988-04-01',
+    '1960-04-01',
+    '2008-04-01',
+    '1965-04-01',
+    '1997-04-01',
+    '2017-04-01'
+  ]
+
   return START_DATES[licenceEntities.length % START_DATES.length]
 }
 
 /**
  * Add licence versions, purposes, points and conditions to a licence
  *
- * `amounts` says how many the licence ends up with. Any that are left out stay as the licence was built: one licence
- * version, one purpose, one point and no conditions.
+ * The licence type says how many the licence ends up with. Any that are left out stay as the licence was built: one
+ * licence version, one purpose, one point and no conditions.
  *
  * Purposes, points and conditions are added first, so that every licence version has them. Then the licence versions
  * are added, each for a reason: a transfer to a new licence holder, then a correction, then another transfer. Where the
@@ -223,8 +288,8 @@ function _startDate(licenceEntities) {
  *
  * @private
  */
-function _add(licenceEntity, region, amounts) {
-  const { versions = 1, purposes = 1, points = 1, conditions = 0 } = amounts
+function _addVersionsPurposesPointsAndConditions(licenceEntity, region, licenceType) {
+  const { versions = 1, purposes = 1, points = 1, conditions = 0 } = licenceType
 
   const purposeAddedInLastVersion = versions > 1 && purposes > 1
   const purposesToAddNow = purposeAddedInLastVersion ? purposes - 2 : purposes - 1
@@ -254,180 +319,4 @@ function _add(licenceEntity, region, amounts) {
   }
 
   return licenceEntity
-}
-
-function _expired(region, startDate, purpose) {
-  return expire(_build(region, startDate, purpose))
-}
-
-function _expiredAndLapsed(region, startDate, purpose) {
-  return lapse(expire(_build(region, startDate, purpose)))
-}
-
-function _expiredAndRevoked(region, startDate, purpose) {
-  return revoke(expire(_build(region, startDate, purpose)))
-}
-
-function _expiredLapsedAndRevoked(region, startDate, purpose) {
-  return revoke(lapse(expire(_build(region, startDate, purpose))))
-}
-
-function _expiresInFuture(region, startDate, purpose) {
-  return expireInFuture(_build(region, startDate, purpose))
-}
-
-function _lapsed(region, startDate, purpose) {
-  return lapse(_build(region, startDate, purpose))
-}
-
-function _lapsedAndRevoked(region, startDate, purpose) {
-  return revoke(lapse(_build(region, startDate, purpose)))
-}
-
-function _lapsedWithFutureExpiry(region, startDate, purpose) {
-  return lapse(expireInFuture(_build(region, startDate, purpose)))
-}
-
-function _noEndDate(region, startDate, purpose) {
-  return _build(region, startDate, purpose)
-}
-
-function _revoked(region, startDate, purpose) {
-  return revoke(_build(region, startDate, purpose))
-}
-
-function _revokedWithFutureExpiry(region, startDate, purpose) {
-  return revoke(expireInFuture(_build(region, startDate, purpose)))
-}
-
-// A licence with one of the combinations of licence versions, purposes, points and conditions that are really seen.
-// Live has no end date and expiring is live with an expiry date in the future. The ended ones are revoked, expired or
-// lapsed.
-
-function _revokedWithOneCondition(region, startDate, purpose) {
-  return _add(revoke(_build(region, startDate, purpose)), region, { conditions: 1 })
-}
-
-function _revokedWithTwoVersions(region, startDate, purpose) {
-  return _add(revoke(_build(region, startDate, purpose)), region, { versions: 2 })
-}
-
-function _expiredWithTwoPoints(region, startDate, purpose) {
-  return _add(expire(_build(region, startDate, purpose)), region, { points: 2 })
-}
-
-function _expiredWithTwoVersionsAndOneCondition(region, startDate, purpose) {
-  return _add(expire(_build(region, startDate, purpose)), region, { versions: 2, conditions: 1 })
-}
-
-function _lapsedWithTwoPurposesAndTwoPoints(region, startDate, purpose) {
-  return _add(lapse(_build(region, startDate, purpose)), region, { purposes: 2, points: 2 })
-}
-
-function _revokedWithTwoConditions(region, startDate, purpose) {
-  return _add(revoke(_build(region, startDate, purpose)), region, { conditions: 2 })
-}
-
-function _revokedWithTwoPurposes(region, startDate, purpose) {
-  return _add(revoke(_build(region, startDate, purpose)), region, { purposes: 2 })
-}
-
-function _revokedWithTwoPurposesAndFourConditions(region, startDate, purpose) {
-  return _add(revoke(_build(region, startDate, purpose)), region, { purposes: 2, conditions: 4 })
-}
-
-function _revokedWithThreeVersions(region, startDate, purpose) {
-  return _add(revoke(_build(region, startDate, purpose)), region, { versions: 3 })
-}
-
-function _revokedWithThreeConditions(region, startDate, purpose) {
-  return _add(revoke(_build(region, startDate, purpose)), region, { conditions: 3 })
-}
-
-function _liveWithTwoVersions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 2 })
-}
-
-function _liveWithOneCondition(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { conditions: 1 })
-}
-
-function _expiringWithThreeVersions(region, startDate, purpose) {
-  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 3 })
-}
-
-function _liveWithFourVersions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 4 })
-}
-
-function _expiringWithTwoVersionsAndOneCondition(region, startDate, purpose) {
-  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 2, conditions: 1 })
-}
-
-function _liveWithFourConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { conditions: 4 })
-}
-
-function _expiringWithFourVersionsAndOneCondition(region, startDate, purpose) {
-  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 4, conditions: 1 })
-}
-
-function _liveWithThreeVersionsAndOneCondition(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 3, conditions: 1 })
-}
-
-function _expiringWithTwoConditions(region, startDate, purpose) {
-  return _add(expireInFuture(_build(region, startDate, purpose)), region, { conditions: 2 })
-}
-
-function _liveWithTwoVersionsAndFourConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 2, conditions: 4 })
-}
-
-function _liveWithFourVersionsTwoPurposesAndFourConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 4, purposes: 2, conditions: 4 })
-}
-
-function _expiringWithTwoVersionsAndTwoConditions(region, startDate, purpose) {
-  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 2, conditions: 2 })
-}
-
-function _liveWithFourVersionsAndTwoConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 4, conditions: 2 })
-}
-
-function _expiringWithFourVersionsAndFourConditions(region, startDate, purpose) {
-  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 4, conditions: 4 })
-}
-
-function _liveWithTwoPurposesAndFourConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { purposes: 2, conditions: 4 })
-}
-
-function _liveWithThreeConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { conditions: 3 })
-}
-
-function _liveWithTwoVersionsTwoPurposesAndFourConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 2, purposes: 2, conditions: 4 })
-}
-
-function _expiringWithThreeVersionsAndTwoConditions(region, startDate, purpose) {
-  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 3, conditions: 2 })
-}
-
-function _liveWithThreeVersionsAndFourConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 3, conditions: 4 })
-}
-
-function _liveWithFourVersionsAndThreeConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 4, conditions: 3 })
-}
-
-function _liveWithThreeVersionsTwoPurposesAndFourConditions(region, startDate, purpose) {
-  return _add(_build(region, startDate, purpose), region, { versions: 3, purposes: 2, conditions: 4 })
-}
-
-function _expiringWithTwoVersionsAndThreeConditions(region, startDate, purpose) {
-  return _add(expireInFuture(_build(region, startDate, purpose)), region, { versions: 2, conditions: 3 })
 }
