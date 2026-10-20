@@ -49,9 +49,10 @@ export default function charging(licenceEntities) {
  * The billing account for each licence holder, past and present, by the id of their company
  *
  * Each company that holds one of a licence's licence versions is given a billing account, for the company and address
- * on that licence version. Most billing accounts are for one licence and about a quarter are for a few, so every 5th
- * licence's current licence holder is billed to the account of the licence before it instead. A billing account is
- * kept on the licence it was built for, so it is loaded with it.
+ * on that licence version. Most billing accounts are for one licence and about a quarter are for a few, so every 3rd
+ * licence's current licence holder is billed to the account of the licence before it instead. Every 3rd past licence
+ * holder is likewise billed to the account of a past licence holder on an earlier licence, where there is one. A billing
+ * account is kept on the licence it was built for, so it is loaded with it.
  *
  * A few billing accounts have moved address, so every 28th one built moves to a new address.
  *
@@ -59,16 +60,19 @@ export default function charging(licenceEntities) {
  */
 function _billingAccounts(licenceEntities) {
   const SECOND_ADDRESS_EVERY = 28
-  const SHARED_BILLING_ACCOUNT_EVERY = 5
+  const SHARED_BILLING_ACCOUNT_EVERY = 3
 
   const billingAccountEntities = new Map()
 
   let builtCount = 0
+  let pastHolderCount = 0
+  let pastBillingAccountEntity = null
 
   for (let i = 0; i < licenceEntities.length; i++) {
     const licenceEntity = licenceEntities[i]
     const billingAccounts = []
     const billingAccountAddresses = []
+    let licencePastBillingAccountEntity = null
 
     for (const licenceVersion of _licenceVersions(licenceEntity)) {
       const holderId = licenceVersion.companyId
@@ -85,6 +89,18 @@ function _billingAccounts(licenceEntities) {
         continue
       }
 
+      if (!currentHolder) {
+        const shared = pastHolderCount % SHARED_BILLING_ACCOUNT_EVERY === SHARED_BILLING_ACCOUNT_EVERY - 1
+
+        pastHolderCount++
+
+        if (shared && pastBillingAccountEntity) {
+          billingAccountEntities.set(holderId, pastBillingAccountEntity)
+
+          continue
+        }
+      }
+
       const billingAccountEntity = _buildBillingAccount(licenceEntity, licenceVersion)
       const { billingAccount } = billingAccountEntity
       const accountAddresses = [billingAccountEntity.billingAccountAddress]
@@ -98,7 +114,13 @@ function _billingAccounts(licenceEntities) {
 
       billingAccountEntities.set(holderId, billingAccountEntity)
       builtCount++
+
+      if (!currentHolder) {
+        licencePastBillingAccountEntity = billingAccountEntity
+      }
     }
+
+    pastBillingAccountEntity = licencePastBillingAccountEntity ?? pastBillingAccountEntity
 
     licenceEntity.billingAccounts = billingAccounts
     licenceEntity.billingAccountAddresses = billingAccountAddresses
