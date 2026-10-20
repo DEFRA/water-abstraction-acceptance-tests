@@ -226,25 +226,18 @@ function _asLists(licenceEntity) {
 }
 
 /**
- * The purpose for the next licence
+ * The purpose for the next licence, which is the next in the list after the one the last licence was given
  *
- * About two thirds of licences are not two-part tariff. So every 3rd licence, starting with the 3rd, is used for spray
- * irrigation direct (400), which is two-part tariff, and the rest are used for general farming and domestic (140),
- * which is not.
- *
- * The uncommon and very rare lists are multiples of 3 long, so within a region each of their licence types is always
- * given the same purpose. Each region starts at a different point, so across regions it varies.
+ * About two thirds of licences are not two-part tariff, so about two thirds of the purposes are general farming and
+ * domestic (140), which is not. The rest are spray irrigation direct (400), which is. The list is a different length to
+ * the start dates and to any of the groups of licences, so a licence type is not always given the same purpose.
  *
  * @private
  */
 function _purpose(licenceEntities) {
-  const SPRAY_IRRIGATION_EVERY = 3
+  const PURPOSES = ['140', '140', '400', '140', '140', '400', '140', '400', '140', '140', '400']
 
-  if (licenceEntities.length % SPRAY_IRRIGATION_EVERY === SPRAY_IRRIGATION_EVERY - 1) {
-    return '400'
-  }
-
-  return '140'
+  return PURPOSES[licenceEntities.length % PURPOSES.length]
 }
 
 /**
