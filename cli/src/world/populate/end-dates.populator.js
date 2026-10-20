@@ -92,7 +92,7 @@ function _endAfter(licenceEntity, yearsHeld, first) {
  */
 function _revokeOn(licenceEntity, date) {
   const { licence } = licenceEntity
-  const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
+  const licenceVersions = licenceEntity.licenceVersions
 
   if (!licence.revokedDate || licence.lapsedDate || _inThePast(licence.expiredDate)) {
     return licenceEntity
@@ -146,7 +146,7 @@ function _inThePast(date) {
 function _moveEnd(licenceEntity, endDate) {
   const { licence, licenceDocument } = licenceEntity
   const previousEndDate = licenceDocument.endDate
-  const licenceDocumentRoles = licenceEntity.licenceDocumentRoles ?? [licenceEntity.licenceDocumentRole]
+  const licenceDocumentRoles = licenceEntity.licenceDocumentRoles
 
   for (const licenceDocumentRole of licenceDocumentRoles) {
     if (licenceDocumentRole.endDate === previousEndDate) {

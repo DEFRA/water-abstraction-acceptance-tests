@@ -19,7 +19,7 @@ const PURPOSES_TO_ADD = ['420', '160', '600']
  * @returns {object} the same licence entity
  */
 export function usedFor(licenceEntity, purpose) {
-  licenceEntity.licenceVersionPurpose.purposeId.value = purpose
+  licenceEntity.licenceVersionPurposes[0].purposeId.value = purpose
 
   return licenceEntity
 }
@@ -36,13 +36,8 @@ export function usedFor(licenceEntity, purpose) {
  * @param {object} region - the region the licence is in
  */
 export function addPurpose(licenceEntity, region) {
-  // A licence is built with one of each. The first time this is called they are put into lists we can add to
-  licenceEntity.licenceVersionPurposes ??= [licenceEntity.licenceVersionPurpose]
-  licenceEntity.licenceVersionPurposePoints ??= [licenceEntity.licenceVersionPurposePoint]
-
-  // The current licence version is the last one, where the licence has been given more than one
-  const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
-  const currentLicenceVersion = licenceVersions.at(-1)
+  // The current licence version is the last one
+  const currentLicenceVersion = licenceEntity.licenceVersions.at(-1)
 
   const existingPurposes = licenceEntity.licenceVersionPurposes.filter((licenceVersionPurpose) => {
     return licenceVersionPurpose.licenceVersionId === currentLicenceVersion.id
@@ -53,22 +48,20 @@ export function addPurpose(licenceEntity, region) {
   purpose.purposeId.value = PURPOSES_TO_ADD[existingPurposes.length - 1]
 
   licenceEntity.licenceVersionPurposes.push(purpose)
-  licenceEntity.licenceVersionPurposePoints.push(licenceVersionPurposePointData(purpose, licenceEntity.point))
+  licenceEntity.licenceVersionPurposePoints.push(licenceVersionPurposePointData(purpose, licenceEntity.points[0]))
 }
 
 /**
- * The first purpose on the licence's current licence version, which is the last one where it has more than one
+ * The first purpose on the licence's current licence version, which is the last one
  *
  * @param {object} licenceEntity - the licence entity to look in
  *
  * @returns {object} the licence version purpose
  */
 export function currentPurpose(licenceEntity) {
-  const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
-  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes ?? [licenceEntity.licenceVersionPurpose]
-  const currentLicenceVersion = licenceVersions.at(-1)
+  const currentLicenceVersion = licenceEntity.licenceVersions.at(-1)
 
-  return licenceVersionPurposes.find((licenceVersionPurpose) => {
+  return licenceEntity.licenceVersionPurposes.find((licenceVersionPurpose) => {
     return licenceVersionPurpose.licenceVersionId === currentLicenceVersion.id
   })
 }

@@ -16,8 +16,8 @@ export function startOn(licenceEntity, startDate) {
   licenceEntity.licence.startDate = startDate
   licenceEntity.permitLicence.startDate = startDate
   licenceEntity.licenceDocument.startDate = startDate
-  licenceEntity.licenceDocumentRole.startDate = startDate
-  licenceEntity.licenceVersion.startDate = startDate
+  licenceEntity.licenceDocumentRoles[0].startDate = startDate
+  licenceEntity.licenceVersions[0].startDate = startDate
 
   return licenceEntity
 }

@@ -72,7 +72,7 @@ export function correctOn(licenceEntity, region, startDate) {
  * @returns {object} the same licence entity
  */
 export function firstIssue(licenceEntity, issue) {
-  licenceEntity.licenceVersion.issue = issue
+  licenceEntity.licenceVersions[0].issue = issue
 
   return licenceEntity
 }
@@ -143,7 +143,6 @@ function _transfer(licenceEntity, region, startDate) {
   licenceEntity.companies ??= [licenceEntity.company]
   licenceEntity.addresses ??= [licenceEntity.address]
   licenceEntity.companyAddresses ??= [licenceEntity.companyAddress]
-  licenceEntity.licenceDocumentRoles ??= [licenceEntity.licenceDocumentRole]
 
   const previousRole = licenceEntity.licenceDocumentRoles.at(-1)
   const currentRole = licenceDocumentRoleData(licenceDocument, company, address)
@@ -186,11 +185,6 @@ function _addDays(date, days) {
  */
 function _newLicenceVersion(licenceEntity, region, startDate) {
   const { address, company, licence } = licenceEntity
-
-  // A licence is built with one of each. The first time this is called they are put into lists we can add to
-  licenceEntity.licenceVersions ??= [licenceEntity.licenceVersion]
-  licenceEntity.licenceVersionPurposes ??= [licenceEntity.licenceVersionPurpose]
-  licenceEntity.licenceVersionPurposePoints ??= [licenceEntity.licenceVersionPurposePoint]
 
   const previous = licenceEntity.licenceVersions.at(-1)
   const current = licenceVersionData(licence, company, address, region)

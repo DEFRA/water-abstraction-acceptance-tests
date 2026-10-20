@@ -55,8 +55,8 @@ function _holdBySameCompany(licenceEntities) {
   for (const licenceEntity of otherLicenceEntities) {
     const droppedCompany = _dropCurrentHolder(licenceEntity)
 
-    const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
-    const licenceDocumentRoles = licenceEntity.licenceDocumentRoles ?? [licenceEntity.licenceDocumentRole]
+    const licenceVersions = licenceEntity.licenceVersions
+    const licenceDocumentRoles = licenceEntity.licenceDocumentRoles
 
     for (const held of [...licenceVersions, ...licenceDocumentRoles]) {
       if (held.companyId === droppedCompany.id) {

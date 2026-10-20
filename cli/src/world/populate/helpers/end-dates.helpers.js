@@ -97,12 +97,12 @@ export function licenceModel(licenceEntity) {
  * @private
  */
 function _endDocument(licenceEntity, endDate) {
-  const { licenceDocument, licenceDocumentRole } = licenceEntity
+  const { licenceDocument, licenceDocumentRoles } = licenceEntity
 
   if (licenceDocument.endDate && licenceDocument.endDate < endDate) {
     return
   }
 
   licenceDocument.endDate = endDate
-  licenceDocumentRole.endDate = endDate
+  licenceDocumentRoles[0].endDate = endDate
 }

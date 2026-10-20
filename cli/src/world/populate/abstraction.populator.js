@@ -93,12 +93,8 @@ export default function abstraction(licenceEntities) {
  * @private
  */
 function _abstractFrom(licenceEntity, region, points) {
-  // A licence is built with one of each. The first time this is called they are put into lists we can add to
-  licenceEntity.points ??= [licenceEntity.point]
-  licenceEntity.licenceVersionPurposePoints ??= [licenceEntity.licenceVersionPurposePoint]
-
-  const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
-  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes ?? [licenceEntity.licenceVersionPurpose]
+  const licenceVersions = licenceEntity.licenceVersions
+  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes
 
   while (licenceEntity.points.length < points) {
     const point = pointData(region)
@@ -129,7 +125,7 @@ function _abstractFrom(licenceEntity, region, points) {
  * @private
  */
 function _abstractDuring(licenceEntity, abstractionPeriod) {
-  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes ?? [licenceEntity.licenceVersionPurpose]
+  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes
 
   for (const licenceVersionPurpose of licenceVersionPurposes) {
     licenceVersionPurpose.abstractionPeriodStartDay = abstractionPeriod.startDay
@@ -154,8 +150,8 @@ function _abstractDuring(licenceEntity, abstractionPeriod) {
  * @private
  */
 function _abstractUpTo(licenceEntity, quantities, first) {
-  const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
-  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes ?? [licenceEntity.licenceVersionPurpose]
+  const licenceVersions = licenceEntity.licenceVersions
+  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes
 
   for (const licenceVersion of licenceVersions) {
     const purposesOnVersion = licenceVersionPurposes.filter((licenceVersionPurpose) => {

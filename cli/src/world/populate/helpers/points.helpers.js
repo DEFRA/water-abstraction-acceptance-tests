@@ -14,10 +14,6 @@ import pointData from '../../../../../tests/support/data/point.data.js'
  * @param {object} region - the region the licence is in
  */
 export function addPoint(licenceEntity, region) {
-  // A licence is built with one of each. The first time this is called they are put into lists we can add to
-  licenceEntity.points ??= [licenceEntity.point]
-  licenceEntity.licenceVersionPurposePoints ??= [licenceEntity.licenceVersionPurposePoint]
-
   const point = pointData(region)
 
   point.description = `Example point ${licenceEntity.points.length + 1}`

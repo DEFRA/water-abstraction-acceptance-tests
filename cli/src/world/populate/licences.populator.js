@@ -6,6 +6,7 @@ import { startOn } from './helpers/start-dates.helpers.js'
 import { addPurpose, usedFor } from './helpers/purposes.helpers.js'
 import { addPurposeToNewVersion, correct, firstIssue, transfer } from './helpers/licence-versions.helpers.js'
 import { expire, expireInFuture, lapse, revoke } from './helpers/end-dates.helpers.js'
+import { asArrays } from '../../../../tests/support/helpers/wire-format.helpers.js'
 
 // Licences that started before this date have a first licence version with an issue of 100. Those that started on or
 // after it have one with an issue of 1.
@@ -161,13 +162,35 @@ export default function licences() {
  * @private
  */
 function _build(region, startDate, purpose) {
-  const licenceEntity = usedFor(startOn(buildLicenceEntity(region), startDate), purpose)
+  const licenceEntity = usedFor(startOn(_asLists(buildLicenceEntity(region)), startDate), purpose)
 
   if (startDate < ISSUE_100_BEFORE) {
     firstIssue(licenceEntity, 100)
   }
 
   return licenceEntity
+}
+
+/**
+ * Turn the parts of a licence entity that a licence can have more than one of into lists
+ *
+ * The licence entity is built with one licence document role, licence version, licence version purpose, point and
+ * licence version purpose point. `asArrays` puts each into a list of one, under the same name made plural, so the
+ * populators can add to them and never have to check which they are. The rest of the entity is left as it is.
+ *
+ * The lists go after the rest, in the order they are loaded in: a point before the licence version purpose points that
+ * refer to it.
+ *
+ * @private
+ */
+function _asLists(licenceEntity) {
+  const { licenceDocumentRole, licenceVersion, licenceVersionPurpose, point, licenceVersionPurposePoint, ...rest } =
+    licenceEntity
+
+  return {
+    ...rest,
+    ...asArrays({ licenceDocumentRole, licenceVersion, licenceVersionPurpose, point, licenceVersionPurposePoint })
+  }
 }
 
 /**

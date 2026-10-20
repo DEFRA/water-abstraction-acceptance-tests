@@ -12,7 +12,7 @@ import licenceAgreementData from '../../../../tests/support/data/licence-agreeme
 import { licenceModel } from './helpers/end-dates.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
 import { srocStartDate } from '../../../../tests/support/default-values.js'
-import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
+import { formatDateToIso } from '../../../../tests/support/helpers/date.helpers.js'
 import workflowData from '../../../../tests/support/data/workflow.data.js'
 
 /**
@@ -74,7 +74,7 @@ function _billingAccounts(licenceEntities) {
     const billingAccountAddresses = []
     let licencePastBillingAccountEntity = null
 
-    for (const licenceVersion of _licenceVersions(licenceEntity)) {
+    for (const licenceVersion of licenceEntity.licenceVersions) {
       const holderId = licenceVersion.companyId
 
       if (billingAccountEntities.has(holderId)) {
@@ -84,7 +84,9 @@ function _billingAccounts(licenceEntities) {
       const currentHolder = licenceVersion === _currentLicenceVersion(licenceEntity)
 
       if (currentHolder && i % SHARED_BILLING_ACCOUNT_EVERY === SHARED_BILLING_ACCOUNT_EVERY - 1) {
-        billingAccountEntities.set(holderId, billingAccountEntities.get(_holderId(licenceEntities[i - 1])))
+        const previousHolderId = _currentLicenceVersion(licenceEntities[i - 1]).companyId
+
+        billingAccountEntities.set(holderId, billingAccountEntities.get(previousHolderId))
 
         continue
       }
@@ -203,7 +205,7 @@ function _chargeLicencesFromAlcs(licenceEntities, billingAccountEntities) {
     }
 
     const referenced = ALCS_REFERENCED[alcsCount % ALCS_REFERENCED.length]
-    const hasTwoPurposes = _licenceVersions(licenceEntity).some((licenceVersion) => {
+    const hasTwoPurposes = licenceEntity.licenceVersions.some((licenceVersion) => {
       return licenceVersion.startDate < srocStartDate && _purposesOn(licenceEntity, licenceVersion).length === 2
     })
     let referenceEachPurpose = false
@@ -254,27 +256,26 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
   let unchargedCount = 0
 
   for (let i = 0; i < liveLicenceEntities.length; i++) {
-    if (i % UNCHARGED_EVERY !== UNCHARGED_EVERY - 1) {
-      if (chargedCount % NON_CHARGEABLE_EVERY === NON_CHARGEABLE_EVERY - 1) {
-        _chargeAsNonChargeable(
-          liveLicenceEntities[i],
-          NON_CHARGEABLE_REASONS[nonChargeableCount % NON_CHARGEABLE_REASONS.length]
-        )
-        nonChargeableCount++
-      } else {
-        _chargeFromSroc(liveLicenceEntities[i], billingAccountEntities)
+    const licenceEntity = liveLicenceEntities[i]
+
+    if (i % UNCHARGED_EVERY === UNCHARGED_EVERY - 1) {
+      if (unchargedCount % TO_SET_UP_EVERY === TO_SET_UP_EVERY - 1) {
+        _toSetUp(licenceEntity)
       }
 
-      chargedCount++
+      unchargedCount++
 
       continue
     }
 
-    if (unchargedCount % TO_SET_UP_EVERY === TO_SET_UP_EVERY - 1) {
-      _toSetUp(liveLicenceEntities[i])
+    if (chargedCount % NON_CHARGEABLE_EVERY === NON_CHARGEABLE_EVERY - 1) {
+      _chargeAsNonChargeable(licenceEntity, NON_CHARGEABLE_REASONS[nonChargeableCount % NON_CHARGEABLE_REASONS.length])
+      nonChargeableCount++
+    } else {
+      _chargeFromSroc(licenceEntity, billingAccountEntities)
     }
 
-    unchargedCount++
+    chargedCount++
   }
 }
 
@@ -359,9 +360,7 @@ function _varySrocReferences(licenceEntities) {
   let srocReferenceCount = 0
 
   for (const licenceEntity of licenceEntities) {
-    const srocReferences = (licenceEntity.chargeReferences ?? []).filter((chargeReference) => {
-      return chargeReference.scheme === 'sroc'
-    })
+    const srocReferences = _srocChargeReferences(licenceEntity)
 
     for (const chargeReference of srocReferences) {
       chargeReference.additionalCharges = licenceEntity.licence.waterUndertaker ? { isSupplyPublicWater: true } : null
@@ -474,9 +473,7 @@ function _addOtherAgreements(licenceEntities) {
 
     _add(licenceEntity, { licenceAgreement })
 
-    const srocReferences = (licenceEntity.chargeReferences ?? []).filter((chargeReference) => {
-      return chargeReference.scheme === 'sroc'
-    })
+    const srocReferences = _srocChargeReferences(licenceEntity)
 
     for (const chargeReference of srocReferences) {
       chargeReference.adjustments.s130 = true
@@ -503,7 +500,7 @@ function _addOtherAgreements(licenceEntities) {
 function _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open, referenceEachPurpose) {
   const endDate = _endDate(licenceEntity)
   const alcsEndDate = _alcsEndDate(licenceEntity)
-  const alcsLicenceVersions = _licenceVersions(licenceEntity).filter((licenceVersion) => {
+  const alcsLicenceVersions = licenceEntity.licenceVersions.filter((licenceVersion) => {
     return licenceVersion.startDate < srocStartDate && (!endDate || licenceVersion.startDate <= endDate)
   })
 
@@ -651,11 +648,11 @@ function _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes
  */
 function _chargeFromSroc(licenceEntity, billingAccountEntities) {
   const endDate = _endDate(licenceEntity)
-  const ended = endDate && endDate <= formatDateToIso(today())
-  const srocLicenceVersions = _licenceVersions(licenceEntity).filter((licenceVersion) => {
-    const startsInTime = !ended || licenceVersion.startDate <= endDate
-
-    return (!licenceVersion.endDate || licenceVersion.endDate >= srocStartDate) && startsInTime
+  const srocLicenceVersions = licenceEntity.licenceVersions.filter((licenceVersion) => {
+    return (
+      (!licenceVersion.endDate || licenceVersion.endDate >= srocStartDate) &&
+      (!endDate || licenceVersion.startDate <= endDate)
+    )
   })
 
   for (let i = 0; i < srocLicenceVersions.length; i++) {
@@ -663,7 +660,7 @@ function _chargeFromSroc(licenceEntity, billingAccountEntities) {
     const chargeVersion = _chargeVersionFor(licenceEntity, licenceVersion, billingAccountEntities)
 
     chargeVersion.startDate = licenceVersion.startDate > srocStartDate ? licenceVersion.startDate : srocStartDate
-    chargeVersion.endDate = i < srocLicenceVersions.length - 1 ? (licenceVersion.endDate ?? null) : null
+    chargeVersion.endDate = i < srocLicenceVersions.length - 1 ? licenceVersion.endDate : null
 
     if (i > 0) {
       chargeVersion.changeReasonId.value = _changeReason(srocLicenceVersions[i - 1], licenceVersion)
@@ -728,6 +725,17 @@ function _alcsEndDate(licenceEntity) {
 function _referenced(licenceEntity, chargeVersion) {
   return (licenceEntity.chargeReferences ?? []).some((chargeReference) => {
     return chargeReference.chargeVersionId === chargeVersion.id
+  })
+}
+
+/**
+ * A licence's sroc charge references
+ *
+ * @private
+ */
+function _srocChargeReferences(licenceEntity) {
+  return (licenceEntity.chargeReferences ?? []).filter((chargeReference) => {
+    return chargeReference.scheme === 'sroc'
   })
 }
 
@@ -823,23 +831,12 @@ function _chargeCategory(chargeReference) {
 }
 
 /**
- * The licence's current licence version, which is the last one where it has more than one
+ * The licence's current licence version, which is the last one
  *
  * @private
  */
 function _currentLicenceVersion(licenceEntity) {
-  const licenceVersions = licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
-
-  return licenceVersions.at(-1)
-}
-
-/**
- * A licence's licence versions, in the order they were made
- *
- * @private
- */
-function _licenceVersions(licenceEntity) {
-  return licenceEntity.licenceVersions ?? [licenceEntity.licenceVersion]
+  return licenceEntity.licenceVersions.at(-1)
 }
 
 /**
@@ -848,7 +845,7 @@ function _licenceVersions(licenceEntity) {
  * @private
  */
 function _licenceVersionFor(licenceEntity, chargeVersion) {
-  const startedBefore = _licenceVersions(licenceEntity).filter((licenceVersion) => {
+  const startedBefore = licenceEntity.licenceVersions.filter((licenceVersion) => {
     return licenceVersion.startDate <= chargeVersion.startDate
   })
 
@@ -861,9 +858,7 @@ function _licenceVersionFor(licenceEntity, chargeVersion) {
  * @private
  */
 function _purposesOn(licenceEntity, licenceVersion) {
-  const licenceVersionPurposes = licenceEntity.licenceVersionPurposes ?? [licenceEntity.licenceVersionPurpose]
-
-  return licenceVersionPurposes.filter((licenceVersionPurpose) => {
+  return licenceEntity.licenceVersionPurposes.filter((licenceVersionPurpose) => {
     return licenceVersionPurpose.licenceVersionId === licenceVersion.id
   })
 }
@@ -908,15 +903,6 @@ function _endDate(licenceEntity) {
   const ends = licenceModel(licenceEntity).$ends()
 
   return ends ? formatDateToIso(ends.date) : null
-}
-
-/**
- * The id of the company that is a licence's current licence holder, from its current licence version
- *
- * @private
- */
-function _holderId(licenceEntity) {
-  return _currentLicenceVersion(licenceEntity).companyId
 }
 
 /**
