@@ -18,7 +18,8 @@ import workflowData from '../../../../tests/support/data/workflow.data.js'
 /**
  * Charge the licences
  *
- * Each licence holder, past and present, is given a billing account. A licence is charged for each of its licence
+ * Each licence holder, past and present, is given a billing account, and each licence empty lists for its charges. A
+ * licence is charged for each of its licence
  * versions, so its charge versions follow its licence versions: the part of a licence version before sroc started is
  * alcs and the part after is sroc. Licences that started before sroc are given alcs charge versions, then live licences
  * are given sroc ones, and so are licences that ended after sroc started. A licence version with two purposes then has
@@ -35,6 +36,7 @@ import workflowData from '../../../../tests/support/data/workflow.data.js'
 export default function charging(licenceEntities) {
   const billingAccountEntities = _billingAccounts(licenceEntities)
 
+  _addChargeLists(licenceEntities)
   _chargeLicencesFromAlcs(licenceEntities, billingAccountEntities)
   _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities)
   _chargeEndedLicencesFromSroc(licenceEntities, billingAccountEntities)
@@ -172,6 +174,23 @@ function _moveBillingAccountAddress(licenceEntity, billingAccount, billingAccoun
 }
 
 /**
+ * Give every licence empty lists for its charge versions, charge references, charge elements and licence agreements
+ *
+ * The steps that follow add to them. They are added after the billing accounts, as the load service loads tables in
+ * the order their keys first appear, and charge versions refer to billing accounts.
+ *
+ * @private
+ */
+function _addChargeLists(licenceEntities) {
+  for (const licenceEntity of licenceEntities) {
+    licenceEntity.chargeVersions = []
+    licenceEntity.chargeReferences = []
+    licenceEntity.chargeElements = []
+    licenceEntity.licenceAgreements = []
+  }
+}
+
+/**
  * Give every licence that started before the sroc start date its alcs charge versions
  *
  * They were brought over from NALD. Many brought over from NALD have no charge reference, so 2 in every 5 licences have
@@ -187,36 +206,42 @@ function _chargeLicencesFromAlcs(licenceEntities, billingAccountEntities) {
   const OPEN_ALCS_EVERY = 3
   const REFERENCE_EACH_PURPOSE_EVERY = 2
 
-  let alcsCount = 0
-  let endedBeforeSrocCount = 0
-  let twoPurposeCount = 0
+  const alcsLicenceEntities = licenceEntities.filter((licenceEntity) => {
+    return licenceEntity.licence.startDate < srocStartDate
+  })
 
-  for (const licenceEntity of licenceEntities) {
-    if (licenceEntity.licence.startDate >= srocStartDate) {
-      continue
-    }
+  const referencedLicenceEntities = alcsLicenceEntities.filter((_licenceEntity, index) => {
+    return ALCS_REFERENCED[index % ALCS_REFERENCED.length]
+  })
 
-    const endDate = _endDate(licenceEntity)
-    let open = false
+  const openLicenceEntities = alcsLicenceEntities
+    .filter((licenceEntity) => {
+      const endDate = _endDate(licenceEntity)
 
-    if (endDate && endDate < srocStartDate) {
-      open = endedBeforeSrocCount % OPEN_ALCS_EVERY === OPEN_ALCS_EVERY - 1
-      endedBeforeSrocCount++
-    }
-
-    const referenced = ALCS_REFERENCED[alcsCount % ALCS_REFERENCED.length]
-    const hasTwoPurposes = licenceEntity.licenceVersions.some((licenceVersion) => {
-      return licenceVersion.startDate < srocStartDate && _purposesOn(licenceEntity, licenceVersion).length === 2
+      return endDate && endDate < srocStartDate
     })
-    let referenceEachPurpose = false
+    .filter((_licenceEntity, index) => {
+      return index % OPEN_ALCS_EVERY === OPEN_ALCS_EVERY - 1
+    })
 
-    if (referenced && hasTwoPurposes) {
-      referenceEachPurpose = twoPurposeCount % REFERENCE_EACH_PURPOSE_EVERY === REFERENCE_EACH_PURPOSE_EVERY - 1
-      twoPurposeCount++
-    }
+  const referenceEachPurposeLicenceEntities = referencedLicenceEntities
+    .filter((licenceEntity) => {
+      return licenceEntity.licenceVersions.some((licenceVersion) => {
+        return licenceVersion.startDate < srocStartDate && _purposesOn(licenceEntity, licenceVersion).length === 2
+      })
+    })
+    .filter((_licenceEntity, index) => {
+      return index % REFERENCE_EACH_PURPOSE_EVERY === REFERENCE_EACH_PURPOSE_EVERY - 1
+    })
 
-    _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open, referenceEachPurpose)
-    alcsCount++
+  for (const licenceEntity of alcsLicenceEntities) {
+    _chargeFromAlcs(
+      licenceEntity,
+      billingAccountEntities,
+      referencedLicenceEntities.includes(licenceEntity),
+      openLicenceEntities.includes(licenceEntity),
+      referenceEachPurposeLicenceEntities.includes(licenceEntity)
+    )
   }
 }
 
@@ -251,31 +276,30 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
     return !licenceModel(licenceEntity).$ended()
   })
 
-  let chargedCount = 0
-  let nonChargeableCount = 0
-  let unchargedCount = 0
+  const unchargedLicenceEntities = liveLicenceEntities.filter((_licenceEntity, index) => {
+    return index % UNCHARGED_EVERY === UNCHARGED_EVERY - 1
+  })
 
-  for (let i = 0; i < liveLicenceEntities.length; i++) {
-    const licenceEntity = liveLicenceEntities[i]
+  const chargedLicenceEntities = liveLicenceEntities.filter((_licenceEntity, index) => {
+    return index % UNCHARGED_EVERY !== UNCHARGED_EVERY - 1
+  })
 
-    if (i % UNCHARGED_EVERY === UNCHARGED_EVERY - 1) {
-      if (unchargedCount % TO_SET_UP_EVERY === TO_SET_UP_EVERY - 1) {
-        _toSetUp(licenceEntity)
-      }
+  for (let i = 0; i < chargedLicenceEntities.length; i++) {
+    if (i % NON_CHARGEABLE_EVERY === NON_CHARGEABLE_EVERY - 1) {
+      const reason = NON_CHARGEABLE_REASONS[Math.floor(i / NON_CHARGEABLE_EVERY) % NON_CHARGEABLE_REASONS.length]
 
-      unchargedCount++
-
-      continue
-    }
-
-    if (chargedCount % NON_CHARGEABLE_EVERY === NON_CHARGEABLE_EVERY - 1) {
-      _chargeAsNonChargeable(licenceEntity, NON_CHARGEABLE_REASONS[nonChargeableCount % NON_CHARGEABLE_REASONS.length])
-      nonChargeableCount++
+      _chargeAsNonChargeable(chargedLicenceEntities[i], reason)
     } else {
-      _chargeFromSroc(licenceEntity, billingAccountEntities)
+      _chargeFromSroc(chargedLicenceEntities[i], billingAccountEntities)
     }
+  }
 
-    chargedCount++
+  const toSetUpLicenceEntities = unchargedLicenceEntities.filter((_licenceEntity, index) => {
+    return index % TO_SET_UP_EVERY === TO_SET_UP_EVERY - 1
+  })
+
+  for (const licenceEntity of toSetUpLicenceEntities) {
+    _toSetUp(licenceEntity)
   }
 }
 
@@ -290,7 +314,7 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
 function _chargeEndedLicencesFromSroc(licenceEntities, billingAccountEntities) {
   for (const licenceEntity of licenceEntities) {
     if (licenceModel(licenceEntity).$ended() && _endDate(licenceEntity) >= srocStartDate) {
-      _chargeFromSroc(licenceEntity, billingAccountEntities)
+      _charge FromSroc(licenceEntity, billingAccountEntities)
     }
   }
 }
@@ -308,34 +332,39 @@ function _chargeEndedLicencesFromSroc(licenceEntities, billingAccountEntities) {
 function _chargeBothPurposes(licenceEntities) {
   const PURPOSE_CHARGING = ['elements', 'elements', 'references', 'first only']
 
-  let twoPurposeCount = 0
+  const twoPurposeLicenceEntities = licenceEntities.filter((licenceEntity) => {
+    return _twoPurposeCharges(licenceEntity).length > 0
+  })
 
-  for (const licenceEntity of licenceEntities) {
-    const twoPurposeCharges = _srocChargeVersions(licenceEntity).flatMap((chargeVersion) => {
-      const licenceVersionPurposes = _purposesOn(licenceEntity, _licenceVersionFor(licenceEntity, chargeVersion))
-      const chargeReference = (licenceEntity.chargeReferences ?? []).find((srocChargeReference) => {
-        return srocChargeReference.chargeVersionId === chargeVersion.id
-      })
+  for (let i = 0; i < twoPurposeLicenceEntities.length; i++) {
+    const licenceEntity = twoPurposeLicenceEntities[i]
+    const charging = PURPOSE_CHARGING[i % PURPOSE_CHARGING.length]
 
-      if (licenceVersionPurposes.length !== 2 || !chargeReference) {
-        return []
-      }
-
-      return [{ chargeReference, licenceVersionPurposes }]
-    })
-
-    if (twoPurposeCharges.length === 0) {
-      continue
-    }
-
-    const charging = PURPOSE_CHARGING[twoPurposeCount % PURPOSE_CHARGING.length]
-
-    for (const { chargeReference, licenceVersionPurposes } of twoPurposeCharges) {
+    for (const { chargeReference, licenceVersionPurposes } of _twoPurposeCharges(licenceEntity)) {
       _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes, charging)
     }
-
-    twoPurposeCount++
   }
+}
+
+/**
+ * The sroc charge references of a licence's charge versions for a licence version with two purposes, with those
+ * purposes
+ *
+ * @private
+ */
+function _twoPurposeCharges(licenceEntity) {
+  return _srocChargeVersions(licenceEntity).flatMap((chargeVersion) => {
+    const licenceVersionPurposes = _purposesOn(licenceEntity, _licenceVersionFor(licenceEntity, chargeVersion))
+    const chargeReference = licenceEntity.chargeReferences.find((srocChargeReference) => {
+      return srocChargeReference.chargeVersionId === chargeVersion.id
+    })
+
+    if (licenceVersionPurposes.length !== 2 || !chargeReference) {
+      return []
+    }
+
+    return [{ chargeReference, licenceVersionPurposes }]
+  })
 }
 
 /**
@@ -357,31 +386,31 @@ function _varySrocReferences(licenceEntities) {
   const WATER_MODELS = ['no model', 'tier 1', 'tier 2']
   const WINTER_DISCOUNT_EVERY = 12
 
-  let srocReferenceCount = 0
+  const srocReferences = licenceEntities.flatMap((licenceEntity) => {
+    return _srocChargeReferences(licenceEntity).map((chargeReference) => {
+      return { chargeReference, waterUndertaker: licenceEntity.licence.waterUndertaker }
+    })
+  })
 
-  for (const licenceEntity of licenceEntities) {
-    const srocReferences = _srocChargeReferences(licenceEntity)
+  for (let i = 0; i < srocReferences.length; i++) {
+    const { chargeReference, waterUndertaker } = srocReferences[i]
 
-    for (const chargeReference of srocReferences) {
-      chargeReference.additionalCharges = licenceEntity.licence.waterUndertaker ? { isSupplyPublicWater: true } : null
-      chargeReference.loss = LOSSES[srocReferenceCount % LOSSES.length]
-      chargeReference.restrictedSource = RESTRICTED_SOURCES[srocReferenceCount % RESTRICTED_SOURCES.length]
-      chargeReference.waterModel = WATER_MODELS[srocReferenceCount % WATER_MODELS.length]
-      chargeReference.chargeCategoryId.value = _chargeCategory(chargeReference).reference
+    chargeReference.additionalCharges = waterUndertaker ? { isSupplyPublicWater: true } : null
+    chargeReference.loss = LOSSES[i % LOSSES.length]
+    chargeReference.restrictedSource = RESTRICTED_SOURCES[i % RESTRICTED_SOURCES.length]
+    chargeReference.waterModel = WATER_MODELS[i % WATER_MODELS.length]
+    chargeReference.chargeCategoryId.value = _chargeCategory(chargeReference).reference
 
-      if (srocReferenceCount % WINTER_DISCOUNT_EVERY === WINTER_DISCOUNT_EVERY - 1) {
-        chargeReference.adjustments.winter = true
-      }
+    if (i % WINTER_DISCOUNT_EVERY === WINTER_DISCOUNT_EVERY - 1) {
+      chargeReference.adjustments.winter = true
+    }
 
-      if (srocReferenceCount % AGGREGATE_EVERY === AGGREGATE_EVERY - 1) {
-        chargeReference.adjustments.aggregate = '0.5'
-      }
+    if (i % AGGREGATE_EVERY === AGGREGATE_EVERY - 1) {
+      chargeReference.adjustments.aggregate = '0.5'
+    }
 
-      if (srocReferenceCount % CHARGE_ADJUSTMENT_EVERY === CHARGE_ADJUSTMENT_EVERY - 1) {
-        chargeReference.adjustments.charge = '0.5'
-      }
-
-      srocReferenceCount++
+    if (i % CHARGE_ADJUSTMENT_EVERY === CHARGE_ADJUSTMENT_EVERY - 1) {
+      chargeReference.adjustments.charge = '0.5'
     }
   }
 }
@@ -400,27 +429,25 @@ function _varySrocReferences(licenceEntities) {
 function _addSupersededVersions(licenceEntities) {
   const SUPERSEDED_EVERY = 7
 
-  let chargedCount = 0
-
-  for (const licenceEntity of licenceEntities) {
+  const chargedLicenceEntities = licenceEntities.filter((licenceEntity) => {
     const firstSrocChargeVersion = _srocChargeVersions(licenceEntity)[0]
 
-    if (
-      licenceModel(licenceEntity).$ended() ||
-      !firstSrocChargeVersion ||
-      !_referenced(licenceEntity, firstSrocChargeVersion)
-    ) {
-      continue
-    }
+    return (
+      !licenceModel(licenceEntity).$ended() &&
+      firstSrocChargeVersion &&
+      _referenced(licenceEntity, firstSrocChargeVersion)
+    )
+  })
 
-    if (chargedCount % SUPERSEDED_EVERY === SUPERSEDED_EVERY - 1) {
-      const superseded = _copyChargeVersion(licenceEntity, firstSrocChargeVersion)
+  const supersededLicenceEntities = chargedLicenceEntities.filter((_licenceEntity, index) => {
+    return index % SUPERSEDED_EVERY === SUPERSEDED_EVERY - 1
+  })
 
-      superseded.status = 'superseded'
-      superseded.endDate = null
-    }
+  for (const licenceEntity of supersededLicenceEntities) {
+    const superseded = _copyChargeVersion(licenceEntity, _srocChargeVersions(licenceEntity)[0])
 
-    chargedCount++
+    superseded.status = 'superseded'
+    superseded.endDate = null
   }
 }
 
@@ -434,7 +461,7 @@ function _addSupersededVersions(licenceEntities) {
  */
 function _numberChargeVersions(licenceEntities) {
   for (const licenceEntity of licenceEntities) {
-    const chargeVersions = [...(licenceEntity.chargeVersions ?? [])].sort((first, second) => {
+    const chargeVersions = [...licenceEntity.chargeVersions].sort((first, second) => {
       if (first.startDate !== second.startDate) {
         return first.startDate < second.startDate ? -1 : 1
       }
@@ -461,17 +488,16 @@ function _numberChargeVersions(licenceEntities) {
 function _addOtherAgreements(licenceEntities) {
   const S130U_EVERY = 180
 
-  for (let i = 0; i < licenceEntities.length; i++) {
-    if (i % S130U_EVERY !== S130U_EVERY - 1) {
-      continue
-    }
+  const s130uLicenceEntities = licenceEntities.filter((_licenceEntity, index) => {
+    return index % S130U_EVERY === S130U_EVERY - 1
+  })
 
-    const licenceEntity = licenceEntities[i]
+  for (const licenceEntity of s130uLicenceEntities) {
     const licenceAgreement = licenceAgreementData(licenceEntity.licence)
 
     licenceAgreement.financialAgreementId.value = 'S130U'
 
-    _add(licenceEntity, { licenceAgreement })
+    licenceEntity.licenceAgreements.push(licenceAgreement)
 
     const srocReferences = _srocChargeReferences(licenceEntity)
 
@@ -522,7 +548,7 @@ function _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open
       chargeVersion.endDate = null
     }
 
-    _add(licenceEntity, { chargeVersion })
+    licenceEntity.chargeVersions.push(chargeVersion)
 
     if (!referenced) {
       chargeVersion.billingAccountId = null
@@ -538,7 +564,7 @@ function _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open
       const chargeReference = chargeReferencePresrocData(chargeVersion, licenceVersionPurpose)
 
       chargeReferences.push(chargeReference)
-      _add(licenceEntity, { chargeReference })
+      licenceEntity.chargeReferences.push(chargeReference)
     }
   }
 
@@ -557,7 +583,7 @@ function _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open
 
   licenceAgreement.startDate = firstTwoPartTariffChargeVersion.startDate
 
-  _add(licenceEntity, { licenceAgreement })
+  licenceEntity.licenceAgreements.push(licenceAgreement)
 }
 
 /**
@@ -579,7 +605,7 @@ function _chargeAsNonChargeable(licenceEntity, reason) {
   chargeVersion.changeReasonId.value = reason.description
   chargeVersion.billingAccountId = null
 
-  _add(licenceEntity, { chargeVersion })
+  licenceEntity.chargeVersions.push(chargeVersion)
 }
 
 /**
@@ -611,10 +637,10 @@ function _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes
   if (charging === 'elements') {
     const purposesChargeReference = chargeReferenceData(chargeVersion, licenceVersionPurposes)
 
-    _add(licenceEntity, { chargeReference: purposesChargeReference })
+    licenceEntity.chargeReferences.push(purposesChargeReference)
 
     for (const licenceVersionPurpose of licenceVersionPurposes) {
-      _add(licenceEntity, { chargeElement: chargeElementData(purposesChargeReference, licenceVersionPurpose) })
+      licenceEntity.chargeElements.push(chargeElementData(purposesChargeReference, licenceVersionPurpose))
     }
 
     return
@@ -625,10 +651,8 @@ function _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes
 
     purposeChargeReference.description = `Test charge reference ${i + 1}`
 
-    _add(licenceEntity, {
-      chargeReference: purposeChargeReference,
-      chargeElement: chargeElementData(purposeChargeReference, licenceVersionPurposes[i])
-    })
+    licenceEntity.chargeReferences.push(purposeChargeReference)
+    licenceEntity.chargeElements.push(chargeElementData(purposeChargeReference, licenceVersionPurposes[i]))
   }
 }
 
@@ -671,29 +695,9 @@ function _chargeFromSroc(licenceEntity, billingAccountEntities) {
     const firstPurpose = _purposesOn(licenceEntity, licenceVersion)[0]
     const chargeReference = chargeReferenceData(chargeVersion, [firstPurpose])
 
-    _add(licenceEntity, {
-      chargeVersion,
-      chargeReference,
-      chargeElement: chargeElementData(chargeReference, firstPurpose)
-    })
-  }
-}
-
-/**
- * Add entities to a licence that it can have more than one of
- *
- * A licence can have more than one charge version, charge reference, charge element and licence agreement, so each is
- * kept in a list named for it, such as `chargeVersions` for a `chargeVersion`. The list is created the first time one
- * is added.
- *
- * @private
- */
-function _add(licenceEntity, entities) {
-  for (const [key, value] of Object.entries(entities)) {
-    const listKey = `${key}s`
-
-    licenceEntity[listKey] ??= []
-    licenceEntity[listKey].push(value)
+    licenceEntity.chargeVersions.push(chargeVersion)
+    licenceEntity.chargeReferences.push(chargeReference)
+    licenceEntity.chargeElements.push(chargeElementData(chargeReference, firstPurpose))
   }
 }
 
@@ -723,7 +727,7 @@ function _alcsEndDate(licenceEntity) {
  * @private
  */
 function _referenced(licenceEntity, chargeVersion) {
-  return (licenceEntity.chargeReferences ?? []).some((chargeReference) => {
+  return licenceEntity.chargeReferences.some((chargeReference) => {
     return chargeReference.chargeVersionId === chargeVersion.id
   })
 }
@@ -734,7 +738,7 @@ function _referenced(licenceEntity, chargeVersion) {
  * @private
  */
 function _srocChargeReferences(licenceEntity) {
-  return (licenceEntity.chargeReferences ?? []).filter((chargeReference) => {
+  return licenceEntity.chargeReferences.filter((chargeReference) => {
     return chargeReference.scheme === 'sroc'
   })
 }
@@ -745,7 +749,7 @@ function _srocChargeReferences(licenceEntity) {
  * @private
  */
 function _srocChargeVersions(licenceEntity) {
-  const srocChargeVersions = (licenceEntity.chargeVersions ?? []).filter((chargeVersion) => {
+  const srocChargeVersions = licenceEntity.chargeVersions.filter((chargeVersion) => {
     return chargeVersion.scheme === 'sroc'
   })
 
@@ -766,7 +770,7 @@ function _copyChargeVersion(licenceEntity, chargeVersion) {
 
   chargeVersionCopy.id = generateUUID()
 
-  _add(licenceEntity, { chargeVersion: chargeVersionCopy })
+  licenceEntity.chargeVersions.push(chargeVersionCopy)
 
   const chargeReferences = licenceEntity.chargeReferences.filter((chargeReference) => {
     return chargeReference.chargeVersionId === chargeVersion.id
@@ -778,9 +782,9 @@ function _copyChargeVersion(licenceEntity, chargeVersion) {
     chargeReferenceCopy.id = generateUUID()
     chargeReferenceCopy.chargeVersionId = chargeVersionCopy.id
 
-    _add(licenceEntity, { chargeReference: chargeReferenceCopy })
+    licenceEntity.chargeReferences.push(chargeReferenceCopy)
 
-    const chargeElements = (licenceEntity.chargeElements ?? []).filter((chargeElement) => {
+    const chargeElements = licenceEntity.chargeElements.filter((chargeElement) => {
       return chargeElement.chargeReferenceId === chargeReference.id
     })
 
@@ -790,7 +794,7 @@ function _copyChargeVersion(licenceEntity, chargeVersion) {
       chargeElementCopy.id = generateUUID()
       chargeElementCopy.chargeReferenceId = chargeReferenceCopy.id
 
-      _add(licenceEntity, { chargeElement: chargeElementCopy })
+      licenceEntity.chargeElements.push(chargeElementCopy)
     }
   }
 
