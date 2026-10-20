@@ -51,8 +51,8 @@ export default function charging(licenceEntities) {
  * Each company that holds one of a licence's licence versions is given a billing account, for the company and address
  * on that licence version. Most billing accounts are for one licence and about a quarter are for a few, so every 3rd
  * licence's current licence holder is billed to the account of the licence before it instead. Every 3rd past licence
- * holder is likewise billed to the account of a past licence holder on an earlier licence, where there is one. A billing
- * account is kept on the licence it was built for, so it is loaded with it.
+ * holder is likewise billed to the account of a past licence holder on an earlier licence, where there is one. A
+ * billing account is kept on the licence it was built for, so it is loaded with it.
  *
  * A few billing accounts have moved address, so every 28th one built moves to a new address.
  *
@@ -204,7 +204,7 @@ function _chargeLicencesFromAlcs(licenceEntities, billingAccountEntities) {
 
     const referenced = ALCS_REFERENCED[alcsCount % ALCS_REFERENCED.length]
     const hasTwoPurposes = _licenceVersions(licenceEntity).some((licenceVersion) => {
-      return _purposesOn(licenceEntity, licenceVersion).length === 2
+      return licenceVersion.startDate < srocStartDate && _purposesOn(licenceEntity, licenceVersion).length === 2
     })
     let referenceEachPurpose = false
 
@@ -394,8 +394,7 @@ function _varySrocReferences(licenceEntities) {
  * version, so every 7th is given one: a copy of its first sroc charge version, with its charge references and charge
  * elements, that starts on the same date, has no end date and was replaced from the start.
  *
- * The licence's other charge versions follow its licence versions, so they are treated as already billed and the
- * licence is not flagged for supplementary billing.
+ * The licence is not flagged for supplementary billing, as its charge history is treated as already billed.
  *
  * @private
  */
@@ -587,12 +586,12 @@ function _chargeAsNonChargeable(licenceEntity, reason) {
 }
 
 /**
- * Charge both of a licence's purposes on its sroc charge version
+ * Charge both purposes of a licence version on its sroc charge version
  *
- * The charge version entity builds one charge reference and one charge element, for the purpose the licence was built
- * with (`licenceVersionPurpose`). Where `charging` is 'elements' they are replaced with one charge reference for both
- * purposes, with a charge element for each. Where it is 'references' they are replaced with a charge reference and
- * charge element for each purpose. Where it is 'first only' they are left as they are.
+ * The charge version was built with one charge reference and one charge element, for the first purpose on its licence
+ * version. Where `charging` is 'elements' they are replaced with one charge reference for both purposes, with a charge
+ * element for each. Where it is 'references' they are replaced with a charge reference and charge element for each
+ * purpose. Where it is 'first only' they are left as they are.
  *
  * @private
  */
