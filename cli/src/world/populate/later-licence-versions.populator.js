@@ -14,8 +14,8 @@ import { regionOf } from './helpers/regions.helpers.js'
  *
  * Each list is taken in turn, going back to the start when it runs out.
  *
- * Call this after the water companies have been set, and before the abstraction details and charging, so they cover the
- * new licence versions.
+ * Call this after the water companies and licence holders have been set, and before the abstraction details and
+ * charging, so they cover the new licence versions.
  *
  * @param {object[]} licenceEntities - the licence entities to change
  */

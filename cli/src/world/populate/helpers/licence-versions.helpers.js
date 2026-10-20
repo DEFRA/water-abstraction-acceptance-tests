@@ -126,6 +126,8 @@ function _correct(licenceEntity, region, startDate) {
  * Give a licence a new licence version because it was transferred to a new licence holder, starting on `startDate`
  * where it is given one
  *
+ * The licence document header is changed to name the new licence holder, as it always names the current one.
+ *
  * @private
  */
 function _transfer(licenceEntity, region, startDate) {
@@ -160,6 +162,9 @@ function _transfer(licenceEntity, region, startDate) {
   licenceEntity.companyAddresses.push(companyAddressData(company, address))
   licenceEntity.licenceDocumentRoles.push(currentRole)
 
+  licenceEntity.licenceDocumentHeader.metadata.Name = company.name
+  licenceEntity.licenceDocumentHeader.metadata.contacts[0].name = company.name
+
   return licenceEntity
 }
 
@@ -184,14 +189,12 @@ function _addDays(date, days) {
  * @private
  */
 function _newLicenceVersion(licenceEntity, region, startDate) {
-  const { address, company, licence } = licenceEntity
+  const { licence } = licenceEntity
 
   const previous = licenceEntity.licenceVersions.at(-1)
-  const current = licenceVersionData(licence, company, address, region)
+  const current = licenceVersionData(licence, { id: previous.companyId }, { id: previous.addressId }, region)
 
   current.startDate = startDate ?? _addDays(previous.startDate, 60)
-  current.companyId = previous.companyId
-  current.addressId = previous.addressId
 
   previous.status = 'superseded'
   previous.endDate = _addDays(current.startDate, -1)

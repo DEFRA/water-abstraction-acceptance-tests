@@ -50,11 +50,9 @@ export default function charging(licenceEntities) {
 /**
  * The billing account for each licence holder, past and present, by the id of their company
  *
- * Each company that holds one of a licence's licence versions is given a billing account, for the company and address
- * on that licence version. Most billing accounts are for one licence and about a quarter are for a few, so every 3rd
- * licence's current licence holder is billed to the account of the licence before it instead. Every 3rd past licence
- * holder is likewise billed to the account of a past licence holder on an earlier licence, where there is one. A
- * billing account is kept on the licence it was built for, so it is loaded with it.
+ * Each licence holder, past and present, has one billing account for all the licences it holds. It is built for the
+ * company and address on the first licence version the company holds, and kept on that licence, so it is loaded with
+ * it.
  *
  * A few billing accounts have moved address, so every 28th one built moves to a new address.
  *
@@ -62,47 +60,20 @@ export default function charging(licenceEntities) {
  */
 function _billingAccounts(licenceEntities) {
   const SECOND_ADDRESS_EVERY = 28
-  const SHARED_BILLING_ACCOUNT_EVERY = 3
 
   const billingAccountEntities = new Map()
 
   let builtCount = 0
-  let pastHolderCount = 0
-  let pastBillingAccountEntity = null
 
-  for (let i = 0; i < licenceEntities.length; i++) {
-    const licenceEntity = licenceEntities[i]
+  for (const licenceEntity of licenceEntities) {
     const billingAccounts = []
     const billingAccountAddresses = []
-    let licencePastBillingAccountEntity = null
 
     for (const licenceVersion of licenceEntity.licenceVersions) {
       const holderId = licenceVersion.companyId
 
       if (billingAccountEntities.has(holderId)) {
         continue
-      }
-
-      const currentHolder = licenceVersion === _currentLicenceVersion(licenceEntity)
-
-      if (currentHolder && i % SHARED_BILLING_ACCOUNT_EVERY === SHARED_BILLING_ACCOUNT_EVERY - 1) {
-        const previousHolderId = _currentLicenceVersion(licenceEntities[i - 1]).companyId
-
-        billingAccountEntities.set(holderId, billingAccountEntities.get(previousHolderId))
-
-        continue
-      }
-
-      if (!currentHolder) {
-        const shared = pastHolderCount % SHARED_BILLING_ACCOUNT_EVERY === SHARED_BILLING_ACCOUNT_EVERY - 1
-
-        pastHolderCount++
-
-        if (shared && pastBillingAccountEntity) {
-          billingAccountEntities.set(holderId, pastBillingAccountEntity)
-
-          continue
-        }
       }
 
       const billingAccountEntity = _buildBillingAccount(licenceEntity, licenceVersion)
@@ -118,13 +89,7 @@ function _billingAccounts(licenceEntities) {
 
       billingAccountEntities.set(holderId, billingAccountEntity)
       builtCount++
-
-      if (!currentHolder) {
-        licencePastBillingAccountEntity = billingAccountEntity
-      }
     }
-
-    pastBillingAccountEntity = licencePastBillingAccountEntity ?? pastBillingAccountEntity
 
     licenceEntity.billingAccounts = billingAccounts
     licenceEntity.billingAccountAddresses = billingAccountAddresses
@@ -136,8 +101,9 @@ function _billingAccounts(licenceEntities) {
 /**
  * Build the billing account for the holder of a licence version
  *
- * It is for the company and address on the licence version. A water company licence gives up its own company for the
- * water company's, so the entity is given those rather than reading them from the licence.
+ * It is for the company and address on the licence version. A licence held by a water company, or by a company that
+ * holds another licence, gives up its own company for that one, so the entity is given those rather than reading them
+ * from the licence.
  *
  * @private
  */
@@ -314,7 +280,7 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
 function _chargeEndedLicencesFromSroc(licenceEntities, billingAccountEntities) {
   for (const licenceEntity of licenceEntities) {
     if (licenceModel(licenceEntity).$ended() && _endDate(licenceEntity) >= srocStartDate) {
-      _charge FromSroc(licenceEntity, billingAccountEntities)
+      _chargeFromSroc(licenceEntity, billingAccountEntities)
     }
   }
 }
@@ -516,7 +482,7 @@ function _addOtherAgreements(licenceEntities) {
  * licence version changed. They were brought over from NALD.
  *
  * Where it is `open`, the last has no end date, as NALD left it. Where it is not `referenced` they have no charge
- * reference or billing account, as NALD has neither for them. Otherwise each has a charge reference for the first
+ * reference, billing account or company, as NALD has none of them. Otherwise each has a charge reference for the first
  * purpose on its licence version, or one for each purpose where `referenceEachPurpose` and the licence version has two.
  * Where one of the charge references is for two-part tariff, the licence is given a two-part tariff (S127) agreement,
  * starting when the first charge version with one did, as that is when two-part tariff began.
@@ -552,6 +518,7 @@ function _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open
 
     if (!referenced) {
       chargeVersion.billingAccountId = null
+      chargeVersion.companyId = null
 
       continue
     }
@@ -890,12 +857,17 @@ function _changeReason(previousLicenceVersion, licenceVersion) {
 /**
  * A charge version for a licence version, billed to the account of that licence version's holder
  *
+ * It is for the billing account's company, as the service sets it when a charge version is created.
+ *
  * @private
  */
 function _chargeVersionFor(licenceEntity, licenceVersion, billingAccountEntities) {
   const { billingAccount } = billingAccountEntities.get(licenceVersion.companyId)
+  const chargeVersion = chargeVersionData(billingAccount, licenceEntity.licence, regionOf(licenceEntity).region)
 
-  return chargeVersionData(billingAccount, licenceEntity.licence, regionOf(licenceEntity).region)
+  chargeVersion.companyId = billingAccount.companyId
+
+  return chargeVersion
 }
 
 /**

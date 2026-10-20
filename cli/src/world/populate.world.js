@@ -1,7 +1,9 @@
 import abstraction from './populate/abstraction.populator.js'
 import charging from './populate/charging.populator.js'
+import companyAddresses from './populate/company-addresses.populator.js'
 import endDates from './populate/end-dates.populator.js'
 import laterLicenceVersions from './populate/later-licence-versions.populator.js'
+import licenceHolders from './populate/licence-holders.populator.js'
 import licences from './populate/licences.populator.js'
 import { mergeByKey } from '../../../tests/support/helpers/scenario.helpers.js'
 import monitoringStations from './populate/monitoring-stations.populator.js'
@@ -19,9 +21,11 @@ export default function populateWorld() {
   const licenceEntities = licences()
 
   waterCompanies(licenceEntities)
+  licenceHolders(licenceEntities)
   laterLicenceVersions(licenceEntities)
   abstraction(licenceEntities)
   endDates(licenceEntities)
+  companyAddresses(licenceEntities)
   monitoringStations(licenceEntities)
   charging(licenceEntities)
 
