@@ -1,4 +1,4 @@
-import { correctOn, transferOn } from './helpers/licence-versions.helpers.js'
+import { correct, transfer } from './helpers/licence-versions.helpers.js'
 import { licenceModel } from './helpers/end-dates.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
 
@@ -21,7 +21,7 @@ import { regionOf } from './helpers/regions.helpers.js'
  */
 export default function laterLicenceVersions(licenceEntities) {
   const CHANGE_DATES = ['2023-04-01', '2024-04-01', '2024-04-01', '2025-04-01', '2025-04-01', '2026-04-01']
-  const CHANGES = [transferOn, correctOn]
+  const CHANGES = [transfer, correct]
   const LATER_VERSION_EVERY = 5
 
   const liveLicenceEntities = licenceEntities.filter((licenceEntity) => {

@@ -52,7 +52,8 @@ export default function charging(licenceEntities) {
  *
  * Each licence holder, past and present, has one billing account for all the licences it holds. It is built for the
  * company and address on the first licence version the company holds, and kept on that licence, so it is loaded with
- * it.
+ * it. They are read from the licence version rather than the licence, as a licence that shares its holder with another
+ * gives up its own company for that one.
  *
  * A few billing accounts have moved address, so every 28th one built moves to a new address.
  *
@@ -70,13 +71,16 @@ function _billingAccounts(licenceEntities) {
     const billingAccountAddresses = []
 
     for (const licenceVersion of licenceEntity.licenceVersions) {
-      const holderId = licenceVersion.companyId
+      const { addressId, companyId: holderId } = licenceVersion
 
       if (billingAccountEntities.has(holderId)) {
         continue
       }
 
-      const billingAccountEntity = _buildBillingAccount(licenceEntity, licenceVersion)
+      const billingAccountEntity = buildBillingAccountEntity(
+        { company: { id: holderId }, address: { id: addressId } },
+        regionOf(licenceEntity).region
+      )
       const { billingAccount } = billingAccountEntity
       const accountAddresses = [billingAccountEntity.billingAccountAddress]
 
@@ -96,23 +100,6 @@ function _billingAccounts(licenceEntities) {
   }
 
   return billingAccountEntities
-}
-
-/**
- * Build the billing account for the holder of a licence version
- *
- * It is for the company and address on the licence version. A licence that shares its holder with another gives up its
- * own company for that one, so the entity is given those rather than reading them from the licence.
- *
- * @private
- */
-function _buildBillingAccount(licenceEntity, licenceVersion) {
-  const { addressId, companyId } = licenceVersion
-
-  return buildBillingAccountEntity(
-    { company: { id: companyId }, address: { id: addressId } },
-    regionOf(licenceEntity).region
-  )
 }
 
 /**
@@ -797,15 +784,6 @@ function _chargeCategory(chargeReference) {
 }
 
 /**
- * The licence's current licence version, which is the last one
- *
- * @private
- */
-function _currentLicenceVersion(licenceEntity) {
-  return licenceEntity.licenceVersions.at(-1)
-}
-
-/**
  * The licence version a charge version covers, which is the one in force when it starts
  *
  * @private
@@ -879,8 +857,8 @@ function _endDate(licenceEntity) {
 /**
  * Put a licence in the workflow waiting for its charge information to be set up
  *
- * It is for the licence's current licence version. Nobody has started on it yet, so it has no charge version and was
- * not created by anyone.
+ * It is for the licence's current licence version, which is the last one. Nobody has started on it yet, so it has no
+ * charge version and was not created by anyone.
  *
  * @private
  */
@@ -888,7 +866,7 @@ function _toSetUp(licenceEntity) {
   const workflow = workflowData(licenceEntity.licence)
 
   workflow.status = 'to_setup'
-  workflow.licenceVersionId = _currentLicenceVersion(licenceEntity).id
+  workflow.licenceVersionId = licenceEntity.licenceVersions.at(-1).id
   workflow.createdBy = null
   workflow.data = { chargeVersion: null, chargeVersionExists: false }
 

@@ -6,25 +6,6 @@ import licenceVersionPurposePointData from '../../../../../tests/support/data/li
 const PURPOSES_TO_ADD = ['420', '160', '600']
 
 /**
- * Change the purpose a licence is used for
- *
- * A licence is built with a purpose of spray irrigation direct (400), which is two-part tariff. This gives it another,
- * for example general farming and domestic (140), which is not.
- *
- * Call this before anything is added to the licence, as new licence versions copy the purposes of the one before.
- *
- * @param {object} licenceEntity - the licence entity to change
- * @param {string} purpose - the legacy id of the purpose, for example '140'
- *
- * @returns {object} the same licence entity
- */
-export function usedFor(licenceEntity, purpose) {
-  licenceEntity.licenceVersionPurposes[0].purposeId.value = purpose
-
-  return licenceEntity
-}
-
-/**
  * Add a purpose to a licence's current licence version
  *
  * The purpose is linked to the licence's point. It is a different purpose from the ones the licence version already

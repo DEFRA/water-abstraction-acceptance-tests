@@ -33,77 +33,33 @@ export function addPurposeToNewVersion(licenceEntity, region) {
 /**
  * Give a licence a new licence version because a detail on the last one was wrong
  *
- * The new version is the next increment of the same issue. Nothing else changes.
+ * The new version is the next increment of the same issue. Nothing else changes. It starts on `startDate` where it is
+ * given one, and otherwise 60 days after the last.
  *
  * @param {object} licenceEntity - the licence entity to change
  * @param {object} region - the region the licence is in
+ * @param {string} [startDate] - the date the new version starts, for example '2024-04-01'
  *
  * @returns {object} the same licence entity
  */
-export function correct(licenceEntity, region) {
-  return _correct(licenceEntity, region, null)
-}
-
-/**
- * Give a licence a new licence version on a given date because a detail on the last one was wrong
- *
- * It is the same as `correct()`, but the new version starts on `startDate` rather than 60 days after the last.
- *
- * @param {object} licenceEntity - the licence entity to change
- * @param {object} region - the region the licence is in
- * @param {string} startDate - the date the new version starts, for example '2024-04-01'
- *
- * @returns {object} the same licence entity
- */
-export function correctOn(licenceEntity, region, startDate) {
+export function correct(licenceEntity, region, startDate) {
   return _correct(licenceEntity, region, startDate)
-}
-
-/**
- * Change the issue of a licence's first licence version
- *
- * A licence is built with a licence version of issue 1. This gives it another, for example 100.
- *
- * Call this before any licence versions are added to the licence, as a new one is numbered from the one before.
- *
- * @param {object} licenceEntity - the licence entity to change
- * @param {number} issue - the issue of the first licence version, for example 100
- *
- * @returns {object} the same licence entity
- */
-export function firstIssue(licenceEntity, issue) {
-  licenceEntity.licenceVersions[0].issue = issue
-
-  return licenceEntity
 }
 
 /**
  * Give a licence a new licence version because it was transferred to a new licence holder
  *
  * The new version is the next issue, and is for a different company at a different address. The previous licence
- * holder's document role ends when their version does, and the new licence holder's starts when theirs does.
+ * holder's document role ends when their version does, and the new licence holder's starts when theirs does. It starts
+ * on `startDate` where it is given one, and otherwise 60 days after the last.
  *
  * @param {object} licenceEntity - the licence entity to change
  * @param {object} region - the region the licence is in
+ * @param {string} [startDate] - the date the new version starts, for example '2024-04-01'
  *
  * @returns {object} the same licence entity
  */
-export function transfer(licenceEntity, region) {
-  return _transfer(licenceEntity, region, null)
-}
-
-/**
- * Give a licence a new licence version on a given date because it was transferred to a new licence holder
- *
- * It is the same as `transfer()`, but the new version starts on `startDate` rather than 60 days after the last.
- *
- * @param {object} licenceEntity - the licence entity to change
- * @param {object} region - the region the licence is in
- * @param {string} startDate - the date the new version starts, for example '2024-04-01'
- *
- * @returns {object} the same licence entity
- */
-export function transferOn(licenceEntity, region, startDate) {
+export function transfer(licenceEntity, region, startDate) {
   return _transfer(licenceEntity, region, startDate)
 }
 

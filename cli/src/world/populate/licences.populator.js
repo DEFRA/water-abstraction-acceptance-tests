@@ -2,9 +2,8 @@ import { REGIONS } from './helpers/regions.helpers.js'
 import { addCondition } from './helpers/conditions.helpers.js'
 import { addPoint } from './helpers/points.helpers.js'
 import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
-import { startOn } from './helpers/start-dates.helpers.js'
-import { addPurpose, usedFor } from './helpers/purposes.helpers.js'
-import { addPurposeToNewVersion, correct, firstIssue, transfer } from './helpers/licence-versions.helpers.js'
+import { addPurpose } from './helpers/purposes.helpers.js'
+import { addPurposeToNewVersion, correct, transfer } from './helpers/licence-versions.helpers.js'
 import { expire, expireInFuture, lapse, revoke } from './helpers/end-dates.helpers.js'
 import { asArrays } from '../../../../tests/support/helpers/wire-format.helpers.js'
 
@@ -159,19 +158,30 @@ function _buildLicences(region, count, licenceTypes, licenceEntities) {
 /**
  * Build a licence of the given licence type that starts on the given date and is used for the given purpose
  *
- * Where the licence started before 2000 its first licence version is issue 100. Otherwise it is issue 1. It is then
- * ended the ways its licence type says, in order, and given its licence type's licence versions, purposes, points and
- * conditions.
+ * A licence is built starting at the beginning of the previous return cycle, so the licence and everything that starts
+ * when it does are moved to the start date: its permit licence, licence document, licence document role and licence
+ * version. Its purpose is changed to the given one. Where the licence started before 2000 its first licence version is
+ * issue 100. Otherwise it is issue 1. These are all done before anything is added to the licence, as new licence
+ * versions are dated, numbered and given purposes from the one before. It is then ended the ways its licence type says,
+ * in order, and given its licence type's licence versions, purposes, points and conditions.
  *
  * @private
  */
 function _build(region, startDate, purpose, licenceType) {
   const ISSUE_100_BEFORE = '2000-01-01'
 
-  const licenceEntity = usedFor(startOn(_asLists(buildLicenceEntity(region)), startDate), purpose)
+  const licenceEntity = _asLists(buildLicenceEntity(region))
+
+  licenceEntity.licence.startDate = startDate
+  licenceEntity.permitLicence.startDate = startDate
+  licenceEntity.licenceDocument.startDate = startDate
+  licenceEntity.licenceDocumentRoles[0].startDate = startDate
+  licenceEntity.licenceVersions[0].startDate = startDate
+
+  licenceEntity.licenceVersionPurposes[0].purposeId.value = purpose
 
   if (startDate < ISSUE_100_BEFORE) {
-    firstIssue(licenceEntity, 100)
+    licenceEntity.licenceVersions[0].issue = 100
   }
 
   for (const end of licenceType.ends) {
