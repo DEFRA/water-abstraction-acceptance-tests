@@ -259,16 +259,14 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
 /**
  * Give the licences that ended after sroc started their sroc charge versions
  *
- * A licence that has ended is given them where it started on or after the sroc start date, or expired on or after it.
+ * A licence that has ended is given them where it ended on or after the sroc start date, however it ended, as it was
+ * on sroc until then.
  *
  * @private
  */
 function _chargeEndedLicencesFromSroc(licenceEntities, billingAccountEntities) {
   for (const licenceEntity of licenceEntities) {
-    if (
-      licenceModel(licenceEntity).$ended() &&
-      (licenceEntity.licence.startDate >= srocStartDate || _expiredOnOrAfterSroc(licenceEntity))
-    ) {
+    if (licenceModel(licenceEntity).$ended() && _endDate(licenceEntity) >= srocStartDate) {
       _chargeFromSroc(licenceEntity, billingAccountEntities)
     }
   }
@@ -621,9 +619,10 @@ function _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes
  *
  * Each licence version in force on or after the sroc start date, and before the licence ended, has a sroc charge
  * version for its holder. It starts when the licence version did, or on the sroc start date where that was later, and
- * ends when the licence version did, or when the licence ended where that was earlier and is in the past. The first was
- * made because the licence moved onto sroc where it started before the sroc start date, or for a new licence where it
- * did not. Each one after was made for why its licence version changed.
+ * ends when the licence version did. The last one has no end date, even where the licence has ended, as a charge
+ * version is not ended when its licence is. The first was made because the licence moved onto sroc where it started
+ * before the sroc start date, or for a new licence where it did not. Each one after was made for why its licence
+ * version changed.
  *
  * Each has a charge reference and charge element for the first purpose on its licence version.
  *
@@ -643,11 +642,7 @@ function _chargeFromSroc(licenceEntity, billingAccountEntities) {
     const chargeVersion = _chargeVersionFor(licenceEntity, licenceVersion, billingAccountEntities)
 
     chargeVersion.startDate = licenceVersion.startDate > srocStartDate ? licenceVersion.startDate : srocStartDate
-    chargeVersion.endDate = licenceVersion.endDate ?? null
-
-    if (ended && (!chargeVersion.endDate || chargeVersion.endDate > endDate)) {
-      chargeVersion.endDate = endDate
-    }
+    chargeVersion.endDate = i < srocLicenceVersions.length - 1 ? (licenceVersion.endDate ?? null) : null
 
     if (i > 0) {
       chargeVersion.changeReasonId.value = _changeReason(srocLicenceVersions[i - 1], licenceVersion)
@@ -892,21 +887,6 @@ function _endDate(licenceEntity) {
   const ends = licenceModel(licenceEntity).$ends()
 
   return ends ? formatDateToIso(ends.date) : null
-}
-
-/**
- * Whether a licence has expired, and did so on or after the sroc start date, without having lapsed or been revoked
- *
- * @private
- */
-function _expiredOnOrAfterSroc(licenceEntity) {
-  const { expiredDate, lapsedDate, revokedDate } = licenceEntity.licence
-
-  if (revokedDate || lapsedDate || !expiredDate) {
-    return false
-  }
-
-  return expiredDate >= srocStartDate && expiredDate <= formatDateToIso(today())
 }
 
 /**
