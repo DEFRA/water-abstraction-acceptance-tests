@@ -1,6 +1,12 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function (billLicence, chargeReference, dates, netAmount) {
+  let section130Agreement = chargeReference.scheme === 'sroc' ? 'false' : null
+
+  if (chargeReference.section130Agreement) {
+    section130Agreement = chargeReference.section130Agreement
+  }
+
   return {
     id: generateUUID(),
     billLicenceId: billLicence.id,
@@ -13,6 +19,7 @@ export default function (billLicence, chargeReference, dates, netAmount) {
     volume: chargeReference.volume,
     scheme: chargeReference.scheme,
     section127Agreement: chargeReference.section127Agreement,
+    section130Agreement,
     description: chargeReference.description,
     chargeCategoryCode: chargeReference.chargeCategoryId.value,
     chargeCategoryDescription: 'Test charge category',
