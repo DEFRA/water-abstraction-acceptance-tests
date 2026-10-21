@@ -487,6 +487,8 @@ function _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open
 
     chargeVersion.scheme = 'alcs'
     chargeVersion.source = 'nald'
+    chargeVersion.createdBy = null
+    chargeVersion.approvedBy = null
     chargeVersion.startDate = licenceVersion.startDate
     chargeVersion.endDate =
       licenceVersion.endDate && licenceVersion.endDate < alcsEndDate ? licenceVersion.endDate : alcsEndDate
