@@ -67,7 +67,7 @@ export const test = base.extend({
 
   triggerJob: async ({ request }, use) => {
     await use((job) => {
-      return request.post(`/system/jobs/${job}`, { timeout: 60000 })
+      return request.post(`${config.internalUrl}/jobs/${job}`, { timeout: 60000 })
     })
   },
 
