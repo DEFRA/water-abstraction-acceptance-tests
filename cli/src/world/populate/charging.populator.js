@@ -308,7 +308,7 @@ function _twoPurposeCharges(licenceEntity) {
  * Each takes the next loss, water model and whether it is for a restricted source from their lists, then the charge
  * category those and its volume fall in. Most are high loss, about a third medium and a few low; a little over half are
  * restricted; models are spread about evenly. A water company licence's references are for public water supply, and the
- * rest have no additional charges. Of the references whose licence is in a region with supported sources, every 10th is
+ * rest have no additional charges. Of the references whose licence is in a region with supported sources, every 30th is
  * for the next supported source of that region; North West and South West have none. Every 12th has a winter discount
  * and every 9th an aggregate factor of a half. A few have a charge adjustment, so every 125th has a charge adjustment
  * of a half.
@@ -320,7 +320,7 @@ function _varySrocReferences(licenceEntities) {
   const CHARGE_ADJUSTMENT_EVERY = 125
   const LOSSES = ['high', 'medium', 'high', 'low', 'high', 'medium', 'high']
   const RESTRICTED_SOURCES = [true, false, true, true, false]
-  const SUPPORTED_SOURCE_EVERY = 10
+  const SUPPORTED_SOURCE_EVERY = 30
   const WATER_MODELS = ['no model', 'tier 1', 'tier 2']
   const WINTER_DISCOUNT_EVERY = 12
 
