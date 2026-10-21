@@ -524,25 +524,29 @@ function _chargeFromAlcs(licenceEntity, billingAccountEntities, referenced, open
 }
 
 /**
- * Give a licence a non-chargeable sroc charge version
+ * Give a licence its non-chargeable sroc charge versions
  *
- * It starts on the sroc start date, or when the licence started where that was later, and covers the whole of its time
- * on sroc. It is made for the given non-chargeable `reason`, so it has no charge reference, charge element or billing
- * account.
+ * Each licence version in force on or after the sroc start date, and before the licence ended, has a non-chargeable
+ * sroc charge version. It starts when the licence version did, or on the sroc start date where that was later, and ends
+ * when the licence version did. The last one has no end date. Each is made for the given non-chargeable `reason`, so it
+ * has no charge reference, charge element or billing account.
  *
  * @private
  */
 function _chargeAsNonChargeable(licenceEntity, reason) {
-  const chargeVersion = chargeVersionData({ id: null }, licenceEntity.licence, regionOf(licenceEntity).region)
+  const srocLicenceVersions = _srocLicenceVersions(licenceEntity)
 
-  if (licenceEntity.licence.startDate < srocStartDate) {
-    chargeVersion.startDate = srocStartDate
+  for (let i = 0; i < srocLicenceVersions.length; i++) {
+    const licenceVersion = srocLicenceVersions[i]
+    const chargeVersion = chargeVersionData({ id: null }, licenceEntity.licence, regionOf(licenceEntity).region)
+
+    chargeVersion.startDate = licenceVersion.startDate > srocStartDate ? licenceVersion.startDate : srocStartDate
+    chargeVersion.endDate = i < srocLicenceVersions.length - 1 ? licenceVersion.endDate : null
+    chargeVersion.changeReasonId.value = reason.description
+    chargeVersion.billingAccountId = null
+
+    licenceEntity.chargeVersions.push(chargeVersion)
   }
-
-  chargeVersion.changeReasonId.value = reason.description
-  chargeVersion.billingAccountId = null
-
-  licenceEntity.chargeVersions.push(chargeVersion)
 }
 
 /**
@@ -608,13 +612,7 @@ function _chargeByPurpose(licenceEntity, chargeReference, licenceVersionPurposes
  * @private
  */
 function _chargeFromSroc(licenceEntity, billingAccountEntities) {
-  const endDate = _endDate(licenceEntity)
-  const srocLicenceVersions = licenceEntity.licenceVersions.filter((licenceVersion) => {
-    return (
-      (!licenceVersion.endDate || licenceVersion.endDate >= srocStartDate) &&
-      (!endDate || licenceVersion.startDate <= endDate)
-    )
-  })
+  const srocLicenceVersions = _srocLicenceVersions(licenceEntity)
 
   for (let i = 0; i < srocLicenceVersions.length; i++) {
     const licenceVersion = srocLicenceVersions[i]
@@ -636,6 +634,24 @@ function _chargeFromSroc(licenceEntity, billingAccountEntities) {
     licenceEntity.chargeReferences.push(chargeReference)
     licenceEntity.chargeElements.push(chargeElementData(chargeReference, firstPurpose))
   }
+}
+
+/**
+ * The licence versions a licence is charged for on sroc
+ *
+ * These are the ones in force on or after the sroc start date, and starting before the licence ended.
+ *
+ * @private
+ */
+function _srocLicenceVersions(licenceEntity) {
+  const endDate = _endDate(licenceEntity)
+
+  return licenceEntity.licenceVersions.filter((licenceVersion) => {
+    return (
+      (!licenceVersion.endDate || licenceVersion.endDate >= srocStartDate) &&
+      (!endDate || licenceVersion.startDate <= endDate)
+    )
+  })
 }
 
 /**
