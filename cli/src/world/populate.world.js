@@ -7,6 +7,7 @@ import licenceHolders from './populate/licence-holders.populator.js'
 import licences from './populate/licences.populator.js'
 import { mergeByKey } from '../../../tests/support/helpers/scenario.helpers.js'
 import monitoringStations from './populate/monitoring-stations.populator.js'
+import workflows from './populate/workflows.populator.js'
 
 /**
  * Generate the data that populates the world when it is created from the CLI, on top of what the specs ask for
@@ -26,6 +27,7 @@ export default function populateWorld() {
   companyAddresses(licenceEntities)
   monitoringStations(licenceEntities)
   charging(licenceEntities)
+  workflows(licenceEntities)
 
   return mergeByKey(...licenceEntities)
 }

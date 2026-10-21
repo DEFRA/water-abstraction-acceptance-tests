@@ -14,7 +14,6 @@ import licenceAgreementData from '../../../../tests/support/data/licence-agreeme
 import { licenceModel } from './helpers/end-dates.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
 import { srocStartDate } from '../../../../tests/support/default-values.js'
-import workflowData from '../../../../tests/support/data/workflow.data.js'
 
 /**
  * Charge the licences
@@ -199,8 +198,7 @@ function _chargeLicencesFromAlcs(licenceEntities, billingAccountEntities) {
  *
  * Nearly every live licence has sroc charge versions, so every one except every 18th is given them. A few are
  * non-chargeable, so every 24th of those is made for the next non-chargeable reason in the list, about half of which
- * are transfer type licence. Most licences without a sroc charge version are not in the workflow, so only every 7th of
- * them is waiting for its charge information to be set up.
+ * are transfer type licence.
  *
  * @private
  */
@@ -218,15 +216,10 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
     ChangeReasonHelper.select(20),
     ChangeReasonHelper.select(16)
   ]
-  const TO_SET_UP_EVERY = 7
   const UNCHARGED_EVERY = 18
 
   const liveLicenceEntities = licenceEntities.filter((licenceEntity) => {
     return !licenceModel(licenceEntity).$ended()
-  })
-
-  const unchargedLicenceEntities = liveLicenceEntities.filter((_licenceEntity, index) => {
-    return index % UNCHARGED_EVERY === UNCHARGED_EVERY - 1
   })
 
   const chargedLicenceEntities = liveLicenceEntities.filter((_licenceEntity, index) => {
@@ -241,14 +234,6 @@ function _chargeLiveLicencesFromSroc(licenceEntities, billingAccountEntities) {
     } else {
       _chargeFromSroc(chargedLicenceEntities[i], billingAccountEntities)
     }
-  }
-
-  const toSetUpLicenceEntities = unchargedLicenceEntities.filter((_licenceEntity, index) => {
-    return index % TO_SET_UP_EVERY === TO_SET_UP_EVERY - 1
-  })
-
-  for (const licenceEntity of toSetUpLicenceEntities) {
-    _toSetUp(licenceEntity)
   }
 }
 
@@ -855,23 +840,4 @@ function _endDate(licenceEntity) {
   const ends = licenceModel(licenceEntity).$ends()
 
   return ends ? formatDateToIso(ends.date) : null
-}
-
-/**
- * Put a licence in the workflow waiting for its charge information to be set up
- *
- * It is for the licence's current licence version, which is the last one. Nobody has started on it yet, so it has no
- * charge version and was not created by anyone.
- *
- * @private
- */
-function _toSetUp(licenceEntity) {
-  const workflow = workflowData(licenceEntity.licence)
-
-  workflow.status = 'to_setup'
-  workflow.licenceVersionId = licenceEntity.licenceVersions.at(-1).id
-  workflow.createdBy = null
-  workflow.data = { chargeVersion: null, chargeVersionExists: false }
-
-  licenceEntity.workflow = workflow
 }

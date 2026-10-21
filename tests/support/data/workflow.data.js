@@ -7,6 +7,7 @@ export default function (licence) {
     createdAt: new Date(),
     updatedAt: new Date(),
     createdBy: {
+      id: users.BILLING_AND_DATA.userId,
       email: users.BILLING_AND_DATA.username
     },
     data: {
