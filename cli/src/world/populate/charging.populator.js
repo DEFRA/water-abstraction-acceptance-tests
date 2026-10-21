@@ -1,5 +1,6 @@
 import ChangeReasonHelper from 'water-abstraction-engine/test/helpers/change-reason.helper.js'
 import ChargeCategoryHelper from 'water-abstraction-engine/test/helpers/charge-category.helper.js'
+import SupportedSourceHelper from 'water-abstraction-engine/test/helpers/supported-source.helper.js'
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 import addressData from '../../../../tests/support/data/address.data.js'
@@ -307,8 +308,10 @@ function _twoPurposeCharges(licenceEntity) {
  * Each takes the next loss, water model and whether it is for a restricted source from their lists, then the charge
  * category those and its volume fall in. Most are high loss, about a third medium and a few low; a little over half are
  * restricted; models are spread about evenly. A water company licence's references are for public water supply, and the
- * rest have no additional charges. Every 12th has a winter discount and every 9th an aggregate factor of a half. A
- * few have a charge adjustment, so every 125th has a charge adjustment of a half.
+ * rest have no additional charges. Of the references whose licence is in a region with supported sources, every 10th is
+ * for the next supported source of that region; North West and South West have none. Every 12th has a winter discount
+ * and every 9th an aggregate factor of a half. A few have a charge adjustment, so every 125th has a charge adjustment
+ * of a half.
  *
  * @private
  */
@@ -317,19 +320,40 @@ function _varySrocReferences(licenceEntities) {
   const CHARGE_ADJUSTMENT_EVERY = 125
   const LOSSES = ['high', 'medium', 'high', 'low', 'high', 'medium', 'high']
   const RESTRICTED_SOURCES = [true, false, true, true, false]
+  const SUPPORTED_SOURCE_EVERY = 10
   const WATER_MODELS = ['no model', 'tier 1', 'tier 2']
   const WINTER_DISCOUNT_EVERY = 12
 
   const srocReferences = licenceEntities.flatMap((licenceEntity) => {
+    const regionName = regionOf(licenceEntity).region.displayName
+    const supportedSources = SupportedSourceHelper.data.filter((supportedSource) => {
+      return supportedSource.region === regionName
+    })
+
     return _srocChargeReferences(licenceEntity).map((chargeReference) => {
-      return { chargeReference, waterUndertaker: licenceEntity.licence.waterUndertaker }
+      return { chargeReference, regionName, supportedSources, waterUndertaker: licenceEntity.licence.waterUndertaker }
     })
   })
 
+  let supportedSourceCount = 0
+  const nextSupportedSource = {}
+
   for (let i = 0; i < srocReferences.length; i++) {
-    const { chargeReference, waterUndertaker } = srocReferences[i]
+    const { chargeReference, regionName, supportedSources, waterUndertaker } = srocReferences[i]
 
     chargeReference.additionalCharges = waterUndertaker ? { isSupplyPublicWater: true } : null
+
+    if (supportedSources.length > 0) {
+      supportedSourceCount++
+
+      if (supportedSourceCount % SUPPORTED_SOURCE_EVERY === 0) {
+        const index = nextSupportedSource[regionName] ?? 0
+        const { id, name } = supportedSources[index % supportedSources.length]
+
+        nextSupportedSource[regionName] = index + 1
+        chargeReference.additionalCharges = { supportedSource: { id, name }, isSupplyPublicWater: waterUndertaker }
+      }
+    }
     chargeReference.loss = LOSSES[i % LOSSES.length]
     chargeReference.restrictedSource = RESTRICTED_SOURCES[i % RESTRICTED_SOURCES.length]
     chargeReference.waterModel = WATER_MODELS[i % WATER_MODELS.length]
