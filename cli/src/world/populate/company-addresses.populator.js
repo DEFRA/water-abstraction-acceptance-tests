@@ -19,8 +19,14 @@ export default function companyAddresses(licenceEntities) {
   for (const licenceEntity of licenceEntities) {
     for (const companyAddress of licenceEntity.companyAddresses) {
       const versions = heldVersions.get(_key(companyAddress))
-      const startDates = versions.map((version) => version.startDate).sort()
-      const endDates = versions.map((version) => version.endDate)
+      const startDates = versions
+        .map((version) => {
+          return version.startDate
+        })
+        .sort()
+      const endDates = versions.map((version) => {
+        return version.endDate
+      })
 
       companyAddress.licenceRoleId.value = 'licenceHolder'
       companyAddress.default = true

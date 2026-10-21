@@ -1,11 +1,11 @@
 import { REGIONS } from './helpers/regions.helpers.js'
 import { addCondition } from './helpers/conditions.helpers.js'
 import { addPoint } from './helpers/points.helpers.js'
-import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
 import { addPurpose } from './helpers/purposes.helpers.js'
+import { asArrays } from '../../../../tests/support/helpers/wire-format.helpers.js'
+import buildLicenceEntity from '../../../../tests/support/entities/licence.entity.js'
 import { addPurposeToNewVersion, correct, transfer } from './helpers/licence-versions.helpers.js'
 import { expire, expireInFuture, lapse, revoke } from './helpers/end-dates.helpers.js'
-import { asArrays } from '../../../../tests/support/helpers/wire-format.helpers.js'
 
 /**
  * Build the licences that populate the world
