@@ -7,6 +7,7 @@ import licenceHolders from './populate/licence-holders.populator.js'
 import licences from './populate/licences.populator.js'
 import { mergeByKey } from '../../../tests/support/helpers/scenario.helpers.js'
 import monitoringStations from './populate/monitoring-stations.populator.js'
+import returnVersions from './populate/return-versions.populator.js'
 import workflows from './populate/workflows.populator.js'
 
 /**
@@ -28,6 +29,7 @@ export default function populateWorld() {
   monitoringStations(licenceEntities)
   charging(licenceEntities)
   workflows(licenceEntities)
+  returnVersions(licenceEntities)
 
   return mergeByKey(...licenceEntities)
 }
