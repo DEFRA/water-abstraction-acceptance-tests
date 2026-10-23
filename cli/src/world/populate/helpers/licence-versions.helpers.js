@@ -43,7 +43,12 @@ export function addPurposeToNewVersion(licenceEntity, region) {
  * @returns {object} the same licence entity
  */
 export function correct(licenceEntity, region, startDate) {
-  return _correct(licenceEntity, region, startDate)
+  const { previous, current } = _newLicenceVersion(licenceEntity, region, startDate)
+
+  current.issue = previous.issue
+  current.increment = previous.increment + 1
+
+  return licenceEntity
 }
 
 /**
@@ -60,33 +65,6 @@ export function correct(licenceEntity, region, startDate) {
  * @returns {object} the same licence entity
  */
 export function transfer(licenceEntity, region, startDate) {
-  return _transfer(licenceEntity, region, startDate)
-}
-
-/**
- * Give a licence a new licence version because a detail on the last one was wrong, starting on `startDate` where it is
- * given one
- *
- * @private
- */
-function _correct(licenceEntity, region, startDate) {
-  const { previous, current } = _newLicenceVersion(licenceEntity, region, startDate)
-
-  current.issue = previous.issue
-  current.increment = previous.increment + 1
-
-  return licenceEntity
-}
-
-/**
- * Give a licence a new licence version because it was transferred to a new licence holder, starting on `startDate`
- * where it is given one
- *
- * The licence document header is changed to name the new licence holder, as it always names the current one.
- *
- * @private
- */
-function _transfer(licenceEntity, region, startDate) {
   const { licenceDocument } = licenceEntity
   const { previous, current } = _newLicenceVersion(licenceEntity, region, startDate)
 
