@@ -1,10 +1,10 @@
-import buildInternalUserEntity from '../entities/internal-user.entity.js'
-import buildLicenceEntity from '../entities/licence.entity.js'
-import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
-import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import primaryUserData from '../data/primary-user.data.js'
-import { groups, monitoringStations, regions } from '../default-values.js'
+import buildInternalUserEntity from 'water-abstraction-engine/cli/world/entities/internal-user.entity.js'
+import buildLicenceEntity from 'water-abstraction-engine/cli/world/entities/licence.entity.js'
+import licenceMonitoringStationData from 'water-abstraction-engine/cli/world/data/licence-monitoring-station.data.js'
+import licenceVersionPurposeConditionData from 'water-abstraction-engine/cli/world/data/licence-version-purpose-condition.data.js'
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import primaryUserData from 'water-abstraction-engine/cli/world/data/primary-user.data.js'
+import { groups, monitoringStations, regions } from 'water-abstraction-engine/cli/world/default-values.js'
 
 export const title = 'Registered licences with a monitoring station (tagged)'
 export const description =

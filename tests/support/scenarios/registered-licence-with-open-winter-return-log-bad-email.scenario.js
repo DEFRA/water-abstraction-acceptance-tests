@@ -1,4 +1,5 @@
-import { regions } from '../default-values.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import registeredLicenceWithOpenWinterReturnLogScenario from './registered-licence-with-open-winter-return-log.scenario.js'
 
 export const title = 'Registered licence with an open return log and a bad email (winter cycle)'

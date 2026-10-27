@@ -1,6 +1,7 @@
-import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
-import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import { sortReturnLogsByDisplayOrder } from '../../support/helpers/return-log.helpers.js'
+import { calculatedDates } from 'water-abstraction-engine/cli/world/helpers/calculated-dates.helpers.js'
+import { returnLogDateDetails } from 'water-abstraction-engine/cli/world/helpers/date.helpers.js'
+import { sortReturnLogsByDisplayOrder } from 'water-abstraction-engine/cli/world/helpers/return-log.helpers.js'
+
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit historic correction changing to quarterly on new return version (internal)', () => {

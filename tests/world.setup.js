@@ -1,4 +1,4 @@
-import resetWorld from '../cli/src/world/reset.world.js'
+import resetWorld from 'water-abstraction-engine/cli/world/reset.world.js'
 
 /**
  * Playwright global setup: reset the world before any spec runs

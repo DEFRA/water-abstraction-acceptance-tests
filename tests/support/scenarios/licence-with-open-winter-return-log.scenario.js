@@ -1,9 +1,9 @@
-import buildInternalUserEntity from '../entities/internal-user.entity.js'
-import buildLicenceEntity from '../entities/licence.entity.js'
-import buildReturnVersionEntity from '../entities/return-version.entity.js'
-import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { regions } from '../default-values.js'
-import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
+import buildInternalUserEntity from 'water-abstraction-engine/cli/world/entities/internal-user.entity.js'
+import buildLicenceEntity from 'water-abstraction-engine/cli/world/entities/licence.entity.js'
+import buildReturnVersionEntity from 'water-abstraction-engine/cli/world/entities/return-version.entity.js'
+import { calculatedDates } from 'water-abstraction-engine/cli/world/helpers/calculated-dates.helpers.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+import { buildReturnLogs, returnLogPeriods } from 'water-abstraction-engine/cli/world/helpers/return-log.helpers.js'
 
 export const title = 'Licence with an open return log (winter cycle)'
 export const description =

@@ -1,9 +1,9 @@
-import buildInternalUserEntity from '../entities/internal-user.entity.js'
-import buildLicenceEntity from '../entities/licence.entity.js'
-import { formatDateToIso } from '../helpers/date.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import primaryUserData from '../data/primary-user.data.js'
-import { groups, regions } from '../default-values.js'
+import buildInternalUserEntity from 'water-abstraction-engine/cli/world/entities/internal-user.entity.js'
+import buildLicenceEntity from 'water-abstraction-engine/cli/world/entities/licence.entity.js'
+import { formatDateToIso } from 'water-abstraction-engine/cli/world/helpers/date.helpers.js'
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import primaryUserData from 'water-abstraction-engine/cli/world/data/primary-user.data.js'
+import { groups, regions } from 'water-abstraction-engine/cli/world/default-values.js'
 
 export const title = 'Registered licence for renewal invitation'
 export const description =

@@ -1,4 +1,5 @@
-import { users } from '../../support/default-values.js'
+import { users } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Creating internal user with existing external account (internal)', () => {

@@ -1,8 +1,8 @@
-import buildInternalUserEntity from '../entities/internal-user.entity.js'
-import buildLicenceEntity from '../entities/licence.entity.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import primaryUserData from '../data/primary-user.data.js'
-import { regions } from '../default-values.js'
+import buildInternalUserEntity from 'water-abstraction-engine/cli/world/entities/internal-user.entity.js'
+import buildLicenceEntity from 'water-abstraction-engine/cli/world/entities/licence.entity.js'
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import primaryUserData from 'water-abstraction-engine/cli/world/data/primary-user.data.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
 
 export const title = 'Registered licence'
 export const description = 'A licence that has been registered (primary user), licence holder and a company'

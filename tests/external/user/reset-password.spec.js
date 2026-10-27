@@ -1,5 +1,6 @@
+import { password } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
-import { password } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Reset password journey (external)', () => {

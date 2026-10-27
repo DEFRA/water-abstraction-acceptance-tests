@@ -1,6 +1,7 @@
+import { generateExternalEmailAddress } from 'water-abstraction-engine/cli/world/helpers/generators.helpers.js'
+import { password } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
-import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
-import { password } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Sharing licence access with a new user (external)', () => {

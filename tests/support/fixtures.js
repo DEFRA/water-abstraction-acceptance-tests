@@ -1,14 +1,14 @@
 import { test as base } from '@playwright/test'
+import buildWorldKey from 'water-abstraction-engine/cli/world/key.world.js'
 import { fileURLToPath } from 'node:url'
 import fs from 'node:fs/promises'
 import path from 'path'
 
-import buildWorldKey from '../../cli/src/world/key.world.js'
 import config from '../config.js'
 
 export { expect } from '@playwright/test'
 
-const WORLD_FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../cli/src/world/world.json')
+const WORLD_FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../world.json')
 
 // Module-level cache so world.json is only read from disk once per worker
 let cachedWorld = null

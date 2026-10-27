@@ -1,12 +1,15 @@
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+import {
+  generateAccountNumber,
+  generatePointExternalId
+} from 'water-abstraction-engine/cli/world/helpers/generators.helpers.js'
 import {
   generateLicenceVersionExternalId,
   generateLicenceVersionPurposeExternalId
 } from 'water-abstraction-engine/test/generators.js'
 
 import licenceWithChargeVersionScenario from './licence-with-charge-version.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { regions } from '../default-values.js'
-import { generateAccountNumber, generatePointExternalId } from '../helpers/generators.helpers.js'
 
 export const title = 'A licence and a water company licence'
 export const description = 'A licence and a water company licence, each with a charge version and billing account'

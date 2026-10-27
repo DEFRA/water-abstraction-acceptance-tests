@@ -1,5 +1,6 @@
+import { users } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
-import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Change user permissions (internal)', () => {

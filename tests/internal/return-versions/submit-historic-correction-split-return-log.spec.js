@@ -1,5 +1,6 @@
-import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
-import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
+import { calculatedDates } from 'water-abstraction-engine/cli/world/helpers/calculated-dates.helpers.js'
+import { returnLogDateDetails } from 'water-abstraction-engine/cli/world/helpers/date.helpers.js'
+
 import { tableRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 

@@ -1,5 +1,6 @@
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
-import { regions } from '../../../support/default-values.js'
 import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
 

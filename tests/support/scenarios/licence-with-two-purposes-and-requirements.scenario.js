@@ -1,7 +1,8 @@
-import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import buildReturnVersionEntity from 'water-abstraction-engine/cli/world/entities/return-version.entity.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+import returnRequirementPointData from 'water-abstraction-engine/cli/world/data/return-requirement-point.data.js'
+
 import licenceWithTwoPurposesScenario from './licence-with-two-purposes.scenario.js'
-import { regions } from '../default-values.js'
-import returnRequirementPointData from '../data/return-requirement-point.data.js'
 
 export const title = 'Licence with two purposes and a return requirement'
 export const description =

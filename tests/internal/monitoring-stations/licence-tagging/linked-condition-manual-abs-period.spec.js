@@ -1,4 +1,5 @@
-import { monitoringStations } from '../../../support/default-values.js'
+import { monitoringStations } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import { expect, test } from '../../../support/fixtures.js'
 import { summaryRow, tableRow } from '../../../support/helpers/govuk.helpers.js'
 

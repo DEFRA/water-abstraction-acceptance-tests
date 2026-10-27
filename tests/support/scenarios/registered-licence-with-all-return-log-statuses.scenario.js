@@ -1,7 +1,8 @@
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import primaryUserData from 'water-abstraction-engine/cli/world/data/primary-user.data.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import licenceWithAllReturnLogStatuses from './licence-with-all-return-log-statuses.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import primaryUserData from '../data/primary-user.data.js'
-import { regions } from '../default-values.js'
 
 export const title = 'Registered licence with all return log statuses'
 export const description = 'Registered licence with return logs covering all possible statuses'

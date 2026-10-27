@@ -1,5 +1,6 @@
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import licenceWithOpenWinterReturnLog from './licence-with-open-winter-return-log.scenario.js'
-import { regions } from '../default-values.js'
 
 export const title = 'Water company licence with an open return log (winter cycle)'
 export const description =

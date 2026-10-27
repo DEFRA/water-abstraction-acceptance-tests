@@ -1,9 +1,9 @@
-import buildBillingAccountEntity from '../entities/billing-account.entity.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
-import buildInternalUserEntity from '../entities/internal-user.entity.js'
-import buildLicenceEntity from '../entities/licence.entity.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { regions } from '../default-values.js'
+import buildBillingAccountEntity from 'water-abstraction-engine/cli/world/entities/billing-account.entity.js'
+import buildChargeVersionEntity from 'water-abstraction-engine/cli/world/entities/charge-version.entity.js'
+import buildInternalUserEntity from 'water-abstraction-engine/cli/world/entities/internal-user.entity.js'
+import buildLicenceEntity from 'water-abstraction-engine/cli/world/entities/licence.entity.js'
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
 
 export const title = 'Licences for annual bill run removals'
 export const description =

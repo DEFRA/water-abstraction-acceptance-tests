@@ -1,7 +1,8 @@
-import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
-import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
+import licenceMonitoringStationData from 'water-abstraction-engine/cli/world/data/licence-monitoring-station.data.js'
+import licenceVersionPurposeConditionData from 'water-abstraction-engine/cli/world/data/licence-version-purpose-condition.data.js'
+import { monitoringStations, regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import registeredLicenceWithMonitoringStationUntaggedScenario from './registered-licence-with-monitoring-station-untagged.scenario.js'
-import { monitoringStations, regions } from '../default-values.js'
 
 export const title = 'Registered licence with a monitoring station (tagged)'
 export const description = 'Registered licence with a licence linked to a monitoring station'

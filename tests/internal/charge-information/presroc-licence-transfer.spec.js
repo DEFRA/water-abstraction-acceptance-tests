@@ -1,5 +1,6 @@
-import { convertCubicMetresToMegalitres } from '../../support/helpers/conversion.helpers.js'
-import { formatLongDate } from '../../support/helpers/date.helpers.js'
+import { convertCubicMetresToMegalitres } from 'water-abstraction-engine/cli/world/helpers/conversion.helpers.js'
+import { formatLongDate } from 'water-abstraction-engine/cli/world/helpers/date.helpers.js'
+
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplementary-billing', '@presroc'] }, () => {

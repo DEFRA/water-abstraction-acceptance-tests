@@ -1,4 +1,5 @@
-import { monthlyReturnPeriods } from '../../support/helpers/date.helpers.js'
+import { monthlyReturnPeriods } from 'water-abstraction-engine/cli/world/helpers/date.helpers.js'
+
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a volumes return (external)', () => {

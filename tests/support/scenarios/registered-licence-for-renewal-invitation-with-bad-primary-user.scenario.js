@@ -1,4 +1,5 @@
-import { regions } from '../default-values.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import registeredLicenceForRenewalInvitation from './registered-licence-for-renewal-invitation.scenario.js'
 
 export const title = 'Registered licence for renewal invitation with a bad primary user'

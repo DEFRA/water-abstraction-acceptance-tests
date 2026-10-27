@@ -1,9 +1,10 @@
-import buildBillingAccountEntity from '../entities/billing-account.entity.js'
-import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
-import buildReturnVersionEntity from '../entities/return-version.entity.js'
-import licenceAgreementData from '../data/licence-agreement.data.js'
+import buildBillingAccountEntity from 'water-abstraction-engine/cli/world/entities/billing-account.entity.js'
+import buildPresrocChargeVersionEntity from 'water-abstraction-engine/cli/world/entities/presroc-charge-version.entity.js'
+import buildReturnVersionEntity from 'water-abstraction-engine/cli/world/entities/return-version.entity.js'
+import licenceAgreementData from 'water-abstraction-engine/cli/world/data/licence-agreement.data.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import presrocLicenceScenario from './presroc-licence.scenario.js'
-import { regions } from '../default-values.js'
 
 export const title = 'Presroc licence with an agreement and a due return'
 export const description =

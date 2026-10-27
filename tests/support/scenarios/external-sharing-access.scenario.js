@@ -1,6 +1,7 @@
+import userData from 'water-abstraction-engine/cli/world/data/user.data.js'
+import { applications, regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import registeredLicenceScenario from './registered-licence.scenario.js'
-import userData from '../data/user.data.js'
-import { applications, regions } from '../default-values.js'
 
 export const title = 'External sharing access'
 export const description =

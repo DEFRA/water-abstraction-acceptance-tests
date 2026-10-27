@@ -1,14 +1,17 @@
-import buildBillRunEntities from '../entities/bill-runs.entities.js'
-import buildBillingAccountEntity from '../entities/billing-account.entity.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
-import buildInternalUserEntity from '../entities/internal-user.entity.js'
-import buildPresrocBillRunEntities from '../entities/presroc-bill-runs.entities.js'
-import buildPresrocChargeVersionEntity from '../entities/presroc-charge-version.entity.js'
-import buildPresrocLicenceEntity from '../entities/presroc-licence.entity.js'
-import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { includeInPresrocSupplementaryBilling, includeInSrocSupplementaryBilling } from '../helpers/billing.helpers.js'
-import { regions, srocStartDate } from '../default-values.js'
+import buildBillRunEntities from 'water-abstraction-engine/cli/world/entities/bill-runs.entities.js'
+import buildBillingAccountEntity from 'water-abstraction-engine/cli/world/entities/billing-account.entity.js'
+import buildChargeVersionEntity from 'water-abstraction-engine/cli/world/entities/charge-version.entity.js'
+import buildInternalUserEntity from 'water-abstraction-engine/cli/world/entities/internal-user.entity.js'
+import buildPresrocBillRunEntities from 'water-abstraction-engine/cli/world/entities/presroc-bill-runs.entities.js'
+import buildPresrocChargeVersionEntity from 'water-abstraction-engine/cli/world/entities/presroc-charge-version.entity.js'
+import buildPresrocLicenceEntity from 'water-abstraction-engine/cli/world/entities/presroc-licence.entity.js'
+import { calculatedDates } from 'water-abstraction-engine/cli/world/helpers/calculated-dates.helpers.js'
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import {
+  includeInPresrocSupplementaryBilling,
+  includeInSrocSupplementaryBilling
+} from 'water-abstraction-engine/cli/world/helpers/billing.helpers.js'
+import { regions, srocStartDate } from 'water-abstraction-engine/cli/world/default-values.js'
 
 export const title = 'Presroc licence flagged for supplementary billing'
 export const description =

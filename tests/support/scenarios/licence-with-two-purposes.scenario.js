@@ -1,12 +1,11 @@
+import buildInternalUserEntity from 'water-abstraction-engine/cli/world/entities/internal-user.entity.js'
+import buildLicenceEntity from 'water-abstraction-engine/cli/world/entities/licence.entity.js'
 import { generateLicenceVersionPurposeExternalId } from 'water-abstraction-engine/test/generators.js'
-
-import buildInternalUserEntity from '../entities/internal-user.entity.js'
-import buildLicenceEntity from '../entities/licence.entity.js'
-import { generatePointExternalId } from '../helpers/generators.helpers.js'
-import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
-import licenceVersionPurposePointData from '../data/licence-version-purpose-point.data.js'
-import pointData from '../data/point.data.js'
-import { regions } from '../default-values.js'
+import { generatePointExternalId } from 'water-abstraction-engine/cli/world/helpers/generators.helpers.js'
+import licenceVersionPurposeData from 'water-abstraction-engine/cli/world/data/licence-version-purpose.data.js'
+import licenceVersionPurposePointData from 'water-abstraction-engine/cli/world/data/licence-version-purpose-point.data.js'
+import pointData from 'water-abstraction-engine/cli/world/data/point.data.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
 
 export const title = 'Licence with two purposes'
 export const description =

@@ -1,5 +1,6 @@
-import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { regions } from '../default-values.js'
+import { calculatedDates } from 'water-abstraction-engine/cli/world/helpers/calculated-dates.helpers.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import registeredLicenceWithOpenReturnLogForFirstPeriod from './registered-licence-with-open-return-log-for-first-period.scenario.js'
 
 export const title = 'Registered licence with a due return log (first period)'

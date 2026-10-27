@@ -1,5 +1,6 @@
+import { users } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
-import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Reset password journey (internal)', () => {

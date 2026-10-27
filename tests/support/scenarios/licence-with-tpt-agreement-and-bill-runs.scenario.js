@@ -1,11 +1,12 @@
-import buildBillRunEntities from '../entities/bill-runs.entities.js'
-import buildBillingAccountEntity from '../entities/billing-account.entity.js'
-import buildChargeVersionEntity from '../entities/charge-version.entity.js'
-import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
+import buildBillRunEntities from 'water-abstraction-engine/cli/world/entities/bill-runs.entities.js'
+import buildBillingAccountEntity from 'water-abstraction-engine/cli/world/entities/billing-account.entity.js'
+import buildChargeVersionEntity from 'water-abstraction-engine/cli/world/entities/charge-version.entity.js'
+import { calculatedDates } from 'water-abstraction-engine/cli/world/helpers/calculated-dates.helpers.js'
+import { markAsTwoPartTariff } from 'water-abstraction-engine/cli/world/helpers/billing.helpers.js'
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import licenceWithAgreementScenario from './licence-with-agreement.scenario.js'
-import { markAsTwoPartTariff } from '../helpers/billing.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import { regions } from '../default-values.js'
 
 export const title = 'Licence with a TPT agreement and bill runs'
 export const description =

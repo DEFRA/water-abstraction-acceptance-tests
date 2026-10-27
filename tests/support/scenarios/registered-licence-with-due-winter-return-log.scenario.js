@@ -1,7 +1,8 @@
+import { mergeByKey } from 'water-abstraction-engine/cli/world/helpers/scenario.helpers.js'
+import primaryUserData from 'water-abstraction-engine/cli/world/data/primary-user.data.js'
+import { regions } from 'water-abstraction-engine/cli/world/default-values.js'
+
 import licenceWithDueWinterReturnLog from './licence-with-due-winter-return-log.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
-import primaryUserData from '../data/primary-user.data.js'
-import { regions } from '../default-values.js'
 
 export const title = 'Registered licence with a due return log (winter cycle)'
 export const description =

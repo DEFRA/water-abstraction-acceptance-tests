@@ -1,5 +1,5 @@
-import { applications } from '../default-values.js'
-import userData from '../data/user.data.js'
+import { applications } from 'water-abstraction-engine/cli/world/default-values.js'
+import userData from 'water-abstraction-engine/cli/world/data/user.data.js'
 
 export const title = 'External user only'
 export const description = 'A single external user with no associated licence or return data'
