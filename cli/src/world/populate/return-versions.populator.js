@@ -6,7 +6,7 @@ import { purposesOn } from './helpers/purposes.helpers.js'
 import returnRequirementData from '../../../../tests/support/data/return-requirement.data.js'
 import returnRequirementPointData from '../../../../tests/support/data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../../../../tests/support/data/return-requirement-purpose.data.js'
-import returnVersionData from '../../../../tests/support/data/return-version.data.js'
+import buildReturnVersionEntity from '../../../../tests/support/entities/return-version.entity.js'
 import { users } from '../../../../tests/support/default-values.js'
 import { licenceVersionChange, licenceVersionOn } from './helpers/licence-versions.helpers.js'
 
@@ -60,7 +60,8 @@ function _addReturnLists(licenceEntities) {
  * new licence, and each one after for why its licence version changed.
  *
  * A water company's return versions are for quarterly returns, but only where they start on or after 1 April 2025, as
- * quarterly returns cannot be set on one that starts before.
+ * quarterly returns cannot be set on one that starts before, and none of its return requirements is on the summer
+ * returns cycle, as the service does not allow quarterly returns for those.
  *
  * Those that start before the import from NALD was removed were imported from NALD, so they and their return
  * requirements, points and purposes have NALD external ids. The NALD region and licence id are taken from the licence's
@@ -87,7 +88,9 @@ function _followLicenceVersions(licenceEntities) {
       returnVersion.version = FIRST_VERSION + i
       returnVersion.reason = i === 0 ? 'new-licence' : _reason(licenceVersions[i - 1], licenceVersion)
       returnVersion.quarterlyReturns =
-        licenceEntity.licence.waterUndertaker && isQuarterlyReturnSubmissions(returnVersion.startDate)
+        licenceEntity.licence.waterUndertaker &&
+        isQuarterlyReturnSubmissions(returnVersion.startDate) &&
+        _allYear(licenceEntity, licenceVersion)
 
       if (returnVersion.startDate < NALD_IMPORT_END_DATE) {
         _importedFromNald(licenceEntity, returnVersion, naldRegionId, naldLicenceId)
@@ -200,13 +203,16 @@ function _misalignSome(licenceEntities) {
 }
 
 /**
- * Give every water company licence a new return version for quarterly returns from 1 April 2025
+ * Give each water company licence a new return version for quarterly returns from 1 April 2025
  *
  * Water companies changed to quarterly returns from 1 April 2025, the first date quarterly returns can be set on a
  * return version. Each water company licence that had not ended before then, and whose last return version starts
  * before then, has that return version ended the day before. A new one starts on 1 April 2025 for the licence version
  * in force on that date, for quarterly returns, as a change to the requirements for returns. It was set up in the
  * service, so it was created by the billing and data user, and has no NALD external ids.
+ *
+ * A licence is left alone where any purpose of that licence version is on the summer returns cycle, as the service
+ * does not allow quarterly returns for it.
  *
  * @private
  */
@@ -232,6 +238,11 @@ function _quarterlyForWaterCompanies(licenceEntities) {
     }
 
     const licenceVersion = licenceVersionOn(licenceEntity, QUARTERLY_START_DATE)
+
+    if (!_allYear(licenceEntity, licenceVersion)) {
+      continue
+    }
+
     const returnVersion = _addReturnVersion(licenceEntity, licenceVersion, QUARTERLY_START_DATE)
 
     lastReturnVersion.endDate = DAY_BEFORE
@@ -324,6 +335,10 @@ function _siteDescriptionsFromPoints(licenceEntity, returnVersion) {
  * readings are collected and reported depends on the licence and purpose, as the service decides it. Its returns are
  * yearly, as the service sets them.
  *
+ * The return version, and the return requirement, purpose and point for the licence version's first purpose and its
+ * first point, are built from the return version entity. Those for any other purposes and points are built from the
+ * data files, as the entity only builds one of each.
+ *
  * None of them has an external id until it is given a NALD one, as only records imported from NALD have them. It is set
  * to null, as otherwise the load service's helpers would make up a random one.
  *
@@ -333,15 +348,26 @@ function _siteDescriptionsFromPoints(licenceEntity, returnVersion) {
  * @private
  */
 function _addReturnVersion(licenceEntity, licenceVersion, startDate) {
-  const returnVersion = returnVersionData(licenceEntity.licence)
+  const licenceVersionPurposes = purposesOn(licenceEntity, licenceVersion)
+
+  const returnVersionEntity = buildReturnVersionEntity({
+    licence: licenceEntity.licence,
+    licenceVersionPurpose: licenceVersionPurposes[0],
+    point: { id: _purposePoints(licenceEntity, licenceVersionPurposes[0])[0].pointId }
+  })
+
+  const { returnVersion } = returnVersionEntity
 
   returnVersion.startDate = startDate
   returnVersion.externalId = null
 
   licenceEntity.returnVersions.push(returnVersion)
 
-  for (const licenceVersionPurpose of purposesOn(licenceEntity, licenceVersion)) {
-    const returnRequirement = returnRequirementData(returnVersion, licenceVersionPurpose)
+  for (let i = 0; i < licenceVersionPurposes.length; i++) {
+    const licenceVersionPurpose = licenceVersionPurposes[i]
+
+    const returnRequirement =
+      i === 0 ? returnVersionEntity.returnRequirement : returnRequirementData(returnVersion, licenceVersionPurpose)
 
     returnRequirement.summer = _summer(returnRequirement)
     returnRequirement.collectionFrequency = _collectionFrequency(licenceEntity, licenceVersionPurpose, startDate)
@@ -351,23 +377,23 @@ function _addReturnVersion(licenceEntity, licenceVersion, startDate) {
 
     licenceEntity.returnRequirements.push(returnRequirement)
 
-    const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
+    const returnRequirementPurpose =
+      i === 0
+        ? returnVersionEntity.returnRequirementPurpose
+        : returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
 
     returnRequirementPurpose.alias = null
     returnRequirementPurpose.externalId = null
 
     licenceEntity.returnRequirementPurposes.push(returnRequirementPurpose)
 
-    const licenceVersionPurposePoints = licenceEntity.licenceVersionPurposePoints.filter(
-      (licenceVersionPurposePoint) => {
-        return licenceVersionPurposePoint.licenceVersionPurposeId === licenceVersionPurpose.id
-      }
-    )
+    const licenceVersionPurposePoints = _purposePoints(licenceEntity, licenceVersionPurpose)
 
-    for (const licenceVersionPurposePoint of licenceVersionPurposePoints) {
-      const returnRequirementPoint = returnRequirementPointData(returnRequirement, {
-        id: licenceVersionPurposePoint.pointId
-      })
+    for (let j = 0; j < licenceVersionPurposePoints.length; j++) {
+      const returnRequirementPoint =
+        i === 0 && j === 0
+          ? returnVersionEntity.returnRequirementPoint
+          : returnRequirementPointData(returnRequirement, { id: licenceVersionPurposePoints[j].pointId })
 
       returnRequirementPoint.externalId = null
 
@@ -376,6 +402,17 @@ function _addReturnVersion(licenceEntity, licenceVersion, startDate) {
   }
 
   return returnVersion
+}
+
+/**
+ * The links between a licence version purpose and the points it abstracts from
+ *
+ * @private
+ */
+function _purposePoints(licenceEntity, licenceVersionPurpose) {
+  return licenceEntity.licenceVersionPurposePoints.filter((licenceVersionPurposePoint) => {
+    return licenceVersionPurposePoint.licenceVersionPurposeId === licenceVersionPurpose.id
+  })
 }
 
 /**
@@ -444,6 +481,20 @@ function _weeklyOrMonthly(licenceVersionPurpose) {
   }
 
   return 'month'
+}
+
+/**
+ * Whether none of the purposes of a licence version is on the summer returns cycle
+ *
+ * A return version has a return requirement for each purpose on its licence version, with the purpose's abstraction
+ * period, so this is whether none of its return requirements would be on the summer cycle.
+ *
+ * @private
+ */
+function _allYear(licenceEntity, licenceVersion) {
+  return purposesOn(licenceEntity, licenceVersion).every((licenceVersionPurpose) => {
+    return !_summer(licenceVersionPurpose)
+  })
 }
 
 /**

@@ -30,6 +30,38 @@ const ABSTRACTION_PERIODS = [
   { startDay: 1, startMonth: 5, endDay: 30, endMonth: 9 }
 ]
 
+// The abstraction periods the water company licences abstract during. Each water company licence takes the next one,
+// going back to the start of the list when it runs out.
+//
+// A water company nearly always abstracts all year. About half its purposes are 1 April to 31 March and half 1 January
+// to 31 December. Only 1 in 24 abstracts in summer, as quarterly returns cannot be set for summer.
+const WATER_COMPANY_ABSTRACTION_PERIODS = [
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 1, endDay: 31, endMonth: 12 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 3 },
+  { startDay: 1, startMonth: 4, endDay: 31, endMonth: 10 }
+]
+
 // The quantities the licences can abstract up to: in a year, a day and an hour in cubic metres, and in an instant in
 // litres per second. Each licence takes the next one for its first purpose, and the ones after it for any other
 // purposes it has, going back to the start of the list when it runs out.
@@ -67,18 +99,32 @@ const POINTS = [1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 5
  * quantities they can abstract up to
  *
  * Each licence is given the next number of points, the next abstraction period and the next quantities in their lists,
- * going back to the start of a list when it runs out. A licence with more than one purpose takes the quantities after
- * its first purpose's for the others.
+ * going back to the start of a list when it runs out. A water company licence takes the next abstraction period from
+ * its own list instead. A licence with more than one purpose takes the quantities after its first purpose's for the
+ * others.
  *
  * Call this after everything has been added to the licences, as new purposes and licence versions are built with the
- * period and quantity a licence starts with.
+ * period and quantity a licence starts with. It relies on the licence holders populator having already set which
+ * licences are held by a water company.
  *
  * @param {object[]} licenceEntities - the licence entities to change
  */
 export default function abstraction(licenceEntities) {
+  let waterCompanyIndex = 0
+
   for (let i = 0; i < licenceEntities.length; i++) {
     _abstractFrom(licenceEntities[i], regionOf(licenceEntities[i]).region, POINTS[i % POINTS.length])
-    _abstractDuring(licenceEntities[i], ABSTRACTION_PERIODS[i % ABSTRACTION_PERIODS.length])
+
+    if (licenceEntities[i].licence.waterUndertaker) {
+      _abstractDuring(
+        licenceEntities[i],
+        WATER_COMPANY_ABSTRACTION_PERIODS[waterCompanyIndex % WATER_COMPANY_ABSTRACTION_PERIODS.length]
+      )
+      waterCompanyIndex++
+    } else {
+      _abstractDuring(licenceEntities[i], ABSTRACTION_PERIODS[i % ABSTRACTION_PERIODS.length])
+    }
+
     _abstractUpTo(licenceEntities[i], QUANTITIES, i % QUANTITIES.length)
   }
 }
