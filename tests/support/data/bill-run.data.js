@@ -1,6 +1,4 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
-
-import { generateBillRunNumber } from '../helpers/generators.helpers.js'
+import { generateBillRunNumber, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function (region) {
   return {

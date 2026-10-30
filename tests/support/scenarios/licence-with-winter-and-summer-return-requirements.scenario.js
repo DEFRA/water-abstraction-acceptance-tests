@@ -1,11 +1,13 @@
-import { generateLicenceVersionPurposeExternalId } from 'water-abstraction-engine/test/generators.js'
+import {
+  generateLicenceVersionPurposeExternalId,
+  generatePointExternalId
+} from 'water-abstraction-engine/test/generators.js'
 
 import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import { buildPreviousAndCurrentReturnLogs } from '../helpers/return-log.helpers.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { generatePointExternalId } from '../helpers/generators.helpers.js'
 import licenceVersionPurposeData from '../data/licence-version-purpose.data.js'
 import licenceVersionPurposePointData from '../data/licence-version-purpose-point.data.js'
 import pointData from '../data/point.data.js'

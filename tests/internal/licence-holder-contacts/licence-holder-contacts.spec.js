@@ -1,7 +1,8 @@
+import { generateCompanyContact, generateExternalEmailAddress } from 'water-abstraction-engine/test/generators.js'
+
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
-import { generateCompanyContact, generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 
 test.describe('Licence holder contacts (internal)', () => {
   let company

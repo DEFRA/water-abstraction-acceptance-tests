@@ -26,7 +26,6 @@
     "water-abstraction-engine": "github:DEFRA/water-abstraction-engine#main"
   },
   "devDependencies": {
-    "@faker-js/faker": "^10.6.0",
     "@inquirer/prompts": "^8.2.0",
     "@playwright/test": "1.61.0",
     "@types/node": "26.0.0",

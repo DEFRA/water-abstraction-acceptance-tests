@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker'
+import { faker } from 'water-abstraction-engine/test/faker.js'
 import { generateCompanyExternalId, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function (region) {
