@@ -225,10 +225,14 @@ test.describe(
       await billRow.getByRole('link', { name: 'View' }).click()
 
       await expect(page.locator('h1')).toContainText(`Billing account ${billingAccount.accountNumber}`)
-      await expect(page.locator('[data-test="additional-charges-0"]')).toContainText(
-        'Supported source Earl Soham - Deben'
-      )
-      await expect(page.locator('[data-test="adjustments-0"]')).toContainText('Winter discount')
+      // The charge's position in the billing account table isn't fixed, so match on any additional-charges or
+      // adjustments cell containing the expected text rather than assuming it sits at index 0
+      await expect(
+        page.locator('[data-test^="additional-charges-"]').filter({ hasText: 'Supported source Earl Soham - Deben' })
+      ).not.toHaveCount(0)
+      await expect(
+        page.locator('[data-test^="adjustments-"]').filter({ hasText: 'Winter discount' })
+      ).not.toHaveCount(0)
     })
   }
 )
