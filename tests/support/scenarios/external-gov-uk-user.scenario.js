@@ -1,5 +1,6 @@
+import { generateGovUKEmail } from 'water-abstraction-engine/test/generators.js'
+
 import { applications } from '../default-values.js'
-import { generateGovUKEmail } from '../helpers/generators.helpers.js'
 import userData from '../data/user.data.js'
 
 export const title = 'External gov.uk user only'

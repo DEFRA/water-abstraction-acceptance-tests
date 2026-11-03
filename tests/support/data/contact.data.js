@@ -1,6 +1,4 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
-
-import { generateCompanyContact } from '../helpers/generators.helpers.js'
+import { generateCompanyContact, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function (company) {
   const contactId = generateUUID()

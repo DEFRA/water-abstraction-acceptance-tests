@@ -1,6 +1,4 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
-
-import { generatePointExternalId } from '../helpers/generators.helpers.js'
+import { generatePointExternalId, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function (region) {
   const pointId = generateUUID()
