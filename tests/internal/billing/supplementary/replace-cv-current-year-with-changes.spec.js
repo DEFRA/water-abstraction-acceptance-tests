@@ -230,9 +230,9 @@ test.describe(
       await expect(
         page.locator('[data-test^="additional-charges-"]').filter({ hasText: 'Supported source Earl Soham - Deben' })
       ).not.toHaveCount(0)
-      await expect(
-        page.locator('[data-test^="adjustments-"]').filter({ hasText: 'Winter discount' })
-      ).not.toHaveCount(0)
+      await expect(page.locator('[data-test^="adjustments-"]').filter({ hasText: 'Winter discount' })).not.toHaveCount(
+        0
+      )
     })
   }
 )
