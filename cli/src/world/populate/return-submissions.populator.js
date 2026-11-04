@@ -7,6 +7,7 @@ import { licenceVersionOn } from './helpers/licence-versions.helpers.js'
 import { purposesOn } from './helpers/purposes.helpers.js'
 import returnSubmissionLineData from '../../../../tests/support/data/return-submission-line.data.js'
 import { users } from '../../../../tests/support/default-values.js'
+import { addDays, formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
 
 // Completed return logs that end on or after this, and have a received date, were submitted in the service. The rest
 // were completed in NALD, and their submissions imported from it.
@@ -62,7 +63,7 @@ const START_READINGS = [2500, 16000, 63000, 210000, 530000]
  * submitted in the service has the user that submitted it and the metadata for how it was reported. A submission that
  * is not a nil return has a line for each day, week or month of its return log, as the service splits it. The
  * entity's own lines are not used, as they are always 12 months from April. Last of all, the meter readings are added
- * to those reported as meter readings.
+ * to those reported as meter readings, and a few made in the service are edited, so get a second submission.
  *
  * Where a step takes the next value from a list, it goes back to the start of the list when it runs out.
  *
@@ -81,6 +82,7 @@ export default function returnSubmissions(licenceEntities) {
   _reported(submitted)
   _addLines(submitted)
   _addMeterReadings(submitted)
+  _editSome(submitted)
 }
 
 /**
@@ -479,6 +481,61 @@ function _addMeterReadings(submitted) {
     lastReadings.set(returnLog.returnRequirementId, reading)
 
     returnSubmission.metadata.meters[0] = { ...meter, units: 'm³', readings, startReading }
+  }
+}
+
+/**
+ * Edit a few of the submissions made in the service that are not nil returns, as an internal user does to correct one
+ *
+ * Every 25th, starting with the 25th, is edited. Its submission stays as version 1, but is no longer current. Version 2
+ * is current, and was made by the billing and data user 58 days after the return log was received, or today where that
+ * is later. It has the same metadata and lines as version 1, each line made again for version 2. Only an internal user
+ * editing from the date the service started recording it is recorded as having created it.
+ *
+ * @private
+ */
+function _editSome(submitted) {
+  const EDITED_EVERY = 25
+  const EDITED_DAYS_AFTER_RECEIVED = 58
+
+  const todayDate = formatDateToIso(today())
+
+  const edited = submitted
+    .filter((submission) => {
+      return submission.inService && !submission.returnSubmission.nilReturn
+    })
+    .filter((_submission, index) => {
+      return index % EDITED_EVERY === EDITED_EVERY - 1
+    })
+
+  for (const { licenceEntity, returnLog, returnSubmission, lines } of edited) {
+    const editedDate = addDays(returnLog.receivedDate, EDITED_DAYS_AFTER_RECEIVED)
+    const createdAt = editedDate < todayDate ? editedDate : todayDate
+    const { returnSubmission: editedSubmission } = buildReturnSubmissionEntity(returnLog, 0)
+
+    returnSubmission.current = false
+
+    editedSubmission.version = returnSubmission.version + 1
+    editedSubmission.userId = users.BILLING_AND_DATA.username
+    editedSubmission.userType = 'internal'
+    editedSubmission.metadata = structuredClone(returnSubmission.metadata)
+    editedSubmission.createdAt = createdAt
+    editedSubmission.nilReturn = false
+    editedSubmission.createdBy = createdAt >= CREATED_BY_FROM ? users.BILLING_AND_DATA.userId : null
+
+    licenceEntity.returnSubmissions.push(editedSubmission)
+
+    for (const line of lines) {
+      const editedLine = returnSubmissionLineData(editedSubmission, line)
+
+      editedLine.timePeriod = line.timePeriod
+      editedLine.quantity = line.quantity
+      editedLine.readingType = line.readingType
+      editedLine.userUnit = line.userUnit
+      editedLine.createdAt = createdAt
+
+      licenceEntity.returnSubmissionLines.push(editedLine)
+    }
   }
 }
 

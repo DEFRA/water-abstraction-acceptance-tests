@@ -32,9 +32,11 @@ const OLD_NALD_RECEIVED_DAYS_AFTER_END = 281
  * Give the licences their return logs
  *
  * Each licence is given an empty list for its return logs. Then the licences that have return logs get one for each
- * return cycle, from each return requirement of their current return versions, as the service makes them. Those that
- * end before 1 April 2025 are then completed as the import from NALD left them, and the rest are completed as they are
- * in the service.
+ * return cycle, from each return requirement of their current return versions, as the service makes them. A few that
+ * were cut to end when their licence ended are given the void return log they were reissued from. Those that end
+ * before 1 April 2025 are then completed as the import from NALD left them, and the rest are completed as they are in
+ * the service. Void return logs are left out of these, and take the received date of the return log they were reissued
+ * as.
  *
  * Where a step takes the next value from a list, it goes back to the start of the list when it runs out.
  *
@@ -45,8 +47,10 @@ const OLD_NALD_RECEIVED_DAYS_AFTER_END = 281
 export default function returnLogs(licenceEntities) {
   _addReturnLogLists(licenceEntities)
   _addReturnLogs(licenceEntities)
+  _voidAndReissueSome(licenceEntities)
   _completeNaldReturnLogs(licenceEntities)
   _completeServiceReturnLogs(licenceEntities)
+  _receiveVoidReturnLogs(licenceEntities)
 }
 
 /**
@@ -131,8 +135,8 @@ function _addLicenceReturnLogs(licenceEntity, returnCycles, firstYear) {
         const generatedReturnLogs = GenerateReturnLogsService(
           fetchedReturnRequirement,
           returnCycle,
-          endDate ? new Date(endDate) : null,
-          true
+          true,
+          endDate ? new Date(endDate) : null
         )
 
         for (const generatedReturnLog of generatedReturnLogs) {
@@ -198,6 +202,139 @@ function _returnLog(licenceEntity, returnRequirement, generatedReturnLog, return
 }
 
 /**
+ * Void the return logs of a few licences that ran past when the licence ended, and reissue them to end on that date
+ *
+ * In pre-prod most void return logs were issued before their licence ended, so they ran to the end of their return
+ * cycle. When the licence was ended they were voided and reissued, cut to end on the licence end date. About a third
+ * of the return logs cut to end on the licence end date from 1 April 1999 to 31 March 2025 were reissued this way, and
+ * hardly any before or after.
+ *
+ * So every 3rd licence that has a return log cut to end on its end date in those years, starting with the 3rd, is given
+ * a void return log for each one. The void return log is the one the generate return logs service makes for the same
+ * return requirement and return cycle when the licence has not ended, and it starts on the same day as the one it was
+ * reissued as. The cut return log stays as it is, as it is the reissued one.
+ *
+ * @private
+ */
+function _voidAndReissueSome(licenceEntities) {
+  const VOID_EVERY = 3
+
+  const licenceEntitiesWithCutReturnLogs = licenceEntities.filter((licenceEntity) => {
+    return _cutReturnLogs(licenceEntity).length > 0
+  })
+
+  const licenceEntitiesToVoid = licenceEntitiesWithCutReturnLogs.filter((_licenceEntity, index) => {
+    return index % VOID_EVERY === VOID_EVERY - 1
+  })
+
+  const returnCycles = _returnCycles()
+
+  for (const licenceEntity of licenceEntitiesToVoid) {
+    for (const cutReturnLog of _cutReturnLogs(licenceEntity)) {
+      licenceEntity.returnLogs.push(_voidReturnLog(licenceEntity, cutReturnLog, returnCycles))
+    }
+  }
+}
+
+/**
+ * The return logs of a licence that end on its end date before the end of their return cycle, from 1 April 1999 to 31
+ * March 2025
+ *
+ * These are the ones the generate return logs service cut to end when the licence ended, in the years pre-prod's
+ * reissued ones end in.
+ *
+ * @private
+ */
+function _cutReturnLogs(licenceEntity) {
+  const endDate = licenceEndDate(licenceEntity)
+
+  if (!endDate) {
+    return []
+  }
+
+  if (endDate < COMPLETED_IN_NALD_FROM || endDate >= NALD_RETURN_LOGS_END_DATE) {
+    return []
+  }
+
+  return licenceEntity.returnLogs.filter((returnLog) => {
+    return returnLog.endDate === endDate && returnLog.metadata.isFinal
+  })
+}
+
+/**
+ * The void return log a cut return log was reissued from
+ *
+ * It is made by the generate return logs service for the cut return log's return requirement and return cycle, with
+ * the licence's expired, lapsed and revoked dates left out, so it runs as it did before the licence ended. Of the return
+ * logs it makes, the one that starts on the same day as the cut return log is used.
+ *
+ * @private
+ */
+function _voidReturnLog(licenceEntity, cutReturnLog, returnCycles) {
+  const returnRequirement = licenceEntity.returnRequirements.find((returnRequirement) => {
+    return returnRequirement.id === cutReturnLog.returnRequirementId
+  })
+
+  const returnVersion = licenceEntity.returnVersions.find((returnVersion) => {
+    return returnVersion.id === returnRequirement.returnVersionId
+  })
+
+  const returnCycle = returnCycles.find((returnCycle) => {
+    return returnCycle.id.value === cutReturnLog.returnCycleId.value
+  })
+
+  const fetchedReturnRequirement = _fetchedReturnRequirement(licenceEntity, returnVersion, returnRequirement)
+
+  fetchedReturnRequirement.returnVersion.licence.expiredDate = null
+  fetchedReturnRequirement.returnVersion.licence.lapsedDate = null
+  fetchedReturnRequirement.returnVersion.licence.revokedDate = null
+
+  const generatedReturnLog = GenerateReturnLogsService(fetchedReturnRequirement, returnCycle, true, null).find(
+    (generatedReturnLog) => {
+      return formatDateToIso(generatedReturnLog.startDate) === cutReturnLog.startDate
+    }
+  )
+
+  const voidReturnLog = _returnLog(licenceEntity, returnRequirement, generatedReturnLog, returnCycle)
+
+  if (voidReturnLog.endDate <= cutReturnLog.endDate) {
+    throw new Error(`Void return log ${voidReturnLog.returnId} does not run past ${cutReturnLog.returnId}`)
+  }
+
+  voidReturnLog.status = 'void'
+
+  return voidReturnLog
+}
+
+/**
+ * Give each void return log the received date of the return log it was reissued as
+ *
+ * In pre-prod most void return logs had been received before they were voided. The one it was reissued as is the
+ * non-void return log of the same return requirement that starts on the same day.
+ *
+ * @private
+ */
+function _receiveVoidReturnLogs(licenceEntities) {
+  for (const licenceEntity of licenceEntities) {
+    const voidReturnLogs = licenceEntity.returnLogs.filter((returnLog) => {
+      return returnLog.status === 'void'
+    })
+
+    for (const voidReturnLog of voidReturnLogs) {
+      const reissuedReturnLog = licenceEntity.returnLogs.find((returnLog) => {
+        return (
+          returnLog.status !== 'void' &&
+          returnLog.returnRequirementId === voidReturnLog.returnRequirementId &&
+          returnLog.startDate === voidReturnLog.startDate
+        )
+      })
+
+      voidReturnLog.receivedDate = reissuedReturnLog.receivedDate
+    }
+  }
+}
+
+/**
  * Complete the return logs imported from NALD, as the import left them
  *
  * Of those that end before 1 April 1999, every 4th was completed, and every 7th of those has a received date. Of those
@@ -214,7 +351,7 @@ function _completeNaldReturnLogs(licenceEntities) {
   const RECEIVED_DAYS_AFTER_END = [3, 20, 39, 90, 297]
 
   const naldReturnLogs = _allReturnLogs(licenceEntities).filter((returnLog) => {
-    return returnLog.source === 'NALD'
+    return returnLog.source === 'NALD' && returnLog.status !== 'void'
   })
 
   const oldCompletedReturnLogs = naldReturnLogs
@@ -279,7 +416,9 @@ function _completeServiceReturnLogs(licenceEntities) {
 
   const completedReturnLogs = _allReturnLogs(licenceEntities)
     .filter((returnLog) => {
-      return returnLog.source !== 'NALD' && returnLog.dueDate && returnLog.dueDate < todayDate
+      return (
+        returnLog.source !== 'NALD' && returnLog.status !== 'void' && returnLog.dueDate && returnLog.dueDate < todayDate
+      )
     })
     .filter((_returnLog, index) => {
       return index % DUE_EVERY !== DUE_EVERY - 1
