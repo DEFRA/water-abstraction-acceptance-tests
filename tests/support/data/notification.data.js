@@ -1,6 +1,4 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
-
-import { generateGovUKEmail } from '../helpers/generators.helpers.js'
+import { generateGovUKEmail, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function (licenceRef, contact) {
   const eventId = generateUUID()

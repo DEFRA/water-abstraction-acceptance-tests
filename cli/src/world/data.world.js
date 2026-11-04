@@ -37,6 +37,9 @@ export default async function dataWorld() {
 /**
  * Find every spec that calls the `world` fixture, and the scenario it asks for, e.g. world('licence')
  *
+ * The specs are sorted, as the order `fs.readdir()` returns them in can differ between machines. The seeded data is
+ * only the same on every machine if the scenarios are built in the same order.
+ *
  * @returns {Promise<object[]>} one entry per matching spec, each with `specFile` and `scenarioName`
  */
 async function _specs() {
@@ -44,7 +47,7 @@ async function _specs() {
 
   for (const dir of TEST_DIRS) {
     const baseDir = path.resolve(ROOT_DIR, dir)
-    const entries = await fs.readdir(baseDir, { recursive: true })
+    const entries = (await fs.readdir(baseDir, { recursive: true })).sort()
 
     for (const entry of entries) {
       const specFile = path.resolve(baseDir, entry)

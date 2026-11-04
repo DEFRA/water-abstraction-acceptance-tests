@@ -1,6 +1,4 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
-
-import { generateAddress } from '../helpers/generators.helpers.js'
+import { generateAddress, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 export default function () {
   const addressId = generateUUID()

@@ -1,6 +1,5 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
+import { generateCompanyEmailAddress, generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-import { generateCompanyEmailAddress } from '../helpers/generators.helpers.js'
 import { password } from '../default-values.js'
 
 export default function (company) {

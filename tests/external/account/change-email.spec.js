@@ -1,4 +1,5 @@
-import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
+import { generateExternalEmailAddress } from 'water-abstraction-engine/test/generators.js'
+
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Change user email address (external)', () => {

@@ -1,4 +1,5 @@
-import { generateGovUKEmail } from '../../support/helpers/generators.helpers.js'
+import { generateGovUKEmail } from 'water-abstraction-engine/test/generators.js'
+
 import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
 
