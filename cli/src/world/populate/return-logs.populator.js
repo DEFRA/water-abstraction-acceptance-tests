@@ -9,9 +9,9 @@ import {
   determineCycleStartDate
 } from 'water-abstraction-engine/lib/return-cycle-dates.lib.js'
 
+import returnLogData from '../../../../tests/support/data/return-log.data.js'
 import { addDays, formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
 import { licenceEndDate, licenceModel } from './helpers/end-dates.helpers.js'
-import returnLogData from '../../../../tests/support/data/return-log.data.js'
 
 // The first year the engine seeds return cycles for. Return logs can only be made for a cycle that has been seeded.
 const FIRST_RETURN_CYCLE_YEAR = 1959
