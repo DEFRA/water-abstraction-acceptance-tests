@@ -329,7 +329,7 @@ function _meterMetadata(method, serial, multiplier) {
       {
         meterDetailsProvided: true,
         multiplier,
-        manufacturer: 'Example meter',
+        manufacturer: 'Test Water Meter',
         serialNumber: `SN${String(serial).padStart(6, '0')}`
       }
     ],
