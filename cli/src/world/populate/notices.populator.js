@@ -5,13 +5,14 @@ import { NoticeJourney, NoticeType } from 'water-abstraction-engine/lib/static-l
 import abstractionAlertNotificationsData from '../../../../tests/support/data/abstraction-alert-notifications.data.js'
 import noticeData from '../../../../tests/support/data/notice.data.js'
 import returnsNoticeNotificationsData from '../../../../tests/support/data/returns-notice-notifications.data.js'
-import { formatDateToIso, relativeToToday, today } from '../../../../tests/support/helpers/date.helpers.js'
+import { addDays, formatDateToIso, relativeToToday, today } from '../../../../tests/support/helpers/date.helpers.js'
 
 const ContactType = Object.freeze({
   ADDITIONAL_CONTACT: 'additional contact',
   LICENCE_HOLDER: 'licence holder',
   PRIMARY_USER: 'primary user',
   RETURNS_TO: 'returns to',
+  RETURNS_USER: 'returns user',
   SINGLE_USE: 'single use'
 })
 
@@ -21,29 +22,33 @@ const LETTER_CONTACTS = [ContactType.LICENCE_HOLDER, ContactType.RETURNS_TO, Con
 /**
  * Add a few notices of each kind so they can be seen on the notices page
  *
- * Each returns notice is for the next licences with an ended return log made in the service, and each alert for the
- * licences tagged to one of the first monitoring stations licences are tagged to. Every 50th email errors and every
- * 25th letter is returned, counted across all the notices. Return logs and tags are left as they are.
+ * Each returns notice is for the next licences not yet sent one that have a return log made in the service that had
+ * ended when it was sent. An alert is sent for each monitoring station licences are tagged to, one every 14 days going
+ * back over the last year, mostly stop and resume. Every 50th email errors and every 25th letter is returned, counted
+ * across all the notices. Return logs and tags are left as they are.
  *
  * @param {object[]} licenceEntities - the licence entities to add notices to
  */
 export default function notices(licenceEntities) {
   const { ADHOC, STANDARD } = NoticeJourney
   const { INVITATIONS, REMINDERS } = NoticeType
+  const { LICENCE_HOLDER, PRIMARY_USER, RETURNS_TO, RETURNS_USER, SINGLE_USE } = ContactType
 
   const RETURNS_NOTICES = [
-    { daysAgo: 40, journey: STANDARD, licences: 70, noticeType: INVITATIONS },
-    { daysAgo: 20, journey: STANDARD, licences: 60, noticeType: REMINDERS },
-    { contactType: ContactType.PRIMARY_USER, daysAgo: 10, journey: ADHOC, licences: 1, noticeType: INVITATIONS },
-    { contactType: ContactType.SINGLE_USE, daysAgo: 5, journey: ADHOC, licences: 1, noticeType: INVITATIONS }
+    { contacts: [PRIMARY_USER, RETURNS_USER], daysAgo: 300, journey: ADHOC, licences: 1, noticeType: INVITATIONS },
+    { contacts: [SINGLE_USE], daysAgo: 220, journey: ADHOC, licences: 1, noticeType: INVITATIONS },
+    { daysAgo: 180, journey: STANDARD, licences: 70, noticeType: INVITATIONS },
+    { daysAgo: 150, journey: STANDARD, licences: 60, noticeType: REMINDERS },
+    { contacts: [LICENCE_HOLDER, RETURNS_TO], daysAgo: 90, journey: ADHOC, licences: 1, noticeType: INVITATIONS },
+    { contacts: [PRIMARY_USER], daysAgo: 45, journey: ADHOC, licences: 1, noticeType: REMINDERS }
   ]
 
-  // An alert is sent for each of this many monitoring stations, taking the alert types in turn
-  const ALERT_STATIONS = 10
-  const ALERT_TYPES = ['warning', 'reduce', 'stop', 'resume']
+  const ALERT_TYPES = ['stop', 'resume', 'stop', 'resume', 'reduce', 'stop', 'resume', 'warning', 'stop', 'resume']
+  const DAYS_BETWEEN_ALERTS = 14
 
   const byLicenceRef = new Map()
   const sent = { contacts: 0, email: 0, letter: 0 }
+  const used = new Set()
 
   for (const licenceEntity of licenceEntities) {
     licenceEntity.events = []
@@ -51,33 +56,31 @@ export default function notices(licenceEntities) {
     byLicenceRef.set(licenceEntity.licence.licenceRef, licenceEntity)
   }
 
-  const withServiceReturnLogs = licenceEntities.filter((licenceEntity) => {
-    return _serviceReturnLog(licenceEntity)
-  })
-
-  let next = 0
-
   for (const example of RETURNS_NOTICES) {
-    const forLicences = withServiceReturnLogs.slice(next, next + example.licences)
+    const date = formatDateToIso(relativeToToday(-example.daysAgo))
+
+    const forLicences = licenceEntities
+      .filter((licenceEntity) => {
+        return !used.has(licenceEntity) && _serviceReturnLog(licenceEntity, date)
+      })
+      .slice(0, example.licences)
 
     if (forLicences.length < example.licences) {
-      throw new Error(`Not enough licences with ended service return logs for ${example.licences} licences`)
+      throw new Error(`Not enough licences with service return logs ended by ${date} for ${example.licences} licences`)
     }
 
-    _returnsNotice(example, forLicences, licenceEntities, byLicenceRef, sent)
-    next += example.licences
+    for (const licenceEntity of forLicences) {
+      used.add(licenceEntity)
+    }
+
+    _returnsNotice(example, date, forLicences, licenceEntities, byLicenceRef, sent)
   }
 
-  const monitoringStationIds = _taggedMonitoringStationIds(licenceEntities).slice(0, ALERT_STATIONS)
+  _taggedMonitoringStationIds(licenceEntities).forEach((monitoringStationId, index) => {
+    const alertType = ALERT_TYPES[index % ALERT_TYPES.length]
+    const date = formatDateToIso(relativeToToday(-DAYS_BETWEEN_ALERTS * (index + 1)))
 
-  if (monitoringStationIds.length < ALERT_STATIONS) {
-    throw new Error(`Not enough monitoring stations with tagged licences for ${ALERT_STATIONS} alerts`)
-  }
-
-  monitoringStationIds.forEach((monitoringStationId, index) => {
-    const example = { alertType: ALERT_TYPES[index % ALERT_TYPES.length], daysAgo: 4 * (index + 1) }
-
-    _alert(example, monitoringStationId, licenceEntities, byLicenceRef, sent)
+    _alert(alertType, date, monitoringStationId, licenceEntities, byLicenceRef, sent)
   })
 }
 
@@ -96,7 +99,11 @@ function _addNotice(notice, notifications, byLicenceRef, sent) {
     letter: { every: 25, failed: 'returned', notifyStatuses: { returned: 'received', sent: 'received' } }
   }
 
+  // How many days after it was sent a returned letter is reported back, or today where that is sooner
+  const RETURNED_DAYS_AFTER_SENT = 30
+
   const statusCounts = { cancelled: 0, error: 0, pending: 0, returned: 0, sent: 0 }
+  const todayDate = formatDateToIso(today())
 
   for (const notification of notifications) {
     const { every, failed, notifyStatuses } = FAILURES[notification.messageType]
@@ -109,7 +116,9 @@ function _addNotice(notice, notifications, byLicenceRef, sent) {
     notification.notifyStatus = notifyStatuses[status]
 
     if (status === 'returned') {
-      notification.returnedAt = notification.createdAt
+      const returnedAt = addDays(notification.createdAt, RETURNED_DAYS_AFTER_SENT)
+
+      notification.returnedAt = returnedAt < todayDate ? returnedAt : todayDate
     }
 
     statusCounts[status]++
@@ -131,7 +140,7 @@ function _addNotice(notice, notifications, byLicenceRef, sent) {
  *
  * @private
  */
-function _alert(example, monitoringStationId, licenceEntities, byLicenceRef, sent) {
+function _alert(alertType, date, monitoringStationId, licenceEntities, byLicenceRef, sent) {
   const ALERT_CONTACTS = [
     ContactType.ADDITIONAL_CONTACT,
     ContactType.PRIMARY_USER,
@@ -145,8 +154,6 @@ function _alert(example, monitoringStationId, licenceEntities, byLicenceRef, sen
     ContactType.LICENCE_HOLDER
   ]
 
-  const { alertType, daysAgo } = example
-  const date = formatDateToIso(relativeToToday(-daysAgo))
   const { label, riverName } = monitoringStationHelper.data.find((station) => {
     return station.id === monitoringStationId
   })
@@ -301,26 +308,25 @@ function _returnsContacts(index) {
 /**
  * Add a returns invitation or reminder for licences' ended return logs made in the service
  *
- * An ad-hoc notice goes to the contact type of its example, and a standard one to each licence's returns contacts. The
+ * An ad-hoc notice goes to the contacts of its example, and a standard one to each licence's returns contacts. The
  * notice's period is the first licence's return log's.
  *
  * @private
  */
-function _returnsNotice(example, forLicences, licenceEntities, byLicenceRef, sent) {
-  const { contactType, daysAgo, journey, noticeType } = example
-  const date = formatDateToIso(relativeToToday(-daysAgo))
+function _returnsNotice(example, date, forLicences, licenceEntities, byLicenceRef, sent) {
+  const { contacts, journey, noticeType } = example
 
   const session = { journey, noticeType }
 
   if (journey === NoticeJourney.STANDARD) {
-    const { dueDate, endDate, metadata, startDate } = _serviceReturnLog(forLicences[0])
+    const { dueDate, endDate, metadata, startDate } = _serviceReturnLog(forLicences[0], date)
 
     session.determinedReturnsPeriod = { dueDate, endDate, startDate, summer: String(metadata.isSummer) }
   }
 
   const recipients = forLicences.flatMap((licenceEntity, index) => {
-    const returnLog = _serviceReturnLog(licenceEntity)
-    const contactTypes = journey === NoticeJourney.ADHOC ? [contactType] : _returnsContacts(index)
+    const returnLog = _serviceReturnLog(licenceEntity, date)
+    const contactTypes = journey === NoticeJourney.ADHOC ? contacts : _returnsContacts(index)
 
     return contactTypes.map((licenceContactType) => {
       return {
@@ -338,17 +344,13 @@ function _returnsNotice(example, forLicences, licenceEntities, byLicenceRef, sen
 }
 
 /**
- * A licence's first return log made in the service that has ended and been given a due date, if it has one
+ * A licence's first return log made in the service that had ended by a date and has a due date, if it has one
  *
  * @private
  */
-function _serviceReturnLog(licenceEntity) {
-  const todayDate = formatDateToIso(today())
-
+function _serviceReturnLog(licenceEntity, date) {
   return licenceEntity.returnLogs.find((returnLog) => {
-    return (
-      returnLog.source !== 'NALD' && returnLog.status !== 'void' && returnLog.endDate < todayDate && returnLog.dueDate
-    )
+    return returnLog.source !== 'NALD' && returnLog.status !== 'void' && returnLog.endDate < date && returnLog.dueDate
   })
 }
 
