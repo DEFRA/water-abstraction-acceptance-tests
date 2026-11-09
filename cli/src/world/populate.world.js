@@ -7,6 +7,7 @@ import licenceHolders from './populate/licence-holders.populator.js'
 import licences from './populate/licences.populator.js'
 import { mergeByKey } from '../../../tests/support/helpers/scenario.helpers.js'
 import monitoringStations from './populate/monitoring-stations.populator.js'
+import notices from './populate/notices.populator.js'
 import returnLogs from './populate/return-logs.populator.js'
 import returnSubmissions from './populate/return-submissions.populator.js'
 import returnVersions from './populate/return-versions.populator.js'
@@ -34,6 +35,7 @@ export default function populateWorld() {
   returnVersions(licenceEntities)
   returnLogs(licenceEntities)
   returnSubmissions(licenceEntities)
+  notices(licenceEntities)
 
   return mergeByKey(...licenceEntities)
 }
