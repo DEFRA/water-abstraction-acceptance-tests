@@ -288,6 +288,9 @@ function _tagToMonitoringStation(licenceEntity, monitoringStation, tag) {
   const purpose = currentPurpose(licenceEntity)
   const licenceMonitoringStation = licenceMonitoringStationData(licenceEntity.licence, monitoringStation)
 
+  // A tag is built without an id, so it is given one for the alerts sent for it to link to
+  licenceMonitoringStation.id = generateUUID()
+
   licenceMonitoringStation.measureType = tag.measureType
   licenceMonitoringStation.restrictionType = tag.restrictionType
   licenceMonitoringStation.thresholdUnit = tag.thresholdUnit
