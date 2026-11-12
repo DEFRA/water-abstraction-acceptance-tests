@@ -1,11 +1,11 @@
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/presroc-licence-flagged-for-supplementary-with-previous-annual-bill-run.scenario.js'
 import {
-  PRESROC_LAST_FINANCIAL_YEAR,
   billingPeriodCounts,
-  formatLongDate
+  formatLongDate,
+  PRESROC_LAST_FINANCIAL_YEAR
 } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe(
   'Create a presroc supplementary bill run with no annual in the current year (internal)',
@@ -55,7 +55,7 @@ test.describe(
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Supplementary', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Supplementary' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

@@ -1,8 +1,8 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-completed-return-log.scenario.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-completed-return-log.scenario.js'
 import { expect, test } from '../../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
 test.describe('Licence and Returns with No Issues (internal)', { tag: '@supplementary-billing' }, () => {
   let billingAccount
@@ -38,12 +38,12 @@ test.describe('Licence and Returns with No Issues (internal)', { tag: '@suppleme
     'creates a SROC two-part tariff bill run and navigates through all the review pages, changing the billable returns volume, previewing the charge, marking the licence as review, marking progress and finally removing the licence from the bill run',
     {
       annotation: {
-        type: 'tpt-review',
         description: `The simplest test case with a single charge element and matching return, fully allocated without issues.
 
 **Acceptance Criteria**
 - No issues are reported on the licence, the returns or the charging information.
-- The return fully allocates to the charge element.`
+- The return fully allocates to the charge element.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -61,7 +61,7 @@ test.describe('Licence and Returns with No Issues (internal)', { tag: '@suppleme
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       // Which kind of bill run do you want to create? ~ Choose Two-part tariff then continue
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // Select the region ~ Choose Test Region and continue

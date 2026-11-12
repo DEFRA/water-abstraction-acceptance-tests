@@ -1,3 +1,9 @@
+/**
+ * Generators for random references used in test data
+ *
+ * @module GeneratorsHelpers
+ */
+
 import { generateRandomInteger } from 'water-abstraction-engine/test/generators.js'
 
 import { regionCode } from '../default-values.js'

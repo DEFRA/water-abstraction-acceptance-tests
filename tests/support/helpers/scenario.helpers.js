@@ -1,4 +1,10 @@
 /**
+ * Helpers for combining scenario data objects
+ *
+ * @module ScenarioHelpers
+ */
+
+/**
  * Merges multiple scenario data objects into one, concatenating array values that share the same key
  *
  * Scenario data objects are keyed by database table name, for example `{ contacts: [...], companyContacts:

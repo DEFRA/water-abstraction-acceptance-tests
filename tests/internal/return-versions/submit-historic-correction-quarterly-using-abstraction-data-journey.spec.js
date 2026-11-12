@@ -1,8 +1,8 @@
+import scenarioData from '../../support/scenarios/water-company-licence-with-open-winter-return-log.scenario.js'
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/water-company-licence-with-open-winter-return-log.scenario.js'
-import { sortReturnLogsByDisplayOrder } from '../../support/helpers/return-log.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
+import { sortReturnLogsByDisplayOrder } from '../../support/helpers/return-log.helpers.js'
 
 test.describe('Submit historic correction changing to quarterly on new return version (internal)', () => {
   let licence
@@ -21,40 +21,40 @@ test.describe('Submit historic correction changing to quarterly on new return ve
     returnLogs = scenario.returnLogs
 
     expectedReturnLogs = {
-      currentFourthPeriod: returnLogDateDetails({
-        startDate: new Date(`${startYear + 1}-01-01`),
-        endDate: new Date(`${startYear + 1}-03-31`)
+      currentFirstPeriod: returnLogDateDetails({
+        endDate: new Date(`${startYear}-06-30`),
+        startDate: new Date(`${startYear}-04-01`)
       }),
-      currentThirdPeriod: returnLogDateDetails({
-        startDate: new Date(`${startYear}-10-01`),
-        endDate: new Date(`${startYear}-12-31`)
+      currentFourthPeriod: returnLogDateDetails({
+        endDate: new Date(`${startYear + 1}-03-31`),
+        startDate: new Date(`${startYear + 1}-01-01`)
       }),
       currentSecondPeriod: returnLogDateDetails({
-        startDate: new Date(`${startYear}-07-01`),
-        endDate: new Date(`${startYear}-09-30`)
+        endDate: new Date(`${startYear}-09-30`),
+        startDate: new Date(`${startYear}-07-01`)
       }),
-      currentFirstPeriod: returnLogDateDetails({
-        startDate: new Date(`${startYear}-04-01`),
-        endDate: new Date(`${startYear}-06-30`)
-      }),
-      fourthPeriod: returnLogDateDetails({
-        startDate: new Date(`${startYear}-01-01`),
-        endDate: new Date(`${startYear}-03-31`)
-      }),
-      thirdPeriod: returnLogDateDetails({
-        startDate: new Date(`${startYear - 1}-10-01`),
-        endDate: new Date(`${startYear - 1}-12-31`)
-      }),
-      splitSecondPeriod: returnLogDateDetails({
-        startDate: new Date(`${startYear - 1}-09-01`),
-        endDate: new Date(`${startYear - 1}-09-30`)
-      }),
-      splitWinter: returnLogDateDetails({
-        startDate: new Date(`${startYear - 1}-04-01`),
-        endDate: new Date(`${startYear - 1}-08-31`)
+      currentThirdPeriod: returnLogDateDetails({
+        endDate: new Date(`${startYear}-12-31`),
+        startDate: new Date(`${startYear}-10-01`)
       }),
       existingCurrent: { ...returnLogDateDetails(returnLogs[1]), status: 'void' },
-      existingPrevious: { ...returnLogDateDetails(returnLogs[0]), status: 'void' }
+      existingPrevious: { ...returnLogDateDetails(returnLogs[0]), status: 'void' },
+      fourthPeriod: returnLogDateDetails({
+        endDate: new Date(`${startYear}-03-31`),
+        startDate: new Date(`${startYear}-01-01`)
+      }),
+      splitSecondPeriod: returnLogDateDetails({
+        endDate: new Date(`${startYear - 1}-09-30`),
+        startDate: new Date(`${startYear - 1}-09-01`)
+      }),
+      splitWinter: returnLogDateDetails({
+        endDate: new Date(`${startYear - 1}-08-31`),
+        startDate: new Date(`${startYear - 1}-04-01`)
+      }),
+      thirdPeriod: returnLogDateDetails({
+        endDate: new Date(`${startYear - 1}-12-31`),
+        startDate: new Date(`${startYear - 1}-10-01`)
+      })
     }
 
     await setup(scenario)

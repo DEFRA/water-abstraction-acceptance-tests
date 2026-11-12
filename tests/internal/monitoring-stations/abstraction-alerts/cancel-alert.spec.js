@@ -1,7 +1,7 @@
-import { generateExternalEmailAddress } from '../../../support/helpers/generators.helpers.js'
 import scenarioData from '../../../support/scenarios/registered-licence-with-monitoring-station-tagged.scenario.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { generateExternalEmailAddress } from '../../../support/helpers/generators.helpers.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 
 test.describe('Set up but then cancel an abstraction alert (internal)', () => {
   let licence

@@ -1,6 +1,6 @@
-import { generateGovUKEmail } from '../helpers/generators.helpers.js'
-import { password } from '../default-values.js'
 import { yesterday } from '../helpers/date.helpers.js'
+import { password } from '../default-values.js'
+import { generateGovUKEmail } from '../helpers/generators.helpers.js'
 
 export default function () {
   return {

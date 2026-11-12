@@ -1,8 +1,8 @@
 import buildLicenceEntity from '../entities/licence.entity.js'
 import companyContactData from '../data/company-contact.data.js'
 import contactData from '../data/contact.data.js'
-import { generateExternalEmailAddress } from '../helpers/generators.helpers.js'
 import notificationData from '../data/notification.data.js'
+import { generateExternalEmailAddress } from '../helpers/generators.helpers.js'
 
 export const title = 'Company contact'
 export const description = 'A licence, licence holder, company, a contact and notification data'

@@ -1,16 +1,16 @@
-import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import scenarioData from '../../support/scenarios/presroc-licence-with-charge-version.scenario.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
   'New licence agreement with charge version journey (presroc) (internal)',
   {
-    tag: ['@supplementary-billing', '@presroc'],
     annotation: {
-      type: 'description',
       description:
-        'When a licence agreement is added to a licence (presroc), the licence should be flagged for supplementary billing. '
-    }
+        'When a licence agreement is added to a licence (presroc), the licence should be flagged for supplementary billing. ',
+      type: 'description'
+    },
+    tag: ['@supplementary-billing', '@presroc']
   },
   () => {
     let licence
@@ -86,8 +86,8 @@ test.describe(
       const row = page.getByRole('row').filter({ hasText: 'Two-part tariff' })
 
       // start date, agreement
-      await expect(row.getByRole('cell', { name: formatLongDate(chargeVersionStartDate), exact: true })).toBeVisible()
-      await expect(row.getByRole('cell', { name: 'Two-part tariff', exact: true })).toBeVisible()
+      await expect(row.getByRole('cell', { exact: true, name: formatLongDate(chargeVersionStartDate) })).toBeVisible()
+      await expect(row.getByRole('cell', { exact: true, name: 'Two-part tariff' })).toBeVisible()
 
       // actions
       await expect(page.locator('[data-test="delete-agreement-0"]')).toBeVisible()

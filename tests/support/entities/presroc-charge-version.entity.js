@@ -1,3 +1,9 @@
+/**
+ * Builds a presroc charge version entity
+ *
+ * @module PresrocChargeVersionEntity
+ */
+
 import buildBillingAccountEntity from './billing-account.entity.js'
 import chargeReferenceData from '../data/charge-reference-presroc.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
@@ -29,7 +35,7 @@ export default function (company, address, licence, licenceVersionPurpose) {
 
   return {
     ...billingAccountEntity,
-    chargeVersion,
-    chargeReference
+    chargeReference,
+    chargeVersion
   }
 }

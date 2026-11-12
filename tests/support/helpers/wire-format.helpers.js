@@ -1,4 +1,10 @@
 /**
+ * Converts scenario data into the format the load endpoint expects
+ *
+ * @module WireFormatHelpers
+ */
+
+/**
  * Data/scenario files may use a singular key naming an entity directly (e.g. `licence`, `company`, `address`)
  * rather than the plural table name the load endpoint expects (`licences`, `companies`, `addresses`), and may
  * return either a single object or an array for it. Normalizing both here means scenario/data files can compose

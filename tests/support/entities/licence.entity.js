@@ -1,3 +1,9 @@
+/**
+ * Builds a licence entity
+ *
+ * @module LicenceEntity
+ */
+
 import addressData from '../data/address.data.js'
 import companyAddressData from '../data/company-address.data.js'
 import companyData from '../data/company.data.js'
@@ -45,8 +51,8 @@ function _company() {
   const companyAddress = companyAddressData(company, address)
 
   return {
-    company,
     address,
+    company,
     companyAddress
   }
 }
@@ -59,7 +65,7 @@ function _company() {
  */
 function _licence(company, address) {
   const currentCycleStartDate = determineReturnCycleStartDate(today(), false)
-  const { startDate: previousCycleStartDate } = previousPeriod({ startDate: currentCycleStartDate, quarterly: false })
+  const { startDate: previousCycleStartDate } = previousPeriod({ quarterly: false, startDate: currentCycleStartDate })
   const startDate = formatDateToIso(previousCycleStartDate)
 
   const licence = licenceData(startDate)
@@ -70,11 +76,11 @@ function _licence(company, address) {
   const licenceVersion = licenceVersionData(licence, company, address)
 
   return {
-    permitLicence,
-    licenceDocumentHeader,
-    licenceDocument,
-    licenceDocumentRole,
     licence,
-    licenceVersion
+    licenceDocument,
+    licenceDocumentHeader,
+    licenceDocumentRole,
+    licenceVersion,
+    permitLicence
   }
 }

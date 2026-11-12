@@ -1,9 +1,9 @@
-import { asArrays } from '../helpers/wire-format.helpers.js'
 import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import monitoringStationData from '../data/monitoring-station.data.js'
 import registeredLicenceScenario from './registered-licence.scenario.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
+import { asArrays } from '../helpers/wire-format.helpers.js'
 
 export const title = 'Registered licences with a monitoring station (tagged)'
 export const description =

@@ -1,9 +1,9 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-two-over-abstracted-returns.scenario.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-two-over-abstracted-returns.scenario.js'
-import { tableRow } from '../../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../../support/fixtures.js'
+import { tableRow } from '../../../../support/helpers/govuk.helpers.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
 test.describe('Licence with Over-abstracted Returns (internal)', () => {
   let endYear
@@ -41,12 +41,12 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
     'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version, a single charge reference and two charge elements. The return matching the first element is over-abstracted; the return matching the second is over-abstracted and abstracts outside the charge period.
 
 **Acceptance Criteria**
 - The licence is flagged with the over abstraction and abstraction outside period issues.
-- An over-abstracted return still only allocates up to the lower of the charge element and charge reference volume, not the over-abstracted amount.`
+- An over-abstracted return still only allocates up to the lower of the charge element and charge reference volume, not the over-abstracted amount.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -58,7 +58,7 @@ test.describe('Licence with Over-abstracted Returns (internal)', () => {
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

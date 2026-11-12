@@ -1,8 +1,8 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-two-completed-return-logs.scenario.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-two-completed-return-logs.scenario.js'
 import { expect, test } from '../../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
 test.describe('Licence and Two Returns with No Issues (internal)', () => {
   let billingAccount
@@ -38,12 +38,12 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
     'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns and allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a single charge reference but two charge elements, only one of which is 2pt. It also has two returns, one 2pt and one not, fully allocated without issues.
 
 **Acceptance Criteria**
 - No issues are reported on the licence, the returns or the charging information.
-- The return fully allocates to the charge element.`
+- The return fully allocates to the charge element.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -59,7 +59,7 @@ test.describe('Licence and Two Returns with No Issues (internal)', () => {
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

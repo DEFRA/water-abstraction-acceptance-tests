@@ -1,4 +1,10 @@
 /**
+ * Default values used when building scenario and data files
+ *
+ * @module DefaultValues
+ */
+
+/**
  * When a scenario or data file needs a company name, we use Big Farm Co Ltd as our default.
  * @type {string}
  */

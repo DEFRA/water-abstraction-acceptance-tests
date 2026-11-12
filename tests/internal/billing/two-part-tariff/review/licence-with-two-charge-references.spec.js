@@ -1,8 +1,8 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-ver-and-two-refs-and-two-due-returns.scenario.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-ver-and-two-refs-and-two-due-returns.scenario.js'
 import { expect, test } from '../../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
 test.describe('Licence with Two Charge References (internal)', () => {
   let endYear
@@ -34,12 +34,12 @@ test.describe('Licence with Two Charge References (internal)', () => {
     'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns, the returns issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version that has two charge references, each with one charge element. Both elements have a matching return with a status of "due".
 
 **Acceptance Criteria**
 - The licence is flagged with the "No returns received" issue.
-- The engine allocates only up to the lower of the charge reference volume and the charge element's authorised volume, proven by swapping which is lower between the two references.`
+- The engine allocates only up to the lower of the charge reference volume and the charge element's authorised volume, proven by swapping which is lower between the two references.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -51,7 +51,7 @@ test.describe('Licence with Two Charge References (internal)', () => {
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

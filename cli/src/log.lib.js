@@ -1,3 +1,9 @@
+/**
+ * Coloured terminal output, spinners and banners for the CLI
+ *
+ * @module LogLib
+ */
+
 import { input } from '@inquirer/prompts'
 
 // A minimal stand-in for a dependency like Chalk, using ANSI escape codes directly to avoid adding another
@@ -95,6 +101,7 @@ export async function withSpinner(message, fn) {
 
   const interval = setInterval(() => {
     const frame = SPINNER_FRAMES[i++ % SPINNER_FRAMES.length]
+
     process.stdout.write(`\r${YELLOW}${frame}${RESET_ALL} ${message}`)
   }, 80)
 

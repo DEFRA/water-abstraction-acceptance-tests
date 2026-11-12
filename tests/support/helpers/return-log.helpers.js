@@ -1,3 +1,9 @@
+/**
+ * Helpers for building return logs in test data
+ *
+ * @module ReturnLogHelpers
+ */
+
 import returnLogData from '../data/return-log.data.js'
 import { compareDates, previousPeriod } from './date.helpers.js'
 
@@ -12,17 +18,17 @@ import { compareDates, previousPeriod } from './date.helpers.js'
  */
 export function returnLogPeriods(cycle, dueDate = null, quarterly = false) {
   const previousPeriodDetails = previousPeriod({
-    startDate: cycle.startDate,
-    endDate: cycle.endDate,
     dueDate,
-    quarterly
+    endDate: cycle.endDate,
+    quarterly,
+    startDate: cycle.startDate
   })
 
   const currentPeriodDetails = {
-    startDate: new Date(cycle.startDate),
-    endDate: new Date(cycle.endDate),
     dueDate: null,
-    quarterly
+    endDate: new Date(cycle.endDate),
+    quarterly,
+    startDate: new Date(cycle.startDate)
   }
 
   return [previousPeriodDetails, currentPeriodDetails]
@@ -58,10 +64,10 @@ export function buildReturnLogs(licence, returnRequirement, returnRequirementPur
  */
 export function buildPreviousAndCurrentReturnLogs(licence, returnRequirement, returnRequirementPurpose, point, cycle) {
   const currentPeriod = {
-    startDate: new Date(cycle.startDate),
-    endDate: new Date(cycle.endDate),
     dueDate: cycle.dueDate ? new Date(cycle.dueDate) : null,
-    quarterly: false
+    endDate: new Date(cycle.endDate),
+    quarterly: false,
+    startDate: new Date(cycle.startDate)
   }
   const previousPeriodDetails = previousPeriod(currentPeriod)
 

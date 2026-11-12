@@ -1,4 +1,10 @@
 /**
+ * Helpers for working with and formatting dates
+ *
+ * @module DateHelpers
+ */
+
+/**
  * The last presroc financial year (end year) — water-abstraction-service's batch-service.js caps presroc
  * supplementary billing at this year, and its legacy engine is never triggered for anything after it.
  * @type {number}
@@ -147,7 +153,7 @@ export function formatLongDate(date) {
 
   const localDate = new Date(date)
 
-  return localDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })
+  return localDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
 /**
@@ -171,9 +177,9 @@ export function monthlyReturnPeriods(startDate, endDate) {
     const monthEndDate = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 0))
 
     periods.push({
-      startDate: monthStartDate,
       endDate: monthEndDate,
-      fieldName: `${formatDateToIso(monthStartDate)}_${formatDateToIso(monthEndDate)}`
+      fieldName: `${formatDateToIso(monthStartDate)}_${formatDateToIso(monthEndDate)}`,
+      startDate: monthStartDate
     })
 
     cursor = new Date(Date.UTC(cursor.getUTCFullYear(), cursor.getUTCMonth() + 1, 1))
@@ -203,16 +209,19 @@ export function previousPeriod(period) {
   const startDate = new Date(period.startDate)
 
   let monthsBack = 12
+
   if (period.quarterly) {
     monthsBack = 3
   }
 
   const endDate = new Date(startDate)
+
   endDate.setUTCDate(endDate.getUTCDate() - 1)
 
   startDate.setUTCMonth(startDate.getUTCMonth() - monthsBack)
 
   let dueDate = null
+
   if (period.dueDate) {
     dueDate = new Date(endDate)
     dueDate.setUTCDate(dueDate.getUTCDate() + 28)
@@ -286,12 +295,12 @@ export function returnLogDateDetails(returnLog) {
   const status = returnLogStatusLabel(returnLog.endDate, returnLog.dueDate)
 
   return {
-    startDate: returnLog.startDate,
-    endDate: returnLog.endDate,
-    startDateString,
-    endDateString,
-    dueDateString,
     dateString: `${startDateString} to ${endDateString}`,
+    dueDateString,
+    endDate: returnLog.endDate,
+    endDateString,
+    startDate: returnLog.startDate,
+    startDateString,
     status
   }
 }

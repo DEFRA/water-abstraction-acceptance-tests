@@ -1,8 +1,8 @@
-import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licences-with-different-billing-accounts.scenario.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Remove a bill from an annual bill run that has not been sent (internal)', () => {
   let scenario
@@ -51,8 +51,8 @@ test.describe('Remove a bill from an annual bill run that has not been sent (int
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Test Region' })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Annual' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText('Test Region annual')

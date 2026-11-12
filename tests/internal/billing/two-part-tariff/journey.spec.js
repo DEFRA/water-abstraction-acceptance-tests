@@ -1,7 +1,7 @@
-import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/presroc-licence-with-agreement-and-due-return.scenario.js'
+import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe(
   'Create and send PRESROC two-part tariff bill run (internal)',
@@ -32,7 +32,7 @@ test.describe(
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
@@ -57,7 +57,7 @@ test.describe(
 
       await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-      await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+      await expect(billRunRow.getByRole('cell', { exact: true, name: 'Test Region' })).toBeVisible()
       await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
       await billRunRow.getByRole('link').click()
 
@@ -119,7 +119,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText('Bill runs')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toContainText('Old charge scheme')
-      await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+      await expect(billRunRow.getByRole('cell', { exact: true, name: 'Test Region' })).toBeVisible()
       await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff winter and all year' })).toBeVisible()
       await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('1')
       await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')

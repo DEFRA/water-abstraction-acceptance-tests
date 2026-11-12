@@ -1,8 +1,8 @@
+import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
 import { calculatedDates } from '../../support/helpers/calculated-dates.helpers.js'
 import { returnLogDateDetails } from '../../support/helpers/date.helpers.js'
-import scenarioData from '../../support/scenarios/licence-with-open-winter-return-log.scenario.js'
-import { tableRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
+import { tableRow } from '../../support/helpers/govuk.helpers.js'
 
 test.describe('Submit historic correction that results in a split-log (internal)', () => {
   let licence
@@ -31,10 +31,10 @@ test.describe('Submit historic correction that results in a split-log (internal)
     truncatedOldPeriodEnd.setUTCDate(truncatedOldPeriodEnd.getUTCDate() - 1)
 
     truncatedOldPeriod = returnLogDateDetails({
-      startDate: scenario.returnLogs[0].startDate,
-      endDate: truncatedOldPeriodEnd
+      endDate: truncatedOldPeriodEnd,
+      startDate: scenario.returnLogs[0].startDate
     })
-    newFromSplitPeriod = returnLogDateDetails({ startDate: splitDate, endDate: scenario.returnLogs[0].endDate })
+    newFromSplitPeriod = returnLogDateDetails({ endDate: scenario.returnLogs[0].endDate, startDate: splitDate })
     currentCyclePeriod = returnLogDateDetails(scenario.returnLogs[1])
     previousCyclePeriod = returnLogDateDetails(scenario.returnLogs[0])
 

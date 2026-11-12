@@ -1,3 +1,9 @@
+/**
+ * Builds a return version entity
+ *
+ * @module ReturnVersionEntity
+ */
+
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
@@ -18,9 +24,9 @@ export default function (licence, licenceVersionPurpose, point) {
   const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
 
   return {
-    returnVersion,
     returnRequirement,
     returnRequirementPoint,
-    returnRequirementPurpose
+    returnRequirementPurpose,
+    returnVersion
   }
 }

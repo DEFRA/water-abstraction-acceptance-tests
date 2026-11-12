@@ -1,5 +1,11 @@
-import { loadScenario } from './scenarios.lib.js'
+/**
+ * The tasks the CLI can run, such as seeding all scenarios or tearing down
+ *
+ * @module TasksLib
+ */
+
 import tearDownService from '../../tests/support/tear-down/tear-down.service.js'
+import { loadScenario } from './scenarios.lib.js'
 
 /**
  * Seed a curated set of scenarios, one after another. Does not tear down first

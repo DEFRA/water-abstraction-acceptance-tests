@@ -20,8 +20,8 @@ test.describe('Creating internal user with existing external account (internal)'
     'can create an internal user even if they have an external user account with the same email',
     {
       annotation: {
-        type: 'issue',
-        description: 'https://eaflood.atlassian.net/browse/WATER-5739'
+        description: 'https://eaflood.atlassian.net/browse/WATER-5739',
+        type: 'issue'
       }
     },
     async ({ page }) => {

@@ -1,5 +1,11 @@
-import { exit } from './cli.lib.js'
+/**
+ * The CLI menu for picking and running a task
+ *
+ * @module TasksMenu
+ */
+
 import selectTaskPrompt from './select-task.prompt.js'
+import { exit } from './cli.lib.js'
 import { logError, printBanner, withSpinner } from './log.lib.js'
 import { seedAll, tearDown } from './tasks.lib.js'
 

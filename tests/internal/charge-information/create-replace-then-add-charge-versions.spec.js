@@ -1,6 +1,6 @@
 import scenarioData from '../../support/scenarios/licence.scenario.js'
-import { expect, test } from '../../support/fixtures.js'
 import { formatLongDate, yesterday } from '../../support/helpers/date.helpers.js'
+import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Create, replace then add a charge version (internal)', { tag: '@supplementary-billing' }, () => {
   let licence
@@ -21,9 +21,9 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
     'all three states of a charge version; creating, replacing and adding charge versions to a licence',
     {
       annotation: {
-        type: 'description',
         description:
-          'Runs three charge information versions for a licence (new licence, error correction, major change), confirming and approving each via the review flow, and asserts the charge version table rows reflect the resulting review, approved and replaced statuses and superseded date ranges.'
+          'Runs three charge information versions for a licence (new licence, error correction, major change), confirming and approving each via the review flow, and asserts the charge version table rows reflect the resulting review, approved and replaced statuses and superseded date ranges.',
+        type: 'description'
       }
     },
     async ({ page }) => {
@@ -34,7 +34,7 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
       await page.getByRole('button', { name: 'Set up a new charge' }).click()
 
       await expect(page.locator('h1')).toContainText('Select reason for new charge information')
-      await page.getByRole('radio', { name: 'New licence', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'New licence' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Set charge start date')
@@ -107,6 +107,7 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
 
       await expect(page.locator('h1')).toContainText('Licence set up')
       const newLicenceRow = chargeTable.getByRole('row', { name: 'New licence' })
+
       await expect(newLicenceRow.getByRole('cell')).toHaveText([
         formatLongDate(licence.startDate),
         '',
@@ -162,6 +163,7 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
 
       await expect(page.locator('h1')).toContainText('Licence set up')
       const errorCorrectionRow = chargeTable.getByRole('row', { name: 'Error correction' })
+
       await expect(errorCorrectionRow.getByRole('cell')).toHaveText([
         formatLongDate(licence.startDate),
         '',
@@ -311,6 +313,7 @@ test.describe('Create, replace then add a charge version (internal)', { tag: '@s
 
       await expect(page.locator('h1')).toContainText('Licence set up')
       const majorChangeRow = chargeTable.getByRole('row', { name: 'Major change' })
+
       await expect(majorChangeRow.getByRole('cell')).toHaveText([
         formatLongDate(new Date()),
         '',

@@ -1,5 +1,5 @@
-import { generateGovUKEmail } from '../../support/helpers/generators.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
+import { generateGovUKEmail } from '../../support/helpers/generators.helpers.js'
 
 test.describe('Creating a user (internal)', () => {
   test.beforeEach(async ({ login, users }) => {

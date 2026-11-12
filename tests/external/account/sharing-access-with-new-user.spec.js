@@ -1,7 +1,7 @@
-import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
-import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import scenarioData from '../../support/scenarios/registered-licence.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
+import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
+import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
 
 test.describe('Sharing licence access with a new user (external)', () => {
   let firstUser

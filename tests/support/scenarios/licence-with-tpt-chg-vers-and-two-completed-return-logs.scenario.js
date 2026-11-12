@@ -1,10 +1,10 @@
 import buildReturnSubmissionEntity from '../entities/return-submission.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
-import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithChargeVersionAndTwoPurposesScenario from './licence-with-charge-version-and-two-purposes.scenario.js'
 import returnRequirementData from '../data/return-requirement.data.js'
 import returnRequirementPointData from '../data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../data/return-requirement-purpose.data.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
 
 export const title = 'Licence with a two-part tariff charge version and two completed return logs'

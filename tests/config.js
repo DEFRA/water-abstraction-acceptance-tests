@@ -1,3 +1,9 @@
+/**
+ * Config for the acceptance tests, read from the environment
+ *
+ * @module Config
+ */
+
 import dotenv from 'dotenv'
 
 // The app runs with TZ=UTC. Calculated dates (see calculated-dates.helpers.js) are built using the

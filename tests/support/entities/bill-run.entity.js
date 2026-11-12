@@ -1,9 +1,15 @@
+/**
+ * Builds a bill run entity
+ *
+ * @module BillRunEntity
+ */
+
 import billData from '../data/bill.data.js'
 import billLicenceData from '../data/bill-licence.data.js'
 import billRunData from '../data/bill-run.data.js'
 import buildChargeVersionEntity from './charge-version.entity.js'
-import { today } from '../helpers/date.helpers.js'
 import transactionData from '../data/transaction.data.js'
+import { today } from '../helpers/date.helpers.js'
 
 // A bill can never be for £0 — a sent bill run always has a non-zero total, so the seeded bill and its transaction
 // must share a real net amount (in pence) rather than being left null.
@@ -48,9 +54,9 @@ export default function (licenceEntity, dates) {
 
   return {
     ...chargeVersionEntity,
-    billRun,
     bill,
     billLicence,
+    billRun,
     transaction
   }
 }

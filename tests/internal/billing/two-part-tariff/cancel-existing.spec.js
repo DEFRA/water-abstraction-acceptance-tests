@@ -1,6 +1,6 @@
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Cancel an existing two-part tariff bill run (internal)', () => {
   test.beforeAll(async ({ tearDown }) => {
@@ -20,7 +20,7 @@ test.describe('Cancel an existing two-part tariff bill run (internal)', () => {
     await page.getByRole('button', { name: 'Create a bill run' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the bill run type')
-    await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+    await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the region')
@@ -45,7 +45,7 @@ test.describe('Cancel an existing two-part tariff bill run (internal)', () => {
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'empty')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Test Region' })).toBeVisible()
     await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
