@@ -4,12 +4,12 @@ import { expect, test } from '../../support/fixtures.js'
 test.describe(
   'Recalculate bills link, selecting presroc (internal)',
   {
-    tag: ['@supplementary-billing', '@presroc'],
     annotation: {
-      type: 'description',
       description:
-        'Selecting the presroc year on the recalculate bills page flags a licence for the old charge scheme regardless of whether a bill run has ever been sent for it.'
-    }
+        'Selecting the presroc year on the recalculate bills page flags a licence for the old charge scheme regardless of whether a bill run has ever been sent for it.',
+      type: 'description'
+    },
+    tag: ['@supplementary-billing', '@presroc']
   },
   () => {
     let licence

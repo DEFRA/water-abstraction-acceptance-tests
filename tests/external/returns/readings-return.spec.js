@@ -1,5 +1,5 @@
-import { monthlyReturnPeriods } from '../../support/helpers/date.helpers.js'
 import scenarioData from '../../support/scenarios/registered-licence-with-open-winter-return-log.scenario.js'
+import { monthlyReturnPeriods } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit a readings return (external)', () => {

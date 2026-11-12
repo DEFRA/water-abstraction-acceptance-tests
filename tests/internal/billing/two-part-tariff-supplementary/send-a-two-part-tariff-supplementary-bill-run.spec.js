@@ -1,9 +1,9 @@
+import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary.scenario.js'
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary.scenario.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Send a two-part tariff supplementary bill run (internal)', { tag: '@supplementary-billing' }, () => {
   let endYear
@@ -32,12 +32,12 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
     'creates an SROC two-part tariff supplementary bill run and once built completes the review, marks it as ready, and sends it',
     {
       annotation: {
-        type: 'tpt-supplementary-journey',
         description: `A licence that is current and not in workflow, has one applicable charge version with a single charge reference and two two-part tariff charge elements, and two completed returns matching them. The licence also has a sent two-part tariff bill run for the same year, which is what flags it for the next two-part tariff supplementary bill run.
 
 **Acceptance Criteria**
 - The licence appears in the review with a 'ready' status, having no issues.
-- Continuing the bill run marks it as ready, and it can then be sent.`
+- Continuing the bill run marks it as ready, and it can then be sent.`,
+        type: 'tpt-supplementary-journey'
       }
     },
     async ({ page }) => {

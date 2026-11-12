@@ -1,17 +1,17 @@
-import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import scenarioData from '../../support/scenarios/licence-with-workflow-and-two-part-tariff-bill-run.scenario.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe(
   'Cancelling a licence in workflow  with a two-part tariff bill run (internal)',
   {
-    tag: ['@presroc', '@supplementary-billing'],
     annotation: {
-      type: 'description',
       description:
         'When the licence is in workflow, and you cancel a workflow item, and there is a two-part tariff bill run, and the workflow was created before the bill run ends, the licence should be flagged for supplementary billing' +
-        '/n A two-part tariff bill run is created for the two-part tariff year, which is the year before the annual bill run. The workflow created at date is set to a date before the bill run end date.'
-    }
+        '/n A two-part tariff bill run is created for the two-part tariff year, which is the year before the annual bill run. The workflow created at date is set to a date before the bill run end date.',
+      type: 'description'
+    },
+    tag: ['@presroc', '@supplementary-billing']
   },
   () => {
     let company
@@ -35,13 +35,14 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText(`Licence summary ${licence.licenceRef}`)
       await expect(page.locator('.govuk-notification-banner__content')).not.toBeVisible()
-      await page.getByRole('link', { name: 'Manage', exact: true }).click()
+      await page.getByRole('link', { exact: true, name: 'Manage' }).click()
       await page.getByRole('link', { name: 'Check licences in workflow' }).click()
 
       await expect(page.locator('h1').first()).toContainText('Workflow')
       await page.getByRole('tab', { name: 'Review charge information' }).click()
       const reviewChargeInformationTable = page.locator('table.govuk-table')
       const reviewChargeInformationRow = reviewChargeInformationTable.getByRole('row', { name: licence.licenceRef })
+
       await expect(reviewChargeInformationRow.getByRole('cell')).toHaveText([
         licence.licenceRef,
         company.name,

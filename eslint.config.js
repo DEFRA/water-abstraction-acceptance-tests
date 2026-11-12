@@ -1,3 +1,9 @@
+/**
+ * ESLint config for the acceptance tests, extending the shared engine config
+ *
+ * @module EslintConfig
+ */
+
 import sharedConfig from 'water-abstraction-engine/eslint.config.js'
 
 export default [
@@ -8,26 +14,45 @@ export default [
   {
     ignores: ['playwright-report/**/*', 'test-results/**/*', 'blob-report/**/*']
   },
+  // Specs have no @module block, the same as test files in the engine
+  {
+    files: ['tests/**/*.spec.js'],
+    rules: {
+      'local/alanisms': ['error', { moduleJsdoc: false }]
+    }
+  },
+  // The API that seeds test data processes entities in insertion order, so the keys and declarations in scenario files
+  // follow dependency order, not A-Z. Scenarios also export a title and description alongside their default export so
+  // the CLI scenario picker can list them
   {
     files: ['tests/support/scenarios/**/*'],
     rules: {
-      'local/no-mixed-exports': 'off',
       'jsdoc/check-alignment': 'off',
       'jsdoc/check-indentation': 'off',
-      'jsdoc/check-types': 'off',
       'jsdoc/check-tag-names': 'off',
+      'jsdoc/check-types': 'off',
       'jsdoc/lines-before-block': 'off',
       'jsdoc/require-description': 'off',
       'jsdoc/require-hyphen-before-param-description': 'off',
       'jsdoc/require-jsdoc': 'off',
       'jsdoc/require-param': 'off',
-      'jsdoc/require-returns': 'off'
+      'jsdoc/require-returns': 'off',
+      'local/alanisms': ['error', { declarations: false, mixedExports: false, moduleJsdoc: false, objectKeys: false }]
     }
   },
+  // Data files follow the same dependency order as scenarios
   {
     files: ['tests/support/data/**/*'],
     rules: {
-      'jsdoc/require-jsdoc': 'off'
+      'jsdoc/require-jsdoc': 'off',
+      'local/alanisms': ['error', { declarations: false, moduleJsdoc: false, objectKeys: false }]
+    }
+  },
+  // The load service lists tables in the order they must be inserted, so its keys are not sorted
+  {
+    files: ['tests/support/load/load.service.js'],
+    rules: {
+      'local/alanisms': ['error', { objectKeys: false }]
     }
   }
 ]

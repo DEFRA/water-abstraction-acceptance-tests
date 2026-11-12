@@ -3,6 +3,7 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Standard returns invitation journey (internal)', () => {
   let licence
+
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 

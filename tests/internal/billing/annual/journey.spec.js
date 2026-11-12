@@ -1,8 +1,8 @@
-import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import scenarioData from '../../../support/scenarios/licence-with-charge-version.scenario.js'
-import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { summaryRow } from '../../../support/helpers/govuk.helpers.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Create and send annual bill run (internal)', () => {
   test.beforeAll(async ({ setup }) => {
@@ -41,8 +41,8 @@ test.describe('Create and send annual bill run (internal)', () => {
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Test Region' })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Annual' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText('Test Region annual')
@@ -66,8 +66,8 @@ test.describe('Create and send annual bill run (internal)', () => {
 
     await expect(page.locator('h1')).toContainText('Bill runs')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Test Region', exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Test Region' })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Annual' })).toBeVisible()
     await expect(billRunRow.locator('[data-test^="number-of-bills-"]')).toContainText('1')
     await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')
   })

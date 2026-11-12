@@ -1,3 +1,9 @@
+/**
+ * Builds a charge version entity
+ *
+ * @module ChargeVersionEntity
+ */
+
 import buildBillingAccountEntity from './billing-account.entity.js'
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
@@ -21,8 +27,8 @@ export default function (company, address, licence, licenceVersionPurpose) {
 
   return {
     ...billingAccountEntity,
-    chargeVersion,
+    chargeElement,
     chargeReference,
-    chargeElement
+    chargeVersion
   }
 }

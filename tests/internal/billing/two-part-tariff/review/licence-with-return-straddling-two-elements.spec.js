@@ -1,8 +1,8 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-return-straddling-two-elements.scenario.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-return-straddling-two-elements.scenario.js'
 import { expect, test } from '../../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
 test.describe('Licence with a Return Straddling Two Charge Elements (internal)', () => {
   let endYear
@@ -36,12 +36,12 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
     'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched return straddling both charge elements and the over-authorised warning',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version, a single charge reference and two charge elements covering different parts of the year. Its only return is two-part tariff and its volume straddles both elements, fully allocating to each.
 
 **Acceptance Criteria**
 - The return fully allocates across both charge elements, so the licence is ready with no issues.
-- Reducing the charge reference's authorised volume below the sum of the allocated elements shows the over-authorised warning.`
+- Reducing the charge reference's authorised volume below the sum of the allocated elements shows the over-authorised warning.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -53,7 +53,7 @@ test.describe('Licence with a Return Straddling Two Charge Elements (internal)',
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

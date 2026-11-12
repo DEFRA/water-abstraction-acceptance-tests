@@ -1,6 +1,6 @@
 import buildBillRunEntity from '../entities/bill-run.entity.js'
-import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import licenceWithAgreementScenario from './licence-with-agreement.scenario.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 
 export const title = 'Licence with an agreement and a bill run'
 export const description =

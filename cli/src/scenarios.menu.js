@@ -1,7 +1,13 @@
-import { exit } from './cli.lib.js'
-import { loadScenario } from './scenarios.lib.js'
+/**
+ * The CLI menu for picking and loading a scenario
+ *
+ * @module ScenariosMenu
+ */
+
 import searchScenariosPrompt from './search-scenarios.prompt.js'
+import { exit } from './cli.lib.js'
 import { logError, printBanner, withSpinner } from './log.lib.js'
+import { loadScenario } from './scenarios.lib.js'
 
 /**
  * Show the CLI's scenarios menu and load whichever scenario the user selects

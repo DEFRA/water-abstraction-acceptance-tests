@@ -1,3 +1,9 @@
+/**
+ * Playwright fixtures shared by the acceptance test specs
+ *
+ * @module Fixtures
+ */
+
 import { test as base } from '@playwright/test'
 
 import config from '../config.js'

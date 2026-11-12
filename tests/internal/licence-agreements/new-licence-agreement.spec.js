@@ -5,12 +5,12 @@ import { expect, test } from '../../support/fixtures.js'
 test.describe(
   'New licence agreement journey (internal)',
   {
-    tag: '@supplementary-billing',
     annotation: {
-      type: 'description',
       description:
-        'When a licence agreement is added to a licence, the licence should not be flagged for supplementary billing. '
-    }
+        'When a licence agreement is added to a licence, the licence should not be flagged for supplementary billing. ',
+      type: 'description'
+    },
+    tag: '@supplementary-billing'
   },
   () => {
     let licence

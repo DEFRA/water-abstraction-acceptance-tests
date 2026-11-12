@@ -1,3 +1,9 @@
+/**
+ * Playwright config for the acceptance tests
+ *
+ * @module PlaywrightConfig
+ */
+
 import { defineConfig } from '@playwright/test'
 
 import config from './tests/config.js'
@@ -9,11 +15,11 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        // Remove ...devices['Desktop Chrome'] here
-        viewport: null,
         launchOptions: {
           args: ['--start-maximized']
-        }
+        },
+        // Remove ...devices['Desktop Chrome'] here
+        viewport: null
       }
     }
   ],

@@ -1,5 +1,5 @@
-import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import scenarioData from '../../support/scenarios/licence-with-two-purposes.scenario.js'
+import { formatLongDate } from '../../support/helpers/date.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
 
 test.describe('Submit return version manually (internal)', () => {

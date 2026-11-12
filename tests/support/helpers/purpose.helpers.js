@@ -1,3 +1,9 @@
+/**
+ * Helpers for working with purposes in test data
+ *
+ * @module PurposeHelpers
+ */
+
 const PURPOSE_DESCRIPTIONS = {
   400: 'Spray Irrigation - Direct',
   420: 'Spray Irrigation - Storage'

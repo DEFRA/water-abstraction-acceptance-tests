@@ -1,8 +1,8 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-aggregate-value.scenario.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-aggregate-value.scenario.js'
 import { expect, test } from '../../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
 test.describe('Licence with an Aggregate (internal)', () => {
   let endYear
@@ -36,13 +36,13 @@ test.describe('Licence with an Aggregate (internal)', () => {
     'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched returns, the element issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. The charge reference has an aggregate value and it has one return that matches.
 
 **Acceptance Criteria**
 - The licence is flagged with the aggregate issue.
 - The return still fully allocates to the charge element.
-- The aggregate and charge adjustment factors can be amended on the charge reference.`
+- The aggregate and charge adjustment factors can be amended on the charge reference.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -54,7 +54,7 @@ test.describe('Licence with an Aggregate (internal)', () => {
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

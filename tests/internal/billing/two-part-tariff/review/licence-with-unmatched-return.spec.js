@@ -1,8 +1,8 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-unmatched-return.scenario.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-unmatched-return.scenario.js'
 import { expect, test } from '../../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
 test.describe('Licence with an Unmatched Return (internal)', () => {
   let endYear
@@ -34,12 +34,12 @@ test.describe('Licence with an Unmatched Return (internal)', () => {
     'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the unmatched return, the return issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version, a single charge reference and one charge element. Its only return is two-part tariff but has a different purpose to the charge element, so the engine cannot match it.
 
 **Acceptance Criteria**
 - The charge element is flagged unable to match a return and the unmatched return is flagged over abstraction, so the licence has multiple issues.
-- With no matching return the charge element's full authorised volume is billable and the unmatched return allocates nothing.`
+- With no matching return the charge element's full authorised volume is billable and the unmatched return allocates nothing.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -51,7 +51,7 @@ test.describe('Licence with an Unmatched Return (internal)', () => {
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

@@ -1,6 +1,6 @@
-import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 import scenarioData from '../../support/scenarios/external-user.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
+import { generateExternalEmailAddress } from '../../support/helpers/generators.helpers.js'
 
 test.describe('Change user email address (external)', () => {
   let user

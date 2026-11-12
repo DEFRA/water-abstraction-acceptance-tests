@@ -1,4 +1,10 @@
 /**
+ * Helpers for locating GOV.UK Design System components on a page
+ *
+ * @module GovukHelpers
+ */
+
+/**
  * Locates the govuk-summary-list row whose label matches the given text
  *
  * @param {import('@playwright/test').Page} page - The page to search

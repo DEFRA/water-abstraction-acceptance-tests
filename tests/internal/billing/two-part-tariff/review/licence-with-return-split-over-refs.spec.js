@@ -1,8 +1,8 @@
+import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-return-split-over-refs.scenario.js'
 import { calculatedDates } from '../../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../../support/scenarios/licence-with-tpt-chg-vers-and-return-split-over-refs.scenario.js'
 import { expect, test } from '../../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../../support/helpers/wait.helpers.js'
 
 test.describe('Licence with a Return Split Over Charge References (internal)', () => {
   let endYear
@@ -33,12 +33,12 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
     'creates a SROC two-part tariff bill run and once built navigates through all the review pages checking the matched return, the return issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version that has two charge references, each with one charge element sharing the same purpose but a different abstraction period. Its single return matches both charge references.
 
 **Acceptance Criteria**
 - The licence is flagged with the return split over charge references issue.
-- The return still fully allocates, split across the two charge references.`
+- The return still fully allocates, split across the two charge references.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

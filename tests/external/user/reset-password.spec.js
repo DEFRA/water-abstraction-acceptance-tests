@@ -1,6 +1,6 @@
-import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
 import scenarioData from '../../support/scenarios/external-user.scenario.js'
 import { expect, test } from '../../support/fixtures.js'
+import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
 
 test.describe('Reset password journey (external)', () => {
   let user

@@ -1,6 +1,6 @@
 import scenarioData from '../../../support/scenarios/registered-licences-with-monitoring-station-tagged.scenario.js'
-import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 
 test.describe('Send an abstraction alert after applying a filter (internal)', () => {
   let firstLicence
@@ -55,10 +55,12 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     // The table is sorted by licence ref and our refs are randomly generated, so we anchor on the ref rather than row
     // position
     const firstLicenceRow = tableRow(page, firstLicence.licenceRef)
+
     await expect(firstLicenceRow.locator('[data-test^="abstraction-period-"]')).toHaveText('10 October to 11 November')
     await expect(firstLicenceRow.locator('[data-test^="restriction-"]')).toHaveText('Stop')
     await expect(firstLicenceRow.locator('[data-test^="threshold-"]')).toHaveText('100m3/s')
     const secondLicenceRow = tableRow(page, secondLicence.licenceRef)
+
     await expect(secondLicenceRow.locator('[data-test^="abstraction-period-"]')).toHaveText('1 April to 31 March')
     await expect(secondLicenceRow.locator('[data-test^="restriction-"]')).toHaveText('Stop')
     await expect(secondLicenceRow.locator('[data-test^="threshold-"]')).toHaveText('100m3/s')

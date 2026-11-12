@@ -1,8 +1,8 @@
+import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary-in-workflow.scenario.js'
 import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import scenarioData from '../../../support/scenarios/licence-flagged-for-tpt-supplementary-in-workflow.scenario.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Send a two-part tariff supplementary bill run (internal)', { tag: '@supplementary-billing' }, () => {
   let endYear
@@ -29,11 +29,11 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
     'creates an SROC two-part tariff supplementary bill run and confirm the licence is not included',
     {
       annotation: {
-        type: 'tpt-supplementary-journey',
         description: `A licence that is current and in workflow, has one applicable charge version with a single charge reference and two two-part tariff charge elements, and two completed returns matching them. The licence also has a sent two-part tariff bill run for the same year, which is what flags it for the next two-part tariff supplementary bill run.
 
 **Acceptance Criteria**
-- The licence should NOT appear in the bill run`
+- The licence should NOT appear in the bill run`,
+        type: 'tpt-supplementary-journey'
       }
     },
     async ({ page }) => {

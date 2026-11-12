@@ -4,12 +4,12 @@ import { expect, test } from '../../support/fixtures.js'
 test.describe(
   'Recalculate bills link (internal)',
   {
-    tag: ['@supplementary-billing'],
     annotation: {
-      type: 'description',
       description:
-        'Recalculating bills only flags a licence if a bill run has already been sent for the selected year, and only two-part tariff bill runs are checked for this — an annual bill run for that year has no effect. This test selects a year with a sent two-part tariff bill run and confirms the licence gets flagged for the next two-part tariff supplementary bill run.'
-    }
+        'Recalculating bills only flags a licence if a bill run has already been sent for the selected year, and only two-part tariff bill runs are checked for this — an annual bill run for that year has no effect. This test selects a year with a sent two-part tariff bill run and confirms the licence gets flagged for the next two-part tariff supplementary bill run.',
+      type: 'description'
+    },
+    tag: ['@supplementary-billing']
   },
   () => {
     let licence

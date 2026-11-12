@@ -3,6 +3,7 @@ import { expect, test } from '../../../support/fixtures.js'
 
 test.describe('Ad-hoc Paper returns journey (internal)', () => {
   let licence
+
   test.beforeAll(async ({ setup }) => {
     const scenario = scenarioData()
 
