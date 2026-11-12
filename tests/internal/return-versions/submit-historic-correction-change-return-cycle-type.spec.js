@@ -7,11 +7,11 @@ test.describe('Submit historic correction changing return cycle type on new retu
   let licence
   let returnLogs
   let startYear
-  let expectedReturnLogs
+  let orderedReturnLogs
   let user
 
   test.beforeAll(async ({ world }) => {
-    const { currentFinancialYear } = calculatedDates()
+    const { currentFinancialYear, currentSummerReturnCycle } = calculatedDates()
 
     startYear = new Date(currentFinancialYear.startDate).getFullYear()
 
@@ -22,7 +22,7 @@ test.describe('Submit historic correction changing return cycle type on new retu
     returnLogs = scenario.returnLogs
     user = scenario.user
 
-    expectedReturnLogs = {
+    const expectedReturnLogs = {
       newSummer: returnLogDateDetails({
         startDate: new Date(`${startYear - 1}-11-01`),
         endDate: new Date(`${startYear}-10-31`)
@@ -35,14 +35,31 @@ test.describe('Submit historic correction changing return cycle type on new retu
         startDate: new Date(`${startYear - 1}-04-01`),
         endDate: new Date(`${startYear - 1}-08-31`)
       }),
-      existingCurrent: returnLogDateDetails({
-        startDate: returnLogs[1].startDate,
-        endDate: returnLogs[1].endDate
-      }),
-      existingPrevious: returnLogDateDetails({
-        startDate: returnLogs[0].startDate,
-        endDate: returnLogs[0].endDate
-      })
+      existingCurrent: { ...returnLogDateDetails(returnLogs[1]), status: 'void' },
+      existingPrevious: { ...returnLogDateDetails(returnLogs[0]), status: 'void' }
+    }
+
+    // The summer cycle runs 1 Nov to 31 Oct, whereas the winter cycle (used to seed the data) runs 1 Apr to 31 Mar.
+    // From 1 Nov until 31 Mar the current summer cycle starts in the same year as the current winter cycle. In that
+    // window the new return version also generates a return log for that later summer cycle, which is listed first
+    // because return logs are ordered by start date, newest first.
+    orderedReturnLogs = [
+      expectedReturnLogs.existingCurrent,
+      expectedReturnLogs.newSummer,
+      expectedReturnLogs.splitSummer,
+      expectedReturnLogs.existingPrevious,
+      expectedReturnLogs.splitWinter
+    ]
+
+    const summerStartYear = new Date(currentSummerReturnCycle.startDate).getFullYear()
+
+    if (summerStartYear === startYear) {
+      orderedReturnLogs.unshift(
+        returnLogDateDetails({
+          startDate: currentSummerReturnCycle.startDate,
+          endDate: currentSummerReturnCycle.endDate
+        })
+      )
     }
   })
 
@@ -131,41 +148,11 @@ test.describe('Submit historic correction changing return cycle type on new retu
     // confirm we are on the licence set up tab
     await expect(page.locator('h1')).toContainText('Returns')
 
-    // Confirm the return logs have been updated and created as expected
-    await expect(page.locator('[data-test="return-reference-0"]')).toContainText(
-      expectedReturnLogs.existingCurrent.dateString
-    )
-    await expect(page.locator('[data-test="return-due-date-0"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-0"] > .govuk-tag')).toContainText('void')
-
-    await expect(page.locator('[data-test="return-reference-1"]')).toContainText(
-      expectedReturnLogs.newSummer.dateString
-    )
-    await expect(page.locator('[data-test="return-due-date-1"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-1"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.newSummer.status
-    )
-
-    await expect(page.locator('[data-test="return-reference-2"]')).toContainText(
-      expectedReturnLogs.splitSummer.dateString
-    )
-    await expect(page.locator('[data-test="return-due-date-2"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-2"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.splitSummer.status
-    )
-
-    await expect(page.locator('[data-test="return-reference-3"]')).toContainText(
-      expectedReturnLogs.existingPrevious.dateString
-    )
-    await expect(page.locator('[data-test="return-due-date-3"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-3"] > .govuk-tag')).toContainText('void')
-
-    await expect(page.locator('[data-test="return-reference-4"]')).toContainText(
-      expectedReturnLogs.splitWinter.dateString
-    )
-    await expect(page.locator('[data-test="return-due-date-4"]')).toBeEmpty()
-    await expect(page.locator('[data-test="return-status-4"] > .govuk-tag')).toContainText(
-      expectedReturnLogs.splitWinter.status
-    )
+    // Confirm the return logs have been updated and created as expected. The order is newest period first
+    for (const [index, expected] of orderedReturnLogs.entries()) {
+      await expect(page.locator(`[data-test="return-reference-${index}"]`)).toContainText(expected.dateString)
+      await expect(page.locator(`[data-test="return-due-date-${index}"]`)).toBeEmpty()
+      await expect(page.locator(`[data-test="return-status-${index}"] > .govuk-tag`)).toContainText(expected.status)
+    }
   })
 })

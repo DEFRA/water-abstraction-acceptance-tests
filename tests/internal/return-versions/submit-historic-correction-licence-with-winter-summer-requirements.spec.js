@@ -10,6 +10,7 @@ test.describe('Submit historic correction for licence with both a winter and sum
   let summerCurrent
   let winterPrevious
   let summerPrevious
+  let summerCycleStartedAfterWinter
   let user
 
   test.beforeAll(async ({ world }) => {
@@ -29,6 +30,12 @@ test.describe('Submit historic correction for licence with both a winter and sum
     summerCurrent = { ...returnLogDateDetails(summerCurrentLog), returnReference: summerCurrentLog.returnReference }
     winterPrevious = { ...returnLogDateDetails(winterPreviousLog), returnReference: winterPreviousLog.returnReference }
     summerPrevious = { ...returnLogDateDetails(summerPreviousLog), returnReference: summerPreviousLog.returnReference }
+
+    // The summer cycle runs 1 Nov to 31 Oct, whereas the winter cycle runs 1 Apr to 31 Mar. From 1 Nov until 31 Mar the
+    // current summer cycle starts in the same year as the current winter cycle (and the new return version's 1 April
+    // start date). That changes the outcome: the seeded 'previous' summer log now straddles the new start date so it is
+    // voided and reissued, and an extra return log is created for the part of that cycle after the start date.
+    summerCycleStartedAfterWinter = new Date(summerCurrent.startDate).getFullYear() === startYear
   })
 
   test.beforeEach(async ({ login }) => {
@@ -124,32 +131,36 @@ test.describe('Submit historic correction for licence with both a winter and sum
       returnRow(summerPrevious.returnReference, summerPrevious.dateString).locator(
         '[data-test^="return-status-"] > .govuk-tag'
       )
-    ).toContainText(summerPrevious.status)
+    ).toContainText(summerCycleStartedAfterWinter ? 'void' : summerPrevious.status)
     await expect(
       returnRow(winterPrevious.returnReference, winterPrevious.dateString).locator(
         '[data-test^="return-status-"] > .govuk-tag'
       )
     ).toContainText(winterPrevious.status)
 
-    // The new return version creates 3 more return logs, whose references aren't known ahead of the journey creating
-    // them, so we confirm them by status count instead of position: 2 new current periods (not due yet) plus 1 new
-    // split log for the previous period (open)
+    // The new return version creates return logs whose references aren't known ahead of the journey creating them, so
+    // we confirm them by status count instead of position. Before the summer cycle rolls over that is 3: 2 new current
+    // periods (not due yet) plus 1 new split log for the previous period (open). After it rolls over there is a 4th,
+    // the summer split log for the period from the start date to the end of the previous summer cycle (open)
     const statuses = (await page.locator('[data-test^="return-status-"] > .govuk-tag').allTextContents()).map(
       (status) => {
         return status.trim()
       }
     )
+    const newLogCount = summerCycleStartedAfterWinter ? 4 : 3
+    const expectedVoidCount = summerCycleStartedAfterWinter ? 3 : 2
+    const previousLogs = summerCycleStartedAfterWinter ? [winterPrevious] : [summerPrevious, winterPrevious]
     const expectedOpenCount =
-      [summerPrevious.status, winterPrevious.status].filter((status) => {
-        return status === 'open'
-      }).length + 1
+      previousLogs.filter((log) => {
+        return log.status === 'open'
+      }).length + (summerCycleStartedAfterWinter ? 2 : 1)
 
-    expect(statuses).toHaveLength(7)
+    expect(statuses).toHaveLength(4 + newLogCount)
     expect(
       statuses.filter((status) => {
         return status === 'void'
       })
-    ).toHaveLength(2)
+    ).toHaveLength(expectedVoidCount)
     expect(
       statuses.filter((status) => {
         return status === 'not due yet'
