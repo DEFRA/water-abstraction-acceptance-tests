@@ -5,6 +5,12 @@ import { chargeYearAmount } from '../helpers/billing.helpers.js'
 export default function (billLicence, chargeReference, dates) {
   const netAmount = chargeYearAmount(dates.endDate.getUTCFullYear(), chargeReference.section127Agreement)
 
+  let section130Agreement = chargeReference.scheme === 'sroc' ? 'false' : null
+
+  if (chargeReference.section130Agreement) {
+    section130Agreement = chargeReference.section130Agreement
+  }
+
   return {
     id: generateUUID(),
     billLicenceId: billLicence.id,
@@ -17,7 +23,7 @@ export default function (billLicence, chargeReference, dates) {
     volume: chargeReference.volume,
     scheme: chargeReference.scheme,
     section127Agreement: chargeReference.section127Agreement,
-    section130Agreement: 'false',
+    section130Agreement,
     description: chargeReference.description,
     chargeCategoryCode: chargeReference.chargeCategoryId.value,
     chargeCategoryDescription: 'Test charge category',
