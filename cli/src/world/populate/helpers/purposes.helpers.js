@@ -1,3 +1,9 @@
+/**
+ * Helpers for adding purposes to a licence
+ *
+ * @module PurposesHelpers
+ */
+
 import licenceVersionPurposeData from '../../../../../tests/support/data/licence-version-purpose.data.js'
 import licenceVersionPurposePointData from '../../../../../tests/support/data/licence-version-purpose-point.data.js'
 

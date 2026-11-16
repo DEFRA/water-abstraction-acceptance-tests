@@ -24,6 +24,7 @@ test.describe('Submit historic correction for licence with both a winter and sum
     licence = scenario.licence
 
     const [winterCurrentLog, winterPreviousLog, summerCurrentLog, summerPreviousLog] = scenario.returnLogs
+
     user = scenario.user
 
     winterCurrent = { ...returnLogDateDetails(winterCurrentLog), returnReference: winterCurrentLog.returnReference }

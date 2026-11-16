@@ -1,3 +1,9 @@
+/**
+ * The theme used by the CLI prompts
+ *
+ * @module ThemeLib
+ */
+
 import { styleText } from 'node:util'
 
 /**

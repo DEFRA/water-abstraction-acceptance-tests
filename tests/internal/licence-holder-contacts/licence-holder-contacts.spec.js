@@ -1,8 +1,8 @@
 import { generateCompanyContact, generateExternalEmailAddress } from 'water-abstraction-engine/test/generators.js'
 
 import { formatLongDate } from '../../support/helpers/date.helpers.js'
-import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
+import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 
 test.describe('Licence holder contacts (internal)', () => {
   let company
@@ -74,6 +74,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('.govuk-button', { hasText: 'Confirm' }).click()
 
     const banner = page.locator('.govuk-notification-banner')
+
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact added')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
       `${contactWithoutALicence.department} was added to this company`
@@ -110,6 +111,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('.govuk-button', { hasText: 'Confirm' }).click()
 
     const banner = page.locator('.govuk-notification-banner')
+
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact added')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
       `${contactWithAllLicences.department} was added to this company`
@@ -147,12 +149,14 @@ test.describe('Licence holder contacts (internal)', () => {
     await expect(_summaryValue(page, 'Name')).toContainText(contactWithSomeLicences.department)
 
     const someLicencesAlertsValue = _summaryValue(page, 'Water abstraction alerts')
+
     await expect(someLicencesAlertsValue).toContainText('Yes, for some licences')
     await expect(someLicencesAlertsValue).toContainText(licence.licenceRef)
 
     await page.locator('.govuk-button', { hasText: 'Confirm' }).click()
 
     const banner = page.locator('.govuk-notification-banner')
+
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact added')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
       `${contactWithSomeLicences.department} was added to this company`
@@ -201,6 +205,7 @@ test.describe('Licence holder contacts (internal)', () => {
 
     // Check the change has been applied on the check contact page
     const pendingAlertsValue = _summaryValue(page, 'Water abstraction alerts')
+
     await expect(pendingAlertsValue).toContainText('Yes, for some licences')
     await expect(pendingAlertsValue).toContainText(licence.licenceRef)
 
@@ -215,6 +220,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await expect(_summaryValue(page, 'Email address')).toContainText(email)
 
     const updatedAlertsValue = _summaryValue(page, 'Water abstraction alerts')
+
     await expect(updatedAlertsValue).toContainText('Yes, for some licences')
     await expect(updatedAlertsValue).toContainText(licence.licenceRef)
 
@@ -255,6 +261,7 @@ test.describe('Licence holder contacts (internal)', () => {
 
     // Confirm the notification banner shows the correct success message
     const banner = page.locator('.govuk-notification-banner')
+
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact removed')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
       `${name} was removed from this company`
@@ -286,6 +293,7 @@ test.describe('Licence holder contacts (internal)', () => {
     await page.locator('.govuk-button', { hasText: 'Remove this contact' }).click()
 
     const banner = page.locator('.govuk-notification-banner')
+
     await expect(banner.locator('.govuk-notification-banner__title')).toContainText('Contact removed')
     await expect(banner.locator('.govuk-notification-banner__heading')).toContainText(
       `${name} was removed from this company`
@@ -307,6 +315,7 @@ test.describe('Licence holder contacts (internal)', () => {
 
     // Confirm a warning is shown that a deleted contact with this name and email already exists
     const warningText = page.locator('.govuk-warning-text__text')
+
     await expect(warningText).toContainText('A deleted contact with this name and email already exists.')
     await expect(warningText).toContainText('Change the name or email, or restore the existing contact.')
 

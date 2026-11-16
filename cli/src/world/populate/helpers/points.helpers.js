@@ -1,6 +1,12 @@
-import { currentPurpose } from './purposes.helpers.js'
+/**
+ * Helpers for adding points to a licence
+ *
+ * @module PointsHelpers
+ */
+
 import licenceVersionPurposePointData from '../../../../../tests/support/data/licence-version-purpose-point.data.js'
 import pointData from '../../../../../tests/support/data/point.data.js'
+import { currentPurpose } from './purposes.helpers.js'
 
 /**
  * Add a point to a licence

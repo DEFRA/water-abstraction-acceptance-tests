@@ -1,6 +1,6 @@
 import { monitoringStations } from '../../../support/default-values.js'
-import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 
 const monitoringStation = monitoringStations.THIRD
 
@@ -51,10 +51,12 @@ test.describe('Send an abstraction alert after applying a filter (internal)', ()
     await expect(page.locator('.govuk-caption-l')).toHaveText(monitoringStation.label)
     await expect(page.getByText('Showing all 2 abstraction alerts')).toBeVisible()
     const firstLicenceRow = tableRow(page, firstLicence.licenceRef)
+
     await expect(firstLicenceRow.locator('[data-test^="abstraction-period-"]')).toHaveText('10 October to 11 November')
     await expect(firstLicenceRow.locator('[data-test^="restriction-"]')).toHaveText('Stop')
     await expect(firstLicenceRow.locator('[data-test^="threshold-"]')).toHaveText('100m3/s')
     const secondLicenceRow = tableRow(page, secondLicence.licenceRef)
+
     await expect(secondLicenceRow.locator('[data-test^="abstraction-period-"]')).toHaveText('1 April to 31 March')
     await expect(secondLicenceRow.locator('[data-test^="restriction-"]')).toHaveText('Stop')
     await expect(secondLicenceRow.locator('[data-test^="threshold-"]')).toHaveText('100m3/s')

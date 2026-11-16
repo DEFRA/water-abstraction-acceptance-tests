@@ -1,3 +1,9 @@
+/**
+ * Builds the sent bill runs for a licence
+ *
+ * @module BillRunsEntities
+ */
+
 import billData from '../data/bill.data.js'
 import billLicenceData from '../data/bill-licence.data.js'
 import billRunData from '../data/bill-run.data.js'

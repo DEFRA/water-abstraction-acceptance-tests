@@ -1,9 +1,9 @@
-import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
+import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import { expect, test } from '../../../support/fixtures.js'
 import { regions, users } from '../../../support/default-values.js'
+import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Create a empty two-part tariff bill run (internal)', () => {
   let endYear
@@ -28,7 +28,7 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
     await page.getByRole('button', { name: 'Create a bill run' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the bill run type')
-    await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+    await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the region')
@@ -48,8 +48,8 @@ test.describe('Create a empty two-part tariff bill run (internal)', () => {
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'empty')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: regions.MIDLANDS.displayName, exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Two-part tariff', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: regions.MIDLANDS.displayName })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Two-part tariff' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText(`${regions.MIDLANDS.displayName} two-part tariff`)

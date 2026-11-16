@@ -1,4 +1,10 @@
 /**
+ * Helpers for finding a bill run's row on the bill runs page
+ *
+ * @module BillRunHelpers
+ */
+
+/**
  * Locates a bill run's row on the bill runs page by its region and bill run type
  *
  * Specs run in parallel, so a new bill run is not always the top row. Each region only has one bill run of a type
@@ -21,7 +27,7 @@ export function findBillRunRow(page, region, type, { oldChargeScheme, sent } = {
     .locator('table.govuk-table')
     .getByRole('row')
     .filter({ hasText: region.displayName })
-    .filter({ has: page.getByRole('cell', { name: type, exact: true }) })
+    .filter({ has: page.getByRole('cell', { exact: true, name: type }) })
 
   if (oldChargeScheme === true) {
     row = row.filter({ hasText: 'Old charge scheme' })

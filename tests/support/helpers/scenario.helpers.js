@@ -1,3 +1,9 @@
+/**
+ * Helpers for combining scenario data objects
+ *
+ * @module ScenarioHelpers
+ */
+
 import { asArrays } from './wire-format.helpers.js'
 
 /**

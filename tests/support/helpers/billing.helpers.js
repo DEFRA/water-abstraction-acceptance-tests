@@ -1,3 +1,9 @@
+/**
+ * Helpers for including licences in supplementary and two-part tariff billing
+ *
+ * @module BillingHelpers
+ */
+
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import { formatDateToIso } from './date.helpers.js'
 import { srocStartDate } from '../default-values.js'
@@ -99,29 +105,29 @@ export function transactionTotals(transactions) {
  */
 export function chargeYearAmount(chargeYear, twoPartTariff) {
   const chargeYearAmounts = {
-    2027: {
-      scheme: 'sroc',
-      amount: 10676
-    },
-    2026: {
-      scheme: 'sroc',
-      amount: 10676
-    },
-    2025: {
-      scheme: 'sroc',
-      amount: 9700
-    },
-    2024: {
-      scheme: 'sroc',
-      amount: 9700
+    2022: {
+      amount: 2988,
+      scheme: 'presroc'
     },
     2023: {
-      scheme: 'sroc',
-      amount: 9700
+      amount: 9700,
+      scheme: 'sroc'
     },
-    2022: {
-      scheme: 'presroc',
-      amount: 2988
+    2024: {
+      amount: 9700,
+      scheme: 'sroc'
+    },
+    2025: {
+      amount: 9700,
+      scheme: 'sroc'
+    },
+    2026: {
+      amount: 10676,
+      scheme: 'sroc'
+    },
+    2027: {
+      amount: 10676,
+      scheme: 'sroc'
     }
   }
 

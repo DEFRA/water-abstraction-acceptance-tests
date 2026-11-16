@@ -1,6 +1,12 @@
+/**
+ * Removes the world from the database and deletes world.json
+ *
+ * @module DestroyWorld
+ */
+
+import path from 'path'
 import { clean } from 'water-abstraction-engine/test/database.js'
 import { fileURLToPath } from 'node:url'
-import path from 'path'
 import { unlink } from 'node:fs/promises'
 
 const WORLD_FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'world.json')

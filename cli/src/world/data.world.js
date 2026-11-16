@@ -1,6 +1,12 @@
-import { fileURLToPath } from 'node:url'
+/**
+ * Generates the scenario data for every spec that calls the `world` fixture
+ *
+ * @module DataWorld
+ */
+
 import fs from 'node:fs/promises'
 import path from 'path'
+import { fileURLToPath } from 'node:url'
 
 import buildWorldKey from './key.world.js'
 
@@ -64,7 +70,7 @@ async function _specs() {
       }
 
       if (matches.length === 1) {
-        specs.push({ specFile, scenarioName: matches[0][1] })
+        specs.push({ scenarioName: matches[0][1], specFile })
       }
     }
   }

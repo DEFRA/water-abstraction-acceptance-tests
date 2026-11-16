@@ -1,5 +1,5 @@
-import { regions } from '../default-values.js'
 import registeredLicenceForRenewalInvitation from './registered-licence-for-renewal-invitation.scenario.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Registered licence for renewal invitation with a bad primary user'
 export const description =

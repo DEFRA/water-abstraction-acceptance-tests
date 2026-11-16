@@ -1,3 +1,9 @@
+/**
+ * Playwright global setup that resets the world before any spec runs
+ *
+ * @module WorldSetup
+ */
+
 import resetWorld from '../cli/src/world/reset.world.js'
 
 /**

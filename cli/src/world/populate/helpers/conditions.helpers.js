@@ -1,5 +1,11 @@
-import { currentPurpose } from './purposes.helpers.js'
+/**
+ * Helpers for adding conditions to a licence
+ *
+ * @module ConditionsHelpers
+ */
+
 import licenceVersionPurposeConditionData from '../../../../../tests/support/data/licence-version-purpose-condition.data.js'
+import { currentPurpose } from './purposes.helpers.js'
 
 /**
  * Add a condition to a licence

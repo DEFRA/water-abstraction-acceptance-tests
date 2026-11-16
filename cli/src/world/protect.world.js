@@ -1,4 +1,10 @@
 /**
+ * Checks the scenarios in the world do not create clashing bill runs
+ *
+ * @module ProtectWorld
+ */
+
+/**
  * Check no scenarios in the world create a bill run for the same batch type, region and financial year
  *
  * Seeding clashing bill runs together would be incorrect data, so we fail before anything is loaded and list every
@@ -23,6 +29,7 @@ export default function protectWorld(scenarios) {
 
         if (billRunKeys.has(billRunKey)) {
           const originalScenario = billRunKeys.get(billRunKey)
+
           errors.push(
             `• [Batch Type: ${batchType} | Region: ${region} | Year: ${year}] ` +
               `found in scenario '${key}' (already used in '${originalScenario}')`

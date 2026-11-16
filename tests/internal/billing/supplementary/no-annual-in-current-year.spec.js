@@ -1,8 +1,8 @@
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe(
   'Create an supplementary bill run with no annual in the current year (internal)',
@@ -39,7 +39,7 @@ test.describe(
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Supplementary', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Supplementary' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
@@ -59,7 +59,7 @@ test.describe(
       await reloadUntilTextFound(page, srocBillRunRow.locator('.govuk-tag'), 'ready')
       await expect(srocBillRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
       await expect(
-        srocBillRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })
+        srocBillRunRow.getByRole('cell', { exact: true, name: regions.NORTH_EAST.displayName })
       ).toBeVisible()
       await srocBillRunRow.getByRole('link').click()
 
@@ -96,7 +96,7 @@ test.describe(
 
       await reloadUntilTextFound(page, presrocBillRunRow.locator('.govuk-tag'), 'empty')
       await expect(
-        presrocBillRunRow.getByRole('cell', { name: regions.NORTH_EAST.displayName, exact: true })
+        presrocBillRunRow.getByRole('cell', { exact: true, name: regions.NORTH_EAST.displayName })
       ).toBeVisible()
       await presrocBillRunRow.getByRole('link').click()
 

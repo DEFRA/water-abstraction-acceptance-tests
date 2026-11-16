@@ -1,3 +1,9 @@
+/**
+ * The task picker prompt used by the CLI
+ *
+ * @module SelectTaskPrompt
+ */
+
 import { select } from '@inquirer/prompts'
 
 import { cliTheme } from './theme.lib.js'
@@ -16,8 +22,8 @@ import { cliTheme } from './theme.lib.js'
 export default async function selectTaskPrompt(choices, escapeSignal, tabSignal) {
   return select(
     {
-      message: 'Select a task:',
       choices,
+      message: 'Select a task:',
       theme: cliTheme('Scenarios menu')
     },
     { signal: AbortSignal.any([escapeSignal, tabSignal]) }

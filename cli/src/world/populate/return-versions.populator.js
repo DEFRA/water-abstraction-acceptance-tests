@@ -1,14 +1,20 @@
+/**
+ * Populates the licences with their return versions
+ *
+ * @module ReturnVersionsPopulator
+ */
+
 import { isQuarterlyReturnSubmissions } from 'water-abstraction-engine/lib/dates.lib.js'
 
-import { addDays } from '../../../../tests/support/helpers/date.helpers.js'
 import buildReturnVersionEntity from '../../../../tests/support/entities/return-version.entity.js'
-import { licenceEndDate } from './helpers/end-dates.helpers.js'
-import { purposesOn } from './helpers/purposes.helpers.js'
 import returnRequirementData from '../../../../tests/support/data/return-requirement.data.js'
 import returnRequirementPointData from '../../../../tests/support/data/return-requirement-point.data.js'
 import returnRequirementPurposeData from '../../../../tests/support/data/return-requirement-purpose.data.js'
+import { addDays } from '../../../../tests/support/helpers/date.helpers.js'
 import { users } from '../../../../tests/support/default-values.js'
+import { licenceEndDate } from './helpers/end-dates.helpers.js'
 import { licenceVersionChange, licenceVersionOn } from './helpers/licence-versions.helpers.js'
+import { purposesOn } from './helpers/purposes.helpers.js'
 
 // The date the import of return versions from NALD was removed. Return versions that start on or after it were set up
 // in the service instead.

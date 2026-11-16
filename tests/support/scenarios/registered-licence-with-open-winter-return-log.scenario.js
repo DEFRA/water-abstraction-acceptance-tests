@@ -1,7 +1,7 @@
 import licenceWithOpenWinterReturnLog from './licence-with-open-winter-return-log.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { regions } from '../default-values.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Registered licence with an open return log (winter cycle)'
 export const description =

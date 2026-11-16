@@ -1,3 +1,9 @@
+/**
+ * Helpers for ending a licence
+ *
+ * @module EndDatesHelpers
+ */
+
 import LicenceModel from 'water-abstraction-engine/models/licence.model.js'
 
 import { formatDateToIso, relativeToToday } from '../../../../../tests/support/helpers/date.helpers.js'

@@ -1,6 +1,6 @@
 import { monitoringStations } from '../../../support/default-values.js'
-import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 
 const monitoringStation = monitoringStations.SECOND
 

@@ -1,9 +1,9 @@
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Remove a bill and a licence from an annual bill run (internal)', () => {
   test.describe.configure({ mode: 'serial' })
@@ -52,8 +52,8 @@ test.describe('Remove a bill and a licence from an annual bill run (internal)', 
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: regions.WALES.displayName, exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: regions.WALES.displayName })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Annual' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText(`${regions.WALES.displayName} annual`)

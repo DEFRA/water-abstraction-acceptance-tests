@@ -1,3 +1,9 @@
+/**
+ * Helpers for converting quantities between units
+ *
+ * @module ConversionHelpers
+ */
+
 import Big from 'big.js'
 
 const MAX_DECIMAL = 6
