@@ -54,9 +54,9 @@ export default function (licenceEntity, dates) {
 
   return {
     ...chargeVersionEntity,
+    billRun,
     bill,
     billLicence,
-    billRun,
     transaction
   }
 }

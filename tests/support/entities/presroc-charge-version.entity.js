@@ -35,7 +35,7 @@ export default function (company, address, licence, licenceVersionPurpose) {
 
   return {
     ...billingAccountEntity,
-    chargeReference,
-    chargeVersion
+    chargeVersion,
+    chargeReference
   }
 }

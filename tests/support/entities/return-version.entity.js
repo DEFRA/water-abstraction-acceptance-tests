@@ -24,9 +24,9 @@ export default function (licence, licenceVersionPurpose, point) {
   const returnRequirementPurpose = returnRequirementPurposeData(returnRequirement, licenceVersionPurpose)
 
   return {
+    returnVersion,
     returnRequirement,
     returnRequirementPoint,
-    returnRequirementPurpose,
-    returnVersion
+    returnRequirementPurpose
   }
 }
