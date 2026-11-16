@@ -1,7 +1,7 @@
 import licenceWithAllReturnLogStatuses from './licence-with-all-return-log-statuses.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { regions } from '../default-values.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Registered licence with all return log statuses'
 export const description = 'Registered licence with return logs covering all possible statuses'

@@ -1,3 +1,9 @@
+/**
+ * Builds a billing account entity
+ *
+ * @module BillingAccountEntity
+ */
+
 import billingAccountAddressData from '../data/billing-account-address.data.js'
 import billingAccountData from '../data/billing-account.data.js'
 

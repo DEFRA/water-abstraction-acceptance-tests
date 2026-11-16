@@ -23,7 +23,7 @@ A scenario file (`tests/support/scenarios/*.scenario.js`) composes one or more d
 
 - Scenario files compose data explicitly: call each `*.data.js` builder yourself and thread the results into other builders as arguments. Never give a builder parameter a default that calls another builder internally (e.g. `purposes = [purposeData()]`) — that hides the dependency graph.
 - Default parameter values for a builder live in the builder's own signature (`tests/support/data/*.data.js`), not re-declared in the scenario file. A scenario overrides a default by passing an explicit argument at the call site, not by relocating the default.
-- Don't alphabetize `const` declarations or return-object keys in scenario/data files — the API processes entities in insertion order, so the sequence must follow dependency order (parent entities before the children that reference them). See `alanisms.md` rule 1 for the general alphabetical-keys rule and this exception to it.
+- Don't alphabetize `const` declarations or return-object keys in scenario/data/entity files — the API processes entities in insertion order, so the sequence must follow dependency order (parent entities before the children that reference them). `eslint.config.js` turns off the alanisms key sorting for these files.
 
 ## Data file return shape
 

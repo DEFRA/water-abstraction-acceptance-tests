@@ -1,8 +1,8 @@
 import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { groups, regions } from '../default-values.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Registered licence with a monitoring station (untagged)'
 export const description = 'Registered licence with no tag to a monitoring station'

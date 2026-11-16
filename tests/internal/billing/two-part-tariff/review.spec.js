@@ -1,10 +1,10 @@
-import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
+import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import { tableRow } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { tableRow } from '../../../support/helpers/govuk.helpers.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 const region = regions.SOUTH_WEST
 
@@ -50,7 +50,7 @@ test.describe('Two-part tariff review (internal)', () => {
     await page.getByRole('button', { name: 'Create a bill run' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the bill run type')
-    await page.getByRole('radio', { name: 'Two-part tariff', exact: true }).check()
+    await page.getByRole('radio', { exact: true, name: 'Two-part tariff' }).check()
     await page.getByRole('button', { name: 'Continue' }).click()
 
     await expect(page.locator('h1')).toContainText('Select the region')
@@ -73,7 +73,7 @@ test.describe('Two-part tariff review (internal)', () => {
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: region.displayName, exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: region.displayName })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText('Review licences')
@@ -101,12 +101,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with two returns checking the matched returns and allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a single charge reference but two charge elements, only one of which is 2pt. It also has two returns, one 2pt and one not, fully allocated without issues.
 
 **Acceptance Criteria**
 - No issues are reported on the licence, the returns or the charging information.
-- The return fully allocates to the charge element.`
+- The return fully allocates to the charge element.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -208,13 +208,13 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with an aggregate checking the matched returns, the element issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. The charge reference has an aggregate value and it has one return that matches.
 
 **Acceptance Criteria**
 - The licence is flagged with the aggregate issue.
 - The return still fully allocates to the charge element.
-- The aggregate and charge adjustment factors can be amended on the charge reference.`
+- The aggregate and charge adjustment factors can be amended on the charge reference.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -342,12 +342,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with a late return checking the matched returns, the returns issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. It has one return however this was received late.
 
 **Acceptance Criteria**
 - The licence is flagged with the returns received late issue.
-- The return still fully allocates to the charge element.`
+- The return still fully allocates to the charge element.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -433,11 +433,11 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with a nil return checking the matched returns and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. It has one matching nil return.
 
 **Acceptance Criteria**
-- A nil return allocates nothing and raises no issues, so the licence is ready with no issues.`
+- A nil return allocates nothing and raises no issues, so the licence is ready with no issues.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -518,12 +518,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with no matching returns checking the charge information',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. Its only return is not two-part tariff, so the engine finds no matching returns.
 
 **Acceptance Criteria**
 - The licence is flagged with the unable to match return issue.
-- With no matching returns the charge element's full authorised volume is billable.`
+- With no matching returns the charge element's full authorised volume is billable.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -591,12 +591,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with over-abstracted returns checking the matched returns and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version, a single charge reference and two charge elements. The return matching the first element is over-abstracted; the return matching the second is over-abstracted and abstracts outside the charge period.
 
 **Acceptance Criteria**
 - The licence is flagged with the over abstraction and abstraction outside period issues.
-- An over-abstracted return still only allocates up to the lower of the charge element and charge reference volume, not the over-abstracted amount.`
+- An over-abstracted return still only allocates up to the lower of the charge element and charge reference volume, not the over-abstracted amount.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -706,12 +706,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with an overlap of charge dates checking the matched returns, the element issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. It has one matching return with a submitted line straddling the charge period.
 
 **Acceptance Criteria**
 - The licence is flagged with the overlap of charge dates issue.
-- The return still fully allocates to the charge element.`
+- The return still fully allocates to the charge element.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -796,12 +796,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with a received return checking the matched returns, the returns issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. It has one matching return with a status of "received".
 
 **Acceptance Criteria**
 - The licence is flagged with the returns received but not processed issue.
-- A received return is not allocated, so it is also flagged with the over abstraction issue.`
+- A received return is not allocated, so it is also flagged with the over abstraction issue.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -898,12 +898,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with a return split over charge references checking the matched return, the return issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version that has two charge references, each with one charge element sharing the same purpose but a different abstraction period. Its single return matches both charge references.
 
 **Acceptance Criteria**
 - The licence is flagged with the return split over charge references issue.
-- The return still fully allocates, split across the two charge references.`
+- The return still fully allocates, split across the two charge references.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -991,12 +991,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with a return straddling two charge elements checking the matched return and the over-authorised warning',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version, a single charge reference and two charge elements covering different parts of the year. Its only return is two-part tariff and its volume straddles both elements, fully allocating to each.
 
 **Acceptance Criteria**
 - The return fully allocates across both charge elements, so the licence is ready with no issues.
-- Reducing the charge reference's authorised volume below the sum of the allocated elements shows the over-authorised warning.`
+- Reducing the charge reference's authorised volume below the sum of the allocated elements shows the over-authorised warning.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -1135,12 +1135,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with a return under query checking the matched returns, the returns issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with a similar licence to the simplest test case, with one applicable charge version, a single charge reference and one charge element. It has one matching return which is under query.
 
 **Acceptance Criteria**
 - The licence is flagged with the checking query issue.
-- A return under query is not allocated, so it is also flagged with the over abstraction issue.`
+- A return under query is not allocated, so it is also flagged with the over abstraction issue.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -1235,12 +1235,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with two charge references checking the matched returns, the returns issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version that has two charge references, each with one charge element. Both elements have a matching return with a status of "due".
 
 **Acceptance Criteria**
 - The licence is flagged with the "No returns received" issue.
-- The engine allocates only up to the lower of the charge reference volume and the charge element's authorised volume, proven by swapping which is lower between the two references.`
+- The engine allocates only up to the lower of the charge reference volume and the charge element's authorised volume, proven by swapping which is lower between the two references.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -1305,12 +1305,12 @@ test.describe('Two-part tariff review (internal)', () => {
     'navigates through all the review pages for a licence with an unmatched return checking the unmatched return, the return issues and the allocated quantities',
     {
       annotation: {
-        type: 'tpt-review',
         description: `A test case with one applicable charge version, a single charge reference and one charge element. Its only return is two-part tariff but has a different purpose to the charge element, so the engine cannot match it.
 
 **Acceptance Criteria**
 - The charge element is flagged unable to match a return and the unmatched return is flagged over abstraction, so the licence has multiple issues.
-- With no matching return the charge element's full authorised volume is billable and the unmatched return allocates nothing.`
+- With no matching return the charge element's full authorised volume is billable and the unmatched return allocates nothing.`,
+        type: 'tpt-review'
       }
     },
     async ({ page }) => {
@@ -1390,15 +1390,15 @@ test.describe('Two-part tariff review (internal)', () => {
   test(
     'navigates through all the review pages for a licence with no issues, changing the billable returns volume, previewing the charge, marking the licence as review, marking progress and finally removing the licence from the bill run',
     {
-      tag: '@supplementary-billing',
       annotation: {
-        type: 'tpt-review',
         description: `The simplest test case with a single charge element and matching return, fully allocated without issues.
 
 **Acceptance Criteria**
 - No issues are reported on the licence, the returns or the charging information.
-- The return fully allocates to the charge element.`
-      }
+- The return fully allocates to the charge element.`,
+        type: 'tpt-review'
+      },
+      tag: '@supplementary-billing'
     },
     async ({ page }) => {
       const { billingAccount, company, licence, returnLogs } = _reviewLicence(scenario, 13)

@@ -1,6 +1,6 @@
-import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { users } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
+import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 
 test.describe('Change user permissions (internal)', () => {
   let user

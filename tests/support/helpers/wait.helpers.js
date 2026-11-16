@@ -1,4 +1,10 @@
 /**
+ * Helpers for waiting on values that only change on the server
+ *
+ * @module WaitHelpers
+ */
+
+/**
  * Reloads the page until the given locator's text starts with the expected value, or the retries are exhausted
  *
  * Some statuses (for example, a notification's send status) are only updated on the server and never pushed to the

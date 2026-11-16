@@ -1,3 +1,9 @@
+/**
+ * Playwright config for the acceptance tests
+ *
+ * @module PlaywrightConfig
+ */
+
 import { defineConfig } from '@playwright/test'
 
 import config from './tests/config.js'
@@ -17,10 +23,10 @@ export default defineConfig({
   timeout: 60 * 1000,
   use: {
     baseURL: config.baseUrl,
-    viewport: null,
     launchOptions: {
       args: ['--start-maximized']
     },
-    trace: 'on-first-retry'
+    trace: 'on-first-retry',
+    viewport: null
   }
 })

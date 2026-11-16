@@ -1,8 +1,8 @@
 import { generateExternalEmailAddress } from 'water-abstraction-engine/test/generators.js'
 
-import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
 import { password } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
+import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
 
 test.describe('User registration (external)', () => {
   test('can register a new user', async ({ page, externalUrl, lastNotification }) => {

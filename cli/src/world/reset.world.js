@@ -1,3 +1,9 @@
+/**
+ * Destroys then creates the world
+ *
+ * @module ResetWorld
+ */
+
 import createWorld from './create.world.js'
 import destroyWorld from './destroy.world.js'
 

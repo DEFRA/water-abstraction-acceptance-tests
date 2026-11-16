@@ -1,7 +1,7 @@
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-import { purposeDescription } from '../helpers/purpose.helpers.js'
 import { determineReturnCycleStartDate, formatDateToIso } from '../helpers/date.helpers.js'
+import { purposeDescription } from '../helpers/purpose.helpers.js'
 
 export default function (licence, returnRequirement, returnRequirementPurposes, points, period, region) {
   const returnLogId = generateUUID()

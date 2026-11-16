@@ -1,8 +1,8 @@
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { reloadUntilGone, reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Annual bill run (internal)', () => {
@@ -45,8 +45,8 @@ test.describe('Annual bill run (internal)', () => {
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: regions.ANGLIAN.displayName, exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: regions.ANGLIAN.displayName })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Annual' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText(`${regions.ANGLIAN.displayName} annual`)
@@ -89,8 +89,8 @@ test.describe('Annual bill run (internal)', () => {
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: regions.ANGLIAN.displayName, exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: regions.ANGLIAN.displayName })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Annual' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText(`${regions.ANGLIAN.displayName} annual`)
@@ -114,8 +114,8 @@ test.describe('Annual bill run (internal)', () => {
 
     await expect(page.locator('h1')).toContainText('Bill runs')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: regions.ANGLIAN.displayName, exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: regions.ANGLIAN.displayName })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Annual' })).toBeVisible()
     await expect(billRunRow.locator('.govuk-tag')).toContainText('sent')
   })
 })

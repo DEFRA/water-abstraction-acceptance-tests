@@ -1,3 +1,9 @@
+/**
+ * Builds the key a spec and its scenario are saved under in world.json
+ *
+ * @module KeyWorld
+ */
+
 import path from 'path'
 
 /**

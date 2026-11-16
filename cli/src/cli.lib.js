@@ -1,3 +1,9 @@
+/**
+ * Helpers shared by the CLI menus, such as exiting cleanly and handling keypresses
+ *
+ * @module CliLib
+ */
+
 import { logWarning } from './log.lib.js'
 
 /**

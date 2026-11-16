@@ -30,7 +30,7 @@ He reviews most PRs raised by the team, looking for consistency with our existin
 
 ### Alanisms
 
-See [`../skills/standards/alanisms.md`](../skills/standards/alanisms.md). This file provides examples of how Alan expects code to be written.
+The alanisms are enforced by the `local/alanisms` ESLint rule from the shared engine config. Run `npx eslint .` to check them.
 
 ## Trigger
 

@@ -1,3 +1,9 @@
+/**
+ * Moves the end dates of the licences that have ended
+ *
+ * @module EndDatesPopulator
+ */
+
 import { formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
 
 // How many years after they started the licences that have ended were held for, by how they ended. Each licence takes

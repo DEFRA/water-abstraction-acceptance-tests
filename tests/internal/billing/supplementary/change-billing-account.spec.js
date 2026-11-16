@@ -1,7 +1,7 @@
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe(
   'Change billing account in a previous financial year (internal)',
@@ -112,7 +112,7 @@ test.describe(
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Supplementary', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Supplementary' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')

@@ -1,9 +1,14 @@
+/**
+ * Populates the licences with their billing accounts and charge information
+ *
+ * @module ChargingPopulator
+ */
+
 import ChangeReasonHelper from 'water-abstraction-engine/test/helpers/change-reason.helper.js'
 import ChargeCategoryHelper from 'water-abstraction-engine/test/helpers/charge-category.helper.js'
 import SupportedSourceHelper from 'water-abstraction-engine/test/helpers/supported-source.helper.js'
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
-import { addDays } from '../../../../tests/support/helpers/date.helpers.js'
 import addressData from '../../../../tests/support/data/address.data.js'
 import billingAccountAddressData from '../../../../tests/support/data/billing-account-address.data.js'
 import buildBillingAccountEntity from '../../../../tests/support/entities/billing-account.entity.js'
@@ -12,11 +17,12 @@ import chargeReferenceData from '../../../../tests/support/data/charge-reference
 import chargeReferencePresrocData from '../../../../tests/support/data/charge-reference-presroc.data.js'
 import chargeVersionData from '../../../../tests/support/data/charge-version.data.js'
 import licenceAgreementData from '../../../../tests/support/data/licence-agreement.data.js'
-import { purposesOn } from './helpers/purposes.helpers.js'
-import { regionOf } from './helpers/regions.helpers.js'
+import { addDays } from '../../../../tests/support/helpers/date.helpers.js'
 import { srocStartDate } from '../../../../tests/support/default-values.js'
 import { licenceEndDate, licenceModel } from './helpers/end-dates.helpers.js'
 import { licenceVersionChange, licenceVersionOn } from './helpers/licence-versions.helpers.js'
+import { purposesOn } from './helpers/purposes.helpers.js'
+import { regionOf } from './helpers/regions.helpers.js'
 
 /**
  * Charge the licences
@@ -338,6 +344,7 @@ function _varySrocReferences(licenceEntities) {
   })
 
   let supportedSourceCount = 0
+
   const nextSupportedSource = {}
 
   for (let i = 0; i < srocReferences.length; i++) {

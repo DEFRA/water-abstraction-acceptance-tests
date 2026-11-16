@@ -1,3 +1,9 @@
+/**
+ * Puts some of the licences in the workflow
+ *
+ * @module WorkflowsPopulator
+ */
+
 import ChangeReasonHelper from 'water-abstraction-engine/test/helpers/change-reason.helper.js'
 import ChargeCategoryHelper from 'water-abstraction-engine/test/helpers/charge-category.helper.js'
 import PurposeHelper from 'water-abstraction-engine/test/helpers/purpose.helper.js'
@@ -5,11 +11,11 @@ import PurposeHelper from 'water-abstraction-engine/test/helpers/purpose.helper.
 import chargeElementData from '../../../../tests/support/data/charge-element.data.js'
 import chargeReferenceData from '../../../../tests/support/data/charge-reference.data.js'
 import chargeVersionData from '../../../../tests/support/data/charge-version.data.js'
+import workflowData from '../../../../tests/support/data/workflow.data.js'
+import { srocStartDate } from '../../../../tests/support/default-values.js'
 import { licenceModel } from './helpers/end-dates.helpers.js'
 import { purposesOn } from './helpers/purposes.helpers.js'
 import { regionOf } from './helpers/regions.helpers.js'
-import { srocStartDate } from '../../../../tests/support/default-values.js'
-import workflowData from '../../../../tests/support/data/workflow.data.js'
 
 /**
  * Put the licences in the workflow

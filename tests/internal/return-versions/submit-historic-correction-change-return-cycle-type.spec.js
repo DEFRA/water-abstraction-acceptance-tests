@@ -23,20 +23,20 @@ test.describe('Submit historic correction changing return cycle type on new retu
     user = scenario.user
 
     const expectedReturnLogs = {
+      existingCurrent: { ...returnLogDateDetails(returnLogs[1]), status: 'void' },
+      existingPrevious: { ...returnLogDateDetails(returnLogs[0]), status: 'void' },
       newSummer: returnLogDateDetails({
-        startDate: new Date(`${startYear - 1}-11-01`),
-        endDate: new Date(`${startYear}-10-31`)
+        endDate: new Date(`${startYear}-10-31`),
+        startDate: new Date(`${startYear - 1}-11-01`)
       }),
       splitSummer: returnLogDateDetails({
-        startDate: new Date(`${startYear - 1}-09-01`),
-        endDate: new Date(`${startYear - 1}-10-31`)
+        endDate: new Date(`${startYear - 1}-10-31`),
+        startDate: new Date(`${startYear - 1}-09-01`)
       }),
       splitWinter: returnLogDateDetails({
-        startDate: new Date(`${startYear - 1}-04-01`),
-        endDate: new Date(`${startYear - 1}-08-31`)
-      }),
-      existingCurrent: { ...returnLogDateDetails(returnLogs[1]), status: 'void' },
-      existingPrevious: { ...returnLogDateDetails(returnLogs[0]), status: 'void' }
+        endDate: new Date(`${startYear - 1}-08-31`),
+        startDate: new Date(`${startYear - 1}-04-01`)
+      })
     }
 
     // The summer cycle runs 1 Nov to 31 Oct, whereas the winter cycle (used to seed the data) runs 1 Apr to 31 Mar.
@@ -56,8 +56,8 @@ test.describe('Submit historic correction changing return cycle type on new retu
     if (summerStartYear === startYear) {
       orderedReturnLogs.unshift(
         returnLogDateDetails({
-          startDate: currentSummerReturnCycle.startDate,
-          endDate: currentSummerReturnCycle.endDate
+          endDate: currentSummerReturnCycle.endDate,
+          startDate: currentSummerReturnCycle.startDate
         })
       )
     }

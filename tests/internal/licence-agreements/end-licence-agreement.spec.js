@@ -4,12 +4,12 @@ import { expect, test } from '../../support/fixtures.js'
 test.describe(
   'End licence agreement journey (internal)',
   {
-    tag: '@supplementary-billing',
     annotation: {
-      type: 'description',
       description:
-        'When a licence agreement exists for a licence, and it is ended, the licence should not be flagged for supplementary billing. '
-    }
+        'When a licence agreement exists for a licence, and it is ended, the licence should not be flagged for supplementary billing. ',
+      type: 'description'
+    },
+    tag: '@supplementary-billing'
   },
   () => {
     let licence

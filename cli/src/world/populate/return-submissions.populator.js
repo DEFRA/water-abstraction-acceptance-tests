@@ -1,13 +1,19 @@
+/**
+ * Populates the completed return logs with their submissions and lines
+ *
+ * @module ReturnSubmissionsPopulator
+ */
+
 import { daysFromPeriod, monthsFromPeriod, weeksFromPeriod } from 'water-abstraction-engine/lib/dates.lib.js'
 
 import buildReturnSubmissionEntity from '../../../../tests/support/entities/return-submission.entity.js'
 import companyContactData from '../../../../tests/support/data/company-contact.data.js'
 import contactData from '../../../../tests/support/data/contact.data.js'
+import returnSubmissionLineData from '../../../../tests/support/data/return-submission-line.data.js'
+import { addDays, formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
+import { users } from '../../../../tests/support/default-values.js'
 import { licenceVersionOn } from './helpers/licence-versions.helpers.js'
 import { purposesOn } from './helpers/purposes.helpers.js'
-import returnSubmissionLineData from '../../../../tests/support/data/return-submission-line.data.js'
-import { users } from '../../../../tests/support/default-values.js'
-import { addDays, formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'
 
 // Completed return logs that end on or after this, and have a received date, were submitted in the service. The rest
 // were completed in NALD, and their submissions imported from it.
@@ -183,6 +189,7 @@ function _submittedInService(submitted) {
   for (let i = 0; i < inService.length; i++) {
     const { returnLog, returnSubmission } = inService[i]
     const internal = i % INTERNAL_EVERY === INTERNAL_EVERY - 1
+
     returnSubmission.userId = internal ? users.BILLING_AND_DATA.username : null
     returnSubmission.userType = internal ? 'internal' : 'external'
     returnSubmission.metadata = {}

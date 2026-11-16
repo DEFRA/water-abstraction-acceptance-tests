@@ -1,13 +1,19 @@
+/**
+ * Populates the licences with their return logs
+ *
+ * @module ReturnLogsPopulator
+ */
+
 import GenerateReturnLogsService from 'water-abstraction-engine/services/return-logs/generate-return-logs.service.js'
-import { determineReturnsPeriods } from 'water-abstraction-engine/lib/return-periods.lib.js'
 import { data as primaryPurposes } from 'water-abstraction-engine/db/seeds/data/primary-purposes.js'
 import { data as purposes } from 'water-abstraction-engine/db/seeds/data/purposes.js'
-import { data as secondaryPurposes } from 'water-abstraction-engine/db/seeds/data/secondary-purposes.js'
 import {
   determineCycleDueDate,
   determineCycleEndDate,
   determineCycleStartDate
 } from 'water-abstraction-engine/lib/return-cycle-dates.lib.js'
+import { determineReturnsPeriods } from 'water-abstraction-engine/lib/return-periods.lib.js'
+import { data as secondaryPurposes } from 'water-abstraction-engine/db/seeds/data/secondary-purposes.js'
 
 import returnLogData from '../../../../tests/support/data/return-log.data.js'
 import { addDays, formatDateToIso, today } from '../../../../tests/support/helpers/date.helpers.js'

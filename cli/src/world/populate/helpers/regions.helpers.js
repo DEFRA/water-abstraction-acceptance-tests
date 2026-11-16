@@ -1,3 +1,9 @@
+/**
+ * How many licences to populate each region with, and the region a licence is in
+ *
+ * @module RegionsHelpers
+ */
+
 import { regions } from '../../../../../tests/support/default-values.js'
 
 /**

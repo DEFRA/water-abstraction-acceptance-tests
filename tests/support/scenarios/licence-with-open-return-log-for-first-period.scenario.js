@@ -1,10 +1,10 @@
 import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
+import returnLogData from '../data/return-log.data.js'
 import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { compareDates } from '../helpers/date.helpers.js'
 import { regions } from '../default-values.js'
-import returnLogData from '../data/return-log.data.js'
 
 export const title = 'Licence with an open return log (first period)'
 export const description = 'Licence with an open return log for the first return period with no due date set'

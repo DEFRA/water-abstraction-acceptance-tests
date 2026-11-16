@@ -2,8 +2,8 @@ import buildBillingAccountEntity from '../entities/billing-account.entity.js'
 import buildChargeVersionEntity from '../entities/charge-version.entity.js'
 import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import { regions } from '../default-values.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Licences for annual bill run removals'
 export const description =

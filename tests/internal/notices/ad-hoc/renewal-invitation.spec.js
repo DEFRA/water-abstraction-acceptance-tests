@@ -48,6 +48,7 @@ test.describe('Ad-hoc renewal invitation journey (internal)', () => {
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(1)
 
     const userRow = page.getByRole('row').filter({ hasText: primaryUser.username })
+
     await expect(userRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
     await expect(userRow.locator('[data-test^="recipient-method"]')).toContainText('Email - primary user')
     await expect(userRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')

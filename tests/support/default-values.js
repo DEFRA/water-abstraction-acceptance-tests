@@ -1,7 +1,13 @@
+/**
+ * Default values shared by the scenarios and data files, such as regions and user groups
+ *
+ * @module DefaultValues
+ */
+
 import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
-import { naldRegions } from 'water-abstraction-engine/lib/static-lookups.lib.js'
 import regionHelper from 'water-abstraction-engine/test/helpers/region.helper.js'
 import userHelper from 'water-abstraction-engine/test/helpers/user.helper.js'
+import { naldRegions } from 'water-abstraction-engine/lib/static-lookups.lib.js'
 
 import config from '../config.js'
 

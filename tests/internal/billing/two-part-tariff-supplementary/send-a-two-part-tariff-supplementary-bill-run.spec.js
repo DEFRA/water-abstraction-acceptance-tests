@@ -1,10 +1,10 @@
-import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
+import { calculatedDates } from '../../../support/helpers/calculated-dates.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { summaryValue } from '../../../support/helpers/govuk.helpers.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Send a two-part tariff supplementary bill run (internal)', { tag: ['@supplementary-billing'] }, () => {
   let endYear
@@ -33,12 +33,12 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
     'creates an SROC two-part tariff supplementary bill run and once built completes the review, marks it as ready, and sends it',
     {
       annotation: {
-        type: 'tpt-supplementary-journey',
         description: `A licence that is current and not in workflow, has one applicable charge version with a single charge reference and two two-part tariff charge elements, and two completed returns matching them. The licence also has a sent two-part tariff bill run for the same year, which is what flags it for the next two-part tariff supplementary bill run.
 
 **Acceptance Criteria**
 - The licence appears in the review with a 'ready' status, having no issues.
-- Continuing the bill run marks it as ready, and it can then be sent.`
+- Continuing the bill run marks it as ready, and it can then be sent.`,
+        type: 'tpt-supplementary-journey'
       }
     },
     async ({ page }) => {
@@ -72,7 +72,7 @@ test.describe('Send a two-part tariff supplementary bill run (internal)', { tag:
 
       await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'review')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-      await expect(billRunRow.getByRole('cell', { name: regions.SOUTHERN.displayName, exact: true })).toBeVisible()
+      await expect(billRunRow.getByRole('cell', { exact: true, name: regions.SOUTHERN.displayName })).toBeVisible()
       await billRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText('Review licences')

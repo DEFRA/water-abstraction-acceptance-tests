@@ -1,3 +1,9 @@
+/**
+ * Creates the world by seeding every scenario the specs ask for
+ *
+ * @module CreateWorld
+ */
+
 import { faker } from 'water-abstraction-engine/test/faker.js'
 
 import dataWorld from './data.world.js'
