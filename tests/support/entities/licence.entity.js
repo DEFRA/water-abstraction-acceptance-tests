@@ -51,8 +51,8 @@ function _company() {
   const companyAddress = companyAddressData(company, address)
 
   return {
-    address,
     company,
+    address,
     companyAddress
   }
 }
@@ -76,11 +76,11 @@ function _licence(company, address) {
   const licenceVersion = licenceVersionData(licence, company, address)
 
   return {
-    licence,
-    licenceDocument,
+    permitLicence,
     licenceDocumentHeader,
+    licenceDocument,
     licenceDocumentRole,
-    licenceVersion,
-    permitLicence
+    licence,
+    licenceVersion
   }
 }

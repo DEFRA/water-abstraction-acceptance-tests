@@ -171,7 +171,7 @@ await page.getByRole('button', { name: 'Continue' }).click()
 
 ## Alanisms
 
-See `alanisms.md` for non-negotiable code conventions that cannot be enforced by linting.
+The alanisms are enforced by the `local/alanisms` ESLint rule from the shared engine config, so `npx eslint .` checks them. Scenario, data and entity files are exempt from key sorting because they follow dependency order.
 
 ## Quality gates
 

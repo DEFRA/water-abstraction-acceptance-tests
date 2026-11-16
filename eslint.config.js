@@ -48,6 +48,13 @@ export default [
       'local/alanisms': ['error', { declarations: false, moduleJsdoc: false, objectKeys: false }]
     }
   },
+  // Entities return their records in the same dependency order as scenarios, because scenarios spread them in
+  {
+    files: ['tests/support/entities/**/*'],
+    rules: {
+      'local/alanisms': ['error', { objectKeys: false }]
+    }
+  },
   // The load service lists tables in the order they must be inserted, so its keys are not sorted
   {
     files: ['tests/support/load/load.service.js'],
