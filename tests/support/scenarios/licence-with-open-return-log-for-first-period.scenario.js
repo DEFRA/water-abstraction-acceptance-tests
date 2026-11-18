@@ -32,6 +32,11 @@ export default function () {
     licenceEntity.point
   )
 
+  // The journey only selects recipients for return logs flagged as summer when the first period is the summer cycle (and
+  // vice versa), so the return requirement, and therefore the return logs seeded from it, must match. The return log's
+  // `isSummer` metadata and return cycle are both derived from this flag when each return log is built.
+  returnVersionEntity.returnRequirement.summer = firstReturnPeriod.name === 'summer'
+
   const periods = _periods(firstPeriod, dates)
   const returnLogs = periods.map((period) => {
     return returnLogData(
