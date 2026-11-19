@@ -1,5 +1,11 @@
-import { generateExternalEmailAddress } from 'water-abstraction-engine/test/generators.js'
+/**
+ * Seeds returns notices and abstraction alerts sent over the last year
+ *
+ * @module NoticesPopulator
+ */
+
 import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
+import { generateExternalEmailAddress } from 'water-abstraction-engine/test/generators.js'
 import { NoticeJourney, NoticeType } from 'water-abstraction-engine/lib/static-lookups.lib.js'
 
 import abstractionAlertNotificationsData from '../../../../tests/support/data/abstraction-alert-notifications.data.js'

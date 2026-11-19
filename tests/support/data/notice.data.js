@@ -1,7 +1,7 @@
 import CreateNoticePresenter from 'water-abstraction-engine/presenters/notices/setup/create-notice.presenter.js'
-import { NoticeTypes } from 'water-abstraction-engine/lib/static-lookups.lib.js'
 import { faker } from 'water-abstraction-engine/test/faker.js'
 import { generateGovUKEmail, generateUUID } from 'water-abstraction-engine/test/generators.js'
+import { NoticeTypes } from 'water-abstraction-engine/lib/static-lookups.lib.js'
 
 // The characters the service makes a notice's reference code from
 const REFERENCE_CODE_CHARACTERS = 'ABCDEFGHJKLMNPQRTUVWXYZ0123456789'
