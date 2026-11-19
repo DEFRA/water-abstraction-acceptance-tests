@@ -29,9 +29,9 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
     'creating new SROC charge version by copying existing presroc, and add new billing account with FAO',
     {
       annotation: {
-        type: 'description',
         description:
-          'Transfers a presroc licence to a new billing account (new address, FAO contact) reusing its existing charge information, then approves the resulting charge version via the review flow and confirms the licence is flagged for the next supplementary bill run on the old charge scheme.'
+          'Transfers a presroc licence to a new billing account (new address, FAO contact) reusing its existing charge information, then approves the resulting charge version via the review flow and confirms the licence is flagged for the next supplementary bill run on the old charge scheme.',
+        type: 'description'
       }
     },
     async ({ page }) => {
@@ -93,6 +93,7 @@ test.describe('Presroc licence transfer journey (internal)', { tag: ['@supplemen
       ).toBeVisible()
       await expect(page.locator('.govuk-summary-list__value', { hasText: formatLongDate(new Date()) })).toBeVisible()
       const annualQuantity = convertCubicMetresToMegalitres(licenceVersionPurpose.annualQuantity)
+
       await expect(
         page.locator('.govuk-summary-list__value', { hasText: `${annualQuantity}ML authorised` })
       ).toBeVisible()

@@ -1,5 +1,5 @@
-import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 import { expect, test } from '../../support/fixtures.js'
+import { summaryRow } from '../../support/helpers/govuk.helpers.js'
 
 test.describe('Submit a nil return (internal)', () => {
   let returnLog

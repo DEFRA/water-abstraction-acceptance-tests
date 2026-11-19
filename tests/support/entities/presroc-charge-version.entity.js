@@ -1,3 +1,9 @@
+/**
+ * Builds a presroc charge version entity
+ *
+ * @module PresrocChargeVersionEntity
+ */
+
 import chargeReferenceData from '../data/charge-reference-presroc.data.js'
 import chargeVersionData from '../data/charge-version.data.js'
 import licenceAgreementData from '../data/licence-agreement.data.js'
@@ -28,6 +34,7 @@ export default function (licenceEntity, billingAccountEntity, region) {
   const chargeReference = chargeReferenceData(chargeVersion, licenceVersionPurpose)
 
   let licenceAgreement = {}
+
   if (chargeReference.section127Agreement) {
     licenceAgreement = licenceAgreementData(licence)
   }

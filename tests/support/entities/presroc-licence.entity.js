@@ -1,6 +1,12 @@
+/**
+ * Builds a presroc licence entity
+ *
+ * @module PresrocLicenceEntity
+ */
+
 import buildLicenceEntity from './licence.entity.js'
-import { srocStartDate } from '../default-values.js'
 import { formatDateToIso, previousYears } from '../helpers/date.helpers.js'
+import { srocStartDate } from '../default-values.js'
 
 /**
  * Builds a pre sroc licence in its entirety: the licence itself, its licence holder (company and address), permit licence,

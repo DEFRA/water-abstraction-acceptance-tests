@@ -1,3 +1,9 @@
+/**
+ * Builds the sent presroc bill runs for a licence
+ *
+ * @module PresrocBillRunsEntities
+ */
+
 import { generateUUID } from 'water-abstraction-engine/test/generators.js'
 
 import billData from '../data/bill.data.js'

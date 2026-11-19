@@ -1,7 +1,13 @@
+/**
+ * The CLI menu for picking and running a task
+ *
+ * @module TasksMenu
+ */
+
 import destroyWorld from './world/destroy.world.js'
-import { exit } from './cli.lib.js'
 import resetWorld from './world/reset.world.js'
 import selectTaskPrompt from './select-task.prompt.js'
+import { exit } from './cli.lib.js'
 import { logError, printBanner, withSpinner } from './log.lib.js'
 
 /**

@@ -1,6 +1,12 @@
-import { fileURLToPath } from 'node:url'
+/**
+ * Writes the world's scenario data to world.json
+ *
+ * @module SaveWorld
+ */
+
 import fs from 'node:fs/promises'
 import path from 'path'
+import { fileURLToPath } from 'node:url'
 
 const WORLD_FILE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'world.json')
 

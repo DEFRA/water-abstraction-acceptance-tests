@@ -1,3 +1,9 @@
+/**
+ * Generates the extra data that populates the world when it is created from the CLI
+ *
+ * @module PopulateWorld
+ */
+
 import abstraction from './populate/abstraction.populator.js'
 import charging from './populate/charging.populator.js'
 import companyAddresses from './populate/company-addresses.populator.js'
@@ -5,13 +11,13 @@ import endDates from './populate/end-dates.populator.js'
 import laterLicenceVersions from './populate/later-licence-versions.populator.js'
 import licenceHolders from './populate/licence-holders.populator.js'
 import licences from './populate/licences.populator.js'
-import { mergeByKey } from '../../../tests/support/helpers/scenario.helpers.js'
 import monitoringStations from './populate/monitoring-stations.populator.js'
 import notices from './populate/notices.populator.js'
 import returnLogs from './populate/return-logs.populator.js'
 import returnSubmissions from './populate/return-submissions.populator.js'
 import returnVersions from './populate/return-versions.populator.js'
 import workflows from './populate/workflows.populator.js'
+import { mergeByKey } from '../../../tests/support/helpers/scenario.helpers.js'
 
 /**
  * Generate the data that populates the world when it is created from the CLI, on top of what the specs ask for

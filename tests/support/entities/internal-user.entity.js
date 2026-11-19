@@ -1,3 +1,9 @@
+/**
+ * Builds an internal user entity
+ *
+ * @module InternalUserEntity
+ */
+
 import userData from '../data/user.data.js'
 import userGroupData from '../data/user-group.data.js'
 import { applications, groups } from '../default-values.js'

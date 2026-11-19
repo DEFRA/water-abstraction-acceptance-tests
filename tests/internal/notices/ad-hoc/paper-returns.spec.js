@@ -3,6 +3,7 @@ import { expect, test } from '../../../support/fixtures.js'
 test.describe('Ad-hoc Paper returns journey (internal)', () => {
   let licence
   let user
+
   test.beforeAll(async ({ world }) => {
     const scenario = world('licence-with-open-winter-return-log')
 

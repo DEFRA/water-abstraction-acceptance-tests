@@ -1,8 +1,8 @@
 import { findBillRunRow } from '../../../support/helpers/bill-run.helpers.js'
 import { formatLongDate } from '../../../support/helpers/date.helpers.js'
 import { regions } from '../../../support/default-values.js'
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 import { expect, test } from '../../../support/fixtures.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe('Create an annual bill run with a licence and a water company licence (internal)', () => {
   let scenario
@@ -43,8 +43,8 @@ test.describe('Create an annual bill run with a licence and a water company lice
 
     await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
     await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: regions.MIDLANDS.displayName, exact: true })).toBeVisible()
-    await expect(billRunRow.getByRole('cell', { name: 'Annual', exact: true })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: regions.MIDLANDS.displayName })).toBeVisible()
+    await expect(billRunRow.getByRole('cell', { exact: true, name: 'Annual' })).toBeVisible()
     await billRunRow.getByRole('link').click()
 
     await expect(page.locator('h1')).toContainText(`${regions.MIDLANDS.displayName} annual`)

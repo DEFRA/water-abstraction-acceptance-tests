@@ -2,9 +2,9 @@ import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import licenceMonitoringStationData from '../data/licence-monitoring-station.data.js'
 import licenceVersionPurposeConditionData from '../data/licence-version-purpose-condition.data.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { groups, monitoringStations, regions } from '../default-values.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Registered licences with a monitoring station (tagged)'
 export const description =

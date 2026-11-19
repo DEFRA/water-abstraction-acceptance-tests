@@ -1,10 +1,12 @@
 /**
  * Interactive CLI to seed the local database with test scenarios. See cli/README.md. Run with `npm run cli`
+ *
+ * @module Cli
  */
 
-import { listScenarios } from './src/scenarios.lib.js'
 import scenariosMenu from './src/scenarios.menu.js'
 import tasksMenu from './src/tasks.menu.js'
+import { listScenarios } from './src/scenarios.lib.js'
 
 const escapeAbortController = new AbortController()
 

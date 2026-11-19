@@ -1,3 +1,9 @@
+/**
+ * Populates the licences with the points, periods and quantities they abstract
+ *
+ * @module AbstractionPopulator
+ */
+
 import licenceVersionPurposePointData from '../../../../tests/support/data/licence-version-purpose-point.data.js'
 import pointData from '../../../../tests/support/data/point.data.js'
 import { purposesOn } from './helpers/purposes.helpers.js'

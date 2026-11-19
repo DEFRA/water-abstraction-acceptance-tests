@@ -1,7 +1,13 @@
-import { test as base } from '@playwright/test'
-import { fileURLToPath } from 'node:url'
+/**
+ * Playwright fixtures shared by the acceptance test specs
+ *
+ * @module Fixtures
+ */
+
 import fs from 'node:fs/promises'
 import path from 'path'
+import { fileURLToPath } from 'node:url'
+import { test as base } from '@playwright/test'
 
 import buildWorldKey from '../../cli/src/world/key.world.js'
 import config from '../config.js'
@@ -62,6 +68,18 @@ export const test = base.extend({
     })
   },
 
+  loginExternal: async ({ page, externalUrl }, use) => {
+    await use(async (user) => {
+      await page.goto(`${externalUrl}/signin`)
+      await page.fill('input#email', user.username)
+      await page.fill('input#password', user.password)
+      await page.click('.govuk-button.govuk-button--start')
+      await page.waitForURL((url) => {
+        return !url.pathname.startsWith('/signin')
+      })
+    })
+  },
+
   // Signs out the session held by cookies from loginCookies, so a spec that signed in once in beforeAll can sign out
   // once in afterAll
   logoutCookies: async ({ browser }, use) => {
@@ -78,21 +96,9 @@ export const test = base.extend({
     })
   },
 
-  loginExternal: async ({ page, externalUrl }, use) => {
-    await use(async (user) => {
-      await page.goto(`${externalUrl}/signin`)
-      await page.fill('input#email', user.username)
-      await page.fill('input#password', user.password)
-      await page.click('.govuk-button.govuk-button--start')
-      await page.waitForURL((url) => {
-        return !url.pathname.startsWith('/signin')
-      })
-    })
-  },
-
   triggerJob: async ({ request }, use) => {
     await use((job) => {
-      return request.post(`/system/jobs/${job}`, { timeout: 60000 })
+      return request.post(`${config.internalUrl}/jobs/${job}`, { timeout: 60000 })
     })
   },
 

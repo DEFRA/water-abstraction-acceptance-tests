@@ -1,4 +1,10 @@
 /**
+ * Helpers for reading notifications sent by the service
+ *
+ * @module NotificationHelpers
+ */
+
+/**
  * Extracts a link from a Notify email body and rewrites its host to point at the given base URL
  *
  * @param {object} body - The response body from the `/notifications/last` endpoint

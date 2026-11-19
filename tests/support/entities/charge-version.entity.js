@@ -1,3 +1,9 @@
+/**
+ * Builds a charge version entity
+ *
+ * @module ChargeVersionEntity
+ */
+
 import chargeElementData from '../data/charge-element.data.js'
 import chargeReferenceData from '../data/charge-reference.data.js'
 import chargeVersionData from '../data/charge-version.data.js'

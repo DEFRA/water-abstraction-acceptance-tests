@@ -1,3 +1,9 @@
+/**
+ * Config for the acceptance tests, read from the environment
+ *
+ * @module Config
+ */
+
 import dotenv from 'dotenv'
 
 // The app runs with TZ=UTC. Calculated dates (see calculated-dates.helpers.js) are built using the
@@ -11,6 +17,7 @@ export default {
   baseUrl: 'http://localhost:8008',
   defaultPassword: process.env.DEFAULT_USER_PASSWORD,
   externalUrl: 'http://localhost:8000',
+  internalUrl: 'http://localhost:8013',
   jwtToken: process.env.JWT_TOKEN,
   notifyCallbackToken: process.env.NOTIFY_CALLBACK_TOKEN
 }

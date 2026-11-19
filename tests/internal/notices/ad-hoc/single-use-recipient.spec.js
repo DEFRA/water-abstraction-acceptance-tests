@@ -59,11 +59,13 @@ test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
 
     const userRow = page.getByRole('row').filter({ hasText: primaryUser.username })
+
     await expect(userRow.locator('[data-test^="recipient-licence-numbers"]')).toContainText(licence.licenceRef)
     await expect(userRow.locator('[data-test^="recipient-method"]')).toContainText('Email - primary user')
     await expect(userRow.locator('[data-test^="recipient-action"]')).toContainText('Preview')
 
     const lookupRow = page.getByRole('row').filter({ hasText: 'Lookup recipient' })
+
     await expect(lookupRow).toContainText('ENVIRONMENT AGENCY')
     await expect(lookupRow).toContainText('HORIZON HOUSE DEANERY ROAD')
     await expect(lookupRow).toContainText('BRISTOL')
@@ -90,6 +92,7 @@ test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
     await expect(page.locator('[data-test^="notification-recipient"]', { hasText: primaryUser.username })).toBeVisible()
 
     const lookupNotification = page.locator('[data-test^="notification-recipient"]', { hasText: 'Lookup recipient' })
+
     await expect(lookupNotification).toContainText('ENVIRONMENT AGENCY')
     await expect(lookupNotification).toContainText('HORIZON HOUSE DEANERY ROAD')
     await expect(lookupNotification).toContainText('BRISTOL')
@@ -120,6 +123,7 @@ test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
     await expect(page.locator('[data-test^="recipient-contact"]')).toHaveCount(2)
 
     const manualRow = page.getByRole('row').filter({ hasText: 'Manual Recipient' })
+
     await expect(manualRow).toContainText('4 Privet drive')
     await expect(manualRow).toContainText('Little Whinging')
     await expect(manualRow).toContainText('Surrey')
@@ -139,6 +143,7 @@ test.describe('Ad-hoc notice single-use recipient journey (internal)', () => {
     await expect(page.locator('[data-test^="notification-recipient"]')).toHaveCount(2)
 
     const manualNotification = page.locator('[data-test^="notification-recipient"]', { hasText: 'Manual Recipient' })
+
     await expect(manualNotification).toContainText('4 Privet drive')
     await expect(manualNotification).toContainText('Little Whinging')
     await expect(manualNotification).toContainText('Surrey')

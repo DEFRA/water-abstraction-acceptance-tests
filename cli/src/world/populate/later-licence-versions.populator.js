@@ -1,6 +1,12 @@
+/**
+ * Populates some live licences with a licence version after the sroc start date
+ *
+ * @module LaterLicenceVersionsPopulator
+ */
+
 import { licenceModel } from './helpers/end-dates.helpers.js'
-import { regionOf } from './helpers/regions.helpers.js'
 import { correct, transfer } from './helpers/licence-versions.helpers.js'
+import { regionOf } from './helpers/regions.helpers.js'
 
 /**
  * Give some live licences a licence version after the sroc start date

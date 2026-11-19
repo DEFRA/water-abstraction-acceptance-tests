@@ -1,3 +1,9 @@
+/**
+ * Lists the scenario files and loads a selected scenario into the database
+ *
+ * @module ScenariosLib
+ */
+
 import fs from 'fs'
 import path from 'path'
 
@@ -27,10 +33,10 @@ export async function listScenarios() {
     const mod = await import(`file://${scenarioPath}`)
 
     scenarios.push({
+      description: mod.description ?? '',
       filename,
       path: scenarioPath,
-      title: mod.title ?? filename,
-      description: mod.description ?? ''
+      title: mod.title ?? filename
     })
   }
 

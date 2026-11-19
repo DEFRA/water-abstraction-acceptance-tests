@@ -24,6 +24,7 @@ test.describe('Submit historic correction using abstraction data for licence wit
 
     const [purpose400CurrentLog, purpose400PreviousLog, purpose420CurrentLog, purpose420PreviousLog] =
       scenario.returnLogs
+
     user = scenario.user
 
     purpose400Current = {

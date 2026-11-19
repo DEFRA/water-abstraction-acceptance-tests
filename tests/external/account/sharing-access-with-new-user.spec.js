@@ -1,8 +1,8 @@
 import { generateExternalEmailAddress } from 'water-abstraction-engine/test/generators.js'
 
-import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
 import { password } from '../../support/default-values.js'
 import { expect, test } from '../../support/fixtures.js'
+import { extractNotificationLink } from '../../support/helpers/notification.helpers.js'
 
 test.describe('Sharing licence access with a new user (external)', () => {
   let firstUser

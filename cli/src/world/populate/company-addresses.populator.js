@@ -1,3 +1,9 @@
+/**
+ * Populates the company addresses of the licence holders
+ *
+ * @module CompanyAddressesPopulator
+ */
+
 import { licenceEndDate } from './helpers/end-dates.helpers.js'
 
 /**

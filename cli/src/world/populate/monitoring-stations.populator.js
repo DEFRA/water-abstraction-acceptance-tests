@@ -1,11 +1,17 @@
-import { generateUUID } from 'water-abstraction-engine/test/generators.js'
-import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
+/**
+ * Tags some of the live licences to monitoring stations
+ *
+ * @module MonitoringStationsPopulator
+ */
 
-import { addCondition } from './helpers/conditions.helpers.js'
-import { currentPurpose } from './helpers/purposes.helpers.js'
-import { licenceModel } from './helpers/end-dates.helpers.js'
+import monitoringStationHelper from 'water-abstraction-engine/test/helpers/monitoring-station.helper.js'
+import { generateUUID } from 'water-abstraction-engine/test/generators.js'
+
 import licenceMonitoringStationData from '../../../../tests/support/data/licence-monitoring-station.data.js'
+import { addCondition } from './helpers/conditions.helpers.js'
 import { formatDateToIso, relativeToToday } from '../../../../tests/support/helpers/date.helpers.js'
+import { licenceModel } from './helpers/end-dates.helpers.js'
+import { currentPurpose } from './helpers/purposes.helpers.js'
 
 // How often a live licence is tagged to a monitoring station. Every 6th live licence is, starting with its first.
 //

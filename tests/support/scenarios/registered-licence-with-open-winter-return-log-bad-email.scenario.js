@@ -1,5 +1,5 @@
-import { regions } from '../default-values.js'
 import registeredLicenceWithOpenWinterReturnLogScenario from './registered-licence-with-open-winter-return-log.scenario.js'
+import { regions } from '../default-values.js'
 
 export const title = 'Registered licence with an open return log and a bad email (winter cycle)'
 export const description =

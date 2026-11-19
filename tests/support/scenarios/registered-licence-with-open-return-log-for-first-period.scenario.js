@@ -1,7 +1,7 @@
 import licenceWithOpenReturnLogForFirstPeriod from './licence-with-open-return-log-for-first-period.scenario.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
 import { regions } from '../default-values.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Registered licence with an open return log (first period)'
 export const description = 'Registered licence with an open return log for the first return period with no due date set'

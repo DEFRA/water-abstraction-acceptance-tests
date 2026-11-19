@@ -1,3 +1,9 @@
+/**
+ * Builds a return submission entity
+ *
+ * @module ReturnSubmissionEntity
+ */
+
 import returnSubmissionData from '../data/return-submission.data.js'
 import returnSubmissionLinesData from '../data/return-submission-lines.data.js'
 
@@ -16,7 +22,7 @@ export default function (returnLog, totalVolume) {
 
   // returnLog.startDate/endDate are ISO strings (the shape the seed endpoint expects), but returnSubmissionLinesData
   // needs real Date objects to read the year off, so we convert them back here.
-  const period = { startDate: new Date(returnLog.startDate), endDate: new Date(returnLog.endDate) }
+  const period = { endDate: new Date(returnLog.endDate), startDate: new Date(returnLog.startDate) }
   const returnSubmissionLines = returnSubmissionLinesData(period, returnSubmission, totalVolume)
 
   return {

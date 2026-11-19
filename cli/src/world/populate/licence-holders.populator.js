@@ -1,4 +1,10 @@
-import { REGIONS, regionOf } from './helpers/regions.helpers.js'
+/**
+ * Populates the licence holders, so some companies hold more than one licence
+ *
+ * @module LicenceHoldersPopulator
+ */
+
+import { regionOf, REGIONS } from './helpers/regions.helpers.js'
 
 /**
  * Hold some licences by a company that holds others

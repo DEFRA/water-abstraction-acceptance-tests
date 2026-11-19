@@ -1,11 +1,11 @@
 import buildInternalUserEntity from '../entities/internal-user.entity.js'
 import buildLicenceEntity from '../entities/licence.entity.js'
 import buildReturnVersionEntity from '../entities/return-version.entity.js'
-import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
-import { mergeByKey } from '../helpers/scenario.helpers.js'
 import primaryUserData from '../data/primary-user.data.js'
+import { calculatedDates } from '../helpers/calculated-dates.helpers.js'
 import { regions } from '../default-values.js'
 import { buildReturnLogs, returnLogPeriods } from '../helpers/return-log.helpers.js'
+import { mergeByKey } from '../helpers/scenario.helpers.js'
 
 export const title = 'Registered licence for a single-use recipient'
 export const description =

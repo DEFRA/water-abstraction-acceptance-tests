@@ -1,13 +1,13 @@
-import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
-import {
-  SROC_FIRST_FINANCIAL_YEAR,
-  billingPeriodCounts,
-  formatLongDate
-} from '../../../support/helpers/date.helpers.js'
-import { expect, test } from '../../../support/fixtures.js'
 import { findBillRunRow, findBillRunRowByLink } from '../../../support/helpers/bill-run.helpers.js'
+import {
+  billingPeriodCounts,
+  formatLongDate,
+  SROC_FIRST_FINANCIAL_YEAR
+} from '../../../support/helpers/date.helpers.js'
 import { regions, srocStartDate } from '../../../support/default-values.js'
+import { expect, test } from '../../../support/fixtures.js'
 import { summaryValue, tableRow } from '../../../support/helpers/govuk.helpers.js'
+import { reloadUntilTextFound } from '../../../support/helpers/wait.helpers.js'
 
 test.describe(
   'Sroc supplementary bill runs after charge changes (internal)',
@@ -50,7 +50,7 @@ test.describe(
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Supplementary', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Supplementary' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
@@ -71,7 +71,7 @@ test.describe(
 
       await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-      await expect(billRunRow.getByRole('cell', { name: regions.NORTH_WEST.displayName, exact: true })).toBeVisible()
+      await expect(billRunRow.getByRole('cell', { exact: true, name: regions.NORTH_WEST.displayName })).toBeVisible()
       await billRunRow.getByRole('link').click()
 
       const billRunUrl = page.url()
@@ -171,7 +171,7 @@ test.describe(
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Supplementary', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Supplementary' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
@@ -190,7 +190,7 @@ test.describe(
 
       await reloadUntilTextFound(page, billRunRow.locator('.govuk-tag'), 'ready')
       await expect(billRunRow.getByRole('cell', { name: formattedCurrentDate })).toBeVisible()
-      await expect(billRunRow.getByRole('cell', { name: regions.NORTH_WEST.displayName, exact: true })).toBeVisible()
+      await expect(billRunRow.getByRole('cell', { exact: true, name: regions.NORTH_WEST.displayName })).toBeVisible()
       await billRunRow.getByRole('link').click()
 
       await expect(page.locator('h1')).toContainText(`${regions.NORTH_WEST.displayName} supplementary`)
@@ -282,7 +282,7 @@ test.describe(
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Supplementary', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Supplementary' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
@@ -461,7 +461,7 @@ test.describe(
       await page.getByRole('button', { name: 'Create a bill run' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the bill run type')
-      await page.getByRole('radio', { name: 'Supplementary', exact: true }).check()
+      await page.getByRole('radio', { exact: true, name: 'Supplementary' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page.locator('h1')).toContainText('Select the region')
@@ -494,6 +494,7 @@ test.describe(
 
       await expect(page.locator('h1')).toContainText(`Billing account ${billingAccount.accountNumber}`)
       const chargeReferenceRow = tableRow(page, 'Supported source Earl Soham - Deben')
+
       await expect(chargeReferenceRow.locator('[data-test^="additional-charges-"]')).toContainText(
         'Supported source Earl Soham - Deben'
       )

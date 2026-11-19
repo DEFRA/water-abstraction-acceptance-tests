@@ -1,3 +1,9 @@
+/**
+ * The searchable scenario picker prompt used by the CLI
+ *
+ * @module SearchScenariosPrompt
+ */
+
 import { search } from '@inquirer/prompts'
 
 import { cliTheme } from './theme.lib.js'
@@ -15,9 +21,9 @@ import { cliTheme } from './theme.lib.js'
 export default async function searchScenariosPrompt(scenarios, escapeSignal, tabSignal, selectedScenario) {
   return search(
     {
-      message: 'Search for a scenario:',
       // Highlights the last used scenario
       default: selectedScenario,
+      message: 'Search for a scenario:',
       source: async (input) => {
         let filteredScenarios = scenarios
 
@@ -44,9 +50,9 @@ function _findMatchingScenarios(scenarios, input) {
 function _presentScenarios(filteredScenarios) {
   return filteredScenarios.map((scenario) => {
     return {
+      description: scenario.description,
       name: scenario.title,
-      value: scenario,
-      description: scenario.description
+      value: scenario
     }
   })
 }
