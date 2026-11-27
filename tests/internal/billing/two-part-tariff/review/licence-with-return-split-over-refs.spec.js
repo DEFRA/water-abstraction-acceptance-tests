@@ -115,46 +115,47 @@ test.describe('Licence with a Return Split Over Charge References (internal)', (
       await expect(page.locator('[data-test="matched-return-action-1"] > .govuk-link')).toHaveCount(0)
       await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
 
-      // Two charge references, each with one element; the return's 24 ML is split 10 ML / 14 ML across them. The
-      // references have different charge categories and sort by subsistence charge (highest first), so 4.6.19 is shown
-      // before 4.6.1.
+      // Two charge references, each with one element; the return's 24 ML is split 14 ML / 10 ML across them. The
+      // references have different charge categories and sort by subsistence charge (lowest first), so 4.6.1 is shown
+      // before 4.6.19.
       await expect(page.locator('[data-test="charge-version-0-details"]')).toContainText(
         '2 charge references with 2 two-part tariff charge elements'
       )
-      await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.6.19')
-      await expect(page.locator('[data-test="charge-version-0-reference-1"]')).toContainText('Charge reference 4.6.1')
+      await expect(page.locator('[data-test="charge-version-0-reference-0"]')).toContainText('Charge reference 4.6.1')
+      await expect(page.locator('[data-test="charge-version-0-reference-1"]')).toContainText('Charge reference 4.6.19')
       await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText(
-        '10 ML / 32 ML'
-      )
-      await expect(
-        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
-      ).toContainText('10 ML / 10 ML')
-      await expect(page.locator('[data-test="charge-version-0-total-billable-returns-1"]')).toContainText(
         '14 ML / 32 ML'
       )
       await expect(
-        page.locator('[data-test="charge-version-0-charge-reference-1-charge-element-billable-returns-0"]')
+        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
       ).toContainText('14 ML / 14 ML')
 
-      // First element's match details: 10 ML of the return allocates to it, still flagged split over charge references
+      await expect(page.locator('[data-test="charge-version-0-total-billable-returns-1"]')).toContainText(
+        '10 ML / 32 ML'
+      )
+      await expect(
+        page.locator('[data-test="charge-version-0-charge-reference-1-charge-element-billable-returns-0"]')
+      ).toContainText('10 ML / 10 ML')
+
+      // First element's match details: 14 ML of the return allocates to it, still flagged split over charge references
       await page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-match-details-0"]').click()
 
       await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
-      await expect(page.locator('[data-test="billable-returns"]')).toContainText('10 ML')
-      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('10 ML')
+      await expect(page.locator('[data-test="billable-returns"]')).toContainText('14 ML')
+      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('14 ML')
       await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('24 ML / 24 ML')
       await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText(
         'Return split over charge references'
       )
       await page.getByRole('link', { name: 'Go back to review licence' }).click()
 
-      // Second element's match details: the other 14 ML of the return allocates to it
+      // Second element's match details: the other 10 ML of the return allocates to it
       await expect(page.locator('h1')).toContainText(`Licence ${licence.licenceRef}`)
       await page.locator('[data-test="charge-version-0-charge-reference-1-charge-element-match-details-0"]').click()
 
       await expect(page.locator('h1')).toContainText('Spray Irrigation - Direct')
-      await expect(page.locator('[data-test="billable-returns"]')).toContainText('14 ML')
-      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('14 ML')
+      await expect(page.locator('[data-test="billable-returns"]')).toContainText('10 ML')
+      await expect(page.locator('[data-test="authorised-volume"]')).toContainText('10 ML')
       await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(1)')).toContainText('24 ML / 24 ML')
       await expect(page.locator('[data-test="matched-return-total-0"] > :nth-child(2)')).toContainText(
         'Return split over charge references'
