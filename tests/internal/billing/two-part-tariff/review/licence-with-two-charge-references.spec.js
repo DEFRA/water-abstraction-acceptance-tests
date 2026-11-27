@@ -119,27 +119,27 @@ test.describe('Licence with Two Charge References (internal)', () => {
       await expect(page.locator('[data-test="matched-return-action-2"] > .govuk-link')).toHaveCount(0)
       await expect(page.locator('[data-test="unmatched-return-action-0"] > .govuk-link')).toHaveCount(0)
 
-      // Two charge references, each with one element. The first reference volume (22) is lower than its element (42) so
-      // allocation caps at the reference; the second element (32) is lower than its reference (52) so allocation caps
-      // at the element.
-      // Two charge references, each with one element, sharing the same two volumes (22 and 42) with the reference and
-      // element swapped. The first reference (22) is lower than its element (42) so allocation caps at the reference;
-      // the second element (22) is lower than its reference (42) so allocation caps at the element. Both allocate 22.
+      // Two charge references, each with one element.
+      //
+      // The first reference's element (22) is lower than its reference (42), so allocation caps at the element.
+      // The second reference's element (42) is higher than its reference (22), so allocation caps at the reference.
+      //
+      // This means both allocate 22.
       await expect(page.locator('[data-test="charge-version-0-details"]')).toContainText(
         '2 charge references with 2 two-part tariff charge elements'
       )
       await expect(page.locator('[data-test="charge-version-0-total-billable-returns-0"]')).toContainText(
-        '22 ML / 22 ML'
-      )
-      await expect(
-        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
-      ).toContainText('22 ML / 42 ML')
-      await expect(page.locator('[data-test="charge-version-0-total-billable-returns-1"]')).toContainText(
         '22 ML / 42 ML'
       )
       await expect(
-        page.locator('[data-test="charge-version-0-charge-reference-1-charge-element-billable-returns-0"]')
+        page.locator('[data-test="charge-version-0-charge-reference-0-charge-element-billable-returns-0"]')
       ).toContainText('22 ML / 22 ML')
+      await expect(page.locator('[data-test="charge-version-0-total-billable-returns-1"]')).toContainText(
+        '22 ML / 22 ML'
+      )
+      await expect(
+        page.locator('[data-test="charge-version-0-charge-reference-1-charge-element-billable-returns-0"]')
+      ).toContainText('22 ML / 42 ML')
     }
   )
 })
